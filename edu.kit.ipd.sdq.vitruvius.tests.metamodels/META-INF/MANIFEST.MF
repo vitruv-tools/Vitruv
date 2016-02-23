@@ -27,7 +27,10 @@ Export-Package: uml_mockup,
  attribute_to_structure_attr.util,
  attribute_to_structure_struct_1,
  attribute_to_structure_struct_1.impl,
- attribute_to_structure_struct_1.util
+ attribute_to_structure_struct_1.util,
+ allElementTypes2,
+ allElementTypes2.impl,
+ allElementTypes2.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy

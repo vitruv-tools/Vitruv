@@ -113,7 +113,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	int MODEL_B__ID = IDENTIFIED__ID;
 
 	/**
-	 * The feature id for the '<em><b>Content</b></em>' reference list.
+	 * The feature id for the '<em><b>Content</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -150,13 +150,22 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	int STRUCTURED = 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRUCTURED__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED__NAME = 0;
+	int STRUCTURED__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Int Container</b></em>' containment reference.
@@ -165,7 +174,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED__INT_CONTAINER = 1;
+	int STRUCTURED__INT_CONTAINER = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Str Container</b></em>' containment reference.
@@ -174,7 +183,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED__STR_CONTAINER = 2;
+	int STRUCTURED__STR_CONTAINER = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Float Container</b></em>' containment reference.
@@ -183,7 +192,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED__FLOAT_CONTAINER = 3;
+	int STRUCTURED__FLOAT_CONTAINER = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Structured</em>' class.
@@ -192,7 +201,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED_FEATURE_COUNT = 4;
+	int STRUCTURED_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Structured</em>' class.
@@ -201,7 +210,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRUCTURED_OPERATION_COUNT = 0;
+	int STRUCTURED_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link attribute_to_structure_struct_1.impl.IntContainerImpl <em>Int Container</em>}' class.
@@ -214,13 +223,22 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	int INT_CONTAINER = 3;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INT_CONTAINER__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INT_CONTAINER__VALUE = 0;
+	int INT_CONTAINER__VALUE = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Int Container</em>' class.
@@ -229,7 +247,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INT_CONTAINER_FEATURE_COUNT = 1;
+	int INT_CONTAINER_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Int Container</em>' class.
@@ -238,7 +256,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INT_CONTAINER_OPERATION_COUNT = 0;
+	int INT_CONTAINER_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link attribute_to_structure_struct_1.impl.StrContainerImpl <em>Str Container</em>}' class.
@@ -251,13 +269,22 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	int STR_CONTAINER = 4;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STR_CONTAINER__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STR_CONTAINER__VALUE = 0;
+	int STR_CONTAINER__VALUE = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Str Container</em>' class.
@@ -266,7 +293,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STR_CONTAINER_FEATURE_COUNT = 1;
+	int STR_CONTAINER_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Str Container</em>' class.
@@ -275,7 +302,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STR_CONTAINER_OPERATION_COUNT = 0;
+	int STR_CONTAINER_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link attribute_to_structure_struct_1.impl.FloatContainerImpl <em>Float Container</em>}' class.
@@ -288,13 +315,22 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	int FLOAT_CONTAINER = 5;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FLOAT_CONTAINER__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FLOAT_CONTAINER__VALUE = 0;
+	int FLOAT_CONTAINER__VALUE = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Float Container</em>' class.
@@ -303,7 +339,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FLOAT_CONTAINER_FEATURE_COUNT = 1;
+	int FLOAT_CONTAINER_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Float Container</em>' class.
@@ -312,7 +348,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FLOAT_CONTAINER_OPERATION_COUNT = 0;
+	int FLOAT_CONTAINER_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 
 	/**
@@ -347,10 +383,10 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 	EClass getModelB();
 
 	/**
-	 * Returns the meta object for the reference list '{@link attribute_to_structure_struct_1.ModelB#getContent <em>Content</em>}'.
+	 * Returns the meta object for the containment reference list '{@link attribute_to_structure_struct_1.ModelB#getContent <em>Content</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Content</em>'.
+	 * @return the meta object for the containment reference list '<em>Content</em>'.
 	 * @see attribute_to_structure_struct_1.ModelB#getContent()
 	 * @see #getModelB()
 	 * @generated
@@ -526,7 +562,7 @@ public interface Attribute_to_structure_struct_1Package extends EPackage {
 		EClass MODEL_B = eINSTANCE.getModelB();
 
 		/**
-		 * The meta object literal for the '<em><b>Content</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Content</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

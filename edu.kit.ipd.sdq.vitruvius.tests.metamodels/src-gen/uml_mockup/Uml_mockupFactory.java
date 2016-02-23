@@ -31,13 +31,13 @@ public interface Uml_mockupFactory extends EFactory {
 	UPackage createUPackage();
 
 	/**
-	 * Returns a new object of class '<em>Interface</em>'.
+	 * Returns a new object of class '<em>UInterface</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Interface</em>'.
+	 * @return a new object of class '<em>UInterface</em>'.
 	 * @generated
 	 */
-	Interface createInterface();
+	UInterface createUInterface();
 
 	/**
 	 * Returns a new object of class '<em>UClass</em>'.
@@ -47,6 +47,15 @@ public interface Uml_mockupFactory extends EFactory {
 	 * @generated
 	 */
 	UClass createUClass();
+
+	/**
+	 * Returns a new object of class '<em>UMethod</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>UMethod</em>'.
+	 * @generated
+	 */
+	UMethod createUMethod();
 
 	/**
 	 * Returns the package supported by this factory.

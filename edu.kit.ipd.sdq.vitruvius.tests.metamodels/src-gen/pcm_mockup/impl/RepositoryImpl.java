@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import pcm_mockup.Component;
-import pcm_mockup.Interface;
+import pcm_mockup.PInterface;
 import pcm_mockup.PNamedElement;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
@@ -66,7 +66,7 @@ public class RepositoryImpl extends IdentifiedImpl implements Repository {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Interface> interfaces;
+	protected EList<PInterface> interfaces;
 
 	/**
 	 * The cached value of the '{@link #getComponents() <em>Components</em>}' containment reference list.
@@ -123,9 +123,9 @@ public class RepositoryImpl extends IdentifiedImpl implements Repository {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Interface> getInterfaces() {
+	public EList<PInterface> getInterfaces() {
 		if (interfaces == null) {
-			interfaces = new EObjectContainmentEList<Interface>(Interface.class, this, Pcm_mockupPackage.REPOSITORY__INTERFACES);
+			interfaces = new EObjectContainmentEList<PInterface>(PInterface.class, this, Pcm_mockupPackage.REPOSITORY__INTERFACES);
 		}
 		return interfaces;
 	}
@@ -190,7 +190,7 @@ public class RepositoryImpl extends IdentifiedImpl implements Repository {
 				return;
 			case Pcm_mockupPackage.REPOSITORY__INTERFACES:
 				getInterfaces().clear();
-				getInterfaces().addAll((Collection<? extends Interface>)newValue);
+				getInterfaces().addAll((Collection<? extends PInterface>)newValue);
 				return;
 			case Pcm_mockupPackage.REPOSITORY__COMPONENTS:
 				getComponents().clear();

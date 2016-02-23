@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
 public interface Repository extends Identified, PNamedElement {
 	/**
 	 * Returns the value of the '<em><b>Interfaces</b></em>' containment reference list.
-	 * The list contents are of type {@link pcm_mockup.Interface}.
+	 * The list contents are of type {@link pcm_mockup.PInterface}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Interfaces</em>' containment reference list isn't clear,
@@ -36,7 +36,7 @@ public interface Repository extends Identified, PNamedElement {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Interface> getInterfaces();
+	EList<PInterface> getInterfaces();
 
 	/**
 	 * Returns the value of the '<em><b>Components</b></em>' containment reference list.

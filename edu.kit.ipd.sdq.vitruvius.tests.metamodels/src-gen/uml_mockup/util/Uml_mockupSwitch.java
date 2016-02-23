@@ -80,11 +80,11 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Uml_mockupPackage.INTERFACE: {
-				Interface interface_ = (Interface)theEObject;
-				T result = caseInterface(interface_);
-				if (result == null) result = caseIdentified(interface_);
-				if (result == null) result = caseUNamedElement(interface_);
+			case Uml_mockupPackage.UINTERFACE: {
+				UInterface uInterface = (UInterface)theEObject;
+				T result = caseUInterface(uInterface);
+				if (result == null) result = caseIdentified(uInterface);
+				if (result == null) result = caseUNamedElement(uInterface);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -99,6 +99,14 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
 			case Uml_mockupPackage.UNAMED_ELEMENT: {
 				UNamedElement uNamedElement = (UNamedElement)theEObject;
 				T result = caseUNamedElement(uNamedElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Uml_mockupPackage.UMETHOD: {
+				UMethod uMethod = (UMethod)theEObject;
+				T result = caseUMethod(uMethod);
+				if (result == null) result = caseIdentified(uMethod);
+				if (result == null) result = caseUNamedElement(uMethod);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -137,17 +145,17 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Interface</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>UInterface</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Interface</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>UInterface</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInterface(Interface object) {
+	public T caseUInterface(UInterface object) {
 		return null;
 	}
 
@@ -178,6 +186,21 @@ public class Uml_mockupSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseUNamedElement(UNamedElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>UMethod</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>UMethod</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseUMethod(UMethod object) {
 		return null;
 	}
 

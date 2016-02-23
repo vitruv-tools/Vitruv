@@ -150,13 +150,22 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	int ATTRIBUTED = 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ATTRIBUTED__ID = IDENTIFIED__ID;
+
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED__NAME = 0;
+	int ATTRIBUTED__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Int Attr</b></em>' attribute.
@@ -165,7 +174,7 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED__INT_ATTR = 1;
+	int ATTRIBUTED__INT_ATTR = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Str Attr</b></em>' attribute.
@@ -174,7 +183,7 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED__STR_ATTR = 2;
+	int ATTRIBUTED__STR_ATTR = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Float Attr</b></em>' attribute.
@@ -183,7 +192,7 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED__FLOAT_ATTR = 3;
+	int ATTRIBUTED__FLOAT_ATTR = IDENTIFIED_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Attributed</em>' class.
@@ -192,7 +201,7 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED_FEATURE_COUNT = 4;
+	int ATTRIBUTED_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Attributed</em>' class.
@@ -201,7 +210,7 @@ public interface Attribute_to_structure_attrPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ATTRIBUTED_OPERATION_COUNT = 0;
+	int ATTRIBUTED_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 
 	/**

@@ -255,6 +255,7 @@ public class Attribute_to_structure_attrPackageImpl extends EPackageImpl impleme
 
 		// Add supertypes to classes
 		modelAEClass.getESuperTypes().add(this.getIdentified());
+		attributedEClass.getESuperTypes().add(this.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(identifiedEClass, Identified.class, "Identified", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -265,9 +266,9 @@ public class Attribute_to_structure_attrPackageImpl extends EPackageImpl impleme
 
 		initEClass(attributedEClass, Attributed.class, "Attributed", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAttributed_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAttributed_IntAttr(), ecorePackage.getEInt(), "intAttr", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAttributed_IntAttr(), ecorePackage.getEIntegerObject(), "intAttr", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAttributed_StrAttr(), ecorePackage.getEString(), "strAttr", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAttributed_FloatAttr(), ecorePackage.getEFloat(), "floatAttr", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAttributed_FloatAttr(), ecorePackage.getEFloatObject(), "floatAttr", null, 0, 1, Attributed.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

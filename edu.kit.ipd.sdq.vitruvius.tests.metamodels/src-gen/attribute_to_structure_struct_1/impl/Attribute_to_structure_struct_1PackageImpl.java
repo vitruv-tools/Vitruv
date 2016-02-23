@@ -342,13 +342,17 @@ public class Attribute_to_structure_struct_1PackageImpl extends EPackageImpl imp
 
 		// Add supertypes to classes
 		modelBEClass.getESuperTypes().add(this.getIdentified());
+		structuredEClass.getESuperTypes().add(this.getIdentified());
+		intContainerEClass.getESuperTypes().add(this.getIdentified());
+		strContainerEClass.getESuperTypes().add(this.getIdentified());
+		floatContainerEClass.getESuperTypes().add(this.getIdentified());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(identifiedEClass, Identified.class, "Identified", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIdentified_Id(), ecorePackage.getEString(), "id", null, 1, 1, Identified.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(modelBEClass, ModelB.class, "ModelB", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getModelB_Content(), this.getStructured(), null, "content", null, 0, -1, ModelB.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModelB_Content(), this.getStructured(), null, "content", null, 0, -1, ModelB.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(structuredEClass, Structured.class, "Structured", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStructured_Name(), ecorePackage.getEString(), "name", null, 0, 1, Structured.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +27,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class AttributedImpl extends MinimalEObjectImpl.Container implements Attributed {
+public class AttributedImpl extends IdentifiedImpl implements Attributed {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,7 +56,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int INT_ATTR_EDEFAULT = 0;
+	protected static final Integer INT_ATTR_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getIntAttr() <em>Int Attr</em>}' attribute.
@@ -67,7 +66,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * @generated
 	 * @ordered
 	 */
-	protected int intAttr = INT_ATTR_EDEFAULT;
+	protected Integer intAttr = INT_ATTR_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getStrAttr() <em>Str Attr</em>}' attribute.
@@ -97,7 +96,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * @generated
 	 * @ordered
 	 */
-	protected static final float FLOAT_ATTR_EDEFAULT = 0.0F;
+	protected static final Float FLOAT_ATTR_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getFloatAttr() <em>Float Attr</em>}' attribute.
@@ -107,7 +106,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * @generated
 	 * @ordered
 	 */
-	protected float floatAttr = FLOAT_ATTR_EDEFAULT;
+	protected Float floatAttr = FLOAT_ATTR_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -154,7 +153,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getIntAttr() {
+	public Integer getIntAttr() {
 		return intAttr;
 	}
 
@@ -163,8 +162,8 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIntAttr(int newIntAttr) {
-		int oldIntAttr = intAttr;
+	public void setIntAttr(Integer newIntAttr) {
+		Integer oldIntAttr = intAttr;
 		intAttr = newIntAttr;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Attribute_to_structure_attrPackage.ATTRIBUTED__INT_ATTR, oldIntAttr, intAttr));
@@ -196,7 +195,7 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public float getFloatAttr() {
+	public Float getFloatAttr() {
 		return floatAttr;
 	}
 
@@ -205,8 +204,8 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setFloatAttr(float newFloatAttr) {
-		float oldFloatAttr = floatAttr;
+	public void setFloatAttr(Float newFloatAttr) {
+		Float oldFloatAttr = floatAttr;
 		floatAttr = newFloatAttr;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Attribute_to_structure_attrPackage.ATTRIBUTED__FLOAT_ATTR, oldFloatAttr, floatAttr));
@@ -291,11 +290,11 @@ public class AttributedImpl extends MinimalEObjectImpl.Container implements Attr
 			case Attribute_to_structure_attrPackage.ATTRIBUTED__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case Attribute_to_structure_attrPackage.ATTRIBUTED__INT_ATTR:
-				return intAttr != INT_ATTR_EDEFAULT;
+				return INT_ATTR_EDEFAULT == null ? intAttr != null : !INT_ATTR_EDEFAULT.equals(intAttr);
 			case Attribute_to_structure_attrPackage.ATTRIBUTED__STR_ATTR:
 				return STR_ATTR_EDEFAULT == null ? strAttr != null : !STR_ATTR_EDEFAULT.equals(strAttr);
 			case Attribute_to_structure_attrPackage.ATTRIBUTED__FLOAT_ATTR:
-				return floatAttr != FLOAT_ATTR_EDEFAULT;
+				return FLOAT_ATTR_EDEFAULT == null ? floatAttr != null : !FLOAT_ATTR_EDEFAULT.equals(floatAttr);
 		}
 		return super.eIsSet(featureID);
 	}

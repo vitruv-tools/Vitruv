@@ -82,6 +82,7 @@ public class Attribute_to_structure_attrSwitch<T> extends Switch<T> {
 			case Attribute_to_structure_attrPackage.ATTRIBUTED: {
 				Attributed attributed = (Attributed)theEObject;
 				T result = caseAttributed(attributed);
+				if (result == null) result = caseIdentified(attributed);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

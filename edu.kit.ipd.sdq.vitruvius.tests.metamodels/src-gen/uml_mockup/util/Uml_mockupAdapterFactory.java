@@ -76,8 +76,8 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 				return createUPackageAdapter();
 			}
 			@Override
-			public Adapter caseInterface(Interface object) {
-				return createInterfaceAdapter();
+			public Adapter caseUInterface(UInterface object) {
+				return createUInterfaceAdapter();
 			}
 			@Override
 			public Adapter caseUClass(UClass object) {
@@ -86,6 +86,10 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseUNamedElement(UNamedElement object) {
 				return createUNamedElementAdapter();
+			}
+			@Override
+			public Adapter caseUMethod(UMethod object) {
+				return createUMethodAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -136,16 +140,16 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link uml_mockup.Interface <em>Interface</em>}'.
+	 * Creates a new adapter for an object of class '{@link uml_mockup.UInterface <em>UInterface</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see uml_mockup.Interface
+	 * @see uml_mockup.UInterface
 	 * @generated
 	 */
-	public Adapter createInterfaceAdapter() {
+	public Adapter createUInterfaceAdapter() {
 		return null;
 	}
 
@@ -174,6 +178,20 @@ public class Uml_mockupAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUNamedElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link uml_mockup.UMethod <em>UMethod</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see uml_mockup.UMethod
+	 * @generated
+	 */
+	public Adapter createUMethodAdapter() {
 		return null;
 	}
 

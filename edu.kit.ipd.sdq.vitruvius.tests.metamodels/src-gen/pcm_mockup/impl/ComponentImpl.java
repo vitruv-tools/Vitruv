@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import pcm_mockup.Component;
-import pcm_mockup.Interface;
+import pcm_mockup.PInterface;
 import pcm_mockup.PNamedElement;
 import pcm_mockup.Pcm_mockupPackage;
 
@@ -23,6 +23,7 @@ import pcm_mockup.Pcm_mockupPackage;
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getName <em>Name</em>}</li>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getProvidedInterface <em>Provided Interface</em>}</li>
  *   <li>{@link pcm_mockup.impl.ComponentImpl#getRepositoryFactor <em>Repository Factor</em>}</li>
+ *   <li>{@link pcm_mockup.impl.ComponentImpl#getComponentExclusive <em>Component Exclusive</em>}</li>
  * </ul>
  *
  * @generated
@@ -55,7 +56,7 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @generated
 	 * @ordered
 	 */
-	protected Interface providedInterface;
+	protected PInterface providedInterface;
 	/**
 	 * The default value of the '{@link #getRepositoryFactor() <em>Repository Factor</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -74,6 +75,25 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * @ordered
 	 */
 	protected int repositoryFactor = REPOSITORY_FACTOR_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getComponentExclusive() <em>Component Exclusive</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComponentExclusive()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String COMPONENT_EXCLUSIVE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getComponentExclusive() <em>Component Exclusive</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getComponentExclusive()
+	 * @generated
+	 * @ordered
+	 */
+	protected String componentExclusive = COMPONENT_EXCLUSIVE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -120,10 +140,10 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Interface getProvidedInterface() {
+	public PInterface getProvidedInterface() {
 		if (providedInterface != null && providedInterface.eIsProxy()) {
 			InternalEObject oldProvidedInterface = (InternalEObject)providedInterface;
-			providedInterface = (Interface)eResolveProxy(oldProvidedInterface);
+			providedInterface = (PInterface)eResolveProxy(oldProvidedInterface);
 			if (providedInterface != oldProvidedInterface) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE, oldProvidedInterface, providedInterface));
@@ -137,7 +157,7 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Interface basicGetProvidedInterface() {
+	public PInterface basicGetProvidedInterface() {
 		return providedInterface;
 	}
 
@@ -146,8 +166,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setProvidedInterface(Interface newProvidedInterface) {
-		Interface oldProvidedInterface = providedInterface;
+	public void setProvidedInterface(PInterface newProvidedInterface) {
+		PInterface oldProvidedInterface = providedInterface;
 		providedInterface = newProvidedInterface;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE, oldProvidedInterface, providedInterface));
@@ -179,6 +199,27 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getComponentExclusive() {
+		return componentExclusive;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setComponentExclusive(String newComponentExclusive) {
+		String oldComponentExclusive = componentExclusive;
+		componentExclusive = newComponentExclusive;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Pcm_mockupPackage.COMPONENT__COMPONENT_EXCLUSIVE, oldComponentExclusive, componentExclusive));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -189,6 +230,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				return basicGetProvidedInterface();
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				return getRepositoryFactor();
+			case Pcm_mockupPackage.COMPONENT__COMPONENT_EXCLUSIVE:
+				return getComponentExclusive();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -205,10 +248,13 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				setName((String)newValue);
 				return;
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
-				setProvidedInterface((Interface)newValue);
+				setProvidedInterface((PInterface)newValue);
 				return;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				setRepositoryFactor((Integer)newValue);
+				return;
+			case Pcm_mockupPackage.COMPONENT__COMPONENT_EXCLUSIVE:
+				setComponentExclusive((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -226,10 +272,13 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				setName(NAME_EDEFAULT);
 				return;
 			case Pcm_mockupPackage.COMPONENT__PROVIDED_INTERFACE:
-				setProvidedInterface((Interface)null);
+				setProvidedInterface((PInterface)null);
 				return;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				setRepositoryFactor(REPOSITORY_FACTOR_EDEFAULT);
+				return;
+			case Pcm_mockupPackage.COMPONENT__COMPONENT_EXCLUSIVE:
+				setComponentExclusive(COMPONENT_EXCLUSIVE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -249,6 +298,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 				return providedInterface != null;
 			case Pcm_mockupPackage.COMPONENT__REPOSITORY_FACTOR:
 				return repositoryFactor != REPOSITORY_FACTOR_EDEFAULT;
+			case Pcm_mockupPackage.COMPONENT__COMPONENT_EXCLUSIVE:
+				return COMPONENT_EXCLUSIVE_EDEFAULT == null ? componentExclusive != null : !COMPONENT_EXCLUSIVE_EDEFAULT.equals(componentExclusive);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -299,6 +350,8 @@ public class ComponentImpl extends IdentifiedImpl implements Component {
 		result.append(name);
 		result.append(", repositoryFactor: ");
 		result.append(repositoryFactor);
+		result.append(", componentExclusive: ");
+		result.append(componentExclusive);
 		result.append(')');
 		return result.toString();
 	}

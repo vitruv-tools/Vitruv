@@ -2,8 +2,6 @@
  */
 package attribute_to_structure_attr;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Attributed</b></em>'.
@@ -23,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Attributed extends EObject {
+public interface Attributed extends Identified {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -59,12 +57,12 @@ public interface Attributed extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Int Attr</em>' attribute.
-	 * @see #setIntAttr(int)
+	 * @see #setIntAttr(Integer)
 	 * @see attribute_to_structure_attr.Attribute_to_structure_attrPackage#getAttributed_IntAttr()
 	 * @model
 	 * @generated
 	 */
-	int getIntAttr();
+	Integer getIntAttr();
 
 	/**
 	 * Sets the value of the '{@link attribute_to_structure_attr.Attributed#getIntAttr <em>Int Attr</em>}' attribute.
@@ -74,7 +72,7 @@ public interface Attributed extends EObject {
 	 * @see #getIntAttr()
 	 * @generated
 	 */
-	void setIntAttr(int value);
+	void setIntAttr(Integer value);
 
 	/**
 	 * Returns the value of the '<em><b>Str Attr</b></em>' attribute.
@@ -111,12 +109,12 @@ public interface Attributed extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Float Attr</em>' attribute.
-	 * @see #setFloatAttr(float)
+	 * @see #setFloatAttr(Float)
 	 * @see attribute_to_structure_attr.Attribute_to_structure_attrPackage#getAttributed_FloatAttr()
 	 * @model
 	 * @generated
 	 */
-	float getFloatAttr();
+	Float getFloatAttr();
 
 	/**
 	 * Sets the value of the '{@link attribute_to_structure_attr.Attributed#getFloatAttr <em>Float Attr</em>}' attribute.
@@ -126,6 +124,6 @@ public interface Attributed extends EObject {
 	 * @see #getFloatAttr()
 	 * @generated
 	 */
-	void setFloatAttr(float value);
+	void setFloatAttr(Float value);
 
 } // Attributed

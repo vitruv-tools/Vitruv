@@ -15,9 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import uml_mockup.Interface;
 import uml_mockup.UClass;
+import uml_mockup.UInterface;
 import uml_mockup.UNamedElement;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupPackage;
@@ -66,7 +65,7 @@ public class UPackageImpl extends IdentifiedImpl implements UPackage {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Interface> interfaces;
+	protected EList<UInterface> interfaces;
 
 	/**
 	 * The cached value of the '{@link #getClasses() <em>Classes</em>}' containment reference list.
@@ -123,9 +122,9 @@ public class UPackageImpl extends IdentifiedImpl implements UPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Interface> getInterfaces() {
+	public EList<UInterface> getInterfaces() {
 		if (interfaces == null) {
-			interfaces = new EObjectContainmentEList<Interface>(Interface.class, this, Uml_mockupPackage.UPACKAGE__INTERFACES);
+			interfaces = new EObjectContainmentEList<UInterface>(UInterface.class, this, Uml_mockupPackage.UPACKAGE__INTERFACES);
 		}
 		return interfaces;
 	}
@@ -190,7 +189,7 @@ public class UPackageImpl extends IdentifiedImpl implements UPackage {
 				return;
 			case Uml_mockupPackage.UPACKAGE__INTERFACES:
 				getInterfaces().clear();
-				getInterfaces().addAll((Collection<? extends Interface>)newValue);
+				getInterfaces().addAll((Collection<? extends UInterface>)newValue);
 				return;
 			case Uml_mockupPackage.UPACKAGE__CLASSES:
 				getClasses().clear();

@@ -31,13 +31,13 @@ public interface Pcm_mockupFactory extends EFactory {
 	Repository createRepository();
 
 	/**
-	 * Returns a new object of class '<em>Interface</em>'.
+	 * Returns a new object of class '<em>PInterface</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Interface</em>'.
+	 * @return a new object of class '<em>PInterface</em>'.
 	 * @generated
 	 */
-	Interface createInterface();
+	PInterface createPInterface();
 
 	/**
 	 * Returns a new object of class '<em>Component</em>'.
@@ -47,6 +47,15 @@ public interface Pcm_mockupFactory extends EFactory {
 	 * @generated
 	 */
 	Component createComponent();
+
+	/**
+	 * Returns a new object of class '<em>PMethod</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>PMethod</em>'.
+	 * @generated
+	 */
+	PMethod createPMethod();
 
 	/**
 	 * Returns the package supported by this factory.

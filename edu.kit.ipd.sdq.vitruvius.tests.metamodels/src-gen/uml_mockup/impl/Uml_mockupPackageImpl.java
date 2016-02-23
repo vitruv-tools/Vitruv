@@ -10,8 +10,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import uml_mockup.Identified;
-import uml_mockup.Interface;
 import uml_mockup.UClass;
+import uml_mockup.UInterface;
+import uml_mockup.UMethod;
 import uml_mockup.UNamedElement;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
@@ -43,7 +44,7 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass interfaceEClass = null;
+	private EClass uInterfaceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -58,6 +59,13 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * @generated
 	 */
 	private EClass uNamedElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass uMethodEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -170,8 +178,17 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getInterface() {
-		return interfaceEClass;
+	public EClass getUInterface() {
+		return uInterfaceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getUInterface_Methods() {
+		return (EReference)uInterfaceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -215,6 +232,15 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getUMethod() {
+		return uMethodEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Uml_mockupFactory getUml_mockupFactory() {
 		return (Uml_mockupFactory)getEFactoryInstance();
 	}
@@ -245,13 +271,16 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 		createEReference(uPackageEClass, UPACKAGE__INTERFACES);
 		createEReference(uPackageEClass, UPACKAGE__CLASSES);
 
-		interfaceEClass = createEClass(INTERFACE);
+		uInterfaceEClass = createEClass(UINTERFACE);
+		createEReference(uInterfaceEClass, UINTERFACE__METHODS);
 
 		uClassEClass = createEClass(UCLASS);
 		createEAttribute(uClassEClass, UCLASS__CLASS_COUNT);
 
 		uNamedElementEClass = createEClass(UNAMED_ELEMENT);
 		createEAttribute(uNamedElementEClass, UNAMED_ELEMENT__NAME);
+
+		uMethodEClass = createEClass(UMETHOD);
 	}
 
 	/**
@@ -284,26 +313,31 @@ public class Uml_mockupPackageImpl extends EPackageImpl implements Uml_mockupPac
 		// Add supertypes to classes
 		uPackageEClass.getESuperTypes().add(this.getIdentified());
 		uPackageEClass.getESuperTypes().add(this.getUNamedElement());
-		interfaceEClass.getESuperTypes().add(this.getIdentified());
-		interfaceEClass.getESuperTypes().add(this.getUNamedElement());
+		uInterfaceEClass.getESuperTypes().add(this.getIdentified());
+		uInterfaceEClass.getESuperTypes().add(this.getUNamedElement());
 		uClassEClass.getESuperTypes().add(this.getIdentified());
 		uClassEClass.getESuperTypes().add(this.getUNamedElement());
+		uMethodEClass.getESuperTypes().add(this.getIdentified());
+		uMethodEClass.getESuperTypes().add(this.getUNamedElement());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(identifiedEClass, Identified.class, "Identified", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIdentified_Id(), ecorePackage.getEString(), "id", null, 1, 1, Identified.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(uPackageEClass, UPackage.class, "UPackage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getUPackage_Interfaces(), this.getInterface(), null, "interfaces", null, 0, -1, UPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUPackage_Interfaces(), this.getUInterface(), null, "interfaces", null, 0, -1, UPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getUPackage_Classes(), this.getUClass(), null, "classes", null, 0, -1, UPackage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(interfaceEClass, Interface.class, "Interface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(uInterfaceEClass, UInterface.class, "UInterface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getUInterface_Methods(), this.getUMethod(), null, "methods", null, 0, -1, UInterface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uClassEClass, UClass.class, "UClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUClass_ClassCount(), ecorePackage.getEInt(), "classCount", null, 1, 1, UClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(uNamedElementEClass, UNamedElement.class, "UNamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getUNamedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, UNamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(uMethodEClass, UMethod.class, "UMethod", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

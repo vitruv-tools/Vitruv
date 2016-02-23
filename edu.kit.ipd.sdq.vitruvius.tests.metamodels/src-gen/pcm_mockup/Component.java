@@ -14,6 +14,7 @@ package pcm_mockup;
  * <ul>
  *   <li>{@link pcm_mockup.Component#getProvidedInterface <em>Provided Interface</em>}</li>
  *   <li>{@link pcm_mockup.Component#getRepositoryFactor <em>Repository Factor</em>}</li>
+ *   <li>{@link pcm_mockup.Component#getComponentExclusive <em>Component Exclusive</em>}</li>
  * </ul>
  *
  * @see pcm_mockup.Pcm_mockupPackage#getComponent()
@@ -31,12 +32,12 @@ public interface Component extends Identified, PNamedElement {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Provided Interface</em>' reference.
-	 * @see #setProvidedInterface(Interface)
+	 * @see #setProvidedInterface(PInterface)
 	 * @see pcm_mockup.Pcm_mockupPackage#getComponent_ProvidedInterface()
 	 * @model ordered="false"
 	 * @generated
 	 */
-	Interface getProvidedInterface();
+	PInterface getProvidedInterface();
 
 	/**
 	 * Sets the value of the '{@link pcm_mockup.Component#getProvidedInterface <em>Provided Interface</em>}' reference.
@@ -46,7 +47,7 @@ public interface Component extends Identified, PNamedElement {
 	 * @see #getProvidedInterface()
 	 * @generated
 	 */
-	void setProvidedInterface(Interface value);
+	void setProvidedInterface(PInterface value);
 
 	/**
 	 * Returns the value of the '<em><b>Repository Factor</b></em>' attribute.
@@ -73,4 +74,30 @@ public interface Component extends Identified, PNamedElement {
 	 * @generated
 	 */
 	void setRepositoryFactor(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Component Exclusive</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Component Exclusive</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Component Exclusive</em>' attribute.
+	 * @see #setComponentExclusive(String)
+	 * @see pcm_mockup.Pcm_mockupPackage#getComponent_ComponentExclusive()
+	 * @model
+	 * @generated
+	 */
+	String getComponentExclusive();
+
+	/**
+	 * Sets the value of the '{@link pcm_mockup.Component#getComponentExclusive <em>Component Exclusive</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Component Exclusive</em>' attribute.
+	 * @see #getComponentExclusive()
+	 * @generated
+	 */
+	void setComponentExclusive(String value);
 } // Component

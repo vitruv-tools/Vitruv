@@ -158,14 +158,14 @@ public interface Uml_mockupPackage extends EPackage {
 	int UPACKAGE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link uml_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
+	 * The meta object id for the '{@link uml_mockup.impl.UInterfaceImpl <em>UInterface</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see uml_mockup.impl.InterfaceImpl
-	 * @see uml_mockup.impl.Uml_mockupPackageImpl#getInterface()
+	 * @see uml_mockup.impl.UInterfaceImpl
+	 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUInterface()
 	 * @generated
 	 */
-	int INTERFACE = 2;
+	int UINTERFACE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -174,7 +174,7 @@ public interface Uml_mockupPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE__ID = IDENTIFIED__ID;
+	int UINTERFACE__ID = IDENTIFIED__ID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -183,25 +183,34 @@ public interface Uml_mockupPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE__NAME = IDENTIFIED_FEATURE_COUNT + 0;
+	int UINTERFACE__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Interface</em>' class.
+	 * The feature id for the '<em><b>Methods</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+	int UINTERFACE__METHODS = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Interface</em>' class.
+	 * The number of structural features of the '<em>UInterface</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
+	int UINTERFACE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>UInterface</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UINTERFACE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link uml_mockup.impl.UClassImpl <em>UClass</em>}' class.
@@ -298,6 +307,53 @@ public interface Uml_mockupPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link uml_mockup.impl.UMethodImpl <em>UMethod</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see uml_mockup.impl.UMethodImpl
+	 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUMethod()
+	 * @generated
+	 */
+	int UMETHOD = 5;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UMETHOD__ID = IDENTIFIED__ID;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UMETHOD__NAME = IDENTIFIED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>UMethod</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UMETHOD_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>UMethod</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UMETHOD_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link uml_mockup.Identified <em>Identified</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -351,14 +407,25 @@ public interface Uml_mockupPackage extends EPackage {
 	EReference getUPackage_Classes();
 
 	/**
-	 * Returns the meta object for class '{@link uml_mockup.Interface <em>Interface</em>}'.
+	 * Returns the meta object for class '{@link uml_mockup.UInterface <em>UInterface</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Interface</em>'.
-	 * @see uml_mockup.Interface
+	 * @return the meta object for class '<em>UInterface</em>'.
+	 * @see uml_mockup.UInterface
 	 * @generated
 	 */
-	EClass getInterface();
+	EClass getUInterface();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link uml_mockup.UInterface#getMethods <em>Methods</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Methods</em>'.
+	 * @see uml_mockup.UInterface#getMethods()
+	 * @see #getUInterface()
+	 * @generated
+	 */
+	EReference getUInterface_Methods();
 
 	/**
 	 * Returns the meta object for class '{@link uml_mockup.UClass <em>UClass</em>}'.
@@ -401,6 +468,16 @@ public interface Uml_mockupPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getUNamedElement_Name();
+
+	/**
+	 * Returns the meta object for class '{@link uml_mockup.UMethod <em>UMethod</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>UMethod</em>'.
+	 * @see uml_mockup.UMethod
+	 * @generated
+	 */
+	EClass getUMethod();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -470,14 +547,22 @@ public interface Uml_mockupPackage extends EPackage {
 		EReference UPACKAGE__CLASSES = eINSTANCE.getUPackage_Classes();
 
 		/**
-		 * The meta object literal for the '{@link uml_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
+		 * The meta object literal for the '{@link uml_mockup.impl.UInterfaceImpl <em>UInterface</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see uml_mockup.impl.InterfaceImpl
-		 * @see uml_mockup.impl.Uml_mockupPackageImpl#getInterface()
+		 * @see uml_mockup.impl.UInterfaceImpl
+		 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUInterface()
 		 * @generated
 		 */
-		EClass INTERFACE = eINSTANCE.getInterface();
+		EClass UINTERFACE = eINSTANCE.getUInterface();
+
+		/**
+		 * The meta object literal for the '<em><b>Methods</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference UINTERFACE__METHODS = eINSTANCE.getUInterface_Methods();
 
 		/**
 		 * The meta object literal for the '{@link uml_mockup.impl.UClassImpl <em>UClass</em>}' class.
@@ -514,6 +599,16 @@ public interface Uml_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute UNAMED_ELEMENT__NAME = eINSTANCE.getUNamedElement_Name();
+
+		/**
+		 * The meta object literal for the '{@link uml_mockup.impl.UMethodImpl <em>UMethod</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see uml_mockup.impl.UMethodImpl
+		 * @see uml_mockup.impl.Uml_mockupPackageImpl#getUMethod()
+		 * @generated
+		 */
+		EClass UMETHOD = eINSTANCE.getUMethod();
 
 	}
 

@@ -80,11 +80,11 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Pcm_mockupPackage.INTERFACE: {
-				Interface interface_ = (Interface)theEObject;
-				T result = caseInterface(interface_);
-				if (result == null) result = caseIdentified(interface_);
-				if (result == null) result = casePNamedElement(interface_);
+			case Pcm_mockupPackage.PINTERFACE: {
+				PInterface pInterface = (PInterface)theEObject;
+				T result = casePInterface(pInterface);
+				if (result == null) result = caseIdentified(pInterface);
+				if (result == null) result = casePNamedElement(pInterface);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -99,6 +99,14 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
 			case Pcm_mockupPackage.PNAMED_ELEMENT: {
 				PNamedElement pNamedElement = (PNamedElement)theEObject;
 				T result = casePNamedElement(pNamedElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Pcm_mockupPackage.PMETHOD: {
+				PMethod pMethod = (PMethod)theEObject;
+				T result = casePMethod(pMethod);
+				if (result == null) result = caseIdentified(pMethod);
+				if (result == null) result = casePNamedElement(pMethod);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -137,17 +145,17 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Interface</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>PInterface</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Interface</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>PInterface</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInterface(Interface object) {
+	public T casePInterface(PInterface object) {
 		return null;
 	}
 
@@ -178,6 +186,21 @@ public class Pcm_mockupSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T casePNamedElement(PNamedElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>PMethod</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>PMethod</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePMethod(PMethod object) {
 		return null;
 	}
 

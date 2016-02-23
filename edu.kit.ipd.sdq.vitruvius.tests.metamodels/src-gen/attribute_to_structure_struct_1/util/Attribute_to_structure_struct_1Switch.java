@@ -82,24 +82,28 @@ public class Attribute_to_structure_struct_1Switch<T> extends Switch<T> {
 			case Attribute_to_structure_struct_1Package.STRUCTURED: {
 				Structured structured = (Structured)theEObject;
 				T result = caseStructured(structured);
+				if (result == null) result = caseIdentified(structured);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Attribute_to_structure_struct_1Package.INT_CONTAINER: {
 				IntContainer intContainer = (IntContainer)theEObject;
 				T result = caseIntContainer(intContainer);
+				if (result == null) result = caseIdentified(intContainer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Attribute_to_structure_struct_1Package.STR_CONTAINER: {
 				StrContainer strContainer = (StrContainer)theEObject;
 				T result = caseStrContainer(strContainer);
+				if (result == null) result = caseIdentified(strContainer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case Attribute_to_structure_struct_1Package.FLOAT_CONTAINER: {
 				FloatContainer floatContainer = (FloatContainer)theEObject;
 				T result = caseFloatContainer(floatContainer);
+				if (result == null) result = caseIdentified(floatContainer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

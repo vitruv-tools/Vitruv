@@ -62,4 +62,12 @@
             genModel="metamodels/attributeToStructureStruct1.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated allElementTypes2 -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes2"
+            class="allElementTypes2.AllElementTypes2Package"
+            genModel="metamodels/allElementTypes2.genmodel"/>
+   </extension>
+
 </plugin>

@@ -158,14 +158,14 @@ public interface Pcm_mockupPackage extends EPackage {
 	int REPOSITORY_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link pcm_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
+	 * The meta object id for the '{@link pcm_mockup.impl.PInterfaceImpl <em>PInterface</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see pcm_mockup.impl.InterfaceImpl
-	 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getInterface()
+	 * @see pcm_mockup.impl.PInterfaceImpl
+	 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getPInterface()
 	 * @generated
 	 */
-	int INTERFACE = 2;
+	int PINTERFACE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -174,7 +174,7 @@ public interface Pcm_mockupPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE__ID = IDENTIFIED__ID;
+	int PINTERFACE__ID = IDENTIFIED__ID;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -183,25 +183,34 @@ public interface Pcm_mockupPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE__NAME = IDENTIFIED_FEATURE_COUNT + 0;
+	int PINTERFACE__NAME = IDENTIFIED_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Interface</em>' class.
+	 * The feature id for the '<em><b>Methods</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+	int PINTERFACE__METHODS = IDENTIFIED_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Interface</em>' class.
+	 * The number of structural features of the '<em>PInterface</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTERFACE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
+	int PINTERFACE_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>PInterface</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PINTERFACE_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link pcm_mockup.impl.ComponentImpl <em>Component</em>}' class.
@@ -250,13 +259,22 @@ public interface Pcm_mockupPackage extends EPackage {
 	int COMPONENT__REPOSITORY_FACTOR = IDENTIFIED_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Component Exclusive</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT__COMPONENT_EXCLUSIVE = IDENTIFIED_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 3;
+	int COMPONENT_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Component</em>' class.
@@ -304,6 +322,53 @@ public interface Pcm_mockupPackage extends EPackage {
 	 * @ordered
 	 */
 	int PNAMED_ELEMENT_OPERATION_COUNT = 0;
+
+
+	/**
+	 * The meta object id for the '{@link pcm_mockup.impl.PMethodImpl <em>PMethod</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see pcm_mockup.impl.PMethodImpl
+	 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getPMethod()
+	 * @generated
+	 */
+	int PMETHOD = 5;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PMETHOD__ID = IDENTIFIED__ID;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PMETHOD__NAME = IDENTIFIED_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>PMethod</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PMETHOD_FEATURE_COUNT = IDENTIFIED_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>PMethod</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PMETHOD_OPERATION_COUNT = IDENTIFIED_OPERATION_COUNT + 0;
 
 
 	/**
@@ -360,14 +425,25 @@ public interface Pcm_mockupPackage extends EPackage {
 	EReference getRepository_Components();
 
 	/**
-	 * Returns the meta object for class '{@link pcm_mockup.Interface <em>Interface</em>}'.
+	 * Returns the meta object for class '{@link pcm_mockup.PInterface <em>PInterface</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Interface</em>'.
-	 * @see pcm_mockup.Interface
+	 * @return the meta object for class '<em>PInterface</em>'.
+	 * @see pcm_mockup.PInterface
 	 * @generated
 	 */
-	EClass getInterface();
+	EClass getPInterface();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link pcm_mockup.PInterface#getMethods <em>Methods</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Methods</em>'.
+	 * @see pcm_mockup.PInterface#getMethods()
+	 * @see #getPInterface()
+	 * @generated
+	 */
+	EReference getPInterface_Methods();
 
 	/**
 	 * Returns the meta object for class '{@link pcm_mockup.Component <em>Component</em>}'.
@@ -402,6 +478,17 @@ public interface Pcm_mockupPackage extends EPackage {
 	EAttribute getComponent_RepositoryFactor();
 
 	/**
+	 * Returns the meta object for the attribute '{@link pcm_mockup.Component#getComponentExclusive <em>Component Exclusive</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Component Exclusive</em>'.
+	 * @see pcm_mockup.Component#getComponentExclusive()
+	 * @see #getComponent()
+	 * @generated
+	 */
+	EAttribute getComponent_ComponentExclusive();
+
+	/**
 	 * Returns the meta object for class '{@link pcm_mockup.PNamedElement <em>PNamed Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -421,6 +508,16 @@ public interface Pcm_mockupPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getPNamedElement_Name();
+
+	/**
+	 * Returns the meta object for class '{@link pcm_mockup.PMethod <em>PMethod</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>PMethod</em>'.
+	 * @see pcm_mockup.PMethod
+	 * @generated
+	 */
+	EClass getPMethod();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -490,14 +587,22 @@ public interface Pcm_mockupPackage extends EPackage {
 		EReference REPOSITORY__COMPONENTS = eINSTANCE.getRepository_Components();
 
 		/**
-		 * The meta object literal for the '{@link pcm_mockup.impl.InterfaceImpl <em>Interface</em>}' class.
+		 * The meta object literal for the '{@link pcm_mockup.impl.PInterfaceImpl <em>PInterface</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see pcm_mockup.impl.InterfaceImpl
-		 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getInterface()
+		 * @see pcm_mockup.impl.PInterfaceImpl
+		 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getPInterface()
 		 * @generated
 		 */
-		EClass INTERFACE = eINSTANCE.getInterface();
+		EClass PINTERFACE = eINSTANCE.getPInterface();
+
+		/**
+		 * The meta object literal for the '<em><b>Methods</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PINTERFACE__METHODS = eINSTANCE.getPInterface_Methods();
 
 		/**
 		 * The meta object literal for the '{@link pcm_mockup.impl.ComponentImpl <em>Component</em>}' class.
@@ -526,6 +631,14 @@ public interface Pcm_mockupPackage extends EPackage {
 		EAttribute COMPONENT__REPOSITORY_FACTOR = eINSTANCE.getComponent_RepositoryFactor();
 
 		/**
+		 * The meta object literal for the '<em><b>Component Exclusive</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COMPONENT__COMPONENT_EXCLUSIVE = eINSTANCE.getComponent_ComponentExclusive();
+
+		/**
 		 * The meta object literal for the '{@link pcm_mockup.impl.PNamedElementImpl <em>PNamed Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -542,6 +655,16 @@ public interface Pcm_mockupPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PNAMED_ELEMENT__NAME = eINSTANCE.getPNamedElement_Name();
+
+		/**
+		 * The meta object literal for the '{@link pcm_mockup.impl.PMethodImpl <em>PMethod</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see pcm_mockup.impl.PMethodImpl
+		 * @see pcm_mockup.impl.Pcm_mockupPackageImpl#getPMethod()
+		 * @generated
+		 */
+		EClass PMETHOD = eINSTANCE.getPMethod();
 
 	}
 

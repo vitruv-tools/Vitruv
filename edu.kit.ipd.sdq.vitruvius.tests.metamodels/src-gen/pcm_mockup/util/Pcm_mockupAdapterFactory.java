@@ -76,8 +76,8 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
 				return createRepositoryAdapter();
 			}
 			@Override
-			public Adapter caseInterface(Interface object) {
-				return createInterfaceAdapter();
+			public Adapter casePInterface(PInterface object) {
+				return createPInterfaceAdapter();
 			}
 			@Override
 			public Adapter caseComponent(Component object) {
@@ -86,6 +86,10 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter casePNamedElement(PNamedElement object) {
 				return createPNamedElementAdapter();
+			}
+			@Override
+			public Adapter casePMethod(PMethod object) {
+				return createPMethodAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -136,16 +140,16 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link pcm_mockup.Interface <em>Interface</em>}'.
+	 * Creates a new adapter for an object of class '{@link pcm_mockup.PInterface <em>PInterface</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see pcm_mockup.Interface
+	 * @see pcm_mockup.PInterface
 	 * @generated
 	 */
-	public Adapter createInterfaceAdapter() {
+	public Adapter createPInterfaceAdapter() {
 		return null;
 	}
 
@@ -174,6 +178,20 @@ public class Pcm_mockupAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPNamedElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link pcm_mockup.PMethod <em>PMethod</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see pcm_mockup.PMethod
+	 * @generated
+	 */
+	public Adapter createPMethodAdapter() {
 		return null;
 	}
 
