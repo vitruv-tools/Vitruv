@@ -308,8 +308,14 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		var List<TUID> bTUIDs = markedCorrespondence.BTUIDs
 		removeTUID2TUIDListsEntries(aTUIDs)
 		removeTUID2TUIDListsEntries(bTUIDs)
-		this.tuid2CorrespondencesMap.remove(aTUIDs)
-		this.tuid2CorrespondencesMap.remove(bTUIDs)
+		this.tuid2CorrespondencesMap.get(aTUIDs).remove(markedCorrespondence);
+		if (tuid2CorrespondencesMap.get(aTUIDs).empty) {
+			tuid2CorrespondencesMap.remove(aTUIDs);
+		}
+		this.tuid2CorrespondencesMap.get(bTUIDs).remove(markedCorrespondence);
+		if (tuid2CorrespondencesMap.get(bTUIDs).empty) {
+			tuid2CorrespondencesMap.remove(bTUIDs);
+		}
 	}
 	
 	def private void removeTUID2TUIDListsEntries(List<TUID> tuids) {
