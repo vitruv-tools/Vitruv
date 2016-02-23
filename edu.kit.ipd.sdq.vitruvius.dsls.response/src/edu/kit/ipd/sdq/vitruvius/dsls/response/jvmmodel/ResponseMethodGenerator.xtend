@@ -444,6 +444,7 @@ class ResponseMethodGenerator {
 			parameters += modelElements.map[generateModelElementParameter(generatedMethod, it)];
 			if (isBlackboardAvailable) {
 				parameters += generateBlackboardParameter;
+				parameters += generateParameter("transformationResult", TransformationResult);
 			}
 			val code = executionBlock.code;
 			if (code instanceof SimpleTextXBlockExpression) {
@@ -463,7 +464,7 @@ class ResponseMethodGenerator {
 			val modelRootChange = response.effects.targetChange as ConcreteTargetModelChange;
 			generateMethodExecuteResponseBody(modelRootChange, changeParameter, blackboardParameter, transformationResultParameter);
 		} else {
-			generateMethodExecuteResponseBody(changeParameter, blackboardParameter);
+			generateMethodExecuteResponseBody(changeParameter, blackboardParameter, transformationResultParameter);
 		}
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
@@ -603,7 +604,7 @@ class ResponseMethodGenerator {
 	 * <p>Methods parameters are:
 	 * <li>1. change: the change event ({@link EChange})
 	 */
-	private def StringConcatenationClient generateMethodExecuteResponseBody(JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter) {
+	private def StringConcatenationClient generateMethodExecuteResponseBody(JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
 		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
 			generateMethodPerformResponse(response.effects.codeBlock, #[]);
 		} else {
@@ -612,7 +613,7 @@ class ResponseMethodGenerator {
 		return '''
 			LOGGER.debug("Execute response " + this.getClass().getName() + " with no affected model");
 			«IF hasExecutionBlock»
-				«performResponseMethod.simpleName»(«changeParameter.name», «blackboardParameter.name»);
+				«performResponseMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «transformationResultParameter.name»);
 			«ENDIF»
 		'''
 	}
