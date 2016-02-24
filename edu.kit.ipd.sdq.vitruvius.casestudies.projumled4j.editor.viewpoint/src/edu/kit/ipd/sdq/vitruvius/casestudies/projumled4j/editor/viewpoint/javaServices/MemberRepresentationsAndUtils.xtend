@@ -22,6 +22,10 @@ import org.emftext.language.java.parameters.Parametrizable
 import org.emftext.language.java.members.Member
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
+import org.emftext.language.java.arrays.ArrayTypeable
+import org.emftext.language.java.types.TypedElement
+import org.emftext.language.java.parameters.Parameter
+import org.emftext.language.java.parameters.VariableLengthParameter
 
 /**
  * This class provides procedures for determining the string representations of class members 
@@ -61,10 +65,42 @@ public final class MemberRepresentationsAndUtils {
 		return "";
 	}
 
-	private def dispatch getUmlTypeString(TypeReference typeReference) {
+	private def dispatch getUmlTypeString(Field field) {
+		return field.typeElementUmlTypeString + field.arrayString;
+	}
+	
+	private def dispatch getUmlTypeString(Parameter param) {
+		return param.typeElementUmlTypeString + param.arrayString;
+	}
+	
+	private def dispatch getUmlTypeString(VariableLengthParameter param) {
+		return param.typeElementUmlTypeString + param.arrayString + "...";
+	}
+	
+	private def dispatch getUmlTypeString(Method method) {
+		return method.typeElementUmlTypeString + method.arrayString;
+	}
+	
+	private def getTypeElementUmlTypeString(TypedElement typedElement) {
+		return typedElement.typeReference.basicUmlTypeString;		
+	}
+	
+	private def dispatch getBasicUmlTypeString(TypeReference typeReference) {
 		return " : " + new DataTypeRepresentations().typeToString(typeReference);
 	}
+	
+	private def dispatch getBasicUmlTypeString(Void voidType) {
+		return "";
+	}
 
+	private def String getArrayString(ArrayTypeable arrayType) {
+		var result = "";
+		for (var i = 0; i < arrayType.arrayDimensionsAfter.size() + arrayType.arrayDimensionsBefore.size(); i++) {
+			result += "[]";
+		}
+		return result;
+	}
+	
 	/**
 	 * Returns the string representation of the given class member. In case of a field this is
 	 * the field name followed by the type, in case of a method it is the UML representation of
@@ -73,16 +109,33 @@ public final class MemberRepresentationsAndUtils {
 	public def dispatch String getRepresentation(EObject member) '''	'''
 
 	private def String getParameterRepresentation(Parametrizable object) '''
-	«FOR parameter : object.parameters SEPARATOR ','»«parameter.name»«parameter.typeReference.umlTypeString»«ENDFOR»'''
+	«FOR parameter : object.parameters SEPARATOR ', '»«parameter.name»«parameter.umlTypeString»«ENDFOR»'''
 
 	public def dispatch String getRepresentation(Method method) '''
-	«method.name»(«method.parameterRepresentation»)«method.typeReference.umlTypeString»'''
+	«method.name»(«method.parameterRepresentation»)«method.umlTypeString»'''
 
 	public def dispatch String getRepresentation(Constructor method) '''
 	<<create>> «method.name»(«method.parameterRepresentation»)'''
 
 	public def dispatch String getRepresentation(Field field) '''
-	«field.name»«field.typeReference.umlTypeString»'''
+	«field.name»«field.umlTypeString»'''
+
+	public def dispatch String getRepresentation(Interface interf) {
+		val namespacesBeforeName = ("<<interface>>".length - interf.name.length);
+		val namespacesBeforeStereotype = - namespacesBeforeName;
+		var beforeName = "";
+		for (var i = 0; i < namespacesBeforeName; i++) {
+			beforeName = beforeName + " ";
+		}
+		var beforeStereotype = "";
+		for (var i = 0; i < namespacesBeforeStereotype; i++) {
+			beforeStereotype = beforeStereotype + " ";
+		}
+		return '''
+			«beforeStereotype»<<interface>>
+			«beforeName»«interf.name»'''
+	}
+
 
 	private def String getNewUnusedMemberName(Iterable<? extends Member> existingMembers, String memberPrefix) {
 		var nameIsUnused = false;

@@ -24,6 +24,9 @@ import org.emftext.language.java.types.Long
 import org.emftext.language.java.types.Byte
 import org.emftext.language.java.types.Short
 import org.emftext.language.java.types.ClassifierReference
+import org.emftext.language.java.generics.TypeArgument
+import org.emftext.language.java.generics.QualifiedTypeArgument
+import edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util.JamoppUtils
 
 /**
  * This class provides procedures for getting string representations of data types.
@@ -79,7 +82,14 @@ public final class DataTypeRepresentations {
 	}
 	
 	public def dispatch String typeToString(ClassifierReference classifierReference) {
-		return classifierReference.target.name;
+		var suffix = "";
+		if (!classifierReference.typeArguments.empty) {
+			suffix =
+			'''<«FOR typeArgument : classifierReference.typeArguments.filter(QualifiedTypeArgument) SEPARATOR ", "»«
+					»«JamoppUtils.getReferencedClassifier(typeArgument.typeReference).name»«
+				ENDFOR»>'''
+		}
+		return classifierReference.target.name + suffix;
 	}
 	
 	public def dispatch String typeToString(NamespaceClassifierReference typeReference) {

@@ -130,6 +130,6 @@ public final class JamoppUtils {
 	
 	public static def Classifier getReferencedClassifier(TypeReference typeReference) {
 		val classifierReference = getClassifierReference(typeReference);
-		return classifierReference.target;
+		return classifierReference?.target;
 	}
 }

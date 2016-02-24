@@ -32,12 +32,13 @@
               </style>
             </conditionnalStyles>
           </subNodeMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="0" arcHeight="0" showIcon="false" labelExpression="[name/]" backgroundStyle="Liquid">
+          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="0" arcHeight="0" showIcon="false" labelExpression="[self.getRepresentation()/]" backgroundStyle="Liquid">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelFormat>bold</labelFormat>
+            <labelFormat>italic</labelFormat>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
-            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
           </style>
         </containerMappings>
         <containerMappings name="ClassContainer" label="Class" semanticCandidatesExpression="[compilationUnits.classifiers/]" doubleClickDescription="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='ClickClass']" synchronizationLock="true" domainClass="classifiers.Class" childrenPresentation="VerticalStack">
@@ -248,7 +249,7 @@
         </edgeMappings>
       </additionalLayers>
       <additionalLayers name="ClassRelationshipsLayer" label="Class Relationships" activeByDefault="true">
-        <edgeMappings name="AssociationRelation" label="Association" preconditionExpression="[self.isAnyAssociation()/]" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetFinderExpression="[self.getAssociationTarget()/]" sourceFinderExpression="[getContainingConcreteClassifier()/]" domainClass="Field" useDomainElement="true">
+        <edgeMappings name="AssociationRelation" label="Association" preconditionExpression="[self.isAnyAssociation()/]" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer'] //@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getAssociationTarget()/]" sourceFinderExpression="[getContainingConcreteClassifier()/]" domainClass="Field" useDomainElement="true">
           <style sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <beginLabelStyleDescription showIcon="false" labelExpression="[self.getSourceMultiplicityRepresentation()/]">

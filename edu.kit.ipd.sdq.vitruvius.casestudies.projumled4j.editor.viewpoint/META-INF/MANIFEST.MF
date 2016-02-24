@@ -19,24 +19,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.core.filesystem,
  org.eclipse.emf.transaction,
- org.eclipse.sirius.diagram
+ org.eclipse.sirius.diagram,
+ org.emftext.language.java
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
  edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util,
  org.apache.log4j,
- org.eclipse.emf.transaction,
- org.emftext.language.java.generics,
- org.emftext.language.java.annotations,
- org.emftext.language.java.variables,
- org.emftext.language.java.classifiers,
- org.emftext.language.java.commons,
- org.emftext.language.java.containers,
- org.emftext.language.java.expressions,
- org.emftext.language.java.literals,
- org.emftext.language.java.members,
- org.emftext.language.java.modifiers,
- org.emftext.language.java.operators,
- org.emftext.language.java.parameters,
- org.emftext.language.java.references,
- org.emftext.language.java.types
+ org.eclipse.emf.transaction
