@@ -1,0 +1,48 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup" as mpcm
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup" as muml
+
+mapping M0A:
+map [ mpcm.Repository ]
+and [ muml.UPackage ] {
+	[
+		equal(repository.name, uPackage.name)
+	]
+}
+
+mapping M1:
+when (M0A)
+map [ mpcm.Component ] with [ in(component, m0A::repository.components) ]
+and [ muml.UClass ] with [ in(uClass, m0A::uPackage.classes) ] {
+	[
+		equal(component.name, uClass.name)
+	]
+}
+
+mapping M2:
+when (M0A)
+map [ mpcm.Component ] with [
+	in(component, m0A::repository.components)
+	xbase
+		check { !mpcm.component.name.endsWith("_Component_M2") }
+		enforce {
+			val nameOrEmpty = mpcm.component.name ?: ""
+			if (!nameOrEmpty.endsWith("_Component_M2")) {
+				mpcm.component.name = nameOrEmpty + "_Component_M2"
+			}
+		}
+]
+and [ muml.UClass ] with [
+	in(uClass, m0A::uPackage.classes)
+	xbase
+		check { !muml.UClass.name.endsWith("_UClass_M2") }
+		enforce {
+			val nameOrEmpty = muml.UClass.name ?: ""
+			if (!nameOrEmpty.endsWith("_Component_M2")) {
+				muml.UClass.name = nameOrEmpty + "_Component_M2"
+			}
+		}
+	] {
+	[
+		equal(component.name, uClass.name)
+	]
+}

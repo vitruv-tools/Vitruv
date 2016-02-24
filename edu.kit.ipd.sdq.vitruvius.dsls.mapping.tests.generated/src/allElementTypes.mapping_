@@ -1,0 +1,37 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as ae1
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes2" as ae2
+
+mapping aet0:
+map [ ae1.Root ]  with [ default-resource(root, "root1.aet1" relative-to root2) ]
+and [ ae2.Root2 ] with [ default-resource(root2, "root2.aet2" relative-to root) ]
+{
+	[
+		xbase from ae1 with {
+			val list = aet0.ae2.root2.multiValuedEAttribute2
+			var sum = 0; for (i : list) { sum = sum + i }
+			if (sum != aet0.ae1.root.singleValuedEAttribute) {
+				list.clear
+				list.add(aet0.ae1.root.singleValuedEAttribute)
+			}
+		}
+		
+		xbase from ae2 with {
+			val list = aet0.ae2.root2.multiValuedEAttribute2
+			var sum = 0; for (i : list) { sum = sum + i }
+			if (sum != aet0.ae1.root.singleValuedEAttribute) {
+				aet0.ae1.root.singleValuedEAttribute = sum
+			}
+		}
+	]
+}
+
+mapping aet_child:
+when (aet0)
+map [ ae1.NonRoot ] with [
+	in(nonRoot, aet0::root.singleValuedNonContainmentEReference)
+	default-contain(nonRoot, aet0::root.singleValuedContainmentEReference)
+]
+and [ ae2.NonRoot2 ] with [
+	in(nonRoot2, aet0::root2.singleValuedNonContainmentEReference2)
+	default-contain(nonRoot2, aet0::root2.singleValuedContainmentEReference2)
+]
