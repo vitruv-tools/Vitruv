@@ -41,23 +41,43 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
 	private IResourceSetProvider resourceSetProvider;
 		
-	private List<Response> responses;
 	private List<Resource> resources;
+	private List<Resource> tempResources;
+	
+	private IProject project;
 	
 	public new() {
-		this.responses = newArrayList();
+		this.tempResources = newArrayList();
 		this.resources = newArrayList();
 	}
 	
-	public override void addResponse(Response response) {
+	public override cleanAndSetProject(IProject project) {
+		finishGeneration();
+		this.project = project;
+	}
+	
+	public override void addResponse(String sourceFileName, Response response) {
+		if (project == null) {
+			throw new IllegalStateException("Project must be set");
+		}
 		if (response == null) {
 			throw new IllegalArgumentException("Response must not be null");
 		}
-		this.responses.add(response);
+		val resource = getOrCreateTempResource(sourceFileName);
+		(resource.contents.get(0) as ResponseFile).responses += response;
 	}
 	
-	public override void addResponses(Iterable<Response> responses) {
-		this.responses.addAll(responses);
+	private def Resource getOrCreateTempResource(String sourceFileName) {
+		for (res : tempResources) {
+			if (res.URI.segmentsList.last.equals(sourceFileName + ".response")) {
+				return res;
+			}
+		}
+		return generateTempResource(project, sourceFileName);
+	}
+	
+	public override void addResponses(String sourceFileName, Iterable<Response> responses) {
+		responses.forEach[addResponse(sourceFileName, it)];
 	}
 	
 	public def override addResponses(Resource responseResource) {
@@ -67,45 +87,40 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.resources.add(responseResource);
 	}
 	
-	public override void generateEnvironment(IFileSystemAccess2 fsa, IProject project) {
+	public override void generateEnvironment(IFileSystemAccess2 fsa) {
 		if (project == null) {
-			throw new IllegalStateException("Project must be set.");
+			throw new IllegalStateException("Project must be set");
 		}
-		prepareGeneration(project);
-		val modelCorrepondenceToResponseMap = generateResponses(fsa);
-		generateExecutorsAndChange2CommandTransformings(modelCorrepondenceToResponseMap, fsa)
-		generateChange2CommandTransformingProviding(modelCorrepondenceToResponseMap.keySet, fsa);
+		prepareGeneration();
+		generate(fsa);
 		finishGeneration();
 	}
 	
-	private def prepareGeneration(IProject project) {
-		cleanGeneratedFiles(project);
-		generateResourceForSingleResponses(project);
+	private def prepareGeneration() {
+		cleanGeneratedFiles();
 	}
 	
-	private def cleanGeneratedFiles(IProject project) {
+	private def cleanGeneratedFiles() {
 		project.getFolder("src-gen").getFolder(ResponseLanguageGeneratorUtils.basicResponsesPackageQualifiedName.replace(".", File.separator)).delete(0, new NullProgressMonitor());
 	}
 	
 	private def finishGeneration() {
-		removeResourceForSingleResponses();
+		removeTempResources();
 		clearResponsesAndResources();
 	}
-			
-	private def generateResourceForSingleResponses(IProject project) {
+	
+	private def Resource generateTempResource(IProject project, String sourceFileName) {
 		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
-		for (response : responses) {
-			responseFile.responses += response;
-		}
 		val resSet = resourceSetProvider.get(project);
-		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "tempres.response"));
+		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + sourceFileName + ".response"));
 		singleResponseResource.contents.add(responseFile);
-		resources += singleResponseResource;
+		tempResources += singleResponseResource;
+		return singleResponseResource;
 	}
-
-	private def void removeResourceForSingleResponses() {
+			
+	private def void removeTempResources() {
 		try {
-			resources.last.delete(emptyMap);
+			tempResources.forEach[delete(emptyMap)];
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -113,7 +128,18 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	
 	private def clearResponsesAndResources() {
 		this.resources.clear();
-		this.responses.clear();
+		this.tempResources.clear();
+	}
+	
+	private def generate(IFileSystemAccess2 fsa) {
+		val modelCorrespondenceToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
+		for (resource : resources + tempResources) {
+			val modelCorrepondenceToResponseMap = generateResponses(resource, fsa);
+			generateExecutors(resource, modelCorrepondenceToResponseMap, fsa, modelCorrespondenceToExecutors);
+		}
+		
+		generateChange2CommandTransformings(modelCorrespondenceToExecutors, fsa)
+		generateChange2CommandTransformingProviding(modelCorrespondenceToExecutors.keySet, fsa);
 	}
 
 	private def void generateChange2CommandTransformingProviding(Set<Pair<VURI, VURI>> modelCorrespondences, IFileSystemAccess fsa) {
@@ -136,16 +162,25 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		fsa.generateFile(change2CommandTransformingProvidingFilePath, classContent);
 	}
 	
-	private def void generateExecutorsAndChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa) {
+	private def void generateExecutors(Resource responseResource, Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa, Map<Pair<VURI, VURI>, List<String>> modelCorrespondencesToExecutors) {
 		for (modelCombination : modelCorrepondenceToResponseMap.keySet) {
-			val executorContent = generateExecutor(modelCombination, modelCorrepondenceToResponseMap.get(modelCombination));
-			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination);
-			fsa.generateFile(modelCombination.executorFilePath, executorContent);
+			val executorContent = generateExecutor(responseResource, modelCombination, modelCorrepondenceToResponseMap.get(modelCombination));
+			if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
+				modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
+			}
+			modelCorrespondencesToExecutors.get(modelCombination).add(getExecutorQualifiedName(responseResource, modelCombination));
+			fsa.generateFile(getExecutorFilePath(responseResource, modelCombination), executorContent);
+		}
+	}
+	
+	private def void generateChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
+		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
+			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
 			fsa.generateFile(modelCombination.change2CommandTransformingFilePath, change2ComandTransformingContent);
 		}
 	}
 		
-	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair) {
+	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
 
 		val classImplementation = '''
@@ -158,16 +193,18 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			}
 			
 			protected void setup() {
-				this.addResponseExecutor(new «modelPair.executorName»(userInteracting));		
+				«FOR executorName : executorsNames»
+					this.addResponseExecutor(new «executorName»(userInteracting));
+				«ENDFOR»		
 			}
 			
 		}
 		'''
 		
-		return generateClass(modelPair.packageQualifiedName, ih, classImplementation);
+		return generateClass(modelPair.change2CommandTransformingQualifiedPackageName, ih, classImplementation);
 	}
 	
-	private def generateExecutor(Pair<VURI, VURI> modelPair, List<String> responseNames) {
+	private def generateExecutor(Resource responsesResource, Pair<VURI, VURI> modelPair, List<String> responseNames) {
 		val ih = new XtendImportHelper();	
 		val classImplementation = '''
 		public class «modelPair.executorName» extends «ih.typeRef(AbstractResponseExecutor)» {
@@ -183,16 +220,13 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		}
 		'''
 		
-		return generateClass(modelPair.packageQualifiedName, ih, classImplementation);
+		return generateClass(responsesResource.getExecutorQualifiedPackageName(modelPair), ih, classImplementation);
 	}
 	
-	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(IFileSystemAccess fsa) {
+	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(Resource responseResource, IFileSystemAccess fsa) {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
-		for (responseResource : resources) {
-			addResponsesToCorrespondenceMap(responseResource, modelCorrespondenceToResponseNameMap);
-			generator.doGenerate(responseResource, fsa);
-		}
-		
+		addResponsesToCorrespondenceMap(responseResource, modelCorrespondenceToResponseNameMap);
+		generator.doGenerate(responseResource, fsa);
 		return modelCorrespondenceToResponseNameMap;
 	}
 	

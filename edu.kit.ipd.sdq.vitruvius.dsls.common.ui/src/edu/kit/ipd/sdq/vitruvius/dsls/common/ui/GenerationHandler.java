@@ -158,17 +158,19 @@ public class GenerationHandler extends AbstractHandler {
 				MIRResourceCollectionVisitor resourceVisitor = new MIRResourceCollectionVisitor(project, mappingScope,
 						responseScope);
 				acceptForEachSourceClassPathEntry(javaProject, resourceVisitor);
-				
+				responseEnvironmentGenerator.cleanAndSetProject(project);
 				mappingScope.mappingLanguageGenerator.initialize();
 
-				final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(resourceVisitor.getMappingResources(), srcGenFSA);
-				responseEnvironmentGenerator.addResponses(generatedResponses);
+				final Map<Resource, Collection<Response>> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(resourceVisitor.getMappingResources(), srcGenFSA);
+				for (Resource mappingResource : generatedResponses.keySet()) {
+					responseEnvironmentGenerator.addResponses(mappingResource.getURI().segments()[mappingResource.getURI().segmentCount() - 1].split("\\.")[0], generatedResponses.get(mappingResource));
+				}
 				
 				for (Resource responseResource : resourceVisitor.getResponseResources()) {
 					responseEnvironmentGenerator.addResponses(responseResource);
 				}
 				
-				responseEnvironmentGenerator.generateEnvironment(srcGenFSA, project);
+				responseEnvironmentGenerator.generateEnvironment(srcGenFSA);
 			}
 		}
 		return null;

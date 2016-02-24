@@ -9,8 +9,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.ResponseEnvironmen
 
 @ImplementedBy(ResponseEnvironmentGenerator)
 interface IResponseEnvironmentGenerator {
-	public def void addResponse(Response response);
+	public def void cleanAndSetProject(IProject project);
+	public def void addResponse(String sourceFileName, Response response);
 	public def void addResponses(Resource responseResource);
-	public def void addResponses(Iterable<Response> responses);	
-	public def void generateEnvironment(IFileSystemAccess2 fsa, IProject project);
+	public def void addResponses(String sourceFileName, Iterable<Response> responses);	
+	public def void generateEnvironment(IFileSystemAccess2 fsa);
 }

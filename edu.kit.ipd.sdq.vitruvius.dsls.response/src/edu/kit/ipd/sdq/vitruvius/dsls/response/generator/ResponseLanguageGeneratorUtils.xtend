@@ -19,6 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatu
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
+import org.eclipse.emf.ecore.resource.Resource
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -33,25 +34,28 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getBasicResponsesPackageQualifiedName() '''
 		«RESPONSES_PACKAGE»'''
 	
-	static def String getMetamodelPairName(Response response) {
+	private static def String getSourceFilePackageQualifiedName(String sourceFileName) '''
+		«basicResponsesPackageQualifiedName».«sourceFileName»'''
+	
+	private static def String getMetamodelPairName(Response response) {
 		return response.sourceTargetPair?.metamodelPairName;
 	}
 	
-	static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
+	private static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
 		«IF modelPair.first.lastSegment.nullOrEmpty»«modelPair.first.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.first.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»To«
 		IF modelPair.second.lastSegment.nullOrEmpty»«modelPair.second.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.second.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»'''
 	
-	static def String getPackageName(Pair<VURI, VURI> modelPair) '''
+	private static def String getPackageName(Pair<VURI, VURI> modelPair) '''
 		responses«modelPair.metamodelPairName»'''
 	
-	static def String getPackageQualifiedName(Pair<VURI, VURI> modelPair) '''
-		«RESPONSES_PACKAGE».«modelPair.packageName»'''
-		
+	private static def String getPackageQualifiedName(String sourceFileName, Pair<VURI, VURI> modelPair) '''
+		«basicResponsesPackageQualifiedName».«sourceFileName».«modelPair?.packageName»'''
+	
 	static def String getChange2CommandTransformingProvidingName() '''
 		ResponseChange2CommandTransformingProviding'''
 		
-	static def String getChange2CommandTransformingProvidingQualifiedName() '''
-		«RESPONSES_PACKAGE».«change2CommandTransformingProvidingName»'''
+	private static def String getChange2CommandTransformingProvidingQualifiedName() '''
+		«basicResponsesPackageQualifiedName».«change2CommandTransformingProvidingName»'''
 		
 	static def String getChange2CommandTransformingProvidingFilePath() '''
 		«change2CommandTransformingProvidingQualifiedName.filePath»'''
@@ -59,26 +63,36 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getExecutorName(Pair<VURI, VURI> modelPair) '''
 		Response«modelPair.metamodelPairName»Executor'''
 		
-	static def String getExecutorQualifiedName(Pair<VURI, VURI> modelPair) '''
-		«modelPair.packageQualifiedName».«modelPair.executorName»'''
+	static def String getExecutorQualifiedPackageName(Resource responseResource, Pair<VURI, VURI> modelPair) '''
+		«basicResponsesPackageQualifiedName».«responseResource.packageNameForResource».«modelPair.packageName»'''
+		
+	static def String getExecutorQualifiedName(Resource responseResource, Pair<VURI, VURI> modelPair) '''
+		«responseResource.getExecutorQualifiedPackageName(modelPair)».«modelPair.executorName»'''
 	
-	static def String getExecutorFilePath(Pair<VURI, VURI> modelPair) '''
-		«modelPair.executorQualifiedName.filePath»'''
+	static def String getExecutorFilePath(Resource responseResource, Pair<VURI, VURI> modelPair) '''
+		«responseResource.getExecutorQualifiedName(modelPair).filePath»'''
 	
 	static def String getChange2CommandTransformingName(Pair<VURI, VURI> modelPair) '''
 		Response«modelPair.metamodelPairName»Change2CommandTransforming'''
 		
+	static def String getChange2CommandTransformingQualifiedPackageName(Pair<VURI, VURI> modelPair) '''
+		«basicResponsesPackageQualifiedName»'''	
+	
 	static def String getChange2CommandTransformingQualifiedName(Pair<VURI, VURI> modelPair) '''
-		«modelPair.packageQualifiedName».«modelPair.change2CommandTransformingName»'''
+		«modelPair.change2CommandTransformingQualifiedPackageName».«modelPair.change2CommandTransformingName»'''
 	
 	static def String getChange2CommandTransformingFilePath(Pair<VURI, VURI> modelPair) '''
 		«modelPair.change2CommandTransformingQualifiedName.filePath»'''
 	
 	static def String getResponseQualifiedName(Response response) '''
-		«response.sourceTargetPair?.packageQualifiedName».«response.responseName»'''
+		«getPackageQualifiedName(response.eResource.getPackageNameForResource, response.sourceTargetPair)».«response.responseName»'''
 	
 	static def String getResponseFilePath(Response response) '''
-		«response.getResponseQualifiedName().filePath»'''
+		«getResponseQualifiedName(response).filePath»'''
+	
+	private static def String getPackageNameForResource(Resource resource) {
+		return resource.URI.lastSegment.split("\\.").get(0);
+	}
 	
 	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
 		package «packageName»;
