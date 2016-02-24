@@ -63,7 +63,8 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 		for (resource : inputResources) {
 			delegateGenerator.doGenerate(resource, fsa)
 			val statefulGenerator = new StatefulMappingLanguageGenerator(resource, emfGeneratorHelper, templateGenerator, nameProvider)
-			responses.put(resource, statefulGenerator.generateResource())
+			val generatedResponses = statefulGenerator.generateResponses()
+			responses.put(resource, generatedResponses)
 		}
 		
 		templateGenerator.generateAllTemplates(fsa)
@@ -107,7 +108,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 		private extension MappingLanguageGeneratorState state
 		private extension ConstraintLanguageGenerator clg
 	
-		private def generateResource() {
+		private def generateResponses() {
 			val mappingFile = resource.contents.get(0).requireType(MappingFile)
 	
 			this.state = new MappingLanguageGeneratorState(mappingFile)
