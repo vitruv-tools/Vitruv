@@ -1,0 +1,2 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as aet
+
