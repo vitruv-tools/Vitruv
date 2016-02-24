@@ -266,6 +266,17 @@ public class CorrespondenceImpl extends EObjectImpl implements Correspondence, S
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated not
+     */
+    @Override
+    public EList<EObject> getElementsForMetamodel(final String metamodelNamespaceUri) {
+        return new BasicEList<EObject>(getParent().getCorrespondenceInstance().resolveEObjectsFromTUIDs(
+                getParent().getCorrespondenceInstance().getTUIDsForMetamodel(this, metamodelNamespaceUri)));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")

@@ -15,21 +15,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent
- * <em>Parent</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn
- * <em>Depends On</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy
- * <em>Depended On By</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getATUIDs
- * <em>ATUI Ds</em>}</li>
- * <li>
- * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getBTUIDs
- * <em>BTUI Ds</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent <em>Parent</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn <em>Depends On</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getATUIDs <em>ATUI Ds</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getBTUIDs <em>BTUI Ds</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence()
@@ -38,16 +28,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
  */
 public interface Correspondence extends EObject {
     /**
-     * Returns the value of the '<em><b>Parent</b></em>' container reference. It is bidirectional
-     * and its opposite is '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondences
-     * <em>Correspondences</em>}'. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Parent</b></em>' container reference.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}'.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Parent</em>' container reference isn't clear, there really should
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Parent</em>' container reference.
      * @see #setParent(Correspondences)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_Parent()
@@ -58,30 +46,24 @@ public interface Correspondence extends EObject {
     Correspondences getParent();
 
     /**
-     * Sets the value of the '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent
-     * <em>Parent</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Parent</em>' container reference.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent <em>Parent</em>}' container reference.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @param value the new value of the '<em>Parent</em>' container reference.
      * @see #getParent()
      * @generated
      */
     void setParent(Correspondences value);
 
     /**
-     * Returns the value of the '<em><b>Depends On</b></em>' reference list. The list contents are
-     * of type
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}. It
-     * is bidirectional and its opposite is '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy
-     * <em>Depended On By</em>}'. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Depends On</b></em>' reference list.
+     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}'.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Depends On</em>' reference list isn't clear, there really should
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Depends On</em>' reference list.
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_DependsOn()
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy
@@ -91,18 +73,15 @@ public interface Correspondence extends EObject {
     EList<Correspondence> getDependsOn();
 
     /**
-     * Returns the value of the '<em><b>Depended On By</b></em>' reference list. The list contents
-     * are of type
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}. It
-     * is bidirectional and its opposite is '
-     * {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn
-     * <em>Depends On</em>}'. <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Depended On By</b></em>' reference list.
+     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn <em>Depends On</em>}'.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Depended On By</em>' reference list isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
      * @return the value of the '<em>Depended On By</em>' reference list.
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_DependedOnBy()
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn
@@ -147,7 +126,6 @@ public interface Correspondence extends EObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @model kind="operation"
      * @generated
      */
@@ -155,7 +133,6 @@ public interface Correspondence extends EObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
      * @model kind="operation"
      * @generated
      */
@@ -180,5 +157,13 @@ public interface Correspondence extends EObject {
      * @deprecated
      */
     TUID getElementBTUID();
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model
+     * @generated
+     */
+    EList<EObject> getElementsForMetamodel(String metamodelNamespaceUri);
 
 } // Correspondence
