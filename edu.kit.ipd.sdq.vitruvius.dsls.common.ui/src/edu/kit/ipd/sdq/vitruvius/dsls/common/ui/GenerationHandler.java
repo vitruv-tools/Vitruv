@@ -145,8 +145,6 @@ public class GenerationHandler extends AbstractHandler {
 		MIRCommonActivator.getDefault().mappingInjector.injectMembers(mappingScope);
 		MIRCommonActivator.getDefault().responseInjector.injectMembers(responseScope);
 		
-		mappingScope.nameProvider.initialize();
-		
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -160,11 +158,11 @@ public class GenerationHandler extends AbstractHandler {
 				MIRResourceCollectionVisitor resourceVisitor = new MIRResourceCollectionVisitor(project, mappingScope,
 						responseScope);
 				acceptForEachSourceClassPathEntry(javaProject, resourceVisitor);
+				
+				mappingScope.mappingLanguageGenerator.initialize();
 
-				for (Resource mappingResource : resourceVisitor.getMappingResources()) {
-					final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(mappingResource, srcGenFSA);
-					responseEnvironmentGenerator.addResponses(generatedResponses);
-				}
+				final Collection<Response> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(resourceVisitor.getMappingResources(), srcGenFSA);
+				responseEnvironmentGenerator.addResponses(generatedResponses);
 				
 				for (Resource responseResource : resourceVisitor.getResponseResources()) {
 					responseEnvironmentGenerator.addResponses(responseResource);
