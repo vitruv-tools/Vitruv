@@ -30,12 +30,13 @@ class ManualTests {
 			}
 			''')
 		val fsa = injections.fsaProv.get();
-		environmentGenerator.addResponse(response.generateResponse());
 		val thisProject = ResourcesPlugin.workspace.root.getProject("edu.kit.ipd.sdq.vitruvius.dsls.response.tests");
+		environmentGenerator.cleanAndSetProject(thisProject);
+		environmentGenerator.addResponse("test", response.generateResponse());
 		fsa.project = thisProject;
 		fsa.outputPath = "src-gen";
 		fsa.currentSource = "src";
 		fsa.monitor = new NullProgressMonitor();
-		environmentGenerator.generateEnvironment(fsa, thisProject);
+		environmentGenerator.generateEnvironment(fsa);
 	}
 }
