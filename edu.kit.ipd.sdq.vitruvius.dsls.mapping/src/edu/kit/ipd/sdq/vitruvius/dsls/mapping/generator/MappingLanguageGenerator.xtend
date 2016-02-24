@@ -58,12 +58,12 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 		
 		emfGeneratorHelper = new EMFGeneratorHelper(nameProvider)
 		templateGenerator = new TemplateGenerator
-		val responses = newArrayList
+		val responses = newHashMap
 		
 		for (resource : inputResources) {
 			delegateGenerator.doGenerate(resource, fsa)
 			val statefulGenerator = new StatefulMappingLanguageGenerator(resource, emfGeneratorHelper, templateGenerator, nameProvider)
-			responses += statefulGenerator.generateResource()
+			responses.put(resource, statefulGenerator.generateResource())
 		}
 		
 		templateGenerator.generateAllTemplates(fsa)
