@@ -31,6 +31,7 @@ import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import org.eclipse.xtext.resource.DerivedStateAwareResource
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
@@ -112,7 +113,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private def Resource generateTempResource(IProject project, String sourceFileName) {
 		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
 		val resSet = resourceSetProvider.get(project);
-		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + sourceFileName + ".response"));
+		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".response"));
 		singleResponseResource.contents.add(responseFile);
 		tempResources += singleResponseResource;
 		return singleResponseResource;
@@ -132,6 +133,11 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	}
 	
 	private def generate(IFileSystemAccess2 fsa) {
+		// TODO HK: This is a temporary hack! Fix it.
+		for (res : tempResources) {
+			(res as DerivedStateAwareResource).discardDerivedState();
+			(res as DerivedStateAwareResource).installDerivedState(false);
+		}
 		val modelCorrespondenceToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (resource : resources + tempResources) {
 			val modelCorrepondenceToResponseMap = generateResponses(resource, fsa);
@@ -226,6 +232,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(Resource responseResource, IFileSystemAccess fsa) {
 		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
 		addResponsesToCorrespondenceMap(responseResource, modelCorrespondenceToResponseNameMap);
+		
 		generator.doGenerate(responseResource, fsa);
 		return modelCorrespondenceToResponseNameMap;
 	}
