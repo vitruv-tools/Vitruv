@@ -1,13 +1,19 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegratedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.IntegrationInfoImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
 import java.util.HashSet
+import java.util.List
 import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -15,9 +21,8 @@ import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.emftext.language.java.classifiers.impl.ClassImpl
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.emftext.language.java.commons.Commentable
 import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Field
@@ -35,13 +40,6 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
-import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegratedCorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.IntegrationInfoImpl
-import org.eclipse.xtend.lib.annotations.Accessors
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -62,7 +60,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	private Resource scdm
 	private Resource pcm
 	@Accessors(PUBLIC_GETTER)
-	private ResourceSet jaMoppResourceSet
+	private List<Resource> jaMoppResources
 	private Repository pcmRepo
 	@Accessors(PUBLIC_GETTER)
 	private CorrespondenceInstanceDecorator cInstance
@@ -105,10 +103,10 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		scdm = ResourceLoadingHelper.loadSCDMResource(scdmPath)
 		pcm = ResourceLoadingHelper.loadPCMRepositoryResource(pcmPath)
 		pcmRepo = pcm.contents.get(0) as Repository;
-		jaMoppResourceSet = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPath)
+		jaMoppResources = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPath)
 
 		// Get all jaMopp packages from resourceSet  
-		jaMoppResourceSet.resources.forEach[packages.addAll((contents.filter(typeof(Package))))]
+		jaMoppResources.forEach[packages.addAll((contents.filter(typeof(Package))))]
 	}
 
 	/**
@@ -173,7 +171,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		if (pcmComponent instanceof BasicComponent) {
 
 			// TODO: Decide which class actually is the implementing class for the component
-			var jamoppClass = resolveJaMoppProxy(componentClassLink.implementingClasses.get(0)) as ClassImpl
+			val desreolvedClassInSCDM = deresolveIfNesessary(componentClassLink.implementingClasses.get(0))
+			var jamoppClass = resolveJaMoppProxy(desreolvedClassInSCDM)
 			val package = getPackageForCommentable(jamoppClass)
 
 			val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
@@ -217,10 +216,13 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// Get parent Interface <-> Type correspondence from correspondence instance
 		val deresolvedPcmInterface = deresolveIfNesessary(pcmInterface)
 		val deresolvedJamoppInterface = deresolveIfNesessary(jamoppInterface)
-		var interfaceCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmInterface.toSet, deresolvedJamoppInterface.toSet).claimOne
-
+		var interfaceCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmInterface.toSet, deresolvedJamoppInterface.toSet)
+		if(interfaceCorrespondence.nullOrEmpty){
+			return
+		}
+ 
 		// 7. OperationSignature <-> jaMopp Method correspondence
-		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppMethod, interfaceCorrespondence);
+		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppMethod, interfaceCorrespondence.get(0));
 
 		for (pcmParam : pcmMethod.parameters__OperationSignature) {
 
@@ -275,10 +277,10 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	/** 
 	 * Returns the resolved EObject for the given jaMopp proxy.
 	 * */
-	private def EObject resolveJaMoppProxy(EObject proxy) {
+	public def <T extends EObject> T resolveJaMoppProxy(T proxy) {
 		if (proxy == null || !proxy.eIsProxy())
 			return proxy;
-		return EcoreUtil.resolve(proxy, jaMoppResourceSet);
+		return EcoreUtil.resolve(proxy, jaMoppResources.get(0).resourceSet) as T;
 	}
 	
 	/**
@@ -336,8 +338,11 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	 * Converts the absolute resource URI of given EObject to platform URI
 	 * or does nothing if it already has one.
 	 */
-	private def EObject deresolveIfNesessary(EObject object) {
-		var uri = object.eResource.URI
+	public def <T extends EObject> T deresolveIfNesessary(T object) {
+		if(null == object.eResource){
+			return object
+		}
+		var URI uri = object.eResource.URI
 		if (!uri.platform) {
 			var base = URI.createFileURI(projectBase.toString + IPath.SEPARATOR)
 			var relativeUri = uri.deresolve(base)

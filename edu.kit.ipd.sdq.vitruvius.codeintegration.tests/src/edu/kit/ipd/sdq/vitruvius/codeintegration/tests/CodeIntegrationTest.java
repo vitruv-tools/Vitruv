@@ -91,6 +91,10 @@ public class CodeIntegrationTest {
 		return SOURCE_CODE_PATH;
 	}
 	
+	protected IProject getTestProject(){
+		return this.testProject;
+	}
+	
 	private void importTestProjectFromBundleData()
 			throws IOException, URISyntaxException, InvocationTargetException, InterruptedException {
 		IOverwriteQuery overwriteQuery = new IOverwriteQuery() {

@@ -3,7 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -25,14 +27,16 @@ public class ResourceLoadingHelper {
      *
      * @param path
      *            src path of the java project
-     * @return set of resources containing the extracted JaMoPP resources.
+     * @return a List of resources containing the extracted JaMoPP resources.
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static ResourceSet loadJaMoPPResourceSet(final String path) throws IOException {
-
+    public static List<Resource> loadJaMoPPResourceSet(final String path) throws IOException {
         final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
-        return jamoppreader.extractSoftwareModel(Collections.singletonList(path), null);
+        final boolean extractLayoutInformation = true;
+        jamoppreader.extractSoftwareModel(Collections.singletonList(path), new NullProgressMonitor(), null,
+                extractLayoutInformation);
+        return jamoppreader.getSourceResources();
     }
 
     /**
@@ -43,7 +47,7 @@ public class ResourceLoadingHelper {
      * @return the resolved scdm resource or null if none was found
      */
     public static Resource loadSCDMResource(final String path) {
-        return loadSCDMResource(URI.createFileURI(new File(path).getAbsolutePath()));
+        return ResourceLoadingHelper.loadSCDMResource(URI.createFileURI(new File(path).getAbsolutePath()));
     }
 
     /**
