@@ -139,7 +139,7 @@ public class TestUserInteractor implements UserInteracting {
 	@Override
 	public URI selectURI(String message) {
 		if (this.concurrentURILinkedQueue.isEmpty()) {
-			throw new IllegalStateException("No URI found in " + TestUserInteractor.class.getSimpleName());
+			throw new IllegalStateException("No URI found in " + TestUserInteractor.class.getSimpleName() + " for message " + message);
 		}
 		
 		final URI result = this.concurrentURILinkedQueue.poll();
