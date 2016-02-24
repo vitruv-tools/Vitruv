@@ -6849,6 +6849,7 @@ rule__DefaultContainExpression__Group_1_1__5
 	}
 :
 	rule__DefaultContainExpression__Group_1_1__5__Impl
+	rule__DefaultContainExpression__Group_1_1__6
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -6863,6 +6864,32 @@ rule__DefaultContainExpression__Group_1_1__5__Impl
 	{ before(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5()); }
 	(rule__DefaultContainExpression__Group_1_1_5__0)?
 	{ after(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__Group_1_1__6
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__DefaultContainExpression__Group_1_1__6__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__DefaultContainExpression__Group_1_1__6__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6()); }
+	')'
+	{ after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6()); }
 )
 ;
 finally {
@@ -6903,7 +6930,6 @@ rule__DefaultContainExpression__Group_1_1_5__1
 	}
 :
 	rule__DefaultContainExpression__Group_1_1_5__1__Impl
-	rule__DefaultContainExpression__Group_1_1_5__2
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -6918,32 +6944,6 @@ rule__DefaultContainExpression__Group_1_1_5__1__Impl
 	{ before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1()); }
 	(rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1)
 	{ after(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__DefaultContainExpression__Group_1_1_5__2
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__DefaultContainExpression__Group_1_1_5__2__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__DefaultContainExpression__Group_1_1_5__2__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); }
-	')'
-	{ after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); }
 )
 ;
 finally {

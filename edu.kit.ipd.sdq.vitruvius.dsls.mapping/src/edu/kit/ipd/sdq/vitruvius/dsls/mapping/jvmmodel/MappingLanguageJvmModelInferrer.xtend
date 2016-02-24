@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorresponde
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorNameProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorState
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorStateProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
@@ -16,7 +15,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor.MappingLanguageDeriv
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import java.util.ArrayList
 import java.util.Arrays
 import java.util.List
@@ -40,13 +38,18 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHel
  */
  @SuppressWarnings("discouraged")
 class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
-	@Inject MappingLanguageGeneratorStateProvider stateProvider
 	@Inject extension JvmTypesBuilder
 	@Inject MappingLanguageDerivedStateComputer derivedStateComputer
 
 	private extension MappingLanguageGeneratorState state
 	@Inject private extension MappingLanguageGeneratorNameProvider nameProvider
-	private ClaimableHashMap<MetamodelImport, String> correspondenceGetMethod
+	
+	/**
+	 * TODO move to helper 
+	 */
+	def String createCorrespondenceGetterCall(MetamodelImport imp) {
+		'''getElementsForMetamodel("«imp.package.nsURI»")'''
+	}
 	
 	def dispatch void infer(MappingFile mappingFile, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
@@ -59,10 +62,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 
 		derivedStateComputer.inferDefaultState(mappingFile)
 
-		this.state = stateProvider.get(mappingFile)
-		this.correspondenceGetMethod = new ClaimableHashMap
-		this.correspondenceGetMethod.put(imports.get(0), "getAs()")
-		this.correspondenceGetMethod.put(imports.get(1), "getBs()")
+		this.state = new MappingLanguageGeneratorState(mappingFile)
 
 		mappingFile.eAllContents.filter(Mapping).forEach [ mapping |
 			val signatureConstraints = mapping.allConstraintExpressions.filter(XbaseSignatureConstraintExpression).
@@ -157,7 +157,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 				]
 			].flatten
 
-			members += imports.map [ imp |
+			members += getImports(mapping).map [ imp |
 				#[
 					mapping.toField(mapping.getWrapperClassName(imp).toVarName,
 						typeRef(mapping.getWrapperClassName(imp))) [
@@ -249,7 +249,7 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 						«FOR req : allRequires SEPARATOR "," AFTER ","»
 							() -> «mapping.getCorrespondenceWrapperClassName.toVarName».get«req.name.toFirstUpper»()
 						«ENDFOR»
-						() -> «mapping.getCorrespondenceWrapperClassName.toVarName».getCorrespondence().«correspondenceGetMethod.claimValueForKey(imp)»
+						() -> «mapping.getCorrespondenceWrapperClassName.toVarName».getCorrespondence().«imp.createCorrespondenceGetterCall»
 					);				
 				'''
 			]

@@ -25,13 +25,13 @@ import com.google.inject.Inject
  * to reference EClasses, EFactories, EPackages and EStrucutralFeatures
  */
 class EMFGeneratorHelper {
-	@Inject
 	private extension MappingLanguageGeneratorNameProvider nameProvider
 	
 	private Map<EPackage, List<Object>> referencedEMFEntities
 
-	new() {
+	new(MappingLanguageGeneratorNameProvider nameProvider) {
 		this.referencedEMFEntities = newHashMap
+		this.nameProvider = nameProvider
 	}
 	
 	private def String classFQN() {

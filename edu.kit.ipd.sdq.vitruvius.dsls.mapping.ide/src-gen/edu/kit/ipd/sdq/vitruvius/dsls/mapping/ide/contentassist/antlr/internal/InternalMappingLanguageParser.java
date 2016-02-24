@@ -23726,17 +23726,22 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1__5"
-    // InternalMappingLanguage.g:6846:1: rule__DefaultContainExpression__Group_1_1__5 : rule__DefaultContainExpression__Group_1_1__5__Impl ;
+    // InternalMappingLanguage.g:6846:1: rule__DefaultContainExpression__Group_1_1__5 : rule__DefaultContainExpression__Group_1_1__5__Impl rule__DefaultContainExpression__Group_1_1__6 ;
     public final void rule__DefaultContainExpression__Group_1_1__5() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6850:1: ( rule__DefaultContainExpression__Group_1_1__5__Impl )
-            // InternalMappingLanguage.g:6851:2: rule__DefaultContainExpression__Group_1_1__5__Impl
+            // InternalMappingLanguage.g:6850:1: ( rule__DefaultContainExpression__Group_1_1__5__Impl rule__DefaultContainExpression__Group_1_1__6 )
+            // InternalMappingLanguage.g:6851:2: rule__DefaultContainExpression__Group_1_1__5__Impl rule__DefaultContainExpression__Group_1_1__6
             {
-            pushFollow(FOLLOW_2);
+            pushFollow(FOLLOW_40);
             rule__DefaultContainExpression__Group_1_1__5__Impl();
+
+            state._fsp--;
+            if (state.failed) return ;
+            pushFollow(FOLLOW_2);
+            rule__DefaultContainExpression__Group_1_1__6();
 
             state._fsp--;
             if (state.failed) return ;
@@ -23759,22 +23764,22 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1__5__Impl"
-    // InternalMappingLanguage.g:6857:1: rule__DefaultContainExpression__Group_1_1__5__Impl : ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? ) ;
+    // InternalMappingLanguage.g:6858:1: rule__DefaultContainExpression__Group_1_1__5__Impl : ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? ) ;
     public final void rule__DefaultContainExpression__Group_1_1__5__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6861:1: ( ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? ) )
-            // InternalMappingLanguage.g:6862:1: ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? )
+            // InternalMappingLanguage.g:6862:1: ( ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? ) )
+            // InternalMappingLanguage.g:6863:1: ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? )
             {
-            // InternalMappingLanguage.g:6862:1: ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? )
-            // InternalMappingLanguage.g:6863:2: ( rule__DefaultContainExpression__Group_1_1_5__0 )?
+            // InternalMappingLanguage.g:6863:1: ( ( rule__DefaultContainExpression__Group_1_1_5__0 )? )
+            // InternalMappingLanguage.g:6864:2: ( rule__DefaultContainExpression__Group_1_1_5__0 )?
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getDefaultContainExpressionAccess().getGroup_1_1_5()); 
             }
-            // InternalMappingLanguage.g:6864:2: ( rule__DefaultContainExpression__Group_1_1_5__0 )?
+            // InternalMappingLanguage.g:6865:2: ( rule__DefaultContainExpression__Group_1_1_5__0 )?
             int alt68=2;
             int LA68_0 = input.LA(1);
 
@@ -23783,7 +23788,7 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
             }
             switch (alt68) {
                 case 1 :
-                    // InternalMappingLanguage.g:6864:3: rule__DefaultContainExpression__Group_1_1_5__0
+                    // InternalMappingLanguage.g:6865:3: rule__DefaultContainExpression__Group_1_1_5__0
                     {
                     pushFollow(FOLLOW_2);
                     rule__DefaultContainExpression__Group_1_1_5__0();
@@ -23820,15 +23825,89 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
     // $ANTLR end "rule__DefaultContainExpression__Group_1_1__5__Impl"
 
 
+    // $ANTLR start "rule__DefaultContainExpression__Group_1_1__6"
+    // InternalMappingLanguage.g:6873:1: rule__DefaultContainExpression__Group_1_1__6 : rule__DefaultContainExpression__Group_1_1__6__Impl ;
+    public final void rule__DefaultContainExpression__Group_1_1__6() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalMappingLanguage.g:6877:1: ( rule__DefaultContainExpression__Group_1_1__6__Impl )
+            // InternalMappingLanguage.g:6878:2: rule__DefaultContainExpression__Group_1_1__6__Impl
+            {
+            pushFollow(FOLLOW_2);
+            rule__DefaultContainExpression__Group_1_1__6__Impl();
+
+            state._fsp--;
+            if (state.failed) return ;
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__DefaultContainExpression__Group_1_1__6"
+
+
+    // $ANTLR start "rule__DefaultContainExpression__Group_1_1__6__Impl"
+    // InternalMappingLanguage.g:6884:1: rule__DefaultContainExpression__Group_1_1__6__Impl : ( ')' ) ;
+    public final void rule__DefaultContainExpression__Group_1_1__6__Impl() throws RecognitionException {
+
+        		int stackSize = keepStackSize();
+        	
+        try {
+            // InternalMappingLanguage.g:6888:1: ( ( ')' ) )
+            // InternalMappingLanguage.g:6889:1: ( ')' )
+            {
+            // InternalMappingLanguage.g:6889:1: ( ')' )
+            // InternalMappingLanguage.g:6890:2: ')'
+            {
+            if ( state.backtracking==0 ) {
+               before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6()); 
+            }
+            match(input,57,FOLLOW_2); if (state.failed) return ;
+            if ( state.backtracking==0 ) {
+               after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6()); 
+            }
+
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+
+            	restoreStackSize(stackSize);
+
+        }
+        return ;
+    }
+    // $ANTLR end "rule__DefaultContainExpression__Group_1_1__6__Impl"
+
+
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__0"
-    // InternalMappingLanguage.g:6873:1: rule__DefaultContainExpression__Group_1_1_5__0 : rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1 ;
+    // InternalMappingLanguage.g:6900:1: rule__DefaultContainExpression__Group_1_1_5__0 : rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1 ;
     public final void rule__DefaultContainExpression__Group_1_1_5__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6877:1: ( rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1 )
-            // InternalMappingLanguage.g:6878:2: rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1
+            // InternalMappingLanguage.g:6904:1: ( rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1 )
+            // InternalMappingLanguage.g:6905:2: rule__DefaultContainExpression__Group_1_1_5__0__Impl rule__DefaultContainExpression__Group_1_1_5__1
             {
             pushFollow(FOLLOW_7);
             rule__DefaultContainExpression__Group_1_1_5__0__Impl();
@@ -23859,17 +23938,17 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__0__Impl"
-    // InternalMappingLanguage.g:6885:1: rule__DefaultContainExpression__Group_1_1_5__0__Impl : ( 'relative-to' ) ;
+    // InternalMappingLanguage.g:6912:1: rule__DefaultContainExpression__Group_1_1_5__0__Impl : ( 'relative-to' ) ;
     public final void rule__DefaultContainExpression__Group_1_1_5__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6889:1: ( ( 'relative-to' ) )
-            // InternalMappingLanguage.g:6890:1: ( 'relative-to' )
+            // InternalMappingLanguage.g:6916:1: ( ( 'relative-to' ) )
+            // InternalMappingLanguage.g:6917:1: ( 'relative-to' )
             {
-            // InternalMappingLanguage.g:6890:1: ( 'relative-to' )
-            // InternalMappingLanguage.g:6891:2: 'relative-to'
+            // InternalMappingLanguage.g:6917:1: ( 'relative-to' )
+            // InternalMappingLanguage.g:6918:2: 'relative-to'
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getDefaultContainExpressionAccess().getRelativeToKeyword_1_1_5_0()); 
@@ -23900,22 +23979,17 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__1"
-    // InternalMappingLanguage.g:6900:1: rule__DefaultContainExpression__Group_1_1_5__1 : rule__DefaultContainExpression__Group_1_1_5__1__Impl rule__DefaultContainExpression__Group_1_1_5__2 ;
+    // InternalMappingLanguage.g:6927:1: rule__DefaultContainExpression__Group_1_1_5__1 : rule__DefaultContainExpression__Group_1_1_5__1__Impl ;
     public final void rule__DefaultContainExpression__Group_1_1_5__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6904:1: ( rule__DefaultContainExpression__Group_1_1_5__1__Impl rule__DefaultContainExpression__Group_1_1_5__2 )
-            // InternalMappingLanguage.g:6905:2: rule__DefaultContainExpression__Group_1_1_5__1__Impl rule__DefaultContainExpression__Group_1_1_5__2
+            // InternalMappingLanguage.g:6931:1: ( rule__DefaultContainExpression__Group_1_1_5__1__Impl )
+            // InternalMappingLanguage.g:6932:2: rule__DefaultContainExpression__Group_1_1_5__1__Impl
             {
-            pushFollow(FOLLOW_36);
-            rule__DefaultContainExpression__Group_1_1_5__1__Impl();
-
-            state._fsp--;
-            if (state.failed) return ;
             pushFollow(FOLLOW_2);
-            rule__DefaultContainExpression__Group_1_1_5__2();
+            rule__DefaultContainExpression__Group_1_1_5__1__Impl();
 
             state._fsp--;
             if (state.failed) return ;
@@ -23938,23 +24012,23 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
 
 
     // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__1__Impl"
-    // InternalMappingLanguage.g:6912:1: rule__DefaultContainExpression__Group_1_1_5__1__Impl : ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) ) ;
+    // InternalMappingLanguage.g:6938:1: rule__DefaultContainExpression__Group_1_1_5__1__Impl : ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) ) ;
     public final void rule__DefaultContainExpression__Group_1_1_5__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMappingLanguage.g:6916:1: ( ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) ) )
-            // InternalMappingLanguage.g:6917:1: ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) )
+            // InternalMappingLanguage.g:6942:1: ( ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) ) )
+            // InternalMappingLanguage.g:6943:1: ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) )
             {
-            // InternalMappingLanguage.g:6917:1: ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) )
-            // InternalMappingLanguage.g:6918:2: ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 )
+            // InternalMappingLanguage.g:6943:1: ( ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 ) )
+            // InternalMappingLanguage.g:6944:2: ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getDefaultContainExpressionAccess().getRelativeResourceSourceAssignment_1_1_5_1()); 
             }
-            // InternalMappingLanguage.g:6919:2: ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 )
-            // InternalMappingLanguage.g:6919:3: rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1
+            // InternalMappingLanguage.g:6945:2: ( rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1 )
+            // InternalMappingLanguage.g:6945:3: rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1
             {
             pushFollow(FOLLOW_2);
             rule__DefaultContainExpression__RelativeResourceSourceAssignment_1_1_5_1();
@@ -23986,80 +24060,6 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
         return ;
     }
     // $ANTLR end "rule__DefaultContainExpression__Group_1_1_5__1__Impl"
-
-
-    // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__2"
-    // InternalMappingLanguage.g:6927:1: rule__DefaultContainExpression__Group_1_1_5__2 : rule__DefaultContainExpression__Group_1_1_5__2__Impl ;
-    public final void rule__DefaultContainExpression__Group_1_1_5__2() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-        	
-        try {
-            // InternalMappingLanguage.g:6931:1: ( rule__DefaultContainExpression__Group_1_1_5__2__Impl )
-            // InternalMappingLanguage.g:6932:2: rule__DefaultContainExpression__Group_1_1_5__2__Impl
-            {
-            pushFollow(FOLLOW_2);
-            rule__DefaultContainExpression__Group_1_1_5__2__Impl();
-
-            state._fsp--;
-            if (state.failed) return ;
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__DefaultContainExpression__Group_1_1_5__2"
-
-
-    // $ANTLR start "rule__DefaultContainExpression__Group_1_1_5__2__Impl"
-    // InternalMappingLanguage.g:6938:1: rule__DefaultContainExpression__Group_1_1_5__2__Impl : ( ')' ) ;
-    public final void rule__DefaultContainExpression__Group_1_1_5__2__Impl() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-        	
-        try {
-            // InternalMappingLanguage.g:6942:1: ( ( ')' ) )
-            // InternalMappingLanguage.g:6943:1: ( ')' )
-            {
-            // InternalMappingLanguage.g:6943:1: ( ')' )
-            // InternalMappingLanguage.g:6944:2: ')'
-            {
-            if ( state.backtracking==0 ) {
-               before(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); 
-            }
-            match(input,57,FOLLOW_2); if (state.failed) return ;
-            if ( state.backtracking==0 ) {
-               after(grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2()); 
-            }
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__DefaultContainExpression__Group_1_1_5__2__Impl"
 
 
     // $ANTLR start "rule__EqualsLiteralExpression__Group__0"
@@ -77632,7 +77632,7 @@ public class InternalMappingLanguageParser extends AbstractInternalContentAssist
     public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
     public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000600L});
     public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0200000000000000L,0x0000000000000800L});
     public static final BitSet FOLLOW_41 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
     public static final BitSet FOLLOW_42 = new BitSet(new long[]{0x00000000000101E0L,0x0000000800004000L});
     public static final BitSet FOLLOW_43 = new BitSet(new long[]{0x0000100000000000L});

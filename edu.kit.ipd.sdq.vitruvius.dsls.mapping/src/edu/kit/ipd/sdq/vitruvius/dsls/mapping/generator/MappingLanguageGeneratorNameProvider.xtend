@@ -11,8 +11,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import java.util.Map
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.EMFHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import com.google.inject.Singleton
 import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ContextVariable
 
 @Singleton
 class MappingLanguageGeneratorNameProvider {
@@ -125,4 +128,11 @@ class MappingLanguageGeneratorNameProvider {
 		'''ResponseFrom«imp.toFirstUpperName»And«resource.URI.trimFileExtension.lastSegment.toFirstUpper»'''
 	}
 	
+	public def String getContextVariableName(ContextVariable contextVariable) {
+		(contextVariable?.requiredMappingPath
+			?.collectRecursive ?: #[])
+			.map[it.name.toFirstUpper]
+			.join
+			+ contextVariable.targetClass.name.toFirstUpper
+	}
 }

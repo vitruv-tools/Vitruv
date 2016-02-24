@@ -151,22 +151,4 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	def boolean checkIfMappedBy(List<EObject> eObjects, MappingRealization mapping) {
 		return ( getMappingTarget(eObjects, mapping) !== null)
 	}
-	
-	/**
-	 * Gets the side of a correspondence for the given metamodel nsURI.
-	 * @param correspondence the correspondence for which the correct side should be chosen
-	 * @param mmNsUri the namespace URI for the requested side
-	 * 
-	 * @throws IllegalArgumentException if the <code>mmNsUri</code> is not the namespace URI of one of the mapped
-	 * meta models. 
-	 */
-	def List<EObject> getObjectsForMetamodel(Correspondence correspondence, String mmNsUri) {
-	 	if (mapping.metamodelA.nsURIs.contains(mmNsUri)) {
-	 		return correspondence.^as
-	 	} else if (mapping.metamodelA.nsURIs.contains(mmNsUri)) {
-	 		return correspondence.bs
-	 	} else {
-	 		throw new IllegalArgumentException('''Metamodel namespace URI "«mmNsUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
-	 	}
-	 }
 }

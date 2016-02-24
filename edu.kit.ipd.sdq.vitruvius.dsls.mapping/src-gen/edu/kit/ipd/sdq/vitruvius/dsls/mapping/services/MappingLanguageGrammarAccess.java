@@ -834,24 +834,24 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRelativeToKeyword_1_1_5_0 = (Keyword)cGroup_1_1_5.eContents().get(0);
 		private final Assignment cRelativeResourceSourceAssignment_1_1_5_1 = (Assignment)cGroup_1_1_5.eContents().get(1);
 		private final RuleCall cRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0 = (RuleCall)cRelativeResourceSourceAssignment_1_1_5_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_1_5_2 = (Keyword)cGroup_1_1_5.eContents().get(2);
+		private final Keyword cRightParenthesisKeyword_1_1_6 = (Keyword)cGroup_1_1.eContents().get(6);
 		
 		//DefaultContainExpression ConstraintExpression:
 		//	{DefaultContainExpression} ('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')' |
 		//	'default-resource' '(' target=ContextVariable ',' relativeResource=STRING ('relative-to'
-		//	relativeResourceSource=ContextVariable ')')?)
+		//	relativeResourceSource=ContextVariable)? ')')
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{DefaultContainExpression} ('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')' |
 		//'default-resource' '(' target=ContextVariable ',' relativeResource=STRING ('relative-to'
-		//relativeResourceSource=ContextVariable ')')?)
+		//relativeResourceSource=ContextVariable)? ')')
 		public Group getGroup() { return cGroup; }
 		
 		//{DefaultContainExpression}
 		public Action getDefaultContainExpressionAction_0() { return cDefaultContainExpressionAction_0; }
 		
 		//('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')' | 'default-resource' '('
-		//target=ContextVariable ',' relativeResource=STRING ('relative-to' relativeResourceSource=ContextVariable ')')?)
+		//target=ContextVariable ',' relativeResource=STRING ('relative-to' relativeResourceSource=ContextVariable)? ')')
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
 		//'default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')'
@@ -882,7 +882,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightParenthesisKeyword_1_0_5() { return cRightParenthesisKeyword_1_0_5; }
 		
 		//'default-resource' '(' target=ContextVariable ',' relativeResource=STRING ('relative-to'
-		//relativeResourceSource=ContextVariable ')')?
+		//relativeResourceSource=ContextVariable)? ')'
 		public Group getGroup_1_1() { return cGroup_1_1; }
 		
 		//'default-resource'
@@ -906,7 +906,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//STRING
 		public RuleCall getRelativeResourceSTRINGTerminalRuleCall_1_1_4_0() { return cRelativeResourceSTRINGTerminalRuleCall_1_1_4_0; }
 		
-		//('relative-to' relativeResourceSource=ContextVariable ')')?
+		//('relative-to' relativeResourceSource=ContextVariable)?
 		public Group getGroup_1_1_5() { return cGroup_1_1_5; }
 		
 		//'relative-to'
@@ -919,7 +919,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0() { return cRelativeResourceSourceContextVariableParserRuleCall_1_1_5_1_0; }
 		
 		//')'
-		public Keyword getRightParenthesisKeyword_1_1_5_2() { return cRightParenthesisKeyword_1_1_5_2; }
+		public Keyword getRightParenthesisKeyword_1_1_6() { return cRightParenthesisKeyword_1_1_6; }
 	}
 	public class EqualsLiteralExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.EqualsLiteralExpression");
@@ -1584,7 +1584,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	//DefaultContainExpression ConstraintExpression:
 	//	{DefaultContainExpression} ('default-contain' '(' target=ContextVariable ',' source=FeatureOfContextVariable ')' |
 	//	'default-resource' '(' target=ContextVariable ',' relativeResource=STRING ('relative-to'
-	//	relativeResourceSource=ContextVariable ')')?)
+	//	relativeResourceSource=ContextVariable)? ')')
 	public DefaultContainExpressionElements getDefaultContainExpressionAccess() {
 		return pDefaultContainExpression;
 	}

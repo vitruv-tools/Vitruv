@@ -34,23 +34,20 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureCons
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 
 class ConstraintLanguageGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
 
-	@Inject
-	private extension EMFGeneratorHelper emfGeneratorHelper
+	private final extension EMFGeneratorHelper emfGeneratorHelper
+	private final extension MappingLanguageGeneratorNameProvider nameProvider
+	private final extension MappingLanguageGeneratorState state
 
-	@Inject
-	private extension MappingLanguageGeneratorNameProvider nameProvider
-
-	@Inject
-	private MappingLanguageGeneratorStateProvider stateProvider
-
-	private extension MappingLanguageGeneratorState state = null
-
-	def setMappingFile(MappingFile file) {
-		state = stateProvider.get(file)
+	new(EMFGeneratorHelper emfGeneratorHelper, MappingLanguageGeneratorNameProvider nameProvider, MappingLanguageGeneratorState state) {
+		this.emfGeneratorHelper = emfGeneratorHelper
+		this.nameProvider = nameProvider
+		this.state = state
 	}
 
 	def dispatch restoreBodyConstraintFrom(ImportHelper importHelper, Map<List<?>, String> localContext,
@@ -312,26 +309,27 @@ class ConstraintLanguageGenerator {
 
 				'''
 					final «typeRef(VURI)» resourceVURI = «typeRef(MIRMappingHelper)».resolveIfRelative(«sourceJava», "«constraint.relativeResource»");
-					if (resourceVURI != null) {
-						result.addRootEObjectToSave(«targetJava», resourceVURI);
+					if ((resourceVURI != null) && (!«typeRef(EMFBridge)».doesResourceExist(resourceVURI.getEMFUri()))) {
+						state.getTransformationResult().addRootEObjectToSave(«targetJava», resourceVURI);
 					}
 				'''
 			} else {
 				constraint.relativeResource.claim[it == null]
 
 				val manipulatedVariable = constraint.source.context
+				val manipulatedVariableAsJavaExpression = getJavaExpressionThatReturns(localContext, manipulatedVariable, sourceMapping)
 				val feature = constraint.source.feature
-
-				eSetOrAdd(
-					importHelper,
-					getJavaExpressionThatReturns(localContext, manipulatedVariable, sourceMapping),
-					feature,
-					targetJava
-				) + ";"
+				
+				'''
+					state.record(«manipulatedVariableAsJavaExpression»);
+					«eSetOrAdd(importHelper, manipulatedVariableAsJavaExpression, feature,	targetJava)»;
+					state.updateAllTuidsOfCachedObjects();
+					state.persistAll();
+				'''
 			}
 
 		'''
-			if (!«typeRef(MIRMappingHelper)».hasContainment(«targetJava», result)) {
+			if (!«typeRef(MIRMappingHelper)».hasContainment(«targetJava», state.getTransformationResult())) {
 				«createContainmentExpression»
 			}
 		'''

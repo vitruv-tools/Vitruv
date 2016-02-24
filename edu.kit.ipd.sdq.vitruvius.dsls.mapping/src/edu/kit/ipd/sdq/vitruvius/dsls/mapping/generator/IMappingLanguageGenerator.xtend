@@ -7,5 +7,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 
 interface IMappingLanguageGenerator extends IGenerator {
-	def Collection<Response> generateAndCreateResponses(Resource input, IFileSystemAccess fsa)
+	def void initialize()
+	def Collection<Response> generateAndCreateResponses(Collection<Resource> input, IFileSystemAccess fsa)
 }

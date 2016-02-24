@@ -3380,7 +3380,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleDefaultContainExpression"
-    // InternalMappingLanguage.g:1204:1: ruleDefaultContainExpression returns [EObject current=null] : ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) ) ) ;
+    // InternalMappingLanguage.g:1204:1: ruleDefaultContainExpression returns [EObject current=null] : ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) ) ) ;
     public final EObject ruleDefaultContainExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3407,11 +3407,11 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMappingLanguage.g:1210:2: ( ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) ) ) )
-            // InternalMappingLanguage.g:1211:2: ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) ) )
+            // InternalMappingLanguage.g:1210:2: ( ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) ) ) )
+            // InternalMappingLanguage.g:1211:2: ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) ) )
             {
-            // InternalMappingLanguage.g:1211:2: ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) ) )
-            // InternalMappingLanguage.g:1212:3: () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) )
+            // InternalMappingLanguage.g:1211:2: ( () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) ) )
+            // InternalMappingLanguage.g:1212:3: () ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) )
             {
             // InternalMappingLanguage.g:1212:3: ()
             // InternalMappingLanguage.g:1213:4: 
@@ -3426,7 +3426,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMappingLanguage.g:1219:3: ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? ) )
+            // InternalMappingLanguage.g:1219:3: ( (otherlv_1= 'default-contain' otherlv_2= '(' ( (lv_target_3_0= ruleContextVariable ) ) otherlv_4= ',' ( (lv_source_5_0= ruleFeatureOfContextVariable ) ) otherlv_6= ')' ) | (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' ) )
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -3551,10 +3551,10 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMappingLanguage.g:1277:4: (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? )
+                    // InternalMappingLanguage.g:1277:4: (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' )
                     {
-                    // InternalMappingLanguage.g:1277:4: (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )? )
-                    // InternalMappingLanguage.g:1278:5: otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )?
+                    // InternalMappingLanguage.g:1277:4: (otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')' )
+                    // InternalMappingLanguage.g:1278:5: otherlv_7= 'default-resource' otherlv_8= '(' ( (lv_target_9_0= ruleContextVariable ) ) otherlv_10= ',' ( (lv_relativeResource_11_0= RULE_STRING ) ) (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )? otherlv_14= ')'
                     {
                     otherlv_7=(Token)match(input,37,FOLLOW_12); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3639,7 +3639,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMappingLanguage.g:1327:5: (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')' )?
+                    // InternalMappingLanguage.g:1327:5: (otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) )?
                     int alt24=2;
                     int LA24_0 = input.LA(1);
 
@@ -3648,7 +3648,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt24) {
                         case 1 :
-                            // InternalMappingLanguage.g:1328:6: otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) ) otherlv_14= ')'
+                            // InternalMappingLanguage.g:1328:6: otherlv_12= 'relative-to' ( (lv_relativeResourceSource_13_0= ruleContextVariable ) )
                             {
                             otherlv_12=(Token)match(input,38,FOLLOW_5); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3691,18 +3691,18 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            otherlv_14=(Token)match(input,21,FOLLOW_2); if (state.failed) return current;
-                            if ( state.backtracking==0 ) {
-
-                              						newLeafNode(otherlv_14, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2());
-                              					
-                            }
 
                             }
                             break;
 
                     }
 
+                    otherlv_14=(Token)match(input,21,FOLLOW_2); if (state.failed) return current;
+                    if ( state.backtracking==0 ) {
+
+                      					newLeafNode(otherlv_14, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6());
+                      				
+                    }
 
                     }
 
@@ -28109,7 +28109,7 @@ public class InternalMappingLanguageParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0000000000100000L});
     public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x0000000000200000L});
     public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000004000000002L});
+    public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000004000200000L});
     public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x00001C00000001E0L});
     public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000010000000000L});
     public static final BitSet FOLLOW_41 = new BitSet(new long[]{0x0000020000000000L});

@@ -28,7 +28,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
  */
 public final class MappingLanguageTestUtil {
 	public static final String[] DEFAULT_ATTRIBUTE_NAMES = new String[] {
-		"id", "name", "entityName"
+		"id", "id2", "name", "entityName"
 	};
 	
 	/**

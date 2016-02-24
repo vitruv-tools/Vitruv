@@ -78,15 +78,6 @@ class MappingLanguageGeneratorState {
 		}
 	}
 	
-	public def getImportLetter(MetamodelImport imp) {
-		val index = imports.indexOf(imp)
-		if (index == -1) {
-			return null
-		} else {
-			return #["A", "B"].get(index)
-		}
-	}
-	
 	public def claimOneImport(Mapping mapping) {
 		return mappingToImports.get(mapping).claimExactlyOne
 	}

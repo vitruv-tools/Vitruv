@@ -1348,11 +1348,11 @@ ruleDefaultContainExpression returns [EObject current=null]
 							}
 						)
 					)
-					otherlv_14=')'
-					{
-						newLeafNode(otherlv_14, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_5_2());
-					}
 				)?
+				otherlv_14=')'
+				{
+					newLeafNode(otherlv_14, grammarAccess.getDefaultContainExpressionAccess().getRightParenthesisKeyword_1_1_6());
+				}
 			)
 		)
 	)
