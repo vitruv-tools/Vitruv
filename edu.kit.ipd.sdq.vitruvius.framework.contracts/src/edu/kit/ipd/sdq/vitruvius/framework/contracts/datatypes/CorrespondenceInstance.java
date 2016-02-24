@@ -174,4 +174,15 @@ public interface CorrespondenceInstance {
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
 
     Set<Correspondence> getAllCorrespondencesWithoutDependencies();
+
+    /**
+     * Returns the TUIDs for a correspondence that belong to the side that has a metamodel whose
+     * namespace URIs include the given <code>metamodelNamespaceUri</code>
+     *
+     * @param metamodelNamespaceUri
+     *            the namespace URI for which the correct side should be returned
+     * @return
+     * @author Dominik Werle
+     */
+    public List<TUID> getTUIDsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri);
 }

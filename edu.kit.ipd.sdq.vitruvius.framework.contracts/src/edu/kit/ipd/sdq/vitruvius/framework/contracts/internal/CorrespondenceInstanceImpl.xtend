@@ -560,4 +560,23 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondences.correspondences
 	}
 	
+	/**
+	 * Gets the side of a correspondence for the given metamodel nsURI.
+	 * @param correspondence the correspondence for which the correct side should be chosen
+	 * @param mmNsUri the namespace URI for the requested side
+	 * 
+	 * @throws IllegalArgumentException if the <code>mmNsUri</code> is not the namespace URI of one of the mapped
+	 * meta models.
+	 * 
+	 * @author Dominik Werle 
+	 */
+	override getTUIDsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
+	 	if (mapping.metamodelA.nsURIs.contains(metamodelNamespaceUri)) {
+	 		return correspondence.ATUIDs
+	 	} else if (mapping.metamodelB.nsURIs.contains(metamodelNamespaceUri)) {
+	 		return correspondence.BTUIDs
+	 	} else {
+	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
+	 	}
+	 }
 }		
