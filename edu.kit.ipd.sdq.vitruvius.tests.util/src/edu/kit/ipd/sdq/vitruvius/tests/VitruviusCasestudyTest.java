@@ -125,13 +125,12 @@ public abstract class VitruviusCasestudyTest {
     	for (Change2CommandTransforming currentChange2CommandTransforming : transformingProviding) {
     		if (change2CommandTransformerClass.isInstance(currentChange2CommandTransforming)) {
                 change2CommandTransforming = currentChange2CommandTransforming;
-                break;
+                change2CommandTransforming.setUserInteracting(newUserInteracting);
             }
     	}
         if (null == change2CommandTransforming) {
             throw new RuntimeException("Could not find a Change2CommandTransforming that is currently active.");
         }
-        change2CommandTransforming.setUserInteracting(newUserInteracting);
     }
     
     protected abstract Class<?> getChange2CommandTransformerClass();
