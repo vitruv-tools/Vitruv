@@ -21,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
@@ -52,7 +53,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     protected ChangeSynchronizing changeSynchronizing;
     protected ModelProviding modelProviding;
     protected VSUMImpl vsum;
-
+    protected Change2CommandTransformingProviding transformingProviding;
+    
     private final boolean isInTestingMode = true;
 
     protected VitruviusEmfBuilder() {
@@ -114,11 +116,11 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
         final MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
         this.vsum = new VSUMImpl(metaModelManager, null, metaRepositoryImpl);
-        final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
+        this.transformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
-                change2CommandTransformingProviding, this.vsum, metaRepositoryImpl, this.vsum, this, changePreparing,
+        		this.transformingProviding, this.vsum, metaRepositoryImpl, this.vsum, this, changePreparing,
                 commandExecuting);
         this.changeSynchronizing = changeSynchronizerImpl;
         return this.vsum;

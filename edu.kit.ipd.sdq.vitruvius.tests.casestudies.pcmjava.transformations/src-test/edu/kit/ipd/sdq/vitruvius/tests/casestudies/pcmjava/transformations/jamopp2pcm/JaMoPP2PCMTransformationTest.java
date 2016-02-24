@@ -101,6 +101,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PC
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
@@ -485,9 +486,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        //final ChangeSynchronizerImpl changeSynchronizerImpl = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
-                //"changeSynchronizing", pcmJavaBuilder);
-        this.setUserInteractor(newUserInteracting);
+        final Change2CommandTransformingProviding transformingProviding = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
+                "transformingProviding", pcmJavaBuilder);
+        this.setUserInteractor(newUserInteracting, transformingProviding);
     }
 
     protected CompositeComponent addSecondPackageCorrespondsToCompositeComponent() throws Throwable {
