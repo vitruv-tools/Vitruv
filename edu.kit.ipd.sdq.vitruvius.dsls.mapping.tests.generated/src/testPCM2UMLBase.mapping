@@ -1,0 +1,7 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup" as adl
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup" as uml
+
+mapping base_repo2pkg:
+map [ adl.Repository ] and [ uml.UPackage ] { [
+	equal(repository.name, uPackage.name)
+] }

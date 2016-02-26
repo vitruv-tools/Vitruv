@@ -26,6 +26,7 @@ import allElementTypes.Root;
 import allElementTypes2.AllElementTypes2Factory;
 import allElementTypes2.Root2;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.tests.generated.testinfrastructure.TestDefaultMappingChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractResponseTests;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
@@ -46,7 +47,7 @@ public class TestDefaultMapping extends AbstractResponseTests {
 	private final static Logger LOGGER = Logger.getLogger(TestDefaultMapping.class);
 
 	public TestDefaultMapping() {
-		super(ResponseChange2CommandTransformingProviding::new);
+		super(TestDefaultMappingChange2CommandTransformingProviding::new);
 	}
 
 	@Override
@@ -121,7 +122,7 @@ public class TestDefaultMapping extends AbstractResponseTests {
 
 		testUserInteractor.addNextSelections(getLocalModelURI("aet2correspondsToDefaultRoot.aet2"));
 		Root root2 = createAndSyncRoot1("createdRoot1b.aet1");
-		assertTrue(testUserInteractor.isResourceQueueEmpty());
+		assertFalse(testUserInteractor.isResourceQueueEmpty());
 
 		Set<Correspondence> defaultCorrespondences = getMappedCorrespondenceInstance()
 				.getCorrespondencesForMapping(DefaultMapping_Mapping.INSTANCE);

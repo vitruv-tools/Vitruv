@@ -1,0 +1,21 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup" as mpcm
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup" as muml
+
+mapping body_M0:
+map [ mpcm.Repository ]
+and [ muml.UPackage ] {
+	[
+		xbase from mpcm with {
+			body_M0.muml.UPackage.name
+				= body_M0.mpcm.repository.name
+					.replace("repository", "package")
+					.replace("Repository", "Package")
+		}
+		xbase from muml with {
+			body_M0.mpcm.repository.name
+				= body_M0.muml.UPackage.name
+					.replace("package", "repository")
+					.replace("Package", "Repository")
+		}
+	]
+}

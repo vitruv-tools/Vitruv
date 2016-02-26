@@ -1,0 +1,15 @@
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.pcm_mockup" as mpcm
+import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.uml_mockup" as muml
+
+mapping child_repo2pkg:
+map [ mpcm.Repository ] and [ muml.UPackage ] { [
+	equal(repository.name, uPackage.name)
+] }
+
+mapping child_M1:
+when (child_repo2pkg as m0)
+map [ mpcm.Component ] with [ in(component, m0::repository.components) ]
+and [ muml.UClass ] with [ in(uClass, m0::uPackage.classes) ]
+{
+	[ equal(component.name, uClass.name) ]
+}
