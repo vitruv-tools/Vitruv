@@ -533,7 +533,7 @@ class ResponseMethodGenerator {
 				«FOR element : retrieveElements»
 					«val method = retrieveElementsMethodMap.get(element)»
 					«method.returnType» «element.name» = «method.simpleName»(«
-						changeParameter.name», «blackboardParameter.name», «identifyingElement.name»);
+						changeParameter.name», «blackboardParameter.name», null«/*identifyingElement.name*/»);
 				«ENDFOR»
 				«IF hasExecutionBlock»
 					«performResponseMethod.simpleName»(«changeParameter.name»«
