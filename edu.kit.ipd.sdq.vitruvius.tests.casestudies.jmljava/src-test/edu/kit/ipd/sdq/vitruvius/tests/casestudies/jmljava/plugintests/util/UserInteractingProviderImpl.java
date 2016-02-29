@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests.util;
 
+import org.eclipse.emf.common.util.URI;
+
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.UserInteractingProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
@@ -32,6 +34,11 @@ public class UserInteractingProviderImpl implements UserInteractingProvider {
             public String getTextInput(final String msg) {
                 throw new UnsupportedOperationException();
             }
+
+			@Override
+			public URI selectURI(String message) {
+				throw new UnsupportedOperationException();
+			}
         };
     }
 

@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IStartup;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
@@ -279,4 +280,9 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.reportChanges = reportChanges;
     }
 
+    @Override
+    public URI selectURI(String message) {
+    	return this.userInteractor.selectURI(message);
+    }
+    
 }
