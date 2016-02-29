@@ -8,6 +8,26 @@ import org.palladiosimulator.pcm.core.entity.Entity
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.modifiers.ModifiersFactory
 import org.emftext.language.java.classifiers.ConcreteClassifier
+import org.emftext.language.java.types.NamespaceClassifierReference
+import org.emftext.language.java.types.TypesFactory
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.members.Field
+import org.emftext.language.java.members.MembersFactory
+import org.emftext.language.java.types.TypeReference
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import org.emftext.language.java.members.Constructor
+import org.emftext.language.java.classifiers.Class;
+import org.emftext.language.java.imports.Import
+import org.emftext.language.java.classifiers.Classifier
+import org.emftext.language.java.imports.ClassifierImport
+import java.util.HashSet
+import org.emftext.language.java.instantiations.NewConstructorCall
+import org.emftext.language.java.parameters.Parameter
+import org.emftext.language.java.statements.StatementsFactory
+import org.emftext.language.java.expressions.ExpressionsFactory
+import org.emftext.language.java.references.ReferencesFactory
+import org.emftext.language.java.literals.LiteralsFactory
+import org.emftext.language.java.operators.OperatorsFactory
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -95,4 +115,88 @@ class PCMJavaHelper {
 		compilationUnit.classifiers.add(javaClassifier);
 	}
 	
+	def static NamespaceClassifierReference createNamespaceClassifierReference(ConcreteClassifier concreteClassifier) {
+		val namespaceClassifierReference = TypesFactory.eINSTANCE.createNamespaceClassifierReference
+		val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
+		classifierRef.target = EcoreUtil.copy(concreteClassifier)
+		namespaceClassifierReference.classifierReferences.add(classifierRef)
+
+		// namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
+		return namespaceClassifierReference
+	}
+	
+	def static createNamespaceClassifierReference(NamespaceClassifierReference namespaceClassifierReference, ConcreteClassifier concreteClassifier) {
+		val classifierRef = TypesFactory.eINSTANCE.createClassifierReference
+		classifierRef.target = EcoreUtil.copy(concreteClassifier)
+		namespaceClassifierReference.classifierReferences.add(classifierRef)
+
+		// namespaceClassifierReference.namespaces.addAll(concreteClassifier.containingCompilationUnit.namespaces)
+	}
+	
+	def static createPrivateField(Field field, TypeReference reference, String name) {
+		field.typeReference = EcoreUtil.copy(reference)
+		field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
+		var String fieldName = name
+		if (fieldName.nullOrEmpty) {
+			fieldName = "field_" + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
+		}
+		field.name = fieldName
+	}
+	
+	def static addConstructorToClass(Constructor constructor, Class jaMoPPClass) {
+		constructor.name = jaMoPPClass.name
+		constructor.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+		jaMoPPClass.members.add(constructor)
+	}
+
+	def static addImportToCompilationUnitOfClassifier(ClassifierImport classifierImport, Classifier classifier,
+		ConcreteClassifier classifierToImport) {
+		if (null != classifierToImport.containingCompilationUnit) {
+			if (null != classifierToImport.containingCompilationUnit.namespaces) {
+				classifierImport.namespaces.addAll(classifierToImport.containingCompilationUnit.namespaces)
+			}
+			classifier.containingCompilationUnit.imports.add(classifierImport)
+		}
+		classifierImport.classifier = classifierToImport
+	}	
+	
+	def static createNewForFieldInConstructor(NewConstructorCall newConstructorCall, Constructor constructor, Field field) {
+		val classifier = field.containingConcreteClassifier
+		if (!(classifier instanceof Class)) {
+			return null
+		}
+		val jaMoPPClass = classifier as Class
+
+		addNewStatementToConstructor(newConstructorCall, constructor, field, jaMoPPClass.fields,
+				constructor.parameters)
+	}
+	
+	def static addNewStatementToConstructor(NewConstructorCall newConstructorCall, Constructor constructor, Field field,
+		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
+		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+
+		// this.
+		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+		selfReference.self = LiteralsFactory.eINSTANCE.createThis
+		assigmentExpression.child = selfReference
+
+		// .fieldname
+		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		fieldReference.target = EcoreUtil.copy(field)
+		selfReference.next = EcoreUtil.copy(fieldReference)
+
+		// =
+		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+		// new fieldType
+		newConstructorCall.typeReference = EcoreUtil.copy(field.typeReference)
+
+		// get order of type references of the constructor
+		PCM2JaMoPPUtils.updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument, newConstructorCall)
+
+		assigmentExpression.value = newConstructorCall
+		expressionStatement.expression = assigmentExpression
+		constructor.statements.add(expressionStatement)
+	}
 }

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ResponsePCMJavaTests
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses
 Bundle-Version: 1.0.0
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.tests,
  com.google.guava,
@@ -12,14 +12,23 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.tests,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
  org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.core.manipulation,
+ org.eclipse.jdt.ui,
+ org.eclipse.ltk.core.refactoring,
+ org.eclipse.text,
  org.apache.log4j,
+ org.apache.commons.lang,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.response.api,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.casestudies.emf,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
@@ -30,6 +39,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.tests,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
- org.junit
+ org.junit,
+ org.emftext.language.java.resource.java
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava

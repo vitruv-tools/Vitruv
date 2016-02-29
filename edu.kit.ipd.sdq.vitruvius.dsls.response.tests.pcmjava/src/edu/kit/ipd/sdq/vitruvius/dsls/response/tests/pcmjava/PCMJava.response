@@ -1,6 +1,14 @@
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaHelper.*;
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.BasicComponent
+import org.palladiosimulator.pcm.repository.CompositeComponent
+import org.emftext.language.java.types.TypeReference
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.modifiers.ModifiersFactory
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import org.emftext.language.java.members.Constructor
+import org.palladiosimulator.pcm.repository.OperationProvidedRole
+import org.palladiosimulator.pcm.repository.OperationRequiredRole
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
@@ -34,6 +42,7 @@ execute: {
 
 response: CreateClassForBasicComponent
 trigger: insert in list pcm.repository.Repository[components__Repository]
+precondition: change.newValue instanceof BasicComponent
 create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
 persist at project-relative location: componentToClass.getPathInProject(change.newValue)
 create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
@@ -42,7 +51,7 @@ execute: {
 	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, componentToClass.getClassName(change.newValue));
 }
 
-response: CreatePackageForBasicComponent
+response: CreatePackageForComponent
 trigger: insert in list pcm.repository.Repository[components__Repository]
 create root element: javaPackage of type java.containers.Package corresponding to change.newValue
 persist at project-relative location: componentToPackageInfo.getPathInProject(change.newValue)
@@ -94,5 +103,71 @@ execute: {
 	compilationUnit.namespaces.clear;
 	compilationUnit.namespaces += componentToClass.getPackageName(component);
 }
+
+
+response: CreateClassForCompositeComponent
+trigger: insert in list pcm.repository.Repository[components__Repository]
+precondition: change.newValue instanceof CompositeComponent
+create root element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
+persist at project-relative location: componentToClass.getPathInProject(change.newValue)
+create model element: javaClass of type java.classifiers.Class corresponding to change.newValue
+execute: {
+	compilationUnit.namespaces += componentToClass.getPackageName(change.newValue);
+	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, componentToClass.getClassName(change.newValue));
+}
+
+response: AddAssemblyContextInCompositeComponent
+trigger: insert in list pcm.repository.CompositeComponent[assemblyContexts__ComposedStructure]
+retrieve model element: compositeComponentJavaClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+retrieve model element: encapsulatedComponentJavaClass of type java.classifiers.Class corresponding to change.newValue.encapsulatedComponent__AssemblyContext
+create model element: assemblyContextField of type java.members.Field corresponding to change.newValue
+create model element: newConstructorCall of type java.instantiations.NewConstructorCall corresponding to change.newValue
+create model element: contextClassImport of type java.imports.ClassifierImport corresponding to change.newValue
+create model element: constructor of type java.members.Constructor corresponding to change.newValue
+execute: {
+	val TypeReference typeRef = createNamespaceClassifierReference(encapsulatedComponentJavaClass);
+	val newAssemblyContext = change.newValue;
+	createPrivateField(assemblyContextField, typeRef, newAssemblyContext.entityName);
+	compositeComponentJavaClass.members += assemblyContextField;
+	addConstructorToClass(constructor, compositeComponentJavaClass)
+	addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentJavaClass, encapsulatedComponentJavaClass)
+	createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
+}
+
+response: AddProvidedRoleToCompositeComponent
+trigger: insert in list pcm.repository.CompositeComponent[providedRoles_InterfaceProvidingEntity]
+precondition: change.newValue instanceof OperationProvidedRole
+retrieve model element: operationProvidingInterface of type java.classifiers.Interface corresponding to (change.newValue as OperationProvidedRole).providedInterface__OperationProvidedRole
+retrieve model element: javaClass of type java.classifiers.Class corresponding to change.newValue.providingEntity_ProvidedRole
+create model element: interfaceImport of type java.imports.ClassifierImport corresponding to change.newValue
+create model element: namespaceClassifierReference of type java.types.NamespaceClassifierReference corresponding to change.newValue
+execute: {
+	createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
+	javaClass.implements.add(namespaceClassifierReference)
+	addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
+}
+
+response: AddRequiredRoleToCompositeComponent
+trigger: insert in list pcm.repository.CompositeComponent[requiredRoles_InterfaceRequiringEntity]
+precondition: change.newValue instanceof OperationRequiredRole
+retrieve model element: requiredInterface of type java.classifiers.Interface corresponding to (change.newValue as OperationRequiredRole).requiredInterface__OperationRequiredRole
+retrieve model element: javaClass of type java.classifiers.Class corresponding to change.newValue.requiringEntity_RequiredRole
+create model element: requiredInterfaceImport of type java.imports.ClassifierImport corresponding to change.newValue
+create model element: requiredInterfaceField of type java.members.Field corresponding to change.newValue 
+execute: {
+	val typeRef = createNamespaceClassifierReference(requiredInterface);
+	addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+	val requiredRoleName = change.newValue.entityName;
+	createPrivateField(requiredInterfaceField, EcoreUtil.copy(typeRef), requiredRoleName);
+	javaClass.members += requiredInterfaceField;
+	for (ctor : javaClass.members.filter(typeof(Constructor))) {
+		val newParam = PCM2JaMoPPUtils.createOrdinaryParameter(EcoreUtil.copy(typeRef), requiredRoleName)
+		ctor.parameters.add(newParam)
+		val asssignment = PCM2JaMoPPUtils.createAssignmentFromParameterToField(requiredInterfaceField, newParam);
+		ctor.statements.add(asssignment)
+	}
+}
+
+
 
 
