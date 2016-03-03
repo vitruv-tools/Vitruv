@@ -10,11 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 
 /**
  * This class contains custom validation rules. 
@@ -47,23 +45,25 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	@Check
 	def checkEffects(Effects effects) {
 		val targetChange = effects.targetChange
-		if (effects.codeBlock == null) {
-			if ((targetChange instanceof ConcreteTargetModelChange && !(targetChange as ConcreteTargetModelChange).createElements.empty) 
-				|| targetChange instanceof ConcreteTargetModelCreate) {
+		if (targetChange instanceof ConcreteTargetModelChange) {
+			if (effects.codeBlock == null && !targetChange.createElements.nullOrEmpty) {
 				warning("Created elements must be initialized and inserted into the target model in the execute block.",
 					ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);			
-			} else if (!(targetChange instanceof ConcreteTargetModelUpdate && (targetChange as ConcreteTargetModelUpdate).identifyingElement instanceof CorrespondingModelElementDelete)) {
+			}
+			// TODO HK This does not make sense any more. Retrieved elements can also be used in other effects in the future, so
+			// deriving an obsolete retrieve is pretty difficult
+			/* else if (!(targetChange instanceof ConcreteTargetModelUpdate && (targetChange as ConcreteTargetModelUpdate).identifyingElement instanceof CorrespondingModelElementDelete)) {
 				warning("No code is specified to execute for the models to update.",
 				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
-			}
+			}*/
 		}
 	}
 	
 	@Check
-	def checkTargetUpdate(ConcreteTargetModelUpdate update) {
-		if (update.renamedModelFileName != null) {
+	def checkTargetUpdate(CorrespondingModelElementRetrieve retrieve) {
+		if (retrieve.renamedModelFileName != null) {
 			warning("Renaming models is currently discouraged since the correspondences of elements will not get updated.",
-				ResponseLanguagePackage.Literals.CONCRETE_TARGET_MODEL_UPDATE__RENAMED_MODEL_FILE_NAME);
+				ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_RETRIEVE__RENAMED_MODEL_FILE_NAME);
 		}
 	}
 }

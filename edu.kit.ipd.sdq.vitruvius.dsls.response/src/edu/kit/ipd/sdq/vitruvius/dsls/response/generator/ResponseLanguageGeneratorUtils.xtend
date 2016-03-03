@@ -17,9 +17,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -119,10 +118,9 @@ final class ResponseLanguageGeneratorUtils {
 	
 	private static def VURI getTargetVURI(Response response) {
 		val targetChange = response?.effects?.targetChange;
-		val targetPackage = if (targetChange instanceof ConcreteTargetModelCreate) {
-			targetChange.rootElement?.elementType?.element?.EPackage;
-		} else if (targetChange instanceof ConcreteTargetModelUpdate) {
-			targetChange.identifyingElement?.elementType?.element?.EPackage;
+		val targetPackage = if (targetChange instanceof ConcreteTargetModelChange) {
+			// TODO HK Clean this statement
+			(targetChange.createElements + targetChange.retrieveElements + targetChange.deleteElements).get(0).elementType?.element?.EPackage;
 		} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 			targetChange.metamodelReference?.model?.package;
 		}
@@ -172,16 +170,16 @@ final class ResponseLanguageGeneratorUtils {
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
 	}
 	
-	static def boolean hasOppositeResponse(Response response) {
+	/*static def boolean hasOppositeResponse(Response response) {
 		// TODO HK does currently always return false
 		val sourceChange = response.trigger;
 		val targetChange = response.effects.targetChange;
 		if (targetChange instanceof ConcreteTargetModelCreate && 
 			sourceChange instanceof AtomicConcreteModelElementChange) {
 			val createTargetChange = targetChange as ConcreteTargetModelCreate;
-			/*if (createTargetChange.autodelete) {
+			if (createTargetChange.autodelete) {
 				return true;
-			}*/
+			}
 		}
 		return false;
 	}
@@ -207,7 +205,7 @@ final class ResponseLanguageGeneratorUtils {
 			return deleteResponse;
 		}
 		return null;
-	}
+	}*/
 	  
 	private static def dispatch Trigger getDeleteTrigger(Trigger change) {
 		return null;

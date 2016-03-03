@@ -28,6 +28,7 @@ import org.emftext.language.java.expressions.ExpressionsFactory
 import org.emftext.language.java.references.ReferencesFactory
 import org.emftext.language.java.literals.LiteralsFactory
 import org.emftext.language.java.operators.OperatorsFactory
+import org.palladiosimulator.pcm.repository.CompositeDataType
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -39,6 +40,7 @@ class PCMJavaHelper {
 	public static final val repositoryToContractsPackageInfo = new CorrespondingContractsRepositoryPackageInfo();
 	public static final val repositoryToDatatypesPackageInfo = new CorrespondingDatatypesRepositoryPackageInfo();
 	public static final val componentToPackageInfo = new CorrespondingComponentPackageInfo();
+	public static final val dataTypeToClass = new CorrespondingDataTypeClass();
 	public static final val componentToClass = new CorrespondingJavaClass();
 		
 	public abstract static class CorrespondingClass<E extends EObject> {
@@ -95,6 +97,16 @@ class PCMJavaHelper {
 		
 		override getPackageName(RepositoryComponent object) {
 			object.repository__RepositoryComponent.qualifiedName.toFirstLower + "." + object.entityName.toFirstLower;
+		}
+	}
+	
+	public static class CorrespondingDataTypeClass extends CorrespondingToEntityClass<CompositeDataType> {
+		override getClassName(CompositeDataType object) {
+			return object.entityName;
+		}
+		
+		override getPackageName(CompositeDataType object) {
+			object.repository__DataType.qualifiedName.toFirstLower + "." + "datatypes";
 		}
 	}
 	

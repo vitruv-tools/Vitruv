@@ -21,9 +21,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureCha
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 
 /**
  * Outline structure definition for a response file.
@@ -73,7 +76,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__EFFECTS,
-			imageDispatcher.invoke(response.effects), "Effects", response.effects != null);
+			imageDispatcher.invoke(response.effects), "Effects", response.effects == null);
 		if (response.effects != null) {
 			createChildren(effectsNode, response.effects);
 		}
@@ -106,14 +109,11 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effects effects) {
 		if (effects.targetChange != null) {
-			var targetChangeIsLeaf = false;
 			val targetChange = effects.targetChange;
-			if (targetChange instanceof ConcreteTargetModelCreate) {
-				targetChangeIsLeaf = targetChange.rootElement?.elementType?.element == null;
-			} if (targetChange instanceof ConcreteTargetModelUpdate) {
-				targetChangeIsLeaf = targetChange.identifyingElement?.elementType?.element == null;
-			} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
-				targetChangeIsLeaf = targetChange.metamodelReference?.model == null;
+			var targetChangeIsLeaf = if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
+				targetChange.metamodelReference?.model == null;
+			} else {
+				false;
 			}
 			val targetChangeNode = createEStructuralFeatureNode(parentNode, effects, 
 				ResponseLanguagePackage.Literals.EFFECTS__TARGET_CHANGE,
@@ -130,15 +130,9 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelCreate targetChange) {
-		if (targetChange.rootElement.elementType.element != null) {
-			createEObjectNode(parentNode, targetChange.rootElement.elementType.element);
-		}
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelUpdate targetChange) {
-		if (targetChange.identifyingElement.elementType.element != null) {
-			createEObjectNode(parentNode, targetChange.identifyingElement.elementType.element);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ConcreteTargetModelChange targetChange) {
+		for (element : targetChange.retrieveElements + targetChange.createElements + targetChange.deleteElements) {
+			createEObjectNode(parentNode, element);	
 		}
 	}
 	
@@ -185,6 +179,22 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "Execution Block"
 	}
 	
+	protected def Object _text(CorrespondingModelElementCreate elementCreate) {
+		"Create element: " + elementCreate.elementText;
+	}
+	
+	protected def Object _text(CorrespondingModelElementRetrieve elementRetrieve) {
+		"Retrieve element: " + elementRetrieve.elementText;
+	}
+	
+	protected def Object _text(CorrespondingModelElementDelete elementDelete) {
+		"Delete element: " + elementDelete.elementText;
+	}
+	
+	private def String getElementText(CorrespondingModelElementSpecification elementSpecification) {
+		return elementSpecification.name + " (" + elementSpecification.elementType?.element?.name + ")"
+	}
+	
 	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {
 		return true;
 	}
@@ -198,6 +208,10 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def boolean _isLeaf(ConcreteModelElementChange event) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(CorrespondingModelElementSpecification elementSpecification) {
 		return true;
 	}
 	

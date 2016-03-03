@@ -39,9 +39,6 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements 
 		}
 		
 		acceptor.accept(generateClass(response, response));
-		if (response.hasOppositeResponse()) {
-			acceptor.accept(generateClass(response.oppositeResponse, response));
-		}
 	}
 	
 	public def JvmGenericType generateClass(Response response, EObject sourceElement) {

@@ -252,9 +252,9 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 				LOGGER.error("There are at least two responses with the name " + responseName + " overwriting each other.");
 			}
 			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			if (response.hasOppositeResponse) {
+			/*if (response.hasOppositeResponse) {
 				modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(response.oppositeResponse.responseName);
-			}
+			}*/
 		}
 	}
 	

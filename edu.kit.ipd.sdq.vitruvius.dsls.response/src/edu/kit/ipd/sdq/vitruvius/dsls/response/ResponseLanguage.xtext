@@ -28,38 +28,31 @@ TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelChange:
-	ConcreteTargetModelUpdate | 
-	ConcreteTargetModelCreate;
+	(retrieveElements+=CorrespondingModelElementRetrieve |
+		deleteElements+=CorrespondingModelElementDelete |
+		createElements+=CorrespondingModelElementCreate)+;
 	
-ConcreteTargetModelUpdate:
-	// You could also put the identifying element together with the retrieved elements. 
-	// The generation uses the first element as an identifying element and thus it is easier
-	identifyingElement=CorrespondingModelElementRetrieveOrDelete
-	('move model to project-relative location:' renamedModelFileName=ModelPathCodeBlock)? 
-	(retrieveElements+=CorrespondingModelElementRetrieveOrDelete |
-		'create model element:' createElements+=CorrespondingModelElementCreate)*;
-
-ConcreteTargetModelCreate:
-	'create root element:' rootElement=CorrespondingModelElementCreate
-	(useRelativeToSource?='persist at changed model relative location:'
-		| useRelativeToProject?='persist at project-relative location:') modelPath=ModelPathCodeBlock
-	('create model element:' createElements+=CorrespondingModelElementCreate)*;
-
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
-	CorrespondingModelElementSpecification;
+	'create element:' CorrespondingModelElementSpecification (persistAsRoot=ModelPersistence)?;
 
-CorrespondingModelElementRetrieveOrDelete returns CorrespondingModelElementRetrieveOrDelete:
-	({CorrespondingModelElementDelete} 'delete model element:' | 
-	{CorrespondingModelElementRetrieve} 'retrieve model element:') CorrespondingModelElementSpecification;
-
+ModelPersistence returns ModelPersistence:
+	(useRelativeToSource?='persist as root at changed model relative location:'
+		| useRelativeToProject?='persist as root at project-relative location:') modelPath=ModelPathCodeBlock;
+		
 CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
 	{CorrespondingModelElementDelete}
-	'delete model element:' CorrespondingModelElementSpecification;
+	'delete element:' CorrespondingModelElementRetrieveOrDelete;
 	
 CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	{CorrespondingModelElementRetrieve}
-	'retrieve model element:' CorrespondingModelElementSpecification;
+	'retrieve element:' CorrespondingModelElementRetrieveOrDelete  ('move containing model to project-relative location:' renamedModelFileName=ModelPathCodeBlock)?;
+	
+fragment CorrespondingModelElementRetrieveOrDelete:
+	CorrespondingModelElementSpecificationWithPrecondition;
+	
+fragment CorrespondingModelElementSpecificationWithPrecondition:
+	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)?;
 	
 fragment CorrespondingModelElementSpecification:
 	name=ValidID 'of type' elementType=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
