@@ -41,6 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieveOrDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -548,6 +549,9 @@ class ResponseMethodGenerator {
 					«method.returnType» «element.name» = «method.simpleName»(«
 						changeParameter.name», «blackboardParameter.name»«/*identifyingElement.name*/»);
 				«ENDFOR»
+				«FOR element : retrieveElements»
+					«TUID» «element.name»_oldTUID = «blackboardParameter.name».getCorrespondenceInstance().calculateTUIDFromEObject(«element.name»);
+				«ENDFOR»
 				«IF hasExecutionBlock»
 					«performResponseMethod.simpleName»(«changeParameter.name»«
 						FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
@@ -567,6 +571,9 @@ class ResponseMethodGenerator {
 					«/* TODO HK The third parameter was the identifying element before since it is persisted when renaming a basic component and so does not throw an exception */»
 					LOGGER.debug("Move model with element " + _sourceElement + " to " + _newModelPath);
 					«ResponseRuntimeHelper».renameModel(«blackboardParameter.name», _sourceElement, «element.name», _newModelPath, «transformationResultParameter.name»);
+				«ENDFOR»
+				«FOR element : retrieveElements»
+					«blackboardParameter.name».getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);
 				«ENDFOR»
 		'''
 	}
