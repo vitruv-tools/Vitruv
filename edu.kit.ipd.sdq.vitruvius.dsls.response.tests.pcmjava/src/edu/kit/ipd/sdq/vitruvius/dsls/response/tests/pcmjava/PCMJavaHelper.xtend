@@ -29,6 +29,17 @@ import org.emftext.language.java.references.ReferencesFactory
 import org.emftext.language.java.literals.LiteralsFactory
 import org.emftext.language.java.operators.OperatorsFactory
 import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.emftext.language.java.members.ClassMethod
+import org.emftext.language.java.parameters.ParametersFactory
+import java.util.List
+import java.util.Comparator
+import org.emftext.language.java.members.Method
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
+import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
+import org.emftext.language.java.classifiers.ClassifiersFactory
+import org.emftext.language.java.types.Type
+import org.palladiosimulator.pcm.repository.PrimitiveDataType
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -210,5 +221,107 @@ class PCMJavaHelper {
 		assigmentExpression.value = newConstructorCall
 		expressionStatement.expression = assigmentExpression
 		constructor.statements.add(expressionStatement)
+	}
+	
+	static def createSetter(Field field, ClassMethod method) {
+		method.name = "set" + field.name.toFirstUpper
+		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+		method.typeReference = TypesFactory.eINSTANCE.createVoid
+		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
+		parameter.name = field.name
+		parameter.typeReference = EcoreUtil.copy(field.typeReference);
+		method.parameters.add(parameter)
+		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+
+		//this.
+		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+		assigmentExpression.child = selfReference
+
+		//.fieldname
+		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		fieldReference.target = field
+		selfReference.next = fieldReference
+		selfReference.^self = LiteralsFactory.eINSTANCE.createThis();
+		//=
+		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+		//name		
+		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		identifierReference.target = parameter
+
+		assigmentExpression.value = identifierReference
+		expressionStatement.expression = assigmentExpression
+		method.statements.add(expressionStatement)
+		return method
+	}
+
+	static def createGetter(Field field, ClassMethod method) {
+		method.name = "get" + field.name.toFirstUpper
+		method.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+		method.typeReference = EcoreUtil.copy(field.typeReference);
+
+		//this.fieldname
+		val identifierRef = ReferencesFactory.eINSTANCE.createIdentifierReference
+		identifierRef.target = field
+
+		// return
+		val ret = StatementsFactory.eINSTANCE.createReturn
+		ret.returnValue = identifierRef
+		method.statements.add(ret);
+		return method
+	}
+	
+	/**
+	 * sorts the member list to ensure that fields are printed before constructors and constructors before methods
+	 */
+	def static sortMembers(List<? extends EObject> members) {
+		members.sort(new Comparator<EObject> {
+
+			override compare(EObject o1, EObject o2) {
+
+				// fields before constructors and methods
+				if (o1 instanceof Field && (o2 instanceof Method || o2 instanceof Constructor)) {
+					return -1
+				} else if ((o1 instanceof Method || o1 instanceof Constructor) && o2 instanceof Field) {
+					return 1
+
+				// constructors before Methods	
+				} else if (o1 instanceof Constructor && o2 instanceof Method) {
+					return -1
+				} else if (o1 instanceof Method && o2 instanceof Constructor) {
+					return 1
+				}
+				return 0;
+			}
+
+			override equals(Object obj) {
+				return this == obj;
+			}
+
+		})
+	}
+	
+	
+	private static var ClaimableMap<PrimitiveTypeEnum, Type> primitveTypeMappingMap;
+
+	private def static initPrimitiveTypeMap() {
+		primitveTypeMappingMap = new ClaimableHashMap<PrimitiveTypeEnum, Type>()
+		val stringClassifier = ClassifiersFactory.eINSTANCE.createClass
+		stringClassifier.setName("String")
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.BOOL, TypesFactory.eINSTANCE.createBoolean)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.BYTE, TypesFactory.eINSTANCE.createByte)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.CHAR, TypesFactory.eINSTANCE.createChar)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.DOUBLE, TypesFactory.eINSTANCE.createDouble)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.INT, TypesFactory.eINSTANCE.createInt)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.LONG, TypesFactory.eINSTANCE.createLong)
+		primitveTypeMappingMap.put(PrimitiveTypeEnum.STRING, stringClassifier)
+	}
+
+	public synchronized def static Type claimJaMoPPTypeForPrimitiveDataType(PrimitiveDataType pdt) {
+		if (null == primitveTypeMappingMap) {
+			initPrimitiveTypeMap()
+		}
+		return EcoreUtil.copy(primitveTypeMappingMap.claimValueForKey(pdt.type))
 	}
 }

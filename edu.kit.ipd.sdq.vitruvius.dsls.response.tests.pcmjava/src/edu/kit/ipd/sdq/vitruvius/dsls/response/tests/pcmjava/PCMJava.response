@@ -4,12 +4,13 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.CompositeComponent
 import org.emftext.language.java.types.TypeReference
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.emftext.language.java.modifiers.ModifiersFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import org.emftext.language.java.members.Constructor
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.CompositeDataType
+import org.palladiosimulator.pcm.repository.PrimitiveDataType
+import org.emftext.language.java.classifiers.ConcreteClassifier
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
@@ -21,6 +22,27 @@ persist as root at project-relative location: repositoryToPackageInfo.getPathInP
 execute: {
 	val newRepository = change.newValue;
 	javaPackage.name = newRepository.entityName
+}
+
+/* TODO HK: Add move of components somehow. E.g. separate effects from trigger code */
+response: RenameRepositoryPackages
+trigger: replace value pcm.repository.Repository[entityName]
+retrieve element: rootPackage of type java.containers.Package corresponding to change.newAffectedEObject
+	with rootPackage.name != "contracts" && rootPackage.name != "datatypes" // TODO HK: Check for change.oldValue currently not possible
+	move containing model to project-relative location: repositoryToPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+retrieve element: contractsPackage of type java.containers.Package corresponding to change.newAffectedEObject
+	with contractsPackage.name == "contracts"
+	move containing model to project-relative location: repositoryToContractsPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+retrieve element: datatypesPackage of type java.containers.Package corresponding to change.newAffectedEObject
+	with datatypesPackage.name == "datatypes"
+	move containing model to project-relative location: repositoryToDatatypesPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+execute: {
+	val repository = change.newAffectedEObject as Repository;
+	rootPackage.name = change.newValue;
+	contractsPackage.namespaces.clear();
+	contractsPackage.namespaces += repositoryToContractsPackageInfo.getPackageName(repository).split("\\.");
+	datatypesPackage.namespaces.clear();
+	datatypesPackage.namespaces += repositoryToDatatypesPackageInfo.getPackageName(repository).split("\\.");
 }
 
 response: CreateContractsPackageForRepository
@@ -174,14 +196,108 @@ trigger: insert in list pcm.repository.Repository[dataTypes__Repository]
 precondition: change.newValue instanceof CompositeDataType
 retrieve element: datatypesPackage of type java.containers.Package corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
 create element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newValue
-persist as root at project-relative location: dataTypeToClass.getPathInProject(change.newValue as CompositeDataType)
+	persist as root at project-relative location: dataTypeToClass.getPathInProject(change.newValue as CompositeDataType)
 create element: javaClass of type java.classifiers.Class corresponding to change.newValue
 execute: {
 	val dataType = change.newValue as CompositeDataType;
-	compilationUnit.namespaces += dataTypeToClass.getPackageName(dataType);
-	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, dataTypeToClass.getClassName(dataType));
-	
+	compilationUnit.namespaces += datatypesPackage.namespaces;
+	compilationUnit.namespaces += datatypesPackage.name;
+	initializeCompilationUnitAndJavaClassifier(compilationUnit, javaClass, dataTypeToClass.getClassName(dataType));	
 }
 
+/* TODO HK: Combine with primitive type response using new language construct */
+response: AddCompositeDataTypeToCompositeDataType
+trigger: insert in list pcm.repository.CompositeDataType[innerDeclaration_CompositeDataType]
+precondition: !(change.newValue.datatype_InnerDeclaration instanceof PrimitiveDataType)
+retrieve element: dataTypeClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+retrieve element: nonPrimitiveInnerDataTypeClass of type java.classifiers.Class corresponding to change.newValue.datatype_InnerDeclaration
+create element: innerDataTypeField of type java.members.Field corresponding to change.newValue
+create element: getterMethod of type java.members.ClassMethod corresponding to change.newValue
+create element: setterMethod of type java.members.ClassMethod corresponding to change.newValue
+execute: {
+	val typeRef = createNamespaceClassifierReference(nonPrimitiveInnerDataTypeClass);
+	createPrivateField(innerDataTypeField, EcoreUtil.copy(typeRef), change.newValue.entityName);
+	createSetter(innerDataTypeField, setterMethod);	
+	createGetter(innerDataTypeField, getterMethod);
+	dataTypeClass.members += innerDataTypeField;
+	dataTypeClass.members += getterMethod;
+	dataTypeClass.members += setterMethod;
+	sortMembers(dataTypeClass.members);
+}
 
+response: AddPrimitiveDataTypeToCompositeDataType
+trigger: insert in list pcm.repository.CompositeDataType[innerDeclaration_CompositeDataType]
+precondition: change.newValue.datatype_InnerDeclaration instanceof PrimitiveDataType
+retrieve element: dataTypeClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+create element: innerDataTypeField of type java.members.Field corresponding to change.newValue
+create element: getterMethod of type java.members.ClassMethod corresponding to change.newValue
+create element: setterMethod of type java.members.ClassMethod corresponding to change.newValue
+execute: {
+	val typeRef = EcoreUtil.copy(claimJaMoPPTypeForPrimitiveDataType(change.newValue.datatype_InnerDeclaration as PrimitiveDataType)) as TypeReference;
+	createPrivateField(innerDataTypeField, EcoreUtil.copy(typeRef), change.newValue.entityName);
+	createSetter(innerDataTypeField, setterMethod);	
+	createGetter(innerDataTypeField, getterMethod);
+	dataTypeClass.members += innerDataTypeField;
+	dataTypeClass.members += getterMethod;
+	dataTypeClass.members += setterMethod;
+	sortMembers(dataTypeClass.members);
+}
 
+response: ChangeNameOfInnerDeclaration
+trigger: replace value pcm.repository.InnerDeclaration[entityName]
+retrieve element: compositeTypeField of type java.members.Field corresponding to change.newAffectedEObject
+retrieve element: compositeTypeGetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeGetterMethod.name.startsWith("get")
+retrieve element: compositeTypeSetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeSetterMethod.name.startsWith("set")
+execute: {
+	val newName = change.newValue;
+	compositeTypeField.name = newName;
+	compositeTypeGetterMethod.name = "get" + newName.toFirstUpper;
+	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
+		val parameter = compositeTypeSetterMethod.parameters.get(0)
+		parameter.name = "set" + newName.toFirstUpper;
+	}
+}
+
+response: ChangeTypeOfInnerDeclaration
+trigger: replace value pcm.repository.InnerDeclaration[datatype_InnerDeclaration]
+precondition: !(change.newValue instanceof PrimitiveDataType)
+retrieve element: compositeTypeField of type java.members.Field corresponding to change.newAffectedEObject
+retrieve element: compositeTypeGetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeGetterMethod.name.startsWith("get")
+retrieve element: compositeTypeSetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeSetterMethod.name.startsWith("set")
+retrieve element: newJavaDataType of type java.classifiers.Class corresponding to change.newValue
+execute: {
+	val newDataTypeReference = createNamespaceClassifierReference(newJavaDataType);
+	compositeTypeField.typeReference = EcoreUtil.copy(newDataTypeReference);
+	compositeTypeGetterMethod.typeReference = EcoreUtil.copy(newDataTypeReference);
+	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
+		val parameter = compositeTypeSetterMethod.parameters.get(0)
+		parameter.typeReference = EcoreUtil.copy(newDataTypeReference)
+	}
+}
+
+response: ChangePrimitiveTypeOfInnerDeclaration
+trigger: replace value pcm.repository.InnerDeclaration[datatype_InnerDeclaration]
+precondition: change.newValue instanceof PrimitiveDataType
+retrieve element: compositeTypeField of type java.members.Field corresponding to change.newAffectedEObject
+retrieve element: compositeTypeGetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeGetterMethod.name.startsWith("get")
+retrieve element: compositeTypeSetterMethod of type java.members.Method corresponding to change.newAffectedEObject
+	with compositeTypeSetterMethod.name.startsWith("set")
+execute: {
+	val newDataType = EcoreUtil.copy(claimJaMoPPTypeForPrimitiveDataType(change.newValue as PrimitiveDataType));
+	val TypeReference newDataTypeReference = if (newDataType instanceof ConcreteClassifier) {
+			createNamespaceClassifierReference(newDataType);
+		} else if (newDataType instanceof TypeReference) {
+			newDataType;
+		};
+	compositeTypeField.typeReference = EcoreUtil.copy(newDataTypeReference);
+	compositeTypeGetterMethod.typeReference = EcoreUtil.copy(newDataTypeReference);
+	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
+		val parameter = compositeTypeSetterMethod.parameters.get(0)
+		parameter.typeReference = EcoreUtil.copy(newDataTypeReference)
+	}
+}

@@ -273,6 +273,7 @@ class ResponseMethodGenerator {
 				«List»<«affectedElementClass»> _targetModels = new «ArrayList»<«affectedElementClass»>();
 				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«changeParameter.name»);
 				«EObject» _sourceParent = null;
+				LOGGER.debug("Retrieving corresponding " + «affectedElementClass».class.getSimpleName() + " element for: " + _sourceElement);
 				«/* TODO HK Fix this after the new change MM is implemented:
 				 * Delete objects (except root one) are removed from the model and now contained in the ChangeDescription,
 				 * so correspondences cannot be resolved
@@ -566,11 +567,11 @@ class ResponseMethodGenerator {
 					deleteElement(«element.name»);
 				«ENDFOR»
 				«FOR element: renameModelMethodMap.keySet»
-					«EObject» _sourceElement = «getCorrespondenceSourceMethodMap.get(element).simpleName»(«changeParameter.name»);
-					String _newModelPath = «renameModelMethodMap.get(element).simpleName»(«changeParameter.name»);
+					«EObject» «element.name»_sourceElement = «getCorrespondenceSourceMethodMap.get(element).simpleName»(«changeParameter.name»);
+					String «element.name»_newModelPath = «renameModelMethodMap.get(element).simpleName»(«changeParameter.name»);
 					«/* TODO HK The third parameter was the identifying element before since it is persisted when renaming a basic component and so does not throw an exception */»
-					LOGGER.debug("Move model with element " + _sourceElement + " to " + _newModelPath);
-					«ResponseRuntimeHelper».renameModel(«blackboardParameter.name», _sourceElement, «element.name», _newModelPath, «transformationResultParameter.name»);
+					LOGGER.debug("Move model with element " + «element.name»_sourceElement + " to " + «element.name»_newModelPath);
+					«ResponseRuntimeHelper».renameModel(«blackboardParameter.name», «element.name»_sourceElement, «element.name», «element.name»_newModelPath, «transformationResultParameter.name»);
 				«ENDFOR»
 				«FOR element : retrieveElements»
 					«blackboardParameter.name».getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);
