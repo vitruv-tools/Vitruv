@@ -79,7 +79,7 @@ class PCMJavaHelper {
 	
 	public static class CorrespondingInterface extends CorrespondingToEntityClass<Interface> {
 		override getPackageName(Interface object) {
-			object.repository__Interface.qualifiedName.toFirstLower;
+			object.repository__Interface.qualifiedName.toFirstLower + ".contracts";
 		}
 	}
 	
