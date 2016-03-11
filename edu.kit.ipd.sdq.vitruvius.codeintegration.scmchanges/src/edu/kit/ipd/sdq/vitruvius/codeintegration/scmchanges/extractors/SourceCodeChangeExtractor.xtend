@@ -1,10 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 
-import com.github.gumtreediff.actions.ActionGenerator
-import com.github.gumtreediff.gen.jdt.JdtTreeGenerator
-import com.github.gumtreediff.matchers.Matchers
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.IScmActionExtractor
-import java.util.HashSet
+import java.util.ArrayList
 import java.util.NoSuchElementException
 import org.apache.log4j.Logger
 import org.eclipse.jgit.api.Git
@@ -15,25 +11,27 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import java.util.ArrayList
-import org.eclipse.jdt.internal.formatter.old.CodeFormatter
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ExtractionResult
-import org.eclipse.jgit.treewalk.filter.PathFilter
+import org.eclipse.jgit.diff.DiffEntry.Side
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller
+import ch.uzh.ifi.seal.changedistiller.ChangeDistiller.Language
+import java.io.InputStreamReader
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.util.IoUtil
+import java.nio.file.Files
+import java.nio.file.CopyOption
+import java.nio.file.StandardCopyOption
+import java.io.File
 
-class GitActionExtractor implements IScmActionExtractor<AnyObjectId> {
+class SourceCodeChangeExtractor {
 	
 	private static final Logger logger = Logger.getLogger(typeof(GitActionExtractor))
 	
 	private Repository repository
 	
-	private JdtTreeGenerator treeGenerator
-	
 	new(Repository repository) {
 		this.repository = repository
-		this.treeGenerator = new JdtTreeGenerator();
 	}
 	
-	override extract(AnyObjectId newVersion, AnyObjectId oldVersion) {
+	def extract(AnyObjectId newVersion, AnyObjectId oldVersion) {
 		//TODO if commits are not neighbors iterate over each commit-pair between
 		logger.info('''Computing changes between git repo versions «newVersion» to «oldVersion»''')
 		val reader = repository.newObjectReader()
@@ -58,17 +56,16 @@ class GitActionExtractor implements IScmActionExtractor<AnyObjectId> {
 				val diff = git.diff
 				diff.newTree = newTree
 				diff.oldTree = oldTree
-				diff.pathFilter = PathFilter.create("*.java")
 				val diffs = diff.call
-			
-				val result = diffs.map[extractActions(it)]
-				allResults.add(result)
+				logger.info('''Found «diffs.size» Java files''')
 				
+				val changes = diffs.map[createSourceCodeChanges(it, it.getPath(Side.NEW), it.getPath(Side.OLD), newVersion, oldVersion)]
+				allResults.addAll(changes)		
 				fromCommit = toCommit
 				toCommit = try {commitIterator.next} catch (NoSuchElementException e) {null}
 			}
 			
-			return allResults.flatten
+			return allResults
 
 		} finally {
 			git.close
@@ -77,7 +74,34 @@ class GitActionExtractor implements IScmActionExtractor<AnyObjectId> {
 		
 	}
 	
-	def findNewToOld(RevWalk revWalk, RevCommit oldCommit) {
+	private def createSourceCodeChanges(DiffEntry entry, String newPath, String oldPath, AnyObjectId newVersion, AnyObjectId oldVersion) {
+
+		logger.info("----------------------------------------------------")
+		logger.info("Distilling changes for file: " + newPath + "; Old path: " + oldPath)
+		logger.info('''From «oldVersion» to «newVersion»''')
+
+		val oldObjectLoader = repository.open(entry.oldId.toObjectId)
+		val newObjectLoader = repository.open(entry.newId.toObjectId)
+		
+		val oldTemp = Files.createTempFile("old", ".java")
+		Files.copy(oldObjectLoader.openStream, oldTemp, StandardCopyOption::REPLACE_EXISTING)
+		
+		val newTemp = Files.createTempFile("new", ".java")
+		Files.copy(newObjectLoader.openStream, newTemp, StandardCopyOption::REPLACE_EXISTING)
+
+		val changeDistiller = ChangeDistiller.createFileDistiller(Language.JAVA)
+		try {
+			changeDistiller.extractClassifiedSourceCodeChanges(oldTemp.toFile, oldVersion.toString, newTemp.toFile, newVersion.toString)
+		} catch (Exception e) {
+			logger.fatal("failed during change distilling")
+		}
+		
+		
+		logger.info("Done!") 
+		return changeDistiller
+	}
+	
+	private def findNewToOld(RevWalk revWalk, RevCommit oldCommit) {
 		val revsNewToOld = new ArrayList
 		for (rev : revWalk) {
 			revsNewToOld.add(rev)
@@ -88,24 +112,7 @@ class GitActionExtractor implements IScmActionExtractor<AnyObjectId> {
 		return revsNewToOld
 	}
 	
-	private def extractActions(DiffEntry entry) {
-		val oldObjectLoader = repository.open(entry.oldId.toObjectId)
-		val newObjectLoder = repository.open(entry.newId.toObjectId)
-		
-		val oldTreeContext = treeGenerator.generateFromStream(oldObjectLoader.openStream)
-		val newTreeContext = treeGenerator.generateFromStream(newObjectLoder.openStream)
-		
-		val oldTree = oldTreeContext.root
-		val newTree = newTreeContext.root
-		
-		val matcher = Matchers.instance.getMatcher(oldTree, newTree)
-		matcher.match
-		
-		val mappings = matcher.mappings
-		val actionGenerator = new ActionGenerator(oldTree, newTree, mappings)
-		actionGenerator.generate
-		val result = new ExtractionResult(oldTreeContext, newTreeContext, mappings, actionGenerator.actions)
-		return result
-	}
+
+	
 	
 }

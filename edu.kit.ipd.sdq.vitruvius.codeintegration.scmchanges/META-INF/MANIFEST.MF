@@ -10,20 +10,25 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
  org.eclipse.jgit;bundle-version="4.0.3",
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.core.resources;bundle-version="3.10.1",
- org.eclipse.jdt.core;bundle-version="3.11.1"
+ org.eclipse.jdt.core;bundle-version="3.11.1",
+ com.google.gson;bundle-version="2.2.4",
+ edu.kit.ipd.sdq.vitruvius.external.guice;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: com.github.gumtreediff.actions,
  com.github.gumtreediff.actions.model,
+ com.github.gumtreediff.io,
+ com.github.gumtreediff.tree,
  edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges,
- edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters,
  edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 Bundle-ClassPath: .,
  lib/core-2.1.0-SNAPSHOT.jar,
  lib/gen.jdt-2.1.0-SNAPSHOT.jar,
  lib/trove4j-3.0.3.jar,
- lib/simmetrics-core-3.2.3.jar
+ lib/simmetrics-core-3.2.3.jar,
+ lib/changedistiller-0.0.1-SNAPSHOT.jar
 

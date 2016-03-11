@@ -2,8 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -16,17 +14,12 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
-import com.github.gumtreediff.io.ActionsIoUtils;
-import com.github.gumtreediff.io.TreeIoUtils;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.SourceCodeChangeExtractorJava;
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ExtractionResult;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.GitActionExtractor;
-
-public class GitActionExtractorTest {
+public class SourceCodeChangeExtractorTest {
 	
 	private static final Logger logger = Logger.getLogger(Logger.class.getName());
 	
@@ -56,22 +49,8 @@ public class GitActionExtractorTest {
 		ObjectId oldId = repo.resolve(OLD_COMMIT_ID);
 		ObjectId newId = repo.resolve(NEW_COMMIT_ID);
 		
-		GitActionExtractor extractorUnderTest = new GitActionExtractor(repo);
-		Iterable<ExtractionResult> results = extractorUnderTest.extract(newId, oldId);
-		
-		Assert.assertNotNull(results);
-		
-		
-		for (ExtractionResult result : results) {
-			StringWriter stringWriter = new StringWriter();
-			stringWriter.append("Old Tree:\n");
-			TreeIoUtils.toJson(result.getOldContext()).writeTo(stringWriter);
-			stringWriter.append("\nNew Tree:\n");
-			TreeIoUtils.toJson(result.getNewContext()).writeTo(stringWriter);
-			stringWriter.append("\nActions:\n");
-			ActionsIoUtils.toJson(result.getOldContext(), result.getActions(), result.getStore()).writeTo(stringWriter);
-			logger.info(stringWriter.toString());
-		}
+		SourceCodeChangeExtractorJava extractor = new SourceCodeChangeExtractorJava(repo);
+		extractor.extract(newId, oldId);
 		
 		
 		
