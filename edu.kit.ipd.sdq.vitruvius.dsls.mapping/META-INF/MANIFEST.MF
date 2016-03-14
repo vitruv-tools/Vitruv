@@ -1,13 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.dsls.mapping
-Bundle-Vendor: My Company
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.mapping;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.xtext.util,
- org.eclipse.emf.ecore,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.common,
  org.eclipse.xtext.xbase.lib,
  org.antlr.runtime,
@@ -17,7 +20,7 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.mwe2.language,
  org.eclipse.text,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  org.eclipse.debug.core,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.util,
@@ -42,5 +45,8 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.serializer,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.services,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.validation,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.impl,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util
 
