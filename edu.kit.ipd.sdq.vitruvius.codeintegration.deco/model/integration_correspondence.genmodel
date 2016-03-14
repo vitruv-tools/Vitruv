@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/edu.kit.ipd.sdq.vitruvius.codeintegration.deco/src-gen"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.codeintegration.deco" modelName="Integration_correspondence"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../edu.kit.ipd.sdq.vitruvius.framework.contracts/metamodel/correspondence.genmodel#//correspondence"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>integration_correspondence.ecore</foreignModel>
+  <genPackages prefix="Integration" basePackage="edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence"
+      disposableProviderFactory="true" ecorePackage="integration_correspondence.ecore#/">
+    <genClasses ecoreClass="integration_correspondence.ecore#//IntegrationCorrespondence"/>
+  </genPackages>
+</genmodel:GenModel>

@@ -10,4 +10,12 @@
       </provides>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated integration_correspondence -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/Integration/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationPackage"
+            genModel="model/integration_correspondence.genmodel"/>
+   </extension>
+
 </plugin>
