@@ -31,13 +31,13 @@ public interface CorrespondenceFactory extends EFactory {
     Correspondences createCorrespondences();
 
     /**
-     * Returns a new object of class '<em>Correspondence</em>'.
+     * Returns a new object of class '<em>Manual Correspondence</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return a new object of class '<em>Correspondence</em>'.
+     * @return a new object of class '<em>Manual Correspondence</em>'.
      * @generated
      */
-    Correspondence createCorrespondence();
+    ManualCorrespondence createManualCorrespondence();
 
     /**
      * Returns the package supported by this factory.

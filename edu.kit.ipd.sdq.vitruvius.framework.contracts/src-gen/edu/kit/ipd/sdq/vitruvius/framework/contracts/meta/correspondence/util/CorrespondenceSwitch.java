@@ -78,6 +78,13 @@ public class CorrespondenceSwitch<T> extends Switch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case CorrespondencePackage.MANUAL_CORRESPONDENCE: {
+                ManualCorrespondence manualCorrespondence = (ManualCorrespondence)theEObject;
+                T result = caseManualCorrespondence(manualCorrespondence);
+                if (result == null) result = caseCorrespondence(manualCorrespondence);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -109,6 +116,21 @@ public class CorrespondenceSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseCorrespondence(Correspondence object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Manual Correspondence</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Manual Correspondence</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseManualCorrespondence(ManualCorrespondence object) {
         return null;
     }
 

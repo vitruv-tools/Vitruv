@@ -23,7 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Correspondence extends EObject {

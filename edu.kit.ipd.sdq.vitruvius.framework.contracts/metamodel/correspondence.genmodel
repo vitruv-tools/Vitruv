@@ -26,6 +26,10 @@
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getBs"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATUID"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementBTUID"/>
+      <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementsForMetamodel">
+        <genParameters ecoreParameter="correspondence.ecore#//Correspondence/getElementsForMetamodel/metamodelNamespaceUri"/>
+      </genOperations>
     </genClasses>
+    <genClasses ecoreClass="correspondence.ecore#//ManualCorrespondence"/>
   </genPackages>
 </genmodel:GenModel>

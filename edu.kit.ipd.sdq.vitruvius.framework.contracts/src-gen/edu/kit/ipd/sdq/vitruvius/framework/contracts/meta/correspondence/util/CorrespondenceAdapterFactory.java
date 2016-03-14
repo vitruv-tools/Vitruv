@@ -76,6 +76,10 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
                 return createCorrespondenceAdapter();
             }
             @Override
+            public Adapter caseManualCorrespondence(ManualCorrespondence object) {
+                return createManualCorrespondenceAdapter();
+            }
+            @Override
             public Adapter defaultCase(EObject object) {
                 return createEObjectAdapter();
             }
@@ -120,6 +124,20 @@ public class CorrespondenceAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCorrespondenceAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence
+     * @generated
+     */
+    public Adapter createManualCorrespondenceAdapter() {
         return null;
     }
 

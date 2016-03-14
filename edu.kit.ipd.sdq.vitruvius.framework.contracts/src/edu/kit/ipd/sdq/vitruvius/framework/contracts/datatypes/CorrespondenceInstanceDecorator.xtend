@@ -4,6 +4,7 @@ import java.util.Map
 import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance
 
+@Deprecated
 interface CorrespondenceInstanceDecorator extends InternalCorrespondenceInstance {
 	/** 
 	 * Returns a mutable map from prefixes for the file extension to objects that should be saved in

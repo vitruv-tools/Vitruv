@@ -60,7 +60,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
             case CorrespondencePackage.CORRESPONDENCES: return createCorrespondences();
-            case CorrespondencePackage.CORRESPONDENCE: return createCorrespondence();
+            case CorrespondencePackage.MANUAL_CORRESPONDENCE: return createManualCorrespondence();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -111,9 +111,9 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
      * <!-- end-user-doc -->
      * @generated
      */
-    public Correspondence createCorrespondence() {
-        CorrespondenceImpl correspondence = new CorrespondenceImpl();
-        return correspondence;
+    public ManualCorrespondence createManualCorrespondence() {
+        ManualCorrespondenceImpl manualCorrespondence = new ManualCorrespondenceImpl();
+        return manualCorrespondence;
     }
 
     /**

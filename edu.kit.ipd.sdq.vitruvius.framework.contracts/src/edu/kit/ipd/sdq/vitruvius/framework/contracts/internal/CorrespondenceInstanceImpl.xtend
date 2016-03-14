@@ -146,10 +146,14 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		 }
 		 throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 	}
-
-
+	
+	@Deprecated
 	override Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		var Correspondence correspondence = CorrespondenceFactory::eINSTANCE.createCorrespondence()
+		return createAndAddManualCorrespondence(eObjects1, eObjects2)
+	}
+
+	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
+		var Correspondence correspondence = CorrespondenceFactory::eINSTANCE.createManualCorrespondence()
 		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
 		addCorrespondence(correspondence)
 		return correspondence

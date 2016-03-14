@@ -158,6 +158,70 @@ public interface CorrespondencePackage extends EPackage {
     int CORRESPONDENCE_FEATURE_COUNT = 5;
 
     /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.ManualCorrespondenceImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getManualCorrespondence()
+     * @generated
+     */
+    int MANUAL_CORRESPONDENCE = 2;
+
+    /**
+     * The feature id for the '<em><b>Parent</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE__PARENT = CORRESPONDENCE__PARENT;
+
+    /**
+     * The feature id for the '<em><b>Depends On</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE__DEPENDS_ON = CORRESPONDENCE__DEPENDS_ON;
+
+    /**
+     * The feature id for the '<em><b>Depended On By</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE__DEPENDED_ON_BY = CORRESPONDENCE__DEPENDED_ON_BY;
+
+    /**
+     * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE__ATUI_DS = CORRESPONDENCE__ATUI_DS;
+
+    /**
+     * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE__BTUI_DS = CORRESPONDENCE__BTUI_DS;
+
+    /**
+     * The number of structural features of the '<em>Manual Correspondence</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MANUAL_CORRESPONDENCE_FEATURE_COUNT = CORRESPONDENCE_FEATURE_COUNT + 0;
+
+    /**
      * The meta object id for the '<em>Instance</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -165,7 +229,7 @@ public interface CorrespondencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceInstance()
      * @generated
      */
-    int CORRESPONDENCE_INSTANCE = 2;
+    int CORRESPONDENCE_INSTANCE = 3;
 
     /**
      * The meta object id for the '<em>TUID</em>' data type.
@@ -175,7 +239,7 @@ public interface CorrespondencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getTUID()
      * @generated
      */
-    int TUID = 3;
+    int TUID = 4;
 
 
     /**
@@ -274,6 +338,16 @@ public interface CorrespondencePackage extends EPackage {
      * @generated
      */
     EAttribute getCorrespondence_BTUIDs();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Manual Correspondence</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence
+     * @generated
+     */
+    EClass getManualCorrespondence();
 
     /**
      * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance <em>Instance</em>}'.
@@ -394,6 +468,16 @@ public interface CorrespondencePackage extends EPackage {
          * @generated
          */
         EAttribute CORRESPONDENCE__BTUI_DS = eINSTANCE.getCorrespondence_BTUIDs();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.ManualCorrespondenceImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getManualCorrespondence()
+         * @generated
+         */
+        EClass MANUAL_CORRESPONDENCE = eINSTANCE.getManualCorrespondence();
 
         /**
          * The meta object literal for the '<em>Instance</em>' data type.

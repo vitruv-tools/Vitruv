@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -38,6 +39,13 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
      * @generated
      */
     private EClass correspondenceEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass manualCorrespondenceEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -200,6 +208,15 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getManualCorrespondence() {
+        return manualCorrespondenceEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getCorrespondenceInstance() {
         return correspondenceInstanceEDataType;
     }
@@ -252,6 +269,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
         createEAttribute(correspondenceEClass, CORRESPONDENCE__ATUI_DS);
         createEAttribute(correspondenceEClass, CORRESPONDENCE__BTUI_DS);
 
+        manualCorrespondenceEClass = createEClass(MANUAL_CORRESPONDENCE);
+
         // Create data types
         correspondenceInstanceEDataType = createEDataType(CORRESPONDENCE_INSTANCE);
         tuidEDataType = createEDataType(TUID);
@@ -285,13 +304,14 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
         // Set bounds for type parameters
 
         // Add supertypes to classes
+        manualCorrespondenceEClass.getESuperTypes().add(this.getCorrespondence());
 
         // Initialize classes and features; add operations and parameters
         initEClass(correspondencesEClass, Correspondences.class, "Correspondences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getCorrespondences_Correspondences(), this.getCorrespondence(), this.getCorrespondence_Parent(), "correspondences", null, 0, -1, Correspondences.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getCorrespondences_CorrespondenceInstance(), this.getCorrespondenceInstance(), "correspondenceInstance", null, 1, 1, Correspondences.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(correspondenceEClass, Correspondence.class, "Correspondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(correspondenceEClass, Correspondence.class, "Correspondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getCorrespondence_Parent(), this.getCorrespondences(), this.getCorrespondences_Correspondences(), "parent", null, 1, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getCorrespondence_DependsOn(), this.getCorrespondence(), this.getCorrespondence_DependedOnBy(), "dependsOn", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
         initEReference(getCorrespondence_DependedOnBy(), this.getCorrespondence(), this.getCorrespondence_DependsOn(), "dependedOnBy", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
@@ -308,6 +328,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
         EOperation op = addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getElementsForMetamodel", 0, -1, IS_UNIQUE, IS_ORDERED);
         addEParameter(op, ecorePackage.getEString(), "metamodelNamespaceUri", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+        initEClass(manualCorrespondenceEClass, ManualCorrespondence.class, "ManualCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize data types
         initEDataType(correspondenceInstanceEDataType, CorrespondenceInstance.class, "CorrespondenceInstance", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

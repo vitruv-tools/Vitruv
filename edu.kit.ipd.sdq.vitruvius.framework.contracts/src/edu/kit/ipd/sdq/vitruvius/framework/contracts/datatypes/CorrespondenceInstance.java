@@ -169,7 +169,10 @@ public interface CorrespondenceInstance {
     /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
      */
+    @Deprecated
     public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
+
+    public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
 
