@@ -15,4 +15,12 @@
             genModel="model/change/Change.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated response_correspondence -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/Response/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponsePackage"
+            genModel="model/response_correspondence.genmodel"/>
+   </extension>
+
 </plugin>
