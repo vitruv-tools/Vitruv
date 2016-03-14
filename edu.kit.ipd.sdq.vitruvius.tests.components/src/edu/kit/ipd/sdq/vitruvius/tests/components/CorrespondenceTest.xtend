@@ -33,6 +33,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
+import pcm_mockup.PInterface
 
 class CorrespondenceTest extends VSUMTest {
 	static final String interfaceCRefName = "interfaces"
@@ -51,7 +52,7 @@ class CorrespondenceTest extends VSUMTest {
 		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		testAllClaimersAndGettersForEObjectCorrespondences(repo, pkg, correspondenceInstance, repo2pkg)
-		var Interface repoInterface = testHasCorrespondences(repo, pkg, correspondenceInstance)
+		var PInterface repoInterface = testHasCorrespondences(repo, pkg, correspondenceInstance)
 		testSimpleRemove(pkg, correspondenceInstance, repo2pkg, repoInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		testRecursiveRemove(repo, pkg, correspondenceInstance, repo2pkg) // now the correspondence instance should be empty
 		// recreate the same correspondence as before
@@ -217,9 +218,9 @@ class CorrespondenceTest extends VSUMTest {
 		assertEquals(correspForRepo, pkg)
 		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
 		assertEquals(correspForPkg, repo)
-		var List<Interface> interfaces = repo.getInterfaces()
+		var List<PInterface> interfaces = repo.getInterfaces()
 		assertEquals(interfaces.size(), 1)
-		var Interface iface = interfaces.get(0)
+		var PInterface iface = interfaces.get(0)
 		var Correspondence correspForIface = corresp.getCorrespondences(iface.toList).claimNotMany
 		assertNull(correspForIface) // TODO test exception throwing of claimUniqueOrNullCorrespondenceForEObject
 		var Set<Correspondence> allRepoCorrespondences = corresp.getCorrespondences(repo.toList)
@@ -240,21 +241,21 @@ class CorrespondenceTest extends VSUMTest {
 		assertTrue(allCorrespForPkg.contains(repo))
 	}
 
-	def private Interface testHasCorrespondences(Repository repo, UPackage pkg, CorrespondenceInstance corresp) {
+	def private PInterface testHasCorrespondences(Repository repo, UPackage pkg, CorrespondenceInstance corresp) {
 		assertTrue(corresp.hasCorrespondences(repo.toList))
 		assertTrue(corresp.hasCorrespondences(pkg.toList))
-		var List<Interface> repoInterfaces = repo.getInterfaces()
+		var List<PInterface> repoInterfaces = repo.getInterfaces()
 		assertEquals(repoInterfaces.size(), 1)
-		var Interface repoInterface = repoInterfaces.get(0)
+		var PInterface repoInterface = repoInterfaces.get(0)
 		assertTrue(!corresp.hasCorrespondences(repoInterface.toList))
 		return repoInterface
 	}
 
 	def private void testSimpleRemove(UPackage pkg, CorrespondenceInstance corresp, Correspondence repo2pkg,
-		Interface repoInterface) {
-		var List<uml_mockup.Interface> pkgInterfaces = pkg.getInterfaces()
+		PInterface repoInterface) {
+		var List<uml_mockup.UInterface> pkgInterfaces = pkg.getInterfaces()
 		assertEquals(pkgInterfaces.size(), 1)
-		var uml_mockup.Interface pkgInterface = pkgInterfaces.get(0)
+		var uml_mockup.UInterface pkgInterface = pkgInterfaces.get(0)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// add correspondence

@@ -7,13 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: edu.kit.ipd.sdq.vitruvius.tests.components,
- pcm_mockup,
- pcm_mockup.impl,
- pcm_mockup.util,
- uml_mockup,
- uml_mockup.impl,
- uml_mockup.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.components
 Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,

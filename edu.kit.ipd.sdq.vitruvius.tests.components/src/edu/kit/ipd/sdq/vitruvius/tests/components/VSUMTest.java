@@ -22,6 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import pcm_mockup.Component;
 import pcm_mockup.Interface;
+import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
 import uml_mockup.UClass;
@@ -169,7 +170,7 @@ public class VSUMTest extends AbstractVSUMTest {
         EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
             @Override
             public Void call() {
-                Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
+                PInterface mockIf = Pcm_mockupFactory.eINSTANCE.createPInterface();
                 repo.getInterfaces().add(mockIf);
                 return null;
             }
@@ -186,7 +187,7 @@ public class VSUMTest extends AbstractVSUMTest {
             public Void call() {
                 UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
                 uPackage.getClasses().add(uClass);
-                uml_mockup.Interface uInterface = Uml_mockupFactory.eINSTANCE.createInterface();
+                uml_mockup.UInterface uInterface = Uml_mockupFactory.eINSTANCE.createUInterface();
                 uPackage.getInterfaces().add(uInterface);
                 return null;
             }
@@ -221,7 +222,7 @@ public class VSUMTest extends AbstractVSUMTest {
         ResourceSet extResourceSet = new ResourceSetImpl();
         Resource extRes = extResourceSet.createResource(vuri.getEMFUri());
         extRes.load(Collections.EMPTY_MAP);
-        Interface mockIf = Pcm_mockupFactory.eINSTANCE.createInterface();
+        PInterface mockIf = Pcm_mockupFactory.eINSTANCE.createPInterface();
         Repository repo = (Repository) extRes.getContents().get(0);
         repo.getInterfaces().add(mockIf);
         extRes.save(Collections.EMPTY_MAP);
