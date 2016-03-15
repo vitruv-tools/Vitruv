@@ -176,15 +176,19 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
-		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
-		var Set<List<TUID>> correspondingTUIDLists = getCorrespondingTUIDs(tuids)
-		return resolveEObjectsSetsFromTUIDsSets(correspondingTUIDLists)
+		this.getCorrespondingEObjects(Correspondence, eObjects);
 	}
 
-	def private Set<List<TUID>> getCorrespondingTUIDs(List<TUID> tuids) {
+	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
+		var List<TUID> tuids = calculateTUIDsFromEObjects(eObjects)
+		var Set<List<TUID>> correspondingTUIDLists = getCorrespondingTUIDs(correspondenceType, tuids)
+		return resolveEObjectsSetsFromTUIDsSets(correspondingTUIDLists)
+	}
+	
+	def private Set<List<TUID>> getCorrespondingTUIDs(Class<? extends Correspondence> correspondenceType, List<TUID> tuids) {
 		var Set<Correspondence> allCorrespondences = getCorrespondencesForTUIDs(tuids)
 		var Set<List<TUID>> correspondingTUIDLists = new HashSet<List<TUID>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences) {
+		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
 			var List<TUID> aTUIDs = correspondence.getATUIDs()
 			var List<TUID> bTUIDs = correspondence.getBTUIDs()
 			if (aTUIDs === null || bTUIDs === null || aTUIDs.size == 0 || bTUIDs.size == 0) {
@@ -200,6 +204,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		}
 		return correspondingTUIDLists
 	}
+	
 
 	// TODO MK rename to reflect the fact that this method saves the correspondence model
 	override Map<String, Object> getFileExtPrefix2ObjectMapForSave() {
@@ -583,4 +588,9 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
 	 	}
 	 }
+	 
+	 override <U extends Correspondence> getView(Class<U> correspondenceType) {
+		return new CorrespondenceInstanceView(URI, resource, correspondenceType, this);
+	}
+	
 }		

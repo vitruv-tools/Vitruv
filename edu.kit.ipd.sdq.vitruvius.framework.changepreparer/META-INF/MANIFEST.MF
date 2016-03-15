@@ -11,6 +11,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changepreparer
 

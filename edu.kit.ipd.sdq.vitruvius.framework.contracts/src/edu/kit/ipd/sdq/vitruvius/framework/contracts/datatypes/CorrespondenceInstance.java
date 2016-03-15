@@ -18,7 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * @author kramerm
  *
  */
-public interface CorrespondenceInstance {
+public interface CorrespondenceInstance<T extends Correspondence> {
 
     public Mapping getMapping();
 
@@ -29,6 +29,7 @@ public interface CorrespondenceInstance {
      *            the object for which correspondences should be looked up
      * @return true if # of corresponding objects > 0
      */
+
     public boolean hasCorrespondences(List<EObject> eObject);
 
     /**
@@ -46,7 +47,8 @@ public interface CorrespondenceInstance {
      * @return all correspondences for the specified object and an empty set if the object has no
      *         correspondences.
      */
-    public Set<Correspondence> getCorrespondences(List<EObject> eObjects);
+
+    public Set<T> getCorrespondences(List<EObject> eObjects);
 
     /**
      * Returns all correspondences for the object with the specified tuid and an empty set if the
@@ -56,18 +58,21 @@ public interface CorrespondenceInstance {
      * @return all correspondences for the object with the specified tuid and an empty set if the
      *         object has no correspondences.
      */
-    public Set<Correspondence> getCorrespondencesForTUIDs(List<TUID> tuids);
+    public Set<T> getCorrespondencesForTUIDs(List<TUID> tuids);
 
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
 
-    public Correspondence claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
+    public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType,
+            List<EObject> eObjects);
 
-    public Set<Correspondence> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
+    public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
 
-    public Set<Correspondence> getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids);
+    public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
+
+    public Set<T> getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids);
 
     // renamed from addSameTypeCorrespondence
-    public void addCorrespondence(Correspondence correspondence);
+    public void addCorrespondence(T correspondence);
 
     /**
      * React to the deletion of an object o by deleting all correspondences that
@@ -103,7 +108,7 @@ public interface CorrespondenceInstance {
      *            that should be removed
      * @return a set containing all removed correspondences
      */
-    public Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence);
+    public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
     /**
      * updates the TUID of an EObject
@@ -176,7 +181,7 @@ public interface CorrespondenceInstance {
 
     EObject resolveEObjectFromRootAndFullTUID(EObject root, String tuidString);
 
-    Set<Correspondence> getAllCorrespondencesWithoutDependencies();
+    Set<T> getAllCorrespondencesWithoutDependencies();
 
     /**
      * Returns the TUIDs for a correspondence that belong to the side that has a metamodel whose
@@ -187,5 +192,18 @@ public interface CorrespondenceInstance {
      * @return
      * @author Dominik Werle
      */
-    public List<TUID> getTUIDsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri);
+    public List<TUID> getTUIDsForMetamodel(T correspondence, String metamodelNamespaceUri);
+
+    /**
+     * Returns a view on the {@link CorrespondenceInstance} restricted to the specified kind of
+     * {@link Correspondence}. The functions of the view will only act on the given implementation
+     * of {@link Correspondence}s.
+     *
+     * @param correspondenceType
+     *            the type of {@link Correspondence}s to be handled by the view
+     * @return the restricted view on the {@link CorrespondenceInstance}
+     * @author Heiko Klare
+     */
+    public <U extends Correspondence> CorrespondenceInstance<U> getView(Class<U> correspondenceType);
+
 }

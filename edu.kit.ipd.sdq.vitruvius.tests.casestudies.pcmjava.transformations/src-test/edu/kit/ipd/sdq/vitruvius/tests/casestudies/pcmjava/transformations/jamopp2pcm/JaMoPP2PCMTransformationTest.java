@@ -104,6 +104,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
@@ -171,11 +172,11 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     @Override
-    protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
+    protected CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable {
         final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
-        final CorrespondenceInstance corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI,
+        final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI,
                 jaMoPPVURI);
         return corresponcenceInstance;
     }
@@ -213,7 +214,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
                 .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });
         this.mainPackage = this
                 .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "datatypes" });
-        final CorrespondenceInstance ci = this.getCorrespondenceInstance();
+        final CorrespondenceInstance<Correspondence> ci = this.getCorrespondenceInstance();
         if (null == ci) {
             throw new RuntimeException("Could not get correspondence instance.");
         }
