@@ -5,21 +5,14 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
 
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.xtext.common.types.JvmTypeReference
-import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
-import java.util.Map
-import java.util.HashMap
-import org.apache.log4j.Logger
-import org.eclipse.xtext.common.types.JvmField
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
+import org.eclipse.xtext.common.types.JvmVisibility
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectRealization
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -28,68 +21,69 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseR
  * 
  * @author Heiko Klare     
  */
-class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer implements IJvmOperationRegistry {
+class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 
 	@Inject extension JvmTypesBuilderWithoutAssociations _typesBuilder
-	private Map<String, JvmOperation> methodMap;
 	
 	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		acceptor.accept(generateClass(response, response));
-	}
-	
-	public def JvmGenericType generateClass(Response response, EObject sourceElement) {
-		if (response?.trigger == null || response?.effects == null) {
-			return null;
+		val effectClass = new ImplicitEffectClassGenerator(response.effect, _typesBuilder, _typeReferenceBuilder).generateClass()
+		acceptor.accept(effectClass);
+		val responseClassGenerator = new ResponseClassGenerator(response, effectClass, _typesBuilder, _typeReferenceBuilder)
+		val mockType = responseClassGenerator.generateMockType();
+		if (mockType != null) {
+			acceptor.accept(mockType);
 		}
-		this.methodMap = new HashMap<String, JvmOperation>();
-		val methodGenerator = new ResponseMethodGenerator(response, this, _typeReferenceBuilder, _typesBuilder);
-		methodGenerator.generateMethodGetTrigger();
-		methodGenerator.generateMethodApplyChange();
-		
-		sourceElement.toClass(response.responseQualifiedName) [
-			visibility = JvmVisibility.DEFAULT;
-			superTypes += typeRef(AbstractResponseRealization);
-			members += generateLoggerInitialization(it);
-			members += generateMethodGetLogger();
-			members += methodGenerator.generateConstructor(it);
-			members += methodMap.values;
-		];
+		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
-	private def JvmField generateLoggerInitialization(JvmGenericType clazz) {
-		generateUnassociatedField("LOGGER", typeRef(Logger)) [
+	def dispatch void infer(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		if (isPreIndexingPhase) {
+			return;
+		}
+		
+		acceptor.accept(new ExplicitEffectClassGenerator(effect, _typesBuilder, _typeReferenceBuilder).generateClass());
+	}
+	
+	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		if (isPreIndexingPhase) {
+			return;
+		}
+		
+		val extension parameterGenerator = new ResponseLanguageParameterGenerator(_typeReferenceBuilder, _typesBuilder);
+		val responseWithEffectsClass = file.toClass("responses.AbstractEffectWithEffects") [
 			visibility = JvmVisibility.PUBLIC;
-			initializer = '''«Logger».getLogger(«clazz».class)'''
+			superTypes += typeRef(AbstractEffectRealization);
+			abstract = true;
+			members += toConstructor() [
+				val userInteractingParameter = generateUserInteractingParameter(); 
+				val blackboardParameter = generateBlackboardParameter();
+				val transformationResultParameter = generateTransformationResultParameter();
+				parameters += userInteractingParameter;
+				parameters += blackboardParameter;
+				parameters += transformationResultParameter;
+				body = '''super(«userInteractingParameter.name», «blackboardParameter.name», «transformationResultParameter.name»);'''
+			]
+			members += file.effects.map[effect | toMethod("call" + effect.name, typeRef(Void.TYPE)) [
+				visibility = JvmVisibility.PROTECTED;
+				parameters += effect.inputElements.map[toParameter(name, typeRef(it.element.instanceClass))]
+				body = '''
+					new «effect.qualifiedName»(this.userInteracting, this.blackboard, this.transformationResult).execute(«
+						FOR parameter : parameters SEPARATOR ", "»«parameter.name»«ENDFOR»);'''			
+			]]
 		]
-	}
-	
-	private def JvmOperation generateMethodGetLogger() {
-		generateUnassociatedMethod("getLogger", typeRef(Logger)) [
-			visibility = JvmVisibility.PUBLIC;
-			body = '''return LOGGER;'''
-		]
-	}
-			
-	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
-		if (!methodMap.containsKey(methodName)) {
-			val operation = contextObject.toMethod(methodName, returnType, initializer);
-			methodMap.put(operation.simpleName, operation);
+		acceptor.accept(responseWithEffectsClass);
+		
+		for (response : file.responses) {
+			infer(response, acceptor, isPreIndexingPhase);
 		}
 		
-		return methodMap.get(methodName);
-	}
-	
-	override JvmOperation getOrGenerateMethod(String methodName, JvmTypeReference returnType, Procedure1<? super JvmOperation> initializer) {
-		if (!methodMap.containsKey(methodName)) {
-			val operation = generateUnassociatedMethod(methodName, returnType, initializer);
-			methodMap.put(operation.simpleName, operation);
+		for (effect : file.effects) {
+			infer(effect, acceptor, isPreIndexingPhase);
 		}
-		
-		return methodMap.get(methodName);
 	}
-	
+
 }

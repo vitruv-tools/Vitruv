@@ -324,4 +324,16 @@ class PCMJavaHelper {
 		}
 		return EcoreUtil.copy(primitveTypeMappingMap.claimValueForKey(pdt.type))
 	}
+	
+	public static def String getJavaProjectSrc() {
+		return "src/";
+	}
+	
+	public static def String getPackageInfoClassName() {
+		"package-info"
+	} 
+	
+	public static def String buildJavaFilePath(String fileName, String... namespaces) {
+		return '''src/«FOR namespace : namespaces SEPARATOR "/" AFTER "/"»«namespace»«ENDFOR»«fileName».java''';
+	}
 }

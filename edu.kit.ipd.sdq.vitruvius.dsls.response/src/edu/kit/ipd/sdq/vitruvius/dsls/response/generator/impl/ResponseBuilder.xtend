@@ -13,7 +13,7 @@ public class ResponseBuilder implements IResponseBuilder {
 	
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
-		this.response.effects = ResponseLanguageFactory.eINSTANCE.createEffects();
+		this.response.effect = ResponseLanguageFactory.eINSTANCE.createImplicitEffect();
 	}
 	
 	public override setName(String name) {
@@ -31,14 +31,14 @@ public class ResponseBuilder implements IResponseBuilder {
 	public override setTargetChange(EPackage targetMetamodel) {
 		val targetChange = ResponseLanguageFactory.eINSTANCE.createArbitraryTargetMetamodelInstanceUpdate();
 		targetChange.metamodelReference = generateMetamodelReference(targetMetamodel);
-		this.response.effects.targetChange = targetChange;
+		this.response.effect.targetChange = targetChange;
 		return this;
 	}
 	
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
 		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionCodeBlock();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
-		this.response.effects.codeBlock = executionBlock;
+		this.response.effect.codeBlock = executionBlock;
 		return this;
 	}
 	

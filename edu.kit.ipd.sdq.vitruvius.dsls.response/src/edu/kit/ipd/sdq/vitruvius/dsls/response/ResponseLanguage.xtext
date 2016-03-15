@@ -1,8 +1,7 @@
-grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage 
-	with edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase hidden(WS, SL_COMMENT)
+grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage with edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase
+hidden(WS, SL_COMMENT)
 
 generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 
@@ -10,57 +9,70 @@ ResponseFile returns mirbase::MirBaseFile:
 	{ResponseFile}
 	(namespaceImports=XImportSection)?
 	(metamodelImports+=MetamodelImport)*
-	(responses += Response)*
-;
+	(responses+=Response |
+		effects+=ExplicitEffect)*;
 
 Response:
 	(documentation=ML_COMMENT)?
 	'response:' (name=ValidID)?
-	trigger=Trigger 
-	effects=Effects;
+	trigger=Trigger
+	effect=ImplicitEffect;
 
-Effects:
-	{Effects}
+fragment Effect:
 	(targetChange=TargetChange)?
 	('execute:' codeBlock=ExecutionCodeBlock)?;
+
+ImplicitEffect:
+	Effect;
+
+ExplicitEffect:
+	'effect:' name=ValidID
+	'input:' inputElements+=NamedModelElement (',' inputElements+=NamedModelElement)*
+	//'java input:' javaInputElements+=NamedJavaElement
+	Effect;
+
+NamedJavaElement:
+	type=JvmTypeReference name=ValidID
+;
 
 TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 
 ConcreteTargetModelChange:
 	(retrieveElements+=CorrespondingModelElementRetrieve |
-		deleteElements+=CorrespondingModelElementDelete |
-		createElements+=CorrespondingModelElementCreate)+;
-	
+	deleteElements+=CorrespondingModelElementDelete |
+	createElements+=CorrespondingModelElementCreate)+;
+
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
 	'create element:' CorrespondingModelElementSpecification (persistAsRoot=ModelPersistence)?;
 
 ModelPersistence returns ModelPersistence:
 	(useRelativeToSource?='persist as root at changed model relative location:'
-		| useRelativeToProject?='persist as root at project-relative location:') modelPath=ModelPathCodeBlock;
-		
+	| useRelativeToProject?='persist as root at project-relative location:') modelPath=ModelPathCodeBlock;
+
 CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
 	{CorrespondingModelElementDelete}
 	'delete element:' CorrespondingModelElementRetrieveOrDelete;
-	
+
 CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	{CorrespondingModelElementRetrieve}
-	'retrieve element:' CorrespondingModelElementRetrieveOrDelete  ('move containing model to project-relative location:' renamedModelFileName=ModelPathCodeBlock)?;
-	
+	'retrieve element:' CorrespondingModelElementRetrieveOrDelete ('move containing model to project-relative location:'
+	renamedModelFileName=ModelPathCodeBlock)?;
+
 fragment CorrespondingModelElementRetrieveOrDelete:
 	CorrespondingModelElementSpecificationWithPrecondition;
-	
+
 fragment CorrespondingModelElementSpecificationWithPrecondition:
 	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)?;
-	
+
 fragment CorrespondingModelElementSpecification:
 	name=ValidID 'of type' elementType=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
 
 ArbitraryTargetMetamodelInstanceUpdate:
 	'update instances of' metamodelReference=MetamodelReference;
 
-/*ChangeAwareCodeBlock returns :
+	/*ChangeAwareCodeBlock returns :
 	StringReturningChangeAwareCodeBlock | EObjectReturningChangeAwareCodeBlock | BooleanReturningChangeAwareCodeBlock;
 */
 PreconditionCodeBlock returns PreconditionCodeBlock:
@@ -74,7 +86,7 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ModelPathCodeBlock returns ModelPathCodeBlock:
 	{ModelPathCodeBlock}
 	CodeBlock;
-	
+
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
@@ -88,18 +100,18 @@ InvariantViolationEvent:
 Trigger:
 	'trigger:' (ModelChange | InvariantViolationEvent)
 	('precondition:' precondition=PreconditionCodeBlock)?;
-	
+
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
 
 ConcreteModelElementChange returns ConcreteModelElementChange:
 	AtomicConcreteModelElementChange;
-	
+
 AtomicConcreteModelElementChange:
 	AtomicRootObjectChange | AtomicFeatureChange;
 
 AtomicRootObjectChange:
-	('insert root' {InsertRootChange} | 
+	('insert root' {InsertRootChange} |
 	'remove root' {RemoveRootChange})
 	changedElement=ModelElement;
 
@@ -113,10 +125,9 @@ AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
 	'permute list' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
-	/* The next two will be removed with the new Change MM */
-	'create value' {SingleValuedFeatureCreate} |
-	'delete value' {SingleValuedFeatureDelete} |
-	'replace value' {SingleValuedFeatureReplace};
+/* The next two will be removed with the new Change MM */
+	'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 'replace value'
+	{SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	'change in instance of' changedModel=MetamodelReference;

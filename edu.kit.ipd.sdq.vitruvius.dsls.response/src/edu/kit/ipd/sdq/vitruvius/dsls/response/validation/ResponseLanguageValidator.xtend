@@ -5,7 +5,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 
 import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.HashMap
@@ -13,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 
 /**
  * This class contains custom validation rules. 
@@ -43,12 +43,12 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	}
 
 	@Check
-	def checkEffects(Effects effects) {
-		val targetChange = effects.targetChange
+	def checkEffects(Effect effect) {
+		val targetChange = effect.targetChange
 		if (targetChange instanceof ConcreteTargetModelChange) {
-			if (effects.codeBlock == null && !targetChange.createElements.nullOrEmpty) {
+			if (effect.codeBlock == null && !targetChange.createElements.nullOrEmpty) {
 				warning("Created elements must be initialized and inserted into the target model in the execute block.",
-					ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);			
+					ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);			
 			}
 			// TODO HK This does not make sense any more. Retrieved elements can also be used in other effects in the future, so
 			// deriving an obsolete retrieve is pretty difficult

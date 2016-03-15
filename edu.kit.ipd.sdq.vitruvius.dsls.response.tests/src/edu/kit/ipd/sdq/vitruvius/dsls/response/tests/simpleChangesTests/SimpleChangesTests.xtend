@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -48,6 +50,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	}
 		
 	private def prepareTestModel() {
+		Logger.rootLogger.level = Level.DEBUG;
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
 		for (nonRootId : nonContainmentNonRootIds) {

@@ -11,7 +11,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
@@ -27,6 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 
 /**
  * Outline structure definition for a response file.
@@ -75,10 +75,10 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			createChildren(triggerNode, response.trigger.precondition)
 		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
-			ResponseLanguagePackage.Literals.RESPONSE__EFFECTS,
-			imageDispatcher.invoke(response.effects), "Effects", response.effects == null);
-		if (response.effects != null) {
-			createChildren(effectsNode, response.effects);
+			ResponseLanguagePackage.Literals.RESPONSE__EFFECT,
+			imageDispatcher.invoke(response.effect), "Effects", response.effect == null);
+		if (response.effect != null) {
+			createChildren(effectsNode, response.effect);
 		}
 	}
 	
@@ -107,21 +107,21 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Effects effects) {
-		if (effects.targetChange != null) {
-			val targetChange = effects.targetChange;
+	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
+		if (effect.targetChange != null) {
+			val targetChange = effect.targetChange;
 			var targetChangeIsLeaf = if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
 				targetChange.metamodelReference?.model == null;
 			} else {
 				false;
 			}
-			val targetChangeNode = createEStructuralFeatureNode(parentNode, effects, 
-				ResponseLanguagePackage.Literals.EFFECTS__TARGET_CHANGE,
-				imageDispatcher.invoke(effects.targetChange), "Target change", 
+			val targetChangeNode = createEStructuralFeatureNode(parentNode, effect, 
+				ResponseLanguagePackage.Literals.EFFECT__TARGET_CHANGE,
+				imageDispatcher.invoke(effect.targetChange), "Target change", 
 					targetChangeIsLeaf);
-			createChildren(targetChangeNode, effects.targetChange);
+			createChildren(targetChangeNode, effect.targetChange);
 		}
-		createChildren(parentNode, effects.codeBlock);
+		createChildren(parentNode, effect.codeBlock);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, ArbitraryTargetMetamodelInstanceUpdate targetChange) {

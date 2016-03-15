@@ -22,7 +22,7 @@ public final class ResponseRuntimeHelper {
 		return result;
 	}
 	
-	private static def getTUID(CorrespondenceInstance correspondenceInstance, EObject object, EObject parent) {
+	private static def getTUID(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject object, EObject parent) {
 		if (parent == null) {
 			return correspondenceInstance.calculateTUIDFromEObject(object);
 		} else {
@@ -32,7 +32,7 @@ public final class ResponseRuntimeHelper {
 		}
 	}
 	
-	public static def removeCorrespondence(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent, EObject target, EObject targetParent) {
+	public static def removeCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent, EObject target, EObject targetParent) {
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
 		val targetTUID = correspondenceInstance.getTUID(target, targetParent);
 		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[sourceTUID]);
@@ -46,11 +46,11 @@ public final class ResponseRuntimeHelper {
 		}
 	}
 	
-	public static def addCorrespondence(CorrespondenceInstance correspondenceInstance, EObject source, EObject target) {
+	public static def addCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject target) {
 		correspondenceInstance.createAndAddCorrespondence(#[source], #[target]);
 	}
 	
-	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance correspondenceInstance, EObject source, EObject sourceParent,
+	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent,
 			Class<T> type) {
 		val tuid = correspondenceInstance.getTUID(source, sourceParent);
 		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
@@ -112,4 +112,32 @@ public final class ResponseRuntimeHelper {
 		transformationResult.addVURIToDeleteIfNotNull(oldVURI);
 	}
 	
+	/*
+	public static def getCorrespondingElements(Blackboard blackboard, EObject sourceElement, EObject sourceParent, Class<? extends EObject> targetType) {
+		val targetModels = <EObject>newArrayList();
+		val correspondingObjects = getCorrespondingObjectsOfType(
+						blackboard.getCorrespondenceInstance(), sourceElement, sourceParent, targetType, );
+				
+		for (potentialTargetElement : correspondingObjects) {
+			«IF preconditionMethod != null»
+					if (_potentialTargetElement != null && «preconditionMethod.simpleName»(«changeParameter.name», _potentialTargetElement)) {
+						_targetModels.add(_potentialTargetElement);
+					}
+					«ELSE»
+					_targetModels.add(_potentialTargetElement);
+					«ENDIF»
+				}
+				
+				«IF correspondingModelElement instanceof CorrespondingModelElementDelete»
+				for («EObject» _targetModel : _targetModels) {
+					«ResponseRuntimeHelper».removeCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, _sourceParent, _targetModel, null);
+				}
+				«ENDIF»
+				
+				if (_targetModels.size() != 1) {
+					throw new «IllegalArgumentException»("There has to be exacty one corresponding element.");
+				}
+				
+				return _targetModels.get(0);
+	}*/
 }

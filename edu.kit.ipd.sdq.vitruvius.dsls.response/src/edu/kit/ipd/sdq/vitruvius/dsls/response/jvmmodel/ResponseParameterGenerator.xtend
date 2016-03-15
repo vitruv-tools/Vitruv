@@ -60,7 +60,7 @@ package class ResponseParameterGenerator {
 	}
 	
 	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, CorrespondingModelElementSpecification elementSpecification) {
-		if (response.effects.targetChange != null) {
+		if (response.effect.targetChange != null) {
 			if (elementSpecification?.elementType?.element != null) {
 				return parameterContext.generateParameter(elementSpecification.name, elementSpecification.elementType.element.instanceClass);
 			}	

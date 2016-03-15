@@ -8,14 +8,6 @@
 			genModel = "model/generated/ResponseLanguage.genmodel" />
 	</extension>
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated Change -->
-      <package
-            uri="http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage/Change"
-            class="edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.change.ChangePackage"
-            genModel="model/change/Change.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated response_correspondence -->
       <package
             uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/Response/1.0"

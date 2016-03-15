@@ -42,6 +42,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieveOrDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 
 class ResponseMethodGenerator {
 	@Extension protected static JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -63,10 +64,10 @@ class ResponseMethodGenerator {
 	
 	new(Response response, IJvmOperationRegistry registry, JvmTypeReferenceBuilder typeReferenceBuilder, JvmTypesBuilderWithoutAssociations jvmTypesBuilder) {
 		this.response = response;
-		this.hasTargetChange = response.effects.targetChange != null;
-		this.hasConcreteTargetChange = this.hasTargetChange && response.effects.targetChange instanceof ConcreteTargetModelChange;
+		this.hasTargetChange = response.effect.targetChange != null;
+		this.hasConcreteTargetChange = this.hasTargetChange && response.effect.targetChange instanceof ConcreteTargetModelChange;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
-		this.hasExecutionBlock = response.effects.codeBlock != null;
+		this.hasExecutionBlock = response.effect.codeBlock != null;
 		this.isBlackboardAvailable = !hasConcreteTargetChange;
 		this.change = response.trigger.generateEChangeInstanceClass();
 		this.methodMap = new HashMap<String, JvmOperation>();
@@ -77,7 +78,7 @@ class ResponseMethodGenerator {
 		_typeReferenceBuilder = typeReferenceBuilder;
 	}
 	
-	protected def generateConstructor(JvmGenericType clazz) {
+	protected def getConstructor(JvmGenericType clazz) {
 		clazz.toConstructor [
 			parameters += generateParameter("userInteracting", UserInteracting);
 			visibility = JvmVisibility.PUBLIC;
@@ -252,7 +253,7 @@ class ResponseMethodGenerator {
 		val methodName = "getCorrespondingModelElement" + correspondingModelElement.name.toFirstUpper;
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElement)
 		
-		val affectedElementClass = correspondingModelElement?.elementType.javaClass;
+		val affectedElementClass = correspondingModelElement?.elementType.element.javaClass;
 		if (affectedElementClass == null) {
 			return null;
 		}
@@ -484,12 +485,7 @@ class ResponseMethodGenerator {
 		val changeParameter = response.generateChangeParameter();
 		val blackboardParameter = response.generateBlackboardParameter();
 		val transformationResultParameter = response.generateParameter("_transformationResult", TransformationResult);
-		val methodBody = if (hasConcreteTargetChange) {
-			val modelRootChange = response.effects.targetChange as ConcreteTargetModelChange;
-			generateMethodExecuteResponseBody(modelRootChange, changeParameter, blackboardParameter, transformationResultParameter);
-		} else {
-			generateMethodExecuteResponseBody(changeParameter, blackboardParameter, transformationResultParameter);
-		}
+		val methodBody = generateMethodExecuteResponseBody(response.effect.targetChange, changeParameter, blackboardParameter, transformationResultParameter);
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			exceptions += typeRef(IOException);
@@ -527,7 +523,7 @@ class ResponseMethodGenerator {
 				[addCorrespondenceMethodMap.put(it, generateCodeAddModelElementCorrespondence(it, changeParameter, blackboardParameter))]);
 		
 		val modelElementList = createElements + retrieveElements + deleteElements;
-		val performResponseMethod = generateMethodPerformResponse(response.effects.codeBlock, modelElementList);
+		val performResponseMethod = generateMethodPerformResponse(response.effect.codeBlock, modelElementList);
 
 		val saveAsRootMethodMap = <CorrespondingModelElementCreate, JvmOperation>newHashMap();
 		CollectionBridge.mapFixed(createElements.filter[persistAsRoot != null], 
@@ -608,55 +604,14 @@ class ResponseMethodGenerator {
 	/**
 	 * Generates: executeResponse
 	 * 
-	 * <p>Calls the response execution after checking preconditions for creating the target model.
-	 * 
-	 * <p>Methods parameters are:
-	 * <li>1. change: the change event ({@link EChange})
-	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
-	 */
-	/*private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelCreate modelRootCreate, 
-		JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
-		if (!modelRootCreate.rootElement.complete) {
-			return '''''';
-		}
-		val rootElement = modelRootCreate.rootElement;
-		val createElements = modelRootCreate.createElements;
-		val generateTargetModelMethod = generateMethodGenerateTargetModel(modelRootCreate);
-		val addCorrespondenceMethodMap = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
-		addCorrespondenceMethodMap.put(rootElement, generateCodeAddModelElementCorrespondence(rootElement, changeParameter, blackboardParameter));
-		CollectionBridge.mapFixed(createElements, 
-				[addCorrespondenceMethodMap.put(it, generateCodeAddModelElementCorrespondence(it, changeParameter, blackboardParameter))]);
-		
-		val modelElementList = #[rootElement] + createElements;
-		val performResponseMethod = generateMethodPerformResponse(response.effects.codeBlock, modelElementList);
-		return '''
-			«generateCodeGenerateModelElement(modelRootCreate.rootElement)»
-			«FOR element : createElements»
-				«generateCodeGenerateModelElement(element)»
-			«ENDFOR»
-			«IF hasExecutionBlock»
-				«performResponseMethod.simpleName»(«changeParameter.name»«
-					FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
-			«ENDIF»
-			«FOR element : createElements»
-				«addCorrespondenceMethodMap.get(element)»
-			«ENDFOR»
-			«generateTargetModelMethod.simpleName»(«changeParameter.name», «blackboardParameter.name», «modelRootCreate.rootElement.name», «transformationResultParameter.name»);
-		'''
-	}	*/
-	
-	
-	/**
-	 * Generates: executeResponse
-	 * 
 	 * <p>Calls the response execution after checking preconditions without a target model.
 	 * 
 	 * <p>Methods parameters are:
 	 * <li>1. change: the change event ({@link EChange})
 	 */
-	private def StringConcatenationClient generateMethodExecuteResponseBody(JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
+	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(TargetChange targetChange, JvmFormalParameter changeParameter, JvmFormalParameter blackboardParameter, JvmFormalParameter transformationResultParameter) {
 		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
-			generateMethodPerformResponse(response.effects.codeBlock, #[]);
+			generateMethodPerformResponse(response.effect.codeBlock, #[]);
 		} else {
 			null;
 		}

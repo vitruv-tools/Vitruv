@@ -247,3 +247,13 @@ execute: {
 	newNonRoot.id = change.newValue.id;
 	nonRootContainer.nonRootObjectsContainment += newNonRoot;
 }
+
+
+effect: InitializeNonRootObjectContainerContents
+input: minimal.Root as containerObject, minimal.NonRoot as insertedNonRoot
+retrieve element: nonRootContainer of type minimal.NonRootObjectContainerHelper corresponding to { containerObject }
+create element: newNonRoot of type minimal.NonRoot corresponding to insertedNonRoot
+execute: {
+	newNonRoot.id = insertedNonRoot.id;
+	nonRootContainer.nonRootObjectsContainment += newNonRoot;
+}

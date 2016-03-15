@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
@@ -18,16 +17,16 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockEx
 import org.eclipse.xtext.xbase.XBlockExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 
 final class ResponseLanguageHelper {
 	private new() {}
 	
 	public static def Response getContainingResponse(CodeBlock codeBlock) {
 		val effects = codeBlock.eContainer();
-		if (effects instanceof Effects) {
+		if (effects instanceof Effect) {
 			return getContainingResponse(effects);
 		}
 		return null;
@@ -63,13 +62,13 @@ final class ResponseLanguageHelper {
 	
 	public static def Response getContainingResponse(TargetChange targetChange) {
 		val effects = targetChange.eContainer();
-		if (effects instanceof Effects) {
+		if (effects instanceof Effect) {
 			return getContainingResponse(effects);
 		}
 		return null;
 	}
 	
-	public static def Response getContainingResponse(Effects effects) {
+	public static def Response getContainingResponse(Effect effects) {
 		val response = effects.eContainer();
 		if (response instanceof Response) {
 			return response;
@@ -122,7 +121,7 @@ final class ResponseLanguageHelper {
 		blockExpression.text.toString;
 	}
 	
-	public static def Class<?> getJavaClass(ModelElement element) {
-		return element.element.instanceClass;
+	public static def Class<?> getJavaClass(EClass element) {
+		return element.instanceClass;
 	}
 }

@@ -19,6 +19,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatu
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
+import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 
 final class ResponseLanguageGeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -41,14 +45,16 @@ final class ResponseLanguageGeneratorUtils {
 	}
 	
 	private static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
-		«IF modelPair.first.lastSegment.nullOrEmpty»«modelPair.first.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.first.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»To«
-		IF modelPair.second.lastSegment.nullOrEmpty»«modelPair.second.EMFUri.toString.split("\\.").last.toFirstUpper»«ELSE»«modelPair.second.lastSegment.split("\\.").get(0).toFirstUpper»«ENDIF»'''
+		«modelPair.first.metamodelIdentifier»To«modelPair.second.metamodelIdentifier»'''
 	
 	private static def String getPackageName(Pair<VURI, VURI> modelPair) '''
 		responses«modelPair.metamodelPairName»'''
 	
 	private static def String getPackageQualifiedName(String sourceFileName, Pair<VURI, VURI> modelPair) '''
 		«basicResponsesPackageQualifiedName».«sourceFileName».«modelPair?.packageName»'''
+		
+	private static def String getPackageQualifiedName(String sourceFileName, Effect effect) '''
+		«basicResponsesPackageQualifiedName».«sourceFileName».«effect.metamodelIdentifier.toFirstUpper»'''
 	
 	static def String getChange2CommandTransformingProvidingName() '''
 		ResponseChange2CommandTransformingProviding'''
@@ -117,7 +123,7 @@ final class ResponseLanguageGeneratorUtils {
 	}
 	
 	private static def VURI getTargetVURI(Response response) {
-		val targetChange = response?.effects?.targetChange;
+		val targetChange = response?.effect?.targetChange;
 		val targetPackage = if (targetChange instanceof ConcreteTargetModelChange) {
 			// TODO HK Clean this statement
 			(targetChange.createElements + targetChange.retrieveElements + targetChange.deleteElements).get(0).elementType?.element?.EPackage;
@@ -168,6 +174,45 @@ final class ResponseLanguageGeneratorUtils {
 	static def dispatch String getResponseNameForEvent(ArbitraryModelElementChange event) {
 		return '''«event.class.simpleName»In«IF event.changedModel?.model?.name != null»«
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
+	}
+	
+	public static def dispatch String getQualifiedName(ExplicitEffect effect) '''
+		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.name»Effect'''
+		
+	public static def dispatch String getQualifiedName(ImplicitEffect effect) '''
+		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.containingResponse.name»Effect'''
+	
+	private static def String getMetamodelIdentifier(URI uri) {
+		if (uri.lastSegment.nullOrEmpty) {
+			return uri.toString.split("\\.").last.toFirstUpper;
+		} else {
+			return uri.lastSegment.replace(".", "_").toFirstUpper;
+		}
+	}
+	
+	private static def String getMetamodelIdentifier(VURI uri) {
+		return uri.EMFUri.metamodelIdentifier;
+	}
+	
+	private static def String getMetamodelIdentifier(Effect effect) {
+		return effect.targetChange.targetChangeMetamodelIdentifier;
+	}
+	
+	private static def dispatch String getTargetChangeMetamodelIdentifier(ArbitraryTargetMetamodelInstanceUpdate targetChange) {
+		targetChange.metamodelReference.model.package.VURI.EMFUri.metamodelIdentifier
+	}
+	
+	private static def dispatch String getTargetChangeMetamodelIdentifier(ConcreteTargetModelChange targetChange) {
+		val element = if (!targetChange.retrieveElements.empty) {
+			targetChange.retrieveElements.get(0);
+		} else if (!targetChange.createElements.empty) {
+			targetChange.createElements.get(0);
+		} else if (!targetChange.deleteElements.empty) {
+			targetChange.deleteElements.get(0);
+		} else {
+			throw new IllegalStateException("The target change does not contain any element.");
+		}
+		return element.elementType.element.EPackage.VURI.EMFUri.metamodelIdentifier;
 	}
 	
 	/*static def boolean hasOppositeResponse(Response response) {
