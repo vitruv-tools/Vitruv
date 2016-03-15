@@ -51,7 +51,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.EObjectContainerMock
 import org.eclipse.xtext.xbase.annotations.xAnnotations.XAnnotation
 
 class ResponseClassGenerator extends ClassGenerator {
