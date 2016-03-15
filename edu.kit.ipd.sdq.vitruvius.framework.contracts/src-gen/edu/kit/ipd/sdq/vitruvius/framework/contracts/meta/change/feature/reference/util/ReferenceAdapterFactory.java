@@ -97,7 +97,7 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createInsertEReferenceAdapter();
             }
             @Override
-            public <A extends EObject> Adapter caseRemoveEReference(RemoveEReference<A> object) {
+            public <A extends EObject, T extends EObject> Adapter caseRemoveEReference(RemoveEReference<A, T> object) {
                 return createRemoveEReferenceAdapter();
             }
             @Override
@@ -129,7 +129,7 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createSubtractiveEChangeAdapter();
             }
             @Override
-            public Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+            public <T extends EObject> Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
                 return createSubtractiveEReferenceChangeAdapter();
             }
             @Override

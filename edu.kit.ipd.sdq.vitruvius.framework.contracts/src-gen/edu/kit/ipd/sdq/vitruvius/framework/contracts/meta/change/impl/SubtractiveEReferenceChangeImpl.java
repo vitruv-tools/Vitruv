@@ -2,18 +2,13 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
-
-import java.util.Map;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EStructuralFeature;
-
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -24,43 +19,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl#getOldTUID <em>Old TUID</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.SubtractiveEReferenceChangeImpl#isIsDelete <em>Is Delete</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChangeImpl<TUID> implements SubtractiveEReferenceChange {
+public abstract class SubtractiveEReferenceChangeImpl<T extends EObject> extends SubtractiveEChangeImpl<T> implements SubtractiveEReferenceChange<T> {
     /**
-     * The default value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute.
+     * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOldTUID()
+     * @see #getOldValue()
      * @generated
      * @ordered
      */
-    protected static final TUID OLD_TUID_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUID()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUID = OLD_TUID_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getFeature2OldValueMap() <em>Feature2 Old Value Map</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getFeature2OldValueMap()
-     * @generated
-     * @ordered
-     */
-    protected Map<EStructuralFeature, Object> feature2OldValueMap;
+    protected T oldValue;
 
     /**
      * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
@@ -106,8 +80,17 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
      * <!-- end-user-doc -->
      * @generated
      */
-    public TUID getOldTUID() {
-        return oldTUID;
+    @SuppressWarnings("unchecked")
+    public T getOldValue() {
+        if (oldValue != null && oldValue.eIsProxy()) {
+            InternalEObject oldOldValue = (InternalEObject)oldValue;
+            oldValue = (T)eResolveProxy(oldOldValue);
+            if (oldValue != oldOldValue) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE, oldOldValue, oldValue));
+            }
+        }
+        return oldValue;
     }
 
     /**
@@ -115,32 +98,20 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setOldTUID(TUID newOldTUID) {
-        TUID oldOldTUID = oldTUID;
-        oldTUID = newOldTUID;
+    public T basicGetOldValue() {
+        return oldValue;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setOldValue(T newOldValue) {
+        T oldOldValue = oldValue;
+        oldValue = newOldValue;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID, oldOldTUID, oldTUID));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Map<EStructuralFeature, Object> getFeature2OldValueMap() {
-        return feature2OldValueMap;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setFeature2OldValueMap(Map<EStructuralFeature, Object> newFeature2OldValueMap) {
-        Map<EStructuralFeature, Object> oldFeature2OldValueMap = feature2OldValueMap;
-        feature2OldValueMap = newFeature2OldValueMap;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP, oldFeature2OldValueMap, feature2OldValueMap));
+            eNotify(new ENotificationImpl(this, Notification.SET, ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE, oldOldValue, oldValue));
     }
 
     /**
@@ -172,10 +143,9 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID:
-                return getOldTUID();
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP:
-                return getFeature2OldValueMap();
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE:
+                if (resolve) return getOldValue();
+                return basicGetOldValue();
             case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE:
                 return isIsDelete();
         }
@@ -191,11 +161,8 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID:
-                setOldTUID((TUID)newValue);
-                return;
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)newValue);
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE:
+                setOldValue((T)newValue);
                 return;
             case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE:
                 setIsDelete((Boolean)newValue);
@@ -212,11 +179,8 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID:
-                setOldTUID(OLD_TUID_EDEFAULT);
-                return;
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)null);
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE:
+                setOldValue((T)null);
                 return;
             case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE:
                 setIsDelete(IS_DELETE_EDEFAULT);
@@ -233,10 +197,8 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID:
-                return OLD_TUID_EDEFAULT == null ? oldTUID != null : !OLD_TUID_EDEFAULT.equals(oldTUID);
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP:
-                return feature2OldValueMap != null;
+            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE:
+                return oldValue != null;
             case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE:
                 return isDelete != IS_DELETE_EDEFAULT;
         }
@@ -253,11 +215,7 @@ public abstract class SubtractiveEReferenceChangeImpl extends SubtractiveEChange
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUID: ");
-        result.append(oldTUID);
-        result.append(", feature2OldValueMap: ");
-        result.append(feature2OldValueMap);
-        result.append(", isDelete: ");
+        result.append(" (isDelete: ");
         result.append(isDelete);
         result.append(')');
         return result.toString();

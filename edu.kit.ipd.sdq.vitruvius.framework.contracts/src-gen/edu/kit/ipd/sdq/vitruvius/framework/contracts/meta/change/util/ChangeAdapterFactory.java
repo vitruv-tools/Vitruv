@@ -96,7 +96,7 @@ public class ChangeAdapterFactory extends AdapterFactoryImpl {
                 return createAdditiveEReferenceChangeAdapter();
             }
             @Override
-            public Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+            public <T extends EObject> Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
                 return createSubtractiveEReferenceChangeAdapter();
             }
             @Override

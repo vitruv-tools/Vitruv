@@ -3,18 +3,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
@@ -34,15 +30,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldTUID <em>Old TUID</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl#isIsDelete <em>Is Delete</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl implements RemoveEReference<A> {
+public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends RemoveFromEListImpl
+        implements RemoveEReference<A, T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -62,60 +57,19 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     protected A affectedEObject;
 
     /**
-     * The default value of the '{@link #getOldTUIDOfAffectedEObject()
-     * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     * 
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected static final TUID OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUIDOfAffectedEObject()
-     * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     * 
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUIDOfAffectedEObject = OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute. <!--
+     * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see #getOldTUID()
+     *
+     * @see #getOldValue()
      * @generated
      * @ordered
      */
-    protected static final TUID OLD_TUID_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUID() <em>Old TUID</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see #getOldTUID()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUID = OLD_TUID_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getFeature2OldValueMap() <em>Feature2 Old Value Map</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @see #getFeature2OldValueMap()
-     * @generated
-     * @ordered
-     */
-    protected Map<EStructuralFeature, Object> feature2OldValueMap;
+    protected T oldValue;
 
     /**
      * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -125,7 +79,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     /**
      * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -225,66 +179,21 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-    @Override
-    public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public TUID getOldTUID() {
-        return oldTUID;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public void setOldTUID(TUID newOldTUID) {
-        TUID oldOldTUID = oldTUID;
-        oldTUID = newOldTUID;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_TUID, oldOldTUID, oldTUID));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public Map<EStructuralFeature, Object> getFeature2OldValueMap() {
-        return feature2OldValueMap;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public void setFeature2OldValueMap(Map<EStructuralFeature, Object> newFeature2OldValueMap) {
-        Map<EStructuralFeature, Object> oldFeature2OldValueMap = feature2OldValueMap;
-        feature2OldValueMap = newFeature2OldValueMap;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP, oldFeature2OldValueMap, feature2OldValueMap));
+    @SuppressWarnings("unchecked")
+    public T getOldValue() {
+        if (oldValue != null && oldValue.eIsProxy()) {
+            InternalEObject oldOldValue = (InternalEObject)oldValue;
+            oldValue = (T)eResolveProxy(oldOldValue);
+            if (oldValue != oldOldValue) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
+            }
+        }
+        return oldValue;
     }
 
     /**
@@ -310,12 +219,22 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
+     * @generated
+     */
+    public T basicGetOldValue() {
+        return oldValue;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * @generated
      */
     @Override
-    public TUID getOldValue() {
-        return getOldTUID();
+    public void setOldValue(T newOldValue) {
+        T oldOldValue = oldValue;
+        oldValue = newOldValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE, oldOldValue, oldValue));
     }
 
     /**
@@ -341,12 +260,9 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
             case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
                 if (resolve) return getAffectedEObject();
                 return basicGetAffectedEObject();
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                return getOldTUID();
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                return getFeature2OldValueMap();
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE:
+                if (resolve) return getOldValue();
+                return basicGetOldValue();
             case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
                 return isIsDelete();
         }
@@ -367,14 +283,8 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
             case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)newValue);
                 return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                setOldTUID((TUID)newValue);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)newValue);
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE:
+                setOldValue((T)newValue);
                 return;
             case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
                 setIsDelete((Boolean)newValue);
@@ -396,14 +306,8 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
             case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)null);
                 return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                setOldTUID(OLD_TUID_EDEFAULT);
-                return;
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                setFeature2OldValueMap((Map<EStructuralFeature, Object>)null);
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE:
+                setOldValue((T)null);
                 return;
             case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
                 setIsDelete(IS_DELETE_EDEFAULT);
@@ -423,12 +327,8 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
                 return affectedFeature != null;
             case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT:
                 return affectedEObject != null;
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
-            case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID:
-                return OLD_TUID_EDEFAULT == null ? oldTUID != null : !OLD_TUID_EDEFAULT.equals(oldTUID);
-            case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP:
-                return feature2OldValueMap != null;
+            case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE:
+                return oldValue != null;
             case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE:
                 return isDelete != IS_DELETE_EDEFAULT;
         }
@@ -445,7 +345,6 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
             switch (derivedFeatureID) {
                 case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
                 case ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-                case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -461,8 +360,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
         }
         if (baseClass == SubtractiveEReferenceChange.class) {
             switch (derivedFeatureID) {
-                case ReferencePackage.REMOVE_EREFERENCE__OLD_TUID: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID;
-                case ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP;
+                case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE;
                 case ReferencePackage.REMOVE_EREFERENCE__IS_DELETE: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
                 default: return -1;
             }
@@ -480,7 +378,6 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
             switch (baseFeatureID) {
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE;
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT;
-                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -496,8 +393,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
         }
         if (baseClass == SubtractiveEReferenceChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID: return ReferencePackage.REMOVE_EREFERENCE__OLD_TUID;
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP: return ReferencePackage.REMOVE_EREFERENCE__FEATURE2_OLD_VALUE_MAP;
+                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE: return ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE;
                 case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE: return ReferencePackage.REMOVE_EREFERENCE__IS_DELETE;
                 default: return -1;
             }
@@ -543,8 +439,6 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
-            case ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE:
-                return getOldValue();
             case ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT:
                 return isContainment();
         }
@@ -560,13 +454,7 @@ public class RemoveEReferenceImpl<A extends EObject> extends RemoveFromEListImpl
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
-        result.append(", oldTUID: ");
-        result.append(oldTUID);
-        result.append(", feature2OldValueMap: ");
-        result.append(feature2OldValueMap);
-        result.append(", isDelete: ");
+        result.append(" (isDelete: ");
         result.append(isDelete);
         result.append(')');
         return result.toString();

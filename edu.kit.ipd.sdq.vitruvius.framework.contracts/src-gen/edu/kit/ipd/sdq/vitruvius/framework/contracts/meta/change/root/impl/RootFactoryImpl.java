@@ -78,8 +78,8 @@ public class RootFactoryImpl extends EFactoryImpl implements RootFactory {
      * <!-- end-user-doc -->
      * @generated
      */
-    public RemoveRootEObject createRemoveRootEObject() {
-        RemoveRootEObjectImpl removeRootEObject = new RemoveRootEObjectImpl();
+    public <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject() {
+        RemoveRootEObjectImpl<T> removeRootEObject = new RemoveRootEObjectImpl<T>();
         return removeRootEObject;
     }
 

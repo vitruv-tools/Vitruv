@@ -423,7 +423,10 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g2 = createEGenericType(moveEObjectEClass_A);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_SubtractWhereChange(), g1, null, "subtractWhereChange", null, 0, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getMoveEObject_SubtractWhatChange(), theChangePackage.getSubtractiveEReferenceChange(), null, "subtractWhatChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
+        g2 = createEGenericType(moveEObjectEClass_T);
+        g1.getETypeArguments().add(g2);
+        initEReference(getMoveEObject_SubtractWhatChange(), g1, null, "subtractWhatChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         g1 = createEGenericType(theReferencePackage.getUpdateEReference());
         g2 = createEGenericType(moveEObjectEClass_B);
         g1.getETypeArguments().add(g2);

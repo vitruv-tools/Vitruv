@@ -7,6 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRoot
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class RemoveRootEObjectImpl extends SubtractiveEReferenceChangeImpl implements RemoveRootEObject {
+public class RemoveRootEObjectImpl<T extends EObject> extends SubtractiveEReferenceChangeImpl<T> implements RemoveRootEObject<T> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

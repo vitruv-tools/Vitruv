@@ -67,7 +67,7 @@ public interface MoveEObject<A extends EObject, B extends EObject, T extends EOb
      * @model containment="true" required="true"
      * @generated
      */
-    SubtractiveEReferenceChange getSubtractWhatChange();
+    SubtractiveEReferenceChange<T> getSubtractWhatChange();
 
     /**
      * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject#getSubtractWhatChange <em>Subtract What Change</em>}' containment reference.
@@ -77,7 +77,7 @@ public interface MoveEObject<A extends EObject, B extends EObject, T extends EOb
      * @see #getSubtractWhatChange()
      * @generated
      */
-    void setSubtractWhatChange(SubtractiveEReferenceChange value);
+    void setSubtractWhatChange(SubtractiveEReferenceChange<T> value);
 
     /**
      * Returns the value of the '<em><b>Add Where Change</b></em>' reference.

@@ -218,17 +218,23 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 
         // Create type parameters
         ETypeParameter insertRootEObjectEClass_T = addETypeParameter(insertRootEObjectEClass, "T");
+        ETypeParameter removeRootEObjectEClass_T = addETypeParameter(removeRootEObjectEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
         insertRootEObjectEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        removeRootEObjectEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
         EGenericType g2 = createEGenericType(insertRootEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
-        removeRootEObjectEClass.getESuperTypes().add(theChangePackage.getSubtractiveEReferenceChange());
+        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
+        g2 = createEGenericType(removeRootEObjectEClass_T);
+        g1.getETypeArguments().add(g2);
+        removeRootEObjectEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

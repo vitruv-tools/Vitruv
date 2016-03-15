@@ -2,7 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
@@ -36,7 +35,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getNewValue <em>New Value</em>}</li>
  * </ul>
@@ -63,26 +61,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
      * @ordered
      */
     protected A affectedEObject;
-
-    /**
-     * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected static final TUID OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUIDOfAffectedEObject = OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
@@ -205,27 +183,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
      * <!-- end-user-doc -->
      * @generated
      */
-    public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public T getOldValue() {
         return oldValue;
     }
@@ -277,8 +234,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
                 if (resolve) return getAffectedEObject();
                 return basicGetAffectedEObject();
-            case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
                 return getOldValue();
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
@@ -301,9 +256,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)newValue);
-                return;
-            case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
                 return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
                 setOldValue((T)newValue);
@@ -329,9 +281,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)null);
                 return;
-            case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
                 setOldValue((T)null);
                 return;
@@ -354,8 +303,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
                 return affectedFeature != null;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT:
                 return affectedEObject != null;
-            case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
                 return oldValue != null;
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE:
@@ -375,7 +322,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
             switch (derivedFeatureID) {
                 case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
                 case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-                case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -420,7 +366,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
             switch (baseFeatureID) {
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE;
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT;
-                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -464,9 +409,7 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
-        result.append(", oldValue: ");
+        result.append(" (oldValue: ");
         result.append(oldValue);
         result.append(", newValue: ");
         result.append(newValue);

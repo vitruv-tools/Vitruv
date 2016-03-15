@@ -78,7 +78,7 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
                 return createInsertRootEObjectAdapter();
             }
             @Override
-            public Adapter caseRemoveRootEObject(RemoveRootEObject object) {
+            public <T extends EObject> Adapter caseRemoveRootEObject(RemoveRootEObject<T> object) {
                 return createRemoveRootEObjectAdapter();
             }
             @Override
@@ -102,7 +102,7 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
                 return createSubtractiveEChangeAdapter();
             }
             @Override
-            public Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+            public <T extends EObject> Adapter caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
                 return createSubtractiveEReferenceChangeAdapter();
             }
             @Override

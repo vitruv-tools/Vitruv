@@ -95,26 +95,26 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence} instances.
+     * This keeps track of the one adapter used for all {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence} instances.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    protected CorrespondenceItemProvider correspondenceItemProvider;
+    protected ManualCorrespondenceItemProvider manualCorrespondenceItemProvider;
 
     /**
-     * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}.
+     * This creates an adapter for a {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.ManualCorrespondence}.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     @Override
-    public Adapter createCorrespondenceAdapter() {
-        if (correspondenceItemProvider == null) {
-            correspondenceItemProvider = new CorrespondenceItemProvider(this);
+    public Adapter createManualCorrespondenceAdapter() {
+        if (manualCorrespondenceItemProvider == null) {
+            manualCorrespondenceItemProvider = new ManualCorrespondenceItemProvider(this);
         }
 
-        return correspondenceItemProvider;
+        return manualCorrespondenceItemProvider;
     }
 
     /**
@@ -217,7 +217,7 @@ public class CorrespondenceItemProviderAdapterFactory extends CorrespondenceAdap
      */
     public void dispose() {
         if (correspondencesItemProvider != null) correspondencesItemProvider.dispose();
-        if (correspondenceItemProvider != null) correspondenceItemProvider.dispose();
+        if (manualCorrespondenceItemProvider != null) manualCorrespondenceItemProvider.dispose();
     }
 
 }

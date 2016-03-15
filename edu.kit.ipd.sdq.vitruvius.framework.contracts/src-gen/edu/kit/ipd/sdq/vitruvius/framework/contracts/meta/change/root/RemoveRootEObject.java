@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,5 +15,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveERef
  * @model
  * @generated
  */
-public interface RemoveRootEObject extends SubtractiveEReferenceChange {
+public interface RemoveRootEObject<T extends EObject> extends SubtractiveEReferenceChange<T> {
 } // RemoveRootEObject

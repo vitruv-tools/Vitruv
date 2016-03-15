@@ -31,8 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePack
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
-
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -189,15 +187,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getEFeatureChange_OldTUIDOfAffectedEObject() {
-        return (EAttribute)eFeatureChangeEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EClass getUpdateEFeature() {
         return updateEFeatureEClass;
     }
@@ -251,7 +240,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
         createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_FEATURE);
         createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
-        createEAttribute(eFeatureChangeEClass, EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT);
 
         updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
 
@@ -316,7 +304,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         g1 = createEGenericType(eFeatureChangeEClass_A);
         initEReference(getEFeatureChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getEFeatureChange_OldTUIDOfAffectedEObject(), theChangePackage.getTUID(), "oldTUIDOfAffectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

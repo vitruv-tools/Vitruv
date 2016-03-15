@@ -37,7 +37,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootP
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -108,13 +107,6 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * @generated
      */
     private EClass subtractiveEReferenceChangeEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EDataType tuidEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -328,17 +320,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getSubtractiveEReferenceChange_OldTUID() {
-        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getSubtractiveEReferenceChange_Feature2OldValueMap() {
-        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(1);
+    public EReference getSubtractiveEReferenceChange_OldValue() {
+        return (EReference)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -347,16 +330,7 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
      * @generated
      */
     public EAttribute getSubtractiveEReferenceChange_IsDelete() {
-        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EDataType getTUID() {
-        return tuidEDataType;
+        return (EAttribute)subtractiveEReferenceChangeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -408,12 +382,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         createEAttribute(additiveEReferenceChangeEClass, ADDITIVE_EREFERENCE_CHANGE__IS_CREATE);
 
         subtractiveEReferenceChangeEClass = createEClass(SUBTRACTIVE_EREFERENCE_CHANGE);
-        createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID);
-        createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP);
+        createEReference(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE);
         createEAttribute(subtractiveEReferenceChangeEClass, SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE);
-
-        // Create data types
-        tuidEDataType = createEDataType(TUID);
     }
 
     /**
@@ -455,6 +425,7 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         ETypeParameter additiveEAttributeChangeEClass_T = addETypeParameter(additiveEAttributeChangeEClass, "T");
         ETypeParameter subtractiveEAttributeChangeEClass_T = addETypeParameter(subtractiveEAttributeChangeEClass, "T");
         ETypeParameter additiveEReferenceChangeEClass_T = addETypeParameter(additiveEReferenceChangeEClass, "T");
+        ETypeParameter subtractiveEReferenceChangeEClass_T = addETypeParameter(subtractiveEReferenceChangeEClass, "T");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
@@ -467,6 +438,8 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         subtractiveEAttributeChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         additiveEReferenceChangeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        subtractiveEReferenceChangeEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
         eAtomicChangeEClass.getESuperTypes().add(this.getEChange());
@@ -485,7 +458,7 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         g1.getETypeArguments().add(g2);
         additiveEReferenceChangeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getSubtractiveEChange());
-        g2 = createEGenericType(this.getTUID());
+        g2 = createEGenericType(subtractiveEReferenceChangeEClass_T);
         g1.getETypeArguments().add(g2);
         subtractiveEReferenceChangeEClass.getEGenericSuperTypes().add(g1);
 
@@ -520,17 +493,9 @@ public class ChangePackageImpl extends EPackageImpl implements ChangePackage {
         initEAttribute(getAdditiveEReferenceChange_IsCreate(), ecorePackage.getEBoolean(), "isCreate", null, 1, 1, AdditiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(subtractiveEReferenceChangeEClass, SubtractiveEReferenceChange.class, "SubtractiveEReferenceChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getSubtractiveEReferenceChange_OldTUID(), this.getTUID(), "oldTUID", null, 1, 1, SubtractiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(ecorePackage.getEMap());
-        g2 = createEGenericType(ecorePackage.getEStructuralFeature());
-        g1.getETypeArguments().add(g2);
-        g2 = createEGenericType(ecorePackage.getEJavaObject());
-        g1.getETypeArguments().add(g2);
-        initEAttribute(getSubtractiveEReferenceChange_Feature2OldValueMap(), g1, "feature2OldValueMap", null, 1, 1, SubtractiveEReferenceChange.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(subtractiveEReferenceChangeEClass_T);
+        initEReference(getSubtractiveEReferenceChange_OldValue(), g1, null, "oldValue", null, 1, 1, SubtractiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSubtractiveEReferenceChange_IsDelete(), ecorePackage.getEBoolean(), "isDelete", null, 1, 1, SubtractiveEReferenceChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        // Initialize data types
-        initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

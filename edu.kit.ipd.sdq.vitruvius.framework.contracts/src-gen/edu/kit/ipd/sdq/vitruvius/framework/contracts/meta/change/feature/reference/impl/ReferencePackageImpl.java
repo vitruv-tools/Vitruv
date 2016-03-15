@@ -293,6 +293,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         ETypeParameter insertEReferenceEClass_A = addETypeParameter(insertEReferenceEClass, "A");
         ETypeParameter insertEReferenceEClass_T = addETypeParameter(insertEReferenceEClass, "T");
         ETypeParameter removeEReferenceEClass_A = addETypeParameter(removeEReferenceEClass, "A");
+        ETypeParameter removeEReferenceEClass_T = addETypeParameter(removeEReferenceEClass, "T");
         ETypeParameter permuteEReferencesEClass_A = addETypeParameter(permuteEReferencesEClass, "A");
 
         // Set bounds for type parameters
@@ -308,6 +309,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         insertEReferenceEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         removeEReferenceEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        removeEReferenceEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         permuteEReferencesEClass_A.getEBounds().add(g1);
 
@@ -325,6 +328,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
+        g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
+        g1.getETypeArguments().add(g2);
         replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
         g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
@@ -347,6 +352,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         g1.getETypeArguments().add(g2);
         removeEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
+        g2 = createEGenericType(removeEReferenceEClass_T);
+        g1.getETypeArguments().add(g2);
         removeEReferenceEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getPermuteEList());
         permuteEReferencesEClass.getEGenericSuperTypes().add(g1);

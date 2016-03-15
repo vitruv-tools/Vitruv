@@ -38,7 +38,7 @@ public interface RootFactory extends EFactory {
      * @return a new object of class '<em>Remove Root EObject</em>'.
      * @generated
      */
-    RemoveRootEObject createRemoveRootEObject();
+    <T extends EObject> RemoveRootEObject<T> createRemoveRootEObject();
 
     /**
      * Returns the package supported by this factory.

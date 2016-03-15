@@ -2,8 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -19,7 +17,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage#getEFeatureChange()
@@ -78,31 +75,5 @@ public interface EFeatureChange<A extends EObject, F extends EStructuralFeature>
      * @generated
      */
     void setAffectedEObject(A value);
-
-    /**
-     * Returns the value of the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Old TUID Of Affected EObject</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Old TUID Of Affected EObject</em>' attribute.
-     * @see #setOldTUIDOfAffectedEObject(TUID)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage#getEFeatureChange_OldTUIDOfAffectedEObject()
-     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TUID" required="true"
-     * @generated
-     */
-    TUID getOldTUIDOfAffectedEObject();
-
-    /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Old TUID Of Affected EObject</em>' attribute.
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     */
-    void setOldTUIDOfAffectedEObject(TUID value);
 
 } // EFeatureChange

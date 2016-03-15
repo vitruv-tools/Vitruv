@@ -123,7 +123,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE: {
-                SubtractiveEReferenceChange subtractiveEReferenceChange = (SubtractiveEReferenceChange)theEObject;
+                SubtractiveEReferenceChange<?> subtractiveEReferenceChange = (SubtractiveEReferenceChange<?>)theEObject;
                 T1 result = caseSubtractiveEReferenceChange(subtractiveEReferenceChange);
                 if (result == null) result = caseSubtractiveEChange(subtractiveEReferenceChange);
                 if (result == null) result = caseEAtomicChange(subtractiveEReferenceChange);
@@ -251,7 +251,7 @@ public class ChangeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+    public <T extends EObject> T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
         return null;
     }
 

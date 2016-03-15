@@ -11,7 +11,6 @@
   <foreignModel>change.ecore</foreignModel>
   <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta"
       disposableProviderFactory="true" ecorePackage="change.ecore#/">
-    <genDataTypes ecoreDataType="change.ecore#//TUID"/>
     <genClasses image="false" ecoreClass="change.ecore#//EChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//EAtomicChange"/>
     <genClasses image="false" ecoreClass="change.ecore#//AdditiveEChange">
@@ -36,8 +35,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//AdditiveEReferenceChange/isCreate"/>
     </genClasses>
     <genClasses image="false" ecoreClass="change.ecore#//SubtractiveEReferenceChange">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/oldTUID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/feature2OldValueMap"/>
+      <genTypeParameters ecoreTypeParameter="change.ecore#//SubtractiveEReferenceChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference change.ecore#//SubtractiveEReferenceChange/oldValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//SubtractiveEReferenceChange/isDelete"/>
     </genClasses>
     <nestedGenPackages prefix="Feature" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
@@ -49,7 +48,6 @@
             ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedFeature"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//feature/EFeatureChange/affectedEObject"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/EFeatureChange/oldTUIDOfAffectedEObject"/>
       </genClasses>
       <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateEFeature"/>
       <genClasses image="false" ecoreClass="change.ecore#//feature/UpdateMultiValuedEFeature"/>
@@ -64,6 +62,7 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/RemoveFromEList/removedObjectURIFragment"/>
         </genClasses>
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/PermuteEList">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/oldIndex"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndex"/>
         </genClasses>
       </nestedGenPackages>
@@ -104,9 +103,10 @@
         </genClasses>
         <genClasses ecoreClass="change.ecore#//feature/reference/RemoveEReference">
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/RemoveEReference/A"/>
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/RemoveEReference/T"/>
         </genClasses>
-        <genClasses ecoreClass="change.ecore#//feature/reference/PermuteEReferenceValues">
-          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/PermuteEReferenceValues/A"/>
+        <genClasses ecoreClass="change.ecore#//feature/reference/PermuteEReferences">
+          <genTypeParameters ecoreTypeParameter="change.ecore#//feature/reference/PermuteEReferences/A"/>
         </genClasses>
       </nestedGenPackages>
     </nestedGenPackages>
@@ -115,7 +115,9 @@
       <genClasses ecoreClass="change.ecore#//root/InsertRootEObject">
         <genTypeParameters ecoreTypeParameter="change.ecore#//root/InsertRootEObject/T"/>
       </genClasses>
-      <genClasses ecoreClass="change.ecore#//root/RemoveRootEObject"/>
+      <genClasses ecoreClass="change.ecore#//root/RemoveRootEObject">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//root/RemoveRootEObject/T"/>
+      </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Compound" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//compound">

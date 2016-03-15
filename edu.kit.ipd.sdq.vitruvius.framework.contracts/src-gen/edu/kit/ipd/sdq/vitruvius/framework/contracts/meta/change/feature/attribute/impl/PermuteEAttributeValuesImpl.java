@@ -2,7 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
@@ -31,7 +30,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.PermuteEAttributeValuesImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.PermuteEAttributeValuesImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.PermuteEAttributeValuesImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  * </ul>
  *
  * @generated
@@ -56,26 +54,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
      * @ordered
      */
     protected A affectedEObject;
-
-    /**
-     * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected static final TUID OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUIDOfAffectedEObject = OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -178,27 +156,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
      * <!-- end-user-doc -->
      * @generated
      */
-    public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -208,8 +165,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
                 if (resolve) return getAffectedEObject();
                 return basicGetAffectedEObject();
-            case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -229,9 +184,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
                 setAffectedEObject((A)newValue);
                 return;
-            case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -250,9 +202,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
                 setAffectedEObject((A)null);
                 return;
-            case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -269,8 +218,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
                 return affectedFeature != null;
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT:
                 return affectedEObject != null;
-            case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
         }
         return super.eIsSet(featureID);
     }
@@ -286,7 +233,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             switch (derivedFeatureID) {
                 case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
                 case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-                case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -309,7 +255,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             switch (baseFeatureID) {
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE;
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT;
-                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -319,22 +264,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (eIsProxy()) return super.toString();
-
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
-        result.append(')');
-        return result.toString();
     }
 
 } //PermuteEAttributeValuesImpl

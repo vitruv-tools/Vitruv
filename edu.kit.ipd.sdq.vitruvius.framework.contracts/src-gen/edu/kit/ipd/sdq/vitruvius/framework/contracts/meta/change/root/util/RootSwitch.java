@@ -83,7 +83,7 @@ public class RootSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case RootPackage.REMOVE_ROOT_EOBJECT: {
-                RemoveRootEObject removeRootEObject = (RemoveRootEObject)theEObject;
+                RemoveRootEObject<?> removeRootEObject = (RemoveRootEObject<?>)theEObject;
                 T1 result = caseRemoveRootEObject(removeRootEObject);
                 if (result == null) result = caseSubtractiveEReferenceChange(removeRootEObject);
                 if (result == null) result = caseSubtractiveEChange(removeRootEObject);
@@ -122,7 +122,7 @@ public class RootSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseRemoveRootEObject(RemoveRootEObject object) {
+    public <T extends EObject> T1 caseRemoveRootEObject(RemoveRootEObject<T> object) {
         return null;
     }
 
@@ -212,7 +212,7 @@ public class RootSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+    public <T extends EObject> T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
         return null;
     }
 

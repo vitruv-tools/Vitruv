@@ -125,7 +125,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 return result;
             }
             case ReferencePackage.REMOVE_EREFERENCE: {
-                RemoveEReference<?> removeEReference = (RemoveEReference<?>)theEObject;
+                RemoveEReference<?, ?> removeEReference = (RemoveEReference<?, ?>)theEObject;
                 T1 result = caseRemoveEReference(removeEReference);
                 if (result == null) result = caseRemoveFromEList(removeEReference);
                 if (result == null) result = caseUpdateEReference(removeEReference);
@@ -213,7 +213,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject> T1 caseRemoveEReference(RemoveEReference<A> object) {
+    public <A extends EObject, T extends EObject> T1 caseRemoveEReference(RemoveEReference<A, T> object) {
         return null;
     }
 
@@ -333,7 +333,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange object) {
+    public <T extends EObject> T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
         return null;
     }
 

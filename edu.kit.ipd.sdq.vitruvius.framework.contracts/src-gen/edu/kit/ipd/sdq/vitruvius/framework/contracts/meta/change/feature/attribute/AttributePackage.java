@@ -87,15 +87,6 @@ public interface AttributePackage extends EPackage {
     int UPDATE_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int UPDATE_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
-
-    /**
      * The number of structural features of the '<em>Update EAttribute</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -142,22 +133,13 @@ public interface AttributePackage extends EPackage {
     int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_TUID_OF_AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
-
-    /**
      * The feature id for the '<em><b>Old Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -166,7 +148,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -175,7 +157,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 5;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -242,22 +224,13 @@ public interface AttributePackage extends EPackage {
     int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EATTRIBUTE_VALUE__OLD_TUID_OF_AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 2;
-
-    /**
      * The feature id for the '<em><b>New Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INSERT_EATTRIBUTE_VALUE__NEW_VALUE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 3;
+    int INSERT_EATTRIBUTE_VALUE__NEW_VALUE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Insert EAttribute Value</em>' class.
@@ -266,7 +239,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 4;
+    int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 3;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -333,22 +306,13 @@ public interface AttributePackage extends EPackage {
     int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EATTRIBUTE_VALUE__OLD_TUID_OF_AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 2;
-
-    /**
      * The feature id for the '<em><b>Old Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 3;
+    int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Remove EAttribute Value</em>' class.
@@ -357,7 +321,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 4;
+    int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 3;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -424,22 +388,13 @@ public interface AttributePackage extends EPackage {
     int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_EATTRIBUTE_VALUES__OLD_TUID_OF_AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
-
-    /**
      * The number of structural features of the '<em>Permute EAttribute Values</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EATTRIBUTE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 3;
+    int PERMUTE_EATTRIBUTE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Permute EAttribute Values</em>' class.

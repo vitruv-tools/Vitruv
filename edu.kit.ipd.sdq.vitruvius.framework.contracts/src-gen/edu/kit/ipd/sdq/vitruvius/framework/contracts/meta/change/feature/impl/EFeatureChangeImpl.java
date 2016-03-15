@@ -2,8 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
@@ -27,7 +25,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.EFeatureChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.EFeatureChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.EFeatureChangeImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,26 +49,6 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
      * @ordered
      */
     protected A affectedEObject;
-
-    /**
-     * The default value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected static final TUID OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUIDOfAffectedEObject() <em>Old TUID Of Affected EObject</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUIDOfAffectedEObject = OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -175,27 +152,6 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
      * <!-- end-user-doc -->
      * @generated
      */
-    public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -205,8 +161,6 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
                 if (resolve) return getAffectedEObject();
                 return basicGetAffectedEObject();
-            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -226,9 +180,6 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)newValue);
                 return;
-            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -247,9 +198,6 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)null);
                 return;
-            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -266,26 +214,8 @@ public abstract class EFeatureChangeImpl<A extends EObject, F extends EStructura
                 return affectedFeature != null;
             case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT:
                 return affectedEObject != null;
-            case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (eIsProxy()) return super.toString();
-
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
-        result.append(')');
-        return result.toString();
     }
 
 } //EFeatureChangeImpl

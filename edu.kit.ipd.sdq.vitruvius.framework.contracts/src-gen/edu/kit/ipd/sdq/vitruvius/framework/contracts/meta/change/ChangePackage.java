@@ -4,7 +4,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -346,22 +345,13 @@ public interface ChangePackage extends EPackage {
     int SUBTRACTIVE_EREFERENCE_CHANGE = 7;
 
     /**
-     * The feature id for the '<em><b>Old TUID</b></em>' attribute.
+     * The feature id for the '<em><b>Old Value</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Feature2 Old Value Map</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
+    int SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -370,7 +360,7 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
+    int SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Subtractive EReference Change</em>' class.
@@ -379,7 +369,7 @@ public interface ChangePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SUBTRACTIVE_EREFERENCE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 3;
+    int SUBTRACTIVE_EREFERENCE_CHANGE_FEATURE_COUNT = SUBTRACTIVE_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -398,17 +388,6 @@ public interface ChangePackage extends EPackage {
      * @ordered
      */
     int SUBTRACTIVE_EREFERENCE_CHANGE_OPERATION_COUNT = SUBTRACTIVE_ECHANGE_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '<em>TUID</em>' data type.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getTUID()
-     * @generated
-     */
-    int TUID = 8;
-
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange <em>EChange</em>}'.
@@ -555,26 +534,15 @@ public interface ChangePackage extends EPackage {
     EClass getSubtractiveEReferenceChange();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID <em>Old TUID</em>}'.
+     * Returns the meta object for the reference '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldValue <em>Old Value</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Old TUID</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldTUID()
+     * @return the meta object for the reference '<em>Old Value</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getOldValue()
      * @see #getSubtractiveEReferenceChange()
      * @generated
      */
-    EAttribute getSubtractiveEReferenceChange_OldTUID();
-
-    /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap <em>Feature2 Old Value Map</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Feature2 Old Value Map</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#getFeature2OldValueMap()
-     * @see #getSubtractiveEReferenceChange()
-     * @generated
-     */
-    EAttribute getSubtractiveEReferenceChange_Feature2OldValueMap();
+    EReference getSubtractiveEReferenceChange_OldValue();
 
     /**
      * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange#isIsDelete <em>Is Delete</em>}'.
@@ -586,17 +554,6 @@ public interface ChangePackage extends EPackage {
      * @generated
      */
     EAttribute getSubtractiveEReferenceChange_IsDelete();
-
-    /**
-     * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID <em>TUID</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>TUID</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-     * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID"
-     * @generated
-     */
-    EDataType getTUID();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -750,20 +707,12 @@ public interface ChangePackage extends EPackage {
         EClass SUBTRACTIVE_EREFERENCE_CHANGE = eINSTANCE.getSubtractiveEReferenceChange();
 
         /**
-         * The meta object literal for the '<em><b>Old TUID</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Old Value</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID = eINSTANCE.getSubtractiveEReferenceChange_OldTUID();
-
-        /**
-         * The meta object literal for the '<em><b>Feature2 Old Value Map</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP = eINSTANCE.getSubtractiveEReferenceChange_Feature2OldValueMap();
+        EReference SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE = eINSTANCE.getSubtractiveEReferenceChange_OldValue();
 
         /**
          * The meta object literal for the '<em><b>Is Delete</b></em>' attribute feature.
@@ -772,16 +721,6 @@ public interface ChangePackage extends EPackage {
          * @generated
          */
         EAttribute SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE = eINSTANCE.getSubtractiveEReferenceChange_IsDelete();
-
-        /**
-         * The meta object literal for the '<em>TUID</em>' data type.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl#getTUID()
-         * @generated
-         */
-        EDataType TUID = eINSTANCE.getTUID();
 
     }
 

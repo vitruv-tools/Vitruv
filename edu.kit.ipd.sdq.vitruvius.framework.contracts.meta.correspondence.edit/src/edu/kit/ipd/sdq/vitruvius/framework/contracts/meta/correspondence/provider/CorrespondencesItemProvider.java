@@ -174,7 +174,7 @@ public class CorrespondencesItemProvider
         newChildDescriptors.add
             (createChildParameter
                 (CorrespondencePackage.Literals.CORRESPONDENCES__CORRESPONDENCES,
-                 CorrespondenceFactory.eINSTANCE.createCorrespondence()));
+                 CorrespondenceFactory.eINSTANCE.createManualCorrespondence()));
     }
 
     /**

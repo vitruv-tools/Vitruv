@@ -122,22 +122,13 @@ public interface RootPackage extends EPackage {
     int REMOVE_ROOT_EOBJECT = 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID</b></em>' attribute.
+     * The feature id for the '<em><b>Old Value</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT__OLD_TUID = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_TUID;
-
-    /**
-     * The feature id for the '<em><b>Feature2 Old Value Map</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_ROOT_EOBJECT__FEATURE2_OLD_VALUE_MAP = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__FEATURE2_OLD_VALUE_MAP;
+    int REMOVE_ROOT_EOBJECT__OLD_VALUE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE;
 
     /**
      * The feature id for the '<em><b>Is Delete</b></em>' attribute.

@@ -47,7 +47,7 @@ public interface ReferenceFactory extends EFactory {
      * @return a new object of class '<em>Remove EReference</em>'.
      * @generated
      */
-    <A extends EObject> RemoveEReference<A> createRemoveEReference();
+    <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveEReference();
 
     /**
      * Returns a new object of class '<em>Permute EReferences</em>'.

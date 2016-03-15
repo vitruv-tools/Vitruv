@@ -11,8 +11,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
@@ -32,7 +30,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl#getAffectedEObject <em>Affected EObject</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl#isIsCreate <em>Is Create</em>}</li>
  * </ul>
@@ -58,28 +55,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
      * @ordered
      */
     protected A affectedEObject;
-
-    /**
-     * The default value of the '{@link #getOldTUIDOfAffectedEObject()
-     * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     * 
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected static final TUID OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getOldTUIDOfAffectedEObject()
-     * <em>Old TUID Of Affected EObject</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     * 
-     * @see #getOldTUIDOfAffectedEObject()
-     * @generated
-     * @ordered
-     */
-    protected TUID oldTUIDOfAffectedEObject = OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference. <!--
@@ -208,27 +183,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
      * @generated
      */
     @Override
-    public TUID getOldTUIDOfAffectedEObject() {
-        return oldTUIDOfAffectedEObject;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public void setOldTUIDOfAffectedEObject(TUID newOldTUIDOfAffectedEObject) {
-        TUID oldOldTUIDOfAffectedEObject = oldTUIDOfAffectedEObject;
-        oldTUIDOfAffectedEObject = newOldTUIDOfAffectedEObject;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT, oldOldTUIDOfAffectedEObject, oldTUIDOfAffectedEObject));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
     @SuppressWarnings("unchecked")
     public T getNewValue() {
         if (newValue != null && newValue.eIsProxy()) {
@@ -306,8 +260,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
             case ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT:
                 if (resolve) return getAffectedEObject();
                 return basicGetAffectedEObject();
-            case ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return getOldTUIDOfAffectedEObject();
             case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
                 if (resolve) return getNewValue();
                 return basicGetNewValue();
@@ -330,9 +282,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
                 return;
             case ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)newValue);
-                return;
-            case ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject((TUID)newValue);
                 return;
             case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
                 setNewValue((T)newValue);
@@ -357,9 +306,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
             case ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT:
                 setAffectedEObject((A)null);
                 return;
-            case ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                setOldTUIDOfAffectedEObject(OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT);
-                return;
             case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
                 setNewValue((T)null);
                 return;
@@ -381,8 +327,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
                 return affectedFeature != null;
             case ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT:
                 return affectedEObject != null;
-            case ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT:
-                return OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT == null ? oldTUIDOfAffectedEObject != null : !OLD_TUID_OF_AFFECTED_EOBJECT_EDEFAULT.equals(oldTUIDOfAffectedEObject);
             case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE:
                 return newValue != null;
             case ReferencePackage.INSERT_EREFERENCE__IS_CREATE:
@@ -401,7 +345,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
             switch (derivedFeatureID) {
                 case ReferencePackage.INSERT_EREFERENCE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
                 case ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
-                case ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -435,7 +378,6 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
             switch (baseFeatureID) {
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return ReferencePackage.INSERT_EREFERENCE__AFFECTED_FEATURE;
                 case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT;
-                case FeaturePackage.EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT: return ReferencePackage.INSERT_EREFERENCE__OLD_TUID_OF_AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
@@ -512,9 +454,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldTUIDOfAffectedEObject: ");
-        result.append(oldTUIDOfAffectedEObject);
-        result.append(", isCreate: ");
+        result.append(" (isCreate: ");
         result.append(isCreate);
         result.append(')');
         return result.toString();

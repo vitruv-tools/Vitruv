@@ -90,8 +90,8 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
      * <!-- end-user-doc -->
      * @generated
      */
-    public <A extends EObject> RemoveEReference<A> createRemoveEReference() {
-        RemoveEReferenceImpl<A> removeEReference = new RemoveEReferenceImpl<A>();
+    public <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveEReference() {
+        RemoveEReferenceImpl<A, T> removeEReference = new RemoveEReferenceImpl<A, T>();
         return removeEReference;
     }
 

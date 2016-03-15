@@ -3,8 +3,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -87,22 +85,13 @@ public interface FeaturePackage extends EPackage {
     int EFEATURE_CHANGE__AFFECTED_EOBJECT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 2;
-
-    /**
      * The number of structural features of the '<em>EFeature Change</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 3;
+    int EFEATURE_CHANGE_FEATURE_COUNT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>EFeature Change</em>' class.
@@ -230,17 +219,6 @@ public interface FeaturePackage extends EPackage {
     EReference getEFeatureChange_AffectedEObject();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getOldTUIDOfAffectedEObject <em>Old TUID Of Affected EObject</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Old TUID Of Affected EObject</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange#getOldTUIDOfAffectedEObject()
-     * @see #getEFeatureChange()
-     * @generated
-     */
-    EAttribute getEFeatureChange_OldTUIDOfAffectedEObject();
-
-    /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature <em>Update EFeature</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -318,14 +296,6 @@ public interface FeaturePackage extends EPackage {
          * @generated
          */
         EReference EFEATURE_CHANGE__AFFECTED_EOBJECT = eINSTANCE.getEFeatureChange_AffectedEObject();
-
-        /**
-         * The meta object literal for the '<em><b>Old TUID Of Affected EObject</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute EFEATURE_CHANGE__OLD_TUID_OF_AFFECTED_EOBJECT = eINSTANCE.getEFeatureChange_OldTUIDOfAffectedEObject();
 
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.UpdateEFeatureImpl <em>Update EFeature</em>}' class.
