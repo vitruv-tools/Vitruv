@@ -258,11 +258,30 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			body = '''
 				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»);
 				«String» _relativePath = «pathFromSourceMethod.simpleName»(«getParameterCallList(inputParameters + #[rootParameter])»);
-				«URI» _resourceURI = «ResponseRuntimeHelper».«
-				IF (createdElement.persistAsRoot.useRelativeToSource)»getURIFromSourceResourceFolder«
-				ELSEIF (createdElement.persistAsRoot.useRelativeToProject)»getURIFromSourceProjectFolder«
-				ENDIF»(_sourceElement, _relativePath, this.blackboard);
-				this.transformationResult.addRootEObjectToSave(«rootParameter.name», «VURI».getInstance(_resourceURI));
+				this.persistModel(_sourceElement, «rootParameter.name», _relativePath, «IF createdElement.persistAsRoot.useRelativeToSource»true«ELSE»false«ENDIF»);
+			'''
+		];
+	}
+	
+	protected def generateMethodMoveModelOfElement(CorrespondingModelElementRetrieve retrievedElement) {
+		if (retrievedElement.moveRoot == null) {
+			throw new IllegalArgumentException("Given element is not to be persisted as root:");
+		}
+		val methodName = "moveModel" + retrievedElement.name.toFirstUpper;
+		
+		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
+			visibility = JvmVisibility.PRIVATE;
+			val inputParameters = generateInputParameters();
+			val rootParameter = generateModelElementParameter(retrievedElement);
+			parameters += inputParameters;
+			parameters += rootParameter;
+			exceptions += typeRef(IOException);
+			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrievedElement);
+			val pathFromSourceMethod = generateMethodGetPathFromSource(retrievedElement.moveRoot.modelPath);
+			body = '''
+				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»);
+				«String» _relativePath = «pathFromSourceMethod.simpleName»(«getParameterCallList(inputParameters + #[rootParameter])»);
+				this.renameModel(_sourceElement, «rootParameter.name», _relativePath, «IF retrievedElement.moveRoot.useRelativeToSource»true«ELSE»false«ENDIF»);
 			'''
 		];
 	}
@@ -359,11 +378,11 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		CollectionBridge.mapFixed(createElements.filter[persistAsRoot != null], 
 				[saveAsRootMethodMap.put(it, generateMethodPersistModelElementAsRoot(it))]);
 		val renameModelMethodMap = <CorrespondingModelElementRetrieve, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(retrieveElements.filter[renamedModelFileName != null], 
-				[renameModelMethodMap.put(it, generateMethodGetNewModelPath(it.renamedModelFileName, it.name))]);
+		CollectionBridge.mapFixed(retrieveElements.filter[moveRoot != null], 
+				[renameModelMethodMap.put(it, generateMethodMoveModelOfElement(it))]);
 		
 		val getCorrespondenceSourceMethodMap = <CorrespondingModelElementRetrieve, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(retrieveElements.filter[renamedModelFileName != null],
+		CollectionBridge.mapFixed(retrieveElements.filter[moveRoot != null],
 			[getCorrespondenceSourceMethodMap.put(it, generateMethodGetCorrespondenceSource(it))]);
 			
 		return '''
@@ -393,11 +412,12 @@ abstract class EffectClassGenerator extends ClassGenerator {
 					deleteElement(«element.name»);
 				«ENDFOR»
 				«FOR element: renameModelMethodMap.keySet»
-					«EObject» «element.name»_sourceElement = «getCorrespondenceSourceMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)»);
+					«renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
+					/*«EObject» «element.name»_sourceElement = «getCorrespondenceSourceMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)»);
 					String «element.name»_newModelPath = «renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)»);
 					«/* TODO HK The third parameter was the identifying element before since it is persisted when renaming a basic component and so does not throw an exception */»
 					LOGGER.debug("Move model with element " + «element.name»_sourceElement + " to " + «element.name»_newModelPath);
-					«ResponseRuntimeHelper».renameModel(this.blackboard, «element.name»_sourceElement, «element.name», «element.name»_newModelPath, this.transformationResult);
+					«ResponseRuntimeHelper».renameModel(this.blackboard, «element.name»_sourceElement, «element.name», «element.name»_newModelPath, this.transformationResult);*/
 				«ENDFOR»
 				«FOR element : retrieveElements»
 					this.blackboard.getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);

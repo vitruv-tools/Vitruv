@@ -47,9 +47,13 @@ CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
 	'create element:' CorrespondingModelElementSpecification (persistAsRoot=ModelPersistence)?;
 
-ModelPersistence returns ModelPersistence:
+ModelPersistence returns ModelLocation:
 	(useRelativeToSource?='persist as root at changed model relative location:'
 	| useRelativeToProject?='persist as root at project-relative location:') modelPath=ModelPathCodeBlock;
+	
+ModelMove returns ModelLocation:
+	(useRelativeToSource?='move containing model relative to original location:'
+	| useRelativeToProject?='move containing model to project-relative location:') modelPath=ModelPathCodeBlock;
 
 CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
 	{CorrespondingModelElementDelete}
@@ -57,8 +61,7 @@ CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
 
 CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	{CorrespondingModelElementRetrieve}
-	'retrieve element:' CorrespondingModelElementRetrieveOrDelete ('move containing model to project-relative location:'
-	renamedModelFileName=ModelPathCodeBlock)?;
+	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (moveRoot=ModelMove)?;
 
 fragment CorrespondingModelElementRetrieveOrDelete:
 	CorrespondingModelElementSpecificationWithPrecondition;

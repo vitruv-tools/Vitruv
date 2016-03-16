@@ -7,6 +7,10 @@ import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper.*;
+import java.util.function.Supplier
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 
 abstract class AbstractEffectRealization {
 	protected val UserInteracting userInteracting;
@@ -34,4 +38,34 @@ abstract class AbstractEffectRealization {
 			EcoreUtil.remove(element);
 		}
 	}
+	
+	public def renameModel(EObject elementOfResourceInProject, EObject elementOfRenamedModel, String newModelPath, boolean relativeToSource) {
+		if (elementOfResourceInProject.eResource() == null) {
+			throw new IllegalStateException("Element must be in a resource to determine the containing project.");			
+		}
+		val sourceRoot = elementOfRenamedModel.modelRoot;
+		val oldVURI = if (sourceRoot.eResource() != null) {
+			VURI.getInstance(sourceRoot.eResource());
+		}
+		
+		val newVURI = if (relativeToSource) {
+			// TODO HK This can eventually go wrong, if the renamed model is not persisted yet
+			VURI.getInstance(getURIFromSourceResourceFolder(elementOfRenamedModel, newModelPath, blackboard));
+		} else {
+			VURI.getInstance(getURIFromSourceProjectFolder(elementOfResourceInProject, newModelPath, blackboard));
+		}
+		EcoreUtil.remove(sourceRoot);
+		transformationResult.addRootEObjectToSave(sourceRoot, newVURI);
+		transformationResult.addVURIToDeleteIfNotNull(oldVURI);
+	}
+	
+	public def persistModel(EObject sourceModelElement, EObject objectToSaveAsRoot, String path, boolean relativeToSource) {
+		val _resourceURI = if (relativeToSource) {
+			getURIFromSourceResourceFolder(sourceModelElement, path, blackboard);
+		} else {
+			getURIFromSourceProjectFolder(sourceModelElement, path, blackboard);
+		}
+		this.transformationResult.addRootEObjectToSave(objectToSaveAsRoot, VURI.getInstance(_resourceURI));
+	}
+	
 }

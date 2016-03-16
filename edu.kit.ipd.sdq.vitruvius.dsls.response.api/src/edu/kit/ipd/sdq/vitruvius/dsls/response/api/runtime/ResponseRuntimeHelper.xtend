@@ -98,19 +98,7 @@ public final class ResponseRuntimeHelper {
 		return baseURI.appendPathToURI(relativePath, blackboard);
 	}
 	
-	public static def renameModel(Blackboard blackboard, EObject elementOfResourceInProject, EObject elementOfRenamedModel, String newModelPath, TransformationResult transformationResult) {
-		if (elementOfResourceInProject.eResource() == null) {
-			throw new IllegalStateException("Element must be in a resource to determine the containing project.");			
-		}
-		val sourceRoot = elementOfRenamedModel.modelRoot;
-		val oldVURI = if (sourceRoot.eResource() != null) {
-			VURI.getInstance(sourceRoot.eResource());
-		}
-		val newVURI = VURI.getInstance(elementOfResourceInProject.getURIFromSourceProjectFolder(newModelPath, blackboard));
-		EcoreUtil.remove(sourceRoot);
-		transformationResult.addRootEObjectToSave(elementOfRenamedModel, newVURI);
-		transformationResult.addVURIToDeleteIfNotNull(oldVURI);
-	}
+	
 	
 	/*
 	public static def getCorrespondingElements(Blackboard blackboard, EObject sourceElement, EObject sourceParent, Class<? extends EObject> targetType) {
