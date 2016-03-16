@@ -55,7 +55,6 @@ import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.text.edits.TextEdit;
 import org.emftext.language.java.annotations.AnnotationInstance;
 import org.emftext.language.java.annotations.AnnotationsFactory;
 import org.emftext.language.java.classifiers.Classifier;
@@ -117,6 +116,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -300,13 +300,14 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected <T> T renameClassifierWithName(final String entityName, final String newName, final Class<T> type)
             throws Throwable {
         try {
-            final ICompilationUnit cu = this.findICompilationUnitWithClassName(entityName + ".java");
+            final ICompilationUnit cu = CompilationUnitManipulatorHelper
+                    .findICompilationUnitWithClassName(entityName + ".java", this.currentTestProject);
             final int offset = cu.getBuffer().getContents().indexOf(entityName);
             if (cu.getBuffer() instanceof IBuffer.ITextEditCapability) {
                 logger.info(cu.getBuffer());
             }
             final ReplaceEdit edit = new ReplaceEdit(offset, entityName.length(), newName);
-            this.editCompilationUnit(cu, edit);
+            CompilationUnitManipulatorHelper.editCompilationUnit(cu, edit);
             TestUtil.waitForSynchronization();
             final VURI vuri = VURI.getInstance(cu.getResource());
             final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
@@ -317,16 +318,6 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         }
         return null;
 
-    }
-
-    protected void editCompilationUnit(final ICompilationUnit cu, final TextEdit... edits) throws JavaModelException {
-        cu.becomeWorkingCopy(new NullProgressMonitor());
-        for (final TextEdit edit : edits) {
-            cu.applyTextEdit(edit, null);
-        }
-        cu.save(new NullProgressMonitor(), true);
-        cu.commitWorkingCopy(true, new NullProgressMonitor());
-        cu.save(new NullProgressMonitor(), true);
     }
 
     private Package findJaMoPPPackageWithName(final String newName) throws Throwable {
@@ -358,37 +349,6 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
             }
         }
         throw new RuntimeException("Could not find a compilation unit with name " + newName);
-    }
-
-    protected ICompilationUnit findICompilationUnitWithClassName(String entityName) throws Throwable {
-        entityName = this.ensureJavaFileExtension(entityName);
-        final IJavaProject javaProject = JavaCore.create(this.currentTestProject);
-        for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
-            final IJavaElement[] children = packageFragmentRoot.getChildren();
-            for (final IJavaElement iJavaElement : children) {
-                if (iJavaElement instanceof IPackageFragment) {
-                    final IPackageFragment fragment = (IPackageFragment) iJavaElement;
-                    final IJavaElement[] javaElements = fragment.getChildren();
-                    for (int k = 0; k < javaElements.length; k++) {
-                        final IJavaElement javaElement = javaElements[k];
-                        if (javaElement.getElementType() == IJavaElement.COMPILATION_UNIT) {
-                            final ICompilationUnit compilationUnit = (ICompilationUnit) javaElement;
-                            if (compilationUnit.getElementName().equals(entityName)) {
-                                return compilationUnit;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        throw new RuntimeException("Could not find a compilation unit with name " + entityName);
-    }
-
-    private String ensureJavaFileExtension(String entityName) {
-        if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
-            entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
-        }
-        return entityName;
     }
 
     private IPackageFragmentRoot getIJavaProject() throws Throwable {
@@ -635,34 +595,20 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected OperationSignature addMethodToInterfaceWithCorrespondence(final String interfaceName,
             final String methodName) throws Throwable, JavaModelException {
         final String methodString = "\nvoid " + methodName + "();\n";
-        final ICompilationUnit cu = this.addMethodToCompilationUnit(interfaceName, methodString);
+        final ICompilationUnit cu = CompilationUnitManipulatorHelper.addMethodToCompilationUnit(interfaceName,
+                methodString, this.currentTestProject);
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
-    }
-
-    protected ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName, final String methodString)
-            throws Throwable, JavaModelException {
-        final ICompilationUnit cu = this.findICompilationUnitWithClassName(compilationUnitName);
-        final IType firstType = cu.getAllTypes()[0];
-        final int offset = this.getOffsetForClassifierManipulation(firstType);
-        final InsertEdit insertEdit = new InsertEdit(offset, methodString);
-        this.editCompilationUnit(cu, insertEdit);
-        TestUtil.waitForSynchronization();
-        return cu;
     }
 
     protected ResourceDemandingSEFF addClassMethodToClassThatOverridesInterfaceMethod(final String className,
             final String methodName) throws Throwable {
         final String methodString = "\n\tpublic void " + methodName + " () {\n\t}\n";
-        final ICompilationUnit icu = this.addMethodToCompilationUnit(className, methodString);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className,
+                methodString, this.currentTestProject);
         final Method jaMoPPMethod = this.findJaMoPPMethodInICU(icu, methodName);
         final ClassMethod classMethod = (ClassMethod) jaMoPPMethod;
         return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
                 this.getCorrespondenceInstance(), classMethod, ResourceDemandingSEFF.class));
-    }
-
-    protected int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
-        final int posOfFirstBracket = firstType.getCompilationUnit().getSource().indexOf("{");
-        return posOfFirstBracket + 1;
     }
 
     protected OperationSignature findOperationSignatureForJaMoPPMethodInCompilationUnit(final String methodName,
@@ -682,13 +628,14 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected OperationSignature renameMethodInClassWithName(final String className, final String methodName)
             throws Throwable {
-        final ICompilationUnit cu = this.findICompilationUnitWithClassName(className);
+        final ICompilationUnit cu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
         final IMethod iMethod = cu.getType(className).getMethod(methodName, null);
         final int offset = iMethod.getNameRange().getOffset();
         final int length = iMethod.getNameRange().getLength();
         final String newMethodName = methodName + PCM2JaMoPPTestUtils.RENAME;
         final ReplaceEdit replaceEdit = new ReplaceEdit(offset, length, newMethodName);
-        this.editCompilationUnit(cu, replaceEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(cu, replaceEdit);
         TestUtil.waitForSynchronization();
         return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(newMethodName, className, cu);
     }
@@ -734,12 +681,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected Parameter addParameterToSignature(final String interfaceName, final String methodName,
             final String typeName, final String parameterName) throws Throwable {
-        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(interfaceName,
+                this.currentTestProject);
         final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, null);
         final String parameterStr = typeName + " " + parameterName;
         final int offset = iMethod.getSourceRange().getOffset() + iMethod.getSourceRange().getLength() - 2;
         final InsertEdit insertEdit = new InsertEdit(offset, parameterStr);
-        this.editCompilationUnit(icu, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
         TestUtil.waitForSynchronization();
         final ConcreteClassifier concreateClassifier = this
                 .getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
@@ -826,7 +774,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected OperationProvidedRole addImplementsCorrespondingToOperationProvidedRoleToClass(final String className,
             final String implementingInterfaceName) throws Throwable {
-        final ICompilationUnit classCompilationUnit = this.findICompilationUnitWithClassName(className);
+        final ICompilationUnit classCompilationUnit = CompilationUnitManipulatorHelper
+                .findICompilationUnitWithClassName(className, this.currentTestProject);
         this.importCompilationUnitWithName(implementingInterfaceName, classCompilationUnit);
         final IType classType = classCompilationUnit.getType(className);
         final String newSource = " implements " + implementingInterfaceName;
@@ -834,7 +783,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final int firstBracket = classType.getSource().indexOf("{");
         offset = offset + firstBracket - 1;
         final InsertEdit insertEdit = new InsertEdit(offset, newSource);
-        this.editCompilationUnit(classCompilationUnit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(classCompilationUnit, insertEdit);
         TestUtil.waitForSynchronization();
         final org.emftext.language.java.classifiers.Class jaMoPPClass = (org.emftext.language.java.classifiers.Class) this
                 .getJaMoPPClassifierForVURI(VURI.getInstance(classCompilationUnit.getResource()));
@@ -852,23 +801,24 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected void importCompilationUnitWithName(final String implementingInterfaceName,
             final ICompilationUnit classCompilationUnit) throws Throwable, JavaModelException {
-        final ICompilationUnit interfaceCompilationUnit = this
-                .findICompilationUnitWithClassName(implementingInterfaceName);
+        final ICompilationUnit interfaceCompilationUnit = CompilationUnitManipulatorHelper
+                .findICompilationUnitWithClassName(implementingInterfaceName, this.currentTestProject);
         final String namespace = interfaceCompilationUnit.getType(implementingInterfaceName).getFullyQualifiedName();
         classCompilationUnit.createImport(namespace, null, null);
     }
 
     protected <T> T addFieldToClassWithName(final String className, final String fieldType, final String fieldName,
             final Class<T> correspondingType) throws Throwable {
-        final ICompilationUnit icu = this.findICompilationUnitWithClassName(className);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
         if (!fieldType.equals("String")) {
             this.importCompilationUnitWithName(fieldType, icu);
         }
         final IType iClass = icu.getAllTypes()[0];
-        final int offset = this.getOffsetForClassifierManipulation(iClass);
+        final int offset = CompilationUnitManipulatorHelper.getOffsetForClassifierManipulation(iClass);
         final String fieldStr = "private " + fieldType + " " + fieldName + ";";
         final InsertEdit insertEdit = new InsertEdit(offset, fieldStr);
-        this.editCompilationUnit(icu, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
         TestUtil.waitForSynchronization();
         final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
         return CollectionBridge.claimOne(CorrespondenceInstanceUtil

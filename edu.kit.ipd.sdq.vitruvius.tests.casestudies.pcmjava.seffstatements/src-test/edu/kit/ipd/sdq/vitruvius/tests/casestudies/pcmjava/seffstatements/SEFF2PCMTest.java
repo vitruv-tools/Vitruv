@@ -31,6 +31,7 @@ import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm.JaMoPP2PCMTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
@@ -250,7 +251,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
                     throws Throwable, CoreException, InterruptedException, JavaModelException {
         final String downloadHelperCode = "\npublic void " + methodName + "( " + parameterCode + "){\n}\n";
         this.addClassInPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName), className);
-        this.addMethodToCompilationUnit(className, downloadHelperCode);
+        CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className, downloadHelperCode,
+                this.currentTestProject);
         this.editMethod(codeForHelper, className, methodName, false);
     }
 
@@ -270,7 +272,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     private void addInternalMethodToWebGUI(final String methodName, final String methodContent) throws Throwable {
         final String compilationUnitName = WEBGUI + "Impl";
         final String methodHeader = "private void " + methodName + "(){\n}";
-        this.addMethodToCompilationUnit(compilationUnitName, methodHeader);
+        CompilationUnitManipulatorHelper.addMethodToCompilationUnit(compilationUnitName, methodHeader,
+                this.currentTestProject);
         this.editMethod(methodContent, compilationUnitName, methodName, false);
 
     }
@@ -288,7 +291,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     }
 
     private String getExternalCallToOtherComponentClassCode() throws Throwable {
-        final ICompilationUnit icu = super.findICompilationUnitWithClassName(this.WEBGUI_CLASSNAME);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper
+                .findICompilationUnitWithClassName(this.WEBGUI_CLASSNAME, this.currentTestProject);
         super.importCompilationUnitWithName(this.MEDIA_STORE_CLASSNAME, icu);
         String code = this.MEDIA_STORE_CLASSNAME + " " + this.MEDIA_STORE_CLASSNAME.toLowerCase() + " = " + "new "
                 + this.MEDIA_STORE_CLASSNAME + "();";
@@ -305,12 +309,13 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     private ResourceDemandingSEFF editMethod(final String code, final String compilationUnitName,
             final String methodName, final boolean shouldHaveCorrespndingSEFFAfterEdit)
                     throws Throwable, JavaModelException {
-        final ICompilationUnit iCu = super.findICompilationUnitWithClassName(compilationUnitName);
+        final ICompilationUnit iCu = CompilationUnitManipulatorHelper
+                .findICompilationUnitWithClassName(compilationUnitName, this.currentTestProject);
         final IMethod iMethod = super.findIMethodByName(compilationUnitName, methodName, iCu);
         int offset = iMethod.getSourceRange().getOffset();
         offset += iMethod.getSource().length() - 2;
         final InsertEdit insertEdit = new InsertEdit(offset, code);
-        this.editCompilationUnit(iCu, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(iCu, insertEdit);
         TestUtil.waitForSynchronization(3 * 1000);
         final CorrespondenceInstance ci = this.getCorrespondenceInstance();
         final Method method = super.findJaMoPPMethodInICU(iCu, methodName);

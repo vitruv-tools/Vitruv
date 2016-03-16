@@ -20,6 +20,7 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -74,7 +75,8 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     private Parameter renameParameterInSignature(final String interfaceName, final String methodName,
             final String oldParameterName, final String newParameterName) throws Throwable {
-        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(interfaceName,
+                this.currentTestProject);
         final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
         final ILocalVariable localVariable = this.findParameterInIMethod(iMethod, oldParameterName);
         final String typeName = localVariable.getSource().split(" ")[0];
@@ -83,7 +85,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         final int length = paramName.length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
         final InsertEdit insertEdit = new InsertEdit(offset, newParameterName);
-        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, newParameterName);
@@ -93,14 +95,15 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
 
     private Parameter changeParameterType(final String interfaceName, final String methodName, final String paramName,
             final String newTypeName) throws Throwable {
-        final ICompilationUnit icu = this.findICompilationUnitWithClassName(interfaceName);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(interfaceName,
+                this.currentTestProject);
         final IMethod iMethod = this.findIMethodByName(interfaceName, methodName, icu);
         final ILocalVariable parameter = this.findParameterInIMethod(iMethod, paramName);
         final int offset = parameter.getSourceRange().getOffset();
         final int length = parameter.getSource().split(" ")[0].length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
         final InsertEdit insertEdit = new InsertEdit(offset, newTypeName + " ");
-        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, paramName);

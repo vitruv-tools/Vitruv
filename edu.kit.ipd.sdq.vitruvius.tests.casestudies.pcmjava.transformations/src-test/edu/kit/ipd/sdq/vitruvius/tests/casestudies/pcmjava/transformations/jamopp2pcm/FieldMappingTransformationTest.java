@@ -23,6 +23,7 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -161,7 +162,8 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     private InnerDeclaration renameFieldInClass(final String className, final String fieldName,
             final String newFieldName) throws Throwable {
-        final ICompilationUnit icu = super.findICompilationUnitWithClassName(className);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
         final IType type = icu.getType(className);
         final IField fieldToRename = type.getField(fieldName);
         final String fieldToRenameStr = fieldToRename.getSource();
@@ -172,7 +174,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final int lengthToDelete = fieldToRenameName.length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, lengthToDelete);
         final InsertEdit insertEdit = new InsertEdit(offset, newFieldName + ";");
-        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, newFieldName);
         return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
@@ -181,7 +183,8 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
 
     private InnerDeclaration changeFieldTypeInClass(final String className, final String fieldName,
             final String newFieldTypeName) throws Throwable {
-        final ICompilationUnit icu = super.findICompilationUnitWithClassName(className);
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
         final IType type = icu.getType(className);
         final IField fieldToRename = type.getField(fieldName);
         final String fieldSrc = fieldToRename.getSource();
@@ -190,7 +193,7 @@ public class FieldMappingTransformationTest extends JaMoPP2PCMTransformationTest
         final int lengthToDelete = fieldType.length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, lengthToDelete);
         final InsertEdit insertEdit = new InsertEdit(offset, newFieldTypeName);
-        super.editCompilationUnit(icu, deleteEdit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
         return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(

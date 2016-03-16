@@ -16,6 +16,7 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -59,7 +60,8 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
     private OperationSignature changeReturnType(final OperationSignature opSig) throws Throwable {
         final String className = opSig.getInterface__OperationSignature().getEntityName();
         final String methodName = opSig.getEntityName();
-        final ICompilationUnit cu = super.findICompilationUnitWithClassName(className);
+        final ICompilationUnit cu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
         final IMethod iMethod = cu.getType(className).getMethod(methodName, null);
         final int returnTypeOffset = iMethod.getSourceRange().getOffset();
         final String retTypeName = iMethod.getSource().split(" ")[0];
@@ -67,7 +69,7 @@ public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTes
         final String newReturnTypeName = "String ";
         final DeleteEdit deleteEdit = new DeleteEdit(returnTypeOffset, returnTypeLength);
         final InsertEdit insertEdit = new InsertEdit(returnTypeOffset, newReturnTypeName);
-        super.editCompilationUnit(cu, deleteEdit, insertEdit);
+        CompilationUnitManipulatorHelper.editCompilationUnit(cu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         return super.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, className, cu);
     }
