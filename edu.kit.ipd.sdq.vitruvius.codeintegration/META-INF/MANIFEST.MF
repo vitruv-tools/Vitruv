@@ -7,6 +7,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.xtend.lib;bundle-version="2.9.1",
  org.eclipse.emf.ecore;bundle-version="2.11.1",
  org.palladiosimulator.pcm;bundle-version="4.0.0",
+ edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.15",
@@ -15,5 +16,6 @@ Require-Bundle: org.eclipse.xtend.lib;bundle-version="2.9.1",
  org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.codeintegration.deco;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.codeintegration,
+ edu.kit.ipd.sdq.vitruvius.codeintegration.deco
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration

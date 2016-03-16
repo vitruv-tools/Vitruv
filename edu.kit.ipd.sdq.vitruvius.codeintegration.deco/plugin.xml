@@ -2,14 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-   <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondenceinstancedecorating">
-      <provides
-            priority="90"
-            provider="edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegrationCorrespondenceInstanceDecorating">
-      </provides>
-   </extension>
-
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated integration_correspondence -->
       <package

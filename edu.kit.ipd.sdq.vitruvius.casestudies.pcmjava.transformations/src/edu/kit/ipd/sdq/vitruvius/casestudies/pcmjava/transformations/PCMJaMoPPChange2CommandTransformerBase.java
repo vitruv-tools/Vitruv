@@ -1,20 +1,19 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.emftext.language.java.containers.Package;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegratedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
@@ -24,21 +23,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.EObjectChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2CommandTransforming {
@@ -58,7 +54,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final Pair<VURI, VURI> pcm2JaMoPP = new Pair<VURI, VURI>(pcmVURI, jaMoPPVURI);
-        final Pair<VURI, VURI> jamopp2PCM = new Pair<VURI, VURI>(jaMoPPVURI, jaMoPPVURI);
+        final Pair<VURI, VURI> jamopp2PCM = new Pair<VURI, VURI>(jaMoPPVURI, pcmVURI);
         this.pairList = new ArrayList<Pair<VURI, VURI>>();
         this.pairList.add(jamopp2PCM);
         this.pairList.add(pcm2JaMoPP);
@@ -110,52 +106,59 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
                     @Override
                     public TransformationResult call() {
                         // execute command converting
-                    	boolean createdByIntegration  = elementsInChangeHaveBeenCreatedByIntegration(emfModelChange, blackboard);
-                    	if (createdByIntegration) {
-                    		userInteracting.showMessage(UserInteractionType.MODELESS, "Elements in change created by integration. Fix manually.");
-                    		return new TransformationResult();
-                    	} else {
-	                        final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
-	                                .executeTransformationForChange(emfModelChange.getEChange());
-	                        return transformationResult;
-	                    }
+                        final boolean createdByIntegration = PCMJaMoPPChange2CommandTransformerBase.this
+                                .elementsInChangeHaveBeenCreatedByIntegration(emfModelChange, blackboard);
+                        if (createdByIntegration) {
+                            PCMJaMoPPChange2CommandTransformerBase.this.userInteracting.showMessage(
+                                    UserInteractionType.MODELESS,
+                                    "Elements in change created by integration. Fix manually.");
+                            return new TransformationResult();
+                        } else {
+                            final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
+                                    .executeTransformationForChange(emfModelChange.getEChange());
+                            return transformationResult;
+                        }
                     }
                 });
 
         return command;
     }
 
-	protected boolean elementsInChangeHaveBeenCreatedByIntegration(EMFModelChange emfModelChange,
-			Blackboard blackboard) {
-		CorrespondenceProviding correspondenceProviding = (CorrespondenceProviding) blackboard.getModelProviding();
-		VURI mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
-		VURI mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
-		IntegratedCorrespondenceInstance correspondenceInstance = (IntegratedCorrespondenceInstance) correspondenceProviding.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
-		EChange eChange = emfModelChange.getEChange();
-		EObject eObj = null;
-		if (eChange instanceof EFeatureChange<?>) {
-			EFeatureChange<?> featureChange = (EFeatureChange<?>) emfModelChange.getEChange();
-			eObj = featureChange.getNewAffectedEObject();
-		} else if (eChange instanceof ReplaceRootEObject<?>) {
-			ReplaceRootEObject<?> replChange = (ReplaceRootEObject<?>) emfModelChange.getEChange();
-			eObj = replChange.getNewValue();
-		} else if (eChange instanceof DeleteRootEObject<?>) {
-			DeleteRootEObject<?> delChange = (DeleteRootEObject<?>) emfModelChange.getEChange();
-			eObj = delChange.getOldValue();
-		}
-		
-		if (eObj != null) {
-			for (Correspondence correspondence : correspondenceInstance
-					.getCorrespondencesThatInvolveAtLeast(Collections.singleton(eObj))) {
-				if (correspondenceInstance.createdByIntegration(correspondence)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    protected boolean elementsInChangeHaveBeenCreatedByIntegration(final EMFModelChange emfModelChange,
+            final Blackboard blackboard) {
+        final CorrespondenceInstance<?> ci = blackboard.getCorrespondenceInstance();
+        final VURI mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+        final VURI mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
 
-	private List<Command> transformCompositeChange(final CompositeChange compositeChange, final Blackboard blackboard) {
+        final EChange eChange = emfModelChange.getEChange();
+        EObject eObj = null;
+        if (eChange instanceof EFeatureChange<?>) {
+            final EFeatureChange<?> featureChange = (EFeatureChange<?>) emfModelChange.getEChange();
+            eObj = featureChange.getNewAffectedEObject();
+        } else if (eChange instanceof ReplaceRootEObject<?>) {
+            final ReplaceRootEObject<?> replChange = (ReplaceRootEObject<?>) emfModelChange.getEChange();
+            eObj = replChange.getNewValue();
+        } else if (eChange instanceof DeleteRootEObject<?>) {
+            final DeleteRootEObject<?> delChange = (DeleteRootEObject<?>) emfModelChange.getEChange();
+            eObj = delChange.getOldValue();
+        }
+
+        final CorrespondenceInstance<IntegrationCorrespondence> integrationView = ci
+                .getView(IntegrationCorrespondence.class);
+        if (eObj != null) {
+            final Set<EObject> set = CollectionBridge.toSet(eObj);
+            final Set<IntegrationCorrespondence> correspondences = integrationView
+                    .getCorrespondencesThatInvolveAtLeast(set);
+            for (final IntegrationCorrespondence integratedCorrespondence : correspondences) {
+                if (integratedCorrespondence.isCreatedByIntegration()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private List<Command> transformCompositeChange(final CompositeChange compositeChange, final Blackboard blackboard) {
         final List<Command> commands = new ArrayList<Command>();
         for (final Change change : compositeChange.getChanges()) {
             // handle CompositeChanges in CompositeChanges
@@ -220,10 +223,10 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     protected abstract VitruviusTransformationRecordingCommand executeChangeRefiner(
             final List<Change> changesForTransformation, final Blackboard blackboard);
-    
+
     @Override
-    public void setUserInteracting(UserInteracting userInteracting) {
-    	this.userInteracting = userInteracting;
-    	this.transformationExecuter.setUserInteracting(userInteracting);
+    public void setUserInteracting(final UserInteracting userInteracting) {
+        this.userInteracting = userInteracting;
+        this.transformationExecuter.setUserInteracting(userInteracting);
     }
 }

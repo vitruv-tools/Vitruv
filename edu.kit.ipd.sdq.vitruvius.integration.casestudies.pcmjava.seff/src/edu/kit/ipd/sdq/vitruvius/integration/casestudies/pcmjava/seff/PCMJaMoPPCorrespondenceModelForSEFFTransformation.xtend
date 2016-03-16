@@ -40,7 +40,7 @@ class PCMJaMoPPCorrespondenceModelForSEFFTransformation implements PCMJaMoPPInte
 		scdmRepo.abstractActionClassMethodLink.forEach[createAbstractAction2ClassMethodLink(currentCorrespondences)]
 	}
 
-	def createSeff2MethodMappings(SEFF2MethodMapping seff2MethodMapping,
+	def private createSeff2MethodMappings(SEFF2MethodMapping seff2MethodMapping,
 		PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
 		val seff = seff2MethodMapping.seff
 		var StatementListContainer statementListContainer = currentCorrespondences.resolveJaMoppProxy(seff2MethodMapping.statementListContainer)
@@ -53,9 +53,10 @@ class PCMJaMoPPCorrespondenceModelForSEFFTransformation implements PCMJaMoPPInte
 	private def createMethod2ResourceDemandingInternalBehaviorLink(
 		MethodLevelResourceDemandingInternalBehaviorLink method2InternalBehavior,
 		PCMJaMoPPCorrespondenceModelTransformation currentCorrespondences) {
-		val jaMoPPClass = method2InternalBehavior.function.containingConcreteClassifier
+		val method = currentCorrespondences.resolveJaMoppProxy(method2InternalBehavior.function)
+		val jaMoPPClass = method.containingConcreteClassifier
 		val parentCorrespondence = findParentCorrespondenceWithType(jaMoPPClass, currentCorrespondences, BasicComponent)
-		currentCorrespondences.addCorrespondence(method2InternalBehavior.function,
+		currentCorrespondences.addCorrespondence(method,
 			method2InternalBehavior.resourceDemandingInternalBehaviour, parentCorrespondence)
 	}
 
@@ -66,7 +67,7 @@ class PCMJaMoPPCorrespondenceModelForSEFFTransformation implements PCMJaMoPPInte
 			// we do not create a correspondence for StartAction and StopAction 
 			return
 		}
-		val classMethod = abstractAction2classMethod.classMethod
+		val classMethod = currentCorrespondences.resolveJaMoppProxy(abstractAction2classMethod.classMethod)
 		val parentCorrespondence = findParentCorrespondenceWithType(classMethod, currentCorrespondences,
 			ResourceDemandingBehaviour)
 		currentCorrespondences.addCorrespondence(abstractAction, classMethod, parentCorrespondence)

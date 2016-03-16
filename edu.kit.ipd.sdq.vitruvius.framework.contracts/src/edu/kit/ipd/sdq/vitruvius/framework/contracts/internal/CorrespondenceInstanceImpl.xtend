@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
@@ -25,6 +26,8 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
+import java.util.concurrent.Callable
+import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.core.internal.resources.ResourceException
 import org.eclipse.emf.common.util.EList
@@ -61,9 +64,15 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	}
 
 	override void addCorrespondence(Correspondence correspondence) {
-		addCorrespondenceToModel(correspondence)
-		registerCorrespondence(correspondence)
-		setChangeAfterLastSaveFlag()
+		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(
+			new Callable<Void>() {
+				override call() throws Exception {
+					addCorrespondenceToModel(correspondence)
+					registerCorrespondence(correspondence)
+					setChangeAfterLastSaveFlag()
+					return null
+				}
+	    }, this.modelProviding)
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {
@@ -152,8 +161,18 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return createAndAddManualCorrespondence(eObjects1, eObjects2)
 	}
 
+	override  createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, 
+		Supplier<Correspondence> correspondenceCreator) {
+		val Correspondence correspondence = correspondenceCreator.get
+		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
+	}
+
 	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		var Correspondence correspondence = CorrespondenceFactory::eINSTANCE.createManualCorrespondence()
+		val correspondence = CorrespondenceFactory.eINSTANCE.createManualCorrespondence
+		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
+	} 
+
+	def private createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, Correspondence correspondence){
 		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
 		addCorrespondence(correspondence)
 		return correspondence
@@ -589,8 +608,12 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 	}
 	 }
 	 
-	 override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		return new CorrespondenceInstanceView(URI, resource, correspondenceType, this);
+	override <U extends Correspondence> getView(Class<U> correspondenceType) {
+		return new CorrespondenceInstanceView(correspondenceType, this);
+	}
+	
+	override <U extends Correspondence> getEditableView(Class<U> correspondenceType, Supplier<U> correspondenceCreator) {
+		return new CorrespondenceInstanceView(correspondenceType, this, correspondenceCreator);
 	}
 	
 }		

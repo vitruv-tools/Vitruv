@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.IntegratedCorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.IntegrationInfoImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
@@ -40,6 +38,7 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -47,15 +46,14 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
  * @author originally by Benjamin Hettwer, changed for thesis by Frederik Petersen
  */
 class PCMJaMoPPCorrespondenceModelTransformation {
-	
-	private HashSet<String> existingEntries = new HashSet; 
-	protected Logger logger = Logger.getRootLogger
-	
-	// Absolute paths needed
-	private String scdmPath; //in, single file
-	private String pcmPath; //in, single file
-	private String jamoppPath; //in, root src folder, directory
 
+	private HashSet<String> existingEntries = new HashSet;
+	protected Logger logger = Logger.getRootLogger
+
+	// Absolute paths needed
+	private String scdmPath; // in, single file
+	private String pcmPath; // in, single file
+	private String jamoppPath; // in, root src folder, directory
 	@Accessors(PUBLIC_GETTER)
 	private Resource scdm
 	private Resource pcm
@@ -69,17 +67,17 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 	private Set<Package> packages
 	private Package rootPackage
-	
+
 	private IPath projectBase
 
 	new(String scdmPath, String pcmPath, String jamoppPath, VSUMImpl vsum, IPath projectBase) {
-		
+
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
-		//FIXME do that without a cast
+		// FIXME do that without a cast
 		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB) as CorrespondenceInstanceDecorator;
-		
+
 		this.scdmPath = scdmPath;
 		this.pcmPath = pcmPath;
 		this.jamoppPath = jamoppPath;
@@ -95,8 +93,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	}
 
 	/**
- 	 * Loads PCM, SDCDM and JaMoPP resources.
- 	 */
+	 * Loads PCM, SDCDM and JaMoPP resources.
+	 */
 	private def prepareTransformation() {
 
 		// Load pcm, scdm and jamopp resourceSet
@@ -141,28 +139,28 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		scdmRepo.methodLevelSourceCodeLink.forEach[createMethodCorrespondence]
 
 		scdmRepo.dataTypeSourceCodeLink.forEach[createDataTypeCorrespondence]
-		
+
 		findAndExecuteAfterTransformationExtensions()
-				
+
 		// forces saving of correspondence instance
 		this.modelProviding.saveExistingModelInstanceOriginal(VURI.getInstance(pcmRepo.eResource))
 	}
-	
+
 	def private findAndExecuteAfterTransformationExtensions() {
-		EclipseBridge.getRegisteredExtensions(
-                PCMJaMoPPIntegrationExtending.ID, VitruviusConstants.getExtensionPropertyName(),
-                PCMJaMoPPIntegrationExtending).forEach[it.afterBasicTransformations(this)];
+		EclipseBridge.getRegisteredExtensions(PCMJaMoPPIntegrationExtending.ID,
+			VitruviusConstants.getExtensionPropertyName(), PCMJaMoPPIntegrationExtending).forEach [
+			it.afterBasicTransformations(this)
+		];
 
 	}
 
-	private def createRepoPackageCorrespondence() {	
-		addCorrespondence(pcmRepo, getRootPackage)	
+	private def createRepoPackageCorrespondence() {
+		addCorrespondence(pcmRepo, getRootPackage)
 	}
-	
+
 //	private def createRepoPackageCorrespondence(Package jaMoppPackage) {
 //		addCorrespondence(pcmRepo, jaMoppPackage)
 //	}
-
 	private def createComponentClassCorrespondence(ComponentImplementingClassesLink componentClassLink) {
 		var pcmComponent = componentClassLink.component;
 
@@ -177,8 +175,9 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 			val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
 			val deresolvedRootPackage = deresolveIfNesessary(getRootPackage)
-			
-			var parentRepoPackageCorr = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet, deresolvedRootPackage.toSet).claimOne
+
+			var parentRepoPackageCorr = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet,
+				deresolvedRootPackage.toSet).claimOne
 
 			// 2. Component <-> Package correspondence
 			addCorrespondence(pcmComponent, package, parentRepoPackageCorr)
@@ -194,11 +193,12 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	private def createInterfaceCorrespondence(InterfaceSourceCodeLink interfaceLink) {
 		var pcmInterface = interfaceLink.interface;
 		var jamoppType = resolveJaMoppProxy(interfaceLink.gastClass) as Type;
-		
+
 		// Get parent Repository <-> Package correspondence from correspondence instance	
 		val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
 		val deresolvedRootPackage = deresolveIfNesessary(getRootPackage)
-		var parentCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet, deresolvedRootPackage.toSet).claimOne
+		var parentCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet,
+			deresolvedRootPackage.toSet).claimOne
 
 		// 5. PCM Interface <-> CompUnit correspondence
 		addCorrespondence(pcmInterface, jamoppType.containingCompilationUnit, parentCorrespondence)
@@ -216,11 +216,12 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// Get parent Interface <-> Type correspondence from correspondence instance
 		val deresolvedPcmInterface = deresolveIfNesessary(pcmInterface)
 		val deresolvedJamoppInterface = deresolveIfNesessary(jamoppInterface)
-		var interfaceCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmInterface.toSet, deresolvedJamoppInterface.toSet)
-		if(interfaceCorrespondence.nullOrEmpty){
+		var interfaceCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmInterface.toSet,
+			deresolvedJamoppInterface.toSet)
+		if (interfaceCorrespondence.nullOrEmpty) {
 			return
 		}
- 
+
 		// 7. OperationSignature <-> jaMopp Method correspondence
 		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppMethod, interfaceCorrespondence.get(0));
 
@@ -243,7 +244,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// Get parent Repository <-> Package correspondence from correspondence instance
 		val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
 		val deresolvedRootPackage = deresolveIfNesessary(getRootPackage)
-		var parentCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet, deresolvedRootPackage.toSet).claimOne
+		var parentCorrespondence = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet,
+			deresolvedRootPackage.toSet).claimOne
 
 		// 9. PCM DataType <-> JaMopp CompUnit correspondence
 		addCorrespondence(pcmDataType, jamoppType.containingCompilationUnit, parentCorrespondence)
@@ -282,14 +284,14 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 			return proxy;
 		return EcoreUtil.resolve(proxy, jaMoppResources.get(0).resourceSet) as T;
 	}
-	
+
 	/**
 	 * Returns top-level package of the loaded jamopp resource set.
 	 */
 	private def Package getRootPackage() {
-		if(rootPackage != null)
+		if (rootPackage != null)
 			return rootPackage
-		
+
 		// Let's assume it's the one with the shortest namespace
 		rootPackage = packages.get(0)
 		for (Package package : packages) {
@@ -300,7 +302,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		}
 		return rootPackage
 	}
-	
+
 	protected def Correspondence addCorrespondence(EObject pcmObject, EObject jamoppObject) {
 		return addCorrespondence(pcmObject, jamoppObject, null);
 	}
@@ -321,25 +323,22 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		var identifier = cInstance.calculateTUIDFromEObject(deresolvedA).toString +
 			cInstance.calculateTUIDFromEObject(deresolvedB).toString
 		if (!existingEntries.contains(identifier)) {
-			var correspondence = cInstance.createAndAddCorrespondence(deresolvedA, deresolvedB);
+			val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
+			val integratedCorrespondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList);
+			
 			existingEntries.add(identifier);
-			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);		
-			
-				
-			logger.info("Setting Integration Annotation for newly created correspondence.")	
-			var iCI = cInstance.getFirstCorrespondenceInstanceDecoratorOfTypeInChain(new IntegratedCorrespondenceInstance(null).class)
-			iCI.setIntegrationInfo(correspondence, new IntegrationInfoImpl(true));
-			
-			return correspondence;
+			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);
+
+			return integratedCorrespondence;
 		}
 	}
-
+	
 	/**
 	 * Converts the absolute resource URI of given EObject to platform URI
 	 * or does nothing if it already has one.
 	 */
 	public def <T extends EObject> T deresolveIfNesessary(T object) {
-		if(null == object.eResource){
+		if (null == object.eResource) {
 			return object
 		}
 		var URI uri = object.eResource.URI

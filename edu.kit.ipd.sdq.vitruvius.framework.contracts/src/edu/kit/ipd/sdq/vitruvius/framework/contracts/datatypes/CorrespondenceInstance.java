@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -174,8 +175,10 @@ public interface CorrespondenceInstance<T extends Correspondence> {
     /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
      */
-    @Deprecated
     public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
+
+    public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+            Supplier<Correspondence> correspondenceCreator);
 
     public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
@@ -205,5 +208,18 @@ public interface CorrespondenceInstance<T extends Correspondence> {
      * @author Heiko Klare
      */
     public <U extends Correspondence> CorrespondenceInstance<U> getView(Class<U> correspondenceType);
+
+    /**
+     * Creates a editable view on the {@link CorrespondenceInstance} restricted to the specified
+     * kind of {@link Correspondence}. To enable the creation of new Correspondences a Supplier
+     * method has to be provided to the writable view.
+     *
+     * @param correspondenceType
+     *            the type of {@link Correspondence}s to be handled by the view
+     * @param correspondenceCreator
+     * @return the restricted editable view on the {@link CorrespondenceInstance}
+     */
+    public <U extends Correspondence> CorrespondenceInstance<U> getEditableView(Class<U> correspondenceType,
+            Supplier<U> correspondenceCreator);
 
 }
