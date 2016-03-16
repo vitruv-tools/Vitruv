@@ -164,7 +164,7 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 		// Add supertypes to classes
 		mappingCorrespondenceEClass.getESuperTypes().add(theCorrespondencePackage.getCorrespondence());
 
-		// Initialize classes, features, and operations; add parameters
+		// Initialize classes and features; add operations and parameters
 		initEClass(mappingCorrespondenceEClass, MappingCorrespondence.class, "MappingCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

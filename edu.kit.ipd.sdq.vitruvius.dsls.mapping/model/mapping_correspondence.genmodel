@@ -4,7 +4,7 @@
     modelPluginID="edu.kit.ipd.sdq.vitruvius.dsls.mapping" modelName="Mapping_correspondence"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../edu.kit.ipd.sdq.vitruvius.framework.contracts/metamodel/correspondence.genmodel#//correspondence"
-    operationReflection="true" importOrganizing="true">
+    importOrganizing="true">
   <foreignModel>mapping_correspondence.ecore</foreignModel>
   <genPackages prefix="Mapping" basePackage="edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence"
       disposableProviderFactory="true" ecorePackage="mapping_correspondence.ecore#/">
