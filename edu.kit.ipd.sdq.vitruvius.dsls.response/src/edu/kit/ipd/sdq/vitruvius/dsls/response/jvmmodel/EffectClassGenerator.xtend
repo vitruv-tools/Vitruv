@@ -100,7 +100,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			body = '''
 				LOGGER.debug("Called effect " + this.getClass().getSimpleName() + " with input:");
 				«FOR inputParameter : inputParameters»
-					LOGGER.debug("   " + «inputParameter.name».getClass().getSimpleName() + ": " + «inputParameter.name»);
+					LOGGER.debug("   " + «inputParameter.parameterType.type.qualifiedName».class.getSimpleName() + ": " + «inputParameter.name»);
 				«ENDFOR»
 
 				try {
@@ -248,8 +248,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
 			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = generateInputParameters();
-			val rootParameter = generateModelElementParameter(createdElement);
+			val inputParameters = effect.generateInputParameters();
+			val rootParameter = effect.generateModelElementParameter(createdElement);
 			parameters += inputParameters;
 			parameters += rootParameter;
 			exceptions += typeRef(IOException);
@@ -271,8 +271,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
 			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = generateInputParameters();
-			val rootParameter = generateModelElementParameter(retrievedElement);
+			val inputParameters = effect.generateInputParameters();
+			val rootParameter = effect.generateModelElementParameter(retrievedElement);
 			parameters += inputParameters;
 			parameters += rootParameter;
 			exceptions += typeRef(IOException);

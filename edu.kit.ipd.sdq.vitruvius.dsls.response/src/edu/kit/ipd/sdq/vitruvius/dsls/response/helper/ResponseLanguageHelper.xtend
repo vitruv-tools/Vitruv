@@ -20,6 +20,9 @@ import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
+import org.eclipse.xtext.common.types.JvmTypeReference
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -124,4 +127,9 @@ final class ResponseLanguageHelper {
 	public static def Class<?> getJavaClass(EClass element) {
 		return element.instanceClass;
 	}
+	
+	public static def Class<?> getJavaClass(ModelElement element) {
+		return element.element.javaClass;
+	}
+	
 }

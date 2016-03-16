@@ -69,7 +69,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			]
 			members += file.effects.map[effect | toMethod("call" + effect.name, typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
-				parameters += effect.inputElements.map[toParameter(name, typeRef(it.element.instanceClass))]
+				parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
 				body = '''
 					new «effect.qualifiedName»(this.userInteracting, this.blackboard, this.transformationResult).execute(«
 						FOR parameter : parameters SEPARATOR ", "»«parameter.name»«ENDFOR»);'''			

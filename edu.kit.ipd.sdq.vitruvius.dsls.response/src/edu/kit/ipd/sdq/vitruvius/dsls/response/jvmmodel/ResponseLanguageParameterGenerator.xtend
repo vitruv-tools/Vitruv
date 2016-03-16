@@ -10,6 +10,9 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 
 class ResponseLanguageParameterGenerator {
 	private static val BLACKBOARD_PARAMETER_NAME = "blackboard";
@@ -47,6 +50,13 @@ class ResponseLanguageParameterGenerator {
 		return generateParameter(parameterContext, USER_INTERACTING_PARAMETER_NAME, UserInteracting);
 	}
 	
+	protected def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
+		if (parameterType == null) {
+			return null;
+		}
+		return context.toParameter(parameterName, parameterType);
+	}
+	
 	protected def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
 		if (parameterClass == null) {
 			return null;
@@ -59,5 +69,8 @@ class ResponseLanguageParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
+	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<ModelElement> modelElements, Iterable<NamedJavaElement> javaElements) {
+		return modelElements.map[generateParameter(contextObject, it.name, it.element.instanceClass)] + javaElements.map[toParameter(contextObject, it.name, it.type)];
+	}
 	
 }

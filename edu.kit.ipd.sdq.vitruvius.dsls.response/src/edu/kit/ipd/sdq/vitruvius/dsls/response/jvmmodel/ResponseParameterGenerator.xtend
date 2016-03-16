@@ -83,4 +83,5 @@ package class ResponseParameterGenerator {
 		val changeType = typeRef(parameterClass, typeParameters);
 		return context.toParameter(parameterName, changeType);
 	}
+	
 }

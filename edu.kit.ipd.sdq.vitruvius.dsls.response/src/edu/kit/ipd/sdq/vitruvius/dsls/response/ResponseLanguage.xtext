@@ -27,14 +27,10 @@ ImplicitEffect:
 
 ExplicitEffect:
 	'effect:' name=ValidID
-	'input:' inputElements+=NamedModelElement (',' inputElements+=NamedModelElement)*
-	//'java input:' javaInputElements+=NamedJavaElement
+	('model input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
+	('java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?
 	Effect;
-
-NamedJavaElement:
-	type=JvmTypeReference name=ValidID
-;
-
+	
 TargetChange:
 	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
 

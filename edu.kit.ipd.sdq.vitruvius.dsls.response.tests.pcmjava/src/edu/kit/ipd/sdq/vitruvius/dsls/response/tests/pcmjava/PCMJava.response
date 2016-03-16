@@ -11,23 +11,21 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.emftext.language.java.classifiers.ConcreteClassifier
-import org.emftext.language.java.classifiers.Interface
 import org.palladiosimulator.pcm.repository.OperationInterface
-import java.util.List
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.emftext.language.java.modifiers.ModifiersFactory
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-
-response: CreatePackageForRepository
-trigger: insert root pcm.repository.Repository
-update instances of java
-execute: {
-	val newRepository = change.newValue;
-	callCreatePackage(newRepository);
-}
+//
+//response: CreatePackageForRepository
+//trigger: insert root pcm.repository.Repository
+//update instances of java
+//execute: {
+//	val newRepository = change.newValue;
+//	callCreatePackage(newRepository);
+//}
 //
 //response: CreatePackageForComponent
 //trigger: insert in list pcm.repository.Repository[components__Repository]
@@ -49,14 +47,16 @@ execute: {
 
 
 effect: CreatePackage
-input: pcm.core.entity.NamedElement as packageCorrespondenceSource
+model input: pcm.core.entity.NamedElement as packageCorrespondenceSource, java.containers.Package as parentPackage
+java input: String as packageName
 create element: javaPackage of type java.containers.Package corresponding to packageCorrespondenceSource
-	persist as root at project-relative location: javaProjectSrc + javaPackage.namespacesAsString.replace(".", "/") + javaPackage.name.toFirstLower + "/" + packageInfoClassName
+	persist as root at project-relative location: buildJavaFilePath(javaPackage)
 execute: {
-	if (packageCorrespondenceSource instanceof RepositoryComponent) {
-		javaPackage.namespaces += packageCorrespondenceSource.repository__RepositoryComponent.entityName;
+	if (parentPackage != null) {
+		javaPackage.namespaces += parentPackage.namespaces;
+		javaPackage.namespaces += parentPackage.name; 
 	}
-	javaPackage.name = packageCorrespondenceSource.entityName.toFirstLower;
+	javaPackage.name = packageName;
 }
 
 
@@ -65,39 +65,90 @@ trigger: insert root pcm.repository.Repository
 update instances of java
 execute: {
 	val repository = change.newValue;
-	callCreateRepositoryPackage(repository);
-	callCreateContractsPackage(repository)
+	callCreatePackage(repository, null, repository.entityName);
+	callCreateRepositorySubPackages(repository);
 }
 
-effect: CreateRepositoryPackage
-input: pcm.repository.Repository as repository
-create element: javaPackage of type java.containers.Package corresponding to repository
-	persist as root at project-relative location: buildJavaFilePath(packageInfoClassName, javaPackage.namespaces)
+effect: CreateRepositorySubPackages
+model input: pcm.repository.Repository as repository
+retrieve element: repositoryPackage of type java.containers.Package corresponding to repository
 execute: {
-	javaPackage.name = repository.entityName;
+	callCreatePackage(repository, repositoryPackage, "datatypes");
+	callCreatePackage(repository, repositoryPackage, "contracts");
 }
 
-effect: CreateContractsPackage
-input: pcm.repository.Repository as repository
-create element: javaPackage of type java.containers.Package corresponding to repository
-	persist as root at project-relative location: buildJavaFilePath(packageInfoClassName, javaPackage.namespaces)
-execute: {
-	javaPackage.namespaces += repository.entityName;
-	javaPackage.name = "contracts"
-}
+//effect: CreateRepositoryPackage
+//model input: pcm.repository.Repository as repository
+//create element: javaPackage of type java.containers.Package corresponding to repository
+//	persist as root at project-relative location: buildJavaFilePath(javaPackage)
+//execute: {
+//	javaPackage.name = repository.entityName;
+//}
+
+//effect: CreateContractsPackage
+//model input: pcm.repository.Repository as repository
+//create element: javaPackage of type java.containers.Package corresponding to repository
+//	persist as root at project-relative location: buildJavaFilePath(javaPackage)
+//execute: {
+//	javaPackage.namespaces += repository.entityName;
+//	javaPackage.name = "contracts"
+//}
 
 /* TODO HK: Add move of components somehow. E.g. separate effects from trigger code */
+//response: RenameRepositoryPackages
+//trigger: replace value pcm.repository.Repository[entityName]
+//retrieve element: rootPackage of type java.containers.Package corresponding to change.newAffectedEObject
+//	with rootPackage.name != "contracts" && rootPackage.name != "datatypes" // TODO HK: Check for change.oldValue currently not possible
+//	move containing model to project-relative location: repositoryToPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+//retrieve element: contractsPackage of type java.containers.Package corresponding to change.newAffectedEObject
+//	with contractsPackage.name == "contracts"
+//	move containing model to project-relative location: repositoryToContractsPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+//retrieve element: datatypesPackage of type java.containers.Package corresponding to change.newAffectedEObject
+//	with datatypesPackage.name == "datatypes"
+//	move containing model to project-relative location: repositoryToDatatypesPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+//execute: {
+//	val repository = change.newAffectedEObject as Repository;
+//	rootPackage.name = change.newValue;
+//	contractsPackage.namespaces.clear();
+//	contractsPackage.namespaces += repository.entityName;
+//	datatypesPackage.namespaces.clear();
+//	datatypesPackage.namespaces += repository.entityName;
+//}
+
+//response: RenamePackageForBasicComponent
+//trigger: replace value pcm.repository.BasicComponent[entityName]
+//retrieve element: javaPackage of type java.containers.Package corresponding to change.newAffectedEObject
+//	move containing model to project-relative location: componentToPackageInfo.getPathInProject(change.newAffectedEObject as BasicComponent)
+//execute: {
+//	javaPackage.namespaces.clear();
+//	javaPackage.namespaces += repositoryToPackageInfo.getPackageName(change.newAffectedEObject.eContainer() as Repository);
+//	javaPackage.name = change.newValue
+//}
+//
+//response: RenameClassForBasicComponent
+//trigger: replace value pcm.repository.BasicComponent[entityName]
+//retrieve element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newAffectedEObject
+//	move containing model to project-relative location: componentToClass.getPathInProject(change.newAffectedEObject as BasicComponent)
+//retrieve element: javaClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+//execute: {
+//	val component = change.newAffectedEObject as BasicComponent;
+//	javaClass.name = componentToClass.getClassName(component);
+//	compilationUnit.name = componentToClass.getClassName(component);
+//	compilationUnit.namespaces.clear;
+//	compilationUnit.namespaces += componentToClass.getPackageName(component);
+//}
+
 response: RenameRepositoryPackages
 trigger: replace value pcm.repository.Repository[entityName]
 retrieve element: rootPackage of type java.containers.Package corresponding to change.newAffectedEObject
 	with rootPackage.name != "contracts" && rootPackage.name != "datatypes" // TODO HK: Check for change.oldValue currently not possible
-	move containing model to project-relative location: repositoryToPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+	move containing model to project-relative location: buildJavaFilePath(rootPackage)
 retrieve element: contractsPackage of type java.containers.Package corresponding to change.newAffectedEObject
 	with contractsPackage.name == "contracts"
-	move containing model to project-relative location: repositoryToContractsPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+	move containing model to project-relative location: buildJavaFilePath(contractsPackage)
 retrieve element: datatypesPackage of type java.containers.Package corresponding to change.newAffectedEObject
 	with datatypesPackage.name == "datatypes"
-	move containing model to project-relative location: repositoryToDatatypesPackageInfo.getPathInProject(change.newAffectedEObject as Repository)
+	move containing model to project-relative location: buildJavaFilePath(datatypesPackage)
 execute: {
 	val repository = change.newAffectedEObject as Repository;
 	rootPackage.name = change.newValue;
@@ -105,18 +156,88 @@ execute: {
 	contractsPackage.namespaces += repository.entityName;
 	datatypesPackage.namespaces.clear();
 	datatypesPackage.namespaces += repository.entityName;
+	
+	for (component : repository.components__Repository.filter(BasicComponent)) {
+		callRenameBasicComponentPackageAndClass(component);
+	}
 }
 
+//response: RenamePackageForBasicComponent
+//trigger: replace value pcm.repository.BasicComponent[entityName]
+//retrieve element: javaPackage of type java.containers.Package corresponding to change.newAffectedEObject
+//	move containing model to project-relative location: componentToPackageInfo.getPathInProject(change.newAffectedEObject as BasicComponent)
+//execute: {
+//	javaPackage.namespaces.clear();
+//	javaPackage.namespaces += repositoryToPackageInfo.getPackageName(change.newAffectedEObject.eContainer() as Repository);
+//	javaPackage.name = change.newValue
+//}
 
+//response: RenameClassForBasicComponent
+//trigger: replace value pcm.repository.BasicComponent[entityName]
+//retrieve element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newAffectedEObject
+//	move containing model to project-relative location: componentToClass.getPathInProject(change.newAffectedEObject as BasicComponent)
+//retrieve element: javaClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+//execute: {
+//	val component = change.newAffectedEObject as BasicComponent;
+//	javaClass.name = componentToClass.getClassName(component);
+//	compilationUnit.name = componentToClass.getClassName(component);
+//	compilationUnit.namespaces.clear;
+//	compilationUnit.namespaces += componentToClass.getPackageName(component);
+//}
 
-response: CreateDatatypesPackageForRepository
-trigger: insert root pcm.repository.Repository
-create element: javaPackage of type java.containers.Package corresponding to change.newValue
-persist as root at project-relative location: repositoryToDatatypesPackageInfo.getPathInProject(change.newValue)
+response: RenameClassForBasicComponent
+trigger: replace value pcm.repository.BasicComponent[entityName]
+update instances of java
 execute: {
-	javaPackage.namespaces += change.newValue.entityName;
-	javaPackage.name = "datatypes"
+	val component = change.newAffectedEObject as BasicComponent;
+	callRenameBasicComponentPackageAndClass(component);
 }
+
+effect: RenameBasicComponentPackageAndClass
+model input: pcm.repository.BasicComponent as component
+retrieve element: repositoryPackage of type java.containers.Package corresponding to component.repository__RepositoryComponent
+	with repositoryPackage.name.equals(component.repository__RepositoryComponent.entityName)
+execute: {
+	callRenameBasicComponentPackage(component, repositoryPackage);
+	callRenameBasicComponentClass(component);
+}
+
+effect: RenameBasicComponentPackage
+model input: pcm.repository.BasicComponent as component, java.containers.Package as repositoryPackage  
+retrieve element: componentPackage of type java.containers.Package corresponding to component
+	move containing model to project-relative location: buildJavaFilePath(componentPackage)
+execute: {
+	componentPackage.namespaces.clear();
+	componentPackage.namespaces += repositoryPackage.namespaces;
+	componentPackage.namespaces += repositoryPackage.name;
+	componentPackage.name = component.entityName;
+}
+
+effect: RenameBasicComponentClass
+model input: pcm.repository.BasicComponent as component
+retrieve element: componentPackage of type java.containers.Package corresponding to component
+retrieve element: compilationUnit of type java.containers.CompilationUnit corresponding to component
+	move containing model to project-relative location: buildJavaFilePath(compilationUnit)
+retrieve element: javaClass of type java.classifiers.Class corresponding to component
+execute: {
+	val componentImplementationName = component.entityName + "Impl";
+	javaClass.name = componentImplementationName;
+	compilationUnit.name = componentImplementationName;
+	compilationUnit.namespaces.clear;
+	compilationUnit.namespaces += componentPackage.namespaces;
+	compilationUnit.namespaces += componentPackage.name;
+}
+
+
+
+//response: CreateDatatypesPackageForRepository
+//trigger: insert root pcm.repository.Repository
+//create element: javaPackage of type java.containers.Package corresponding to change.newValue
+//persist as root at project-relative location: repositoryToDatatypesPackageInfo.getPathInProject(change.newValue)
+//execute: {
+//	javaPackage.namespaces += change.newValue.entityName;
+//	javaPackage.name = "datatypes"
+//}
 
 response: CreateInterfaceForInterface
 trigger: insert in list pcm.repository.Repository[interfaces__Repository]
@@ -168,15 +289,16 @@ execute: {
 
 response: CreatePackageAndImplementationForComponent
 trigger: insert in list pcm.repository.Repository[components__Repository]
-update instances of java
+retrieve element: repositoryPackage of type java.containers.Package corresponding to change.newValue.repository__RepositoryComponent
+	with change.newValue.repository__RepositoryComponent.entityName.equals(repositoryPackage.name)
 execute: {
 	val component = change.newValue;
-	callCreatePackage(component);
+	callCreatePackage(component, repositoryPackage, component.entityName);
 	callCreateImplememetationForComponent(component);
 }
 
 effect: CreateImplememetationForComponent
-input: pcm.repository.RepositoryComponent as component
+model input: pcm.repository.RepositoryComponent as component
 retrieve element: componentPackage of type java.containers.Package corresponding to component
 execute: {
 	callCreateClass(component, componentPackage);
@@ -219,9 +341,9 @@ execute: {
 }
 
 effect: CreateClass
-input: pcm.core.entity.NamedElement as sourceElement, java.containers.Package as containingPackage
+model input: pcm.core.entity.NamedElement as sourceElement, java.containers.Package as containingPackage
 create element: compilationUnit of type java.containers.CompilationUnit corresponding to sourceElement
-	persist as root at project-relative location: buildJavaFilePath(compilationUnit.name, containingPackage.namespaces + containingPackage.name)
+	persist as root at project-relative location: buildJavaFilePath(compilationUnit)
 create element: javaClass of type java.classifiers.Class corresponding to sourceElement
 execute: {
 	compilationUnit.namespaces += containingPackage.namespaces;
@@ -248,28 +370,7 @@ trigger: remove from list pcm.repository.Repository[components__Repository]
 delete element: javaPackage of type java.containers.Package corresponding to change.oldValue
 
 
-response: RenamePackageForBasicComponent
-trigger: replace value pcm.repository.BasicComponent[entityName]
-retrieve element: javaPackage of type java.containers.Package corresponding to change.newAffectedEObject
-	move containing model to project-relative location: componentToPackageInfo.getPathInProject(change.newAffectedEObject as BasicComponent)
-execute: {
-	javaPackage.namespaces.clear();
-	javaPackage.namespaces += repositoryToPackageInfo.getPackageName(change.newAffectedEObject.eContainer() as Repository);
-	javaPackage.name = change.newValue
-}
 
-response: RenameClassForBasicComponent
-trigger: replace value pcm.repository.BasicComponent[entityName]
-retrieve element: compilationUnit of type java.containers.CompilationUnit corresponding to change.newAffectedEObject
-	move containing model to project-relative location: componentToClass.getPathInProject(change.newAffectedEObject as BasicComponent)
-retrieve element: javaClass of type java.classifiers.Class corresponding to change.newAffectedEObject
-execute: {
-	val component = change.newAffectedEObject as BasicComponent;
-	javaClass.name = componentToClass.getClassName(component);
-	compilationUnit.name = componentToClass.getClassName(component);
-	compilationUnit.namespaces.clear;
-	compilationUnit.namespaces += componentToClass.getPackageName(component);
-}
 
 
 response: CreateClassForCompositeComponent
