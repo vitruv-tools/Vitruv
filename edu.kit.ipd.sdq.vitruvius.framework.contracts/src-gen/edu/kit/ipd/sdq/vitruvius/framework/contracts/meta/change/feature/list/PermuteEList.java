@@ -3,6 +3,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,8 +14,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateM
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex <em>Old Index</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex <em>New Index</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getPermuteEList()
@@ -23,55 +23,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateM
  */
 public interface PermuteEList extends UpdateMultiValuedEFeature {
     /**
-     * Returns the value of the '<em><b>Old Index</b></em>' attribute.
+     * Returns the value of the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
+     * The list contents are of type {@link java.lang.Integer}.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Old Index</em>' attribute isn't clear,
+     * If the meaning of the '<em>New Indices For Elements At Old Indices</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Old Index</em>' attribute.
-     * @see #setOldIndex(int)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getPermuteEList_OldIndex()
+     * @return the value of the '<em>New Indices For Elements At Old Indices</em>' attribute list.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getPermuteEList_NewIndicesForElementsAtOldIndices()
      * @model required="true"
      * @generated
      */
-    int getOldIndex();
-
-    /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex <em>Old Index</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Old Index</em>' attribute.
-     * @see #getOldIndex()
-     * @generated
-     */
-    void setOldIndex(int value);
-
-    /**
-     * Returns the value of the '<em><b>New Index</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>New Index</em>' attribute isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>New Index</em>' attribute.
-     * @see #setNewIndex(int)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage#getPermuteEList_NewIndex()
-     * @model required="true"
-     * @generated
-     */
-    int getNewIndex();
-
-    /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex <em>New Index</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>New Index</em>' attribute.
-     * @see #getNewIndex()
-     * @generated
-     */
-    void setNewIndex(int value);
+    EList<Integer> getNewIndicesForElementsAtOldIndices();
 
 } // PermuteEList

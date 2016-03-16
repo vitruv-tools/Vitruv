@@ -7,11 +7,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.Up
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
 
-import org.eclipse.emf.common.notify.Notification;
-
+import java.util.Collection;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,52 +20,21 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl#getOldIndex <em>Old Index</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl#getNewIndex <em>New Index</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl implements PermuteEList {
     /**
-     * The default value of the '{@link #getOldIndex() <em>Old Index</em>}' attribute.
+     * The cached value of the '{@link #getNewIndicesForElementsAtOldIndices() <em>New Indices For Elements At Old Indices</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOldIndex()
+     * @see #getNewIndicesForElementsAtOldIndices()
      * @generated
      * @ordered
      */
-    protected static final int OLD_INDEX_EDEFAULT = 0;
-
-    /**
-     * The cached value of the '{@link #getOldIndex() <em>Old Index</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOldIndex()
-     * @generated
-     * @ordered
-     */
-    protected int oldIndex = OLD_INDEX_EDEFAULT;
-
-    /**
-     * The default value of the '{@link #getNewIndex() <em>New Index</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getNewIndex()
-     * @generated
-     * @ordered
-     */
-    protected static final int NEW_INDEX_EDEFAULT = 0;
-
-    /**
-     * The cached value of the '{@link #getNewIndex() <em>New Index</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getNewIndex()
-     * @generated
-     * @ordered
-     */
-    protected int newIndex = NEW_INDEX_EDEFAULT;
+    protected EList<Integer> newIndicesForElementsAtOldIndices;
 
     /**
      * <!-- begin-user-doc -->
@@ -92,41 +60,11 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
-    public int getOldIndex() {
-        return oldIndex;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOldIndex(int newOldIndex) {
-        int oldOldIndex = oldIndex;
-        oldIndex = newOldIndex;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ListPackage.PERMUTE_ELIST__OLD_INDEX, oldOldIndex, oldIndex));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public int getNewIndex() {
-        return newIndex;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setNewIndex(int newNewIndex) {
-        int oldNewIndex = newIndex;
-        newIndex = newNewIndex;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, ListPackage.PERMUTE_ELIST__NEW_INDEX, oldNewIndex, newIndex));
+    public EList<Integer> getNewIndicesForElementsAtOldIndices() {
+        if (newIndicesForElementsAtOldIndices == null) {
+            newIndicesForElementsAtOldIndices = new EDataTypeUniqueEList<Integer>(Integer.class, this, ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES);
+        }
+        return newIndicesForElementsAtOldIndices;
     }
 
     /**
@@ -137,10 +75,8 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ListPackage.PERMUTE_ELIST__OLD_INDEX:
-                return getOldIndex();
-            case ListPackage.PERMUTE_ELIST__NEW_INDEX:
-                return getNewIndex();
+            case ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES:
+                return getNewIndicesForElementsAtOldIndices();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -150,14 +86,13 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ListPackage.PERMUTE_ELIST__OLD_INDEX:
-                setOldIndex((Integer)newValue);
-                return;
-            case ListPackage.PERMUTE_ELIST__NEW_INDEX:
-                setNewIndex((Integer)newValue);
+            case ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES:
+                getNewIndicesForElementsAtOldIndices().clear();
+                getNewIndicesForElementsAtOldIndices().addAll((Collection<? extends Integer>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -171,11 +106,8 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ListPackage.PERMUTE_ELIST__OLD_INDEX:
-                setOldIndex(OLD_INDEX_EDEFAULT);
-                return;
-            case ListPackage.PERMUTE_ELIST__NEW_INDEX:
-                setNewIndex(NEW_INDEX_EDEFAULT);
+            case ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES:
+                getNewIndicesForElementsAtOldIndices().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -189,10 +121,8 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ListPackage.PERMUTE_ELIST__OLD_INDEX:
-                return oldIndex != OLD_INDEX_EDEFAULT;
-            case ListPackage.PERMUTE_ELIST__NEW_INDEX:
-                return newIndex != NEW_INDEX_EDEFAULT;
+            case ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES:
+                return newIndicesForElementsAtOldIndices != null && !newIndicesForElementsAtOldIndices.isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -207,10 +137,8 @@ public abstract class PermuteEListImpl extends UpdateMultiValuedEFeatureImpl imp
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (oldIndex: ");
-        result.append(oldIndex);
-        result.append(", newIndex: ");
-        result.append(newIndex);
+        result.append(" (newIndicesForElementsAtOldIndices: ");
+        result.append(newIndicesForElementsAtOldIndices);
         result.append(')');
         return result.toString();
     }

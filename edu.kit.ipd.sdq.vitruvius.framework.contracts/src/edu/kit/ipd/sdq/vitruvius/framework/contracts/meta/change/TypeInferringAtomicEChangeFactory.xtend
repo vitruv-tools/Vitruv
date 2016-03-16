@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import java.util.List
 
 final class TypeInferringAtomicEChangeFactory {
 	val Metamodel metamodel
@@ -110,11 +111,10 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def <A extends EObject> PermuteEAttributeValues<A> createPermuteAttributesChange(A affectedEObject, EAttribute affectedAttribute, int oldIndex, int newIndex) {
+	def <A extends EObject> PermuteEAttributeValues<A> createPermuteAttributesChange(A affectedEObject, EAttribute affectedAttribute, List<Integer> newIndicesForElementsAtOldIndices) {
 		val c = AttributeFactory.eINSTANCE.createPermuteEAttributeValues()
 		setFeatureChangeFeatures(c,affectedEObject,affectedAttribute)
-		c.oldIndex = oldIndex
-		c.newIndex = newIndex
+		c.newIndicesForElementsAtOldIndices.addAll(newIndicesForElementsAtOldIndices)
 		return c
 	}
 	
@@ -143,11 +143,10 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def <A extends EObject> PermuteEReferences<A> createPermuteReferencesChange(A affectedEObject, EReference affectedReference, int oldIndex, int newIndex) {
+	def <A extends EObject> PermuteEReferences<A> createPermuteReferencesChange(A affectedEObject, EReference affectedReference, List<Integer> newIndicesForElementsAtOldIndices) {
 		val c = ReferenceFactory.eINSTANCE.createPermuteEReferences()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
-		c.oldIndex = oldIndex
-		c.newIndex = newIndex
+		c.newIndicesForElementsAtOldIndices.addAll(newIndicesForElementsAtOldIndices)
 		return c
 	}
 }

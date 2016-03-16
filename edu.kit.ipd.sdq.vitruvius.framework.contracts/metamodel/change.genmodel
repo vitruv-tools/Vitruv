@@ -62,8 +62,7 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/RemoveFromEList/removedObjectURIFragment"/>
         </genClasses>
         <genClasses image="false" ecoreClass="change.ecore#//feature/list/PermuteEList">
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/oldIndex"/>
-          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndex"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//feature/list/PermuteEList/newIndicesForElementsAtOldIndices"/>
         </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Attribute" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature"

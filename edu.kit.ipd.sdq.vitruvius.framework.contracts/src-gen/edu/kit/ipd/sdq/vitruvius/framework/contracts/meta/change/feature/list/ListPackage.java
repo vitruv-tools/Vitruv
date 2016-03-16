@@ -188,22 +188,13 @@ public interface ListPackage extends EPackage {
     int PERMUTE_ELIST = 3;
 
     /**
-     * The feature id for the '<em><b>Old Index</b></em>' attribute.
+     * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST__OLD_INDEX = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>New Index</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_ELIST__NEW_INDEX = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
+    int PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Permute EList</em>' class.
@@ -212,7 +203,7 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 2;
+    int PERMUTE_ELIST_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Permute EList</em>' class.
@@ -287,26 +278,15 @@ public interface ListPackage extends EPackage {
     EClass getPermuteEList();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex <em>Old Index</em>}'.
+     * Returns the meta object for the attribute list '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Old Index</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getOldIndex()
+     * @return the meta object for the attribute list '<em>New Indices For Elements At Old Indices</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndicesForElementsAtOldIndices()
      * @see #getPermuteEList()
      * @generated
      */
-    EAttribute getPermuteEList_OldIndex();
-
-    /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex <em>New Index</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>New Index</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndex()
-     * @see #getPermuteEList()
-     * @generated
-     */
-    EAttribute getPermuteEList_NewIndex();
+    EAttribute getPermuteEList_NewIndicesForElementsAtOldIndices();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -388,20 +368,12 @@ public interface ListPackage extends EPackage {
         EClass PERMUTE_ELIST = eINSTANCE.getPermuteEList();
 
         /**
-         * The meta object literal for the '<em><b>Old Index</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute PERMUTE_ELIST__OLD_INDEX = eINSTANCE.getPermuteEList_OldIndex();
-
-        /**
-         * The meta object literal for the '<em><b>New Index</b></em>' attribute feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute PERMUTE_ELIST__NEW_INDEX = eINSTANCE.getPermuteEList_NewIndex();
+        EAttribute PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = eINSTANCE.getPermuteEList_NewIndicesForElementsAtOldIndices();
 
     }
 
