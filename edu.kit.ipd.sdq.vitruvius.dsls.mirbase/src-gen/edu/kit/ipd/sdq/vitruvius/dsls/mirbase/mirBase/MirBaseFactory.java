@@ -42,6 +42,15 @@ public interface MirBaseFactory extends EFactory
   MetamodelImport createMetamodelImport();
 
   /**
+   * Returns a new object of class '<em>Named Java Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Named Java Element</em>'.
+   * @generated
+   */
+  NamedJavaElement createNamedJavaElement();
+
+  /**
    * Returns a new object of class '<em>Model Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

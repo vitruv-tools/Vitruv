@@ -67,6 +67,7 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
     {
       case MirBasePackage.MIR_BASE_FILE: return createMirBaseFile();
       case MirBasePackage.METAMODEL_IMPORT: return createMetamodelImport();
+      case MirBasePackage.NAMED_JAVA_ELEMENT: return createNamedJavaElement();
       case MirBasePackage.MODEL_ELEMENT: return createModelElement();
       case MirBasePackage.FEATURE_OF_ELEMENT: return createFeatureOfElement();
       case MirBasePackage.METAMODEL_REFERENCE: return createMetamodelReference();
@@ -95,6 +96,17 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
   {
     MetamodelImportImpl metamodelImport = new MetamodelImportImpl();
     return metamodelImport;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NamedJavaElement createNamedJavaElement()
+  {
+    NamedJavaElementImpl namedJavaElement = new NamedJavaElementImpl();
+    return namedJavaElement;
   }
 
   /**

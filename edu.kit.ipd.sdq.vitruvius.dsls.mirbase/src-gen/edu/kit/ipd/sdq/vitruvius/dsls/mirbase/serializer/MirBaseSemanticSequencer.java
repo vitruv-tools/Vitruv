@@ -10,6 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services.MirBaseGrammarAccess;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
@@ -103,6 +104,9 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 					return; 
 				}
 				else break;
+			case MirBasePackage.NAMED_JAVA_ELEMENT:
+				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
+				return; 
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -433,6 +437,27 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getElement());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     NamedJavaElement returns NamedJavaElement
+	 *
+	 * Constraint:
+	 *     (type=JvmTypeReference name=ValidID)
+	 */
+	protected void sequence_NamedJavaElement(ISerializationContext context, NamedJavaElement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.NAMED_JAVA_ELEMENT__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.NAMED_JAVA_ELEMENT__TYPE));
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.NAMED_JAVA_ELEMENT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.NAMED_JAVA_ELEMENT__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getNamedJavaElementAccess().getTypeJvmTypeReferenceParserRuleCall_0_0(), semanticObject.getType());
+		feeder.accept(grammarAccess.getNamedJavaElementAccess().getNameValidIDParserRuleCall_2_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

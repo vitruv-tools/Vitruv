@@ -86,6 +86,37 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_3_0() { return cNameValidIDParserRuleCall_3_0; }
 	}
+	public class NamedJavaElementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.NamedJavaElement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_0_0 = (RuleCall)cTypeAssignment_0.eContents().get(0);
+		private final Keyword cAsKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		
+		//NamedJavaElement:
+		//	type=JvmTypeReference 'as' name=ValidID;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//type=JvmTypeReference 'as' name=ValidID
+		public Group getGroup() { return cGroup; }
+		
+		//type=JvmTypeReference
+		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
+		
+		//JvmTypeReference
+		public RuleCall getTypeJvmTypeReferenceParserRuleCall_0_0() { return cTypeJvmTypeReferenceParserRuleCall_0_0; }
+		
+		//'as'
+		public Keyword getAsKeyword_1() { return cAsKeyword_1; }
+		
+		//name=ValidID
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+	}
 	public class ModelElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.ModelElement");
 		private final Assignment cElementAssignment = (Assignment)rule.eContents().get(1);
@@ -156,7 +187,18 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1 = (RuleCall)cFeatureEStructuralFeatureCrossReference_2_0.eContents().get(1);
 		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//FeatureOfElement:
+		////fragment ModelElement:
+		// //	element=[ecore::EClass|QualifiedName]
+		// //;
+		// //
+		// //UnnamedModelElement:
+		// //	ModelElement;
+		//
+		////		
+		// //NamedModelElement:
+		// //	ModelElement ('as' name=ValidID)?
+		// //;
+		// FeatureOfElement:
 		//	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -210,6 +252,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private final MirBaseFileElements pMirBaseFile;
 	private final MetamodelImportElements pMetamodelImport;
+	private final NamedJavaElementElements pNamedJavaElement;
 	private final ModelElementElements pModelElement;
 	private final NamedModelElementElements pNamedModelElement;
 	private final FeatureOfElementElements pFeatureOfElement;
@@ -230,6 +273,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		this.gaXtype = gaXtype;
 		this.pMirBaseFile = new MirBaseFileElements();
 		this.pMetamodelImport = new MetamodelImportElements();
+		this.pNamedJavaElement = new NamedJavaElementElements();
 		this.pModelElement = new ModelElementElements();
 		this.pNamedModelElement = new NamedModelElementElements();
 		this.pFeatureOfElement = new FeatureOfElementElements();
@@ -287,6 +331,16 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		return getMetamodelImportAccess().getRule();
 	}
 	
+	//NamedJavaElement:
+	//	type=JvmTypeReference 'as' name=ValidID;
+	public NamedJavaElementElements getNamedJavaElementAccess() {
+		return pNamedJavaElement;
+	}
+	
+	public ParserRule getNamedJavaElementRule() {
+		return getNamedJavaElementAccess().getRule();
+	}
+	
 	//ModelElement:
 	//	element=[ecore::EClass|QualifiedName];
 	public ModelElementElements getModelElementAccess() {
@@ -307,7 +361,18 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedModelElementAccess().getRule();
 	}
 	
-	//FeatureOfElement:
+	////fragment ModelElement:
+	// //	element=[ecore::EClass|QualifiedName]
+	// //;
+	// //
+	// //UnnamedModelElement:
+	// //	ModelElement;
+	//
+	////		
+	// //NamedModelElement:
+	// //	ModelElement ('as' name=ValidID)?
+	// //;
+	// FeatureOfElement:
 	//	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 	public FeatureOfElementElements getFeatureOfElementAccess() {
 		return pFeatureOfElement;

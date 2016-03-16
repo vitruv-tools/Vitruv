@@ -87,6 +87,13 @@ public class MirBaseSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MirBasePackage.NAMED_JAVA_ELEMENT:
+      {
+        NamedJavaElement namedJavaElement = (NamedJavaElement)theEObject;
+        T result = caseNamedJavaElement(namedJavaElement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MirBasePackage.MODEL_ELEMENT:
       {
         ModelElement modelElement = (ModelElement)theEObject;
@@ -140,6 +147,22 @@ public class MirBaseSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseMetamodelImport(MetamodelImport object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Named Java Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Named Java Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNamedJavaElement(NamedJavaElement object)
   {
     return null;
   }

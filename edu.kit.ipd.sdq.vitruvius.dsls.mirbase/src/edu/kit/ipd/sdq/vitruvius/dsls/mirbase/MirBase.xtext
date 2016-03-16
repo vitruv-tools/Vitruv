@@ -11,14 +11,28 @@ MirBaseFile returns MirBaseFile:
 
 MetamodelImport:
 	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID;
-	
+
+NamedJavaElement:
+	type=JvmTypeReference 'as' name=ValidID;
+
 ModelElement:
 	element=[ecore::EClass|QualifiedName]
 ;
-	
+
 NamedModelElement returns ModelElement:
 	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 ;
+
+//fragment ModelElement:
+//	element=[ecore::EClass|QualifiedName]
+//;
+//
+//UnnamedModelElement:
+//	ModelElement;
+//		
+//NamedModelElement:
+//	ModelElement ('as' name=ValidID)?
+//;
 	
 FeatureOfElement:
 	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']'

@@ -76,6 +76,7 @@ public class MirBaseParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXImportDeclarationAccess().getAlternatives_1_0_3(), "rule__XImportDeclaration__Alternatives_1_0_3");
 					put(grammarAccess.getMirBaseFileAccess().getGroup(), "rule__MirBaseFile__Group__0");
 					put(grammarAccess.getMetamodelImportAccess().getGroup(), "rule__MetamodelImport__Group__0");
+					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup_1(), "rule__NamedModelElement__Group_1__0");
 					put(grammarAccess.getFeatureOfElementAccess().getGroup(), "rule__FeatureOfElement__Group__0");
@@ -261,6 +262,8 @@ public class MirBaseParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1(), "rule__MirBaseFile__MetamodelImportsAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
+					put(grammarAccess.getNamedJavaElementAccess().getTypeAssignment_0(), "rule__NamedJavaElement__TypeAssignment_0");
+					put(grammarAccess.getNamedJavaElementAccess().getNameAssignment_2(), "rule__NamedJavaElement__NameAssignment_2");
 					put(grammarAccess.getModelElementAccess().getElementAssignment(), "rule__ModelElement__ElementAssignment");
 					put(grammarAccess.getNamedModelElementAccess().getElementAssignment_0(), "rule__NamedModelElement__ElementAssignment_0");
 					put(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1(), "rule__NamedModelElement__NameAssignment_1_1");

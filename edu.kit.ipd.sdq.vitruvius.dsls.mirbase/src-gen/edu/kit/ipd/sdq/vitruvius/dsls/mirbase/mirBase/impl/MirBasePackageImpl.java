@@ -10,6 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -17,6 +18,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.xtext.common.types.TypesPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,6 +42,13 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * @generated
    */
   private EClass metamodelImportEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass namedJavaElementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -109,6 +119,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     isInited = true;
 
+    // Initialize simple dependencies
+    TypesPackage.eINSTANCE.eClass();
+
     // Create package meta-data objects
     theMirBasePackage.createPackageContents();
 
@@ -172,6 +185,36 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
   public EAttribute getMetamodelImport_Name()
   {
     return (EAttribute)metamodelImportEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNamedJavaElement()
+  {
+    return namedJavaElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNamedJavaElement_Type()
+  {
+    return (EReference)namedJavaElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNamedJavaElement_Name()
+  {
+    return (EAttribute)namedJavaElementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -291,6 +334,10 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     createEReference(metamodelImportEClass, METAMODEL_IMPORT__PACKAGE);
     createEAttribute(metamodelImportEClass, METAMODEL_IMPORT__NAME);
 
+    namedJavaElementEClass = createEClass(NAMED_JAVA_ELEMENT);
+    createEReference(namedJavaElementEClass, NAMED_JAVA_ELEMENT__TYPE);
+    createEAttribute(namedJavaElementEClass, NAMED_JAVA_ELEMENT__NAME);
+
     modelElementEClass = createEClass(MODEL_ELEMENT);
     createEReference(modelElementEClass, MODEL_ELEMENT__ELEMENT);
     createEAttribute(modelElementEClass, MODEL_ELEMENT__NAME);
@@ -327,6 +374,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     setNsPrefix(eNS_PREFIX);
     setNsURI(eNS_URI);
 
+    // Obtain other dependent packages
+    TypesPackage theTypesPackage = (TypesPackage)EPackage.Registry.INSTANCE.getEPackage(TypesPackage.eNS_URI);
+
     // Create type parameters
 
     // Set bounds for type parameters
@@ -340,6 +390,10 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     initEClass(metamodelImportEClass, MetamodelImport.class, "MetamodelImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMetamodelImport_Package(), ecorePackage.getEPackage(), null, "package", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMetamodelImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, MetamodelImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(namedJavaElementEClass, NamedJavaElement.class, "NamedJavaElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNamedJavaElement_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, NamedJavaElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNamedJavaElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedJavaElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(modelElementEClass, ModelElement.class, "ModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getModelElement_Element(), ecorePackage.getEClass(), null, "element", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

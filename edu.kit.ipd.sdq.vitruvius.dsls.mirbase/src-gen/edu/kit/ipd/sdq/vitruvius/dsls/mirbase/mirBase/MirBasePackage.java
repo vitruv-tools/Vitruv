@@ -123,6 +123,43 @@ public interface MirBasePackage extends EPackage
   int METAMODEL_IMPORT_FEATURE_COUNT = 2;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedJavaElementImpl <em>Named Java Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedJavaElementImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedJavaElement()
+   * @generated
+   */
+  int NAMED_JAVA_ELEMENT = 2;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_JAVA_ELEMENT__TYPE = 0;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_JAVA_ELEMENT__NAME = 1;
+
+  /**
+   * The number of structural features of the '<em>Named Java Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_JAVA_ELEMENT_FEATURE_COUNT = 2;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.ModelElementImpl <em>Model Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -130,7 +167,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getModelElement()
    * @generated
    */
-  int MODEL_ELEMENT = 2;
+  int MODEL_ELEMENT = 3;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -167,7 +204,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getFeatureOfElement()
    * @generated
    */
-  int FEATURE_OF_ELEMENT = 3;
+  int FEATURE_OF_ELEMENT = 4;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -204,7 +241,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelReference()
    * @generated
    */
-  int METAMODEL_REFERENCE = 4;
+  int METAMODEL_REFERENCE = 5;
 
   /**
    * The feature id for the '<em><b>Model</b></em>' reference.
@@ -277,6 +314,38 @@ public interface MirBasePackage extends EPackage
    * @generated
    */
   EAttribute getMetamodelImport_Name();
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement <em>Named Java Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Named Java Element</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
+   * @generated
+   */
+  EClass getNamedJavaElement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Type</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement#getType()
+   * @see #getNamedJavaElement()
+   * @generated
+   */
+  EReference getNamedJavaElement_Type();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement#getName()
+   * @see #getNamedJavaElement()
+   * @generated
+   */
+  EAttribute getNamedJavaElement_Name();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement <em>Model Element</em>}'.
@@ -429,6 +498,32 @@ public interface MirBasePackage extends EPackage
      * @generated
      */
     EAttribute METAMODEL_IMPORT__NAME = eINSTANCE.getMetamodelImport_Name();
+
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedJavaElementImpl <em>Named Java Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.NamedJavaElementImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedJavaElement()
+     * @generated
+     */
+    EClass NAMED_JAVA_ELEMENT = eINSTANCE.getNamedJavaElement();
+
+    /**
+     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NAMED_JAVA_ELEMENT__TYPE = eINSTANCE.getNamedJavaElement_Type();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NAMED_JAVA_ELEMENT__NAME = eINSTANCE.getNamedJavaElement_Name();
 
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.ModelElementImpl <em>Model Element</em>}' class.

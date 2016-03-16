@@ -86,6 +86,11 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
         return createMetamodelImportAdapter();
       }
       @Override
+      public Adapter caseNamedJavaElement(NamedJavaElement object)
+      {
+        return createNamedJavaElementAdapter();
+      }
+      @Override
       public Adapter caseModelElement(ModelElement object)
       {
         return createModelElementAdapter();
@@ -148,6 +153,21 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMetamodelImportAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement <em>Named Java Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
+   * @generated
+   */
+  public Adapter createNamedJavaElementAdapter()
   {
     return null;
   }
