@@ -60,7 +60,7 @@ CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (moveRoot=ModelMove)?;
 
 fragment CorrespondingModelElementRetrieveOrDelete:
-	CorrespondingModelElementSpecificationWithPrecondition;
+	CorrespondingModelElementSpecificationWithPrecondition (optional?='optional')?;
 
 fragment CorrespondingModelElementSpecificationWithPrecondition:
 	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)?;

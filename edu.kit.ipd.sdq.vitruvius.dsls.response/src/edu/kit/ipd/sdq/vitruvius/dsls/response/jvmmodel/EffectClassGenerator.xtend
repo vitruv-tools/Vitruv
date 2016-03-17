@@ -185,8 +185,17 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				if (_sourceElement.eContainer() instanceof «ChangeDescription») {
 					_sourceParent = «changeParameter.name».getOldAffectedEObject();
 				}«*/»
-				«Iterable»<«affectedElementClass»> _correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-						«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, null, «affectedElementClass».class);
+				«Iterable»<«affectedElementClass»> _correspondingObjects = new «ArrayList»<«affectedElementClass»>();
+				try {
+					_correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
+							«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, null, «affectedElementClass».class);
+				} catch(«RuntimeException» ex) {
+					«IF !correspondingModelElement.optional»
+						throw new «RuntimeException»("An error occured when retrieved the corresponding elements of: " + _sourceElement);
+					«ELSE»
+						// The element is optional so there can occur errors when trying to retrieve the corresponding element. Just catch it and go on.
+					«ENDIF»
+				}
 				
 				for («affectedElementClass» _potentialTargetElement : _correspondingObjects) {
 					«IF preconditionMethod != null»
@@ -205,11 +214,17 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«ENDIF»
 				
 				«/*TODO HK This would be a good place for user interaction*/»					
-				if (_targetModels.size() != 1) {
-					throw new «IllegalArgumentException»("There has to be exacty one corresponding element.");
+				«IF correspondingModelElement.optional»
+				if (_targetModels.size() > 1) {
+					throw new «IllegalArgumentException»("There has to be at most one corresponding element of type " + «affectedElementClass».class.getSimpleName() + " for: " + _sourceElement);
 				}
+				«ELSE»
+				if (_targetModels.size() != 1) {
+					throw new «IllegalArgumentException»("There has to be exacty one corresponding element of type " + «affectedElementClass».class.getSimpleName() + " for: " + _sourceElement);
+				}
+				«ENDIF»
 				
-				return _targetModels.get(0);
+				return _targetModels.isEmpty() ? null : _targetModels.get(0);
 			'''
 		];
 	}
@@ -412,15 +427,14 @@ abstract class EffectClassGenerator extends ClassGenerator {
 					deleteElement(«element.name»);
 				«ENDFOR»
 				«FOR element: renameModelMethodMap.keySet»
-					«renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
-					/*«EObject» «element.name»_sourceElement = «getCorrespondenceSourceMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)»);
-					String «element.name»_newModelPath = «renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)»);
-					«/* TODO HK The third parameter was the identifying element before since it is persisted when renaming a basic component and so does not throw an exception */»
-					LOGGER.debug("Move model with element " + «element.name»_sourceElement + " to " + «element.name»_newModelPath);
-					«ResponseRuntimeHelper».renameModel(this.blackboard, «element.name»_sourceElement, «element.name», «element.name»_newModelPath, this.transformationResult);*/
+					if («element.name» != null) {
+						«renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
+					}
 				«ENDFOR»
 				«FOR element : retrieveElements»
-					this.blackboard.getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);
+					if («element.name» != null) {
+						this.blackboard.getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);
+					}
 				«ENDFOR»
 		'''
 	}

@@ -26,6 +26,9 @@ abstract class AbstractEffectRealization {
 	protected abstract def Logger getLogger();
 	
 	protected def void deleteElement(EObject element) {
+		if (element == null) {
+			return;
+		}
 		if (element.eContainer() == null) {
 			if (element.eResource() != null) {
 				logger.debug("Deleting root object: " + element);
