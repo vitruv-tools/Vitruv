@@ -459,7 +459,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	 * <p>Methods parameters are:
 	 * <li>1. change: the change event ({@link EChange})
 	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(TargetChange targetChange, List<JvmFormalParameter> inputParameters) {
+	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(TargetChange targetChange, Iterable<JvmFormalParameter> inputParameters) {
 		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
 			generateMethodPerformResponse(effect.codeBlock, #[]);
 		} else {
