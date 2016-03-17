@@ -41,6 +41,13 @@ import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.types.Type
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.DataType
+import org.emftext.language.java.modifiers.Modifier
+import org.eclipse.emf.common.util.EList
+import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier
+import com.google.common.base.Objects
+import java.util.Collection
+import org.emftext.language.java.modifiers.Public
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -366,5 +373,40 @@ class PCMJavaHelper {
 			throw new IllegalArgumentException("Either the dataType must be primitive or a correspondingJavaClass must be specified");
 		}
 		return innerDataTypeReference;
+	}
+	
+	public static def void initializeClassMethod(ClassMethod classMethod, Method implementedMethod, boolean ensurePublic) {
+		initializeClassMethod(classMethod, implementedMethod.name, implementedMethod.typeReference, implementedMethod.modifiers, implementedMethod.parameters, ensurePublic)
+	}
+	
+	public static def void initializeClassMethod(ClassMethod classMethod, String name, TypeReference typeReference, Modifier[] modifiers,
+		Parameter[] parameters, boolean ensurePublic) {
+		classMethod.name = name
+		if (null != typeReference) {
+			classMethod.typeReference = EcoreUtil.copy(typeReference)
+		}
+		if (null != modifiers) {
+			classMethod.annotationsAndModifiers.addAll(EcoreUtil.copyAll(modifiers))
+		}
+		if (ensurePublic) {
+			val alreadyPublic = classMethod.annotationsAndModifiers.filter[modifier|modifier instanceof Public].size > 0
+			if (!alreadyPublic) {
+				classMethod.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
+			}
+		}
+		if (null != parameters) {
+			classMethod.parameters.addAll(EcoreUtil.copyAll(parameters))
+		}
+	}
+	
+	public static def ClassMethod findMethodInClass(ConcreteClassifier concreteClassifier, ClassMethod method) {
+		for (Method currentMethod : concreteClassifier.methods) {
+			if (currentMethod instanceof ClassMethod && currentMethod.name.equals(method.name) &&
+				currentMethod.typeParameters.size == method.typeParameters.size) {
+				// todo: finish check by comparing type reference and type of each parameter 
+				return currentMethod as ClassMethod
+			}
+		}
+		null
 	}
 }

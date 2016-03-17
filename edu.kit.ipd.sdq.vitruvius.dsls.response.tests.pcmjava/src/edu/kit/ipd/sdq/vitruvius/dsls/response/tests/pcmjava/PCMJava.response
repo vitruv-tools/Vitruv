@@ -22,6 +22,7 @@ import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.parameters.Parameter
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
@@ -554,20 +555,11 @@ execute: {
 		]
 	]
 	val basicComponents = implementingComponents.filter(BasicComponent)
-	
-	// TODO HK Update name of methods of implementating components (SEFFs realizations)
-//	basicComponents.forEach[
-//		it.serviceEffectSpecifications__BasicComponent.forEach[
-//			val correspondingClassMethods = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(it, ClassMethod)
-//			if(!correspondingClassMethods.nullOrEmpty){
-//				correspondingClassMethods.forEach[
-//					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(it)
-//					it.name = newValue.toString
-//					blackboard.correspondenceInstance.updateTUID(oldTUID, it)
-//				]
-//			}	
-//		]
-//	]
+	basicComponents.forEach[
+		it.serviceEffectSpecifications__BasicComponent.forEach[
+			callUpdateSEFFImplementingMethodName(it)
+		]
+	]
 }
 
 response: ChangeOperationSignatureReturnType
@@ -653,3 +645,53 @@ execute: {
 response: RemovedResourceDemandingInternalBehavior
 trigger: remove from list pcm.repository.BasicComponent[resourceDemandingInternalBehaviours__BasicComponent]
 delete element: javaMethod of type java.members.ClassMethod corresponding to change.oldValue
+
+
+
+
+// ################################################################################
+// #################################### SEFFS #####################################
+
+response: CreatedSEFF
+trigger: insert in list pcm.repository.BasicComponent[serviceEffectSpecifications__BasicComponent]
+update instances of java
+execute: callCreateSEFF(change.newValue)
+
+effect: CreateSEFF
+model input: pcm.seff.ServiceEffectSpecification as seff
+retrieve element: componentClass of type java.classifiers.Class corresponding to seff.basicComponent_ServiceEffectSpecification
+retrieve element: interfaceMethod of type java.members.InterfaceMethod corresponding to seff.describedService__SEFF
+create element: classMethod of type java.members.ClassMethod corresponding to seff
+execute: {
+	val signature = seff.describedService__SEFF
+	val sigIsOpSig = signature != null && signature instanceof OperationSignature
+	if (!sigIsOpSig) {
+		return;
+	}
+	initializeClassMethod(classMethod, interfaceMethod, true);
+	var correspondingClassMethod = componentClass.findMethodInClass(classMethod)
+	if (null == correspondingClassMethod) {
+		componentClass.members.add(classMethod)
+		correspondingClassMethod = classMethod
+	} else {
+		correspondingClassMethod.name = interfaceMethod.name
+	}
+}
+
+response: ChangeOperationSignatureOfSeff
+trigger: replace value pcm.seff.ResourceDemandingSEFF[describedService__SEFF]
+delete element: oldClassMethod of type java.members.ClassMethod corresponding to change.newAffectedEObject
+execute: callCreateSEFF(change.newAffectedEObject as ResourceDemandingSEFF)
+
+effect: UpdateSEFFImplementingMethodName
+model input: pcm.seff.ServiceEffectSpecification as seff
+retrieve element: classMethod of type java.members.ClassMethod corresponding to seff
+execute: {
+	classMethod.name = seff.describedService__SEFF.entityName;
+}
+
+response: RemovedSeff
+trigger: remove from list pcm.repository.BasicComponent[serviceEffectSpecifications__BasicComponent]
+delete element: classMethod of type java.members.ClassMethod corresponding to change.oldValue
+
+
