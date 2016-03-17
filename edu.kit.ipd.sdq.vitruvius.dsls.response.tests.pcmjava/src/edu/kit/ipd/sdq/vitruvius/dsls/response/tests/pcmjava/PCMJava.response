@@ -8,8 +8,6 @@ import org.emftext.language.java.members.Constructor
 import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.CompositeDataType
-import org.palladiosimulator.pcm.repository.PrimitiveDataType
-import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.emftext.language.java.modifiers.ModifiersFactory
 import org.palladiosimulator.pcm.repository.InnerDeclaration
@@ -24,10 +22,6 @@ import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.parameters.Parameter
-import org.palladiosimulator.pcm.repository.RequiredRoleContainerMock
-import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity
-import org.palladiosimulator.pcm.repository.RequiredRole
-import org.emftext.language.java.types.Type
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
@@ -594,6 +588,8 @@ trigger: remove from list pcm.repository.OperationInterface[signatures__Operatio
 delete element: interfaceMethod of type java.members.InterfaceMethod corresponding to change.oldValue
 
 
+// ################################################################################
+// ################################## PARAMETERS ##################################
 
 response: CreatedParameter
 trigger: insert in list pcm.repository.OperationSignature[parameters__OperationSignature]
@@ -634,3 +630,26 @@ retrieve element: interfaceMethod of type java.members.InterfaceMethod correspon
 delete element: javaParameter of type java.parameters.OrdinaryParameter corresponding to change.oldValue
 
 
+// ################################################################################
+// ##################### RESOURCE DEMANDING INTERNAL BEHAVIOR #####################
+
+response: CreatedResourceDemandingInternalBehavior
+trigger: insert in list pcm.repository.BasicComponent[resourceDemandingInternalBehaviours__BasicComponent]
+retrieve element: componentClass of type java.classifiers.Class corresponding to change.newAffectedEObject
+create element: javaMethod of type java.members.ClassMethod corresponding to change.newValue
+execute: {
+	javaMethod.name = change.newValue.entityName;
+	javaMethod.typeReference = TypesFactory.eINSTANCE.createVoid;
+	componentClass.members += javaMethod;
+}
+
+response: RenameResourceDemandingInternalBehavior
+trigger: replace value pcm.seff.ResourceDemandingInternalBehaviour[entityName]
+retrieve element: javaMethod of type java.members.ClassMethod corresponding to change.newAffectedEObject
+execute: {
+	javaMethod.name = change.newValue;
+}
+
+response: RemovedResourceDemandingInternalBehavior
+trigger: remove from list pcm.repository.BasicComponent[resourceDemandingInternalBehaviours__BasicComponent]
+delete element: javaMethod of type java.members.ClassMethod corresponding to change.oldValue
