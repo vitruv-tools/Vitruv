@@ -413,6 +413,9 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«FOR element : retrieveElements»
 					«TUID» «element.name»_oldTUID = this.blackboard.getCorrespondenceInstance().calculateTUIDFromEObject(«element.name»);
 				«ENDFOR»
+				«FOR element : deleteElements»
+					deleteElement(«element.name»);
+				«ENDFOR»
 				«IF hasExecutionBlock»
 					«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
 						FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
@@ -422,9 +425,6 @@ abstract class EffectClassGenerator extends ClassGenerator {
 					«IF element.persistAsRoot != null»
 						«saveAsRootMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
 					«ENDIF»
-				«ENDFOR»
-				«FOR element : deleteElements»
-					deleteElement(«element.name»);
 				«ENDFOR»
 				«FOR element: renameModelMethodMap.keySet»
 					if («element.name» != null) {
