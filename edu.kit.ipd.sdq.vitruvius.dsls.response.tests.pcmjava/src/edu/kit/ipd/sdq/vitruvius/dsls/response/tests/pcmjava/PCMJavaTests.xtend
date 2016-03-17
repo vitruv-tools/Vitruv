@@ -6,7 +6,8 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.repository.Repository
 import static org.junit.Assert.*;
 import org.emftext.language.java.containers.CompilationUnit
-import org.emftext.language.java.JavaPackage
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.Interface
 
 class PCMJavaTests extends AbstractPCMJavaTests {
 	private static final String TEST_REPOSITORY_NAME = "testRepo"
@@ -23,10 +24,6 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 		return "model/" + modelName + "." + "repository";
 	}
 	
-	private static def getJavaClassPathForFQN(String fqn) {
-		return "src/" + fqn.replace(".", "/") + "." + "java";
-	}
-	
 	override protected initializeTestModel() {
 		val root = RepositoryFactory.eINSTANCE.createRepository();
 		root.entityName = TEST_REPOSITORY_NAME;
@@ -35,9 +32,8 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	
 	@Test
 	public def void testCreateRepository() {
-		val helper = PCMJavaHelper.repositoryToPackageInfo;
 		val repository = repositoryRootElement;
-		val repositoryPath = helper.getQualifiedClassName(repository).javaClassPathForFQN;
+		val repositoryPath = PCMJavaHelper.buildJavaFilePath("package-info", #[repository.entityName]);
 		assertModelExists(repositoryPath);
 		val rootObject = repositoryPath.root;
 		assertTrue(rootObject instanceof org.emftext.language.java.containers.Package);
@@ -45,22 +41,28 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	
 	@Test
 	public def void testCreateBasicComponent() {
-		val helper = PCMJavaHelper.componentToClass;
 		val component = RepositoryFactory.eINSTANCE.createBasicComponent();
 		repositoryRootElement.components__Repository += component;
 		component.entityName = "MyComponent";
 		saveAndSynchronizeChanges(repositoryRootElement);
-		checkCompilationUnitConsistencyAndName(helper.getQualifiedClassName(component).javaClassPathForFQN, helper.getClassName(component));
+		checkCompilationUnitConsistencyAndName(component.javaPath, component.entityName + "Impl");
+	}
+	
+	private def String getJavaPath(RepositoryComponent component) {
+		return PCMJavaHelper.buildJavaFilePath(component.entityName + "Impl", #[component.repository__RepositoryComponent.entityName, component.entityName])
+	}
+	
+	private def String getJavaPath(Interface interf) {
+		return PCMJavaHelper.buildJavaFilePath(interf.entityName, #[interf.repository__Interface.entityName, "contracts"])
 	}
 	
 	@Test
 	public def void testCreateInterface() {
-		val helper = PCMJavaHelper.interfaceToInterface;
 		val interf = RepositoryFactory.eINSTANCE.createInfrastructureInterface();
 		repositoryRootElement.interfaces__Repository += interf;
 		interf.entityName = "MyInterface";
 		saveAndSynchronizeChanges(repositoryRootElement);
-		checkCompilationUnitConsistencyAndName(helper.getQualifiedClassName(interf).javaClassPathForFQN, helper.getClassName(interf));	
+		checkCompilationUnitConsistencyAndName(interf.javaPath, interf.entityName);	
 	}
 	
 	private def checkCompilationUnitConsistencyAndName(String compilationUnitPath, String expectedName) {

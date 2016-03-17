@@ -1,10 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava
 
-import org.palladiosimulator.pcm.repository.RepositoryComponent
-import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.Interface
 import org.eclipse.emf.ecore.EObject
-import org.palladiosimulator.pcm.core.entity.Entity
 import org.emftext.language.java.containers.CompilationUnit
 import org.emftext.language.java.modifiers.ModifiersFactory
 import org.emftext.language.java.classifiers.ConcreteClassifier
@@ -12,15 +8,11 @@ import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.TypesFactory
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.emftext.language.java.members.Field
-import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.types.TypeReference
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.classifiers.Class;
-import org.emftext.language.java.imports.Import
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.imports.ClassifierImport
-import java.util.HashSet
 import org.emftext.language.java.instantiations.NewConstructorCall
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.statements.StatementsFactory
@@ -28,7 +20,6 @@ import org.emftext.language.java.expressions.ExpressionsFactory
 import org.emftext.language.java.references.ReferencesFactory
 import org.emftext.language.java.literals.LiteralsFactory
 import org.emftext.language.java.operators.OperatorsFactory
-import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.parameters.ParametersFactory
 import java.util.List
@@ -42,103 +33,17 @@ import org.emftext.language.java.types.Type
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.DataType
 import org.emftext.language.java.modifiers.Modifier
-import org.eclipse.emf.common.util.EList
-import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier
-import com.google.common.base.Objects
-import java.util.Collection
 import org.emftext.language.java.modifiers.Public
-import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.emftext.language.java.members.MembersFactory
+import org.emftext.language.java.statements.Statement
+import org.emftext.language.java.types.Int
+import org.emftext.language.java.types.Char
+import org.emftext.language.java.types.ClassifierReference
+import org.emftext.language.java.references.IdentifierReference
+import org.emftext.language.java.references.ReferenceableElement
+import java.util.ArrayList
 
 class PCMJavaHelper {
-	private static def String getQualifiedName(Repository repository) {
-		repository.entityName.toFirstLower.trim;
-	}
-	
-	public static final val interfaceToInterface = new CorrespondingInterface();
-	public static final val repositoryToPackageInfo = new CorrespondingRepositoryPackageInfo();
-	public static final val repositoryToContractsPackageInfo = new CorrespondingContractsRepositoryPackageInfo();
-	public static final val repositoryToDatatypesPackageInfo = new CorrespondingDatatypesRepositoryPackageInfo();
-	public static final val componentToPackageInfo = new CorrespondingComponentPackageInfo();
-	public static final val dataTypeToClass = new CorrespondingDataTypeClass();
-	public static final val componentToClass = new CorrespondingJavaClass();
-		
-	public abstract static class CorrespondingClass<E extends EObject> {
-		public abstract def String getClassName(E object);
-		public abstract def String getPackageName(E object);
-		public def String getQualifiedClassName(E object) {
-			return object.packageName + "." + object.className;
-		}
-		public def String getPathInProject(E object) {
-			return "src/" + object.qualifiedClassName.replace(".", "/") + ".java";
-		}
-	}
-	
-	public abstract static class CorrespondingToEntityClass<E extends Entity> extends CorrespondingClass<E> {
-		override getClassName(E object) {
-			return object.entityName.toFirstUpper;
-		}
-	}
-	
-	public abstract static class CorrespondingPackageInfo<E extends Entity> extends CorrespondingToEntityClass<E> {
-		override getClassName(E object) {
-			return "package-info";
-		}
-	}
-	
-	public static class CorrespondingInterface extends CorrespondingToEntityClass<Interface> {
-		override getPackageName(Interface object) {
-			object.repository__Interface.qualifiedName.toFirstLower + ".contracts";
-		}
-	}
-	
-	public static class CorrespondingRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
-		override getPackageName(Repository object) {
-			object.qualifiedName.toFirstLower;
-		}
-	}
-	
-	public static class CorrespondingContractsRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
-		override getPackageName(Repository object) {
-			object.qualifiedName.toFirstLower + ".contracts";
-		}
-	}
-	
-	public static class CorrespondingDatatypesRepositoryPackageInfo extends CorrespondingPackageInfo<Repository> {
-		override getPackageName(Repository object) {
-			object.qualifiedName.toFirstLower + ".datatypes";
-		}
-	}
-	
-	public static class CorrespondingComponentPackageInfo extends CorrespondingToEntityClass<RepositoryComponent> {
-		override getClassName(RepositoryComponent object) {
-			return "package-info";
-		}
-		
-		override getPackageName(RepositoryComponent object) {
-			object.repository__RepositoryComponent.qualifiedName.toFirstLower + "." + object.entityName.toFirstLower;
-		}
-	}
-	
-	public static class CorrespondingDataTypeClass extends CorrespondingToEntityClass<CompositeDataType> {
-		override getClassName(CompositeDataType object) {
-			return object.entityName;
-		}
-		
-		override getPackageName(CompositeDataType object) {
-			object.repository__DataType.qualifiedName.toFirstLower + "." + "datatypes";
-		}
-	}
-	
-	public static class CorrespondingJavaClass extends CorrespondingToEntityClass<RepositoryComponent> {
-		override getClassName(RepositoryComponent object) {
-			return super.getClassName(object) + "Impl";
-		}
-		
-		override getPackageName(RepositoryComponent object) {
-			return object.repository__RepositoryComponent.qualifiedName.toFirstLower + "." + object.entityName.toFirstLower;
-		}
-	}
-	
 	public static def void initializeCompilationUnitAndJavaClassifier(CompilationUnit compilationUnit, ConcreteClassifier javaClassifier, String name) {
 		compilationUnit.name = name;
 		javaClassifier.name = name;
@@ -169,15 +74,101 @@ class PCMJavaHelper {
 		field.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPrivate)
 		var String fieldName = name
 		if (fieldName.nullOrEmpty) {
-			fieldName = "field_" + PCM2JaMoPPUtils.getNameFromJaMoPPType(reference)
+			fieldName = "field_" + getNameFromJaMoPPType(reference)
 		}
 		field.name = fieldName
 	}
 	
-	def static addConstructorToClass(Constructor constructor, Class jaMoPPClass) {
-		constructor.name = jaMoPPClass.name
+	def dispatch static getNameFromJaMoPPType(ClassifierReference reference) {
+		return reference.target.name
+	}
+
+	def dispatch static getNameFromJaMoPPType(NamespaceClassifierReference reference) {
+		val classRef = reference.pureClassifierReference
+		return classRef.target.name
+
+	// is currently not possible: see: https://bugs.eclipse.org/bugs/show_bug.cgi?id=404817
+	// return getNameFromJaMoPPType(classRef)
+	}
+
+	def dispatch static getNameFromJaMoPPType(Boolean reference) {
+		return "boolean"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Byte reference) {
+		return "byte"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Char reference) {
+		return "char"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Double reference) {
+		return "double"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Float reference) {
+		return "float"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Int reference) {
+		return "int"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Long reference) {
+		return "long"
+	}
+
+	def dispatch static getNameFromJaMoPPType(Short reference) {
+		return "short"
+	}
+
+	def dispatch static getNameFromJaMoPPType(org.emftext.language.java.types.Void reference) {
+		return "void"
+	}
+	
+	def static addConstructorToClass(Class javaClass) {
+		val Constructor constructor = MembersFactory.eINSTANCE.createConstructor
+		addConstructorToClass(constructor, javaClass)
+	}
+	
+	def static Statement createAssignmentFromParameterToField(Field field, Parameter parameter) {
+		val expressionStatement = StatementsFactory.eINSTANCE.createExpressionStatement
+		val assigmentExpression = ExpressionsFactory.eINSTANCE.createAssignmentExpression
+
+		// this.
+		val selfReference = ReferencesFactory.eINSTANCE.createSelfReference
+		selfReference.self = LiteralsFactory.eINSTANCE.createThis
+		assigmentExpression.child = selfReference
+
+		// .fieldname
+		val fieldReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		fieldReference.target = EcoreUtil.copy(field)
+		selfReference.next = fieldReference
+
+		// =
+		assigmentExpression.assignmentOperator = OperatorsFactory.eINSTANCE.createAssignment
+
+		// name		
+		val identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+		identifierReference.target = parameter
+
+		assigmentExpression.value = identifierReference
+		expressionStatement.expression = assigmentExpression
+		return expressionStatement
+	}
+	
+	def static addConstructorToClass(Constructor constructor, Class javaClass) {
+		constructor.name = javaClass.name
 		constructor.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
-		jaMoPPClass.members.add(constructor)
+		javaClass.members.add(constructor)
+	}
+	
+	def static Parameter createOrdinaryParameter(TypeReference typeReference, String name) {
+		val parameter = ParametersFactory.eINSTANCE.createOrdinaryParameter
+		parameter.name = name
+		parameter.typeReference = typeReference
+		return parameter
 	}
 
 	def static addImportToCompilationUnitOfClassifier(ClassifierImport classifierImport, Classifier classifier,
@@ -224,11 +215,57 @@ class PCMJavaHelper {
 		newConstructorCall.typeReference = EcoreUtil.copy(field.typeReference)
 
 		// get order of type references of the constructor
-		PCM2JaMoPPUtils.updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument, newConstructorCall)
+		updateArgumentsOfConstructorCall(field, fieldsToUseAsArgument, parametersToUseAsArgument, newConstructorCall)
 
 		assigmentExpression.value = newConstructorCall
 		expressionStatement.expression = assigmentExpression
 		constructor.statements.add(expressionStatement)
+	}
+	
+	def static updateArgumentsOfConstructorCall(Field field, Field[] fieldsToUseAsArgument,
+		Parameter[] parametersToUseAsArgument, NewConstructorCall newConstructorCall) {
+		val List<TypeReference> typeListForConstructor = new ArrayList<TypeReference>
+		if (null != field.typeReference && null != field.typeReference.pureClassifierReference &&
+			null != field.typeReference.pureClassifierReference.target) {
+			val classifier = EcoreUtil.copy(field.typeReference.pureClassifierReference.target)
+			if (classifier instanceof Class) {
+				val jaMoPPClass = classifier as Class
+				val constructorsForClass = jaMoPPClass.members.filter(typeof(Constructor))
+				if (!constructorsForClass.nullOrEmpty) {
+					val constructorForClass = constructorsForClass.get(0)
+					for (parameter : constructorForClass.parameters) {
+						typeListForConstructor.add(parameter.typeReference)
+					}
+				}
+			}
+		}
+
+		// find type with same name in fields or parameters (start with parameter)
+		for (typeRef : typeListForConstructor) {
+			val refElement = typeRef.findMatchingTypeInParametersOrFields(fieldsToUseAsArgument,
+				parametersToUseAsArgument)
+			if (refElement != null) {
+				val IdentifierReference identifierReference = ReferencesFactory.eINSTANCE.createIdentifierReference
+				identifierReference.target = refElement
+			} else {
+				newConstructorCall.arguments.add(LiteralsFactory.eINSTANCE.createNullLiteral)
+			}
+		}
+	}
+	
+	def static ReferenceableElement findMatchingTypeInParametersOrFields(TypeReference typeReferenceToFind,
+		Field[] fieldsToUseAsArgument, Parameter[] parametersToUseAsArgument) {
+		for (parameter : parametersToUseAsArgument) {
+			if (parameter.typeReference.target == typeReferenceToFind.target) {
+				return parameter
+			}
+		}
+		for (field : fieldsToUseAsArgument) {
+			if (field.typeReference.target == typeReferenceToFind.target) {
+				return field
+			}
+		}
+		return null
 	}
 	
 	static def createSetter(Field field, ClassMethod method) {
