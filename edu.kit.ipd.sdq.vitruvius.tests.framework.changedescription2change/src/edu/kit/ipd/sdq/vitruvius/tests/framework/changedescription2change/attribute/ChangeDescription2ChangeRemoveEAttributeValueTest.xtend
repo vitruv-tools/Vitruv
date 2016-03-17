@@ -18,9 +18,9 @@ class ChangeDescription2ChangeRemoveEAttributeValueTest extends edu.kit.ipd.sdq.
 		this.rootElement.eUnset(this.rootElement.getFeautreByName(SINGE_VALUE_E_ATTRIBUTE_NAME))
 		
 		val changes = getChanges()
-		
-		changes.assertSingleChangeWithType(RemoveEAttributeValue)
-		val removeEAttributeValue = changes.get(0) as RemoveEAttributeValue<?, ?>
+		val subtractiveChanges = changes.assertExplicitUnset
+		subtractiveChanges.assertSingleChangeWithType(RemoveEAttributeValue)
+		val removeEAttributeValue = subtractiveChanges.get(0) as RemoveEAttributeValue<?, ?>
 		removeEAttributeValue.assertAffectedEObject(this.rootElement)
 		removeEAttributeValue.assertOldValue(42)
 	} 

@@ -5,12 +5,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveERefere
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
@@ -78,12 +82,12 @@ public class ChangeAssertHelper {
     Assert.assertEquals("The new indices for elements at old indices is wrong", _newIndicesForElementsAtOldIndices, expectedIndices);
   }
   
-  public static void assertPermuteAttributeTest(final List<?> changes, final EObject rootElement, final List<Integer> expectedIndicesForElementsAtOldIndices) {
-    ChangeAssertHelper.<PermuteEAttributeValues>assertSingleChangeWithType(changes, PermuteEAttributeValues.class);
+  public static void assertPermuteListTest(final List<?> changes, final EObject rootElement, final List<Integer> expectedIndicesForElementsAtOldIndices, final String featureName, final Class<? extends PermuteEList> changeType) {
+    ChangeAssertHelper.assertSingleChangeWithType(changes, changeType);
     Object _get = changes.get(0);
-    final PermuteEAttributeValues<?> permuteEAttributeValues = ((PermuteEAttributeValues<?>) _get);
+    final PermuteEList permuteEAttributeValues = changeType.cast(_get);
     ChangeAssertHelper.assertAffectedEObject(permuteEAttributeValues, rootElement);
-    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(rootElement, "multiValuedEAttribute");
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(rootElement, featureName);
     ChangeAssertHelper.assertAffectedEFeature(permuteEAttributeValues, _feautreByName);
     ChangeAssertHelper.assertIndices(permuteEAttributeValues, expectedIndicesForElementsAtOldIndices);
   }
@@ -103,19 +107,50 @@ public class ChangeAssertHelper {
     Assert.assertEquals((("Change " + additiveReference) + " shall not be a create change"), Boolean.valueOf(_isIsCreate), Boolean.valueOf(expectedValue));
   }
   
-  public static void assertReplaceSingleValuedEReference(final List<?> changes, final Object expectedOldValue, final Object expectedNewValue, final String affectedEFeatureName, final EObject affectedEObject, final boolean isContainment) {
+  public static void assertReplaceSingleValuedEReference(final List<?> changes, final Object expectedOldValue, final Object expectedNewValue, final String affectedEFeatureName, final EObject affectedEObject, final boolean isContainment, final boolean isCreate, final boolean isDelete) {
     final ReplaceSingleValuedEReference change = ChangeAssertHelper.<ReplaceSingleValuedEReference>assertSingleChangeWithType(changes, ReplaceSingleValuedEReference.class);
     ChangeAssertHelper.assertOldAndNewValue(change, expectedOldValue, expectedNewValue);
     EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(affectedEObject, affectedEFeatureName);
     ChangeAssertHelper.assertAffectedEFeature(change, _feautreByName);
     ChangeAssertHelper.assertAffectedEObject(change, affectedEObject);
     ChangeAssertHelper.assertContainment(change, isContainment);
-    ChangeAssertHelper.assertIsCreate(change, isContainment);
-    ChangeAssertHelper.assertIsDelete(change, isContainment);
   }
   
-  public static void assertIndex(final InsertInEList change, final int expectedIndex) {
+  public static void assertIndex(final UpdateSingleEListEntry change, final int expectedIndex) {
     int _index = change.getIndex();
     Assert.assertEquals("The value is not at the correct index", _index, expectedIndex);
+  }
+  
+  public static void assertSubtractiveChange(final List<?> changes, final EObject affectedEObject, final String affectedFeatureName, final Object oldValue, final int expectedOldIndex, final boolean isContainment, final boolean isDelete) {
+    final RemoveEReference change = ChangeAssertHelper.<RemoveEReference>assertSingleChangeWithType(changes, RemoveEReference.class);
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(affectedEObject, affectedFeatureName);
+    ChangeAssertHelper.assertAffectedEFeature(change, _feautreByName);
+    ChangeAssertHelper.assertAffectedEObject(change, affectedEObject);
+    ChangeAssertHelper.assertOldValue(change, oldValue);
+    if ((change instanceof RemoveFromEList)) {
+      ChangeAssertHelper.assertIndex(change, expectedOldIndex);
+    }
+    ChangeAssertHelper.assertContainment(change, isContainment);
+    ChangeAssertHelper.assertIsDelete(change, isDelete);
+  }
+  
+  public static List<?> assertExplicitUnset(final List<?> changes) {
+    final ExplicitUnsetEFeature unsetChange = ChangeAssertHelper.<ExplicitUnsetEFeature>assertSingleChangeWithType(changes, ExplicitUnsetEFeature.class);
+    EList _atomicChanges = unsetChange.getAtomicChanges();
+    EList _subtractiveChanges = unsetChange.getSubtractiveChanges();
+    Assert.assertEquals("atomic changes should be the same than the subtractive changes", _atomicChanges, _subtractiveChanges);
+    return unsetChange.getSubtractiveChanges();
+  }
+  
+  public static void assertInsertRootEObject(final List<?> changes, final Object newValue, final boolean isCreate) {
+    final InsertRootEObject insertRoot = ChangeAssertHelper.<InsertRootEObject>assertSingleChangeWithType(changes, InsertRootEObject.class);
+    ChangeAssertHelper.assertNewValue(insertRoot, newValue);
+    ChangeAssertHelper.assertIsCreate(insertRoot, isCreate);
+  }
+  
+  public static void assertRemoveRootEObject(final List<?> changes, final Object oldValue, final boolean isDelete) {
+    final RemoveRootEObject removeRoot = ChangeAssertHelper.<RemoveRootEObject>assertSingleChangeWithType(changes, RemoveRootEObject.class);
+    ChangeAssertHelper.assertOldValue(removeRoot, oldValue);
+    ChangeAssertHelper.assertIsDelete(removeRoot, isDelete);
   }
 }

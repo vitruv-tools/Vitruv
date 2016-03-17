@@ -1,5 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.attribute;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues;
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeDescription2ChangeTransformationTestUtil;
@@ -22,7 +23,7 @@ public class ChangeDescription2PermuteEAttrbuteValueTest extends ChangeDescripti
     _multiValuedEAttribute.add(_remove);
     final List<Integer> expectedIndicesForElementsAtOldIndices = Collections.<Integer>unmodifiableList(CollectionLiterals.<Integer>newArrayList(Integer.valueOf(1), Integer.valueOf(0)));
     final List<?> changes = this.getChanges();
-    ChangeAssertHelper.assertPermuteAttributeTest(changes, this.rootElement, expectedIndicesForElementsAtOldIndices);
+    ChangeAssertHelper.assertPermuteListTest(changes, this.rootElement, expectedIndicesForElementsAtOldIndices, ChangeDescription2ChangeTransformationTest.MULI_VALUED_E_ATTRIBUTE_NAME, PermuteEAttributeValues.class);
   }
   
   @Test
@@ -37,6 +38,6 @@ public class ChangeDescription2PermuteEAttrbuteValueTest extends ChangeDescripti
     _multiValuedEAttribute.add(1, _remove);
     final List<Integer> expectedIndicesForElementsAtOldIndices = Collections.<Integer>unmodifiableList(CollectionLiterals.<Integer>newArrayList(Integer.valueOf(0), Integer.valueOf(2), Integer.valueOf(1)));
     final List<?> changes = this.getChanges();
-    ChangeAssertHelper.assertPermuteAttributeTest(changes, this.rootElement, expectedIndicesForElementsAtOldIndices);
+    ChangeAssertHelper.assertPermuteListTest(changes, this.rootElement, expectedIndicesForElementsAtOldIndices, ChangeDescription2ChangeTransformationTest.MULI_VALUED_E_ATTRIBUTE_NAME, PermuteEAttributeValues.class);
   }
 }

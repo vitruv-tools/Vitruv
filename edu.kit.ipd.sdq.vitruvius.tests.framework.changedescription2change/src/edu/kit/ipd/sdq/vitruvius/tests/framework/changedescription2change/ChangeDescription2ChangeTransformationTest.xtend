@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.junit.After
 import org.junit.Before
+import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 
 /** 
  * This class is the test class for the new {@link ChangeDescription2ChangeTransformation}. It
@@ -18,7 +19,7 @@ import org.junit.Before
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
-	var private ChangeRecorder changeRecorder
+	var protected ChangeRecorder changeRecorder
 	var protected Root rootElement
 
 	public static val MULI_VALUED_E_ATTRIBUTE_NAME = "multiValuedEAttribute"	
@@ -65,5 +66,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			startRecording
 		}
 		return nonRoot
+	}
+	
+	protected def createAndAddNonRootToContainment(boolean shouldStartRecording) {
+		// prepare --> insert the non root in the containment - but do not test the containment
+		createAndAddNonRootToFeature(this.rootElement.getFeautreByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
+			shouldStartRecording)
 	}
 }

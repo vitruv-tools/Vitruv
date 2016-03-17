@@ -4,6 +4,7 @@ import allElementTypes.AllElementTypesFactory;
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation;
+import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -21,7 +22,7 @@ import org.junit.Before;
  */
 @SuppressWarnings("all")
 public abstract class ChangeDescription2ChangeTransformationTest {
-  private ChangeRecorder changeRecorder;
+  protected ChangeRecorder changeRecorder;
   
   protected Root rootElement;
   
@@ -78,5 +79,10 @@ public abstract class ChangeDescription2ChangeTransformationTest {
       this.startRecording();
     }
     return nonRoot;
+  }
+  
+  protected NonRoot createAndAddNonRootToContainment(final boolean shouldStartRecording) {
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(this.rootElement, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME);
+    return this.createAndAddNonRootToFeature(_feautreByName, shouldStartRecording);
   }
 }

@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.refer
 
 import allElementTypes.AllElementTypesFactory
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
@@ -20,7 +21,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(null, nonRoot, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, true)
+			this.rootElement, true, true, true)
 	}
 
 	@Test
@@ -35,7 +36,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(nonRoot, replaceNonRoot, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, true)
+			this.rootElement, true, true, true)
 	}
 
 	@Test
@@ -44,7 +45,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		this.rootElement.singleValuedContainmentEReference = null
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, true)
+			this.rootElement, true, false, true)
 	}
 
 	@Test
@@ -52,8 +53,18 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		val nonRoot = createAndAddNonRootToContainment(true)
 		this.rootElement.eUnset(this.rootElement.getFeautreByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME))
 		val changes = getChanges()
+		val subtractiveChanges = changes.assertExplicitUnset
+		subtractiveChanges.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
+			this.rootElement, true, false, true)
+	}
+
+	@Test
+	def public void testRemoveContainmentReferenceWithDelete() {
+		val nonRoot = createAndAddNonRootToContainment(true)
+		EcoreUtil.delete(nonRoot)
+		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, true)
+			this.rootElement, true, false, true)
 	}
 
 	@Test
@@ -67,7 +78,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(null, nonRoot, SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, false)
+			this.rootElement, false, true, false)
 	}
 
 	@Test
@@ -84,7 +95,22 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		// assert
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(nonRoot, replaceNonRoot,
-			SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false)
+			SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false, false, false)
+	}
+
+	@Test
+	def public void testRemoveNonContainmentReferenceWithDelete() {
+		// prepare
+		val nonRoot = createAndAddNonRootToContainment(false)
+		this.rootElement.singleValuedNonContainmentEReference = nonRoot
+		// test
+		EcoreUtil.delete(nonRoot)
+		// assert
+		val changes = getChanges()
+		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME,
+			this.rootElement, false, false, false)
+		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
+			this.rootElement, true, false, true)
 	}
 
 	@Test
@@ -93,7 +119,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		this.rootElement.singleValuedNonContainmentEReference = null
 		val changes = getChanges()
 		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, false)
+			this.rootElement, false, false, false)
 	}
 
 	@Test
@@ -101,14 +127,9 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 		val nonRoot = createAndAddNonRootToContainment(true)
 		this.rootElement.eUnset(this.rootElement.getFeautreByName(SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME))
 		val changes = getChanges()
-		changes.assertReplaceSingleValuedEReference(nonRoot, null, SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME,
-			this.rootElement, false)
-	}
-
-	private def createAndAddNonRootToContainment(boolean shouldStartRecording) {
-		// prepare --> insert the non root in the containment - but do not test the containment
-		createAndAddNonRootToFeature(this.rootElement.getFeautreByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
-			shouldStartRecording)
+		val subtractiveChanges = changes.assertExplicitUnset()
+		subtractiveChanges.assertReplaceSingleValuedEReference(nonRoot, null,
+			SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false, false, false)
 	}
 
 }

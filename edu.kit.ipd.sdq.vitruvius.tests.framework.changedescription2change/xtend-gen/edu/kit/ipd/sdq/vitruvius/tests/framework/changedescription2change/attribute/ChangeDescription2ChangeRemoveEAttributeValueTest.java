@@ -17,8 +17,9 @@ public class ChangeDescription2ChangeRemoveEAttributeValueTest extends ChangeDes
     EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(this.rootElement, ChangeDescription2ChangeTransformationTest.SINGE_VALUE_E_ATTRIBUTE_NAME);
     this.rootElement.eUnset(_feautreByName);
     final List<?> changes = this.getChanges();
-    ChangeAssertHelper.<RemoveEAttributeValue>assertSingleChangeWithType(changes, RemoveEAttributeValue.class);
-    Object _get = changes.get(0);
+    final List<?> subtractiveChanges = ChangeAssertHelper.assertExplicitUnset(changes);
+    ChangeAssertHelper.<RemoveEAttributeValue>assertSingleChangeWithType(subtractiveChanges, RemoveEAttributeValue.class);
+    Object _get = subtractiveChanges.get(0);
     final RemoveEAttributeValue<?, ?> removeEAttributeValue = ((RemoveEAttributeValue<?, ?>) _get);
     ChangeAssertHelper.assertAffectedEObject(removeEAttributeValue, this.rootElement);
     ChangeAssertHelper.assertOldValue(removeEAttributeValue, Integer.valueOf(42));

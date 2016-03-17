@@ -6,6 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.Change
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper;
 import java.util.List;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -17,7 +18,7 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedContainmentEReference(nonRoot);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, null, nonRoot, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, true);
+      this.rootElement, true, true, true);
   }
   
   @Test
@@ -27,7 +28,7 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedContainmentEReference(replaceNonRoot);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, replaceNonRoot, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, true);
+      this.rootElement, true, true, true);
   }
   
   @Test
@@ -36,7 +37,7 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedContainmentEReference(null);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, true);
+      this.rootElement, true, false, true);
   }
   
   @Test
@@ -45,8 +46,18 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(this.rootElement, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME);
     this.rootElement.eUnset(_feautreByName);
     final List<?> changes = this.getChanges();
+    final List<?> subtractiveChanges = ChangeAssertHelper.assertExplicitUnset(changes);
+    ChangeAssertHelper.assertReplaceSingleValuedEReference(subtractiveChanges, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
+      this.rootElement, true, false, true);
+  }
+  
+  @Test
+  public void testRemoveContainmentReferenceWithDelete() {
+    final NonRoot nonRoot = this.createAndAddNonRootToContainment(true);
+    EcoreUtil.delete(nonRoot);
+    final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, true);
+      this.rootElement, true, false, true);
   }
   
   @Test
@@ -55,7 +66,7 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedNonContainmentEReference(nonRoot);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, null, nonRoot, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, false);
+      this.rootElement, false, true, false);
   }
   
   @Test
@@ -67,7 +78,19 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedNonContainmentEReference(replaceNonRoot);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, replaceNonRoot, 
-      ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false);
+      ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false, false, false);
+  }
+  
+  @Test
+  public void testRemoveNonContainmentReferenceWithDelete() {
+    final NonRoot nonRoot = this.createAndAddNonRootToContainment(false);
+    this.rootElement.setSingleValuedNonContainmentEReference(nonRoot);
+    EcoreUtil.delete(nonRoot);
+    final List<?> changes = this.getChanges();
+    ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, 
+      this.rootElement, false, false, false);
+    ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME, 
+      this.rootElement, true, false, true);
   }
   
   @Test
@@ -76,7 +99,7 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     this.rootElement.setSingleValuedNonContainmentEReference(null);
     final List<?> changes = this.getChanges();
     ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, false);
+      this.rootElement, false, false, false);
   }
   
   @Test
@@ -85,12 +108,8 @@ public class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeD
     EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(this.rootElement, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME);
     this.rootElement.eUnset(_feautreByName);
     final List<?> changes = this.getChanges();
-    ChangeAssertHelper.assertReplaceSingleValuedEReference(changes, nonRoot, null, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, 
-      this.rootElement, false);
-  }
-  
-  private NonRoot createAndAddNonRootToContainment(final boolean shouldStartRecording) {
-    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(this.rootElement, ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME);
-    return this.createAndAddNonRootToFeature(_feautreByName, shouldStartRecording);
+    final List<?> subtractiveChanges = ChangeAssertHelper.assertExplicitUnset(changes);
+    ChangeAssertHelper.assertReplaceSingleValuedEReference(subtractiveChanges, nonRoot, null, 
+      ChangeDescription2ChangeTransformationTest.SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, this.rootElement, false, false, false);
   }
 }
