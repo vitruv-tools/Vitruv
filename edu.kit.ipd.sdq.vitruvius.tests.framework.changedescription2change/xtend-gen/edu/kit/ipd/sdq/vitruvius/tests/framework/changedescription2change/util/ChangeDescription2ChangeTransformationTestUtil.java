@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.C
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 @SuppressWarnings("all")
 public class ChangeDescription2ChangeTransformationTestUtil {
@@ -19,7 +20,7 @@ public class ChangeDescription2ChangeTransformationTestUtil {
     Root _rootElement = test.getRootElement();
     _rootElement.setSingleValuedEAttribute(Integer.valueOf(newValue));
     final List<?> changes = test.getChanges();
-    ChangeAssertHelper.assertSingleChangeWithType(changes, ReplaceSingleValuedEAttribute.class);
+    ChangeAssertHelper.<ReplaceSingleValuedEAttribute>assertSingleChangeWithType(changes, ReplaceSingleValuedEAttribute.class);
     Object _get = changes.get(0);
     final ReplaceSingleValuedEAttribute<?, ?> replaceEAttribute = ((ReplaceSingleValuedEAttribute<?, ?>) _get);
     ChangeAssertHelper.assertOldAndNewValue(replaceEAttribute, Integer.valueOf(oldValue), Integer.valueOf(newValue));
@@ -37,12 +38,16 @@ public class ChangeDescription2ChangeTransformationTestUtil {
       _multiValuedEAttribute_1.add(position, Integer.valueOf(expectedValue));
     }
     final List<?> changes = changeDescription2Change.getChanges();
-    ChangeAssertHelper.assertSingleChangeWithType(changes, InsertEAttributeValue.class);
+    ChangeAssertHelper.<InsertEAttributeValue>assertSingleChangeWithType(changes, InsertEAttributeValue.class);
     Object _get = changes.get(0);
     final InsertEAttributeValue<?, ?> insertEAttributValue = ((InsertEAttributeValue<?, ?>) _get);
     EObject _affectedEObject = insertEAttributValue.getAffectedEObject();
     ChangeAssertHelper.assertAffectedEObject(insertEAttributValue, _affectedEObject);
-    insertEAttributValue.getIndex();
-    insertEAttributValue.getNewValue();
+    ChangeAssertHelper.assertNewValue(insertEAttributValue, Integer.valueOf(expectedValue));
+    ChangeAssertHelper.assertIndex(insertEAttributValue, expectedValue);
+    Root _rootElement_2 = changeDescription2Change.getRootElement();
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(_rootElement_2, 
+      ChangeDescription2ChangeTransformationTest.MULI_VALUED_E_ATTRIBUTE_NAME);
+    ChangeAssertHelper.assertAffectedEFeature(insertEAttributValue, _feautreByName);
   }
 }

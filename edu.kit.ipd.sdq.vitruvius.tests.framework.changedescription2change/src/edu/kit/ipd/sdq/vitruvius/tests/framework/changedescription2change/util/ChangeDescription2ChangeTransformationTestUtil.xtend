@@ -7,14 +7,14 @@ import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.Change
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 
 class ChangeDescription2ChangeTransformationTestUtil {
-	private new(){
-		
+	private new() {
 	}
-	
-	def public static testReplaceSingleValuedAttribute(ChangeDescription2ChangeTransformationTest test, int oldValue, int newValue){
+
+	def public static testReplaceSingleValuedAttribute(ChangeDescription2ChangeTransformationTest test, int oldValue,
+		int newValue) {
 		// the test
 		test.startRecording
-		test.rootElement.setSingleValuedEAttribute(newValue)
+		test.rootElement.singleValuedEAttribute = newValue
 
 		// get the changes
 		val changes = test.getChanges()
@@ -23,27 +23,32 @@ class ChangeDescription2ChangeTransformationTestUtil {
 		changes.assertSingleChangeWithType(ReplaceSingleValuedEAttribute)
 		val replaceEAttribute = changes.get(0) as ReplaceSingleValuedEAttribute<?, ?>
 		replaceEAttribute.assertOldAndNewValue(oldValue, newValue)
-	}	
-	
-	def public static void testInsertEAttributeValue(ChangeDescription2ChangeTransformationTest changeDescription2Change, int expectedIndex, int expectedValue, int position) {
-		// test
-		changeDescription2Change.startRecording
-		if (position == -1) {
-			changeDescription2Change.rootElement.multiValuedEAttribute.add(expectedValue)
-		}else{
-			changeDescription2Change.rootElement.multiValuedEAttribute.add(position, expectedValue)
+	}
+
+	def public static void testInsertEAttributeValue(
+		ChangeDescription2ChangeTransformationTest changeDescription2Change, int expectedIndex, int expectedValue,
+		int position) {
+			// test
+			changeDescription2Change.startRecording
+			if (position == -1) {
+				changeDescription2Change.rootElement.multiValuedEAttribute.add(expectedValue)
+			} else {
+				changeDescription2Change.rootElement.multiValuedEAttribute.add(position, expectedValue)
+			}
+
+			// get changes
+			val changes = changeDescription2Change.getChanges()
+
+			// assert
+			changes.assertSingleChangeWithType(InsertEAttributeValue)
+			val insertEAttributValue = changes.get(0) as InsertEAttributeValue<?, ?>
+			insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
+			insertEAttributValue.assertNewValue(expectedValue)
+			insertEAttributValue.assertIndex(expectedValue)
+			insertEAttributValue.assertAffectedEFeature(
+				changeDescription2Change.rootElement.getFeautreByName(
+					ChangeDescription2ChangeTransformationTest.MULI_VALUED_E_ATTRIBUTE_NAME))
 		}
 
-		// get changes
-		val changes = changeDescription2Change.getChanges()
-
-		// assert
-		changes.assertSingleChangeWithType(InsertEAttributeValue)
-		val insertEAttributValue = changes.get(0) as InsertEAttributeValue<?, ?>
-		insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
-
-		// insertEAttributValue.affectedFeature.assertAffectedFeature()
-		insertEAttributValue.index
-		insertEAttributValue.newValue
 	}
-}
+	

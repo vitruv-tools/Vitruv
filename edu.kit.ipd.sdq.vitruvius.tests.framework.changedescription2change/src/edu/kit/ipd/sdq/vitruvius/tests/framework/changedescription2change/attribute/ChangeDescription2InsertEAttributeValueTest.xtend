@@ -1,10 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change
+package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.attribute
 
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeDescription2ChangeTransformationTestUtil.*
 
-class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2ChangeTransformationTest {
+class ChangeDescription2InsertEAttributeValueTest extends edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest {
 
 	@Test
 	def void testInsertEAttributeValue() {

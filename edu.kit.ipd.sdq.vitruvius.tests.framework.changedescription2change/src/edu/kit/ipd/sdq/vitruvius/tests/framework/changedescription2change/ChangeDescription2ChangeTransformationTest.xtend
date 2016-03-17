@@ -5,6 +5,7 @@ import allElementTypes.Root
 import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation
 import java.util.Arrays
 import java.util.List
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.junit.After
 import org.junit.Before
@@ -19,6 +20,13 @@ import org.junit.Before
 abstract class ChangeDescription2ChangeTransformationTest {
 	var private ChangeRecorder changeRecorder
 	var protected Root rootElement
+
+	public static val MULI_VALUED_E_ATTRIBUTE_NAME = "multiValuedEAttribute"	
+	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
+	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
+	public static val SINGE_VALUE_E_ATTRIBUTE_NAME = "singleValuedEAttribute"
+	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME =  "multiValuedContainmentEReference"
+	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 
 	/** 
 	 * Create a new model and initialize the change monitoring
@@ -48,5 +56,14 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	public def getRootElement(){
 		return this.rootElement
+	}
+	
+	protected  def createAndAddNonRootToFeature(EStructuralFeature eStructuralFeature, boolean shouldStartRecording) {
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
+		this.rootElement.eSet(eStructuralFeature, nonRoot)
+		if (shouldStartRecording) {
+			startRecording
+		}
+		return nonRoot
 	}
 }

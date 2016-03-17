@@ -1,5 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change
+package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.attribute
 
+import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeDescription2ChangeTransformationTestUtil.*
