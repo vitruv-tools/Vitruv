@@ -78,7 +78,7 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
     }
 
     @Test
-    public void testCangeTypeOfOperationRequiredRole() throws Throwable {
+    public void testChangeTypeOfOperationRequiredRole() throws Throwable {
         final OperationRequiredRole opr = this.createAndSyncRepoBasicCompInterfaceAndOperationReqiredRole();
         final Repository repo = opr.getRequiredInterface__OperationRequiredRole().getRepository__Interface();
 

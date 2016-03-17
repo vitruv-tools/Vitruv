@@ -40,6 +40,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import org.emftext.language.java.classifiers.ClassifiersFactory
 import org.emftext.language.java.types.Type
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
+import org.palladiosimulator.pcm.repository.DataType
 
 class PCMJavaHelper {
 	private static def String getQualifiedName(Repository repository) {
@@ -343,5 +344,27 @@ class PCMJavaHelper {
 	
 	public static def String buildJavaFilePath(org.emftext.language.java.containers.Package javaPackage) {
 		return '''src/«FOR namespace : javaPackage.namespaces SEPARATOR "/" AFTER "/"»«namespace»«ENDFOR»«javaPackage.name»/«packageInfoClassName».java''';
+	}
+	
+	public static def TypeReference createTypeReference(DataType originalDataType, Class correspondingJavaClassIfExisting) {
+		if (null == originalDataType) {
+			return TypesFactory.eINSTANCE.createVoid
+		}
+		var TypeReference innerDataTypeReference = null;
+		if (originalDataType instanceof PrimitiveDataType) {
+			val type = EcoreUtil.copy(claimJaMoPPTypeForPrimitiveDataType(originalDataType));
+			if (type instanceof TypeReference) {
+				innerDataTypeReference = type;
+			} else if (type instanceof ConcreteClassifier) {
+				innerDataTypeReference = createNamespaceClassifierReference(type);
+			} else {
+				// This cannot be since the claimForPrimitiveType function does only return TypeReference or ConcreteClassifier
+			}
+		} else if (correspondingJavaClassIfExisting != null) {
+			innerDataTypeReference = createNamespaceClassifierReference(correspondingJavaClassIfExisting);	
+		} else {
+			throw new IllegalArgumentException("Either the dataType must be primitive or a correspondingJavaClass must be specified");
+		}
+		return innerDataTypeReference;
 	}
 }
