@@ -246,6 +246,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
             final String parameterName) {
         final Parameter param = RepositoryFactory.eINSTANCE.createParameter();
         param.setParameterName(parameterName);
+        param.setEntityName(parameterName);
         param.setDataType__Parameter(dataType);
         param.setModifier__Parameter(ParameterModifier.IN);
         param.setOperationSignature__Parameter(opSig);

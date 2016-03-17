@@ -592,3 +592,45 @@ execute: {
 response: DeleteOperationSignature
 trigger: remove from list pcm.repository.OperationInterface[signatures__OperationInterface]
 delete element: interfaceMethod of type java.members.InterfaceMethod corresponding to change.oldValue
+
+
+
+response: CreatedParameter
+trigger: insert in list pcm.repository.OperationSignature[parameters__OperationSignature]
+retrieve element: interfaceMethod of type java.members.InterfaceMethod corresponding to change.newAffectedEObject
+create element: javaParameter of type java.parameters.OrdinaryParameter corresponding to change.newValue
+execute: {
+	javaParameter.name = change.newValue.parameterName;
+	callChangeParameterType(javaParameter, change.newValue.dataType__Parameter);
+	interfaceMethod.parameters += javaParameter;
+}
+
+response: ChangedParameterName
+trigger: replace value pcm.repository.Parameter[parameterName]
+retrieve element: javaParameter of type java.parameters.OrdinaryParameter corresponding to change.newAffectedEObject
+execute: {
+	javaParameter.name = change.newValue;
+}
+
+response: ChangedParameterType
+trigger: replace value pcm.repository.Parameter[dataType__Parameter]
+// retrieve the interface method to update the TUID according to the new parameter type
+retrieve element: interfaceMethod of type java.members.InterfaceMethod corresponding to change.newAffectedEObject.eContainer
+retrieve element: javaParameter of type java.parameters.OrdinaryParameter corresponding to change.newAffectedEObject
+execute: callChangeParameterType(javaParameter, change.newValue)
+
+effect: ChangeParameterType
+model input: java.parameters.OrdinaryParameter as javaParameter, pcm.repository.DataType as parameterType
+retrieve element: javaParameterTypeClass of type java.classifiers.Class corresponding to parameterType optional
+execute: {
+	val parameterTypeReference = createTypeReference(parameterType, javaParameterTypeClass);
+	javaParameter.typeReference = parameterTypeReference;
+}
+
+response: RemovedParameter
+trigger: remove from list pcm.repository.OperationSignature[parameters__OperationSignature]
+// retrieve the interface method to update the TUID according to the removed parameter type
+retrieve element: interfaceMethod of type java.members.InterfaceMethod corresponding to change.newAffectedEObject
+delete element: javaParameter of type java.parameters.OrdinaryParameter corresponding to change.oldValue
+
+

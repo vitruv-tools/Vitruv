@@ -1,7 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.pcm2jamopp.repository;
 
-import org.junit.Test;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.emftext.language.java.classifiers.Classifier;
+import org.emftext.language.java.containers.CompilationUnit;
+import org.emftext.language.java.members.InterfaceMethod;
+import org.emftext.language.java.parameters.OrdinaryParameter;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Parameter;
@@ -9,6 +20,10 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.utils.PCM2JaMoPPTestUtils;
 
@@ -50,9 +65,21 @@ public class PCMParameterMappingTransformationTest extends PCM2JaMoPPTransformat
 
         this.assertParameterCorrespondences(param);
     }
+    
+    @Test
+    public void testRemoveParameter() throws Throwable {
+        final Parameter param = this.createAndSyncRepoOpSigAndParameter();
+
+        this.assertParameterCorrespondences(param);
+        final OperationSignature opSig = param.getOperationSignature__Parameter();
+        EcoreUtil.remove(param);
+        triggerSynchronization(opSig);
+        
+        this.assertCorrectSignatureMappingWithParameters(opSig, 0);
+    }
 
     @Test
-    public void testAddMultipleParameters() throws Throwable {
+    public void testAddMultipleParametersAndRemoveOne() throws Throwable {
         final Parameter param = super.createAndSyncRepoOpSigAndParameterWithDataTypeName(
                 PCM2JaMoPPTestUtils.COMPOSITE_DATA_TYPE_NAME + "_1", "compositeParam1");
         final OperationSignature opSig = param.getOperationSignature__Parameter();
@@ -61,10 +88,15 @@ public class PCMParameterMappingTransformationTest extends PCM2JaMoPPTransformat
 
         final Parameter param2 = super.addAndSyncParameterWithPrimitiveTypeToSignature(opSig);
         final Parameter param3 = super.addAndSyncParameterToSignature(opSig, cdt, "compositeParam2");
-
+        
+        this.assertCorrectSignatureMappingWithParameters(opSig, 3);
         this.assertParameterCorrespondences(param);
         this.assertParameterCorrespondences(param2);
         this.assertParameterCorrespondences(param3);
+        
+        EcoreUtil.remove(param2);
+        triggerSynchronization(opSig);
+        this.assertCorrectSignatureMappingWithParameters(opSig, 2);
     }
 
     /**
@@ -73,6 +105,22 @@ public class PCMParameterMappingTransformationTest extends PCM2JaMoPPTransformat
      */
     private void assertParameterCorrespondences(final Parameter param) throws Throwable {
         this.assertDataTypeCorrespondence(param.getDataType__Parameter());
+        this.assertCorrespondnecesAndCompareNames(param, 1,
+                new java.lang.Class[] { OrdinaryParameter.class },
+                new String[] { param.getParameterName() });
+    }
+    
+    private void assertCorrectSignatureMappingWithParameters(final OperationSignature signature, int expectedParameterCount) throws Throwable {
+    	Set<InterfaceMethod> ims = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(getCorrespondenceInstance(), signature, InterfaceMethod.class);
+    	 assertEquals(1, ims.size());
+         InterfaceMethod im = ims.iterator().next();
+         assertEquals(expectedParameterCount, im.getParameters().size());
+         for (Parameter curParam : signature.getParameters__OperationSignature()) {
+        	 Set<OrdinaryParameter> javaParams = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(getCorrespondenceInstance(), curParam, OrdinaryParameter.class);
+        	 assertEquals(1, javaParams.size());
+        	 OrdinaryParameter javaParam = javaParams.iterator().next();
+        	 assertEquals(im.getParameters().get(signature.getParameters__OperationSignature().indexOf(curParam)), javaParam);
+         }
     }
 
 }
