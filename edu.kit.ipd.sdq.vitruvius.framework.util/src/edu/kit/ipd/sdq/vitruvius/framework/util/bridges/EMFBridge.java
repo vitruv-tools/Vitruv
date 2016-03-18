@@ -10,6 +10,10 @@
  ******************************************************************************/
 package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
+import java.io.File;
+
+import org.eclipse.core.internal.resources.Container;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -134,15 +138,21 @@ public final class EMFBridge {
 	}
 
 	public static IFolder createFolderInProjectIfNecessary(IProject project, String folderName) {
-		IFolder folder = project.getFolder(folderName);
-		if (!folder.exists()) {
-			try {
-				folder.create(true, true, new NullProgressMonitor());
-			} catch (CoreException e) {
-				// soften
-				throw new RuntimeException(e);
+		String[] folderNames = folderName.split(File.separator);
+		IContainer currentContainer = project;
+		IFolder folder = null;
+		for (int i=0; i<folderNames.length; i++) {
+			folder = currentContainer.getFolder(new Path(folderNames[i]));
+			if (!folder.exists()) {
+				try {
+					folder.create(true, true, new NullProgressMonitor());
+				} catch (CoreException e) {
+					// soften
+					throw new RuntimeException(e);
+				}
 			}
-		}
+			currentContainer = folder;
+		} 
 		return folder;
 	}
 	

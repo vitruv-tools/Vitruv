@@ -322,6 +322,19 @@ public final class EcoreBridge {
     public static Iterable<EObject> getAllContents(final EObject eObject) {
         return JavaBridge.toIterable(eObject.eAllContents());
     }
+    
+    /**
+     * Returns an iterable for iterating over all direct and indirect contents of the given Resource.
+     *
+     * @param resource
+     *            container Resource
+     * @return a direct and indirect content iterating iterable
+     *
+     * @see org.eclipse.emf.ecore.Resource#eAllContents() Resource.eAllContents()
+     */
+    public static Iterable<EObject> getAllContents(final Resource resource) {
+        return JavaBridge.toIterable(resource.getAllContents());
+    }
 
     /**
      * Returns whether the given eObject is contained indirectly in the given collection. Returns

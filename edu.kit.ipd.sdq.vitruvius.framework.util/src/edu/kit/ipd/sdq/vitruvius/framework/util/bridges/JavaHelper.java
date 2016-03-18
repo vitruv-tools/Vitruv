@@ -1,11 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static org.eclipse.xtext.xbase.lib.IterableExtensions.map;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,8 +18,6 @@ import java.util.stream.Stream;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
-
-import static org.eclipse.xtext.xbase.lib.IterableExtensions.*;
 
 /**
  * Helper class for casting, assertions, etc...
