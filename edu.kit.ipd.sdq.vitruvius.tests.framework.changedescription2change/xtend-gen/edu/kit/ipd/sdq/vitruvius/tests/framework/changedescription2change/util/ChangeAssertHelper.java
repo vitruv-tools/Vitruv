@@ -2,20 +2,30 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -134,6 +144,17 @@ public class ChangeAssertHelper {
     ChangeAssertHelper.assertIsDelete(change, isDelete);
   }
   
+  public static void assertRemoveEAttribute(final List<?> changes, final EObject affecteEObject, final String featureName, final Object oldValue, final int expectedOldIndex) {
+    ChangeAssertHelper.<RemoveEAttributeValue>assertSingleChangeWithType(changes, RemoveEAttributeValue.class);
+    Object _get = changes.get(0);
+    final RemoveEAttributeValue<?, ?> removeEAttributeValue = ((RemoveEAttributeValue<?, ?>) _get);
+    ChangeAssertHelper.assertAffectedEObject(removeEAttributeValue, affecteEObject);
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(affecteEObject, featureName);
+    ChangeAssertHelper.assertAffectedEFeature(removeEAttributeValue, _feautreByName);
+    ChangeAssertHelper.assertOldValue(removeEAttributeValue, oldValue);
+    ChangeAssertHelper.assertIndex(removeEAttributeValue, expectedOldIndex);
+  }
+  
   public static List<?> assertExplicitUnset(final List<?> changes) {
     final ExplicitUnsetEFeature unsetChange = ChangeAssertHelper.<ExplicitUnsetEFeature>assertSingleChangeWithType(changes, ExplicitUnsetEFeature.class);
     EList _atomicChanges = unsetChange.getAtomicChanges();
@@ -152,5 +173,52 @@ public class ChangeAssertHelper {
     final RemoveRootEObject removeRoot = ChangeAssertHelper.<RemoveRootEObject>assertSingleChangeWithType(changes, RemoveRootEObject.class);
     ChangeAssertHelper.assertOldValue(removeRoot, oldValue);
     ChangeAssertHelper.assertIsDelete(removeRoot, isDelete);
+  }
+  
+  public static Quadruple<SubtractiveEReferenceChange<?>, UpdateEReference<?>, AdditiveEReferenceChange<?>, UpdateEReference<?>> assertMoveEObject(final List<?> changes, final int atomicChanges) {
+    final MoveEObject moveEObject = ChangeAssertHelper.<MoveEObject>assertSingleChangeWithType(changes, MoveEObject.class);
+    ChangeAssertHelper.assertAtomicChanges(moveEObject, atomicChanges);
+    final SubtractiveEReferenceChange subtractiveReferenceChange = moveEObject.getSubtractWhatChange();
+    final UpdateEReference removeUpdateEReferenceChange = moveEObject.getSubtractWhereChange();
+    final AdditiveEReferenceChange addEReferenceChange = moveEObject.getAddWhatChange();
+    final UpdateEReference addUpdateEReferenceChange = moveEObject.getAddWhereChange();
+    return new Quadruple<SubtractiveEReferenceChange<?>, UpdateEReference<?>, AdditiveEReferenceChange<?>, UpdateEReference<?>>(subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange, addUpdateEReferenceChange);
+  }
+  
+  public static Pair<RemoveFromEList, InsertInEList> assertReplaceInEList(final List<?> changes, final int atomicChanges) {
+    final ReplaceInEList replaceInEList = ChangeAssertHelper.<ReplaceInEList>assertSingleChangeWithType(changes, ReplaceInEList.class);
+    ChangeAssertHelper.assertAtomicChanges(replaceInEList, atomicChanges);
+    final EAtomicChange removeChange = ((EAtomicChange)replaceInEList.getRemoveChange());
+    final EAtomicChange insertInEList = ((EAtomicChange)replaceInEList.getInsertChange());
+    return new Pair<RemoveFromEList, InsertInEList>(((RemoveFromEList)removeChange), ((InsertInEList)insertInEList));
+  }
+  
+  public static void assertAtomicChanges(final ECompoundChange eCompoundChange, final int atomicChanges) {
+    EList<EAtomicChange> _atomicChanges = eCompoundChange.getAtomicChanges();
+    int _size = _atomicChanges.size();
+    Assert.assertEquals((("Expected exactly " + Integer.valueOf(atomicChanges)) + " changes in move EObject"), _size, atomicChanges);
+  }
+  
+  public static void assertInsertEReference(final List<?> changes, final EObject affectedEObject, final String featureName, final Object expectedNewValue, final int expectedIndex, final boolean isContainment, final boolean isCreate) {
+    final InsertEReference insertEReference = ChangeAssertHelper.<InsertEReference>assertSingleChangeWithType(changes, InsertEReference.class);
+    ChangeAssertHelper.assertAffectedEObject(insertEReference, affectedEObject);
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(affectedEObject, featureName);
+    ChangeAssertHelper.assertAffectedEFeature(insertEReference, _feautreByName);
+    ChangeAssertHelper.assertNewValue(insertEReference, expectedNewValue);
+    ChangeAssertHelper.assertIndex(insertEReference, expectedIndex);
+    ChangeAssertHelper.assertContainment(insertEReference, isContainment);
+    ChangeAssertHelper.assertIsCreate(insertEReference, isCreate);
+  }
+  
+  public static void assertInsertEAttribute(final List<?> changes, final EObject affectedEObject, final String featureName, final Object expectedValue, final int expectedIndex) {
+    ChangeAssertHelper.<InsertEAttributeValue>assertSingleChangeWithType(changes, InsertEAttributeValue.class);
+    Object _get = changes.get(0);
+    final InsertEAttributeValue<?, ?> insertEAttributValue = ((InsertEAttributeValue<?, ?>) _get);
+    EObject _affectedEObject = insertEAttributValue.getAffectedEObject();
+    ChangeAssertHelper.assertAffectedEObject(insertEAttributValue, _affectedEObject);
+    ChangeAssertHelper.assertNewValue(insertEAttributValue, expectedValue);
+    ChangeAssertHelper.assertIndex(insertEAttributValue, expectedIndex);
+    EStructuralFeature _feautreByName = ChangeAssertHelper.getFeautreByName(affectedEObject, featureName);
+    ChangeAssertHelper.assertAffectedEFeature(insertEAttributValue, _feautreByName);
   }
 }

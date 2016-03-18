@@ -26,8 +26,6 @@ public abstract class ChangeDescription2ChangeTransformationTest {
   
   protected Root rootElement;
   
-  public final static String MULI_VALUED_E_ATTRIBUTE_NAME = "multiValuedEAttribute";
-  
   public final static String SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference";
   
   public final static String SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference";
@@ -37,6 +35,8 @@ public abstract class ChangeDescription2ChangeTransformationTest {
   public final static String MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME = "multiValuedContainmentEReference";
   
   public final static String MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference";
+  
+  public final static String MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute";
   
   /**
    * Create a new model and initialize the change monitoring

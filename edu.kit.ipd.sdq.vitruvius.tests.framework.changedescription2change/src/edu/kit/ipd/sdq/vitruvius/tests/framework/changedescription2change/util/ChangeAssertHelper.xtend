@@ -5,25 +5,34 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveERefere
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.Assert
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 
 class ChangeAssertHelper {
-	
+
 	private new() {
 	}
 
@@ -74,74 +83,133 @@ class ChangeAssertHelper {
 	}
 
 	def public static void assertPermuteListTest(List<?> changes, EObject rootElement,
-		List<Integer> expectedIndicesForElementsAtOldIndices, String featureName, Class<? extends PermuteEList> changeType) {
-		changes.assertSingleChangeWithType(changeType)
-		val permuteEAttributeValues = changeType.cast(changes.get(0))
-		permuteEAttributeValues.assertAffectedEObject(rootElement)
-		permuteEAttributeValues.assertAffectedEFeature(rootElement.getFeautreByName(featureName))
-		permuteEAttributeValues.assertIndices(expectedIndicesForElementsAtOldIndices)
-	}
-	
-	def static void assertContainment(UpdateEReference<?> updateEReference, boolean expectedValue) {
-		Assert.assertEquals("The containment information of the change " + updateEReference + " is wrong",
-			updateEReference.isContainment, expectedValue)
-	}
-
-	def static void assertIsDelete(SubtractiveEReferenceChange<?> subtractiveReference, boolean expectedValue) {
-		Assert.assertEquals("Change " + subtractiveReference + " shall not be a delete change",
-			subtractiveReference.isIsDelete, expectedValue)
-	}
-
-	def static void assertIsCreate(AdditiveEReferenceChange<?> additiveReference, boolean expectedValue) {
-		Assert.assertEquals("Change " + additiveReference + " shall not be a create change",
-			additiveReference.isIsCreate, expectedValue)
-	}
-
-	def static void assertReplaceSingleValuedEReference(List<?> changes, Object expectedOldValue,
-		Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
-		boolean isCreate, boolean isDelete) {
-		val change = changes.assertSingleChangeWithType(ReplaceSingleValuedEReference)
-		change.assertOldAndNewValue(expectedOldValue, expectedNewValue)
-		change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedEFeatureName))
-		change.assertAffectedEObject(affectedEObject)
-		change.assertContainment(isContainment)
-
-	}
-
-	def static void assertIndex(UpdateSingleEListEntry change, int expectedIndex) {
-		Assert.assertEquals("The value is not at the correct index", change.index, expectedIndex)
-	}
-
-	def public static assertSubtractiveChange(List<?> changes, EObject affectedEObject, String affectedFeatureName,
-		Object oldValue, int expectedOldIndex, boolean isContainment, boolean isDelete) {
-		val change = assertSingleChangeWithType(changes, RemoveEReference)
-		change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedFeatureName))
-		change.assertAffectedEObject(affectedEObject)
-		change.assertOldValue(oldValue)
-		if(change instanceof RemoveFromEList){
-			change.assertIndex(expectedOldIndex)	
+		List<Integer> expectedIndicesForElementsAtOldIndices, String featureName,
+		Class<? extends PermuteEList> changeType) {
+			changes.assertSingleChangeWithType(changeType)
+			val permuteEAttributeValues = changeType.cast(changes.get(0))
+			permuteEAttributeValues.assertAffectedEObject(rootElement)
+			permuteEAttributeValues.assertAffectedEFeature(rootElement.getFeautreByName(featureName))
+			permuteEAttributeValues.assertIndices(expectedIndicesForElementsAtOldIndices)
 		}
-		change.assertContainment(isContainment)
-		change.assertIsDelete(isDelete)
-	}
 
-	def public static List<?> assertExplicitUnset(List<?> changes) {
-		val unsetChange = changes.assertSingleChangeWithType(ExplicitUnsetEFeature)
-		Assert.assertEquals("atomic changes should be the same than the subtractive changes", unsetChange.atomicChanges,
-			unsetChange.subtractiveChanges)
-		return unsetChange.subtractiveChanges
-	}
-	
-	def public static assertInsertRootEObject(List<?> changes, Object newValue, boolean isCreate){
-		val insertRoot = changes.assertSingleChangeWithType(InsertRootEObject)
-		insertRoot.assertNewValue(newValue)		
-		insertRoot.assertIsCreate(isCreate)
-	}
-	
-	def public static assertRemoveRootEObject(List<?> changes, Object oldValue, boolean isDelete){
-		val removeRoot = changes.assertSingleChangeWithType(RemoveRootEObject)
-		removeRoot.assertOldValue(oldValue)
-		removeRoot.assertIsDelete(isDelete)
-	}
+		def static void assertContainment(UpdateEReference<?> updateEReference, boolean expectedValue) {
+			Assert.assertEquals("The containment information of the change " + updateEReference + " is wrong",
+				updateEReference.isContainment, expectedValue)
+		}
 
-}
+		def static void assertIsDelete(SubtractiveEReferenceChange<?> subtractiveReference, boolean expectedValue) {
+			Assert.assertEquals("Change " + subtractiveReference + " shall not be a delete change",
+				subtractiveReference.isIsDelete, expectedValue)
+		}
+
+		def static void assertIsCreate(AdditiveEReferenceChange<?> additiveReference, boolean expectedValue) {
+			Assert.assertEquals("Change " + additiveReference + " shall not be a create change",
+				additiveReference.isIsCreate, expectedValue)
+		}
+
+		def static void assertReplaceSingleValuedEReference(List<?> changes, Object expectedOldValue,
+			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
+			boolean isCreate, boolean isDelete) {
+			val change = changes.assertSingleChangeWithType(ReplaceSingleValuedEReference)
+			change.assertOldAndNewValue(expectedOldValue, expectedNewValue)
+			change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedEFeatureName))
+			change.assertAffectedEObject(affectedEObject)
+			change.assertContainment(isContainment)
+
+		}
+
+		def static void assertIndex(UpdateSingleEListEntry change, int expectedIndex) {
+			Assert.assertEquals("The value is not at the correct index", change.index, expectedIndex)
+		}
+
+		def public static assertSubtractiveChange(List<?> changes, EObject affectedEObject, String affectedFeatureName,
+			Object oldValue, int expectedOldIndex, boolean isContainment, boolean isDelete) {
+			val change = assertSingleChangeWithType(changes, RemoveEReference)
+			change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedFeatureName))
+			change.assertAffectedEObject(affectedEObject)
+			change.assertOldValue(oldValue)
+			if (change instanceof RemoveFromEList) {
+				change.assertIndex(expectedOldIndex)
+			}
+			change.assertContainment(isContainment)
+			change.assertIsDelete(isDelete)
+		}
+
+		def public static assertRemoveEAttribute(List<?> changes, EObject affecteEObject, String featureName,
+			Object oldValue, int expectedOldIndex) {
+			changes.assertSingleChangeWithType(RemoveEAttributeValue)
+			val removeEAttributeValue = changes.get(0) as RemoveEAttributeValue<?, ?>
+			removeEAttributeValue.assertAffectedEObject(affecteEObject)
+			removeEAttributeValue.assertAffectedEFeature(affecteEObject.getFeautreByName(featureName))
+			removeEAttributeValue.assertOldValue(oldValue)
+			removeEAttributeValue.assertIndex(expectedOldIndex)
+		}
+
+		def public static List<?> assertExplicitUnset(List<?> changes) {
+			val unsetChange = changes.assertSingleChangeWithType(ExplicitUnsetEFeature)
+			Assert.assertEquals("atomic changes should be the same than the subtractive changes",
+				unsetChange.atomicChanges, unsetChange.subtractiveChanges)
+			return unsetChange.subtractiveChanges
+		}
+
+		def public static assertInsertRootEObject(List<?> changes, Object newValue, boolean isCreate) {
+			val insertRoot = changes.assertSingleChangeWithType(InsertRootEObject)
+			insertRoot.assertNewValue(newValue)
+			insertRoot.assertIsCreate(isCreate)
+		}
+
+		def public static assertRemoveRootEObject(List<?> changes, Object oldValue, boolean isDelete) {
+			val removeRoot = changes.assertSingleChangeWithType(RemoveRootEObject)
+			removeRoot.assertOldValue(oldValue)
+			removeRoot.assertIsDelete(isDelete)
+		}
+
+		def public static assertMoveEObject(List<?> changes, int atomicChanges) {
+			val moveEObject = changes.assertSingleChangeWithType(MoveEObject)
+			moveEObject.assertAtomicChanges(atomicChanges)
+			val subtractiveReferenceChange = moveEObject.subtractWhatChange
+			val removeUpdateEReferenceChange = moveEObject.subtractWhereChange
+			val addEReferenceChange = moveEObject.addWhatChange
+			val addUpdateEReferenceChange = moveEObject.
+				addWhereChange
+			return new Quadruple<SubtractiveEReferenceChange<?>, UpdateEReference<?>, AdditiveEReferenceChange<?>, UpdateEReference<?>>(
+				subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange, addUpdateEReferenceChange)
+
+			}
+
+			def public static assertReplaceInEList(List<?> changes, int atomicChanges) {
+				val replaceInEList = changes.assertSingleChangeWithType(ReplaceInEList)
+				replaceInEList.assertAtomicChanges(atomicChanges)
+				val removeChange = replaceInEList.removeChange
+				val insertInEList = replaceInEList.insertChange
+				return new Pair<RemoveFromEList, InsertInEList>(removeChange, insertInEList)
+			}
+
+			def public static assertAtomicChanges(ECompoundChange eCompoundChange, int atomicChanges) {
+				Assert.assertEquals("Expected exactly " + atomicChanges + " changes in move EObject",
+					eCompoundChange.atomicChanges.size, atomicChanges)
+			}
+
+			def public static assertInsertEReference(List<?> changes, EObject affectedEObject, String featureName,
+				Object expectedNewValue, int expectedIndex, boolean isContainment, boolean isCreate) {
+				val insertEReference = changes.assertSingleChangeWithType(InsertEReference)
+				insertEReference.assertAffectedEObject(affectedEObject)
+				insertEReference.assertAffectedEFeature(affectedEObject.getFeautreByName(featureName))
+				insertEReference.assertNewValue(expectedNewValue)
+				insertEReference.assertIndex(expectedIndex)
+				insertEReference.assertContainment(isContainment)
+				insertEReference.assertIsCreate(isCreate)
+			}
+
+			def public static assertInsertEAttribute(List<?> changes, EObject affectedEObject, String featureName,
+				Object expectedValue, int expectedIndex) {
+				changes.assertSingleChangeWithType(InsertEAttributeValue)
+				val insertEAttributValue = changes.get(0) as InsertEAttributeValue<?, ?>
+				insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
+				insertEAttributValue.assertNewValue(expectedValue)
+				insertEAttributValue.assertIndex(expectedIndex)
+				insertEAttributValue.assertAffectedEFeature(affectedEObject.getFeautreByName(featureName))
+			}
+
+		}
+		

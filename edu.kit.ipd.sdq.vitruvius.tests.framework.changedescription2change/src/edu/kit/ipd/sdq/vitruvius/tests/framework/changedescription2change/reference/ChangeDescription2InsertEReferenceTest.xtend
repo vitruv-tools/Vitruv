@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.refer
 import allElementTypes.NonRoot
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.junit.Test
 
@@ -39,8 +40,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	def private testInsertInContainmentEReference(int expectedIndex) {
 		startRecording
 		val nonRoot = createNonRootInInsertEFerence(false)
-		assertInsertEReferenceTest(nonRoot, this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, true)
+		val changes = getChanges()
+		changes.assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
+			expectedIndex, true, true)
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
@@ -49,24 +51,13 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		// test
 		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
 		// assert	
-		assertInsertEReferenceTest(nonRoot, this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, false)
+		val changes = getChanges()
+		changes.assertInsertEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
+			expectedIndex, false, false)
 	}
 
 	def private createNonRootInInsertEFerence(boolean startRecording) {
 		val feature = this.rootElement.getFeautreByName(MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME)
 		feature.createAndAddNonRootToFeature(startRecording)
-	}
-
-	def private assertInsertEReferenceTest(NonRoot nonRoot, EObject affectedEObject, String featureName,
-		Object expectedNewValue, int expectedIndex, boolean isContainment) {
-		val changes = getChanges()
-		val insertEReference = changes.assertSingleChangeWithType(InsertEReference)
-		insertEReference.assertAffectedEObject(affectedEObject)
-		insertEReference.assertAffectedEFeature(this.rootElement.getFeautreByName(featureName))
-		insertEReference.assertNewValue(expectedNewValue)
-		insertEReference.assertIndex(expectedIndex)
-		insertEReference.assertContainment(isContainment)
-		insertEReference.assertIsCreate(isContainment)
 	}
 }

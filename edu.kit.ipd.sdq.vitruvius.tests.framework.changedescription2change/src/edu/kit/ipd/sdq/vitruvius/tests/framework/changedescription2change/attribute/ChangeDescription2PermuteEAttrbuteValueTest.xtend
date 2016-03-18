@@ -20,7 +20,7 @@ class ChangeDescription2PermuteEAttrbuteValueTest extends edu.kit.ipd.sdq.vitruv
 
 		val expectedIndicesForElementsAtOldIndices = #[1, 0]
 		val changes = getChanges()
-		changes.assertPermuteListTest(rootElement, expectedIndicesForElementsAtOldIndices, MULI_VALUED_E_ATTRIBUTE_NAME, PermuteEAttributeValues)
+		changes.assertPermuteListTest(rootElement, expectedIndicesForElementsAtOldIndices, MULTI_VALUE_E_ATTRIBUTE_NAME, PermuteEAttributeValues)
 	}
 
 	@Test
@@ -37,7 +37,7 @@ class ChangeDescription2PermuteEAttrbuteValueTest extends edu.kit.ipd.sdq.vitruv
 
 		val expectedIndicesForElementsAtOldIndices = #[0, 2, 1]
 		val changes = getChanges()
-		changes.assertPermuteListTest(this.rootElement, expectedIndicesForElementsAtOldIndices, MULI_VALUED_E_ATTRIBUTE_NAME, PermuteEAttributeValues)
+		changes.assertPermuteListTest(this.rootElement, expectedIndicesForElementsAtOldIndices, MULTI_VALUE_E_ATTRIBUTE_NAME, PermuteEAttributeValues)
 	}
 
 }

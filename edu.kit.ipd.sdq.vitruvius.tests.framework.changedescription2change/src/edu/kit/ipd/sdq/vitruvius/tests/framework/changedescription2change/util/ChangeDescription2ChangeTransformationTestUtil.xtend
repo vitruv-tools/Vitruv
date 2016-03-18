@@ -1,10 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
+import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 
 class ChangeDescription2ChangeTransformationTestUtil {
 	private new() {
@@ -29,10 +29,12 @@ class ChangeDescription2ChangeTransformationTestUtil {
 		ChangeDescription2ChangeTransformationTest changeDescription2Change, int expectedIndex, int expectedValue,
 		int position) {
 			// test
+			var int index = expectedIndex
 			changeDescription2Change.startRecording
-			if (position == -1) {
+			if(-1 == position){
 				changeDescription2Change.rootElement.multiValuedEAttribute.add(expectedValue)
-			} else {
+				index = changeDescription2Change.rootElement.multiValuedEAttribute.size - 1
+			}else{
 				changeDescription2Change.rootElement.multiValuedEAttribute.add(position, expectedValue)
 			}
 
@@ -40,14 +42,8 @@ class ChangeDescription2ChangeTransformationTestUtil {
 			val changes = changeDescription2Change.getChanges()
 
 			// assert
-			changes.assertSingleChangeWithType(InsertEAttributeValue)
-			val insertEAttributValue = changes.get(0) as InsertEAttributeValue<?, ?>
-			insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
-			insertEAttributValue.assertNewValue(expectedValue)
-			insertEAttributValue.assertIndex(expectedValue)
-			insertEAttributValue.assertAffectedEFeature(
-				changeDescription2Change.rootElement.getFeautreByName(
-					ChangeDescription2ChangeTransformationTest.MULI_VALUED_E_ATTRIBUTE_NAME))
+			changes.assertInsertEAttribute(changeDescription2Change.rootElement,
+				ChangeDescription2ChangeTransformationTest.MULTI_VALUE_E_ATTRIBUTE_NAME, expectedValue, index)
 		}
 
 	}

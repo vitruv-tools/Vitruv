@@ -22,12 +22,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	var protected ChangeRecorder changeRecorder
 	var protected Root rootElement
 
-	public static val MULI_VALUED_E_ATTRIBUTE_NAME = "multiValuedEAttribute"	
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
 	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
 	public static val SINGE_VALUE_E_ATTRIBUTE_NAME = "singleValuedEAttribute"
 	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME =  "multiValuedContainmentEReference"
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
+	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
 
 	/** 
 	 * Create a new model and initialize the change monitoring
