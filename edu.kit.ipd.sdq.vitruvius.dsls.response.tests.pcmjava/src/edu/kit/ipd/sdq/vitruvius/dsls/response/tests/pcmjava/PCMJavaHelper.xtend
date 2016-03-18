@@ -42,6 +42,13 @@ import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.references.ReferenceableElement
 import java.util.ArrayList
+import org.emftext.language.java.containers.JavaRoot
+import java.io.ByteArrayInputStream
+import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
+import org.emftext.language.java.imports.ImportsFactory
+import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
+import org.emftext.language.java.types.PrimitiveType
 
 class PCMJavaHelper {
 	public static def void initializeCompilationUnitAndJavaClassifier(CompilationUnit compilationUnit, ConcreteClassifier javaClassifier, String name) {
@@ -169,6 +176,11 @@ class PCMJavaHelper {
 		parameter.name = name
 		parameter.typeReference = typeReference
 		return parameter
+	}
+	
+	def static createClassifierImportInClassifier(ConcreteClassifier classifier, ConcreteClassifier classifierToImport) {
+		val classifierImport = ImportsFactory.eINSTANCE.createClassifierImport;
+		addImportToCompilationUnitOfClassifier(classifierImport, classifier, classifierToImport);
 	}
 
 	def static addImportToCompilationUnitOfClassifier(ClassifierImport classifierImport, Classifier classifier,
@@ -445,5 +457,90 @@ class PCMJavaHelper {
 			}
 		}
 		null
+	}
+	
+	def static ClassifierImport getJavaClassImport(String name) {
+		val content = "package dummyPackage;\n " +
+				"import " + name + ";\n" +
+				"public class DummyClass {}";
+		val dummyCU = createCompilationUnit("DummyClass", content);
+		val classifierImport = (dummyCU.getImports().get(0) as ClassifierImport)
+		EcoreUtil.copy(classifierImport);
+		return classifierImport;
+		
+	}
+	
+	def static ConcreteClassifier getJavaClass(String name) {
+		val content = "package dummyPackage;\n " +
+				"import " + name + ";\n" +
+				"public class DummyClass {}";
+		val dummyCU = createCompilationUnit("DummyClass", content);
+		val classifier = (dummyCU.getImports().get(0) as ClassifierImport).getClassifier();
+		EcoreUtil.copy(classifier);
+		return classifier;
+		
+	}
+	
+	def static CompilationUnit createCompilationUnit(String name, String content) {
+		return createJavaRoot(name, content) as CompilationUnit
+	}
+
+	def static Package createPackage(String namespace) {
+		val String content = '''package «namespace»;'''
+		return createJavaRoot("package-info", content) as Package
+	}
+
+	def static JavaRoot createJavaRoot(String name, String content) {
+		val JaMoPPParser jaMoPPParser = new JaMoPPParser
+		val inStream = new ByteArrayInputStream(content.bytes)
+		val javaRoot = jaMoPPParser.parseCompilationUnitFromInputStream(URI.createFileURI(name + ".java"),
+			inStream)
+		javaRoot.name = name + ".java"
+		EcoreUtil.remove(javaRoot)
+		return javaRoot
+	}
+	
+	/**
+	 * returns the class object for a primitive type, e.g, Integer for int
+	 */
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(PrimitiveType type) {
+		return null
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Boolean type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Boolean")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Byte type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Byte")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Char type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Character")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Double type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Double")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Float type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Float")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Int type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Integer")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Long type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Long")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(Short type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Short")
+	}
+
+	def dispatch static TypeReference getWrapperTypeReferenceForPrimitiveType(
+		org.emftext.language.java.types.Void type) {
+		PCM2JaMoPPUtils.createAndReturnNamespaceClassifierReferenceForName("java.lang", "Void")
 	}
 }

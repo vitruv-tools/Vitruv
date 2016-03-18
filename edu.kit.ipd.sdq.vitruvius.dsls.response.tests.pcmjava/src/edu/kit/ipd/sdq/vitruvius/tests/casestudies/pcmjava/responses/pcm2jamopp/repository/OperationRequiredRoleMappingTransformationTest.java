@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.pcm2jamopp.repository;
 
+import java.util.concurrent.Callable;
+
 import org.junit.Test;
 
 import org.palladiosimulator.pcm.repository.BasicComponent;
@@ -9,6 +11,7 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.utils.PCM2JaMoPPTestUtils;
 
@@ -47,8 +50,17 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
         final OperationRequiredRole operationRequiredRole = this.createAndSyncOperationRequiredRole(opInterface,
                 compositeComponent);
 
-        this.assertOperationRequiredRole(operationRequiredRole);
-
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                try {
+                	assertOperationRequiredRole(operationRequiredRole);
+                } catch (final Throwable e) {
+                    throw new RuntimeException(e);
+                }
+                return null;
+            }
+        }, this.vsum);
     }
 
     @Test
