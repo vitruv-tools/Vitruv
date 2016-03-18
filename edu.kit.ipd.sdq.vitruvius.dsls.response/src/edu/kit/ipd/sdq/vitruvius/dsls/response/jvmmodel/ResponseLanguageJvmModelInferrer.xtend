@@ -71,8 +71,14 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 				visibility = JvmVisibility.PROTECTED;
 				parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
 				body = '''
-					new «effect.qualifiedName»(this.userInteracting, this.blackboard, this.transformationResult).execute(«
-						FOR parameter : parameters SEPARATOR ", "»«parameter.name»«ENDFOR»);'''			
+					try {
+						new «effect.qualifiedName»(this.userInteracting, this.blackboard, this.transformationResult).execute(«
+							FOR parameter : parameters SEPARATOR ", "»«parameter.name»«ENDFOR»);
+					} catch («Exception» exception) {
+						// If an error occured during execution, avoid an application shutdown and print the error.
+						getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («effect.effectName») called from effect (" + this.getClass().getSimpleName() + "): " + exception.getMessage());
+					}
+					'''			
 			]]
 		]
 		acceptor.accept(responseWithEffectsClass);

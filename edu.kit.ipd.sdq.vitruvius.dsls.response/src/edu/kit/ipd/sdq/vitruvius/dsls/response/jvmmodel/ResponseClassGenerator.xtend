@@ -207,7 +207,7 @@ class ResponseClassGenerator extends ClassGenerator {
 					new «implicitEffectClass»(userInteracting, «blackboardParameter.name», transformationResult).execute(«typedChangeName»);
 				} catch («Exception» exception) {
 					// If an error occured during execution, avoid an application shutdown and print the error.
-					LOGGER.error(exception.getClass().getSimpleName() + " (" + exception.getMessage() + ") during execution of response: " + this.getClass().getName());
+					getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («implicitEffectClass.simpleName») called from response («response.responseName»): " + exception.getMessage());
 				}
 				
 				return transformationResult;'''

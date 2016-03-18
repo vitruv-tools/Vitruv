@@ -176,11 +176,15 @@ final class ResponseLanguageGeneratorUtils {
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
 	}
 	
-	public static def dispatch String getQualifiedName(ExplicitEffect effect) '''
-		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.name»Effect'''
+	public static def String getQualifiedName(Effect effect) '''
+		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.effectName»'''
 		
-	public static def dispatch String getQualifiedName(ImplicitEffect effect) '''
-		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.containingResponse.name»Effect'''
+	public static def dispatch getEffectName(ExplicitEffect effect) '''
+		«effect.name»Effect'''
+	
+	public static def dispatch getEffectName(ImplicitEffect effect) '''
+		«effect.containingResponse.name»Effect'''
+	
 	
 	private static def String getMetamodelIdentifier(URI uri) {
 		if (uri.lastSegment.nullOrEmpty) {
