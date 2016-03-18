@@ -77,6 +77,10 @@ class Metamodel extends AbstractURIHaving {
 		return this.fileExtensions
 	}
 
+	def boolean hasTUID(EObject eObject) {
+		return tuidCalculatorAndResolver.hasTUID(eObject);
+	}
+
 	def String calculateTUIDFromEObject(EObject eObject) {
 		return this.tuidCalculatorAndResolver.calculateTUIDFromEObject(eObject)
 	}

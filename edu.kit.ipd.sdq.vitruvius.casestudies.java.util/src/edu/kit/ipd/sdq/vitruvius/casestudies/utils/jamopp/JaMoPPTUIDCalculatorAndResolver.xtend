@@ -257,5 +257,9 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	private def String getNamespaceAsString(CompilationUnit cu) {
 		return StringOperationsJaMoPP.getNamespaceAsString(cu.namespaces)
 	}
+	
+	override hasTUID(EObject eObject) {
+		return true;
+	}
 
 }

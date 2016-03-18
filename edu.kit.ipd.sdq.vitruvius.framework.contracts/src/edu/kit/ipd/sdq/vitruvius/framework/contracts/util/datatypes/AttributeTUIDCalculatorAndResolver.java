@@ -58,4 +58,15 @@ public class AttributeTUIDCalculatorAndResolver extends HierarchicalTUIDCalculat
         throw new RuntimeException(
                 "None of '" + String.join("', '", this.attributeNames) + "' found for eObject '" + obj + "'");
     }
+
+    @Override
+    public boolean hasTUID(final EObject eObject) {
+        for (String attributeName : this.attributeNames) {
+            final String attributeValue = EcoreBridge.getStringValueOfAttribute(eObject, attributeName);
+            if (null != attributeValue) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

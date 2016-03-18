@@ -6,13 +6,16 @@ import org.eclipse.emf.ecore.EObject;
 
 public interface TUIDCalculatorAndResolver {
 
+    boolean hasTUID(EObject eObject);
+
     String calculateTUIDFromEObject(EObject eObject);
-	
-	/**
-	 * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
-	 * @param eObjects
-	 * @return
-	 */
+
+    /**
+     * syntactic sugar for map[{@link #calculateTUIDFromEObject(EObject)}]
+     * 
+     * @param eObjects
+     * @return
+     */
     List<String> calculateTUIDsFromEObjects(List<EObject> eObjects);
 
     /**
