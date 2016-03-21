@@ -121,7 +121,8 @@ public final class EMFBridge {
 	 */
 	public static URI createURI(String uriString) {
 		if (uriString != null) {
-			if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())) {
+			if (!uriString.startsWith(VitruviusConstants.getPlatformResourcePrefix())
+					&& !uriString.startsWith(VitruviusConstants.getPathmapPrefix())) {
 				if (startsWithWindowsDriveLetterColonBackslash(uriString) || uriString.startsWith("/")) {
 					return URI.createFileURI(uriString);
 				} else if (!uriString.startsWith("http://")) {
