@@ -24,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 
-final class ResponseLanguageGeneratorUtils {
+final class ResponseLanguageGeneratorUtils extends GeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".java";
 	private static val RESPONSES_PACKAGE = "responses";
@@ -53,8 +53,6 @@ final class ResponseLanguageGeneratorUtils {
 	private static def String getPackageQualifiedName(String sourceFileName, Pair<VURI, VURI> modelPair) '''
 		«basicResponsesPackageQualifiedName».«sourceFileName».«modelPair?.packageName»'''
 		
-	private static def String getPackageQualifiedName(String sourceFileName, Effect effect) '''
-		«basicResponsesPackageQualifiedName».«sourceFileName».«effect.metamodelIdentifier.toFirstUpper»'''
 	
 	static def String getChange2CommandTransformingProvidingName() '''
 		ResponseChange2CommandTransformingProviding'''
@@ -95,9 +93,7 @@ final class ResponseLanguageGeneratorUtils {
 	static def String getResponseFilePath(Response response) '''
 		«getResponseQualifiedName(response).filePath»'''
 	
-	private static def String getPackageNameForResource(Resource resource) {
-		return resource.URI.lastSegment.split("\\.").get(0);
-	}
+	
 	
 	static def generateClass(String packageName, XtendImportHelper importHelper, CharSequence classImplementation) '''
 		package «packageName»;
@@ -176,16 +172,6 @@ final class ResponseLanguageGeneratorUtils {
 			event.changedModel.model.name.toFirstUpper»«ENDIF»'''
 	}
 	
-	public static def String getQualifiedName(Effect effect) '''
-		«getPackageQualifiedName(effect.eResource.getPackageNameForResource, effect)».«effect.effectName»'''
-		
-	public static def dispatch getEffectName(ExplicitEffect effect) '''
-		«effect.name»Effect'''
-	
-	public static def dispatch getEffectName(ImplicitEffect effect) '''
-		«effect.containingResponse.name»Effect'''
-	
-	
 	private static def String getMetamodelIdentifier(URI uri) {
 		if (uri.lastSegment.nullOrEmpty) {
 			return uri.toString.split("\\.").last.toFirstUpper;
@@ -219,61 +205,4 @@ final class ResponseLanguageGeneratorUtils {
 		return element.elementType.element.EPackage.VURI.EMFUri.metamodelIdentifier;
 	}
 	
-	/*static def boolean hasOppositeResponse(Response response) {
-		// TODO HK does currently always return false
-		val sourceChange = response.trigger;
-		val targetChange = response.effects.targetChange;
-		if (targetChange instanceof ConcreteTargetModelCreate && 
-			sourceChange instanceof AtomicConcreteModelElementChange) {
-			val createTargetChange = targetChange as ConcreteTargetModelCreate;
-			if (createTargetChange.autodelete) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	static def Response getOppositeResponse(Response response) {
-		if (response.hasOppositeResponse) {
-			val deleteTrigger = response.trigger.deleteTrigger;
-			val createTargetChange = response.effects.targetChange as ConcreteTargetModelCreate;
-			val deleteResponse = ResponseLanguageFactory.eINSTANCE.createResponse();
-			deleteResponse.name = "OppositeResponseForDeleteTo" + response.name;
-			deleteResponse.trigger = deleteTrigger;
-			val deleteEffects = ResponseLanguageFactory.eINSTANCE.createEffects();
-			val deleteTargetChange = ResponseLanguageFactory.eINSTANCE.createConcreteTargetModelUpdate();
-			val targetChangeElement = MirBaseFactory.eINSTANCE.createModelElement();
-			targetChangeElement.element = createTargetChange.rootElement.elementType.element;
-			val correspondingModelElementSpecification = ResponseLanguageFactory.eINSTANCE.createCorrespondingModelElementDelete();
-			correspondingModelElementSpecification.elementType = targetChangeElement;
-			deleteTargetChange.identifyingElement = correspondingModelElementSpecification;
-			correspondingModelElementSpecification.correspondenceSource = ResponseLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock();
-			correspondingModelElementSpecification.correspondenceSource.code = new SimpleTextXBlockExpression('''return change.getOldValue();''');
-			deleteEffects.targetChange = deleteTargetChange;
-			deleteResponse.effects = deleteEffects;
-			return deleteResponse;
-		}
-		return null;
-	}*/
-	  
-	private static def dispatch Trigger getDeleteTrigger(Trigger change) {
-		return null;
-	}
-	
-	private static def dispatch Trigger getDeleteTrigger(MultiValuedFeatureInsertChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createMultiValuedFeatureRemoveChange();
-		val changedElement = MirBaseFactory.eINSTANCE.createFeatureOfElement();
-		changedElement.element = change.changedFeature.element;
-		changedElement.feature = change.changedFeature.feature;
-		deleteTrigger.changedFeature = changedElement;
-		return deleteTrigger;
-	}
-	
-	private static def dispatch Trigger getDeleteTrigger(InsertRootChange change) {
-		val deleteTrigger = ResponseLanguageFactory.eINSTANCE.createRemoveRootChange();
-		val changedElement = MirBaseFactory.eINSTANCE.createModelElement();
-		changedElement.element = change.changedElement.element;
-		deleteTrigger.changedElement = changedElement;
-		return deleteTrigger;
-	}
 }

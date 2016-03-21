@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
+package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1

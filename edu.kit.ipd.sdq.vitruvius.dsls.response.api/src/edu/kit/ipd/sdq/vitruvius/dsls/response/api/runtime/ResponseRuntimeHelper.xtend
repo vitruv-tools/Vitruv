@@ -49,6 +49,12 @@ public final class ResponseRuntimeHelper {
 	public static def addCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject target) {
 		correspondenceInstance.createAndAddCorrespondence(#[source], #[target]);
 	}
+
+	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, Class<T> type) {
+		val tuid = correspondenceInstance.getTUID(source, null);
+		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
+	}
+
 	
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent,
 			Class<T> type) {

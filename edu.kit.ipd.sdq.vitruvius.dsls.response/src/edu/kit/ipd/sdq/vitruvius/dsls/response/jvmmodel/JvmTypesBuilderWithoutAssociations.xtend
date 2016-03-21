@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator
 import org.eclipse.xtext.common.types.JvmFormalParameter
+import org.eclipse.xtext.common.types.JvmGenericType
 
 class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	@Inject
@@ -98,6 +99,25 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 		val result = typesFactory.createJvmFormalParameter();
 		result.setName(name);
 		result.setParameterType(cloneWithProxies(typeRef));
+		return result;
+	}
+	
+	public def JvmGenericType generateUnassociatedClass(/* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
+		val result = createJvmGenericType(name);
+		if (result == null)
+			return null;
+		return initializeSafely(result, initializer);
+	}
+	
+	protected def JvmGenericType createJvmGenericType(/* @Nullable */ String name) {
+		if (name == null)
+			return null;
+		val fullName = splitQualifiedName(name);
+		val result = typesFactory.createJvmGenericType();
+		result.setSimpleName(fullName.getSecond());
+		if (fullName.getFirst() != null)
+			result.setPackageName(fullName.getFirst());
+		result.setVisibility(JvmVisibility.PUBLIC);
 		return result;
 	}
 }

@@ -13,6 +13,17 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectRealization
+import org.eclipse.emf.ecore.resource.Resource
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
+import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectsFacade
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ImplicitEffectClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.MockClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExplicitEffectClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.EffectsFacadeClassGenerator
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -24,16 +35,21 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectRea
 class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 
 	@Inject extension JvmTypesBuilderWithoutAssociations _typesBuilder
+	@Inject TypesBuilderExtensionProvider typesBuilderExtensionProvider;
+	
+	private def void updateBuilders() {
+		typesBuilderExtensionProvider.setBuilders(_typesBuilder, _typeReferenceBuilder, _annotationTypesBuilder);
+	}
 	
 	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		val effectClass = new ImplicitEffectClassGenerator(response.effect, _typesBuilder, _typeReferenceBuilder).generateClass()
+		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider).generateClass();
 		acceptor.accept(effectClass);
-		val responseClassGenerator = new ResponseClassGenerator(response, effectClass, _typesBuilder, _typeReferenceBuilder)
-		val mockType = responseClassGenerator.generateMockType();
+		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
+		val mockType = new MockClassGenerator(response.trigger, typesBuilderExtensionProvider).generateClass();
 		if (mockType != null) {
 			acceptor.accept(mockType);
 		}
@@ -45,43 +61,42 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			return;
 		}
 		
-		acceptor.accept(new ExplicitEffectClassGenerator(effect, _typesBuilder, _typeReferenceBuilder).generateClass());
+		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider).generateClass());
 	}
 	
 	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
+		updateBuilders();
 		
-		val extension parameterGenerator = new ResponseLanguageParameterGenerator(_typeReferenceBuilder, _typesBuilder);
-		val responseWithEffectsClass = file.toClass("responses.AbstractEffectWithEffects") [
-			visibility = JvmVisibility.PUBLIC;
-			superTypes += typeRef(AbstractEffectRealization);
-			abstract = true;
-			members += toConstructor() [
-				val userInteractingParameter = generateUserInteractingParameter(); 
-				val blackboardParameter = generateBlackboardParameter();
-				val transformationResultParameter = generateTransformationResultParameter();
-				parameters += userInteractingParameter;
-				parameters += blackboardParameter;
-				parameters += transformationResultParameter;
-				body = '''super(«userInteractingParameter.name», «blackboardParameter.name», «transformationResultParameter.name»);'''
-			]
-			members += file.effects.map[effect | toMethod("call" + effect.name, typeRef(Void.TYPE)) [
-				visibility = JvmVisibility.PROTECTED;
-				parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
-				body = '''
-					try {
-						new «effect.qualifiedName»(this.userInteracting, this.blackboard, this.transformationResult).execute(«
-							FOR parameter : parameters SEPARATOR ", "»«parameter.name»«ENDFOR»);
-					} catch («Exception» exception) {
-						// If an error occured during execution, avoid an application shutdown and print the error.
-						getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («effect.effectName») called from effect (" + this.getClass().getSimpleName() + "): " + exception.getMessage());
-					}
-					'''			
-			]]
-		]
-		acceptor.accept(responseWithEffectsClass);
+		val effectsFacade = new EffectsFacadeClassGenerator(file.effects, typesBuilderExtensionProvider).generateClass();
+		
+//		val extension parameterGenerator = new ResponseLanguageParameterGenerator(_typeReferenceBuilder, _typesBuilder);
+//		val effectsFacade = file.toClass("responses.EffectsFacade") [
+//			superTypes += typeRef(AbstractEffectsFacade);
+//			members += toConstructor() [
+//				parameters += generateParameter("responseExecutionState", ResponseExecutionState)
+//				body = '''super(responseExecutionState);'''
+//			]
+//			members += file.effects.map[effect | toMethod("call" + effect.name, typeRef(Void.TYPE)) [
+//				visibility = JvmVisibility.PUBLIC;
+//				parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
+//				body = '''
+//					try {
+//						«effect.qualifiedName» effect = new «effect.qualifiedName»(this.responseExecutionState);
+//						«FOR parameter : parameters»
+//							effect.set«parameter.name.toFirstUpper»(«parameter.name»);
+//						«ENDFOR»
+//						effect.applyEffect();
+//					} catch («Exception» exception) {
+//						// If an error occured during execution, avoid an application shutdown and print the error.
+//						getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («effect.effectName») called from effect (" + this.getClass().getSimpleName() + "): " + exception.getMessage());
+//					}
+//					'''			
+//			]]
+//		]
+		acceptor.accept(effectsFacade);
 		
 		for (response : file.responses) {
 			infer(response, acceptor, isPreIndexingPhase);

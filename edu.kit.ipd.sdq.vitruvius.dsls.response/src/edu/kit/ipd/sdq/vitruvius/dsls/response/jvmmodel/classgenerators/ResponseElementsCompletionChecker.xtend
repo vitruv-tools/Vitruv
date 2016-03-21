@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel
+package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
