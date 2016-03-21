@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.rooto
 
 import org.junit.Test
 
+import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 
 class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChangeTest{
@@ -16,7 +17,11 @@ class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChan
 		
 		//assert
 		val changes = getChanges()
-		changes.assertInsertRootEObject(this.rootElement, false)
+		val insertChange = changes.claimElementAt(0)
+		val setIDChange = changes.claimElementAt(1)
+		// FIXME MK KEEP ON WORKING HERE resolve proxy given in change
+		insertChange.assertInsertRootEObject(this.rootElement, false)
+		setIDChange.assertReplaceSingleValueEAttribute("",this.rootElement.id)
 	}
 	
 }

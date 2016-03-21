@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.Assert
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class ChangeAssertHelper {
 
@@ -47,7 +49,8 @@ class ChangeAssertHelper {
 		return type.cast(object)
 	}
 
-	public static def assertOldAndNewValue(EChange eChange, Object oldValue, Object newValue) {
+	public static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange,
+		Object oldValue, Object newValue) {
 		eChange.assertOldValue(oldValue)
 		eChange.assertNewValue(newValue)
 	}
@@ -57,9 +60,15 @@ class ChangeAssertHelper {
 			(eChange as SubtractiveEChange<?>).oldValue)
 	}
 
-	public static def assertNewValue(EChange eChange, Object newValue) {
-		Assert.assertEquals("new value must be the same than the given new value", newValue,
-			(eChange as AdditiveEChange<?>).newValue)
+	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
+		val newValueInChange = eChange.newValue
+		var condition = false
+		if (newValue instanceof EObject) {
+			condition = EcoreUtil.equals(newValue, newValueInChange as EObject)
+		} else {
+			condition = newValue?.equals(newValueInChange)
+		}
+		Assert.assertTrue("new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue + "'!", condition)
 	}
 
 	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
@@ -115,7 +124,11 @@ class ChangeAssertHelper {
 			change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedEFeatureName))
 			change.assertAffectedEObject(affectedEObject)
 			change.assertContainment(isContainment)
-
+		}
+		
+		def static void assertReplaceSingleValueEAttribute(EChange eChange, Object oldValue, Object newValue) {
+			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
+			rsve.assertOldAndNewValue(oldValue,newValue)
 		}
 
 		def static void assertIndex(UpdateSingleEListEntry change, int expectedIndex) {
@@ -152,8 +165,8 @@ class ChangeAssertHelper {
 			return unsetChange.subtractiveChanges
 		}
 
-		def public static assertInsertRootEObject(List<?> changes, Object newValue, boolean isCreate) {
-			val insertRoot = changes.assertSingleChangeWithType(InsertRootEObject)
+		def public static assertInsertRootEObject(EChange change, Object newValue, boolean isCreate) {
+			val insertRoot = change.assertObjectInstanceOf(InsertRootEObject)
 			insertRoot.assertNewValue(newValue)
 			insertRoot.assertIsCreate(isCreate)
 		}
@@ -173,7 +186,8 @@ class ChangeAssertHelper {
 			val addUpdateEReferenceChange = moveEObject.
 				addWhereChange
 			return new Quadruple<SubtractiveEReferenceChange<?>, UpdateEReference<?>, AdditiveEReferenceChange<?>, UpdateEReference<?>>(
-				subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange, addUpdateEReferenceChange)
+				subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange,
+				addUpdateEReferenceChange)
 
 			}
 

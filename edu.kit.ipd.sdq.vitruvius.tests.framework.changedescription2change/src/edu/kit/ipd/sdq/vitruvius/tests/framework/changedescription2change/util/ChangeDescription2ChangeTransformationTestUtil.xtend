@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
-import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 
 class ChangeDescription2ChangeTransformationTestUtil {
 	private new() {
@@ -20,9 +18,7 @@ class ChangeDescription2ChangeTransformationTestUtil {
 		val changes = test.getChanges()
 
 		// assert the changes
-		changes.assertSingleChangeWithType(ReplaceSingleValuedEAttribute)
-		val replaceEAttribute = changes.get(0) as ReplaceSingleValuedEAttribute<?, ?>
-		replaceEAttribute.assertOldAndNewValue(oldValue, newValue)
+		changes.get(0).assertReplaceSingleValueEAttribute(oldValue, newValue)
 	}
 
 	def public static void testInsertEAttributeValue(

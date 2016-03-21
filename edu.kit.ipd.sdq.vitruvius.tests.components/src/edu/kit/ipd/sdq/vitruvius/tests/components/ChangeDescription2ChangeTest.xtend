@@ -60,7 +60,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 		super.beforeTest()
 //		vECTest.beforeTest()
         this.resourceSet = new ResourceSetImpl()
-        this.changeRecorder = new ForwardChangeRecorder(this.resourceSet)
+        this.changeRecorder = new ForwardChangeRecorder(newArrayList(this.resourceSet))
         this.changeRecorder.beginRec()
 	}
 //	

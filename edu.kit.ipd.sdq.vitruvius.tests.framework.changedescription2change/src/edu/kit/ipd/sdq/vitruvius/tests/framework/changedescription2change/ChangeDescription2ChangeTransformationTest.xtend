@@ -3,12 +3,13 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation
-import java.util.Arrays
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.util.doers.ForwardChangeRecorder
 import java.util.List
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.junit.After
 import org.junit.Before
+
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 
 /** 
@@ -19,7 +20,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescript
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
-	var protected ChangeRecorder changeRecorder
+	var protected ForwardChangeRecorder changeRecorder
 	var protected Root rootElement
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
@@ -35,24 +36,24 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@Before
 	def void beforeTest() {
 		this.rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
-		this.changeRecorder = new ChangeRecorder()
+		this.changeRecorder = new ForwardChangeRecorder(newArrayList(rootElement))
 	}
 
 	@After
 	def void afterTest() {
 		if (this.changeRecorder.isRecording) {
-			this.changeRecorder.endRecording
+			this.changeRecorder.endRec()
 		}
 		this.changeRecorder.dispose()
 	}
 	
-	public def List<?> getChanges() {
-		val changesDescriptions = changeRecorder.endRecording
+	public def List<EChange> getChanges() {
+		val changesDescriptions = changeRecorder.endRec()
 		return ChangeDescription2ChangeTransformation.transform(changesDescriptions)
 	}
 	
 	public def startRecording(){
-		this.changeRecorder.beginRecording(Arrays.asList(this.rootElement))
+		this.changeRecorder.beginRec()
 	}
 	
 	public def getRootElement(){
