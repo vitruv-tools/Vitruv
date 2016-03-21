@@ -236,5 +236,9 @@ class JMLTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResolver
 	private def dispatch String calculateInternalTUID(MemberDecl md) {
 		throw new IllegalArgumentException("Not implemented yet.")
 	}
+	
+	override hasTUID(EObject eObject) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }

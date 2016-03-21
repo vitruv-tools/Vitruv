@@ -159,5 +159,9 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 	private def String getNamespaceAsString(CompilationUnit cu) {
 		return StringOperationsJaMoPP.getNamespaceAsString(cu.namespaces)
 	}
+	
+	override hasTUID(EObject eObject) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 }
