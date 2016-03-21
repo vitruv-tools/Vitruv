@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
@@ -94,7 +95,9 @@ class CommandExecutingImpl implements CommandExecuting {
 			if (object instanceof EObject) {
 				val EObject eObject = object as EObject
 				if (null !== eObject.eResource()) {
-					vurisToSave.add(VURI::getInstance(eObject.eResource()))
+					val vuri = VURI::getInstance(eObject.eResource());
+					if (!vuri.toString.startsWith(VitruviusConstants.getPathmapPrefix()))
+						vurisToSave.add(vuri)
 				}
 
 			}
