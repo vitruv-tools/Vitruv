@@ -1,25 +1,28 @@
 package edu.kit.ipd.sdq.vitruvius.framework.util.doers
 
-import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.common.util.URI
+import java.util.Collection
 import java.util.HashMap
 import java.util.Map
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.change.ChangeDescription
+import org.eclipse.emf.ecore.change.util.ChangeRecorder
 
-class ForwardChangeRecorder extends ChangeRecorder {
+class ForwardChangeRecorder {
+	private ChangeRecorder cr;
 	private var Map<EObject, URI> eObjectToProxyURIMap
-	private val ResourceSet resourceSet
+	private val Collection<Notifier> elementsToObserve
 	
-	new(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet
-		setRecordingTransientFeatures(false)
+	new(Collection<Notifier> elementsToObserve) {
+		this.cr = new ChangeRecorder()
+		this.elementsToObserve = elementsToObserve
+		cr.setRecordingTransientFeatures(false)
 	}
 	
 	def void beginRec() {
-		setEObjectToProxyURIMap(this.eObjectToProxyURIMap = new HashMap())
-		beginRecording(#[this.resourceSet])
+		cr.setEObjectToProxyURIMap(this.eObjectToProxyURIMap = new HashMap())
+		cr.beginRecording(this.elementsToObserve)
 	}
 	
 	def ChangeDescription endRec() {
@@ -27,7 +30,7 @@ class ForwardChangeRecorder extends ChangeRecorder {
 	}
 		
 	def ChangeDescription endRec(boolean copy) {
-		val cd = endRecording()
+		val cd = cr.endRecording()
 		if (copy) {
 			cd.copyAndReverse(this.eObjectToProxyURIMap)
 		} else {
@@ -44,5 +47,17 @@ class ForwardChangeRecorder extends ChangeRecorder {
 		val cd = endRec(copy)
 		beginRec()
 		return cd
+	}
+	
+	def void startObserving(Notifier elementToObserve) {
+		this.elementsToObserve.add(elementToObserve)
+	}
+	
+	def boolean isRecording() {
+		return cr.isRecording()
+	}
+	
+	def void dispose() {
+		cr.dispose()
 	}
 }

@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 
+// TODO MK is this class really necessary or is MetaRepositoryImpl enough?
 public class MetamodelManagerImpl implements MetamodelManaging {
 
     private final MetamodelManaging metamodelManaging;

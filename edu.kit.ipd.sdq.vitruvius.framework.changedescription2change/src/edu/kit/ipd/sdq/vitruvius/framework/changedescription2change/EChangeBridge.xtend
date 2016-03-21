@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.*
 import org.eclipse.emf.ecore.change.ChangeDescription
 
 class EChangeBridge {
@@ -14,8 +14,7 @@ class EChangeBridge {
 	}
 	
 	def static EChange createAdditiveEChangeForAttributeValue(EObject eObject, EAttribute attribute) {
-		// FIXME MK ChangeBridge
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return createAdditiveAttributeChange(eObject, attribute)
 	}
 	
 	def static EChange createSubtractiveEChangeForReferencedObject(EObject eObject, EReference reference) {
@@ -25,8 +24,7 @@ class EChangeBridge {
 	
 	def static EChange createAdditiveEChangeForEObject(EObject eObject) {
 		if (eObject.eContainer instanceof ChangeDescription) {
-			// FIXME MK KEEP ON WORKING HERE
-//			return TypeInferringAtomicEChangeFactory.createInsertRootChange(eObject, true)
+			return createInsertRootChange(eObject, true)
 		}
 		// FIXME MK ChangeBridge
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")

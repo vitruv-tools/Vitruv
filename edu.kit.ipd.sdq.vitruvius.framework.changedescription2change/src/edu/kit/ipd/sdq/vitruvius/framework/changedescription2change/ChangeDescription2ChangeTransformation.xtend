@@ -130,18 +130,18 @@ class ChangeDescription2ChangeTransformation {
 			val metaclass = eObject.eClass
 			for (feature : metaclass.EAllStructuralFeatures) {
 				if (hasChangeableUnderivedPersistedNotContainingNonDefaultValue(eObject, feature)) {
-					eChanges.add(createChangeForValue(eObject, feature))
+					eChanges.add(edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation.createAdditiveChangeForValue(eObject, feature))
 					getReferenceValueList(eObject, feature).forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
 				}
 			}
 		}
 	}
 	
-	def private static dispatch EChange createChangeForValue(EObject eObject,  EReference reference) {
+	def private static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EReference reference) {
 		return EChangeBridge.createAdditiveEChangeForReferencedObject(eObject, reference)
 	}
 	
-	def private static dispatch EChange createChangeForValue(EObject eObject,  EAttribute attribute) {
+	def private static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EAttribute attribute) {
 		return EChangeBridge.createAdditiveEChangeForAttributeValue(eObject, attribute)
 	}
 	
@@ -182,6 +182,7 @@ class ChangeDescription2ChangeTransformation {
 		return getValueList(eObject, reference) as EList<EObject>
 	}
 	
+	// FIXME MK move to EObjectUtil
 	def private static EList<?> getValueList(EObject eObject, EStructuralFeature feature) {
 		val value = eObject.eGet(feature)
 		if (feature.many && value != null) {
@@ -190,11 +191,6 @@ class ChangeDescription2ChangeTransformation {
 			return new BasicEList(#[value])
 		}
 	}
-	
-	def private static boolean isContainmentFeature(EStructuralFeature feature) {
-		// TODO MK move this method and also use it in change metamodel?
-    	return feature instanceof EReference && (feature as EReference).isContainment
-    }
     
 	def static addChangeForObjectToAttach(EObject objectToAttach, List<EChange> eChanges) {
 		eChanges.add(EChangeBridge.createAdditiveEChangeForEObject(objectToAttach))
@@ -228,8 +224,8 @@ class ChangeDescription2ChangeTransformation {
 		val containmentChanges = new BasicEList
 		val remainingChanges = new BasicEList
 		for (change : changes) {
-			if (change instanceof SubtractiveEReferenceChange
-				&& (change as SubtractiveEReferenceChange).isDelete
+			if (change instanceof SubtractiveEReferenceChange<?>
+				&& (change as SubtractiveEReferenceChange<?>).isDelete
 			) {
 				deletions.add(change)
 			} else if (change instanceof AdditiveEReferenceChange<?>
