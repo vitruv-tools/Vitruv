@@ -11,8 +11,8 @@ class ExplicitEffectClassGenerator extends EffectClassGenerator {
 	private final List<ModelElement> modelInputElements;
 	private final List<NamedJavaElement> javaInputElements;
 	
-	public new(ExplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
-		super(effect, typesBuilderExtensionProvider);
+	public new(ExplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
+		super(effect, typesBuilderExtensionProvider, hasEffectsFacade);
 		modelInputElements = effect.modelInputElements;
 		javaInputElements = effect.javaInputElements;
 	}

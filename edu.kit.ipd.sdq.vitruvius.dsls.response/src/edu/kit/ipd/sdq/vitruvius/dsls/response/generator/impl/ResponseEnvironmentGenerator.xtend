@@ -32,6 +32,7 @@ import java.util.Collections
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import org.eclipse.xtext.resource.DerivedStateAwareResource
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
@@ -65,6 +66,12 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			throw new IllegalArgumentException("Response must not be null");
 		}
 		val resource = getOrCreateTempResource(sourceFileName);
+		// TODO HK This is really ugly
+		if ((resource.contents.get(0) as ResponseFile).affectedMetamodels.size == 0) {
+			(resource.contents.get(0) as ResponseFile).affectedMetamodels += (response.eContainer as MetamodelPairResponses).affectedMetamodels
+		}/* else if (!(resource.contents.get(0) as ResponseFile).affectedMetamodels.equals((response.eContainer as MetamodelPairResponses).affectedMetamodels)) {
+			throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
+		}*/
 		(resource.contents.get(0) as ResponseFile).responses += response;
 	}
 	

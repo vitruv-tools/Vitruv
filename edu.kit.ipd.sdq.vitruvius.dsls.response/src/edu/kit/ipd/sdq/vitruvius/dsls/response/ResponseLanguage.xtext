@@ -5,10 +5,15 @@ generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/Re
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 
-ResponseFile returns mirbase::MirBaseFile:
-	{ResponseFile}
+ResponseFile:
+	MirBaseFile
 	(namespaceImports=XImportSection)?
 	(metamodelImports+=MetamodelImport)*
+	MetamodelPairResponses;
+	
+fragment MetamodelPairResponses:
+	'first metamodel' affectedMetamodels+=MetamodelReference
+	'second metamodel' affectedMetamodels+=MetamodelReference
 	(responses+=Response |
 		effects+=ExplicitEffect)*;
 
@@ -19,7 +24,9 @@ Response:
 	effect=ImplicitEffect;
 
 fragment Effect:
-	(targetChange=TargetChange)?
+	(retrieveElements+=CorrespondingModelElementRetrieve |
+	deleteElements+=CorrespondingModelElementDelete |
+	createElements+=CorrespondingModelElementCreate)*
 	('execute:' codeBlock=ExecutionCodeBlock)?;
 
 ImplicitEffect:
@@ -31,17 +38,9 @@ ExplicitEffect:
 	('java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?
 	Effect;
 	
-TargetChange:
-	ConcreteTargetModelChange | ArbitraryTargetMetamodelInstanceUpdate;
-
-ConcreteTargetModelChange:
-	(retrieveElements+=CorrespondingModelElementRetrieve |
-	deleteElements+=CorrespondingModelElementDelete |
-	createElements+=CorrespondingModelElementCreate)+;
-
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
-	'create element:' CorrespondingModelElementSpecification (persistAsRoot=ModelPersistence)?;
+	'create element:' CorrespondingModelElementSpecification (persistence=ModelPersistence)?;
 
 ModelPersistence returns ModelLocation:
 	(useRelativeToSource?='persist as root at changed model relative location:'
@@ -57,7 +56,7 @@ CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
 
 CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	{CorrespondingModelElementRetrieve}
-	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (moveRoot=ModelMove)?;
+	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (persistence=ModelMove)?;
 
 fragment CorrespondingModelElementRetrieveOrDelete:
 	CorrespondingModelElementSpecificationWithPrecondition (optional?='optional')?;

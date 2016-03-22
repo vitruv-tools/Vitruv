@@ -13,8 +13,8 @@ class ImplicitEffectClassGenerator extends EffectClassGenerator {
 	protected final Class<? extends EChange> change;
 	protected final Response containingResponse;
 	
-	public new(ImplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
-		super(effect, typesBuilderExtensionProvider);
+	public new(ImplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
+		super(effect, typesBuilderExtensionProvider, hasEffectsFacade);
 		this.containingResponse = effect.containingResponse;
 		this.change = containingResponse.trigger.generateEChangeInstanceClass();
 	}

@@ -32,12 +32,13 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		typesBuilderExtensionProvider.setBuilders(_typesBuilder, _typeReferenceBuilder, _annotationTypesBuilder);
 	}
 	
-	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	// TODO HK The hasEffectsFacade thing is ugly.. change it
+	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase, boolean hasEffectsFacade) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider).generateClass();
+		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider, hasEffectsFacade).generateClass();
 		acceptor.accept(effectClass);
 		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
 		val mockType = new MockClassGenerator(response.trigger, typesBuilderExtensionProvider).generateClass();
@@ -47,12 +48,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
-	def dispatch void infer(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase, boolean hasEffectsFacade) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider).generateClass());
+		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider, hasEffectsFacade).generateClass());
 	}
 	
 	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -66,11 +67,11 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(effectsFacade);
 		
 		for (response : file.responses) {
-			infer(response, acceptor, isPreIndexingPhase);
+			infer(response, acceptor, isPreIndexingPhase, effectsFacade != null);
 		}
 		
 		for (effect : file.effects) {
-			infer(effect, acceptor, isPreIndexingPhase);
+			infer(effect, acceptor, isPreIndexingPhase, effectsFacade != null);
 		}
 	}
 

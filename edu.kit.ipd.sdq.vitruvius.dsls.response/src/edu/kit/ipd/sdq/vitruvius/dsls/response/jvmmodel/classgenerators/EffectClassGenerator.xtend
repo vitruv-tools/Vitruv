@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
@@ -18,7 +17,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExecutionCodeBlo
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
@@ -28,20 +26,16 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractE
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
-	protected final boolean hasTargetChange;
-	protected final boolean hasConcreteTargetChange;
 	protected final boolean hasExecutionBlock;
-	protected final boolean isBlackboardAvailable;
+	protected final boolean hasEffectsFacade;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	
-	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
 		super(typesBuilderExtensionProvider);
 		this.effect = effect;
-		this.hasTargetChange = effect.targetChange != null;
-		this.hasConcreteTargetChange = this.hasTargetChange && effect.targetChange instanceof ConcreteTargetModelChange;
 		this.hasExecutionBlock = effect.codeBlock != null;
-		this.isBlackboardAvailable = !hasConcreteTargetChange;
 		this._completionChecker = new ResponseElementsCompletionChecker();
+		this.hasEffectsFacade = hasEffectsFacade;
 	}
 	
 	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject); 
@@ -67,6 +61,9 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	}
 	
 	private def JvmMember generateFacadeClassField() {
+		if (!hasEffectsFacade) {
+			return null;
+		}
 		effect.toField("_effectsFacade", typeRef(effect.qualifiedEffectsFacadeClassName)) [
 			annotations += annotationRef(Extension);
 			initializer = '''new «typeRef(effect.qualifiedEffectsFacadeClassName)»(_executionState)'''
@@ -118,10 +115,10 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	}
 	
 	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementCreate elementCreate) {
-		if (elementCreate.persistAsRoot == null) {
+		if (elementCreate.persistence == null) {
 			return null;
 		}
-		return generateMethodGetPathFromSource(elementCreate.persistAsRoot.modelPath, elementCreate);		
+		return generateMethodGetPathFromSource(elementCreate.persistence.modelPath, elementCreate);		
 	}
 	
 	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementDelete elementDelete) {
@@ -129,10 +126,10 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	}
 	
 	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementRetrieve elementRetrieve) {
-		if (elementRetrieve.moveRoot == null) {
+		if (elementRetrieve.persistence == null) {
 			return null;
 		}
-		return generateMethodGetPathFromSource(elementRetrieve.moveRoot.modelPath, elementRetrieve);		
+		return generateMethodGetPathFromSource(elementRetrieve.persistence.modelPath, elementRetrieve);		
 	}
 	
 	protected def generateMethodCorrespondencePrecondition(CorrespondingModelElementRetrieveOrDelete correspondingModelElementSpecification) {
@@ -184,7 +181,12 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeEffect";
 		val inputParameters = effect.generateInputParameters();
-		val methodBody = generateMethodExecuteResponseBody(effect.targetChange, inputParameters);
+		val modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete]
+		val modelElementInitialization = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
+		CollectionBridge.mapFixed(modelElements, 
+				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallList(generateInputParameters)))]);
+		
+		val performResponseMethod = generateMethodPerformResponse(effect.codeBlock, modelElements);
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
@@ -194,43 +196,20 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«FOR inputParameter : inputParameters»
 					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + «inputParameter.name»);
 				«ENDFOR»
-				«methodBody»
+				
+				«FOR element : modelElements»
+					«modelElementInitialization.get(element)»
+				«ENDFOR»
+				preProcessElements();
+				«IF hasExecutionBlock»
+					«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
+						FOR modelElement : modelElements BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
+				«ENDIF»
+				postProcessElements();
 				'''
 		];	
 	}
 		
-	
-	/**
-	 * Generates: executeResponse
-	 * 
-	 * <p>Calls the response execution after checking preconditions for updating the determined target models.
-	 * 
-	 * <p>Methods parameters are:
-	 * <li>1. change: the change event ({@link EChange})
-	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance}
-	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelChange targetModelChange, 
-		Iterable<JvmFormalParameter> inputParameters) {
-		val modelElements = (targetModelChange.createElements + targetModelChange.retrieveElements + targetModelChange.deleteElements).filter[complete]
-		val modelElementInitialization = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
-		CollectionBridge.mapFixed(modelElements, 
-				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallList(generateInputParameters)))]);
-		
-		val performResponseMethod = generateMethodPerformResponse(effect.codeBlock, modelElements);
-	
-		return '''
-			«FOR element : modelElements»
-				«modelElementInitialization.get(element)»
-			«ENDFOR»
-			preProcessElements();
-			«IF hasExecutionBlock»
-				«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
-					FOR modelElement : modelElements BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
-			«ENDIF»
-			postProcessElements();
-		'''
-	}
-	
 	private def StringConcatenationClient getCorrespondenceSourceSupplier(CorrespondingModelElementSpecification elementSpecification) {
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
 		return '''() -> «correspondenceSourceMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())»)'''	
@@ -290,8 +269,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		val persistencePathSupplier = getPersistencePathSupplier(elementSpecification);
 		if (persistencePathSupplier != null) {
 			return '''setPersistenceInformation(«elementSpecification.name», «persistencePathSupplier», «
-				IF elementSpecification instanceof CorrespondingModelElementCreate»«elementSpecification.persistAsRoot.useRelativeToSource»«
-				ELSEIF elementSpecification instanceof CorrespondingModelElementRetrieve»«(elementSpecification as CorrespondingModelElementRetrieve).moveRoot.useRelativeToSource»«
+				IF elementSpecification instanceof CorrespondingModelElementCreate»«elementSpecification.persistence.useRelativeToSource»«
+				ELSEIF elementSpecification instanceof CorrespondingModelElementRetrieve»«(elementSpecification as CorrespondingModelElementRetrieve).persistence.useRelativeToSource»«
 				ENDIF»);'''
 		}
 		return '''''';
@@ -302,28 +281,6 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementCreate.elementType.element;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''() -> «createdClassFactory».eINSTANCE.create«affectedElementClass.name»()'''
-	}
-	
-	/**
-	 * Generates: executeResponse
-	 * 
-	 * <p>Calls the response execution after checking preconditions without a target model.
-	 * 
-	 * <p>Methods parameters are:
-	 * <li>1. change: the change event ({@link EChange})
-	 */
-	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(TargetChange targetChange, Iterable<JvmFormalParameter> inputParameters) {
-		val JvmOperation performResponseMethod = if (hasExecutionBlock) {
-			generateMethodPerformResponse(effect.codeBlock, #[]);
-		} else {
-			null;
-		}
-		return '''
-			getLogger().debug("Execute response " + this.getClass().getName() + " with no affected model");
-			«IF hasExecutionBlock»
-				«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»);
-			«ENDIF»
-		'''
 	}
 	
 }

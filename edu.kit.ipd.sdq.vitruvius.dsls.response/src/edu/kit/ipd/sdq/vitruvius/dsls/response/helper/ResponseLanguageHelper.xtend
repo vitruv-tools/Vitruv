@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
@@ -61,14 +60,6 @@ final class ResponseLanguageHelper {
 		} else {
 			return null;
 		}
-	}
-	
-	public static def Response getContainingResponse(TargetChange targetChange) {
-		val effects = targetChange.eContainer();
-		if (effects instanceof Effect) {
-			return getContainingResponse(effects);
-		}
-		return null;
 	}
 	
 	public static def Response getContainingResponse(Effect effects) {

@@ -7,22 +7,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import org.eclipse.emf.ecore.EPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryTargetMetamodelInstanceUpdate
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MultiValuedFeatureInsertChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InsertRootChange
 import org.eclipse.emf.ecore.resource.Resource
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 
 final class ResponseLanguageGeneratorUtils extends GeneratorUtils {
 	private static val FSA_SEPARATOR = "/";
@@ -119,19 +109,18 @@ final class ResponseLanguageGeneratorUtils extends GeneratorUtils {
 	}
 	
 	private static def VURI getTargetVURI(Response response) {
-		val targetChange = response?.effect?.targetChange;
-		val targetPackage = if (targetChange instanceof ConcreteTargetModelChange) {
-			// TODO HK Clean this statement
-			(targetChange.createElements + targetChange.retrieveElements + targetChange.deleteElements).get(0).elementType?.element?.EPackage;
-		} else if (targetChange instanceof ArbitraryTargetMetamodelInstanceUpdate) {
-			targetChange.metamodelReference?.model?.package;
+		if (!(response.eContainer instanceof MetamodelPairResponses)) {
+			throw new IllegalStateException();
+		}
+		val metamodels = (response.eContainer as MetamodelPairResponses).affectedMetamodels.map[model];
+		val sourceMetamodel = response?.trigger?.sourceMetamodel;
+		val potentialModels = metamodels.filter[!it.package.VURI.equals(sourceMetamodel.VURI)];
+		if (potentialModels.size != 1) {
+			throw new IllegalStateException();
 		}
 		
-		if (targetPackage == null) {
-			return response.sourceVURI;
-		} else {
-			return targetPackage.VURI;
-		}
+		val targetPackage = potentialModels.get(0).package;
+		return targetPackage.VURI;
 	}
 	
 	private static def VURI getVURI(EPackage pckg) {
@@ -182,27 +171,6 @@ final class ResponseLanguageGeneratorUtils extends GeneratorUtils {
 	
 	private static def String getMetamodelIdentifier(VURI uri) {
 		return uri.EMFUri.metamodelIdentifier;
-	}
-	
-	private static def String getMetamodelIdentifier(Effect effect) {
-		return effect.targetChange.targetChangeMetamodelIdentifier;
-	}
-	
-	private static def dispatch String getTargetChangeMetamodelIdentifier(ArbitraryTargetMetamodelInstanceUpdate targetChange) {
-		targetChange.metamodelReference.model.package.VURI.EMFUri.metamodelIdentifier
-	}
-	
-	private static def dispatch String getTargetChangeMetamodelIdentifier(ConcreteTargetModelChange targetChange) {
-		val element = if (!targetChange.retrieveElements.empty) {
-			targetChange.retrieveElements.get(0);
-		} else if (!targetChange.createElements.empty) {
-			targetChange.createElements.get(0);
-		} else if (!targetChange.deleteElements.empty) {
-			targetChange.deleteElements.get(0);
-		} else {
-			throw new IllegalStateException("The target change does not contain any element.");
-		}
-		return element.elementType.element.EPackage.VURI.EMFUri.metamodelIdentifier;
 	}
 	
 }

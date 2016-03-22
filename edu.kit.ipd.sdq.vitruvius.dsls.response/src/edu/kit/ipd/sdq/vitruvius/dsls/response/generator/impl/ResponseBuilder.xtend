@@ -7,13 +7,18 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseBuilder
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 
 public class ResponseBuilder implements IResponseBuilder {
+	private MetamodelPairResponses responseContainer;
 	private Response response;
 	
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
 		this.response.effect = ResponseLanguageFactory.eINSTANCE.createImplicitEffect();
+		this.responseContainer = ResponseLanguageFactory.eINSTANCE.createMetamodelPairResponses();
+		responseContainer.responses += this.response;
 	}
 	
 	public override setName(String name) {
@@ -23,15 +28,16 @@ public class ResponseBuilder implements IResponseBuilder {
 	
 	public override setTrigger(EPackage sourceMetamodel) {
 		val trigger = ResponseLanguageFactory.eINSTANCE.createArbitraryModelElementChange();
-		trigger.changedModel = generateMetamodelReference(sourceMetamodel);
+		val metamodelImport = generateMetamodelImport(sourceMetamodel);
+		this.responseContainer.affectedMetamodels += generateMetamodelReference(metamodelImport);
+		trigger.changedModel = generateMetamodelReference(metamodelImport);
 		this.response.trigger = trigger;
 		return this;
 	}
 	
 	public override setTargetChange(EPackage targetMetamodel) {
-		val targetChange = ResponseLanguageFactory.eINSTANCE.createArbitraryTargetMetamodelInstanceUpdate();
-		targetChange.metamodelReference = generateMetamodelReference(targetMetamodel);
-		this.response.effect.targetChange = targetChange;
+		val metamodelImport = generateMetamodelImport(targetMetamodel);
+		this.responseContainer.affectedMetamodels += generateMetamodelReference(metamodelImport);
 		return this;
 	}
 	
@@ -42,11 +48,15 @@ public class ResponseBuilder implements IResponseBuilder {
 		return this;
 	}
 	
-	private static def MetamodelReference generateMetamodelReference(EPackage pack) {
-		val metamodelRef = MirBaseFactory.eINSTANCE.createMetamodelReference();
+	private static def MetamodelImport generateMetamodelImport(EPackage pack) {
 		val metamodelImport = MirBaseFactory.eINSTANCE.createMetamodelImport();
 		metamodelImport.name = pack.name;
 		metamodelImport.package = pack;
+		return metamodelImport;
+	}
+	
+	private static def MetamodelReference generateMetamodelReference(MetamodelImport metamodelImport) {
+		val metamodelRef = MirBaseFactory.eINSTANCE.createMetamodelReference();
 		metamodelRef.model = metamodelImport;
 		return metamodelRef;
 	}

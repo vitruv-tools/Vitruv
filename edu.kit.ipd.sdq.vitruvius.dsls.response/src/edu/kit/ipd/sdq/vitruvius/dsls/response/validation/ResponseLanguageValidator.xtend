@@ -10,8 +10,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Respon
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 
 /**
@@ -44,18 +42,9 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
 	def checkEffects(Effect effect) {
-		val targetChange = effect.targetChange
-		if (targetChange instanceof ConcreteTargetModelChange) {
-			if (effect.codeBlock == null && !targetChange.createElements.nullOrEmpty) {
-				warning("Created elements must be initialized and inserted into the target model in the execute block.",
-					ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);			
-			}
-			// TODO HK This does not make sense any more. Retrieved elements can also be used in other effects in the future, so
-			// deriving an obsolete retrieve is pretty difficult
-			/* else if (!(targetChange instanceof ConcreteTargetModelUpdate && (targetChange as ConcreteTargetModelUpdate).identifyingElement instanceof CorrespondingModelElementDelete)) {
-				warning("No code is specified to execute for the models to update.",
-				ResponseLanguagePackage.Literals.EFFECTS__CODE_BLOCK);
-			}*/
+		if (effect.codeBlock == null && !effect.createElements.nullOrEmpty) {
+			warning("Created elements must be initialized and inserted into the target model in the execute block.",
+				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);			
 		}
 	}
 	
