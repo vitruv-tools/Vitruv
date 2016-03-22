@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectsFacade
 import org.eclipse.xtext.common.types.JvmOperation
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import org.eclipse.xtext.common.types.JvmVisibility
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectsFacade
 
 class EffectsFacadeClassGenerator extends ClassGenerator {
 	private val List<ExplicitEffect> effects;

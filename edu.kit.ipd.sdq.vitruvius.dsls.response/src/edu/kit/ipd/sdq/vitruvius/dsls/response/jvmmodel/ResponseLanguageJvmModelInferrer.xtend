@@ -9,15 +9,6 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
-import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectRealization
-import org.eclipse.emf.ecore.resource.Resource
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
-import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectsFacade
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ImplicitEffectClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
@@ -72,30 +63,6 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		
 		val effectsFacade = new EffectsFacadeClassGenerator(file.effects, typesBuilderExtensionProvider).generateClass();
 		
-//		val extension parameterGenerator = new ResponseLanguageParameterGenerator(_typeReferenceBuilder, _typesBuilder);
-//		val effectsFacade = file.toClass("responses.EffectsFacade") [
-//			superTypes += typeRef(AbstractEffectsFacade);
-//			members += toConstructor() [
-//				parameters += generateParameter("responseExecutionState", ResponseExecutionState)
-//				body = '''super(responseExecutionState);'''
-//			]
-//			members += file.effects.map[effect | toMethod("call" + effect.name, typeRef(Void.TYPE)) [
-//				visibility = JvmVisibility.PUBLIC;
-//				parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
-//				body = '''
-//					try {
-//						«effect.qualifiedName» effect = new «effect.qualifiedName»(this.responseExecutionState);
-//						«FOR parameter : parameters»
-//							effect.set«parameter.name.toFirstUpper»(«parameter.name»);
-//						«ENDFOR»
-//						effect.applyEffect();
-//					} catch («Exception» exception) {
-//						// If an error occured during execution, avoid an application shutdown and print the error.
-//						getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («effect.effectName») called from effect (" + this.getClass().getSimpleName() + "): " + exception.getMessage());
-//					}
-//					'''			
-//			]]
-//		]
 		acceptor.accept(effectsFacade);
 		
 		for (response : file.responses) {

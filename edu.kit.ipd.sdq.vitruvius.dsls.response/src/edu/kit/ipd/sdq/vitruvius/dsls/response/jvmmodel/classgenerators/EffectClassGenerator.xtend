@@ -4,13 +4,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteTargetModelChange
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.emf.ecore.EObject
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ModelPathCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieveOrDelete
-import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.SimpleTextXBlockExpression
@@ -22,16 +19,12 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TargetChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-import java.util.List
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
-import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectRealization
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -54,7 +47,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject); 
 	
 	protected def getParameterCallList(JvmFormalParameter... parameters) '''
-		«FOR parameter : parameters SEPARATOR ','»«parameter.name»«ENDFOR»'''
+		«FOR parameter : parameters SEPARATOR ', '»«parameter.name»«ENDFOR»'''
 		
 	public override JvmGenericType generateClass() {
 		if (effect == null) {
@@ -67,7 +60,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PUBLIC;
 			superTypes += typeRef(AbstractEffectRealization);
 			members += generateConstructor();
-			members += generateInputFieldsAndSetterSetterMethods();
+			members += generateInputFieldsAndSetterMethods();
 			members += generateFacadeClassField;
 			members += generatedMethods;
 		];
@@ -89,7 +82,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		]
 	}
 	
-	protected def Iterable<JvmMember> generateInputFieldsAndSetterSetterMethods() {
+	protected def Iterable<JvmMember> generateInputFieldsAndSetterMethods() {
 		val inputParameters = effect.generateInputParameters()
 		return inputParameters.map[toField(name, parameterType)]
 			+ inputParameters.map[toField("is" + name.toFirstUpper + "Set", typeRef(Boolean.TYPE))]
@@ -124,96 +117,33 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		];		
 	}
 	
+	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementCreate elementCreate) {
+		if (elementCreate.persistAsRoot == null) {
+			return null;
+		}
+		return generateMethodGetPathFromSource(elementCreate.persistAsRoot.modelPath, elementCreate);		
+	}
+	
+	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementDelete elementDelete) {
+		return null;
+	}
+	
+	protected def dispatch JvmOperation generateMethodGetPathFromSource(CorrespondingModelElementRetrieve elementRetrieve) {
+		if (elementRetrieve.moveRoot == null) {
+			return null;
+		}
+		return generateMethodGetPathFromSource(elementRetrieve.moveRoot.modelPath, elementRetrieve);		
+	}
+	
 	protected def generateMethodCorrespondencePrecondition(CorrespondingModelElementRetrieveOrDelete correspondingModelElementSpecification) {
 		val methodName = "getCorrespondingModelElementsPrecondition" + correspondingModelElementSpecification.name.toFirstUpper;
 		return correspondingModelElementSpecification.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = generateInputParameters();	
+			val inputParameters = generateInputParameters();
 			val elementParameter = generateModelElementParameter(correspondingModelElementSpecification);
 			parameters += inputParameters;
 			parameters += elementParameter;
 			body = correspondingModelElementSpecification.precondition.code;
-		];
-	}
-	
-	/**
-	 * Generates method: determineTargetModels
-	 * 
-	 * <p>Checks the CorrespondenceInstance in the specified blackboard for corresponding objects
-	 * according to the type and constraints specified in the response.
-	 * 
-	 * <p>Method parameters are:
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
-	 * 
-	 * <p>Precondition: a metamodel element for the target models is specified in the response
-	 */	
-	protected def generateMethodGetCorrespondingModelElement(CorrespondingModelElementRetrieveOrDelete correspondingModelElement) {
-		val methodName = "getCorrespondingModelElement" + correspondingModelElement.name.toFirstUpper;
-		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(correspondingModelElement)
-		
-		val affectedElementClass = correspondingModelElement?.elementType.element.javaClass;
-		if (affectedElementClass == null) {
-			return null;
-		}
-		
-		var returnType = typeRef(affectedElementClass);
-		val preconditionMethod = if (correspondingModelElement instanceof CorrespondingModelElementRetrieveOrDelete) {
-			if (correspondingModelElement.precondition != null) {
-				generateMethodCorrespondencePrecondition(correspondingModelElement);
-			}
-		}
-		return getOrGenerateMethod(methodName, returnType) [
-			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = effect.generateInputParameters();	
-			val blackboardParameter = effect.generateBlackboardParameter();
-			parameters += inputParameters;
-			parameters += blackboardParameter;
-			body = '''
-				«List»<«affectedElementClass»> _targetModels = new «ArrayList»<«affectedElementClass»>();
-				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»);
-				getLogger().debug("Retrieving corresponding " + «affectedElementClass».class.getSimpleName() + " element for: " + _sourceElement);
-				«Iterable»<«affectedElementClass»> _correspondingObjects = new «ArrayList»<«affectedElementClass»>();
-				try {
-					_correspondingObjects = «ResponseRuntimeHelper».getCorrespondingObjectsOfType(
-							«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, «affectedElementClass».class);
-				} catch(«RuntimeException» ex) {
-					«IF !correspondingModelElement.optional»
-						throw new «RuntimeException»("An error occured when retrieved the corresponding elements of: " + _sourceElement);
-					«ELSE»
-						// The element is optional so there can occur errors when trying to retrieve the corresponding element. Just catch it and go on.
-					«ENDIF»
-				}
-				
-				for («affectedElementClass» _potentialTargetElement : _correspondingObjects) {
-					«IF preconditionMethod != null»
-					if (_potentialTargetElement != null && «preconditionMethod.simpleName»(«getParameterCallList(inputParameters)», _potentialTargetElement)) {
-						_targetModels.add(_potentialTargetElement);
-					}
-					«ELSE»
-					_targetModels.add(_potentialTargetElement);
-					«ENDIF»
-				}
-				
-				«IF correspondingModelElement instanceof CorrespondingModelElementDelete»
-				for («EObject» _targetModel : _targetModels) {
-					«ResponseRuntimeHelper».removeCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, null, _targetModel, null);
-				}
-				«ENDIF»
-				
-				«/*TODO HK This would be a good place for user interaction*/»					
-				«IF correspondingModelElement.optional»
-				if (_targetModels.size() > 1) {
-					throw new «IllegalArgumentException»("There has to be at most one corresponding element of type " + «affectedElementClass».class.getSimpleName() + " for: " + _sourceElement);
-				}
-				«ELSE»
-				if (_targetModels.size() != 1) {
-					throw new «IllegalArgumentException»("There has to be exacty one corresponding element of type " + «affectedElementClass».class.getSimpleName() + " for: " + _sourceElement);
-				}
-				«ENDIF»
-				
-				return _targetModels.isEmpty() ? null : _targetModels.get(0);
-			'''
 		];
 	}
 	
@@ -230,91 +160,6 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				body = correspondenceSourceBlock;
 			}
 		];
-	}
-	
-	/**
-	 * Generates method: generateTargetModel
-	 * 
-	 * <p>Generates a new target model as specified in the response
-	 * 
-	 * <p>Method parameters are:
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
-	 * 
-	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
-	 */	
-	protected def generateMethodPersistModelElementAsRoot(CorrespondingModelElementCreate createdElement) {
-		if (createdElement.persistAsRoot == null) {
-			throw new IllegalArgumentException("Given element is not to be persisted as root:");
-		}
-		val methodName = "persistModelElementAsRoot" + createdElement.name.toFirstUpper;
-		
-		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
-			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = effect.generateInputParameters();
-			val rootParameter = effect.generateModelElementParameter(createdElement);
-			parameters += inputParameters;
-			parameters += rootParameter;
-			exceptions += typeRef(IOException);
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(createdElement);
-			val pathFromSourceMethod = generateMethodGetPathFromSource(createdElement.persistAsRoot.modelPath);
-			body = '''
-				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»);
-				«String» _relativePath = «pathFromSourceMethod.simpleName»(«getParameterCallList(inputParameters + #[rootParameter])»);
-				this.persistModel(_sourceElement, «rootParameter.name», _relativePath, «IF createdElement.persistAsRoot.useRelativeToSource»true«ELSE»false«ENDIF»);
-			'''
-		];
-	}
-	
-	protected def generateMethodMoveModelOfElement(CorrespondingModelElementRetrieve retrievedElement) {
-		if (retrievedElement.moveRoot == null) {
-			throw new IllegalArgumentException("Given element is not to be persisted as root:");
-		}
-		val methodName = "moveModel" + retrievedElement.name.toFirstUpper;
-		
-		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [ 
-			visibility = JvmVisibility.PRIVATE;
-			val inputParameters = effect.generateInputParameters();
-			val rootParameter = effect.generateModelElementParameter(retrievedElement);
-			parameters += inputParameters;
-			parameters += rootParameter;
-			exceptions += typeRef(IOException);
-			val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrievedElement);
-			val pathFromSourceMethod = generateMethodGetPathFromSource(retrievedElement.moveRoot.modelPath);
-			body = '''
-				«EObject» _sourceElement = «correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»);
-				«String» _relativePath = «pathFromSourceMethod.simpleName»(«getParameterCallList(inputParameters + #[rootParameter])»);
-				this.renameModel(_sourceElement, «rootParameter.name», _relativePath, «IF retrievedElement.moveRoot.useRelativeToSource»true«ELSE»false«ENDIF»);
-			'''
-		];
-	}
-	
-	
-	/**
-	 * Generates method: generateTargetModel
-	 * 
-	 * <p>Generates a new target model as specified in the response
-	 * 
-	 * <p>Method parameters are:
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 *  <li>2. blackboard: the blackboard ({@link Blackboard})</li>
-	 * 
-	 * <p>Precondition: a metamodel element to be the root of the new model is specified in the response
-	 */	
-	protected def StringConcatenationClient generateCodeGenerateModelElement(CorrespondingModelElementSpecification elementSpecification) {
-		if (!elementSpecification.complete) {
-			return '''''';
-		}
-		val affectedElementClass = elementSpecification.elementType.element;
-		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
-		return '''«affectedElementClass.instanceClass» «elementSpecification.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();'''
-	}
-	
-	protected def StringConcatenationClient generateCodeAddModelElementCorrespondence(CorrespondingModelElementSpecification elementSpecification, Iterable<JvmFormalParameter> inputParameters) {
-		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
-		return ''' 
-			«ResponseRuntimeHelper».addCorrespondence(this._executionState.getBlackboard().getCorrespondenceInstance(), 
-				«correspondenceSourceMethod.simpleName»(«getParameterCallList(inputParameters)»), «elementSpecification.name»);'''
 	}
 	
 	protected def generateMethodPerformResponse(ExecutionCodeBlock executionBlock, CorrespondingModelElementSpecification... modelElements) {
@@ -345,9 +190,9 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			exceptions += typeRef(IOException);
 			//parameters += inputParameters;
 			body = '''
-				getLogger().debug("Called effect " + this.getClass().getSimpleName() + " with input:");
+				getLogger().debug("Called effect «effect.simpleClassName» with input:");
 				«FOR inputParameter : inputParameters»
-					getLogger().debug("   " + «inputParameter.parameterType.type.qualifiedName».class.getSimpleName() + ": " + «inputParameter.name»);
+					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + «inputParameter.name»);
 				«ENDFOR»
 				«methodBody»
 				'''
@@ -366,97 +211,97 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	 */
 	private def dispatch StringConcatenationClient generateMethodExecuteResponseBody(ConcreteTargetModelChange targetModelChange, 
 		Iterable<JvmFormalParameter> inputParameters) {
-		val createElements = targetModelChange.createElements.filter[complete];
-		val retrieveElements = targetModelChange.retrieveElements.filter[complete];
-		val deleteElements = targetModelChange.deleteElements.filter[complete];
+		val modelElements = (targetModelChange.createElements + targetModelChange.retrieveElements + targetModelChange.deleteElements).filter[complete]
+		val modelElementInitialization = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
+		CollectionBridge.mapFixed(modelElements, 
+				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallList(generateInputParameters)))]);
 		
-		val retrieveElementsMethodMap = <CorrespondingModelElementRetrieveOrDelete, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(retrieveElements + deleteElements, 
-				[retrieveElementsMethodMap.put(it, generateMethodGetCorrespondingModelElement(it))]);
-		CollectionBridge.mapFixed(deleteElements, 
-				[retrieveElementsMethodMap.put(it, generateMethodGetCorrespondingModelElement(it))]);
-		
-		val addCorrespondenceMethodMap = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
-		CollectionBridge.mapFixed(createElements, 
-				[addCorrespondenceMethodMap.put(it, generateCodeAddModelElementCorrespondence(it, inputParameters))]);
-		
-		val modelElementList = createElements + retrieveElements + deleteElements;
-		val performResponseMethod = generateMethodPerformResponse(effect.codeBlock, modelElementList);
-
-		val saveAsRootMethodMap = <CorrespondingModelElementCreate, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(createElements.filter[persistAsRoot != null], 
-				[saveAsRootMethodMap.put(it, generateMethodPersistModelElementAsRoot(it))]);
-		val renameModelMethodMap = <CorrespondingModelElementRetrieve, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(retrieveElements.filter[moveRoot != null], 
-				[renameModelMethodMap.put(it, generateMethodMoveModelOfElement(it))]);
-		
-		val getCorrespondenceSourceMethodMap = <CorrespondingModelElementRetrieve, JvmOperation>newHashMap();
-		CollectionBridge.mapFixed(retrieveElements.filter[moveRoot != null],
-			[getCorrespondenceSourceMethodMap.put(it, generateMethodGetCorrespondenceSource(it))]);
-			
+		val performResponseMethod = generateMethodPerformResponse(effect.codeBlock, modelElements);
+	
 		return '''
-				getLogger().debug("Execute response " + this.getClass().getName());
-				«FOR element : createElements»
-					«generateCodeGenerateModelElement(element)»
-				«ENDFOR»
-				«FOR element : retrieveElements + deleteElements»
-					«val method = retrieveElementsMethodMap.get(element)»
-					«method.returnType» «element.name» = «method.simpleName»(«getParameterCallList(inputParameters)
-						», _executionState.getBlackboard()«/*identifyingElement.name*/»);
-				«ENDFOR»
-				«FOR element : retrieveElements»
-					«TUID» «element.name»_oldTUID = _executionState.getBlackboard().getCorrespondenceInstance().calculateTUIDFromEObject(«element.name»);
-				«ENDFOR»
-				«FOR element : deleteElements»
-					deleteElement(«element.name»);
-				«ENDFOR»
-				«IF hasExecutionBlock»
-					«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
-						FOR modelElement : modelElementList BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
-				«ENDIF»
-				«FOR element : createElements»
-					«addCorrespondenceMethodMap.get(element)»
-					«IF element.persistAsRoot != null»
-						«saveAsRootMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
-					«ENDIF»
-				«ENDFOR»
-				«FOR element: renameModelMethodMap.keySet»
-					if («element.name» != null) {
-						«renameModelMethodMap.get(element).simpleName»(«getParameterCallList(inputParameters)», «element.name»);
-					}
-				«ENDFOR»
-				«FOR element : retrieveElements»
-					if («element.name» != null) {
-						_executionState.getBlackboard().getCorrespondenceInstance().updateTUID(«element.name»_oldTUID, «element.name»);
-					}
-				«ENDFOR»
+			«FOR element : modelElements»
+				«modelElementInitialization.get(element)»
+			«ENDFOR»
+			preProcessElements();
+			«IF hasExecutionBlock»
+				«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
+					FOR modelElement : modelElements BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
+			«ENDIF»
+			postProcessElements();
 		'''
 	}
 	
+	private def StringConcatenationClient getCorrespondenceSourceSupplier(CorrespondingModelElementSpecification elementSpecification) {
+		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
+		return '''() -> «correspondenceSourceMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())»)'''	
+	}
 	
-	/*protected def JvmOperation generateMethodMoveModelWithElement(CorrespondingModelElementRetrieve elementRetrieve) {
-		if(elementRetrieve.renamedModelFileName == null) {
-			throw new IllegalArgumentException("This model element is not to be moved.");
+	private def StringConcatenationClient getPersistencePathSupplier(CorrespondingModelElementSpecification elementSpecification) {
+		val pathFromSourceMethod = generateMethodGetPathFromSource(elementSpecification);
+		if (pathFromSourceMethod == null) {
+			return null;
 		}
-		val methodName = "moveModelWithElement" + elementRetrieve.name.toFirstUpper;
-		val newModelPathMethod = generateMethodGetNewModelPath(elementRetrieve.renamedModelFileName, elementRetrieve.name);
-		return elementRetrieve.renamedModelFileName.getOrGenerateMethod(methodName, typeRef(String)) [
-			visibility = JvmVisibility.PRIVATE;
-			parameters += generateChangeParameter();
-			body = '''
-				
-			'''
-		];
-	}*/
+		return '''() -> «pathFromSourceMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())», «elementSpecification.name»)'''	
+	}
 	
-	protected def JvmOperation generateMethodGetNewModelPath(ModelPathCodeBlock pathBlock, String modelElementName) {
-		val methodName = "getNewModelName" + modelElementName.toFirstUpper;
+	private def StringConcatenationClient getPreconditionChecker(CorrespondingModelElementRetrieveOrDelete elementSpecification) {
+		val affectedElementClass = elementSpecification.elementType.element.javaClass;
+		if (elementSpecification.precondition == null) {
+			return '''(«affectedElementClass» _element) -> true''';
+		}
+		val preconditionMethod = generateMethodCorrespondencePrecondition(elementSpecification);
+		return '''(«affectedElementClass» _element) -> «preconditionMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())», _element)'''	
+	}
+	
+	private def dispatch StringConcatenationClient getInitializationCode(CorrespondingModelElementRetrieveOrDelete elementRetrieveOrDelete, CharSequence parameterCallList) {
+		val affectedElementClass = elementRetrieveOrDelete.elementType.element;
+		val correspondingElementPreconditionChecker = getPreconditionChecker(elementRetrieveOrDelete);
+		val correspondenceSourceSupplier = getCorrespondenceSourceSupplier(elementRetrieveOrDelete);
+		val persistenceInformationInitializer = getPersistenceInformationInitializer(elementRetrieveOrDelete);
+		return '''
+			«affectedElementClass.javaClass» «elementRetrieveOrDelete.name» = «
+			IF elementRetrieveOrDelete instanceof CorrespondingModelElementRetrieve»initializeRetrieveElementState«
+			ELSE»initializeDeleteElementState«ENDIF»(
+				«correspondenceSourceSupplier», // correspondence source supplier
+				«correspondingElementPreconditionChecker», // correspondence precondition checker
+				«affectedElementClass.javaClass».class,	«elementRetrieveOrDelete.optional»);
+			«persistenceInformationInitializer»
+		'''	
+	}
+	
+	private def dispatch StringConcatenationClient getInitializationCode(CorrespondingModelElementCreate elementCreate, CharSequence parameterCallList) {
+		if (!elementCreate.complete) {
+			return '''''';
+		}
+		val affectedElementClass = elementCreate.elementType.element.javaClass;
+		val correspondenceSourceSupplier = getCorrespondenceSourceSupplier(elementCreate);
+		val persistenceInformationInitializer = getPersistenceInformationInitializer(elementCreate);
+		val elementCreationSupplier = getElementCreationSupplier(elementCreate);
+		return '''
+			«affectedElementClass» «elementCreate.name» = initializeCreateElementState(
+				«correspondenceSourceSupplier», // correspondence source supplier
+				«elementCreationSupplier», // element creation supplier
+				«affectedElementClass».class);
+			«persistenceInformationInitializer»
+			'''	
+	}
+	
+	private def StringConcatenationClient getPersistenceInformationInitializer(CorrespondingModelElementSpecification elementSpecification) {
+		val persistencePathSupplier = getPersistencePathSupplier(elementSpecification);
+		if (persistencePathSupplier != null) {
+			return '''setPersistenceInformation(«elementSpecification.name», «persistencePathSupplier», «
+				IF elementSpecification instanceof CorrespondingModelElementCreate»«elementSpecification.persistAsRoot.useRelativeToSource»«
+				ELSEIF elementSpecification instanceof CorrespondingModelElementRetrieve»«(elementSpecification as CorrespondingModelElementRetrieve).moveRoot.useRelativeToSource»«
+				ENDIF»);'''
+		}
+		return '''''';
 		
-		return pathBlock.getOrGenerateMethod(methodName, typeRef(String)) [
-			visibility = JvmVisibility.PRIVATE;
-			parameters += generateInputParameters();
-			body = pathBlock.code;
-		];
+	}
+	
+	private def StringConcatenationClient getElementCreationSupplier(CorrespondingModelElementCreate elementCreate) {
+		val affectedElementClass = elementCreate.elementType.element;
+		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
+		return '''() -> «createdClassFactory».eINSTANCE.create«affectedElementClass.name»()'''
 	}
 	
 	/**

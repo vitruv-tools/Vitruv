@@ -1,6 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
+package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
 
 class AbstractEffectsFacade extends Loggable {
 	protected val ResponseExecutionState executionState;
