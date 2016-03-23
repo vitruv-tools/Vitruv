@@ -4,10 +4,10 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.serializer;
 
 import com.google.inject.Inject;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement;
@@ -82,6 +82,9 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MirBasePackage.DUMMY_ENTRY_RULE:
+				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
+				return; 
 			case MirBasePackage.FEATURE_OF_ELEMENT:
 				sequence_FeatureOfElement(context, (FeatureOfElement) semanticObject); 
 				return; 
@@ -90,9 +93,6 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 				return; 
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
-				return; 
-			case MirBasePackage.MIR_BASE_FILE:
-				sequence_MirBaseFile(context, (MirBaseFile) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
 				if (rule == grammarAccess.getModelElementRule()) {
@@ -413,12 +413,12 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     MirBaseFile returns MirBaseFile
+	 *     DummyEntryRule returns DummyEntryRule
 	 *
 	 * Constraint:
 	 *     metamodelImports+=MetamodelImport*
 	 */
-	protected void sequence_MirBaseFile(ISerializationContext context, MirBaseFile semanticObject) {
+	protected void sequence_MirBaseFile(ISerializationContext context, DummyEntryRule semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

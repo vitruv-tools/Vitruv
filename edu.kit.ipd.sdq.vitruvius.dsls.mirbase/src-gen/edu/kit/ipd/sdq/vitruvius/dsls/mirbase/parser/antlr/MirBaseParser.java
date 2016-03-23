@@ -27,7 +27,7 @@ public class MirBaseParser extends AbstractAntlrParser {
 
 	@Override 
 	protected String getDefaultRuleName() {
-		return "MirBaseFile";
+		return "DummyEntryRule";
 	}
 
 	public MirBaseGrammarAccess getGrammarAccess() {

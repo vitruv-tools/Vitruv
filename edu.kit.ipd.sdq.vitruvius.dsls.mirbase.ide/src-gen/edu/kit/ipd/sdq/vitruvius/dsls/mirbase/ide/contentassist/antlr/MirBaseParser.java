@@ -74,7 +74,6 @@ public class MirBaseParser extends AbstractContentAssistParser {
 					put(grammarAccess.getJvmWildcardTypeReferenceAccess().getAlternatives_2(), "rule__JvmWildcardTypeReference__Alternatives_2");
 					put(grammarAccess.getXImportDeclarationAccess().getAlternatives_1(), "rule__XImportDeclaration__Alternatives_1");
 					put(grammarAccess.getXImportDeclarationAccess().getAlternatives_1_0_3(), "rule__XImportDeclaration__Alternatives_1_0_3");
-					put(grammarAccess.getMirBaseFileAccess().getGroup(), "rule__MirBaseFile__Group__0");
 					put(grammarAccess.getMetamodelImportAccess().getGroup(), "rule__MetamodelImport__Group__0");
 					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
@@ -259,7 +258,7 @@ public class MirBaseParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXImportDeclarationAccess().getGroup(), "rule__XImportDeclaration__Group__0");
 					put(grammarAccess.getXImportDeclarationAccess().getGroup_1_0(), "rule__XImportDeclaration__Group_1_0__0");
 					put(grammarAccess.getQualifiedNameInStaticImportAccess().getGroup(), "rule__QualifiedNameInStaticImport__Group__0");
-					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1(), "rule__MirBaseFile__MetamodelImportsAssignment_1");
+					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment(), "rule__MirBaseFile__MetamodelImportsAssignment");
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
 					put(grammarAccess.getNamedJavaElementAccess().getTypeAssignment_0(), "rule__NamedJavaElement__TypeAssignment_0");
@@ -424,7 +423,7 @@ public class MirBaseParser extends AbstractContentAssistParser {
 	protected Collection<FollowElement> getFollowElements(AbstractInternalContentAssistParser parser) {
 		try {
 			InternalMirBaseParser typedParser = (InternalMirBaseParser) parser;
-			typedParser.entryRuleMirBaseFile();
+			typedParser.entryRuleDummyEntryRule();
 			return typedParser.getFollowElements();
 		} catch(RecognitionException ex) {
 			throw new RuntimeException(ex);

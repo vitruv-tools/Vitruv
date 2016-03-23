@@ -43,7 +43,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services.MirBaseGrammarAccess;
 
     @Override
     protected String getFirstRuleName() {
-    	return "MirBaseFile";
+    	return "DummyEntryRule";
    	}
 
    	@Override
@@ -60,15 +60,37 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services.MirBaseGrammarAccess;
     }
 }
 
-// Entry rule entryRuleMirBaseFile
-entryRuleMirBaseFile returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getMirBaseFileRule()); }
-	iv_ruleMirBaseFile=ruleMirBaseFile
-	{ $current=$iv_ruleMirBaseFile.current; }
+// Entry rule entryRuleDummyEntryRule
+entryRuleDummyEntryRule returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getDummyEntryRuleRule()); }
+	iv_ruleDummyEntryRule=ruleDummyEntryRule
+	{ $current=$iv_ruleDummyEntryRule.current; }
 	EOF;
 
+// Rule DummyEntryRule
+ruleDummyEntryRule returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	{
+		if ($current==null) {
+			$current = createModelElement(grammarAccess.getDummyEntryRuleRule());
+		}
+		newCompositeNode(grammarAccess.getDummyEntryRuleAccess().getMirBaseFileParserRuleCall());
+	}
+	this_MirBaseFile_0=ruleMirBaseFile[$current]
+	{
+		$current = $this_MirBaseFile_0.current;
+		afterParserOrEnumRuleCall();
+	}
+;
+
+
 // Rule MirBaseFile
-ruleMirBaseFile returns [EObject current=null]
+ruleMirBaseFile[EObject in_current]  returns [EObject current=in_current]
 @init {
 	enterRule();
 }
@@ -78,31 +100,22 @@ ruleMirBaseFile returns [EObject current=null]
 	(
 		(
 			{
-				$current = forceCreateModelElement(
-					grammarAccess.getMirBaseFileAccess().getMirBaseFileAction_0(),
-					$current);
+				newCompositeNode(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0());
+			}
+			lv_metamodelImports_0_0=ruleMetamodelImport
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getMirBaseFileRule());
+				}
+				add(
+					$current,
+					"metamodelImports",
+					lv_metamodelImports_0_0,
+					"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
+				afterParserOrEnumRuleCall();
 			}
 		)
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_1_0());
-				}
-				lv_metamodelImports_1_0=ruleMetamodelImport
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getMirBaseFileRule());
-					}
-					add(
-						$current,
-						"metamodelImports",
-						lv_metamodelImports_1_0,
-						"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)*
-	)
+	)*
 ;
 
 // Entry rule entryRuleMetamodelImport

@@ -24,6 +24,15 @@ public interface MirBaseFactory extends EFactory
   MirBaseFactory eINSTANCE = edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFactoryImpl.init();
 
   /**
+   * Returns a new object of class '<em>Dummy Entry Rule</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Dummy Entry Rule</em>'.
+   * @generated
+   */
+  DummyEntryRule createDummyEntryRule();
+
+  /**
    * Returns a new object of class '<em>File</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

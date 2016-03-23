@@ -65,7 +65,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMirBaseFile()
    * @generated
    */
-  int MIR_BASE_FILE = 0;
+  int MIR_BASE_FILE = 1;
 
   /**
    * The feature id for the '<em><b>Metamodel Imports</b></em>' containment reference list.
@@ -86,6 +86,34 @@ public interface MirBasePackage extends EPackage
   int MIR_BASE_FILE_FEATURE_COUNT = 1;
 
   /**
+   * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.DummyEntryRuleImpl <em>Dummy Entry Rule</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.DummyEntryRuleImpl
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDummyEntryRule()
+   * @generated
+   */
+  int DUMMY_ENTRY_RULE = 0;
+
+  /**
+   * The feature id for the '<em><b>Metamodel Imports</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DUMMY_ENTRY_RULE__METAMODEL_IMPORTS = MIR_BASE_FILE__METAMODEL_IMPORTS;
+
+  /**
+   * The number of structural features of the '<em>Dummy Entry Rule</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DUMMY_ENTRY_RULE_FEATURE_COUNT = MIR_BASE_FILE_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MetamodelImportImpl <em>Metamodel Import</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -93,7 +121,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelImport()
    * @generated
    */
-  int METAMODEL_IMPORT = 1;
+  int METAMODEL_IMPORT = 2;
 
   /**
    * The feature id for the '<em><b>Package</b></em>' reference.
@@ -130,7 +158,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedJavaElement()
    * @generated
    */
-  int NAMED_JAVA_ELEMENT = 2;
+  int NAMED_JAVA_ELEMENT = 3;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -167,7 +195,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getModelElement()
    * @generated
    */
-  int MODEL_ELEMENT = 3;
+  int MODEL_ELEMENT = 4;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -204,7 +232,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getFeatureOfElement()
    * @generated
    */
-  int FEATURE_OF_ELEMENT = 4;
+  int FEATURE_OF_ELEMENT = 5;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -241,7 +269,7 @@ public interface MirBasePackage extends EPackage
    * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelReference()
    * @generated
    */
-  int METAMODEL_REFERENCE = 5;
+  int METAMODEL_REFERENCE = 6;
 
   /**
    * The feature id for the '<em><b>Model</b></em>' reference.
@@ -261,6 +289,16 @@ public interface MirBasePackage extends EPackage
    */
   int METAMODEL_REFERENCE_FEATURE_COUNT = 1;
 
+
+  /**
+   * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule <em>Dummy Entry Rule</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Dummy Entry Rule</em>'.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule
+   * @generated
+   */
+  EClass getDummyEntryRule();
 
   /**
    * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile <em>File</em>}'.
@@ -455,6 +493,16 @@ public interface MirBasePackage extends EPackage
    */
   interface Literals
   {
+    /**
+     * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.DummyEntryRuleImpl <em>Dummy Entry Rule</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.DummyEntryRuleImpl
+     * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getDummyEntryRule()
+     * @generated
+     */
+    EClass DUMMY_ENTRY_RULE = eINSTANCE.getDummyEntryRule();
+
     /**
      * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl.MirBaseFileImpl <em>File</em>}' class.
      * <!-- begin-user-doc -->

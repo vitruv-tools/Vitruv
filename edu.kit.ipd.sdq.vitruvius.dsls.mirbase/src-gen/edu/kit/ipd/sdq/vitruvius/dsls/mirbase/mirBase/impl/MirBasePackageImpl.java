@@ -3,6 +3,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.impl;
 
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
@@ -29,6 +30,13 @@ import org.eclipse.xtext.common.types.TypesPackage;
  */
 public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 {
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass dummyEntryRuleEClass = null;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -135,6 +143,16 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     // Update the registry and return the package
     EPackage.Registry.INSTANCE.put(MirBasePackage.eNS_URI, theMirBasePackage);
     return theMirBasePackage;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDummyEntryRule()
+  {
+    return dummyEntryRuleEClass;
   }
 
   /**
@@ -327,6 +345,8 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     isCreated = true;
 
     // Create classes and their features
+    dummyEntryRuleEClass = createEClass(DUMMY_ENTRY_RULE);
+
     mirBaseFileEClass = createEClass(MIR_BASE_FILE);
     createEReference(mirBaseFileEClass, MIR_BASE_FILE__METAMODEL_IMPORTS);
 
@@ -382,8 +402,11 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    dummyEntryRuleEClass.getESuperTypes().add(this.getMirBaseFile());
 
     // Initialize classes and features; add operations and parameters
+    initEClass(dummyEntryRuleEClass, DummyEntryRule.class, "DummyEntryRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(mirBaseFileEClass, MirBaseFile.class, "MirBaseFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMirBaseFile_MetamodelImports(), this.getMetamodelImport(), null, "metamodelImports", null, 0, -1, MirBaseFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

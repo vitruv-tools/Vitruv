@@ -6,7 +6,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.List;
-import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.CrossReference;
 import org.eclipse.xtext.Grammar;
@@ -24,28 +23,31 @@ import org.eclipse.xtext.xbase.services.XtypeGrammarAccess;
 @Singleton
 public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	
-	public class MirBaseFileElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MirBaseFile");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cMirBaseFileAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cMetamodelImportsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cMetamodelImportsMetamodelImportParserRuleCall_1_0 = (RuleCall)cMetamodelImportsAssignment_1.eContents().get(0);
+	public class DummyEntryRuleElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.DummyEntryRule");
+		private final RuleCall cMirBaseFileParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//MirBaseFile:
-		//	{MirBaseFile} metamodelImports+=MetamodelImport*;
+		//DummyEntryRule:
+		//	MirBaseFile;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{MirBaseFile} metamodelImports+=MetamodelImport*
-		public Group getGroup() { return cGroup; }
+		//MirBaseFile
+		public RuleCall getMirBaseFileParserRuleCall() { return cMirBaseFileParserRuleCall; }
+	}
+	public class MirBaseFileElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MirBaseFile");
+		private final Assignment cMetamodelImportsAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cMetamodelImportsMetamodelImportParserRuleCall_0 = (RuleCall)cMetamodelImportsAssignment.eContents().get(0);
 		
-		//{MirBaseFile}
-		public Action getMirBaseFileAction_0() { return cMirBaseFileAction_0; }
+		//fragment MirBaseFile:
+		//	metamodelImports+=MetamodelImport*;
+		@Override public ParserRule getRule() { return rule; }
 		
 		//metamodelImports+=MetamodelImport*
-		public Assignment getMetamodelImportsAssignment_1() { return cMetamodelImportsAssignment_1; }
+		public Assignment getMetamodelImportsAssignment() { return cMetamodelImportsAssignment; }
 		
 		//MetamodelImport
-		public RuleCall getMetamodelImportsMetamodelImportParserRuleCall_1_0() { return cMetamodelImportsMetamodelImportParserRuleCall_1_0; }
+		public RuleCall getMetamodelImportsMetamodelImportParserRuleCall_0() { return cMetamodelImportsMetamodelImportParserRuleCall_0; }
 	}
 	public class MetamodelImportElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
@@ -250,6 +252,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
+	private final DummyEntryRuleElements pDummyEntryRule;
 	private final MirBaseFileElements pMirBaseFile;
 	private final MetamodelImportElements pMetamodelImport;
 	private final NamedJavaElementElements pNamedJavaElement;
@@ -271,6 +274,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaXbase = gaXbase;
 		this.gaXtype = gaXtype;
+		this.pDummyEntryRule = new DummyEntryRuleElements();
 		this.pMirBaseFile = new MirBaseFileElements();
 		this.pMetamodelImport = new MetamodelImportElements();
 		this.pNamedJavaElement = new NamedJavaElementElements();
@@ -311,8 +315,18 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	//MirBaseFile:
-	//	{MirBaseFile} metamodelImports+=MetamodelImport*;
+	//DummyEntryRule:
+	//	MirBaseFile;
+	public DummyEntryRuleElements getDummyEntryRuleAccess() {
+		return pDummyEntryRule;
+	}
+	
+	public ParserRule getDummyEntryRuleRule() {
+		return getDummyEntryRuleAccess().getRule();
+	}
+	
+	//fragment MirBaseFile:
+	//	metamodelImports+=MetamodelImport*;
 	public MirBaseFileElements getMirBaseFileAccess() {
 		return pMirBaseFile;
 	}

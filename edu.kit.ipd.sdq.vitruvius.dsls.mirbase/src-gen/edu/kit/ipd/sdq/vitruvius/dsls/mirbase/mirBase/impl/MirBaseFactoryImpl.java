@@ -65,6 +65,7 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
   {
     switch (eClass.getClassifierID())
     {
+      case MirBasePackage.DUMMY_ENTRY_RULE: return createDummyEntryRule();
       case MirBasePackage.MIR_BASE_FILE: return createMirBaseFile();
       case MirBasePackage.METAMODEL_IMPORT: return createMetamodelImport();
       case MirBasePackage.NAMED_JAVA_ELEMENT: return createNamedJavaElement();
@@ -74,6 +75,17 @@ public class MirBaseFactoryImpl extends EFactoryImpl implements MirBaseFactory
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DummyEntryRule createDummyEntryRule()
+  {
+    DummyEntryRuleImpl dummyEntryRule = new DummyEntryRuleImpl();
+    return dummyEntryRule;
   }
 
   /**

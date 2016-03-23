@@ -76,6 +76,11 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
     new MirBaseSwitch<Adapter>()
     {
       @Override
+      public Adapter caseDummyEntryRule(DummyEntryRule object)
+      {
+        return createDummyEntryRuleAdapter();
+      }
+      @Override
       public Adapter caseMirBaseFile(MirBaseFile object)
       {
         return createMirBaseFileAdapter();
@@ -126,6 +131,21 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
     return modelSwitch.doSwitch((EObject)target);
   }
 
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule <em>Dummy Entry Rule</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule
+   * @generated
+   */
+  public Adapter createDummyEntryRuleAdapter()
+  {
+    return null;
+  }
 
   /**
    * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile <em>File</em>}'.

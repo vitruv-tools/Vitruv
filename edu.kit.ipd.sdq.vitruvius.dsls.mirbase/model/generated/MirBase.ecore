@@ -2,6 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mirBase" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase"
     nsPrefix="mirBase">
+  <eClassifiers xsi:type="ecore:EClass" name="DummyEntryRule" eSuperTypes="#//MirBaseFile"/>
   <eClassifiers xsi:type="ecore:EClass" name="MirBaseFile">
     <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelImports" upperBound="-1"
         eType="#//MetamodelImport" containment="true"/>

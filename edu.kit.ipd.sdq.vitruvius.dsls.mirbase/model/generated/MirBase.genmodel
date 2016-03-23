@@ -6,6 +6,7 @@
     complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.11" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types">
   <genPackages prefix="MirBase" basePackage="edu.kit.ipd.sdq.vitruvius.dsls.mirbase"
       disposableProviderFactory="true" fileExtensions="mirbase" ecorePackage="MirBase.ecore#/">
+    <genClasses ecoreClass="MirBase.ecore#//DummyEntryRule"/>
     <genClasses ecoreClass="MirBase.ecore#//MirBaseFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MirBase.ecore#//MirBaseFile/metamodelImports"/>
     </genClasses>

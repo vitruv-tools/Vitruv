@@ -50,14 +50,31 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.services.MirBaseGrammarAccess;
 	}
 }
 
-// Entry rule entryRuleMirBaseFile
-entryRuleMirBaseFile
+// Entry rule entryRuleDummyEntryRule
+entryRuleDummyEntryRule
 :
-{ before(grammarAccess.getMirBaseFileRule()); }
-	 ruleMirBaseFile
-{ after(grammarAccess.getMirBaseFileRule()); } 
+{ before(grammarAccess.getDummyEntryRuleRule()); }
+	 ruleDummyEntryRule
+{ after(grammarAccess.getDummyEntryRuleRule()); } 
 	 EOF 
 ;
+
+// Rule DummyEntryRule
+ruleDummyEntryRule 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getDummyEntryRuleAccess().getMirBaseFileParserRuleCall()); }
+		ruleMirBaseFile
+		{ after(grammarAccess.getDummyEntryRuleAccess().getMirBaseFileParserRuleCall()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 
 // Rule MirBaseFile
 ruleMirBaseFile 
@@ -66,9 +83,9 @@ ruleMirBaseFile
 	}
 	:
 	(
-		{ before(grammarAccess.getMirBaseFileAccess().getGroup()); }
-		(rule__MirBaseFile__Group__0)
-		{ after(grammarAccess.getMirBaseFileAccess().getGroup()); }
+		{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment()); }
+		(rule__MirBaseFile__MetamodelImportsAssignment)*
+		{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment()); }
 	)
 ;
 finally {
@@ -3066,60 +3083,6 @@ rule__XImportDeclaration__Alternatives_1_0_3
 finally {
 	restoreStackSize(stackSize);
 }
-
-rule__MirBaseFile__Group__0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__MirBaseFile__Group__0__Impl
-	rule__MirBaseFile__Group__1
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MirBaseFile__Group__0__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getMirBaseFileAccess().getMirBaseFileAction_0()); }
-	()
-	{ after(grammarAccess.getMirBaseFileAccess().getMirBaseFileAction_0()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MirBaseFile__Group__1
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__MirBaseFile__Group__1__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__MirBaseFile__Group__1__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1()); }
-	(rule__MirBaseFile__MetamodelImportsAssignment_1)*
-	{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 
 rule__MetamodelImport__Group__0
 	@init {
@@ -14873,15 +14836,15 @@ finally {
 }
 
 
-rule__MirBaseFile__MetamodelImportsAssignment_1
+rule__MirBaseFile__MetamodelImportsAssignment
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_1_0()); }
+		{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0()); }
 		ruleMetamodelImport
-		{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_1_0()); }
+		{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0()); }
 	)
 ;
 finally {
