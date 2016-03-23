@@ -12,12 +12,16 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.PersistableEffectElement.PersistenceInformation
 
 abstract class AbstractEffectRealization extends Loggable {
-	protected extension val ResponseExecutionState _executionState;
-	protected Map<EObject, EffectElement> elementStates;
+	private extension val ResponseExecutionState executionState;
+	private Map<EObject, EffectElement> elementStates;
 	
 	public new(ResponseExecutionState executionState) {
-		this._executionState = executionState;
+		this.executionState = executionState;
 		this.elementStates = new HashMap<EObject, EffectElement>();
+	}
+	
+	protected def ResponseExecutionState getExecutionState() {
+		return executionState;
 	}
 	
 	protected def <T extends EObject> T initializeCreateElementState(Function0<EObject> correspondenceSourceSupplier,
@@ -26,7 +30,7 @@ abstract class AbstractEffectRealization extends Loggable {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val createElement = newObjectSupplier.apply();
 		this.elementStates.put(createElement, 
-			new EffectElementCreate(createElement, correspondenceSource, _executionState)
+			new EffectElementCreate(createElement, correspondenceSource, executionState)
 		);
 		return createElement;
 	}
@@ -36,7 +40,7 @@ abstract class AbstractEffectRealization extends Loggable {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
-			new EffectElementRetrieve(retrievedElement, correspondenceSource, _executionState)
+			new EffectElementRetrieve(retrievedElement, correspondenceSource, executionState)
 		);
 		return retrievedElement;
 	}
@@ -48,7 +52,7 @@ abstract class AbstractEffectRealization extends Loggable {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
-			new EffectElementDelete(retrievedElement, correspondenceSource, _executionState)
+			new EffectElementDelete(retrievedElement, correspondenceSource, executionState)
 		);
 		return retrievedElement;
 	}
