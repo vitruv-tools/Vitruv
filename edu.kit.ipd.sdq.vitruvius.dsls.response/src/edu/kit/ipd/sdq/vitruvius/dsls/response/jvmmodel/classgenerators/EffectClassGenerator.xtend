@@ -18,30 +18,42 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectRealization
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
 	protected final boolean hasExecutionBlock;
 	protected final boolean hasEffectsFacade;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
+	protected final Iterable<CorrespondingModelElementSpecification> modelElements;
+	private final String effectUserExecutionQualifiedClassName;
 	
-	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
+	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.effect = effect;
 		this.hasExecutionBlock = effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.hasEffectsFacade = hasEffectsFacade;
+		this.modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete];
+		this.effectUserExecutionQualifiedClassName = effect.qualifiedClassName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 	}
 	
 	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject); 
+	protected abstract def Iterable<String> getInputParameterNames();
 	
-	protected def getParameterCallList(JvmFormalParameter... parameters) '''
-		«FOR parameter : parameters SEPARATOR ', '»«parameter.name»«ENDFOR»'''
+	protected def getParameterCallListWithModelInput(String... parameterStrings) {
+		getParameterCallList(inputParameterNames + parameterStrings);
+	}
+	
+	protected def getParameterCallList(String... parameterStrings) '''
+		«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
 		
 	public override JvmGenericType generateClass() {
 		if (effect == null) {
@@ -55,27 +67,64 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			superTypes += typeRef(AbstractEffectRealization);
 			members += generateConstructor();
 			members += generateInputFieldsAndSetterMethods();
-			members += generateFacadeClassField;
 			members += generatedMethods;
+			members += generateEffectUserExecutionClass();
 		];
 	}
 	
-	private def JvmMember generateFacadeClassField() {
-		if (!hasEffectsFacade) {
-			return null;
-		}
-		effect.toField("_effectsFacade", typeRef(effect.qualifiedEffectsFacadeClassName)) [
-			annotations += annotationRef(Extension);
-			initializer = '''new «typeRef(effect.qualifiedEffectsFacadeClassName)»(_executionState)'''
+	private def JvmGenericType generateEffectUserExecutionClass() {
+		return effect.toClass(effectUserExecutionQualifiedClassName) [
+			visibility = JvmVisibility.PRIVATE;
+			static = true;
+			val blackboardField = toField(BLACKBOARD_FIELD_NAME, typeRef(Blackboard));
+			val userInteractingField = toField(USER_INTERACTING_FIELD_NAME, typeRef(UserInteracting));
+			val transformationResultField = toField(TRANSFORMATION_RESULT_FIELD_NAME, typeRef(TransformationResult));
+			val effectsFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(effect.qualifiedEffectsFacadeClassName)) [
+					annotations += annotationRef(Extension);
+				]
+			members += #[blackboardField, userInteractingField, transformationResultField, effectsFacadeField];
+			members += toConstructor() [
+				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
+				parameters += responseExecutionStateParameter;
+				body = '''
+					this.«blackboardField.simpleName» = «responseExecutionStateParameter.name».getBlackboard();
+					this.«userInteractingField.simpleName» = «responseExecutionStateParameter.name».getUserInteracting();
+					this.«transformationResultField.simpleName» = «responseExecutionStateParameter.name».getTransformationResult();
+					this.«effectsFacadeField.simpleName» = new «typeRef(effect.qualifiedEffectsFacadeClassName)»(«responseExecutionStateParameter.name»);
+					'''
+			]
+			if (hasExecutionBlock) {
+				members += generateMethodExecuteUserOperations(effect.codeBlock, modelElements);
+			}
 		]
 	}
+	
+	protected def generateMethodExecuteUserOperations(ExecutionCodeBlock executionBlock, CorrespondingModelElementSpecification... modelElements) {
+		if (!hasExecutionBlock) {
+			return null;
+		}
+		
+		val methodName = EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME;
+		return executionBlock.toMethod(methodName, typeRef(Void.TYPE)) [
+			visibility = JvmVisibility.PRIVATE;
+			parameters += effect.generateInputParameters;
+			parameters += modelElements.map[effect.generateModelElementParameter(it)];
+			val code = executionBlock.code;
+			if (code instanceof SimpleTextXBlockExpression) {
+				body = code.text;
+			} else {
+				body = code;
+			}
+		];	
+		
+	}	
 	
 	protected def void generateMethodAllParametersSet() {
 		effect.getOrGenerateMethod("allParametersSet", typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC
 			body = '''
-				return «FOR inputParameter : effect.generateInputParameters() SEPARATOR '&&'
-					»is«inputParameter.name.toFirstUpper»Set«ENDFOR»;'''		
+				return «FOR inputParameter : inputParameterNames SEPARATOR '&&'
+					»is«inputParameter.toFirstUpper»Set«ENDFOR»;'''		
 		]
 	}
 	
@@ -94,7 +143,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	
 	protected def JvmConstructor generateConstructor(JvmGenericType clazz) {
 		return clazz.toConstructor [
-			val executionStateParameter = generateParameter("executionState", ResponseExecutionState);
+			val executionStateParameter = generateResponseExecutionStateParameter();
 			parameters += executionStateParameter;
 			visibility = JvmVisibility.PUBLIC;
 			body = '''super(«executionStateParameter.name»);'''
@@ -159,42 +208,22 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	protected def generateMethodPerformResponse(ExecutionCodeBlock executionBlock, CorrespondingModelElementSpecification... modelElements) {
-		if (!hasExecutionBlock) {
-			return null;
-		}
-		val methodName = "performResponseTo";
-		return executionBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
-			visibility = JvmVisibility.PRIVATE;
-			parameters += generateInputParameters;
-			val generatedMethod = it;
-			parameters += modelElements.map[generateModelElementParameter(generatedMethod, it)];
-			val code = executionBlock.code;
-			if (code instanceof SimpleTextXBlockExpression) {
-				body = code.text;
-			} else {
-				body = code;
-			}
-		];	
-	}
+	
 	
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeEffect";
 		val inputParameters = effect.generateInputParameters();
-		val modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete]
 		val modelElementInitialization = <CorrespondingModelElementSpecification, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(modelElements, 
-				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallList(generateInputParameters)))]);
+				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallListWithModelInput()))]);
 		
-		val performResponseMethod = generateMethodPerformResponse(effect.codeBlock, modelElements);
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
-			//parameters += inputParameters;
 			body = '''
 				getLogger().debug("Called effect «effect.simpleClassName» with input:");
 				«FOR inputParameter : inputParameters»
-					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + «inputParameter.name»);
+					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + this.«inputParameter.name»);
 				«ENDFOR»
 				
 				«FOR element : modelElements»
@@ -202,8 +231,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«ENDFOR»
 				preProcessElements();
 				«IF hasExecutionBlock»
-					«performResponseMethod.simpleName»(«getParameterCallList(inputParameters)»«
-						FOR modelElement : modelElements BEFORE ', ' SEPARATOR ', '»«modelElement.name»«ENDFOR»);
+					new «effectUserExecutionQualifiedClassName»(getExecutionState()).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
+						«getParameterCallListWithModelInput(modelElements.map[name])»);
 				«ENDIF»
 				postProcessElements();
 				'''
@@ -212,7 +241,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		
 	private def StringConcatenationClient getCorrespondenceSourceSupplier(CorrespondingModelElementSpecification elementSpecification) {
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(elementSpecification);
-		return '''() -> «correspondenceSourceMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())»)'''	
+		return '''() -> «correspondenceSourceMethod.simpleName»(«getParameterCallListWithModelInput()»)'''	
 	}
 	
 	private def StringConcatenationClient getPersistencePathSupplier(CorrespondingModelElementSpecification elementSpecification) {
@@ -220,7 +249,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		if (pathFromSourceMethod == null) {
 			return null;
 		}
-		return '''() -> «pathFromSourceMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())», «elementSpecification.name»)'''	
+		return '''() -> «pathFromSourceMethod.simpleName»(«getParameterCallListWithModelInput(elementSpecification.name)»)'''	
 	}
 	
 	private def StringConcatenationClient getPreconditionChecker(CorrespondingModelElementRetrieveOrDelete elementSpecification) {
@@ -229,7 +258,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
 		val preconditionMethod = generateMethodCorrespondencePrecondition(elementSpecification);
-		return '''(«affectedElementClass» _element) -> «preconditionMethod.simpleName»(«getParameterCallList(elementSpecification.generateInputParameters())», _element)'''	
+		return '''(«affectedElementClass» _element) -> «preconditionMethod.simpleName»(«getParameterCallListWithModelInput("_element")»)'''	
 	}
 	
 	private def dispatch StringConcatenationClient getInitializationCode(CorrespondingModelElementRetrieveOrDelete elementRetrieveOrDelete, CharSequence parameterCallList) {

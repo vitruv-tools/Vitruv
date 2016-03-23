@@ -13,14 +13,18 @@ class ImplicitEffectClassGenerator extends EffectClassGenerator {
 	protected final Class<? extends EChange> change;
 	protected final Response containingResponse;
 	
-	public new(ImplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
-		super(effect, typesBuilderExtensionProvider, hasEffectsFacade);
+	public new(ImplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+		super(effect, typesBuilderExtensionProvider);
 		this.containingResponse = effect.containingResponse;
 		this.change = containingResponse.trigger.generateEChangeInstanceClass();
 	}
 		
 	protected override Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
 		return #[contextObject.generateChangeParameter(containingResponse.trigger)];
+	}
+	
+	override protected getInputParameterNames() {
+		return #[ResponseLanguageParameterGenerator.CHANGE_PARAMETER_NAME];
 	}
 	
 }

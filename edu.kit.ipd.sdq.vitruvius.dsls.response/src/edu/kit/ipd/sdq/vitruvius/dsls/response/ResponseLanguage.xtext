@@ -12,8 +12,7 @@ ResponseFile:
 	MetamodelPairResponses;
 	
 fragment MetamodelPairResponses:
-	'first metamodel' affectedMetamodels+=MetamodelReference
-	'second metamodel' affectedMetamodels+=MetamodelReference
+	'responses for metamodels' affectedMetamodels+=MetamodelReference 'and' affectedMetamodels+=MetamodelReference
 	(responses+=Response |
 		effects+=ExplicitEffect)*;
 
@@ -34,8 +33,9 @@ ImplicitEffect:
 
 ExplicitEffect:
 	'effect:' name=ValidID
+	// TODO HK replace, the distinction is not needed
 	('model input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
-	('java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?
+	('other input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?
 	Effect;
 	
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:

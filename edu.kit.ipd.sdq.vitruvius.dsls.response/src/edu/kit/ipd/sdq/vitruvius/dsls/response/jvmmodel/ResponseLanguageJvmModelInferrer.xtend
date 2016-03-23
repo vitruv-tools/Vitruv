@@ -32,13 +32,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		typesBuilderExtensionProvider.setBuilders(_typesBuilder, _typeReferenceBuilder, _annotationTypesBuilder);
 	}
 	
-	// TODO HK The hasEffectsFacade thing is ugly.. change it
-	def dispatch void infer(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase, boolean hasEffectsFacade) {
+	def dispatch void generate(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider, hasEffectsFacade).generateClass();
+		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider).generateClass();
 		acceptor.accept(effectClass);
 		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
 		val mockType = new MockClassGenerator(response.trigger, typesBuilderExtensionProvider).generateClass();
@@ -48,12 +47,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
-	def dispatch void infer(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase, boolean hasEffectsFacade) {
+	def dispatch void generate(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider, hasEffectsFacade).generateClass());
+		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider).generateClass());
 	}
 	
 	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -62,17 +61,18 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		}
 		updateBuilders();
 		
-		val effectsFacade = new EffectsFacadeClassGenerator(file.effects, typesBuilderExtensionProvider).generateClass();
-		
-		acceptor.accept(effectsFacade);
+		if (file.effects.size + file.responses.map[effect].size != 0) {
+			acceptor.accept(new EffectsFacadeClassGenerator(file, typesBuilderExtensionProvider).generateClass());
+			for (effect : file.effects) {
+				generate(effect, acceptor, isPreIndexingPhase);
+			}
+		}
 		
 		for (response : file.responses) {
-			infer(response, acceptor, isPreIndexingPhase, effectsFacade != null);
+			generate(response, acceptor, isPreIndexingPhase);
 		}
 		
-		for (effect : file.effects) {
-			infer(effect, acceptor, isPreIndexingPhase, effectsFacade != null);
-		}
+		
 	}
 
 }

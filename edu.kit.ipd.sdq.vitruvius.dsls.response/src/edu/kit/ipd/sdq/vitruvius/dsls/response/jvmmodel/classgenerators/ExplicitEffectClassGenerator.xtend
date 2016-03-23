@@ -11,15 +11,18 @@ class ExplicitEffectClassGenerator extends EffectClassGenerator {
 	private final List<ModelElement> modelInputElements;
 	private final List<NamedJavaElement> javaInputElements;
 	
-	public new(ExplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider, boolean hasEffectsFacade) {
-		super(effect, typesBuilderExtensionProvider, hasEffectsFacade);
+	public new(ExplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+		super(effect, typesBuilderExtensionProvider);
 		modelInputElements = effect.modelInputElements;
 		javaInputElements = effect.javaInputElements;
 	}
-	
-	
+		
 	protected override Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
 		return generateMethodInputParameters(contextObject, modelInputElements, javaInputElements);
+	}
+	
+	override protected getInputParameterNames() {
+		return modelInputElements.map[name]+ javaInputElements.map[name];
 	}
 	
 }

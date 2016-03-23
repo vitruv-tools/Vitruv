@@ -112,14 +112,16 @@ final class ResponseLanguageGeneratorUtils extends GeneratorUtils {
 		if (!(response.eContainer instanceof MetamodelPairResponses)) {
 			throw new IllegalStateException();
 		}
-		val metamodels = (response.eContainer as MetamodelPairResponses).affectedMetamodels.map[model];
+		val metamodels = (response.eContainer as MetamodelPairResponses).affectedMetamodels.map[model.package];
 		val sourceMetamodel = response?.trigger?.sourceMetamodel;
-		val potentialModels = metamodels.filter[!it.package.VURI.equals(sourceMetamodel.VURI)];
-		if (potentialModels.size != 1) {
+		var potentialModels = metamodels.filter[!it.VURI.equals(sourceMetamodel.VURI)];
+		if (potentialModels.size > 1) {
 			throw new IllegalStateException();
+		} else if (potentialModels.size == 0) {
+			potentialModels = #[sourceMetamodel];
 		}
 		
-		val targetPackage = potentialModels.get(0).package;
+		val targetPackage = potentialModels.get(0);
 		return targetPackage.VURI;
 	}
 	
