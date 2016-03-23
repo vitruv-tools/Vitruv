@@ -28,10 +28,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.VariableRef;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.services.MappingLanguageGrammarAccess;
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.DummyEntryRule;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelReference;
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBaseFile;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement;
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement;
@@ -181,6 +181,9 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 			}
 		else if (epackage == MirBasePackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case MirBasePackage.DUMMY_ENTRY_RULE:
+				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
+				return; 
 			case MirBasePackage.FEATURE_OF_ELEMENT:
 				sequence_FeatureOfElement(context, (FeatureOfElement) semanticObject); 
 				return; 
@@ -189,9 +192,6 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 				return; 
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
-				return; 
-			case MirBasePackage.MIR_BASE_FILE:
-				sequence_MirBaseFile(context, (MirBaseFile) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
 				if (rule == grammarAccess.getModelElementRule()) {

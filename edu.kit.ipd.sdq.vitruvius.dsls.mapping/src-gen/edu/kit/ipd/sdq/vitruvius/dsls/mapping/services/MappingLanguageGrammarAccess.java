@@ -1706,8 +1706,18 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getConstraintStringLiteralAccess().getRule();
 	}
 	
-	//MirBaseFile:
-	//	{MirBaseFile} metamodelImports+=MetamodelImport*;
+	//DummyEntryRule:
+	//	MirBaseFile;
+	public MirBaseGrammarAccess.DummyEntryRuleElements getDummyEntryRuleAccess() {
+		return gaMirBase.getDummyEntryRuleAccess();
+	}
+	
+	public ParserRule getDummyEntryRuleRule() {
+		return getDummyEntryRuleAccess().getRule();
+	}
+	
+	//fragment MirBaseFile:
+	//	metamodelImports+=MetamodelImport*;
 	public MirBaseGrammarAccess.MirBaseFileElements getMirBaseFileAccess() {
 		return gaMirBase.getMirBaseFileAccess();
 	}

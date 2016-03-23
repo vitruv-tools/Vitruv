@@ -1970,6 +1970,36 @@ ruleConstraintStringLiteral returns [EObject current=null]
 	)
 ;
 
+
+// Rule MirBaseFile
+ruleMirBaseFile[EObject in_current]  returns [EObject current=in_current]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				newCompositeNode(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0());
+			}
+			lv_metamodelImports_0_0=ruleMetamodelImport
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getMirBaseFileRule());
+				}
+				add(
+					$current,
+					"metamodelImports",
+					lv_metamodelImports_0_0,
+					"edu.kit.ipd.sdq.vitruvius.dsls.mirbase.MirBase.MetamodelImport");
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)*
+;
+
 // Entry rule entryRuleMetamodelImport
 entryRuleMetamodelImport returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getMetamodelImportRule()); }

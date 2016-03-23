@@ -130,7 +130,6 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstraintNullLiteralAccess().getGroup(), "rule__ConstraintNullLiteral__Group__0");
 					put(grammarAccess.getConstraintNumberLiteralAccess().getGroup(), "rule__ConstraintNumberLiteral__Group__0");
 					put(grammarAccess.getConstraintStringLiteralAccess().getGroup(), "rule__ConstraintStringLiteral__Group__0");
-					put(grammarAccess.getMirBaseFileAccess().getGroup(), "rule__MirBaseFile__Group__0");
 					put(grammarAccess.getMetamodelImportAccess().getGroup(), "rule__MetamodelImport__Group__0");
 					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
@@ -366,7 +365,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstraintBooleanLiteralAccess().getIsTrueAssignment_1_1(), "rule__ConstraintBooleanLiteral__IsTrueAssignment_1_1");
 					put(grammarAccess.getConstraintNumberLiteralAccess().getValueAssignment_1(), "rule__ConstraintNumberLiteral__ValueAssignment_1");
 					put(grammarAccess.getConstraintStringLiteralAccess().getValueAssignment_1(), "rule__ConstraintStringLiteral__ValueAssignment_1");
-					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment_1(), "rule__MirBaseFile__MetamodelImportsAssignment_1");
+					put(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment(), "rule__MirBaseFile__MetamodelImportsAssignment");
 					put(grammarAccess.getMetamodelImportAccess().getPackageAssignment_1(), "rule__MetamodelImport__PackageAssignment_1");
 					put(grammarAccess.getMetamodelImportAccess().getNameAssignment_3(), "rule__MetamodelImport__NameAssignment_3");
 					put(grammarAccess.getNamedJavaElementAccess().getTypeAssignment_0(), "rule__NamedJavaElement__TypeAssignment_0");

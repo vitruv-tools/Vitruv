@@ -675,6 +675,23 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+
+// Rule MirBaseFile
+ruleMirBaseFile 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment()); }
+		(rule__MirBaseFile__MetamodelImportsAssignment)*
+		{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleMetamodelImport
 entryRuleMetamodelImport
 :
@@ -20528,6 +20545,21 @@ rule__ConstraintStringLiteral__ValueAssignment_1
 		{ before(grammarAccess.getConstraintStringLiteralAccess().getValueSTRINGTerminalRuleCall_1_0()); }
 		RULE_STRING
 		{ after(grammarAccess.getConstraintStringLiteralAccess().getValueSTRINGTerminalRuleCall_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MirBaseFile__MetamodelImportsAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0()); }
+		ruleMetamodelImport
+		{ after(grammarAccess.getMirBaseFileAccess().getMetamodelImportsMetamodelImportParserRuleCall_0()); }
 	)
 ;
 finally {

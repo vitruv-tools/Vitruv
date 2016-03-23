@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.MappingHelper
+import java.util.function.Supplier
 
 class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<String>>> {
 	HashMap<Correspondence, Collection<String>> correspondence2MappingMap
@@ -151,4 +152,13 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	def boolean checkIfMappedBy(List<EObject> eObjects, MappingRealization mapping) {
 		return ( getMappingTarget(eObjects, mapping) !== null)
 	}
+	
+	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, Supplier<Correspondence> correspondenceCreator) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
+	override <U extends Correspondence> getEditableView(Class<U> correspondenceType, Supplier<U> correspondenceCreator) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
+	
 }
