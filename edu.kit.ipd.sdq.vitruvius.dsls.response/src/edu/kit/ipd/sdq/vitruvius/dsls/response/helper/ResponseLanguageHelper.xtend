@@ -22,14 +22,15 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
 import org.eclipse.xtext.common.types.JvmTypeReference
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 
 final class ResponseLanguageHelper {
 	private new() {}
 	
 	public static def Response getContainingResponse(CodeBlock codeBlock) {
-		val effects = codeBlock.eContainer();
-		if (effects instanceof Effect) {
-			return getContainingResponse(effects);
+		val effect = codeBlock.eContainer();
+		if (effect instanceof ImplicitEffect) {
+			return getContainingResponse(effect);
 		}
 		return null;
 	}
@@ -62,8 +63,8 @@ final class ResponseLanguageHelper {
 		}
 	}
 	
-	public static def Response getContainingResponse(Effect effects) {
-		val response = effects.eContainer();
+	public static def Response getContainingResponse(ImplicitEffect effect) {
+		val response = effect.eContainer();
 		if (response instanceof Response) {
 			return response;
 		}

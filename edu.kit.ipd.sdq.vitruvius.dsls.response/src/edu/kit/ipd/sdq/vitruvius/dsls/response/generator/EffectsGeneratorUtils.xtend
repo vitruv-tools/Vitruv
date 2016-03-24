@@ -18,10 +18,10 @@ class EffectsGeneratorUtils extends GeneratorUtils {
 	public static def getSimpleEffectsFacadeClassName(Effect effect) '''
 		«EFFECTS_FACADE_CLASS_NAME»'''
 	
-	public static def dispatch getSimpleClassName(ExplicitEffect effect) '''
+	public static def dispatch String getSimpleClassName(ExplicitEffect effect) '''
 		«effect.name»Effect'''
 	
-	public static def dispatch getSimpleClassName(ImplicitEffect effect) '''
+	public static def dispatch String getSimpleClassName(ImplicitEffect effect) '''
 		«effect.containingResponse.name»Effect'''
 
 	private static def String getPackageQualifiedName(String sourceFileName) '''

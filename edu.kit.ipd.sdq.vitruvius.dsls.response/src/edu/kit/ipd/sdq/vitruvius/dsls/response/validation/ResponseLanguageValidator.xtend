@@ -11,6 +11,10 @@ import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 
 /**
  * This class contains custom validation rules. 
@@ -23,13 +27,34 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	def checkResponseFile(ResponseFile file) {
 		val alreadyCheckedResponses = new HashMap<String, Response>();
 		for (response : file.responses) {
-			if (alreadyCheckedResponses.containsKey(response.responseName)) {
-				warning("Duplicate response name.",
-					response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
-				warning("Duplicate response name.",
-					alreadyCheckedResponses.get(response.responseName), ResponseLanguagePackage.Literals.RESPONSE__NAME);
+			val responseName = response.responseName;
+			if (alreadyCheckedResponses.containsKey(responseName)) {
+				val errorMessage = "Duplicate response name: " + responseName; 
+				error(errorMessage, response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
+				error (errorMessage, alreadyCheckedResponses.get(responseName),
+					ResponseLanguagePackage.Literals.RESPONSE__NAME
+				);
 			}
 			alreadyCheckedResponses.put(response.responseName, response);
+		}
+		
+		val alreadyCheckedEffects = new HashMap<String, Effect>();
+		for (implicitEffect : file.responses.map[effect]) {
+			alreadyCheckedEffects.put(implicitEffect.simpleClassName, implicitEffect);
+		}
+		for (effect : file.effects) {
+			val effectName = effect.simpleClassName
+			if (alreadyCheckedEffects.containsKey(effectName)) {
+				val errorMessage = "Duplicate effect name: " + effectName;
+				error(errorMessage,	effect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
+				val duplicateNameEffect = alreadyCheckedEffects.get(effectName);
+				if (duplicateNameEffect instanceof ImplicitEffect) {
+					error(errorMessage, duplicateNameEffect.containingResponse, ResponseLanguagePackage.Literals.RESPONSE__NAME);
+				} else if (duplicateNameEffect instanceof ExplicitEffect) {
+					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
+				}
+			}
+			alreadyCheckedEffects.put(effectName, effect);
 		}
 	}
 
