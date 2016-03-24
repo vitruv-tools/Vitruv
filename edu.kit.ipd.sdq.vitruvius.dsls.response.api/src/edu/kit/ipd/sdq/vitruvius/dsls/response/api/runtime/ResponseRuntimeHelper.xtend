@@ -9,12 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import org.eclipse.emf.ecore.util.EcoreUtil
-import java.util.List
 import java.util.ArrayList
-import org.eclipse.xtext.xbase.lib.Functions.Function0
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 public final class ResponseRuntimeHelper {
@@ -84,7 +79,7 @@ public final class ResponseRuntimeHelper {
 		val IFile sourceModelFile = EMFBridge.getIFileForEMFUri(element.eResource().URI);
 		val IProject projectSourceModel = sourceModelFile.getProject();
 		// TODO HK: Check if the last / is necessary
-		var String srcFolderPath = projectSourceModel.getFullPath().toString() + "/";
+		var String srcFolderPath = projectSourceModel.getFullPath().toString();
 		return URI.createPlatformResourceURI(srcFolderPath, true);
 	}
 	
@@ -122,7 +117,6 @@ public final class ResponseRuntimeHelper {
 			}
 		}				
 		
-		/*TODO HK This would be a good place for user interaction*/
 		if (targetElements.size() != 1) {
 			if (!optional || targetElements.size() > 1) {
 				throw new IllegalArgumentException("There were (" + targetElements.size() + ") corresponding elements of type " + affectedElementClass.class.getSimpleName() + " for " + (if (optional) "optional" else "") + ": " + sourceElement);
@@ -132,33 +126,4 @@ public final class ResponseRuntimeHelper {
 		return if (targetElements.isEmpty()) null else targetElements.get(0);
 	}
 	
-	
-	/*
-	public static def getCorrespondingElements(Blackboard blackboard, EObject sourceElement, EObject sourceParent, Class<? extends EObject> targetType) {
-		val targetModels = <EObject>newArrayList();
-		val correspondingObjects = getCorrespondingObjectsOfType(
-						blackboard.getCorrespondenceInstance(), sourceElement, sourceParent, targetType, );
-				
-		for (potentialTargetElement : correspondingObjects) {
-			«IF preconditionMethod != null»
-					if (_potentialTargetElement != null && «preconditionMethod.simpleName»(«changeParameter.name», _potentialTargetElement)) {
-						_targetModels.add(_potentialTargetElement);
-					}
-					«ELSE»
-					_targetModels.add(_potentialTargetElement);
-					«ENDIF»
-				}
-				
-				«IF correspondingModelElement instanceof CorrespondingModelElementDelete»
-				for («EObject» _targetModel : _targetModels) {
-					«ResponseRuntimeHelper».removeCorrespondence(«blackboardParameter.name».getCorrespondenceInstance(), _sourceElement, _sourceParent, _targetModel, null);
-				}
-				«ENDIF»
-				
-				if (_targetModels.size() != 1) {
-					throw new «IllegalArgumentException»("There has to be exacty one corresponding element.");
-				}
-				
-				return _targetModels.get(0);
-	}*/
 }
