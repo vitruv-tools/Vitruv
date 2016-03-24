@@ -18,7 +18,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureCha
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
 
