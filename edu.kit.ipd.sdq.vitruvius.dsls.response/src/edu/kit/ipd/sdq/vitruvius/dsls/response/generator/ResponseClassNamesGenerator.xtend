@@ -14,6 +14,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
@@ -102,10 +103,10 @@ final class ResponseClassNamesGenerator {
 		private val String metamodelPairPackageName;
 		private val String resourcePackageName;
 		
-		public new(Resource responseResource, Pair<VURI, VURI> modelPair) {
-			this.metamodelPairName = modelPair.metamodelPairName;
-			this.metamodelPairPackageName = modelPair.packageName;
-			this.resourcePackageName = responseResource.packageNameForResource;
+		public new(MetamodelPairResponses metamodelPair) {
+			this.metamodelPairName = metamodelPair.sourceTargetPair.metamodelPairName;
+			this.metamodelPairPackageName = metamodelPair.sourceTargetPair.packageName;
+			this.resourcePackageName = metamodelPair.eResource.packageNameForResource;
 		}
 		
 		public override getSimpleName() '''

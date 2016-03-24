@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.MockClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExplicitEffectClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.EffectsFacadeClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExecutorClassGenerator
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -72,7 +73,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			generate(response, acceptor, isPreIndexingPhase);
 		}
 		
-		
+		acceptor.accept(new ExecutorClassGenerator(file, typesBuilderExtensionProvider).generateClass());
 	}
 
 }

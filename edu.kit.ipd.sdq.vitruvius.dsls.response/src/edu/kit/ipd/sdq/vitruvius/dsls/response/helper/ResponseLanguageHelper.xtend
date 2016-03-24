@@ -127,9 +127,9 @@ final class ResponseLanguageHelper {
 		return element.element.javaClass;
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
-		val sourceVURI = response.sourceVURI;
-		val targetVURI = response.targetVURI;
+	static def Pair<VURI, VURI> getSourceTargetPair(MetamodelPairResponses metamodelPair) {
+		val sourceVURI = metamodelPair.fromMetamodel.model.package.VURI;
+		val targetVURI = metamodelPair.toMetamodel.model.package.VURI;
 		if (sourceVURI != null && targetVURI != null) {
 			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
 		} else {
@@ -137,15 +137,9 @@ final class ResponseLanguageHelper {
 		}		
 	}
 	
-	private static def VURI getSourceVURI(Response response) {
+	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
 		// TODO remove cast
-		val sourceURI = (response?.eContainer as MetamodelPairResponses).fromMetamodel.model.package;
-		return sourceURI.VURI;
-	}
-	
-	private static def VURI getTargetVURI(Response response) {
-		val targetURI = (response?.eContainer as MetamodelPairResponses).toMetamodel.model.package;
-		return targetURI.VURI;
+		return (response.eContainer as MetamodelPairResponses).sourceTargetPair;
 	}
 	
 	private static def VURI getVURI(EPackage pckg) {
@@ -159,6 +153,5 @@ final class ResponseLanguageHelper {
 			null;
 		}
 	}
-	
 	
 }

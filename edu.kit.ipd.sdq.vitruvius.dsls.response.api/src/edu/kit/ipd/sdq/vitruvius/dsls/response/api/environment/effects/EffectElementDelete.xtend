@@ -34,8 +34,6 @@ class EffectElementDelete extends EffectElement {
 	}	
 
 	override protected preProcess() {
-		// TODO HK Is this correct? What if we delete an element and its correspondences and afterwards make it for a
-		// contained element? Will there be an exception?
 		removeCorrespondence();
 		delete();
 	}

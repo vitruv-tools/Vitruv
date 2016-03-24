@@ -183,13 +183,12 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	
 	private def void generateExecutors(Resource responseResource, Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa, Map<Pair<VURI, VURI>, List<String>> modelCorrespondencesToExecutors) {
 		for (modelCombination : modelCorrepondenceToResponseMap.keySet) {
-			val executorContent = generateExecutor(responseResource, modelCombination, modelCorrepondenceToResponseMap.get(modelCombination));
 			if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
 				modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
 			}
-			val executorNameGenerator = new ExecutorClassNameGenerator(responseResource, modelCombination);
+			// TODO HK remove cast
+			val executorNameGenerator = new ExecutorClassNameGenerator(responseResource.contents.get(0) as MetamodelPairResponses);
 			modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
-			fsa.generateFile(executorNameGenerator.qualifiedName.filePath, executorContent);
 		}
 	}
 	
@@ -223,26 +222,6 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		'''
 		
 		return generateClass(change2CommandTransformingNameGenerator.packageName, ih, classImplementation);
-	}
-	
-	private def generateExecutor(Resource responsesResource, Pair<VURI, VURI> modelPair, List<String> responseNames) {
-		val ih = new XtendImportHelper();	
-		val executorNameGenerator = new ExecutorClassNameGenerator(responsesResource, modelPair);
-		val classImplementation = '''
-		public class «executorNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseExecutor)» {
-			public «executorNameGenerator.simpleName»(«ih.typeRef(UserInteracting)» userInteracting) {
-				super(userInteracting);
-			}
-			
-			protected void setup() {
-				«FOR response : responseNames»
-				this.addResponse(«ih.typeRef(response)».getTrigger(), new «ih.typeRef(response)»(userInteracting));
-				«ENDFOR»
-			}
-		}
-		'''
-		
-		return generateClass(executorNameGenerator.packageName, ih, classImplementation);
 	}
 	
 	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(Resource responseResource, IFileSystemAccess fsa) {
