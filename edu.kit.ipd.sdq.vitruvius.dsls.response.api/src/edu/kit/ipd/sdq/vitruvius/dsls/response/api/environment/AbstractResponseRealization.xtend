@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 
-abstract class AbstractResponseRealization extends Loggable implements IResponseRealization {
+abstract class AbstractResponseRealization extends CallHierarchyHaving implements IResponseRealization {
 	protected val UserInteracting userInteracting;
 	protected ResponseExecutionState executionState;
 	

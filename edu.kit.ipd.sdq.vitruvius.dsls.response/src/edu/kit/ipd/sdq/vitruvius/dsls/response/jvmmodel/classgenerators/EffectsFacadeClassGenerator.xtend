@@ -8,6 +8,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectsFacade
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 
 class EffectsFacadeClassGenerator extends ClassGenerator {
 	private val List<ExplicitEffect> effects;
@@ -23,9 +25,11 @@ class EffectsFacadeClassGenerator extends ClassGenerator {
 		generateUnassociatedClass(facadeNameIdentifyingEffect.qualifiedEffectsFacadeClassName) [
 			superTypes += typeRef(AbstractEffectsFacade);
 			members += toConstructor() [
-				val responseExecutionStateParameter = generateResponseExecutionStateParameter(); 
+				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
+				val calledByParameter = generateParameter(EFFECT_FACADE_CALLED_BY_FIELD_NAME, typeRef(CallHierarchyHaving));
 				parameters += responseExecutionStateParameter;
-				body = '''super(«responseExecutionStateParameter.name»);'''
+				parameters += calledByParameter;
+				body = '''super(«responseExecutionStateParameter.name», «calledByParameter.name»);'''
 			]
 			members += effects.map[generateCallMethod];
 		]
@@ -36,7 +40,7 @@ class EffectsFacadeClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PUBLIC;
 			parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
 			body = '''
-				«effect.qualifiedClassName» effect = new «effect.qualifiedClassName»(this.executionState);
+				«effect.qualifiedClassName» effect = new «effect.qualifiedClassName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
 				«FOR parameter : parameters»
 					effect.set«parameter.name.toFirstUpper»(«parameter.name»);
 				«ENDFOR»

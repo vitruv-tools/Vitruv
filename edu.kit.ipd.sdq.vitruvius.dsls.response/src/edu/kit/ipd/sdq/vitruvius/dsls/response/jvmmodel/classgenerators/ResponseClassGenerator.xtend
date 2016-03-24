@@ -82,7 +82,7 @@ class ResponseClassGenerator extends ClassGenerator {
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
 				try {
 					«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
-					«effect.qualifiedClassName» effect = new «effect.qualifiedClassName»(this.executionState);
+					«effect.qualifiedClassName» effect = new «effect.qualifiedClassName»(this.executionState, this);
 					effect.setChange(«typedChangeName»);
 					effect.applyEffect();
 				} catch («Exception» exception) {

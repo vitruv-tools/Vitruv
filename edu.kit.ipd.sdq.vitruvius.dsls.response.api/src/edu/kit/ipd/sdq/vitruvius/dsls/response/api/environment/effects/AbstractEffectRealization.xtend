@@ -5,17 +5,18 @@ import java.io.IOException
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import java.util.Map
 import java.util.HashMap
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.PersistableEffectElement.PersistenceInformation
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 
-abstract class AbstractEffectRealization extends Loggable {
+abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	private extension val ResponseExecutionState executionState;
 	private Map<EObject, EffectElement> elementStates;
 	
-	public new(ResponseExecutionState executionState) {
+	public new(ResponseExecutionState executionState, CallHierarchyHaving calledBy) {
+		super(calledBy);
 		this.executionState = executionState;
 		this.elementStates = new HashMap<EObject, EffectElement>();
 	}
@@ -93,7 +94,7 @@ abstract class AbstractEffectRealization extends Loggable {
 			executeEffect();
 		} catch (Exception exception) {
 			// If an error occured during execution, avoid an application shutdown and print the error.
-			getLogger().error('''«exception.class.simpleName» during execution of effect («this.class.simpleName»): «exception.message»''');
+			getLogger().error('''«exception.class.simpleName» during execution of effect «calledByString»: «exception.message»''');
 		}
 	}
 	

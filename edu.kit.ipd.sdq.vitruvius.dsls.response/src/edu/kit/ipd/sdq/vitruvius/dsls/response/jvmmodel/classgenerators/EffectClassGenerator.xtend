@@ -26,11 +26,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
 	protected final boolean hasExecutionBlock;
-	protected final boolean hasEffectsFacade;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	protected final Iterable<CorrespondingModelElementSpecification> modelElements;
 	private final String effectUserExecutionQualifiedClassName;
@@ -40,7 +40,6 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		this.effect = effect;
 		this.hasExecutionBlock = effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
-		this.hasEffectsFacade = hasEffectsFacade;
 		this.modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete];
 		this.effectUserExecutionQualifiedClassName = effect.qualifiedClassName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 	}
@@ -85,12 +84,14 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			members += #[blackboardField, userInteractingField, transformationResultField, effectsFacadeField];
 			members += toConstructor() [
 				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
+				val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
 				parameters += responseExecutionStateParameter;
+				parameters += calledByParameter;
 				body = '''
 					this.«blackboardField.simpleName» = «responseExecutionStateParameter.name».getBlackboard();
 					this.«userInteractingField.simpleName» = «responseExecutionStateParameter.name».getUserInteracting();
 					this.«transformationResultField.simpleName» = «responseExecutionStateParameter.name».getTransformationResult();
-					this.«effectsFacadeField.simpleName» = new «typeRef(effect.qualifiedEffectsFacadeClassName)»(«responseExecutionStateParameter.name»);
+					this.«effectsFacadeField.simpleName» = new «typeRef(effect.qualifiedEffectsFacadeClassName)»(«responseExecutionStateParameter.name», «calledByParameter.name»);
 					'''
 			]
 			if (hasExecutionBlock) {
@@ -143,10 +144,12 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	
 	protected def JvmConstructor generateConstructor(JvmGenericType clazz) {
 		return clazz.toConstructor [
-			val executionStateParameter = generateResponseExecutionStateParameter();
-			parameters += executionStateParameter;
 			visibility = JvmVisibility.PUBLIC;
-			body = '''super(«executionStateParameter.name»);'''
+			val executionStateParameter = generateResponseExecutionStateParameter();
+			val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
+			parameters += executionStateParameter;
+			parameters += calledByParameter;
+			body = '''super(«executionStateParameter.name», «calledByParameter.name»);'''
 		]
 	}
 	
@@ -231,7 +234,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«ENDFOR»
 				preProcessElements();
 				«IF hasExecutionBlock»
-					new «effectUserExecutionQualifiedClassName»(getExecutionState()).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
+					new «effectUserExecutionQualifiedClassName»(getExecutionState(), this).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
 						«getParameterCallListWithModelInput(modelElements.map[name])»);
 				«ENDIF»
 				postProcessElements();
