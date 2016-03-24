@@ -6,10 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
@@ -74,14 +70,6 @@ final class ResponseClassNamesGenerator {
 			
 		public def String getSimpleName();
 		public def String getPackageName();
-	}
-	
-	public static class Change2CommandTransformingProvidingClassNameGenerator extends ClassNameGenerator {
-		public override String getSimpleName() '''
-			ResponseChange2CommandTransformingProviding'''
-				
-		public override String getPackageName() '''
-			«basicResponsesPackageQualifiedName»'''
 	}
 	
 	public static class Change2CommandTransformingClassNameGenerator extends ClassNameGenerator {

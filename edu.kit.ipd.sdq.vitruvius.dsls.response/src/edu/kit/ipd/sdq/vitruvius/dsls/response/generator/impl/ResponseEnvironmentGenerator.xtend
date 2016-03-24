@@ -3,19 +3,15 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import java.util.Map
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguageFactory
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.IResponseEnvironmentGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseExecutor
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import com.google.inject.Inject
@@ -28,13 +24,11 @@ import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.Change2CommandTransformingProvidingClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.Change2CommandTransformingClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ExecutorClassNameGenerator
 
@@ -152,44 +146,19 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			(res as DerivedStateAwareResource).discardDerivedState();
 			(res as DerivedStateAwareResource).installDerivedState(false);
 		}
-		val modelCorrespondenceToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
+		val modelCorrespondencesToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (resource : resources + tempResources) {
-			val modelCorrepondenceToResponseMap = generateResponses(resource, fsa);
-			generateExecutors(resource, modelCorrepondenceToResponseMap, fsa, modelCorrespondenceToExecutors);
-		}
-		
-		generateChange2CommandTransformings(modelCorrespondenceToExecutors, fsa)
-		generateChange2CommandTransformingProviding(modelCorrespondenceToExecutors.keySet, fsa);
-	}
-
-	private def void generateChange2CommandTransformingProviding(Set<Pair<VURI, VURI>> modelCorrespondences, IFileSystemAccess fsa) {
-		val ih = new XtendImportHelper();	
-		val change2CommandTransformingProvidingNameGenerator = new Change2CommandTransformingProvidingClassNameGenerator();
-		val classImplementation = '''
-		public class «change2CommandTransformingProvidingNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseChange2CommandTransformingProviding)» {
-			protected void initialize() {
-				«ih.typeRef(List)»<«ih.typeRef(Change2CommandTransforming)»> change2CommandTransformings = new «ih.typeRef(ArrayList)»<«ih.typeRef(Change2CommandTransforming)»>();
-				«FOR modelCorrespondence : modelCorrespondences»
-					change2CommandTransformings.add(new «ih.typeRef(new Change2CommandTransformingClassNameGenerator(modelCorrespondence).qualifiedName)»());
-				«ENDFOR»
-				initializeChange2CommandTransformationMap(change2CommandTransformings);
-			}
-		}
-		'''
-		
-		val classContent = generateClass(change2CommandTransformingProvidingNameGenerator.packageName, ih, classImplementation);
-		fsa.generateFile(change2CommandTransformingProvidingNameGenerator.qualifiedName.filePath, classContent);
-	}
-	
-	private def void generateExecutors(Resource responseResource, Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToResponseMap, IFileSystemAccess fsa, Map<Pair<VURI, VURI>, List<String>> modelCorrespondencesToExecutors) {
-		for (modelCombination : modelCorrepondenceToResponseMap.keySet) {
+			// TODO HK remove this cast
+			val modelCombination = (resource.contents.get(0) as MetamodelPairResponses).sourceTargetPair
 			if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
 				modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
 			}
-			// TODO HK remove cast
-			val executorNameGenerator = new ExecutorClassNameGenerator(responseResource.contents.get(0) as MetamodelPairResponses);
+			val executorNameGenerator = new ExecutorClassNameGenerator(resource.contents.get(0) as MetamodelPairResponses);
 			modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
+			generateResponses(resource, fsa);
 		}
+		
+		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)
 	}
 	
 	private def void generateChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
@@ -224,33 +193,8 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		return generateClass(change2CommandTransformingNameGenerator.packageName, ih, classImplementation);
 	}
 	
-	private def Map<Pair<VURI, VURI>, List<String>> generateResponses(Resource responseResource, IFileSystemAccess fsa) {
-		val modelCorrespondenceToResponseNameMap = new HashMap<Pair<VURI, VURI>, List<String>>;
-		addResponsesToCorrespondenceMap(responseResource, modelCorrespondenceToResponseNameMap);
-		
+	private def void generateResponses(Resource responseResource, IFileSystemAccess fsa) {
 		generator.doGenerate(responseResource, fsa);
-		return modelCorrespondenceToResponseNameMap;
-	}
-	
-	private def void addResponsesToCorrespondenceMap(Resource responseResource, Map<Pair<VURI, VURI>, List<String>> modelCorrespondenceToResponseNameMap) {
-		if (!(responseResource.contents.get(0) instanceof ResponseFile)) {
-			throw new IllegalArgumentException("The given resource is not a response file.");
-		}
-		
-		for (response : (responseResource.contents.get(0) as ResponseFile).responses) {
-			val responseName = new ResponseClassNameGenerator(response).simpleName;
-			val sourceTargetPair = response.sourceTargetPair;
-			if (!modelCorrespondenceToResponseNameMap.containsKey(sourceTargetPair)) {
-				modelCorrespondenceToResponseNameMap.put(sourceTargetPair, new ArrayList<String>());
-			}
-			if (modelCorrespondenceToResponseNameMap.get(sourceTargetPair).contains(responseName)) {
-				LOGGER.error("There are at least two responses with the name " + responseName + " overwriting each other.");
-			}
-			modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(responseName);
-			/*if (response.hasOppositeResponse) {
-				modelCorrespondenceToResponseNameMap.get(sourceTargetPair).add(response.oppositeResponse.responseName);
-			}*/
-		}
 	}
 	
 }
