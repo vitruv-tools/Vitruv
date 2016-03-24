@@ -12,7 +12,7 @@ ResponseFile:
 	MetamodelPairResponses;
 	
 fragment MetamodelPairResponses:
-	'responses for metamodels' affectedMetamodels+=MetamodelReference 'and' affectedMetamodels+=MetamodelReference
+	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
 	(responses+=Response |
 		effects+=ExplicitEffect)*;
 

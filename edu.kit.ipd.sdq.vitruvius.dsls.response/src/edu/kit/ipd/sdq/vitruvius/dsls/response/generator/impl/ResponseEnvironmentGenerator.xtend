@@ -71,8 +71,11 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		}
 		val resource = getOrCreateTempResource(sourceFileName);
 		// TODO HK This is really ugly
-		if ((resource.contents.get(0) as ResponseFile).affectedMetamodels.size == 0) {
-			(resource.contents.get(0) as ResponseFile).affectedMetamodels += (response.eContainer as MetamodelPairResponses).affectedMetamodels
+		if ((resource.contents.get(0) as ResponseFile).fromMetamodel == null
+			|| (resource.contents.get(0) as ResponseFile).toMetamodel == null
+		) {
+			(resource.contents.get(0) as ResponseFile).fromMetamodel = (response.eContainer as MetamodelPairResponses).fromMetamodel;
+			(resource.contents.get(0) as ResponseFile).toMetamodel = (response.eContainer as MetamodelPairResponses).toMetamodel;
 		}/* else if (!(resource.contents.get(0) as ResponseFile).affectedMetamodels.equals((response.eContainer as MetamodelPairResponses).affectedMetamodels)) {
 			throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
 		}*/

@@ -138,25 +138,14 @@ final class ResponseLanguageHelper {
 	}
 	
 	private static def VURI getSourceVURI(Response response) {
-		val sourceURI = response?.trigger?.sourceMetamodel;
+		// TODO remove cast
+		val sourceURI = (response?.eContainer as MetamodelPairResponses).fromMetamodel.model.package;
 		return sourceURI.VURI;
 	}
 	
 	private static def VURI getTargetVURI(Response response) {
-		if (!(response.eContainer instanceof MetamodelPairResponses)) {
-			throw new IllegalStateException();
-		}
-		val metamodels = (response.eContainer as MetamodelPairResponses).affectedMetamodels.map[model.package];
-		val sourceMetamodel = response?.trigger?.sourceMetamodel;
-		var potentialModels = metamodels.filter[!it.VURI.equals(sourceMetamodel.VURI)];
-		if (potentialModels.size > 1) {
-			throw new IllegalStateException();
-		} else if (potentialModels.size == 0) {
-			potentialModels = #[sourceMetamodel];
-		}
-		
-		val targetPackage = potentialModels.get(0);
-		return targetPackage.VURI;
+		val targetURI = (response?.eContainer as MetamodelPairResponses).toMetamodel.model.package;
+		return targetURI.VURI;
 	}
 	
 	private static def VURI getVURI(EPackage pckg) {

@@ -29,7 +29,7 @@ public class ResponseBuilder implements IResponseBuilder {
 	public override setTrigger(EPackage sourceMetamodel) {
 		val trigger = ResponseLanguageFactory.eINSTANCE.createArbitraryModelElementChange();
 		val metamodelImport = generateMetamodelImport(sourceMetamodel);
-		this.responseContainer.affectedMetamodels += generateMetamodelReference(metamodelImport);
+		this.responseContainer.fromMetamodel = generateMetamodelReference(metamodelImport);
 		trigger.changedModel = generateMetamodelReference(metamodelImport);
 		this.response.trigger = trigger;
 		return this;
@@ -37,7 +37,7 @@ public class ResponseBuilder implements IResponseBuilder {
 	
 	public override setTargetChange(EPackage targetMetamodel) {
 		val metamodelImport = generateMetamodelImport(targetMetamodel);
-		this.responseContainer.affectedMetamodels += generateMetamodelReference(metamodelImport);
+		this.responseContainer.toMetamodel = generateMetamodelReference(metamodelImport);
 		return this;
 	}
 	
