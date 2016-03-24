@@ -34,7 +34,7 @@ Workflow {
     	directory = "${runtimeProject}.tests/src-gen"
     }
     
-	component = XtextGenerator {
+	component = postprocessor.ResponseLanguageExtendedGenerator {
 		configuration = {
 			project = StandardProjectConfig {
 				baseName = "edu.kit.ipd.sdq.vitruvius.dsls.response"
