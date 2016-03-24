@@ -5,7 +5,6 @@ import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
-import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import java.util.Map
 import java.util.HashMap
@@ -28,7 +27,6 @@ import org.eclipse.xtext.resource.DerivedStateAwareResource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.Change2CommandTransformingClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ExecutorClassNameGenerator
 
@@ -56,6 +54,15 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.project = project;
 	}
 	
+	private static def MetamodelPairResponses getMetamodelPairResponsesInResource(Resource resource) {
+		if (!(resource?.contents.get(0) instanceof MetamodelPairResponses)) {
+			throw new IllegalStateException("The given resource must contain a MetamodelPairResponses element.");
+		}
+		
+		return resource.contents.get(0) as MetamodelPairResponses;
+	}
+	
+	
 	public override void addResponse(String sourceFileName, Response response) {
 		if (project == null) {
 			throw new IllegalStateException("Project must be set");
@@ -64,16 +71,15 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			throw new IllegalArgumentException("Response must not be null");
 		}
 		val resource = getOrCreateTempResource(sourceFileName);
-		// TODO HK This is really ugly
-		if ((resource.contents.get(0) as ResponseFile).fromMetamodel == null
-			|| (resource.contents.get(0) as ResponseFile).toMetamodel == null
-		) {
-			(resource.contents.get(0) as ResponseFile).fromMetamodel = (response.eContainer as MetamodelPairResponses).fromMetamodel;
-			(resource.contents.get(0) as ResponseFile).toMetamodel = (response.eContainer as MetamodelPairResponses).toMetamodel;
-		}/* else if (!(resource.contents.get(0) as ResponseFile).affectedMetamodels.equals((response.eContainer as MetamodelPairResponses).affectedMetamodels)) {
+		val resourceMetamodelPair = resource.metamodelPairResponsesInResource;
+		if (resourceMetamodelPair.fromMetamodel == null && resourceMetamodelPair.toMetamodel == null) {
+			// TODO HK Remove the cast
+			resourceMetamodelPair.fromMetamodel = (response.eContainer as MetamodelPairResponses).fromMetamodel;
+			resourceMetamodelPair.toMetamodel = (response.eContainer as MetamodelPairResponses).toMetamodel;
+		} else {
 			throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
-		}*/
-		(resource.contents.get(0) as ResponseFile).responses += response;
+		}
+		resourceMetamodelPair.responses += response;
 	}
 	
 	private def Resource getOrCreateTempResource(String sourceFileName) {
