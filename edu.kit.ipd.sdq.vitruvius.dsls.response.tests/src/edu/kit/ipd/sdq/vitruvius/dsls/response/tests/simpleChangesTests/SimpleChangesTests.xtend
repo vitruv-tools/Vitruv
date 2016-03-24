@@ -8,7 +8,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractAllElementTypesResp
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType
 import org.eclipse.emf.common.util.ECollections
 import org.junit.Test
-import responses.ResponseChange2CommandTransformingProviding
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
@@ -24,7 +23,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	new() {
-		super([| return new ResponseChange2CommandTransformingProviding()]);
+		super([| return new SimpleTestsChange2CommandTransformingProviding()]);
 	}
 	
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
