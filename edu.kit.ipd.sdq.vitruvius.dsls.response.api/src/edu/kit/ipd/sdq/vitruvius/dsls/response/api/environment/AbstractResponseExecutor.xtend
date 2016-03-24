@@ -33,8 +33,8 @@ abstract class AbstractResponseExecutor  {
 
 	protected def List<Command> callRelevantResponses(EChange event, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
-		val relevantResponses = this.changeToResponseMap.getResponses(event);
-		LOGGER.debug("call relevant responses");
+		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
+		LOGGER.debug("Call relevant responses");
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
 			result.add(EMFCommandBridge
