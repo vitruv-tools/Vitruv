@@ -9,9 +9,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.IMappingLanguageGenerato
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.linking.MappingLanguageLinkingService
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor.MappingLanguageDerivedStateComputer
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageQualifiedNameConverter
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping.MappingLanguageScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseGlobalScopeProvider
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.resource.IDerivedStateComputer
 import org.eclipse.xtext.scoping.IScopeProvider
@@ -36,7 +36,7 @@ class MappingLanguageRuntimeModule extends AbstractMappingLanguageRuntimeModule 
 	}
 	
 	override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
-		return MappingLanguageQualifiedNameConverter
+		return MirBaseQualifiedNameConverter
 	}
 	
 	override Class<? extends IDerivedStateComputer> bindIDerivedStateComputer() {

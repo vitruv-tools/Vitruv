@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping
+package edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping
 
 import org.eclipse.xtext.xbase.XbaseQualifiedNameConverter
 import org.eclipse.xtext.naming.QualifiedName
 
-class MappingLanguageQualifiedNameConverter extends XbaseQualifiedNameConverter {
+class MirBaseQualifiedNameConverter extends XbaseQualifiedNameConverter {
 	
 	override toQualifiedName(String qualifiedNameAsString) {
 		if (qualifiedNameAsString.startsWith("http://"))

@@ -11,7 +11,7 @@ import org.eclipse.xtext.linking.ILinkingService
 import edu.kit.ipd.sdq.vitruvius.dsls.response.linking.ResponseLinkingService
 import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageGlobalScopeProvider
-import edu.kit.ipd.sdq.vitruvius.dsls.response.scoping.ResponseLanguageQualifiedNameConverter
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -28,7 +28,7 @@ class ResponseLanguageRuntimeModule extends AbstractResponseLanguageRuntimeModul
 	}
 	
 	public override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
-		return ResponseLanguageQualifiedNameConverter;
+		return MirBaseQualifiedNameConverter;
 	}
 	
 	public override Class<? extends ILinkingService> bindILinkingService() {
