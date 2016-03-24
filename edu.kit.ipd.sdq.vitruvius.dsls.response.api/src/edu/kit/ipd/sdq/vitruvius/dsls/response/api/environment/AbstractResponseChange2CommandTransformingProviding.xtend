@@ -13,7 +13,10 @@ abstract class AbstractResponseChange2CommandTransformingProviding implements Ch
 	
 	new() {
 		this.change2CommandTransformingsMap = new ClaimableHashMap<Pair<VURI, VURI>, Change2CommandTransforming>();
+		initialize();
 	}
+	
+	protected def void initialize();
 	
 	protected def void initializeChange2CommandTransformationMap(List<Change2CommandTransforming> transformationExecutingList) {
 		for (transformationExecuting : transformationExecutingList) {

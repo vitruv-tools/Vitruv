@@ -6,15 +6,15 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.validation
 import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
 
 /**
  * This class contains custom validation rules. 
@@ -27,7 +27,7 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	def checkResponseFile(ResponseFile file) {
 		val alreadyCheckedResponses = new HashMap<String, Response>();
 		for (response : file.responses) {
-			val responseName = response.responseName;
+			val responseName = new ResponseClassNameGenerator(response).simpleName;
 			if (alreadyCheckedResponses.containsKey(responseName)) {
 				val errorMessage = "Duplicate response name: " + responseName; 
 				error(errorMessage, response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
@@ -35,15 +35,15 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 					ResponseLanguagePackage.Literals.RESPONSE__NAME
 				);
 			}
-			alreadyCheckedResponses.put(response.responseName, response);
+			alreadyCheckedResponses.put(responseName, response);
 		}
 		
 		val alreadyCheckedEffects = new HashMap<String, Effect>();
 		for (implicitEffect : file.responses.map[effect]) {
-			alreadyCheckedEffects.put(implicitEffect.simpleClassName, implicitEffect);
+			alreadyCheckedEffects.put(new EffectClassNameGenerator(implicitEffect).simpleName, implicitEffect);
 		}
 		for (effect : file.effects) {
-			val effectName = effect.simpleClassName
+			val effectName = new EffectClassNameGenerator(effect).simpleName
 			if (alreadyCheckedEffects.containsKey(effectName)) {
 				val errorMessage = "Duplicate effect name: " + effectName;
 				error(errorMessage,	effect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);

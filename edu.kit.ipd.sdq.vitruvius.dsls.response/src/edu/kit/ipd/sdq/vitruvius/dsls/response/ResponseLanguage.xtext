@@ -18,7 +18,7 @@ fragment MetamodelPairResponses:
 
 Response:
 	(documentation=ML_COMMENT)?
-	'response:' (name=ValidID)?
+	'response:' name=ValidID
 	trigger=Trigger
 	effect=ImplicitEffect;
 

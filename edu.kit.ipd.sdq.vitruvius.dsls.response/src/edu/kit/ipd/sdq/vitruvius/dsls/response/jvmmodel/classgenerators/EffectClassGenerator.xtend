@@ -18,7 +18,6 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectRealization
@@ -27,6 +26,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectsFacadeClassNameGenerator
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -34,6 +35,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	protected final Iterable<CorrespondingModelElementSpecification> modelElements;
 	private final String effectUserExecutionQualifiedClassName;
+	private final EffectClassNameGenerator effectClassNameGenerator;
+	private final EffectsFacadeClassNameGenerator effectsFacadeClassNameGenerator;
 	
 	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -41,7 +44,9 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		this.hasExecutionBlock = effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete];
-		this.effectUserExecutionQualifiedClassName = effect.qualifiedClassName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
+		this.effectClassNameGenerator = new EffectClassNameGenerator(effect);
+		this.effectsFacadeClassNameGenerator = new EffectsFacadeClassNameGenerator(effect);
+		this.effectUserExecutionQualifiedClassName = effectClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 	}
 	
 	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject); 
@@ -61,7 +66,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		
 		generateMethodExecuteEffect();
 		generateMethodAllParametersSet();
-		effect.toClass(effect.qualifiedClassName) [
+		effect.toClass(effectClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 			superTypes += typeRef(AbstractEffectRealization);
 			members += generateConstructor();
@@ -78,7 +83,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			val blackboardField = toField(BLACKBOARD_FIELD_NAME, typeRef(Blackboard));
 			val userInteractingField = toField(USER_INTERACTING_FIELD_NAME, typeRef(UserInteracting));
 			val transformationResultField = toField(TRANSFORMATION_RESULT_FIELD_NAME, typeRef(TransformationResult));
-			val effectsFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(effect.qualifiedEffectsFacadeClassName)) [
+			val effectsFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(effectsFacadeClassNameGenerator.qualifiedName)) [
 					annotations += annotationRef(Extension);
 				]
 			members += #[blackboardField, userInteractingField, transformationResultField, effectsFacadeField];
@@ -91,7 +96,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 					this.«blackboardField.simpleName» = «responseExecutionStateParameter.name».getBlackboard();
 					this.«userInteractingField.simpleName» = «responseExecutionStateParameter.name».getUserInteracting();
 					this.«transformationResultField.simpleName» = «responseExecutionStateParameter.name».getTransformationResult();
-					this.«effectsFacadeField.simpleName» = new «typeRef(effect.qualifiedEffectsFacadeClassName)»(«responseExecutionStateParameter.name», «calledByParameter.name»);
+					this.«effectsFacadeField.simpleName» = new «typeRef(effectsFacadeClassNameGenerator.qualifiedName)»(«responseExecutionStateParameter.name», «calledByParameter.name»);
 					'''
 			]
 			if (hasExecutionBlock) {
@@ -224,7 +229,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
 			body = '''
-				getLogger().debug("Called effect «effect.simpleClassName» with input:");
+				getLogger().debug("Called effect «effectClassNameGenerator.simpleName» with input:");
 				«FOR inputParameter : inputParameters»
 					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + this.«inputParameter.name»);
 				«ENDFOR»

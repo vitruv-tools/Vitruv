@@ -6,6 +6,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import org.eclipse.xtext.common.types.JvmVisibility
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 
 /** 
  * This is a temporary class that will be removed if the new change metamodel with TUID updates inside the monitors 
@@ -37,7 +38,7 @@ class MockClassGenerator extends ClassGenerator {
 		if (change.methods.exists[it.name == "setOldValue"]) {
 			val affectedElementClass = elementChange.changedFeature.feature.EType;
 			if (EObject.isAssignableFrom(affectedElementClass.instanceClass)) {
-				result = affectedElementClass.toClass(affectedElementClass.instanceClass.name + "ContainerMock") [
+				result = affectedElementClass.toClass(basicResponsesPackageQualifiedName + ".mocks." + affectedElementClass.instanceClass.name + "ContainerMock") [
 					superTypes += typeRef(affectedElementClass.instanceClass);
 					members += toConstructor() [
 						parameters += toParameter("containedObject", typeRef(affectedElementClass.instanceClass));

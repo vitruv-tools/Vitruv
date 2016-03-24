@@ -23,6 +23,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
 import org.eclipse.xtext.common.types.JvmTypeReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -123,5 +126,50 @@ final class ResponseLanguageHelper {
 	public static def Class<?> getJavaClass(ModelElement element) {
 		return element.element.javaClass;
 	}
+	
+	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
+		val sourceVURI = response.sourceVURI;
+		val targetVURI = response.targetVURI;
+		if (sourceVURI != null && targetVURI != null) {
+			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
+		} else {
+			return null;
+		}		
+	}
+	
+	private static def VURI getSourceVURI(Response response) {
+		val sourceURI = response?.trigger?.sourceMetamodel;
+		return sourceURI.VURI;
+	}
+	
+	private static def VURI getTargetVURI(Response response) {
+		if (!(response.eContainer instanceof MetamodelPairResponses)) {
+			throw new IllegalStateException();
+		}
+		val metamodels = (response.eContainer as MetamodelPairResponses).affectedMetamodels.map[model.package];
+		val sourceMetamodel = response?.trigger?.sourceMetamodel;
+		var potentialModels = metamodels.filter[!it.VURI.equals(sourceMetamodel.VURI)];
+		if (potentialModels.size > 1) {
+			throw new IllegalStateException();
+		} else if (potentialModels.size == 0) {
+			potentialModels = #[sourceMetamodel];
+		}
+		
+		val targetPackage = potentialModels.get(0);
+		return targetPackage.VURI;
+	}
+	
+	private static def VURI getVURI(EPackage pckg) {
+		return if (pckg?.nsURI != null) {
+			var topPckg = pckg;
+			while (topPckg.ESuperPackage != null) {
+				topPckg = pckg.ESuperPackage;
+			}
+			VURI.getInstance(topPckg.nsURI);
+		} else {
+			null;
+		}
+	}
+	
 	
 }

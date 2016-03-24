@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 import org.eclipse.xtext.common.types.JvmGenericType
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import org.eclipse.emf.ecore.EObject
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseLanguageGeneratorUtils.*;
+import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import org.eclipse.xtext.common.types.JvmVisibility
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
@@ -17,14 +17,18 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.EffectsGeneratorUtils.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
-
+	private final ResponseClassNameGenerator responseClassNameGenerator;
+	private final EffectClassNameGenerator effectClassNameGenerator;
+	
 	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		if (response?.trigger == null || response?.effect == null) {
@@ -33,6 +37,8 @@ class ResponseClassGenerator extends ClassGenerator {
 		this.response = response;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.change = response.trigger.generateEChangeInstanceClass();
+		this.responseClassNameGenerator = new ResponseClassNameGenerator(response);
+		this.effectClassNameGenerator = new EffectClassNameGenerator(response.effect);
 	}
 		
 	public override JvmGenericType generateClass() {
@@ -40,7 +46,7 @@ class ResponseClassGenerator extends ClassGenerator {
 		generateMethodCheckPrecondition();
 		generateMethodExecuteResponse();
 
-		response.toClass(response.responseQualifiedName) [
+		response.toClass(responseClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT;
 			superTypes += typeRef(AbstractResponseRealization);
 			addConstructor(it);
@@ -70,25 +76,19 @@ class ResponseClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteResponse() {
 		val methodName = "executeResponse";
-
+		
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			val changeParameter = generateUntypedChangeParameter();
 			parameters += changeParameter;
 			val typedChangeName = "typedChange";
 			val typedChangeString = typedChangeString;
-			val effect = response.effect;
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
-				try {
-					«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
-					«effect.qualifiedClassName» effect = new «effect.qualifiedClassName»(this.executionState, this);
-					effect.setChange(«typedChangeName»);
-					effect.applyEffect();
-				} catch («Exception» exception) {
-					// If an error occured during execution, avoid an application shutdown and print the error.
-					getLogger().error(exception.getClass().getSimpleName() + " during execution of effect («effect.simpleClassName») called from response («response.responseName»): " + exception.getMessage());
-				}'''
+				«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
+				«effectClassNameGenerator.qualifiedName» effect = new «effectClassNameGenerator.qualifiedName»(this.executionState, this);
+				effect.setChange(«typedChangeName»);
+				effect.applyEffect();'''
 		];
 	}
 	
@@ -101,9 +101,9 @@ class ResponseClassGenerator extends ClassGenerator {
 		val affectedElementClass = trigger.changedFeature.feature.EType
 		if (change.methods.exists[it.name == "setOldValue"] && EObject.isAssignableFrom(affectedElementClass.instanceClass)) {
 			'''
-			final «affectedElementClass.instanceClass» oldValue = «typedChangeName».getOldValue();
+			final «affectedElementClass.instanceClass.name» oldValue = «typedChangeName».getOldValue();
 			if (oldValue != null) {
-				«typedChangeName».setOldValue(new «affectedElementClass.instanceClass.name + "ContainerMock"»(oldValue, «typedChangeName».getOldAffectedEObject()));
+				«typedChangeName».setOldValue(new «basicResponsesPackageQualifiedName + ".mocks." + affectedElementClass.instanceClass.name + "ContainerMock"»(oldValue, «typedChangeName».getOldAffectedEObject()));
 			}'''
 		}
 	}

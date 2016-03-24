@@ -13,11 +13,11 @@ class CallHierarchyHaving extends Loggable {
 		this.calledBy = calledBy;
 	}
 	
-	protected def CallHierarchyHaving getCalledBy() {
+	public def CallHierarchyHaving getCalledBy() {
 		return calledBy;
 	}
 	
-	protected def String getCalledByString() {
+	public def String getCalledByString() {
 		return '''(«this.class.simpleName»)«IF calledBy != null» called by «calledBy.calledByString»«ENDIF»''';
 	}
 }
