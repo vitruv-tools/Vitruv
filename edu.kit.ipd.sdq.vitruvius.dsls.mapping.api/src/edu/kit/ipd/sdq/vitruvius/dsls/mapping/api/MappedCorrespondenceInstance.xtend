@@ -154,11 +154,11 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	}
 	
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, Supplier<Correspondence> correspondenceCreator) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		correspondenceInstance.createAndAddCorrespondence(eObjects1, eObjects2, correspondenceCreator);
 	}
 	
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType, Supplier<U> correspondenceCreator) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		correspondenceInstance.getEditableView(correspondenceType, correspondenceCreator);
 	}
 	
 }
