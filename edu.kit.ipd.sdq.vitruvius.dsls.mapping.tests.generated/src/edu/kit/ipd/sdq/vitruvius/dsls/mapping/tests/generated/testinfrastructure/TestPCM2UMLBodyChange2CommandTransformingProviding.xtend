@@ -1,29 +1,29 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.tests.generated.testinfrastructure
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import java.util.List
-import responses.ResponsePcm_mockupToUml_mockupChange2CommandTransforming
-import responses.ResponseUml_mockupToPcm_mockupChange2CommandTransforming
-import responses.testPCM2UMLBody.responsesPcm_mockupToUml_mockup.ResponsePcm_mockupToUml_mockupExecutor
-import responses.testPCM2UMLBody.responsesUml_mockupToPcm_mockup.ResponseUml_mockupToPcm_mockupExecutor
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
+import mir.responses.Change2CommandTransformingUml_mockupToPcm_mockup
+import mir.responses.Change2CommandTransformingPcm_mockupToUml_mockup
+import mir.responses.responsesPcm_mockupToUml_mockup.testPCM2UMLBody.ExecutorPcm_mockupToUml_mockup
+import mir.responses.responsesUml_mockupToPcm_mockup.testPCM2UMLBody.ExecutorUml_mockupToPcm_mockup
 
-class TestPCM2UMLBodyChange2CommandTransformingProviding extends AbstractResponseChange2CommandTransformingProviding {
+class TestPCM2UMLBodyChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
 	new() {
 		val List<Change2CommandTransforming> change2CommandTransformings = #[
-			new ResponsePcm_mockupToUml_mockupChange2CommandTransforming() {
+			new Change2CommandTransformingPcm_mockupToUml_mockup() {
 				override protected setup() {
 					this.addResponseExecutor(
-						new ResponsePcm_mockupToUml_mockupExecutor(userInteracting))
+						new ExecutorPcm_mockupToUml_mockup(userInteracting))
 				}
 			},
-			new ResponseUml_mockupToPcm_mockupChange2CommandTransforming() {
+			new Change2CommandTransformingUml_mockupToPcm_mockup() {
 				override protected setup() {
 					this.addResponseExecutor(
-						new ResponseUml_mockupToPcm_mockupExecutor(userInteracting))
+						new ExecutorUml_mockupToPcm_mockup(userInteracting))
 				}				
 			}
 		]
-		initializeChange2CommandTransformationMap(change2CommandTransformings);
+		change2CommandTransformings.forEach[addChange2CommandTransforming];
 	}
 }

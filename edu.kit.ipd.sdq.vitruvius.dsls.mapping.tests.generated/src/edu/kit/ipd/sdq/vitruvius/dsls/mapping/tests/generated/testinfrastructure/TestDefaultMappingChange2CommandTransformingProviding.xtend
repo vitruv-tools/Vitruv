@@ -1,29 +1,29 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.tests.generated.testinfrastructure
 
-import responses.ResponseAllElementTypesToAllElementTypes2Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseChange2CommandTransformingProviding
-import responses.ResponseAllElementTypes2ToAllElementTypesChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import java.util.List
-import responses.defaultMapping.responsesAllElementTypes2ToAllElementTypes.ResponseAllElementTypes2ToAllElementTypesExecutor
-import responses.defaultMapping.responsesAllElementTypesToAllElementTypes2.ResponseAllElementTypesToAllElementTypes2Executor
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
+import mir.responses.Change2CommandTransformingAllElementTypes2ToAllElementTypes
+import mir.responses.Change2CommandTransformingAllElementTypesToAllElementTypes2
+import mir.responses.responsesAllElementTypesToAllElementTypes2.defaultMapping.ExecutorAllElementTypesToAllElementTypes2
+import mir.responses.responsesAllElementTypes2ToAllElementTypes.defaultMapping.ExecutorAllElementTypes2ToAllElementTypes
 
-class TestDefaultMappingChange2CommandTransformingProviding extends AbstractResponseChange2CommandTransformingProviding {
+class TestDefaultMappingChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
 	new() {
 		val List<Change2CommandTransforming> change2CommandTransformings = #[
-			new ResponseAllElementTypes2ToAllElementTypesChange2CommandTransforming() {
+			new Change2CommandTransformingAllElementTypes2ToAllElementTypes() {
 				override protected setup() {
 					this.addResponseExecutor(
-						new ResponseAllElementTypes2ToAllElementTypesExecutor(userInteracting));
+						new ExecutorAllElementTypes2ToAllElementTypes(userInteracting));
 				}
 			},
-			new ResponseAllElementTypesToAllElementTypes2Change2CommandTransforming() {
+			new Change2CommandTransformingAllElementTypesToAllElementTypes2() {
 				override protected setup() {
 					this.addResponseExecutor(
-						new ResponseAllElementTypesToAllElementTypes2Executor(userInteracting));
+						new ExecutorAllElementTypesToAllElementTypes2(userInteracting));
 				}				
 			}
 		]
-		initializeChange2CommandTransformationMap(change2CommandTransformings);
+		change2CommandTransformings.forEach[addChange2CommandTransforming];
 	}
 }

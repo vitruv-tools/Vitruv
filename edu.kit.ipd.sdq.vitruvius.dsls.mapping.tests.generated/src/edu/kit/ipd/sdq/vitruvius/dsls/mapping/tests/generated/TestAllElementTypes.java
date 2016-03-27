@@ -36,7 +36,6 @@ import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
 import mappings.generated.mappings.aet0.Aet0_Mapping;
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
-import responses.ResponseChange2CommandTransformingProviding;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;

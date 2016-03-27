@@ -24,5 +24,6 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.junit;bundle-version="4.12.0",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.tests;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.tests.metamodels
+ edu.kit.ipd.sdq.vitruvius.tests.metamodels,
+ edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
