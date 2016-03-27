@@ -62,18 +62,17 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		}
 		updateBuilders();
 		
-		if (file.effects.size + file.responses.map[effect].size != 0) {
-			acceptor.accept(new EffectsFacadeClassGenerator(file, typesBuilderExtensionProvider).generateClass());
-			for (effect : file.effects) {
+		for (responsesSegment : file.responsesSegments) {
+			acceptor.accept(new EffectsFacadeClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());
+			for (effect : responsesSegment.effects) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
+			for (response : responsesSegment.responses) {
+				generate(response, acceptor, isPreIndexingPhase);
+			}
+			acceptor.accept(new ExecutorClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());			
 		}
-		
-		for (response : file.responses) {
-			generate(response, acceptor, isPreIndexingPhase);
-		}
-		
-		acceptor.accept(new ExecutorClassGenerator(file, typesBuilderExtensionProvider).generateClass());
+
 	}
 
 }

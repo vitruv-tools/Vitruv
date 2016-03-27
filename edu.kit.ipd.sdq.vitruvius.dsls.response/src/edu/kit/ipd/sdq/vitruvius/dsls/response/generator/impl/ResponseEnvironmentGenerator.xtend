@@ -24,11 +24,11 @@ import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
 import org.apache.log4j.Logger
 import org.eclipse.xtext.resource.DerivedStateAwareResource
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.Change2CommandTransformingClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ExecutorClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
@@ -54,12 +54,12 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.project = project;
 	}
 	
-	private static def MetamodelPairResponses getMetamodelPairResponsesInResource(Resource resource) {
-		if (!(resource?.contents.get(0) instanceof MetamodelPairResponses)) {
-			throw new IllegalStateException("The given resource must contain a MetamodelPairResponses element.");
+	private static def ResponseFile getResponseFileInResource(Resource resource) {
+		if (!(resource?.contents.get(0) instanceof ResponseFile)) {
+			throw new IllegalStateException("The given resource must contain a ResponseFile element.");
 		}
 		
-		return resource.contents.get(0) as MetamodelPairResponses;
+		return resource.contents.get(0) as ResponseFile;
 	}
 	
 	
@@ -70,24 +70,40 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		if (response == null) {
 			throw new IllegalArgumentException("Response must not be null");
 		}
-		val resource = getOrCreateTempResource(sourceFileName, response.metamodelPair);
-		val resourceMetamodelPair = resource.metamodelPairResponsesInResource;
-		resourceMetamodelPair.responses += response;
+		val responsesSegment = getCorrespondingResponsesSegmentInTempResource(sourceFileName, response.responsesSegment);
+		responsesSegment.responses += response;
 	}
 	
-	private def Resource getOrCreateTempResource(String sourceFileName, MetamodelPairResponses metamodelPair) {
+	private def ResponsesSegment getCorrespondingResponsesSegmentInTempResource(String sourceFileName, ResponsesSegment responsesSegment) {
 		for (res : tempResources) {
 			if (res.URI.segmentsList.last.equals(sourceFileName + ".response")) {
-				val resourceMetamodelPair = res.metamodelPairResponsesInResource;
-				if (resourceMetamodelPair.fromMetamodel != metamodelPair.fromMetamodel
-					|| resourceMetamodelPair.toMetamodel != metamodelPair.toMetamodel
-				) {
-					throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
+				val responseFile = res.responseFileInResource;
+				var ResponsesSegment foundSegment = null;
+				for (segment :  responseFile.responsesSegments) {
+					if (segment.fromMetamodel == responsesSegment.fromMetamodel
+						&& segment.toMetamodel == responsesSegment.toMetamodel
+					) {
+						foundSegment = segment;
+					}	
 				}
-				return res;
+				if (foundSegment == null) {
+					foundSegment = addResponsesSegment(responseFile, responsesSegment, sourceFileName);
+				}
+				
+				return foundSegment;
 			}
 		}
-		return generateTempResource(project, sourceFileName, metamodelPair);
+		val newFile = generateTempResourceWithResponseFile(project, sourceFileName);
+		return addResponsesSegment(newFile, responsesSegment, sourceFileName);
+	}
+	
+	private def ResponsesSegment addResponsesSegment(ResponseFile fileToAddTo, ResponsesSegment originalSegment, String segmentName) {
+		val newSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
+		newSegment.fromMetamodel = originalSegment.fromMetamodel;
+		newSegment.toMetamodel = originalSegment.toMetamodel;
+		newSegment.name = segmentName;
+		fileToAddTo.responsesSegments += newSegment;
+		return newSegment;
 	}
 	
 	public override void addResponses(String sourceFileName, Iterable<Response> responses) {
@@ -123,15 +139,13 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		clearResponsesAndResources();
 	}
 	
-	private def Resource generateTempResource(IProject project, String sourceFileName, MetamodelPairResponses metamodelPair) {
+	private def ResponseFile generateTempResourceWithResponseFile(IProject project, String sourceFileName) {
 		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
-		responseFile.fromMetamodel = metamodelPair.fromMetamodel;
-		responseFile.toMetamodel = metamodelPair.toMetamodel;
 		val resSet = resourceSetProvider.get(project);
 		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".response"));
 		singleResponseResource.contents.add(responseFile);
 		tempResources += singleResponseResource;
-		return singleResponseResource;
+		return responseFile;
 	}
 			
 	private def void removeTempResources() {
@@ -158,14 +172,15 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		reinitializeDerivedStateOfTemporaryResources();		
 		val modelCorrespondencesToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (resource : resources + tempResources) {
-			val metamodelPair = resource.metamodelPairResponsesInResource;
-			val modelCombination = metamodelPair.sourceTargetPair;
-			if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
-				modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
+			for (responseSegment : resource.responseFileInResource.responsesSegments) {
+				val modelCombination = responseSegment.sourceTargetPair;
+				if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
+					modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
+				}
+				val executorNameGenerator = new ExecutorClassNameGenerator(responseSegment);
+				modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
+				generateResponses(resource, fsa);
 			}
-			val executorNameGenerator = new ExecutorClassNameGenerator(metamodelPair);
-			modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
-			generateResponses(resource, fsa);
 		}
 		
 		generateChange2CommandTransformings(modelCorrespondencesToExecutors, fsa)

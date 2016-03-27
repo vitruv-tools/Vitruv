@@ -18,14 +18,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
-import org.eclipse.xtext.common.types.JvmTypeReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -82,6 +80,14 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
+	public static def dispatch ResponsesSegment getResponsesSegment(ExplicitEffect effect) {
+		return effect.responsesSegment
+	}
+	
+	public static def dispatch ResponsesSegment getResponsesSegment(ImplicitEffect effect) {
+		return effect.containingResponse.responsesSegment;
+	}
+	
 	public static def dispatch EClass getChangedModelElementClass(Trigger change) {
 		throw new UnsupportedOperationException();
 	}
@@ -127,9 +133,9 @@ final class ResponseLanguageHelper {
 		return element.element.javaClass;
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(MetamodelPairResponses metamodelPair) {
-		val sourceVURI = metamodelPair.fromMetamodel.model.package.VURI;
-		val targetVURI = metamodelPair.toMetamodel.model.package.VURI;
+	static def Pair<VURI, VURI> getSourceTargetPair(ResponsesSegment responsesSegment) {
+		val sourceVURI = responsesSegment.fromMetamodel.model.package.VURI;
+		val targetVURI = responsesSegment.toMetamodel.model.package.VURI;
 		if (sourceVURI != null && targetVURI != null) {
 			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
 		} else {
@@ -138,8 +144,7 @@ final class ResponseLanguageHelper {
 	}
 	
 	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
-		// TODO remove cast
-		return (response.eContainer as MetamodelPairResponses).sourceTargetPair;
+		return response.responsesSegment.sourceTargetPair;
 	}
 	
 	private static def VURI getVURI(EPackage pckg) {

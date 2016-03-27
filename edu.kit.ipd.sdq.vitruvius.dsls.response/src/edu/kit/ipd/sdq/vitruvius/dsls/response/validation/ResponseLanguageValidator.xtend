@@ -15,6 +15,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 
 /**
  * This class contains custom validation rules. 
@@ -22,34 +23,36 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGener
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
-	
+
 	@Check
-	def checkResponseFile(ResponseFile file) {
+	def checkResponseFile(ResponsesSegment responseSegment) {
 		val alreadyCheckedResponses = new HashMap<String, Response>();
-		for (response : file.responses) {
+		for (response : responseSegment.responses) {
 			val responseName = new ResponseClassNameGenerator(response).simpleName;
 			if (alreadyCheckedResponses.containsKey(responseName)) {
-				val errorMessage = "Duplicate response name: " + responseName; 
+				val errorMessage = "Duplicate response name: " + responseName;
 				error(errorMessage, response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
-				error (errorMessage, alreadyCheckedResponses.get(responseName),
+				error(
+					errorMessage,
+					alreadyCheckedResponses.get(responseName),
 					ResponseLanguagePackage.Literals.RESPONSE__NAME
 				);
 			}
 			alreadyCheckedResponses.put(responseName, response);
 		}
-		
 		val alreadyCheckedEffects = new HashMap<String, Effect>();
-		for (implicitEffect : file.responses.map[effect]) {
+		for (implicitEffect : responseSegment.responses.map[effect]) {
 			alreadyCheckedEffects.put(new EffectClassNameGenerator(implicitEffect).simpleName, implicitEffect);
 		}
-		for (effect : file.effects) {
+		for (effect : responseSegment.effects) {
 			val effectName = new EffectClassNameGenerator(effect).simpleName
 			if (alreadyCheckedEffects.containsKey(effectName)) {
 				val errorMessage = "Duplicate effect name: " + effectName;
-				error(errorMessage,	effect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
+				error(errorMessage, effect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
 				val duplicateNameEffect = alreadyCheckedEffects.get(effectName);
 				if (duplicateNameEffect instanceof ImplicitEffect) {
-					error(errorMessage, duplicateNameEffect.containingResponse, ResponseLanguagePackage.Literals.RESPONSE__NAME);
+					error(errorMessage, duplicateNameEffect.containingResponse,
+						ResponseLanguagePackage.Literals.RESPONSE__NAME);
 				} else if (duplicateNameEffect instanceof ExplicitEffect) {
 					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
 				}
@@ -61,7 +64,8 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	@Check
 	def checkCorrespondingElementSpecification(CorrespondingModelElementSpecification element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
-			error("Element names must not start with an underscore.", ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_SPECIFICATION__NAME);
+			error("Element names must not start with an underscore.",
+				ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_SPECIFICATION__NAME);
 		}
 	}
 
@@ -69,8 +73,8 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	def checkEffects(Effect effect) {
 		if (effect.codeBlock == null && !effect.createElements.nullOrEmpty) {
 			warning("Created elements must be initialized and inserted into the target model in the execute block.",
-				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);			
+				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);
 		}
 	}
-	
+
 }

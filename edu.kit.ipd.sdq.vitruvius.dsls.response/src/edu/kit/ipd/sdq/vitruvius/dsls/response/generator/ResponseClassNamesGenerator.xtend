@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
@@ -50,10 +50,6 @@ final class ResponseClassNamesGenerator {
 		}
 	}
 	
-	private static def String getPackageNameForResource(Resource resource) {
-		return resource.URI.lastSegment.split("\\.").get(0);
-	}
-	
 	private static def String getMetamodelIdentifier(VURI uri) {
 		return uri.EMFUri.metamodelIdentifier;
 	}
@@ -62,15 +58,15 @@ final class ResponseClassNamesGenerator {
 		return '''«metamodelPair.first.metamodelIdentifier»To«metamodelPair.second.metamodelIdentifier»'''	
 	}
 	
-	private static def String getMetamodelPairName(MetamodelPairResponses metamodelPair) {
-		return metamodelPair.sourceTargetPair.metamodelPairName;
+	private static def String getMetamodelPairName(ResponsesSegment responsesSegment) {
+		return responsesSegment.sourceTargetPair.metamodelPairName;
 	}
 	
-	private static def String getPackageName(MetamodelPairResponses modelPair) '''
-		responses«modelPair.metamodelPairName»'''
+	private static def String getPackageName(ResponsesSegment responsesSegment) '''
+		responses«responsesSegment.metamodelPairName»'''
 		
-	private static def String getQualifiedPackageName(MetamodelPairResponses modelPair) '''
-		«basicResponsesPackageQualifiedName».«modelPair.packageName»'''
+	private static def String getQualifiedPackageName(ResponsesSegment responsesSegment) '''
+		«basicResponsesPackageQualifiedName».«responsesSegment.packageName»'''
 	
 	public static abstract class ClassNameGenerator {
 		public def String getQualifiedName() '''
@@ -95,17 +91,17 @@ final class ResponseClassNamesGenerator {
 	}	
 	
 	public static class ExecutorClassNameGenerator extends ClassNameGenerator {
-		private val MetamodelPairResponses metamodelPair;
+		private val ResponsesSegment responsesSegment;
 		
-		public new(MetamodelPairResponses metamodelPair) {
-			this.metamodelPair = metamodelPair;
+		public new(ResponsesSegment responsesSegment) {
+			this.responsesSegment = responsesSegment;
 		}
 		
 		public override getSimpleName() '''
-			Executor«metamodelPair.metamodelPairName»'''
+			Executor«responsesSegment.metamodelPairName»'''
 	
 		public override getPackageName() '''
-			«metamodelPair.qualifiedPackageName».«metamodelPair.eResource.packageNameForResource»'''		
+			«responsesSegment.qualifiedPackageName».«responsesSegment.name»'''		
 	}
 	
 	public static class ResponseClassNameGenerator extends ClassNameGenerator {
@@ -118,7 +114,7 @@ final class ResponseClassNamesGenerator {
 			«response.name»Response'''
 		
 		public override String getPackageName() '''
-			«response.metamodelPair.qualifiedPackageName».«response.eResource.packageNameForResource»'''		
+			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name»'''		
 	}
 	
 	public static class EffectClassNameGenerator extends ClassNameGenerator {
@@ -128,30 +124,31 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«effect.name»Effect'''
+			«effect.effectName»Effect'''
 		
-		private static def dispatch getName(ExplicitEffect effect) {
-			return effect.name
-		}
-		
-		private static def dispatch getName(ImplicitEffect effect) {
+		private static def dispatch String getEffectName(ImplicitEffect effect) {
 			return effect.containingResponse.name
 		}
 		
+		private static def dispatch String getEffectName(ExplicitEffect effect) {
+			return effect.name
+		}
+		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«effect.eResource.getPackageNameForResource»'''		
+			«basicEffectsPackageQualifiedName».«effect.responsesSegment.name»'''
+		
 	}
 	
 	public static class EffectsFacadeClassNameGenerator extends ClassNameGenerator {
-		private val Effect identifyingEffect;
-		public new(Effect identifyingEffect) {
-			this.identifyingEffect = identifyingEffect;
+		private val ResponsesSegment responsesSegment;
+		public new(ResponsesSegment responsesSegment) {
+			this.responsesSegment = responsesSegment;
 		}
 		
 		public override String getSimpleName() '''
 			«EFFECTS_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«identifyingEffect.eResource.getPackageNameForResource»'''		
+			«basicEffectsPackageQualifiedName».«responsesSegment.name»'''		
 	}
 }

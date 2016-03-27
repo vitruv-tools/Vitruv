@@ -9,18 +9,10 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.xtext.GeneratedMetamodel;
 import org.eclipse.xtext.xtext.ecoreInference.IXtext2EcorePostProcessor;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.MetamodelPairResponses;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile;
-
 @SuppressWarnings("restriction")
 public class ResponseLanguageXtext2EcorePostProcessor implements IXtext2EcorePostProcessor {
 	private static EClass getEClass(EPackage ePackage, String name) {
 		return requireType(ePackage.getEClassifier(name), EClass.class);
-	}
-	
-	private static EClass getEClass(EPackage ePackage, Class<?> clazz) {
-		return getEClass(ePackage, clazz.getSimpleName());
 	}
 	
 	@Override
@@ -29,20 +21,27 @@ public class ResponseLanguageXtext2EcorePostProcessor implements IXtext2EcorePos
 			return;
 		
 		final EPackage ePackage = metamodel.getEPackage();
-		final EClass responseFileEClass = getEClass(ePackage, ResponseFile.class);
-		final EClass metamodelPairFileEClass = getEClass(ePackage, MetamodelPairResponses.class);
-		final EClass responseEClass = getEClass(ePackage, Response.class);
+		final EClass responsesSegmentEClass = getEClass(ePackage, "ResponsesSegment");
+		final EClass responseEClass = getEClass(ePackage, "Response");
+		final EClass effectEClass = getEClass(ePackage, "ExplicitEffect");
 		
 		// Add an opposite reference for the metamodel pair to the response
-		final EReference oppositeRef = EcoreFactory.eINSTANCE.createEReference();
-		oppositeRef.setName("metamodelPair");
-		oppositeRef.setEType(ePackage.getEClassifier(MetamodelPairResponses.class.getSimpleName()));
-		oppositeRef.setLowerBound(1);
-		oppositeRef.setUpperBound(1);
-		final EReference metamodelPairResponsesReference = (EReference)metamodelPairFileEClass.getEStructuralFeature("responses");
-		oppositeRef.setEOpposite(metamodelPairResponsesReference);
-		metamodelPairResponsesReference.setEOpposite(oppositeRef);
-		responseEClass.getEStructuralFeatures().add(oppositeRef);
-		//sponseFileEClass.getEStructuralFeature("responses")
+		final EReference responsesSegmentResponsesReference = (EReference)responsesSegmentEClass.getEStructuralFeature("responses");
+		addResponsesSegmentEReference(responseEClass, responsesSegmentResponsesReference);
+		
+		final EReference responsesSegmentEffectsReference = (EReference)responsesSegmentEClass.getEStructuralFeature("effects");
+		addResponsesSegmentEReference(effectEClass, responsesSegmentEffectsReference);
+	}
+	
+	private EReference addResponsesSegmentEReference(EClass classToAddReferenceTo, EReference oppositeReference) {
+		final EReference responsesSegmentReference = EcoreFactory.eINSTANCE.createEReference();
+		responsesSegmentReference.setName("responsesSegment");
+		responsesSegmentReference.setEType(classToAddReferenceTo.getEPackage().getEClassifier("ResponsesSegment"));
+		responsesSegmentReference.setLowerBound(1);
+		responsesSegmentReference.setUpperBound(1);
+		oppositeReference.setEOpposite(responsesSegmentReference);
+		responsesSegmentReference.setEOpposite(oppositeReference);
+		classToAddReferenceTo.getEStructuralFeatures().add(responsesSegmentReference);
+		return responsesSegmentReference;
 	}
 }

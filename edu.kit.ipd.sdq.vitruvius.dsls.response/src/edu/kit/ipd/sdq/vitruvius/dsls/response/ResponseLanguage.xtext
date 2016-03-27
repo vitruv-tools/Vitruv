@@ -9,10 +9,11 @@ ResponseFile:
 	MirBaseFile
 	(namespaceImports=XImportSection)?
 	(metamodelImports+=MetamodelImport)*
-	MetamodelPairResponses;
+	(responsesSegments+=ResponsesSegment)+;
 	
-fragment MetamodelPairResponses:
+ResponsesSegment:
 	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
+	'called' name=ValidID
 	(responses+=Response |
 		effects+=ExplicitEffect)*;
 

@@ -19,6 +19,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
 
 class ResponseClassGenerator extends ClassGenerator {
@@ -26,7 +27,7 @@ class ResponseClassGenerator extends ClassGenerator {
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
 	private final ResponseClassNameGenerator responseClassNameGenerator;
-	private final EffectClassNameGenerator effectClassNameGenerator;
+	private final ClassNameGenerator effectClassNameGenerator;
 	
 	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
