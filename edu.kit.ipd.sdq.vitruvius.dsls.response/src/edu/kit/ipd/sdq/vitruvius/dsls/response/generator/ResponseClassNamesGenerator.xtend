@@ -58,11 +58,19 @@ final class ResponseClassNamesGenerator {
 		return uri.EMFUri.metamodelIdentifier;
 	}
 	
-	private static def String getMetamodelPairName(Pair<VURI, VURI> modelPair) '''
-		«modelPair.first.metamodelIdentifier»To«modelPair.second.metamodelIdentifier»'''
+	private static def String getMetamodelPairName(Pair<VURI, VURI> metamodelPair) {
+		return '''«metamodelPair.first.metamodelIdentifier»To«metamodelPair.second.metamodelIdentifier»'''	
+	}
 	
-	private static def String getPackageName(Pair<VURI, VURI> modelPair) '''
+	private static def String getMetamodelPairName(MetamodelPairResponses metamodelPair) {
+		return metamodelPair.sourceTargetPair.metamodelPairName;
+	}
+	
+	private static def String getPackageName(MetamodelPairResponses modelPair) '''
 		responses«modelPair.metamodelPairName»'''
+		
+	private static def String getQualifiedPackageName(MetamodelPairResponses modelPair) '''
+		«basicResponsesPackageQualifiedName».«modelPair.packageName»'''
 	
 	public static abstract class ClassNameGenerator {
 		public def String getQualifiedName() '''
@@ -75,8 +83,8 @@ final class ResponseClassNamesGenerator {
 	public static class Change2CommandTransformingClassNameGenerator extends ClassNameGenerator {
 		private val String metamodelPairName;
 		
-		public new(Pair<VURI, VURI> modelPair) {
-			this.metamodelPairName = modelPair.metamodelPairName;
+		public new(Pair<VURI, VURI> metamodelPair) {
+			this.metamodelPairName = metamodelPair.metamodelPairName;
 		}
 		
 		public override getSimpleName() '''
@@ -87,21 +95,17 @@ final class ResponseClassNamesGenerator {
 	}	
 	
 	public static class ExecutorClassNameGenerator extends ClassNameGenerator {
-		private val String metamodelPairName;
-		private val String metamodelPairPackageName;
-		private val String resourcePackageName;
+		private val MetamodelPairResponses metamodelPair;
 		
 		public new(MetamodelPairResponses metamodelPair) {
-			this.metamodelPairName = metamodelPair.sourceTargetPair.metamodelPairName;
-			this.metamodelPairPackageName = metamodelPair.sourceTargetPair.packageName;
-			this.resourcePackageName = metamodelPair.eResource.packageNameForResource;
+			this.metamodelPair = metamodelPair;
 		}
 		
 		public override getSimpleName() '''
-			Executor«metamodelPairName»'''
+			Executor«metamodelPair.metamodelPairName»'''
 	
 		public override getPackageName() '''
-			«basicResponsesPackageQualifiedName».«resourcePackageName».«metamodelPairPackageName»'''		
+			«metamodelPair.qualifiedPackageName».«metamodelPair.eResource.packageNameForResource»'''		
 	}
 	
 	public static class ResponseClassNameGenerator extends ClassNameGenerator {
@@ -114,7 +118,7 @@ final class ResponseClassNamesGenerator {
 			«response.name»Response'''
 		
 		public override String getPackageName() '''
-			«basicResponsesPackageQualifiedName».«response.eResource.packageNameForResource».«response.sourceTargetPair.packageName»'''		
+			«response.metamodelPair.qualifiedPackageName».«response.eResource.packageNameForResource»'''		
 	}
 	
 	public static class EffectClassNameGenerator extends ClassNameGenerator {

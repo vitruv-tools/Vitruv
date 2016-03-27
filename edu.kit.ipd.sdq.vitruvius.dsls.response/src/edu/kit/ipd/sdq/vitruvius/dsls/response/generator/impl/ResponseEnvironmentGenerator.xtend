@@ -70,25 +70,24 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		if (response == null) {
 			throw new IllegalArgumentException("Response must not be null");
 		}
-		val resource = getOrCreateTempResource(sourceFileName);
+		val resource = getOrCreateTempResource(sourceFileName, response.metamodelPair);
 		val resourceMetamodelPair = resource.metamodelPairResponsesInResource;
-		if (resourceMetamodelPair.fromMetamodel == null && resourceMetamodelPair.toMetamodel == null) {
-			// TODO HK Remove the cast
-			resourceMetamodelPair.fromMetamodel = (response.eContainer as MetamodelPairResponses).fromMetamodel;
-			resourceMetamodelPair.toMetamodel = (response.eContainer as MetamodelPairResponses).toMetamodel;
-		} else {
-			throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
-		}
 		resourceMetamodelPair.responses += response;
 	}
 	
-	private def Resource getOrCreateTempResource(String sourceFileName) {
+	private def Resource getOrCreateTempResource(String sourceFileName, MetamodelPairResponses metamodelPair) {
 		for (res : tempResources) {
 			if (res.URI.segmentsList.last.equals(sourceFileName + ".response")) {
+				val resourceMetamodelPair = res.metamodelPairResponsesInResource;
+				if (resourceMetamodelPair.fromMetamodel != metamodelPair.fromMetamodel
+					|| resourceMetamodelPair.toMetamodel != metamodelPair.toMetamodel
+				) {
+					throw new IllegalStateException("Responses from the same source file must have the same two metamodels associated");
+				}
 				return res;
 			}
 		}
-		return generateTempResource(project, sourceFileName);
+		return generateTempResource(project, sourceFileName, metamodelPair);
 	}
 	
 	public override void addResponses(String sourceFileName, Iterable<Response> responses) {
@@ -124,8 +123,10 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		clearResponsesAndResources();
 	}
 	
-	private def Resource generateTempResource(IProject project, String sourceFileName) {
+	private def Resource generateTempResource(IProject project, String sourceFileName, MetamodelPairResponses metamodelPair) {
 		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
+		responseFile.fromMetamodel = metamodelPair.fromMetamodel;
+		responseFile.toMetamodel = metamodelPair.toMetamodel;
 		val resSet = resourceSetProvider.get(project);
 		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".response"));
 		singleResponseResource.contents.add(responseFile);
@@ -146,20 +147,23 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.tempResources.clear();
 	}
 	
-	private def generate(IFileSystemAccess2 fsa) {
-		// TODO HK: This is a temporary hack! Fix it.
+	private def reinitializeDerivedStateOfTemporaryResources() {
 		for (res : tempResources) {
 			(res as DerivedStateAwareResource).discardDerivedState();
 			(res as DerivedStateAwareResource).installDerivedState(false);
 		}
+	}
+	
+	private def generate(IFileSystemAccess2 fsa) {
+		reinitializeDerivedStateOfTemporaryResources();		
 		val modelCorrespondencesToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (resource : resources + tempResources) {
-			// TODO HK remove this cast
-			val modelCombination = (resource.contents.get(0) as MetamodelPairResponses).sourceTargetPair
+			val metamodelPair = resource.metamodelPairResponsesInResource;
+			val modelCombination = metamodelPair.sourceTargetPair;
 			if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
 				modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
 			}
-			val executorNameGenerator = new ExecutorClassNameGenerator(resource.contents.get(0) as MetamodelPairResponses);
+			val executorNameGenerator = new ExecutorClassNameGenerator(metamodelPair);
 			modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
 			generateResponses(resource, fsa);
 		}
