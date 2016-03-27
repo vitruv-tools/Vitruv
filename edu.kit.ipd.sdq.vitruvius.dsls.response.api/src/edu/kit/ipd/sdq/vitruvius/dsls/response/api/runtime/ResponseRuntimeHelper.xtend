@@ -11,6 +11,8 @@ import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import java.util.ArrayList
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence
+import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory
 
 public final class ResponseRuntimeHelper {
 	public static def EObject getModelRoot(EObject modelObject) {
@@ -19,6 +21,10 @@ public final class ResponseRuntimeHelper {
 			result = result.eContainer();
 		}
 		return result;
+	}
+	
+	private static def getResponseView(CorrespondenceInstance<Correspondence> correspondenceInstance) {
+		return correspondenceInstance.getEditableView(ResponseCorrespondence, [ResponseFactory.eINSTANCE.createResponseCorrespondence()]);
 	}
 	
 	private static def getTUID(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject object, EObject parent) {
@@ -32,36 +38,37 @@ public final class ResponseRuntimeHelper {
 	}
 	
 	public static def removeCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent, EObject target, EObject targetParent) {
+		val correspondenceInstanceView = correspondenceInstance.responseView;
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
 		val targetTUID = correspondenceInstance.getTUID(target, targetParent);
-		val correspondences = correspondenceInstance.getCorrespondencesForTUIDs(#[sourceTUID]);
+		val correspondences = correspondenceInstanceView.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences.toList) {
 			if ((correspondence.ATUIDs.contains(sourceTUID)
 				&& correspondence.BTUIDs.contains(targetTUID))
 				|| (correspondence.BTUIDs.contains(sourceTUID)
 				&& correspondence.ATUIDs.contains(targetTUID))) {
-				correspondenceInstance.removeCorrespondencesAndDependendCorrespondences(correspondence);		
+				correspondenceInstanceView.removeCorrespondencesAndDependendCorrespondences(correspondence);		
 			}
 		}
 	}
 	
 	public static def addCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject target) {
-		correspondenceInstance.createAndAddCorrespondence(#[source], #[target]);
+		correspondenceInstance.responseView.createAndAddCorrespondence(#[source], #[target]);
 	}
 
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, Class<T> type) {
 		val tuid = correspondenceInstance.getTUID(source, null);
-		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
+		return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 	}
 
 	
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent,
 			Class<T> type) {
 		val tuid = correspondenceInstance.getTUID(source, sourceParent);
-		return correspondenceInstance.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
+		return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 	}
 	
-	private static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(Correspondence correspondence, TUID source, Class<T> type) {
+	private static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(ResponseCorrespondence correspondence, TUID source, Class<T> type) {
 		var Iterable<T> correspondences = 
 			if (correspondence.ATUIDs.contains(source)) {
 				correspondence.^bs.filter(type);

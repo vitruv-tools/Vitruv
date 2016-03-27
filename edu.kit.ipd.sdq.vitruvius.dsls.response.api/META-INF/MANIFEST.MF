@@ -1,23 +1,29 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ResponseAPI
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.api
+Bundle-Name: %pluginName
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.api;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
  org.eclipse.core.resources,
- org.eclipse.core.runtime
-Export-Package: 
- edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment,
  edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects,
  edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces,
- edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime
-Import-Package: 
- org.apache.log4j
+ edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.impl,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.util
+Import-Package: org.apache.log4j
