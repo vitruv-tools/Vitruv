@@ -4,6 +4,7 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.S
 import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as minimal
 
 responses from metamodel minimal to metamodel minimal
+called simpleChangesTests 
 
 /*
  * UpdateSingleValuedEAttribute
