@@ -22,17 +22,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import java.io.File
 import org.eclipse.xtext.generator.IGenerator
 import java.util.Collections
-import org.apache.log4j.Logger
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.Change2CommandTransformingClassNameGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ExecutorClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
-	private static final Logger LOGGER = Logger.getLogger(ResponseEnvironmentGenerator);
-	
 	@Inject
 	private IGenerator generator;
 	
@@ -177,7 +172,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 				if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
 					modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());
 				}
-				val executorNameGenerator = new ExecutorClassNameGenerator(responseSegment);
+				val executorNameGenerator = responseSegment.executorClassNameGenerator;
 				modelCorrespondencesToExecutors.get(modelCombination).add(executorNameGenerator.qualifiedName);
 				generateResponses(resource, fsa);
 			}
@@ -189,14 +184,14 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private def void generateChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
 			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
-			val change2CommandTransformingNameGenerator = new Change2CommandTransformingClassNameGenerator(modelCombination);
+			val change2CommandTransformingNameGenerator = modelCombination.change2CommandTransformingClassNameGenerator;
 			fsa.generateFile(change2CommandTransformingNameGenerator.qualifiedName.filePath, change2ComandTransformingContent);
 		}
 	}
 		
 	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
-		val change2CommandTransformingNameGenerator = new Change2CommandTransformingClassNameGenerator(modelPair);
+		val change2CommandTransformingNameGenerator = modelPair.change2CommandTransformingClassNameGenerator;
 		val classImplementation = '''
 		public class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
 			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {

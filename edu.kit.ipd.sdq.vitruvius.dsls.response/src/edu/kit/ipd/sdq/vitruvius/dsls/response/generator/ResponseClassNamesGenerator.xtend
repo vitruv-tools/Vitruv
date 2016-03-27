@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.generator
 
-import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import org.eclipse.emf.common.util.URI
@@ -68,6 +67,26 @@ final class ResponseClassNamesGenerator {
 	private static def String getQualifiedPackageName(ResponsesSegment responsesSegment) '''
 		«basicResponsesPackageQualifiedName».«responsesSegment.packageName»'''
 	
+	public static def ClassNameGenerator getChange2CommandTransformingClassNameGenerator(Pair<VURI, VURI> metamodelPair) {
+		return new Change2CommandTransformingClassNameGenerator(metamodelPair);
+	}
+	
+	public static def ClassNameGenerator getExecutorClassNameGenerator(ResponsesSegment responsesSegment) {
+		return new ExecutorClassNameGenerator(responsesSegment);
+	}
+	
+	public static def ClassNameGenerator getEffectsFacadeClassNameGenerator(ResponsesSegment responsesSegment) {
+		return new EffectsFacadeClassNameGenerator(responsesSegment);
+	}
+	
+	public static def ClassNameGenerator getResponseClassNameGenerator(Response response) {
+		return new ResponseClassNameGenerator(response);
+	}
+	
+	public static def ClassNameGenerator getEffectClassNameGenerator(Effect effect) {
+		return new EffectClassNameGenerator(effect);
+	}
+	
 	public static abstract class ClassNameGenerator {
 		public def String getQualifiedName() '''
 			«packageName».«simpleName»'''
@@ -76,7 +95,7 @@ final class ResponseClassNamesGenerator {
 		public def String getPackageName();
 	}
 	
-	public static class Change2CommandTransformingClassNameGenerator extends ClassNameGenerator {
+	private static class Change2CommandTransformingClassNameGenerator extends ClassNameGenerator {
 		private val String metamodelPairName;
 		
 		public new(Pair<VURI, VURI> metamodelPair) {
@@ -90,7 +109,7 @@ final class ResponseClassNamesGenerator {
 			«basicResponsesPackageQualifiedName»'''	
 	}	
 	
-	public static class ExecutorClassNameGenerator extends ClassNameGenerator {
+	private static class ExecutorClassNameGenerator extends ClassNameGenerator {
 		private val ResponsesSegment responsesSegment;
 		
 		public new(ResponsesSegment responsesSegment) {
@@ -104,7 +123,7 @@ final class ResponseClassNamesGenerator {
 			«responsesSegment.qualifiedPackageName».«responsesSegment.name»'''		
 	}
 	
-	public static class ResponseClassNameGenerator extends ClassNameGenerator {
+	private static class ResponseClassNameGenerator extends ClassNameGenerator {
 		private val Response response;
 		public new(Response response) {
 			this.response = response;
@@ -117,7 +136,7 @@ final class ResponseClassNamesGenerator {
 			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name»'''		
 	}
 	
-	public static class EffectClassNameGenerator extends ClassNameGenerator {
+	private static class EffectClassNameGenerator extends ClassNameGenerator {
 		private val Effect effect;
 		public new(Effect effect) {
 			this.effect = effect;
@@ -139,7 +158,7 @@ final class ResponseClassNamesGenerator {
 		
 	}
 	
-	public static class EffectsFacadeClassNameGenerator extends ClassNameGenerator {
+	private static class EffectsFacadeClassNameGenerator extends ClassNameGenerator {
 		private val ResponsesSegment responsesSegment;
 		public new(ResponsesSegment responsesSegment) {
 			this.responsesSegment = responsesSegment;

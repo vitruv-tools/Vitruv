@@ -1,11 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ClassGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ExecutorClassNameGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseExecutor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 
 class ExecutorClassGenerator extends ClassGenerator {
 	private final ResponsesSegment responsesSegment;
@@ -16,7 +15,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 	}
 	
 	override generateClass() {
-		val executorNameGenerator = new ExecutorClassNameGenerator(responsesSegment);
+		val executorNameGenerator = responsesSegment.executorClassNameGenerator;
 		responsesSegment.toClass(executorNameGenerator.qualifiedName) [
 			superTypes += typeRef(AbstractResponseExecutor);
 			members += toConstructor() [
@@ -28,7 +27,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 				visibility = JvmVisibility.PROTECTED;
 				body = '''
 					«FOR response : responsesSegment.responses»
-						«val responseNameGenerator = new ResponseClassNameGenerator(response)»
+						«val responseNameGenerator = response.responseClassNameGenerator»
 						this.addResponse(«responseNameGenerator.qualifiedName».getTrigger(), new «responseNameGenerator.qualifiedName»(userInteracting));
 					«ENDFOR»
 				'''

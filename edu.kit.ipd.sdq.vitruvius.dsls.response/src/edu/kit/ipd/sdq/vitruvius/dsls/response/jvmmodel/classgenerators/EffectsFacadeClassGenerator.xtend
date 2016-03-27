@@ -7,18 +7,18 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectsFacade
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectsFacadeClassNameGenerator
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
 
 class EffectsFacadeClassGenerator extends ClassGenerator {
 	private val List<ExplicitEffect> effects;
-	private val EffectsFacadeClassNameGenerator effectFacadeNameGenerator;
+	private val ClassNameGenerator effectFacadeNameGenerator;
 	
 	new(ResponsesSegment responsesSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.effects = responsesSegment.effects;
-		this.effectFacadeNameGenerator = new EffectsFacadeClassNameGenerator(responsesSegment);
+		this.effectFacadeNameGenerator = responsesSegment.effectsFacadeClassNameGenerator;
 	}
 	
 	public override generateClass() {
@@ -36,7 +36,7 @@ class EffectsFacadeClassGenerator extends ClassGenerator {
 	}
 	
 	private def JvmOperation generateCallMethod(ExplicitEffect effect) {
-		val effectNameGenerator = new EffectClassNameGenerator(effect);
+		val effectNameGenerator = effect.effectClassNameGenerator;
 		return effect.toMethod("call" + effect.name, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);

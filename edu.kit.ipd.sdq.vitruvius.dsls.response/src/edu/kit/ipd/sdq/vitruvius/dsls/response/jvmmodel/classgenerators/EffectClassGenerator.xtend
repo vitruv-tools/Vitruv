@@ -26,9 +26,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectsFacadeClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -37,7 +36,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Iterable<CorrespondingModelElementSpecification> modelElements;
 	private final String effectUserExecutionQualifiedClassName;
 	private final ClassNameGenerator effectClassNameGenerator;
-	private final EffectsFacadeClassNameGenerator effectsFacadeClassNameGenerator;
+	private final ClassNameGenerator effectsFacadeClassNameGenerator;
 	
 	public new(Effect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -45,8 +44,8 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		this.hasExecutionBlock = effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete];
-		this.effectClassNameGenerator = new EffectClassNameGenerator(effect);
-		this.effectsFacadeClassNameGenerator = new EffectsFacadeClassNameGenerator(effect.responsesSegment);
+		this.effectClassNameGenerator = effect.effectClassNameGenerator;
+		this.effectsFacadeClassNameGenerator = effect.responsesSegment.effectsFacadeClassNameGenerator;
 		this.effectUserExecutionQualifiedClassName = effectClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 	}
 	

@@ -18,15 +18,14 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureCha
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ResponseClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.EffectClassNameGenerator
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
-	private final ResponseClassNameGenerator responseClassNameGenerator;
+	private final ClassNameGenerator responseClassNameGenerator;
 	private final ClassNameGenerator effectClassNameGenerator;
 	
 	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
@@ -37,8 +36,8 @@ class ResponseClassGenerator extends ClassGenerator {
 		this.response = response;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.change = response.trigger.generateEChangeInstanceClass();
-		this.responseClassNameGenerator = new ResponseClassNameGenerator(response);
-		this.effectClassNameGenerator = new EffectClassNameGenerator(response.effect);
+		this.responseClassNameGenerator = response.responseClassNameGenerator;
+		this.effectClassNameGenerator = response.effect.effectClassNameGenerator;
 	}
 		
 	public override JvmGenericType generateClass() {
