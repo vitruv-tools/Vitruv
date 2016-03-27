@@ -23,6 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingMod
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 
 /**
  * Outline structure definition for a response file.
@@ -37,11 +39,18 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		for (imp : responseFile.metamodelImports) {
 			createChildren(importsNode, imp);
 		}
-		val responsesNode = createEStructuralFeatureNode(root, responseFile, 
-			ResponseLanguagePackage.Literals.METAMODEL_PAIR_RESPONSES__RESPONSES,
-			imageDispatcher.invoke(responseFile), "responses", false);
-		for (response : responseFile.responses) {
-			createChildren(responsesNode, response);
+		for (responseSegment : responseFile.responsesSegments) {
+			createChildren(root, responseSegment);
+		}
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ResponsesSegment responsesSegment) {
+		val segmentNode = createEObjectNode(parentNode, responsesSegment);
+		for (response: responsesSegment.responses) {
+			createChildren(segmentNode, response);	
+		}
+		for (effect: responsesSegment.effects) {
+			createChildren(segmentNode, effect);	
 		}
 	}
 	
@@ -59,11 +68,11 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			createEStructuralFeatureNode(responseNode, response,
 				ResponseLanguagePackage.Literals.RESPONSE__DOCUMENTATION,
 				imageDispatcher.invoke(response.documentation),
-				"Documentation", true);
+				"documentation", true);
 		}
 		val triggerNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__TRIGGER,
-			imageDispatcher.invoke(response.trigger), "Trigger", response.trigger != null);
+			imageDispatcher.invoke(response.trigger), "trigger", response.trigger == null);
 		if (response.trigger != null) {
 			createChildren(triggerNode, response.trigger);
 		}
@@ -72,7 +81,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
 			ResponseLanguagePackage.Literals.RESPONSE__EFFECT,
-			imageDispatcher.invoke(response.effect), "Effects", response.effect == null);
+			imageDispatcher.invoke(response.effect), "effect", response.effect == null);
 		if (response.effect != null) {
 			createChildren(effectsNode, response.effect);
 		}
@@ -120,7 +129,15 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(Response response) {
-		return response.name;
+		return "response: " + response.name;
+	}
+	
+	protected def Object _text(ExplicitEffect effect) {
+		return "effect: " + effect.name;
+	}
+	
+	protected def Object _text(ResponsesSegment responsesSegment) {
+		return "segment: " + responsesSegment.name;
 	}
 	
 	protected def Object _text(Trigger trigger) {
