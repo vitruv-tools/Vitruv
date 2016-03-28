@@ -47,6 +47,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.tests,
  org.eclipse.emf.ecore.xmi;bundle-version="2.9.1",
  org.emftext.commons.antlr3_4_0;bundle-version="3.4.0",
  org.emftext.language.java.resource.bcel;bundle-version="1.4.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses

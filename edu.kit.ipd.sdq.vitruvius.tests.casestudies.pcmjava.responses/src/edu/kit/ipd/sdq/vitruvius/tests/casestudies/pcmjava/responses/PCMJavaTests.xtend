@@ -1,6 +1,5 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractPCMJavaTests
 import org.junit.Test
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.repository.Repository
@@ -8,6 +7,8 @@ import static org.junit.Assert.*;
 import org.emftext.language.java.containers.CompilationUnit
 import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.Interface
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.PCMJavaChange2CommandTransformingProviding
 
 class PCMJavaTests extends AbstractPCMJavaTests {
 	private static final String TEST_REPOSITORY_NAME = "testRepo"
@@ -33,7 +34,7 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	@Test
 	public def void testCreateRepository() {
 		val repository = repositoryRootElement;
-		val repositoryPath = PCMJavaHelper.buildJavaFilePath("package-info", #[repository.entityName]);
+		val repositoryPath = PCM2JavaHelper.buildJavaFilePath("package-info", #[repository.entityName]);
 		assertModelExists(repositoryPath);
 		val rootObject = repositoryPath.root;
 		assertTrue(rootObject instanceof org.emftext.language.java.containers.Package);
@@ -49,11 +50,11 @@ class PCMJavaTests extends AbstractPCMJavaTests {
 	}
 	
 	private def String getJavaPath(RepositoryComponent component) {
-		return PCMJavaHelper.buildJavaFilePath(component.entityName + "Impl", #[component.repository__RepositoryComponent.entityName, component.entityName])
+		return PCM2JavaHelper.buildJavaFilePath(component.entityName + "Impl", #[component.repository__RepositoryComponent.entityName, component.entityName])
 	}
 	
 	private def String getJavaPath(Interface interf) {
-		return PCMJavaHelper.buildJavaFilePath(interf.entityName, #[interf.repository__Interface.entityName, "contracts"])
+		return PCM2JavaHelper.buildJavaFilePath(interf.entityName, #[interf.repository__Interface.entityName, "contracts"])
 	}
 	
 	@Test

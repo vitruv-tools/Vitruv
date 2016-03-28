@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractResponseTests
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding

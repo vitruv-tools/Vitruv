@@ -12,11 +12,11 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.pcmjava.PCMJavaChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.PCMJavaChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.responses.utils.PCM2JaMoPPTestUtils;
 
