@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.api;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -19,10 +19,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment,
- edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects,
- edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces,
- edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime,
+Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure,
  edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response,
  edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.impl,
  edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.util

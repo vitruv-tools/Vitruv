@@ -1,11 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper.*;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.PersistableEffectElement.PersistenceInformation
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
 class EffectElementCreate extends EffectElement implements PersistableEffectElement {
 	private PersistenceInformation persistenceInformation; 
@@ -20,7 +19,7 @@ class EffectElementCreate extends EffectElement implements PersistableEffectElem
 		if (correspondenceSource == null || element == null) {
 			return;
 		}
-		ResponseRuntimeHelper.addCorrespondence(blackboard.getCorrespondenceInstance(), 
+		CorrespondenceHelper.addCorrespondence(blackboard.getCorrespondenceInstance(), 
 				correspondenceSource, element, tag);
 	}
 	
@@ -37,18 +36,18 @@ class EffectElementCreate extends EffectElement implements PersistableEffectElem
 		transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
 	}
 	
-	override protected preProcess() {
+	override public preProcess() {
 		// Do nothing
 	}
 	
-	override protected postProcess() {
+	override public postProcess() {
 		initializeCorrespondence();
 		if (persistenceInformation != null) {
 			persistModel();
 		}
 	}
 	
-	override protected updateTUIDs() {
+	override public updateTUIDs() {
 		// Do nothing
 	}
 	

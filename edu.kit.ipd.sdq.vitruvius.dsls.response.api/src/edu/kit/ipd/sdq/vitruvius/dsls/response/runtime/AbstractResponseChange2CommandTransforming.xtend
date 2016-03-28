@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard

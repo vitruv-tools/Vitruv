@@ -3,9 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 import org.eclipse.xtext.common.types.JvmGenericType
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import org.eclipse.emf.ecore.EObject
-import static edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import org.eclipse.xtext.common.types.JvmOperation
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
@@ -20,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;

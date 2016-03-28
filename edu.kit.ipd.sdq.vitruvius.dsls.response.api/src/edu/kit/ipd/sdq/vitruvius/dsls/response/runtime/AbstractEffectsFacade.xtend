@@ -1,8 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.Loggable
 
 class AbstractEffectsFacade extends Loggable {
 	protected val ResponseExecutionState executionState;

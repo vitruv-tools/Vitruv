@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 

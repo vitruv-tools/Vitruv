@@ -1,12 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper.*;
+import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.PersistableEffectElement.PersistenceInformation
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
 class EffectElementRetrieve extends EffectElement implements PersistableEffectElement {
 	private final TUID oldTUID;
@@ -44,17 +43,17 @@ class EffectElementRetrieve extends EffectElement implements PersistableEffectEl
 	}
 	
 	
-	override protected preProcess() {
+	override public preProcess() {
 		// Do nothing
 	}
 	
-	override protected postProcess() {
+	override public postProcess() {
 		if (moveInformation != null) {
 			renameModel();
 		}
 	}
 	
-	override protected updateTUIDs() {
+	override public updateTUIDs() {
 		updateTUID();
 	}
 	

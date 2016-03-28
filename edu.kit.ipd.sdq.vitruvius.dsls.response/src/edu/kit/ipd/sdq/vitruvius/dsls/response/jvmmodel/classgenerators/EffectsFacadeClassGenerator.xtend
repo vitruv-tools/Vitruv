@@ -4,12 +4,12 @@ import java.util.List
 import org.eclipse.xtext.common.types.JvmOperation
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.AbstractEffectsFacade
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
 
 class EffectsFacadeClassGenerator extends ClassGenerator {
 	private val List<ExplicitEffect> effects;

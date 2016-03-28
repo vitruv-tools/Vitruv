@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";

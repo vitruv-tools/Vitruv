@@ -1,10 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import org.eclipse.emf.ecore.EObject
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
 class EffectElementDelete extends EffectElement {
 	
@@ -13,7 +13,7 @@ class EffectElementDelete extends EffectElement {
 	}
 	
 	private def removeCorrespondence() {
-		ResponseRuntimeHelper.removeCorrespondence(blackboard.getCorrespondenceInstance(), correspondenceSource, null, element, null);
+		CorrespondenceHelper.removeCorrespondence(blackboard.getCorrespondenceInstance(), correspondenceSource, null, element, null);
 	}
 	
 	private def void delete() {
@@ -33,16 +33,16 @@ class EffectElementDelete extends EffectElement {
 		}
 	}	
 
-	override protected preProcess() {
+	override public preProcess() {
 		removeCorrespondence();
 		delete();
 	}
 		
-	override protected postProcess() {
+	override public postProcess() {
 		// Do nothing
 	}
 	
-	override protected updateTUIDs() {
+	override public updateTUIDs() {
 		// Do nothing
 	}
 	

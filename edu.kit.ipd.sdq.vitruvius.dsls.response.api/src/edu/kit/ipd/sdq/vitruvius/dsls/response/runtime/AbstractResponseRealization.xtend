@@ -1,11 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
 
 abstract class AbstractResponseRealization extends CallHierarchyHaving implements IResponseRealization {
 	protected val UserInteracting userInteracting;

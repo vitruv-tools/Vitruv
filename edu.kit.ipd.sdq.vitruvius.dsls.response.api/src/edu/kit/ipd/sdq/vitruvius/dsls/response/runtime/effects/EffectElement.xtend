@@ -1,13 +1,13 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.Loggable
 
 abstract class EffectElement extends Loggable {
 	protected final EObject element;
+	protected final EObject correspondenceSource;
 	protected final extension ResponseExecutionState _executionState;
-	public final EObject correspondenceSource;
 	
 	public new(EObject element, EObject correspondenceSource, ResponseExecutionState executionState) {
 		this.element = element;
@@ -15,7 +15,7 @@ abstract class EffectElement extends Loggable {
 		this._executionState = executionState;
 	}
 	
-	protected def void preProcess();
-	protected def void postProcess();
-	protected def void updateTUIDs();
+	public def void preProcess();
+	public def void postProcess();
+	public def void updateTUIDs();
 }

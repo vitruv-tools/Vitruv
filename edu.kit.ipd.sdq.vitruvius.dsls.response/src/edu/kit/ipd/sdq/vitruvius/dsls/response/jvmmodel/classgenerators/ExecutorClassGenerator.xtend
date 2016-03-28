@@ -2,9 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.AbstractResponseExecutor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseExecutor
 
 class ExecutorClassGenerator extends ClassGenerator {
 	private final ResponsesSegment responsesSegment;

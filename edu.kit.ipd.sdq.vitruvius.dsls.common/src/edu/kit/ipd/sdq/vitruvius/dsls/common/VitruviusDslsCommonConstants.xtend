@@ -14,7 +14,7 @@ class VitruviusDslsCommonConstants {
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.response.api",
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.response.runtime",
  		"edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter",
  		"edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor"
 	]

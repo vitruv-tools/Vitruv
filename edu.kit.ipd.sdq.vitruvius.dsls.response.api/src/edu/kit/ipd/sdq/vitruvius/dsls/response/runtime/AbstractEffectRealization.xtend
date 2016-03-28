@@ -1,15 +1,19 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import org.eclipse.emf.ecore.EObject
 import java.io.IOException
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseExecutionState
 import java.util.Map
 import java.util.HashMap
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.runtime.ResponseRuntimeHelper
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 import org.eclipse.xtext.xbase.lib.Functions.Function1
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.PersistableEffectElement.PersistenceInformation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.PersistableEffectElement.PersistenceInformation
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElementRetrieve
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElementDelete
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.PersistableEffectElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	private extension val ResponseExecutionState executionState;
@@ -41,7 +45,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, boolean optional) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val tag = tagSupplier.apply();
-		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
+		val retrievedElement = CorrespondenceHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
 			new EffectElementRetrieve(retrievedElement, correspondenceSource, executionState)
 		);
@@ -54,7 +58,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val tag = tagSupplier.apply();
-		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
+		val retrievedElement = CorrespondenceHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
 			new EffectElementDelete(retrievedElement, correspondenceSource, executionState)
 		);

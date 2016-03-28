@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import org.apache.log4j.Logger
 import java.util.List
@@ -7,8 +7,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
 
 abstract class AbstractResponseExecutor  {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);

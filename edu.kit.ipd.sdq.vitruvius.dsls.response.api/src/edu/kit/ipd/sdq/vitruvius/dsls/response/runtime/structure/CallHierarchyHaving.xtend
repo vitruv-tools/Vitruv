@@ -1,6 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
-
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.Loggable
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure
 
 class CallHierarchyHaving extends Loggable {
 	private val CallHierarchyHaving calledBy;

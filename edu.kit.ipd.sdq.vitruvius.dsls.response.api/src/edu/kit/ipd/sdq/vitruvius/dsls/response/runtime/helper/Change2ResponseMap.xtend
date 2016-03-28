@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment
+package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper
 
 import java.util.Map
 import java.util.HashMap
@@ -7,7 +7,7 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import java.util.Set
 import java.util.HashSet
-import edu.kit.ipd.sdq.vitruvius.dsls.response.api.interfaces.IResponseRealization
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 
 class Change2ResponseMap {
 	private Map<Class<? extends EChange>, List<IResponseRealization>> change2responseMap;
