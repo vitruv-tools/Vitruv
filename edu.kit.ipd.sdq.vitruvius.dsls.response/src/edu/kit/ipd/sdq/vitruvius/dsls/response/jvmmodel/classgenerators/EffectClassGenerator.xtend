@@ -28,7 +28,6 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageCon
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TagCodeBlock
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -159,13 +158,13 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		]
 	}
 	
-	protected def JvmOperation generateMethodGetTag(TagCodeBlock tagCodeBlock) {
-		val methodName = "getTag";
+	protected def JvmOperation generateMethodGetTag(CorrespondingModelElementSpecification elementSpecification) {
+		val methodName = "getTag" + elementSpecification.name.toFirstUpper;
 		
-		return tagCodeBlock.getOrGenerateMethod(methodName, typeRef(String)) [
+		return elementSpecification.tag.getOrGenerateMethod(methodName, typeRef(String)) [
 			visibility = JvmVisibility.PRIVATE;
 			parameters += generateInputParameters();
-			body = tagCodeBlock.code;
+			body = elementSpecification.tag.code;
 		];		
 	}
 	
@@ -263,7 +262,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 	
 	private def StringConcatenationClient getTagSupplier(CorrespondingModelElementSpecification elementSpecification) {
 		if (elementSpecification.tag != null) {
-			val tagMethod = generateMethodGetTag(elementSpecification.tag);
+			val tagMethod = generateMethodGetTag(elementSpecification);
 			return '''() -> «tagMethod.simpleName»(«getParameterCallListWithModelInput()»)'''
 		} else {
 			return '''() -> null'''
