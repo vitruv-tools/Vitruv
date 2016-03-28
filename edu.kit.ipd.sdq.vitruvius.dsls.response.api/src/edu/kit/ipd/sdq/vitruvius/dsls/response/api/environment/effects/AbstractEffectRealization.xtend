@@ -26,20 +26,22 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	}
 	
 	protected def <T extends EObject> T initializeCreateElementState(Function0<EObject> correspondenceSourceSupplier,
-		Function0<T> newObjectSupplier, Class<T> elementClass
+		Function0<T> newObjectSupplier, Function0<String> tagSupplier, Class<T> elementClass
 	) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val createElement = newObjectSupplier.apply();
+		val tag = tagSupplier.apply();
 		this.elementStates.put(createElement, 
-			new EffectElementCreate(createElement, correspondenceSource, executionState)
+			new EffectElementCreate(createElement, correspondenceSource, executionState, tag)
 		);
 		return createElement;
 	}
 	
 	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
-		Function1<T, Boolean> correspondencePreconditionMethod, Class<T> elementClass, boolean optional) {
+		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, boolean optional) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
-		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, correspondencePreconditionMethod, blackboard);
+		val tag = tagSupplier.apply();
+		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
 			new EffectElementRetrieve(retrievedElement, correspondenceSource, executionState)
 		);
@@ -48,10 +50,11 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	
 	
 	protected def <T extends EObject> T initializeDeleteElementState(Function0<EObject> correspondenceSourceSupplier,
-		Function1<T, Boolean> correspondencePreconditionMethod, Class<T> elementClass, boolean optional
+		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, boolean optional
 	) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
-		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, correspondencePreconditionMethod, blackboard);
+		val tag = tagSupplier.apply();
+		val retrievedElement = ResponseRuntimeHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
 		this.elementStates.put(retrievedElement, 
 			new EffectElementDelete(retrievedElement, correspondenceSource, executionState)
 		);

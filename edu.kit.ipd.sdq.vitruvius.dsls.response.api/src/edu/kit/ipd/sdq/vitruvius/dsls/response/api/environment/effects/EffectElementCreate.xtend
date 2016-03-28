@@ -9,9 +9,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.effects.Persistab
 
 class EffectElementCreate extends EffectElement implements PersistableEffectElement {
 	private PersistenceInformation persistenceInformation; 
+	private final String tag;
 	
-	new(EObject element, EObject correspondenceSource, ResponseExecutionState executionState) {
+	new(EObject element, EObject correspondenceSource, ResponseExecutionState executionState, String tag) {
 		super(element, correspondenceSource, executionState);
+		this.tag = tag;
 	}
 
 	private def void initializeCorrespondence() {
@@ -19,7 +21,7 @@ class EffectElementCreate extends EffectElement implements PersistableEffectElem
 			return;
 		}
 		ResponseRuntimeHelper.addCorrespondence(blackboard.getCorrespondenceInstance(), 
-				correspondenceSource, element);
+				correspondenceSource, element, tag);
 	}
 	
 	private def persistModel() {

@@ -41,7 +41,7 @@ ExplicitEffect:
 	
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
-	'create element:' CorrespondingModelElementSpecification (persistence=ModelPersistence)?;
+	'create element:' CorrespondingModelElementSpecification ('tag with' tag=TagCodeBlock)? (persistence=ModelPersistence)?;
 
 ModelPersistence returns ModelLocation:
 	(useRelativeToSource?='persist as root at changed model relative location:'
@@ -60,10 +60,7 @@ CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
 	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (persistence=ModelMove)?;
 
 fragment CorrespondingModelElementRetrieveOrDelete:
-	CorrespondingModelElementSpecificationWithPrecondition (optional?='optional')?;
-
-fragment CorrespondingModelElementSpecificationWithPrecondition:
-	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)?;
+	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)? (optional?='optional')? ('tagged with' tag=TagCodeBlock)? ;
 
 fragment CorrespondingModelElementSpecification:
 	name=ValidID 'of type' elementType=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
@@ -74,6 +71,11 @@ ArbitraryTargetMetamodelInstanceUpdate:
 	/*ChangeAwareCodeBlock returns :
 	StringReturningChangeAwareCodeBlock | EObjectReturningChangeAwareCodeBlock | BooleanReturningChangeAwareCodeBlock;
 */
+
+TagCodeBlock returns TagCodeBlock:
+	{TagCodeBlock}
+	CodeBlock;
+
 PreconditionCodeBlock returns PreconditionCodeBlock:
 	{PreconditionCodeBlock}
 	CodeBlock;

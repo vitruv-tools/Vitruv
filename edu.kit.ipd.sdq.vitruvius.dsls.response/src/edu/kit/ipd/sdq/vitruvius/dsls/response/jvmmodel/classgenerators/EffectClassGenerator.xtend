@@ -28,6 +28,7 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageCon
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.environment.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.TagCodeBlock
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -158,6 +159,16 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		]
 	}
 	
+	protected def JvmOperation generateMethodGetTag(TagCodeBlock tagCodeBlock) {
+		val methodName = "getTag";
+		
+		return tagCodeBlock.getOrGenerateMethod(methodName, typeRef(String)) [
+			visibility = JvmVisibility.PRIVATE;
+			parameters += generateInputParameters();
+			body = tagCodeBlock.code;
+		];		
+	}
+	
 	protected def JvmOperation generateMethodGetPathFromSource(ModelPathCodeBlock modelPathCodeBlock, CorrespondingModelElementSpecification... inputElements) {
 		val methodName = "getModelPath";
 		
@@ -216,8 +227,6 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	
-	
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeEffect";
 		val inputParameters = effect.generateInputParameters();
@@ -252,6 +261,15 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		return '''() -> «correspondenceSourceMethod.simpleName»(«getParameterCallListWithModelInput()»)'''	
 	}
 	
+	private def StringConcatenationClient getTagSupplier(CorrespondingModelElementSpecification elementSpecification) {
+		if (elementSpecification.tag != null) {
+			val tagMethod = generateMethodGetTag(elementSpecification.tag);
+			return '''() -> «tagMethod.simpleName»(«getParameterCallListWithModelInput()»)'''
+		} else {
+			return '''() -> null'''
+		}
+	}
+	
 	private def StringConcatenationClient getPersistencePathSupplier(CorrespondingModelElementSpecification elementSpecification) {
 		val pathFromSourceMethod = generateMethodGetPathFromSource(elementSpecification);
 		if (pathFromSourceMethod == null) {
@@ -273,6 +291,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementRetrieveOrDelete.elementType.element;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(elementRetrieveOrDelete);
 		val correspondenceSourceSupplier = getCorrespondenceSourceSupplier(elementRetrieveOrDelete);
+		val tagSupplier = getTagSupplier(elementRetrieveOrDelete);
 		val persistenceInformationInitializer = getPersistenceInformationInitializer(elementRetrieveOrDelete);
 		return '''
 			«affectedElementClass.javaClass» «elementRetrieveOrDelete.name» = «
@@ -280,6 +299,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 			ELSE»initializeDeleteElementState«ENDIF»(
 				«correspondenceSourceSupplier», // correspondence source supplier
 				«correspondingElementPreconditionChecker», // correspondence precondition checker
+				«tagSupplier», // tag supplier
 				«affectedElementClass.javaClass».class,	«elementRetrieveOrDelete.optional»);
 			«persistenceInformationInitializer»
 		'''	
@@ -292,11 +312,13 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		val affectedElementClass = elementCreate.elementType.element.javaClass;
 		val correspondenceSourceSupplier = getCorrespondenceSourceSupplier(elementCreate);
 		val persistenceInformationInitializer = getPersistenceInformationInitializer(elementCreate);
+		val tagSupplier = getTagSupplier(elementCreate);
 		val elementCreationSupplier = getElementCreationSupplier(elementCreate);
 		return '''
 			«affectedElementClass» «elementCreate.name» = initializeCreateElementState(
 				«correspondenceSourceSupplier», // correspondence source supplier
 				«elementCreationSupplier», // element creation supplier
+				«tagSupplier», // tag supplier
 				«affectedElementClass».class);
 			«persistenceInformationInitializer»
 			'''	

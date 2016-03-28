@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.Resp
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -105,6 +106,15 @@ public class ResponsePackageImpl extends EPackageImpl implements ResponsePackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getResponseCorrespondence_Tag() {
+		return (EAttribute)responseCorrespondenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ResponseFactory getResponseFactory() {
 		return (ResponseFactory)getEFactoryInstance();
 	}
@@ -129,6 +139,7 @@ public class ResponsePackageImpl extends EPackageImpl implements ResponsePackage
 
 		// Create classes and their features
 		responseCorrespondenceEClass = createEClass(RESPONSE_CORRESPONDENCE);
+		createEAttribute(responseCorrespondenceEClass, RESPONSE_CORRESPONDENCE__TAG);
 	}
 
 	/**
@@ -166,6 +177,7 @@ public class ResponsePackageImpl extends EPackageImpl implements ResponsePackage
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(responseCorrespondenceEClass, ResponseCorrespondence.class, "ResponseCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getResponseCorrespondence_Tag(), ecorePackage.getEString(), "Tag", null, 0, 1, ResponseCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

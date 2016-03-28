@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -111,13 +112,22 @@ public interface ResponsePackage extends EPackage {
 	int RESPONSE_CORRESPONDENCE__BTUI_DS = CorrespondencePackage.CORRESPONDENCE__BTUI_DS;
 
 	/**
+	 * The feature id for the '<em><b>Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESPONSE_CORRESPONDENCE__TAG = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RESPONSE_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
+	int RESPONSE_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 1;
 
 
 	/**
@@ -129,6 +139,17 @@ public interface ResponsePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getResponseCorrespondence();
+
+	/**
+	 * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence#getTag <em>Tag</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Tag</em>'.
+	 * @see edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence#getTag()
+	 * @see #getResponseCorrespondence()
+	 * @generated
+	 */
+	EAttribute getResponseCorrespondence_Tag();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -161,6 +182,13 @@ public interface ResponsePackage extends EPackage {
 		 * @generated
 		 */
 		EClass RESPONSE_CORRESPONDENCE = eINSTANCE.getResponseCorrespondence();
+		/**
+		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RESPONSE_CORRESPONDENCE__TAG = eINSTANCE.getResponseCorrespondence_Tag();
 
 	}
 
