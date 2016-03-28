@@ -42,15 +42,15 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
 responses from metamodel pcm to metamodel java
 called pcm2java
 
-
 // ###################################################
 // ################ PACKAGE RESPONSES ################
+
 
 response: CreatePackagesForRepository
 trigger: insert root pcm.repository.Repository
 execute: {
 	val repository = change.newValue;
-	callCreateJavaPackage(repository, null, repository.entityName);
+	callCreateJavaPackage(repository, null, repository.entityName, "repository_root");
 	callCreateRepositorySubPackages(repository);
 }
 
@@ -58,14 +58,14 @@ effect: CreateRepositorySubPackages
 model input: pcm.repository.Repository as repository
 retrieve element: repositoryPackage of type java.containers.Package corresponding to repository
 execute: {
-	callCreateJavaPackage(repository, repositoryPackage, "datatypes");
-	callCreateJavaPackage(repository, repositoryPackage, "contracts");
+	callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
+	callCreateJavaPackage(repository, repositoryPackage, "contracts", "contracts");
 }
 
 response: RenamedRepositoryPackages
 trigger: replace value pcm.repository.Repository[entityName]
 retrieve element: rootPackage of type java.containers.Package corresponding to change.newAffectedEObject
-	with rootPackage.name != "contracts" && rootPackage.name != "datatypes" // TODO HK: Check for change.oldValue currently not possible
+	tagged with "repository_root"
 	move containing model to project-relative location: buildJavaFilePath(rootPackage)
 execute: {
 	val repository = change.newAffectedEObject as Repository;
@@ -93,7 +93,7 @@ response: CreatedSystem
 trigger: insert root pcm.system.System
 execute: {
 	val system = change.newValue;
-	callCreateJavaPackage(system, null, system.entityName);
+	callCreateJavaPackage(system, null, system.entityName, "root_system");
 	callCreateImplementationForSystem(system);
 }
 
@@ -146,7 +146,7 @@ retrieve element: repositoryPackage of type java.containers.Package correspondin
 	with change.newValue.repository__RepositoryComponent.entityName.equals(repositoryPackage.name)
 execute: {
 	val component = change.newValue;
-	callCreateJavaPackage(component, repositoryPackage, component.entityName);
+	callCreateJavaPackage(component, repositoryPackage, component.entityName, null);
 	callCreateImplementationForComponent(component);
 }
 
@@ -182,7 +182,7 @@ execute: callDeleteJavaClassifier(change.oldValue)
 
 response: DeletePackageForBasicComponent
 trigger: remove from list pcm.repository.Repository[components__Repository]
-execute: callDeleteJavaPackage(change.oldValue, change.oldValue.entityName)
+execute: callDeleteJavaPackage(change.oldValue, change.oldValue.entityName, "")
 
 
 // #####################################################
@@ -250,8 +250,8 @@ effect: AddInnerDeclarationToCompositeDataType
 model input: pcm.repository.CompositeDataType as compositeDataType, pcm.repository.InnerDeclaration as innerDeclaration, java.types.TypeReference as dataTypeReference
 retrieve element: dataTypeClass of type java.classifiers.Class corresponding to compositeDataType
 create element: innerDataTypeField of type java.members.Field corresponding to innerDeclaration
-create element: getterMethod of type java.members.ClassMethod corresponding to innerDeclaration
-create element: setterMethod of type java.members.ClassMethod corresponding to innerDeclaration
+create element: getterMethod of type java.members.ClassMethod corresponding to innerDeclaration tag with "getter"
+create element: setterMethod of type java.members.ClassMethod corresponding to innerDeclaration tag with "setter"
 execute: {
 	createPrivateField(innerDataTypeField, EcoreUtil.copy(dataTypeReference), innerDeclaration.entityName);
 	createSetter(innerDataTypeField, setterMethod);	
@@ -262,15 +262,17 @@ execute: {
 	sortMembers(dataTypeClass.members);
 }
 
-response: ChangeNameOfInnerDeclaration
+response: ChangedNameOfInnerDeclaration
 trigger: replace value pcm.repository.InnerDeclaration[entityName]
-retrieve element: compositeTypeField of type java.members.Field corresponding to change.newAffectedEObject
-retrieve element: compositeTypeGetterMethod of type java.members.ClassMethod corresponding to change.newAffectedEObject
-	with compositeTypeGetterMethod.name.startsWith("get")
-retrieve element: compositeTypeSetterMethod of type java.members.ClassMethod corresponding to change.newAffectedEObject
-	with compositeTypeSetterMethod.name.startsWith("set")
+execute: callChangeNameOfInnerDeclaration(change.newAffectedEObject as InnerDeclaration)
+
+effect: ChangeNameOfInnerDeclaration
+model input: pcm.repository.InnerDeclaration as innerDeclaration
+retrieve element: compositeTypeField of type java.members.Field corresponding to innerDeclaration
+retrieve element: compositeTypeGetterMethod of type java.members.ClassMethod corresponding to innerDeclaration tagged with "getter"
+retrieve element: compositeTypeSetterMethod of type java.members.ClassMethod corresponding to innerDeclaration tagged with "setter"
 execute: {
-	val newName = change.newValue;
+	val newName = innerDeclaration.entityName;
 	compositeTypeField.name = newName;
 	compositeTypeGetterMethod.name = "get" + newName.toFirstUpper;
 	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
@@ -310,9 +312,9 @@ execute: {
 
 effect: CreateJavaPackage
 model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, java.containers.Package as parentPackage
-other input: String as packageName
+other input: String as packageName, String as newTag
 create element: javaPackage of type java.containers.Package corresponding to sourceElementMappedToPackage
-	persist as root at project-relative location: buildJavaFilePath(javaPackage)
+	tag with newTag persist as root at project-relative location: buildJavaFilePath(javaPackage)
 execute: {
 	if (parentPackage != null) {
 		javaPackage.namespaces += parentPackage.namespaces;
@@ -323,10 +325,9 @@ execute: {
 
 effect: RenameJavaPackage
 model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, java.containers.Package as parentPackage
-other input: String as packageName, String as expectedCorrespondingPackageName
+other input: String as packageName, String as expectedTag
 retrieve element: javaPackage of type java.containers.Package corresponding to sourceElementMappedToPackage
-	with expectedCorrespondingPackageName == null || javaPackage.name == expectedCorrespondingPackageName
-	move containing model to project-relative location: buildJavaFilePath(javaPackage)
+	tagged with expectedTag	move containing model to project-relative location: buildJavaFilePath(javaPackage)
 execute: {
 	javaPackage.namespaces.clear();
 	if (parentPackage != null) {
@@ -338,9 +339,9 @@ execute: {
 
 effect: DeleteJavaPackage
 model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage
-other input: String as packageName
+other input: String as packageName, String as expectedTag
 delete element: javaPackage of type java.containers.Package corresponding to sourceElementMappedToPackage
-	with javaPackage.name.equals(packageName)
+	tagged with expectedTag
 
 
 // ######################################################
