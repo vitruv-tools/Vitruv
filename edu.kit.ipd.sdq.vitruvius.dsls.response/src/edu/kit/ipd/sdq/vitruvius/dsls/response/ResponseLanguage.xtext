@@ -63,14 +63,7 @@ fragment CorrespondingModelElementRetrieveOrDelete:
 	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)? (optional?='optional')? ('tagged with' tag=TagCodeBlock)? ;
 
 fragment CorrespondingModelElementSpecification:
-	name=ValidID 'of type' elementType=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
-
-ArbitraryTargetMetamodelInstanceUpdate:
-	'update instances of' metamodelReference=MetamodelReference;
-
-	/*ChangeAwareCodeBlock returns :
-	StringReturningChangeAwareCodeBlock | EObjectReturningChangeAwareCodeBlock | BooleanReturningChangeAwareCodeBlock;
-*/
+	elementType=ModelElement 'as' name=ValidID 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
 
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
