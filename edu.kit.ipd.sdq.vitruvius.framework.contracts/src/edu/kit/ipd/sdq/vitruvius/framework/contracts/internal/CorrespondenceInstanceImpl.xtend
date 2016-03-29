@@ -479,7 +479,8 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 
 	override void updateTUID(EObject oldEObject, EObject newEObject) {
 		// If the object has no TUID, do nothing
-		if (!oldEObject.metamodelForEObject.hasTUID(oldEObject)) {
+		val metamodel = oldEObject?.metamodelForEObject;
+		if (metamodel == null || !metamodel.hasTUID(oldEObject)) {
 			return;
 		}
 		var TUID oldTUID = calculateTUIDsFromEObjects(oldEObject.toList).claimOne
