@@ -120,7 +120,7 @@ final class ResponseClassNamesGenerator {
 			Executor«responsesSegment.metamodelPairName»'''
 	
 		public override getPackageName() '''
-			«responsesSegment.qualifiedPackageName».«responsesSegment.name»'''		
+			«responsesSegment.qualifiedPackageName».«responsesSegment.name.toFirstLower»'''		
 	}
 	
 	private static class ResponseClassNameGenerator extends ClassNameGenerator {
@@ -133,7 +133,7 @@ final class ResponseClassNamesGenerator {
 			«response.name»Response'''
 		
 		public override String getPackageName() '''
-			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name»'''		
+			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name.toFirstLower»'''		
 	}
 	
 	private static class EffectClassNameGenerator extends ClassNameGenerator {
@@ -154,7 +154,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«effect.responsesSegment.name»'''
+			«basicEffectsPackageQualifiedName».«effect.responsesSegment.name.toFirstLower»'''
 		
 	}
 	
@@ -168,6 +168,6 @@ final class ResponseClassNamesGenerator {
 			«EFFECTS_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«responsesSegment.name»'''		
+			«basicEffectsPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
 	}
 }
