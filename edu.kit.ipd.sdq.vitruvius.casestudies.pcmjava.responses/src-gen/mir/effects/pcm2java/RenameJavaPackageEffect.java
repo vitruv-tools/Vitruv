@@ -2,7 +2,7 @@ package mir.effects.pcm2java;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -71,7 +71,7 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
   }
   
   private String getModelPath(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag, final org.emftext.language.java.containers.Package javaPackage) {
-    String _buildJavaFilePath = PCM2JavaHelper.buildJavaFilePath(javaPackage);
+    String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
     return _buildJavaFilePath;
   }
   
@@ -79,8 +79,8 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect RenameJavaPackageEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
     getLogger().debug("   Package: " + this.parentPackage);
-    getLogger().debug("   void: " + this.packageName);
-    getLogger().debug("   void: " + this.expectedTag);
+    getLogger().debug("   String: " + this.packageName);
+    getLogger().debug("   String: " + this.expectedTag);
     
     org.emftext.language.java.containers.Package javaPackage = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // correspondence source supplier

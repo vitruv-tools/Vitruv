@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseChange2Co
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public class Change2CommandTransforming5_1ToJava extends AbstractResponseChange2CommandTransforming {
+public abstract class AbstractChange2CommandTransforming5_1ToJava extends AbstractResponseChange2CommandTransforming {
 	public List<Pair<VURI, VURI>> getTransformableMetamodels() {
 		VURI sourceVURI = VURI.getInstance("http://palladiosimulator.org/PalladioComponentModel/5.1");
 		VURI targetVURI = VURI.getInstance("http://www.emftext.org/java");

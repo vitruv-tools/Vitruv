@@ -60,7 +60,7 @@ public class CreateJavaClassEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect CreateJavaClassEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
     getLogger().debug("   Package: " + this.containingPackage);
-    getLogger().debug("   void: " + this.className);
+    getLogger().debug("   String: " + this.className);
     
     org.emftext.language.java.classifiers.Class javaClass = initializeCreateElementState(
     	() -> getCorrepondenceSourceJavaClass(sourceElementMappedToClass, containingPackage, className), // correspondence source supplier

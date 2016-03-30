@@ -1,7 +1,7 @@
 package mir.effects.pcm2java;
 
 import com.google.common.collect.Iterables;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -56,7 +56,7 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
   }
   
   private String getModelPath(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
-    String _buildJavaFilePath = PCM2JavaHelper.buildJavaFilePath(compilationUnit);
+    String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
     return _buildJavaFilePath;
   }
   

@@ -1,7 +1,7 @@
 package mir.effects.pcm2java;
 
 import com.google.common.collect.Iterables;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -55,7 +55,7 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
   }
   
   private String getModelPath(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit) {
-    String _buildJavaFilePath = PCM2JavaHelper.buildJavaFilePath(compilationUnit);
+    String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
     return _buildJavaFilePath;
   }
   
@@ -67,7 +67,7 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect RenameJavaClassifierEffect with input:");
     getLogger().debug("   NamedElement: " + this.classSourceElement);
     getLogger().debug("   Package: " + this.containingPackage);
-    getLogger().debug("   void: " + this.className);
+    getLogger().debug("   String: " + this.className);
     
     CompilationUnit compilationUnit = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompilationUnit(classSourceElement, containingPackage, className), // correspondence source supplier

@@ -61,7 +61,7 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect CreateJavaInterfaceEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
     getLogger().debug("   Package: " + this.containingPackage);
-    getLogger().debug("   void: " + this.className);
+    getLogger().debug("   String: " + this.className);
     
     Interface javaInterface = initializeCreateElementState(
     	() -> getCorrepondenceSourceJavaInterface(sourceElementMappedToClass, containingPackage, className), // correspondence source supplier

@@ -20,7 +20,6 @@ import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
-import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.references.IdentifierReference;
 import org.emftext.language.java.references.Reference;
 import org.emftext.language.java.references.ReferenceableElement;
@@ -122,6 +121,7 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
       Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
       for (final Constructor ctor : _filter) {
         {
+          this.effectFacade.callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
           Statement statementToRemove = null;
           EList<Statement> _statements = ctor.getStatements();
           for (final Statement statement : _statements) {
@@ -146,25 +146,10 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
               }
             }
           }
-          Parameter parameterToRemove = null;
-          EList<Parameter> _parameters = ctor.getParameters();
-          for (final Parameter parameter : _parameters) {
-            String _name_1 = parameter.getName();
-            String _entityName_1 = requiredRole.getEntityName();
-            boolean _equals_2 = _name_1.equals(_entityName_1);
-            if (_equals_2) {
-              parameterToRemove = parameter;
-            }
-          }
           boolean _notEquals = (!Objects.equal(statementToRemove, null));
           if (_notEquals) {
             EList<Statement> _statements_1 = ctor.getStatements();
             _statements_1.remove(statementToRemove);
-          }
-          boolean _notEquals_1 = (!Objects.equal(parameterToRemove, null));
-          if (_notEquals_1) {
-            EList<Parameter> _parameters_1 = ctor.getParameters();
-            _parameters_1.remove(parameterToRemove);
           }
         }
       }

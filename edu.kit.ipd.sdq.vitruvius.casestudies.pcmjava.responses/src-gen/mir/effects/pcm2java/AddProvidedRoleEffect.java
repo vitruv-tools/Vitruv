@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -107,10 +107,10 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final OperationProvidedRole providedRole, final ClassifierImport interfaceImport, final NamespaceClassifierReference namespaceClassifierReference, final Interface operationProvidingInterface, final org.emftext.language.java.classifiers.Class javaClass) {
-      PCM2JavaHelper.createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
+      Pcm2JavaHelper.createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
       EList<TypeReference> _implements = javaClass.getImplements();
       _implements.add(namespaceClassifierReference);
-      PCM2JavaHelper.addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
     }
   }
 }

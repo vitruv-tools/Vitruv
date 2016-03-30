@@ -1,7 +1,7 @@
 package mir.effects.pcm2java;
 
 import com.google.common.base.Objects;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -110,8 +110,8 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
       if ((!sigIsOpSig)) {
         return;
       }
-      PCM2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
-      ClassMethod correspondingClassMethod = PCM2JavaHelper.findMethodInClass(componentClass, classMethod);
+      Pcm2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
+      ClassMethod correspondingClassMethod = Pcm2JavaHelper.findMethodInClass(componentClass, classMethod);
       boolean _equals = Objects.equal(null, correspondingClassMethod);
       if (_equals) {
         EList<Member> _members = componentClass.getMembers();

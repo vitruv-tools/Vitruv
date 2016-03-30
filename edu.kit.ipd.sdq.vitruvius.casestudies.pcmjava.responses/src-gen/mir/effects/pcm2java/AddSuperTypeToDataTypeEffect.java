@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -78,7 +78,7 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect AddSuperTypeToDataTypeEffect with input:");
     getLogger().debug("   DataType: " + this.dataType);
     getLogger().debug("   TypeReference: " + this.innerTypeReference);
-    getLogger().debug("   void: " + this.superType);
+    getLogger().debug("   Class: " + this.superType);
     
     NamespaceClassifierReference namespaceClassifier = initializeCreateElementState(
     	() -> getCorrepondenceSourceNamespaceClassifier(dataType, innerTypeReference, superType), // correspondence source supplier
@@ -120,11 +120,11 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     
     private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final Class<?> superType, final NamespaceClassifierReference namespaceClassifier, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU) {
       String _name = superType.getName();
-      final ClassifierImport collectionTypeClassImport = PCM2JavaHelper.getJavaClassImport(_name);
+      final ClassifierImport collectionTypeClassImport = Pcm2JavaHelper.getJavaClassImport(_name);
       EList<Import> _imports = dataTypeImplementationCU.getImports();
       _imports.add(collectionTypeClassImport);
       ConcreteClassifier _classifier = collectionTypeClassImport.getClassifier();
-      PCM2JavaHelper.createNamespaceClassifierReference(namespaceClassifier, _classifier);
+      Pcm2JavaHelper.createNamespaceClassifierReference(namespaceClassifier, _classifier);
       final QualifiedTypeArgument qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
       qualifiedTypeArgument.setTypeReference(innerTypeReference);
       EList<ClassifierReference> _classifierReferences = namespaceClassifier.getClassifierReferences();

@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -127,14 +127,14 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
     }
     
     private void executeUserOperations(final org.emftext.language.java.classifiers.Class compositeComponentClass, final AssemblyContext assemblyContext, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass) {
-      final TypeReference typeRef = PCM2JavaHelper.createNamespaceClassifierReference(encapsulatedComponentJavaClass);
+      final TypeReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(encapsulatedComponentJavaClass);
       String _entityName = assemblyContext.getEntityName();
-      PCM2JavaHelper.createPrivateField(assemblyContextField, typeRef, _entityName);
+      Pcm2JavaHelper.createPrivateField(assemblyContextField, typeRef, _entityName);
       EList<Member> _members = compositeComponentClass.getMembers();
       _members.add(assemblyContextField);
-      PCM2JavaHelper.addConstructorToClass(constructor, compositeComponentClass);
-      PCM2JavaHelper.addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentClass, encapsulatedComponentJavaClass);
-      PCM2JavaHelper.createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
+      Pcm2JavaHelper.addConstructorToClass(constructor, compositeComponentClass);
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentClass, encapsulatedComponentJavaClass);
+      Pcm2JavaHelper.createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
     }
   }
 }

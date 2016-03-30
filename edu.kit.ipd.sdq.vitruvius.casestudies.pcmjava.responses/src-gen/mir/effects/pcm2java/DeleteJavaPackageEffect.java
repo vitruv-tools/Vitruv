@@ -60,8 +60,8 @@ public class DeleteJavaPackageEffect extends AbstractEffectRealization {
   protected void executeEffect() throws IOException {
     getLogger().debug("Called effect DeleteJavaPackageEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
-    getLogger().debug("   void: " + this.packageName);
-    getLogger().debug("   void: " + this.expectedTag);
+    getLogger().debug("   String: " + this.packageName);
+    getLogger().debug("   String: " + this.expectedTag);
     
     org.emftext.language.java.containers.Package javaPackage = initializeDeleteElementState(
     	() -> getCorrepondenceSourceJavaPackage(sourceElementMappedToPackage, packageName, expectedTag), // correspondence source supplier

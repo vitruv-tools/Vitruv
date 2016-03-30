@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java
 
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.containers.CompilationUnit
@@ -49,7 +49,7 @@ import org.emftext.language.java.imports.ImportsFactory
 import org.eclipse.emf.common.util.URI
 import org.emftext.language.java.types.PrimitiveType
 
-class PCM2JavaHelper {
+class Pcm2JavaHelper {
 	public static def void initializeCompilationUnitAndJavaClassifier(CompilationUnit compilationUnit, ConcreteClassifier javaClassifier, String name) {
 		compilationUnit.name = name;
 		javaClassifier.name = name;

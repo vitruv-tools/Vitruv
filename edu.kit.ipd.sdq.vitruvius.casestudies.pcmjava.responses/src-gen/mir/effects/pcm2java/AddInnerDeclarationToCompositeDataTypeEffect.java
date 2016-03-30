@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -134,9 +134,9 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     private void executeUserOperations(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod, final org.emftext.language.java.classifiers.Class dataTypeClass) {
       TypeReference _copy = EcoreUtil.<TypeReference>copy(dataTypeReference);
       String _entityName = innerDeclaration.getEntityName();
-      PCM2JavaHelper.createPrivateField(innerDataTypeField, _copy, _entityName);
-      PCM2JavaHelper.createSetter(innerDataTypeField, setterMethod);
-      PCM2JavaHelper.createGetter(innerDataTypeField, getterMethod);
+      Pcm2JavaHelper.createPrivateField(innerDataTypeField, _copy, _entityName);
+      Pcm2JavaHelper.createSetter(innerDataTypeField, setterMethod);
+      Pcm2JavaHelper.createGetter(innerDataTypeField, getterMethod);
       EList<Member> _members = dataTypeClass.getMembers();
       _members.add(innerDataTypeField);
       EList<Member> _members_1 = dataTypeClass.getMembers();
@@ -144,7 +144,7 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
       EList<Member> _members_2 = dataTypeClass.getMembers();
       _members_2.add(setterMethod);
       EList<Member> _members_3 = dataTypeClass.getMembers();
-      PCM2JavaHelper.sortMembers(_members_3);
+      Pcm2JavaHelper.sortMembers(_members_3);
     }
   }
 }

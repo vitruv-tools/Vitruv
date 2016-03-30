@@ -19,7 +19,6 @@ import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.statements.Statement
-import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.palladiosimulator.pcm.system.System
 import org.palladiosimulator.pcm.repository.CollectionDataType
@@ -34,7 +33,7 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import org.emftext.language.java.generics.GenericsFactory
 import org.emftext.language.java.types.PrimitiveType
-import static extension edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper.*
+import static extension edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper.*
 
 import "http://www.emftext.org/java" as java
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
@@ -489,12 +488,22 @@ execute: {
 		addConstructorToClass(javaClass)
 	}
 	for (ctor : javaClass.members.filter(typeof(Constructor))) {
-		val newParam = createOrdinaryParameter(EcoreUtil.copy(typeRef), requiredRoleName)
-		ctor.parameters.add(newParam)
-		val asssignment = createAssignmentFromParameterToField(requiredInterfaceField, newParam);
-		ctor.statements.add(asssignment)
+		callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
 	}
 }
+
+effect: AddParameterAndAssignmentToConstructor
+model input: pcm.core.entity.NamedElement as parameterCorrespondenceSource, java.members.Constructor as constructor, java.types.NamespaceClassifierReference as typeReference, java.members.Field as fieldToBeAssigned
+other input: String as parameterName
+create element: java.parameters.OrdinaryParameter as newParameter corresponding to parameterCorrespondenceSource
+execute: {
+	newParameter.name = parameterName;
+	newParameter.typeReference = EcoreUtil.copy(typeReference);
+	constructor.parameters.add(newParameter)
+	val asssignment = createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
+	constructor.statements.add(asssignment)
+}
+
 
 response: RemoveRequiredRoleFromComponent
 trigger: remove from list pcm.repository.RepositoryComponent[requiredRoles_InterfaceRequiringEntity]
@@ -523,6 +532,7 @@ execute: {
 		return
 	}
 	for (ctor : javaClass.members.filter(typeof(Constructor))) {
+		callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
 		var Statement statementToRemove = null;
 		for (statement : ctor.statements) {
 			if (statement instanceof ExpressionStatement) {
@@ -545,20 +555,25 @@ execute: {
 				}
 			}
 		}
-		var Parameter parameterToRemove = null;
-		for (parameter : ctor.parameters) {
-			if (parameter.name.equals(requiredRole.entityName)) {
-				parameterToRemove = parameter;
-			}
-		}
+//		var Parameter parameterToRemove = null;
+//		for (parameter : ctor.parameters) {
+//			if (parameter.name.equals(requiredRole.entityName)) {
+//				parameterToRemove = parameter;
+//			}
+//		}
 		if (statementToRemove != null) {
 			ctor.statements.remove(statementToRemove);
 		}
-		if (parameterToRemove != null) {
-			ctor.parameters.remove(parameterToRemove);
-		}
+//		if (parameterToRemove != null) {
+//			ctor.parameters.remove(parameterToRemove);
+//		}
 	}
 }
+
+effect: RemoveCorrespondingParameterFromConstructor
+model input: java.members.Constructor as ctor, pcm.core.entity.NamedElement as correspondenceSource
+delete element: java.parameters.OrdinaryParameter as param corresponding to correspondenceSource
+	with ctor.parameters.contains(param)
 
 effect: ReinitializeOperationRequiredRole
 model input: pcm.repository.OperationRequiredRole as requiredRole

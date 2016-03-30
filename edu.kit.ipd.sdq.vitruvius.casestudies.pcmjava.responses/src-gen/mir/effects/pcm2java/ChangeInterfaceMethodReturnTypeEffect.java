@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -81,7 +81,7 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
     }
     
     private void executeUserOperations(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
-      final TypeReference returnTypeReference = PCM2JavaHelper.createTypeReference(returnType, returnTypeClass);
+      final TypeReference returnTypeReference = Pcm2JavaHelper.createTypeReference(returnType, returnTypeClass);
       interfaceMethod.setTypeReference(returnTypeReference);
     }
   }

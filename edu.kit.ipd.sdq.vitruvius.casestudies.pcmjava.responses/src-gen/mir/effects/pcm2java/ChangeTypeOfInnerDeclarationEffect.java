@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -76,7 +76,7 @@ public class ChangeTypeOfInnerDeclarationEffect extends AbstractEffectRealizatio
       EObject _newAffectedEObject = change.getNewAffectedEObject();
       final InnerDeclaration innerDeclaration = ((InnerDeclaration) _newAffectedEObject);
       DataType _newValue = change.getNewValue();
-      final TypeReference newDataTypeReference = PCM2JavaHelper.createTypeReference(_newValue, newJavaDataType);
+      final TypeReference newDataTypeReference = Pcm2JavaHelper.createTypeReference(_newValue, newJavaDataType);
       this.effectFacade.callChangeInnerDeclarationType(innerDeclaration, newDataTypeReference);
     }
   }

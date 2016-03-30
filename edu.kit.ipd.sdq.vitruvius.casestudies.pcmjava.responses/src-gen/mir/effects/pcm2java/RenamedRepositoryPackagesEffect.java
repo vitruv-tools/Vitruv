@@ -1,7 +1,7 @@
 package mir.effects.pcm2java;
 
 import com.google.common.collect.Iterables;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -51,7 +51,7 @@ public class RenamedRepositoryPackagesEffect extends AbstractEffectRealization {
   }
   
   private String getModelPath(final UpdateSingleValuedEAttribute<String> change, final org.emftext.language.java.containers.Package rootPackage) {
-    String _buildJavaFilePath = PCM2JavaHelper.buildJavaFilePath(rootPackage);
+    String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
     return _buildJavaFilePath;
   }
   

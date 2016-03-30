@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -81,7 +81,7 @@ public class ChangeParameterTypeEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final OrdinaryParameter javaParameter, final DataType parameterType, final org.emftext.language.java.classifiers.Class javaParameterTypeClass) {
-      final TypeReference parameterTypeReference = PCM2JavaHelper.createTypeReference(parameterType, javaParameterTypeClass);
+      final TypeReference parameterTypeReference = Pcm2JavaHelper.createTypeReference(parameterType, javaParameterTypeClass);
       javaParameter.setTypeReference(parameterTypeReference);
     }
   }

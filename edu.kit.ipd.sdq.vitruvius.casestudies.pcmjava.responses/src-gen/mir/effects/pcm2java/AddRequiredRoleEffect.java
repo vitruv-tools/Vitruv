@@ -1,7 +1,7 @@
 package mir.effects.pcm2java;
 
 import com.google.common.collect.Iterables;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -22,8 +22,6 @@ import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.impl.MembersFactoryImpl;
-import org.emftext.language.java.parameters.Parameter;
-import org.emftext.language.java.statements.Statement;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationInterface;
@@ -114,31 +112,23 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final OperationRequiredRole requiredRole, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass) {
-      final NamespaceClassifierReference typeRef = PCM2JavaHelper.createNamespaceClassifierReference(requiredInterface);
-      PCM2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
       final String requiredRoleName = requiredRole.getEntityName();
       NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
-      PCM2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
+      Pcm2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
       EList<Member> _members = javaClass.getMembers();
       _members.add(requiredInterfaceField);
       EList<Member> _members_1 = javaClass.getMembers();
       Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members_1, Constructor.class);
       boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_filter);
       if (_isNullOrEmpty) {
-        PCM2JavaHelper.addConstructorToClass(javaClass);
+        Pcm2JavaHelper.addConstructorToClass(javaClass);
       }
       EList<Member> _members_2 = javaClass.getMembers();
       Iterable<Constructor> _filter_1 = Iterables.<Constructor>filter(_members_2, Constructor.class);
       for (final Constructor ctor : _filter_1) {
-        {
-          NamespaceClassifierReference _copy_1 = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
-          final Parameter newParam = PCM2JavaHelper.createOrdinaryParameter(_copy_1, requiredRoleName);
-          EList<Parameter> _parameters = ctor.getParameters();
-          _parameters.add(newParam);
-          final Statement asssignment = PCM2JavaHelper.createAssignmentFromParameterToField(requiredInterfaceField, newParam);
-          EList<Statement> _statements = ctor.getStatements();
-          _statements.add(asssignment);
-        }
+        this.effectFacade.callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
       }
     }
   }

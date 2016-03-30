@@ -4,8 +4,11 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
+import org.emftext.language.java.members.Constructor;
+import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.parameters.OrdinaryParameter;
+import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
@@ -180,10 +183,27 @@ public class EffectsFacade extends AbstractEffectsFacade {
     effect.applyEffect();
   }
   
+  public void callAddParameterAndAssignmentToConstructor(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName) {
+    mir.effects.pcm2java.AddParameterAndAssignmentToConstructorEffect effect = new mir.effects.pcm2java.AddParameterAndAssignmentToConstructorEffect(this.executionState, calledBy);
+    effect.setParameterCorrespondenceSource(parameterCorrespondenceSource);
+    effect.setConstructor(constructor);
+    effect.setTypeReference(typeReference);
+    effect.setFieldToBeAssigned(fieldToBeAssigned);
+    effect.setParameterName(parameterName);
+    effect.applyEffect();
+  }
+  
   public void callRemoveRequiredRole(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     mir.effects.pcm2java.RemoveRequiredRoleEffect effect = new mir.effects.pcm2java.RemoveRequiredRoleEffect(this.executionState, calledBy);
     effect.setRequiredRole(requiredRole);
     effect.setRequiringEntity(requiringEntity);
+    effect.applyEffect();
+  }
+  
+  public void callRemoveCorrespondingParameterFromConstructor(final Constructor ctor, final NamedElement correspondenceSource) {
+    mir.effects.pcm2java.RemoveCorrespondingParameterFromConstructorEffect effect = new mir.effects.pcm2java.RemoveCorrespondingParameterFromConstructorEffect(this.executionState, calledBy);
+    effect.setCtor(ctor);
+    effect.setCorrespondenceSource(correspondenceSource);
     effect.applyEffect();
   }
   

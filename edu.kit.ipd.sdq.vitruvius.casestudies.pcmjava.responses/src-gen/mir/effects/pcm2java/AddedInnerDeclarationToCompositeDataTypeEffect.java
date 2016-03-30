@@ -1,6 +1,6 @@
 package mir.effects.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.PCM2JavaHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
@@ -77,7 +77,7 @@ public class AddedInnerDeclarationToCompositeDataTypeEffect extends AbstractEffe
     private void executeUserOperations(final CreateNonRootEObjectInList<InnerDeclaration> change, final org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass) {
       InnerDeclaration _newValue = change.getNewValue();
       DataType _datatype_InnerDeclaration = _newValue.getDatatype_InnerDeclaration();
-      final TypeReference innerDataTypeReference = PCM2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
+      final TypeReference innerDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
       EObject _newAffectedEObject = change.getNewAffectedEObject();
       final CompositeDataType compositeDataType = ((CompositeDataType) _newAffectedEObject);
       final InnerDeclaration innerDeclaration = change.getNewValue();

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCMJavaResponses
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
@@ -25,12 +25,11 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
- edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
+ edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
+ org.somox.gast2seff
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: mir.effects.pcm2java,
- mir.responses,
- mir.responses.responses5_1ToJava.pcm2java,
- mir.responses.mocks.org.palladiosimulator.pcm.core.entity,
- mir.responses.mocks.org.palladiosimulator.pcm.repository,
- mir.responses.mocks.org.palladiosimulator.pcm.seff,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm
