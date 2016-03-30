@@ -101,7 +101,7 @@ final class CorrespondenceHelper {
 			if (!optional || targetElements.size() > 1) {
 				throw new IllegalArgumentException(
 					"There were (" + targetElements.size() + ") corresponding elements of type " +
-						affectedElementClass.class.getSimpleName() + " for " + (if(optional) "optional" else "") +
+						affectedElementClass.getSimpleName() + " for " + (if(optional) "optional" else "") +
 						": " + sourceElement);
 			}
 		}
