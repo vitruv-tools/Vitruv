@@ -18,7 +18,6 @@ import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseChange2CommandTransforming
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
@@ -26,10 +25,6 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		super(change2CommandTransformingProvidingSupplier);
 	}
 
-	protected override Class<?> getChange2CommandTransformerClass() {
-		return AbstractResponseChange2CommandTransforming;
-	}
-	
 	/**
 	 * Set up test resources and initialize the test model,
 	 * acting as a template method for the {@link initializeTestModel} method.

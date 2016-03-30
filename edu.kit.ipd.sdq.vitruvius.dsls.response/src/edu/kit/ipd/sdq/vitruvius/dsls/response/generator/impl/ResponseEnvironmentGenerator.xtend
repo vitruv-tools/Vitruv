@@ -193,7 +193,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val ih = new XtendImportHelper();	
 		val change2CommandTransformingNameGenerator = modelPair.change2CommandTransformingClassNameGenerator;
 		val classImplementation = '''
-		public class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
+		public abstract class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
 			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
 				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
 				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");

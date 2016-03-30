@@ -103,7 +103,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override getSimpleName() '''
-			Change2CommandTransforming«metamodelPairName»'''
+			AbstractChange2CommandTransforming«metamodelPairName»'''
 		
 		public override getPackageName() '''
 			«basicResponsesPackageQualifiedName»'''	
