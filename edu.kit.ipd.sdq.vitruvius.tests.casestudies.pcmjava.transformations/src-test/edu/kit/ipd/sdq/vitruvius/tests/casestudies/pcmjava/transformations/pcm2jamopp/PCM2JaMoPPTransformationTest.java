@@ -56,7 +56,6 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
@@ -238,6 +237,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected Parameter addAndSyncParameterToSignature(final OperationSignature opSig, final DataType dataType,
             final String parameterName) {
         final Parameter param = RepositoryFactory.eINSTANCE.createParameter();
+        param.setEntityName(parameterName);
         param.setParameterName(parameterName);
         param.setDataType__Parameter(dataType);
         param.setModifier__Parameter(ParameterModifier.IN);
@@ -486,8 +486,10 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
                 constructorFound = true;
             }
         }
-        assertTrue("Could not find all necessary corresponding objects",
-                constructorFound && importFound && newConstructorCallFound && fieldFound);
+        assertTrue("Could not find corresponding constructor", constructorFound);
+        assertTrue("Could not find corresponding import", importFound);
+        assertTrue("Could not find corresponding new constructor call", newConstructorCallFound);
+        assertTrue("Could not find corresponding field", fieldFound);
     }
 
     @SuppressWarnings("unused")
@@ -588,11 +590,6 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         assertEquals("name of JaMoPP type is not expected name of PCM datatype", expectedTypeName.toLowerCase(),
                 fieldTypeName.toLowerCase());
 
-    }
-
-    @Override
-    protected java.lang.Class<?> getChange2CommandTransformerClass() {
-        return PCMJaMoPPChange2CommandTransformerBase.class;
     }
 
     protected void assertCompilationUnitForBasicComponentDeleted(final BasicComponent basicComponent) throws Throwable {

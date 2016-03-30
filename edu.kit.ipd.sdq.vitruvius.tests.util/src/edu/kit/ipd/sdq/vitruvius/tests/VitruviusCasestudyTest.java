@@ -120,20 +120,10 @@ public abstract class VitruviusCasestudyTest {
 
     protected void setUserInteractor(final UserInteracting newUserInteracting,
             final Change2CommandTransformingProviding transformingProviding) throws Throwable {
-    	final Class<?> change2CommandTransformerClass = this.getChange2CommandTransformerClass();
-    	Change2CommandTransforming change2CommandTransforming = null;
-    	for (Change2CommandTransforming currentChange2CommandTransforming : transformingProviding) {
-    		if (change2CommandTransformerClass.isInstance(currentChange2CommandTransforming)) {
-                change2CommandTransforming = currentChange2CommandTransforming;
-                change2CommandTransforming.setUserInteracting(newUserInteracting);
-            }
+    	for (Change2CommandTransforming change2CommandTransforming : transformingProviding) {
+    		change2CommandTransforming.setUserInteracting(newUserInteracting);
     	}
-        if (null == change2CommandTransforming) {
-            throw new RuntimeException("Could not find a Change2CommandTransforming that is currently active.");
-        }
     }
-    
-    protected abstract Class<?> getChange2CommandTransformerClass();
 
     /**
      * copied from:
