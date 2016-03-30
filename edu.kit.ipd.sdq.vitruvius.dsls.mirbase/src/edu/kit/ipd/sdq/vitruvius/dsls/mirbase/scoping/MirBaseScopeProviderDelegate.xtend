@@ -20,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EcorePackage
 
 class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(MirBaseScopeProviderDelegate)
@@ -94,7 +95,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	def createQualifiedEClassScope(Resource res) {
 		val classifierDescriptions = res.metamodelImports.map[
 			import | collectObjectDescriptions(import.package, true, true, false, import.name)
-		].flatten
+		].flatten + #[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null)];
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
@@ -120,7 +121,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * Creates and returns a {@link EObjectDescription} with simple name
 	 * or in case of a qualified name with the given package prefix.
 	 */
-	private def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName, String packagePrefix) {
+	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName, String packagePrefix) {
 		if (useSimpleName) {
 			return EObjectDescription.create(classifier.name, classifier);
 		} else {
