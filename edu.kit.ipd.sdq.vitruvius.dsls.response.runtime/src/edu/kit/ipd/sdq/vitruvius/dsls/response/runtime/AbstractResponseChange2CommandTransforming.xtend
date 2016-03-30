@@ -20,13 +20,20 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 
 	protected UserInteracting userInteracting;
 	
+	private List<Change2CommandTransformingPreprocessor> preprocessors;
+	
 	new() {
 		this.responseExecutors = new ArrayList<AbstractResponseExecutor>();
+		this.preprocessors = new ArrayList<Change2CommandTransformingPreprocessor>();
 		setUserInteracting(new UserInteractor());
 	}
 
 	protected def void addResponseExecutor(AbstractResponseExecutor executor) {
 		this.responseExecutors.add(executor);
+	}
+	
+	public def void addPreprocessor(Change2CommandTransformingPreprocessor preprocessor) {
+		this.preprocessors += preprocessor;
 	}
 	
 	override transformChanges2Commands(Blackboard blackboard) {
@@ -42,6 +49,11 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 
 	private def List<Command> handleChange(Change change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
+		for (preprocessor : preprocessors) {
+			if (preprocessor.doesProcess(change)) {
+				result.addAll(preprocessor.processChange(change, userInteracting, blackboard));	
+			}
+		}
 		if (change instanceof CompositeChange) {
 			for (Change c : (change as CompositeChange).getChanges()) {
 				result.addAll(this.handleChange(c, blackboard));
