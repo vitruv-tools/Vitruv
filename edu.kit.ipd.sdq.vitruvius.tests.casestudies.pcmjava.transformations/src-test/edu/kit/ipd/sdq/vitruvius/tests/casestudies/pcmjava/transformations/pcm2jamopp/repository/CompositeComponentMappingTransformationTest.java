@@ -40,7 +40,7 @@ public class CompositeComponentMappingTransformationTest extends PCM2JaMoPPTrans
     }
 
     @Test
-    public void testAddOperationRequiredRoleToCompositeComponent() throws Throwable {
+    public void testAddRequiredRoleToCompositeComponent() throws Throwable {
         final CompositeComponent compositeComponent = this.createAndSyncRepoAndCompositeComponent();
         final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(
                 compositeComponent.getRepository__RepositoryComponent(), PCM2JaMoPPTestUtils.INTERFACE_NAME);
