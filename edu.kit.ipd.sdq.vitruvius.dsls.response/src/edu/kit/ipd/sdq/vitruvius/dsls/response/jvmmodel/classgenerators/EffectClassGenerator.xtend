@@ -250,6 +250,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				
 				«FOR element : modelElements»
 					«modelElementInitialization.get(element)»
+					if (isAborted()) return;
 				«ENDFOR»
 				preProcessElements();
 				«IF hasExecutionBlock»
