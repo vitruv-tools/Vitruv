@@ -48,20 +48,20 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.NoProtocolTypeIDUsedTwice(arg0, arg1);
   }
   
-  public EList getParentInterfaces__Interface() {
-    return containedObject.getParentInterfaces__Interface();
-  }
-  
   public EList getProtocols__Interface() {
     return containedObject.getProtocols__Interface();
   }
   
-  public EList getRequiredCharacterisations() {
-    return containedObject.getRequiredCharacterisations();
+  public EList getParentInterfaces__Interface() {
+    return containedObject.getParentInterfaces__Interface();
   }
   
   public Repository getRepository__Interface() {
     return containedObject.getRepository__Interface();
+  }
+  
+  public EList getRequiredCharacterisations() {
+    return containedObject.getRequiredCharacterisations();
   }
   
   public void setRepository__Interface(final Repository arg0) {
@@ -76,44 +76,16 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     containedObject.setId(arg0);
   }
   
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
+  public CDORevision cdoRevision(final boolean arg0) {
+    return containedObject.cdoRevision(arg0);
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
   }
   
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
-  }
-  
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
-  }
-  
-  public void cdoPrefetch(final int arg0) {
-    containedObject.cdoPrefetch(arg0);
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
-  }
-  
-  public boolean cdoInvalid() {
-    return containedObject.cdoInvalid();
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
+  public CDOState cdoState() {
+    return containedObject.cdoState();
   }
   
   public CDOResource cdoDirectResource() {
@@ -124,24 +96,52 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.cdoView();
   }
   
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
-  }
-  
-  public CDORevision cdoRevision(final boolean arg0) {
-    return containedObject.cdoRevision(arg0);
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDOID cdoID() {
     return containedObject.cdoID();
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
   }
   
-  public CDOState cdoState() {
-    return containedObject.cdoState();
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
+  }
+  
+  public void cdoPrefetch(final int arg0) {
+    containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
+  }
+  
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
+  }
+  
+  public boolean cdoInvalid() {
+    return containedObject.cdoInvalid();
+  }
+  
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
+  }
+  
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
   }
   
   public EObject eContainer() {
@@ -152,12 +152,28 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.eClass();
   }
   
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
   }
   
   public boolean eIsSet(final EStructuralFeature arg0) {
     return containedObject.eIsSet(arg0);
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
   }
   
   public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
@@ -168,20 +184,8 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.eGet(arg0);
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
-  }
-  
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public Resource eResource() {
-    return containerObject.eResource();
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
   }
   
   public EList eContents() {
@@ -190,10 +194,6 @@ public class OperationInterfaceContainerMock implements OperationInterface {
   
   public EList eCrossReferences() {
     return containedObject.eCrossReferences();
-  }
-  
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
   }
   
   public EReference eContainmentFeature() {
@@ -208,12 +208,12 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     containedObject.eNotify(arg0);
   }
   
-  public boolean eDeliver() {
-    return containedObject.eDeliver();
-  }
-  
   public void eSetDeliver(final boolean arg0) {
     containedObject.eSetDeliver(arg0);
+  }
+  
+  public boolean eDeliver() {
+    return containedObject.eDeliver();
   }
   
   public EList eAdapters() {
