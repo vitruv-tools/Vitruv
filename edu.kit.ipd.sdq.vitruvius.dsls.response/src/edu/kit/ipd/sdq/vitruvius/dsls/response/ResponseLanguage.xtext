@@ -2,8 +2,10 @@ grammar edu.kit.ipd.sdq.vitruvius.dsls.response.ResponseLanguage with edu.kit.ip
 hidden(WS, SL_COMMENT)
 
 generate responseLanguage "http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
+
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
+
 
 ResponseFile:
 	(namespaceImports=XImportSection)?
@@ -21,6 +23,10 @@ Response:
 	'response:' name=ValidID
 	trigger=Trigger
 	effect=ImplicitEffect;
+
+
+
+// ****** EFFECTS ******
 
 fragment Effect:
 	(retrieveElements+=CorrespondingModelElementRetrieve |
@@ -40,10 +46,29 @@ EffectInput:
 	{EffectInput}
 	('input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
 	('plain java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?;
-	
+
+
+
+// ****** CORRESPONDENCE SPECIFICATION ******	
+
+fragment CorrespondingModelElementSpecification:
+	elementType=ModelElement 'as' name=ValidID 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
+
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}
 	'create element:' CorrespondingModelElementSpecification ('tag with' tag=TagCodeBlock)? (persistence=ModelPersistence)?;
+
+fragment CorrespondingModelElementRetrieveOrDelete:
+	CorrespondingModelElementSpecification ('tagged with' tag=TagCodeBlock)? ('with' precondition=PreconditionCodeBlock)?
+	(failSpecification=CorrespondenceFailSpecification)?;
+
+CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
+	{CorrespondingModelElementRetrieve}
+	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (persistence=ModelMove)?;
+
+CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
+	{CorrespondingModelElementDelete}
+	'delete element:' CorrespondingModelElementRetrieveOrDelete;
 
 ModelPersistence returns ModelLocation:
 	(useRelativeToSource?='persist as root at changed model relative location:'
@@ -53,19 +78,34 @@ ModelMove returns ModelLocation:
 	(useRelativeToSource?='move containing model relative to original location:'
 	| useRelativeToProject?='move containing model to project-relative location:') modelPath=ModelPathCodeBlock;
 
-CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
-	{CorrespondingModelElementDelete}
-	'delete element:' CorrespondingModelElementRetrieveOrDelete;
 
-CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
-	{CorrespondingModelElementRetrieve}
-	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (persistence=ModelMove)?;
 
-fragment CorrespondingModelElementRetrieveOrDelete:
-	CorrespondingModelElementSpecification ('with' precondition=PreconditionCodeBlock)? (optional?='optional')? ('tagged with' tag=TagCodeBlock)? ;
+// ****** CORRESPONDENCE FAIL ******
 
-fragment CorrespondingModelElementSpecification:
-	elementType=ModelElement 'as' name=ValidID 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
+CorrespondenceFailSpecification:
+	'on fail' (CorrespondenceFailException | CorrespondenceFailAction);
+
+CorrespondenceFailException:
+	{CorrespondenceFailException}
+	'throw exception';
+
+CorrespondenceFailAction:
+	(CorrespondenceFailDialog | CorrespondenceFailDoNothing /*| CorrespondenceFailCodeBlock */) (abortEffect?='and abort effect' | 'and continue effect');
+	
+CorrespondenceFailDoNothing:
+	{CorrespondenceFailDoNothing}
+	'do nothing';
+	
+CorrespondenceFailDialog:
+	('show default user dialog' {CorrespondenceFailDefaultDialog}
+	| 'show user dialog with message' {CorrespondenceFailCustomDialog} message=STRING);
+	
+/*CorrespondenceFailCodeBlock returns CorrespondenceFailCodeBlock:
+	CodeBlock;*/
+
+
+
+// ****** CODE BLOCKS ******
 
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
@@ -89,6 +129,10 @@ ExecutionCodeBlock returns ExecutionCodeBlock:
 
 fragment CodeBlock:
 	code=XExpression;
+
+
+
+// ****** TRIGGER ******
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];

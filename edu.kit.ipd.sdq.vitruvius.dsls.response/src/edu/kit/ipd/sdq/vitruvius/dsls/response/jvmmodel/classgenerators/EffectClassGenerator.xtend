@@ -28,6 +28,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGener
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceFailException
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceFailCustomDialog
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceFailSpecification
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceFailDoNothing
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondenceFailDefaultDialog
 
 abstract class EffectClassGenerator extends ClassGenerator {
 	protected final Effect effect;
@@ -299,9 +305,22 @@ abstract class EffectClassGenerator extends ClassGenerator {
 				«correspondenceSourceSupplier», // correspondence source supplier
 				«correspondingElementPreconditionChecker», // correspondence precondition checker
 				«tagSupplier», // tag supplier
-				«affectedElementClass.javaClass».class,	«elementRetrieveOrDelete.optional»);
+				«affectedElementClass.javaClass».class,
+				«elementRetrieveOrDelete.failSpecification.correspondenceFailHandlerInitialization»);
 			«persistenceInformationInitializer»
 		'''	
+	}
+	
+	private def StringConcatenationClient getCorrespondenceFailHandlerInitialization(CorrespondenceFailSpecification failSpec) {
+		if (failSpec == null || failSpec instanceof CorrespondenceFailException) {
+			return '''«CorrespondenceFailHandlerFactory».createExceptionHandler()'''
+		} else if (failSpec instanceof CorrespondenceFailCustomDialog) {
+			return '''«CorrespondenceFailHandlerFactory».createCustomUserDialogHandler(«failSpec.abortEffect», "«failSpec.message»")'''
+		} else if (failSpec instanceof CorrespondenceFailDefaultDialog) {
+			return '''«CorrespondenceFailHandlerFactory».createDefaultUserDialogHandler(«failSpec.abortEffect»)'''
+		} else if (failSpec instanceof CorrespondenceFailDoNothing) {
+			return '''«CorrespondenceFailHandlerFactory».createDoNothingHandler(«failSpec.abortEffect»)'''
+		}
 	}
 	
 	private def dispatch StringConcatenationClient getInitializationCode(CorrespondingModelElementCreate elementCreate, CharSequence parameterCallList) {
