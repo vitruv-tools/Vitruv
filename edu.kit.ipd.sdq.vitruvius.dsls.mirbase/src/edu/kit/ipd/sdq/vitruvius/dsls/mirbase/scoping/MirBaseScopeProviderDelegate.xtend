@@ -92,13 +92,30 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * 
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
-	def createQualifiedEClassScope(Resource res) {
+	private def createQualifiedEClassScope(Resource res, boolean includeAbstract, boolean includeEObject) {
 		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, true, false, import.name)
-		].flatten + #[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null)];
+			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useSimpleNames, import.name)
+		].flatten +
+			if (includeEObject) {
+				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null)];	
+			} else {
+				#[];
+			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
+	}
+	
+	def createQualifiedEClassScopeWithoutAbstract(Resource res) {
+		return createQualifiedEClassScope(res, true, false);
+	}
+	
+	def createQualifiedEClassScope(Resource res) {
+		return createQualifiedEClassScope(res, false, false);
+	}
+	
+	def createQualifiedEClassScopeWithEObject(Resource res) {
+		return createQualifiedEClassScope(res, true, true);
 	}
 	
 	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
@@ -122,14 +139,15 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * or in case of a qualified name with the given package prefix.
 	 */
 	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName, String packagePrefix) {
+		var QualifiedName qualifiedName;
 		if (useSimpleName) {
-			return EObjectDescription.create(classifier.name, classifier);
+			qualifiedName = QualifiedName.create(classifier.name);
 		} else {
-			var qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
-			if (packagePrefix != null) {
-				qualifiedName = QualifiedName.create(packagePrefix).append(qualifiedName);
-			}
-			return EObjectDescription.create(qualifiedName, classifier);
+			qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
 		}
+		if (packagePrefix != null) {
+			qualifiedName = QualifiedName.create(packagePrefix).append(qualifiedName);
+		}
+		return EObjectDescription.create(qualifiedName, classifier);
 	}
 }

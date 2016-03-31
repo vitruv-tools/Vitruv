@@ -12,7 +12,7 @@ fragment MirBaseFile:
 	(metamodelImports+=MetamodelImport)*;
 
 MetamodelImport:
-	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID;
+	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID (useSimpleNames?='using simple names')?;
 
 NamedJavaElement:
 	type=JvmTypeReference 'as' name=ValidID;

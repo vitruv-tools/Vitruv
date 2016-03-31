@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.scoping
 
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -30,13 +29,13 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			if (context instanceof CorrespondingModelElementCreate
 				|| context.eContainer() instanceof CorrespondingModelElementCreate
 			) {
-				return createQualifiedConcreteEClassScope(context.eResource);
+				return createQualifiedEClassScopeWithoutAbstract(context.eResource);
 			} else if (reference.equals(MODEL_ELEMENT__ELEMENT) && 
 				(context.eContainer() instanceof EffectInput || context instanceof EffectInput)
 			) {
 				return createQualifiedEClassScopeWithSpecialInputTypes(context.eResource);
 			} else {
-				return createQualifiedEClassScope(context.eResource)
+				return createQualifiedEClassScopeWithEObject(context.eResource)
 			}
 		}
 		super.getScope(context, reference)
@@ -60,26 +59,9 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		}
 	}
 
-	/**
-	 * Create an {@link IScope} that represents all non-abstract {@link EClass}es
-	 * that are referencable inside the {@link Resource} via {@link Import}s
-	 * by a fully qualified name.
-	 * 
-	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
-	 */
-	def createQualifiedConcreteEClassScope(Resource res) {
-		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, false, false, import.name)
-		].flatten
-
-		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
-		return resultScope
-	}
-	
-	
 	def createQualifiedEClassScopeWithSpecialInputTypes(Resource res) {
 		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, true, false, import.name)
+			import | collectObjectDescriptions(import.package, true, true, import.useSimpleNames, import.name)
 		].flatten + #[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null),
 			createEObjectDescription(InputTypesPackage.Literals.STRING, true, null),
 			createEObjectDescription(InputTypesPackage.Literals.INT, true, null)
