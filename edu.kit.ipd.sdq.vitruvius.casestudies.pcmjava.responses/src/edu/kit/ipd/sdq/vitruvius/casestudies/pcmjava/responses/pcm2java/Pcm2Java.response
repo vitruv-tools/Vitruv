@@ -236,7 +236,8 @@ execute: callDeleteJavaClassifier(change.oldValue as CompositeDataType)
 
 response: AddedInnerDeclarationToCompositeDataType
 trigger: insert in list pcm.CompositeDataType[innerDeclaration_CompositeDataType]
-retrieve element: java.Class as nonPrimitiveInnerDataTypeClass corresponding to change.newValue.datatype_InnerDeclaration optional
+retrieve element: java.Class as nonPrimitiveInnerDataTypeClass corresponding to change.newValue.datatype_InnerDeclaration
+	on fail do nothing and continue effect
 execute: {
 	val innerDataTypeReference = createTypeReference(change.newValue.datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
 	val compositeDataType = change.newAffectedEObject as CompositeDataType;
@@ -281,7 +282,8 @@ execute: {
 
 response: ChangeTypeOfInnerDeclaration
 trigger: replace value pcm.InnerDeclaration[datatype_InnerDeclaration]
-retrieve element: java.Class as newJavaDataType corresponding to change.newValue optional
+retrieve element: java.Class as newJavaDataType corresponding to change.newValue
+	on fail do nothing and continue effect
 execute: {
 	val innerDeclaration = change.newAffectedEObject as InnerDeclaration;
 	val newDataTypeReference = createTypeReference(change.newValue, newJavaDataType);
@@ -442,8 +444,10 @@ execute: callRemoveProvidedRole(change.oldValue)
 // and thus remove is called, the correspondences cannot be resolved because of faulty correspondences 
 effect: RemoveProvidedRole
 input: pcm.ProvidedRole as providedRole
-delete element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole optional
-delete element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole optional
+delete element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
+	on fail show default user dialog and continue effect
+delete element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
+	on fail show user dialog with message "Due to old TUIDs remove cannot be performed" and continue effect
 
 
 // ####################################################
@@ -516,9 +520,12 @@ execute: {
 // but correspondences shall be removed
 effect: RemoveRequiredRole
 input: pcm.RequiredRole as requiredRole, pcm.InterfaceRequiringEntity as requiringEntity
-delete element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole optional
-delete element: java.Field as requiredInterfaceField corresponding to requiredRole optional
-retrieve element: java.Class as javaClass corresponding to requiringEntity optional
+delete element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
+	on fail do nothing and continue effect
+delete element: java.Field as requiredInterfaceField corresponding to requiredRole
+	on fail do nothing and continue effect
+retrieve element: java.Class as javaClass corresponding to requiringEntity
+	on fail do nothing and continue effect
 execute: {
 	if (javaClass == null) {
 		return
@@ -636,7 +643,8 @@ execute: callChangeInterfaceMethodReturnType(interfaceMethod, (change.newAffecte
 
 effect: ChangeInterfaceMethodReturnType
 input: java.InterfaceMethod as interfaceMethod, pcm.DataType as returnType
-retrieve element: java.Class as returnTypeClass corresponding to returnType optional
+retrieve element: java.Class as returnTypeClass corresponding to returnType
+	on fail do nothing and continue effect
 execute: {
 	val returnTypeReference = createTypeReference(returnType, returnTypeClass);
 	interfaceMethod.typeReference = returnTypeReference;
@@ -676,7 +684,8 @@ execute: callChangeParameterType(javaParameter, change.newValue)
 
 effect: ChangeParameterType
 input: java.OrdinaryParameter as javaParameter, pcm.DataType as parameterType
-retrieve element: java.Class as javaParameterTypeClass corresponding to parameterType optional
+retrieve element: java.Class as javaParameterTypeClass corresponding to parameterType
+	on fail do nothing and continue effect
 execute: {
 	val parameterTypeReference = createTypeReference(parameterType, javaParameterTypeClass);
 	javaParameter.typeReference = parameterTypeReference;
@@ -766,7 +775,8 @@ delete element: java.ClassMethod as classMethod corresponding to change.oldValue
 response: CreatedCollectionDataType
 trigger: insert in list pcm.Repository[dataTypes__Repository]
 precondition: change.newValue instanceof CollectionDataType
-retrieve element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType optional
+retrieve element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType
+	on fail do nothing and continue effect
 retrieve element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
 execute: {
 	// create correct (and in case of primitive types wrapped) type reference for the inner type

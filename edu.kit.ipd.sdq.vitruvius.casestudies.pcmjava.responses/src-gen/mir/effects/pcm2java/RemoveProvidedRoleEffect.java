@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -49,12 +50,14 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceRequiredInterfaceImport(providedRole), // correspondence source supplier
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	ClassifierImport.class,	true);
+    	ClassifierImport.class,
+    	CorrespondenceFailHandlerFactory.createDefaultUserDialogHandler(false));
     NamespaceClassifierReference namespaceClassifierReference = initializeDeleteElementState(
     	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
     	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	NamespaceClassifierReference.class,	true);
+    	NamespaceClassifierReference.class,
+    	CorrespondenceFailHandlerFactory.createCustomUserDialogHandler(false, "Due to old TUIDs remove cannot be performed"));
     preProcessElements();
     postProcessElements();
   }

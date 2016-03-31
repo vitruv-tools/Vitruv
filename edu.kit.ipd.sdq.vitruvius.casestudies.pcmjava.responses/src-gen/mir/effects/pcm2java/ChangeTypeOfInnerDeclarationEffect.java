@@ -2,6 +2,7 @@ package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -48,7 +49,8 @@ public class ChangeTypeOfInnerDeclarationEffect extends AbstractEffectRealizatio
     	() -> getCorrepondenceSourceNewJavaDataType(change), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,	true);
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
     preProcessElements();
     new mir.effects.pcm2java.ChangeTypeOfInnerDeclarationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, newJavaDataType);

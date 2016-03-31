@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -45,7 +46,8 @@ public class RenameResourceDemandingInternalBehaviorEffect extends AbstractEffec
     	() -> getCorrepondenceSourceJavaMethod(change), // correspondence source supplier
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	ClassMethod.class,	false);
+    	ClassMethod.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.RenameResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, javaMethod);

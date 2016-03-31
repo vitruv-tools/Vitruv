@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -61,17 +62,20 @@ public class ChangeNameOfInnerDeclarationEffect extends AbstractEffectRealizatio
     	() -> getCorrepondenceSourceCompositeTypeField(innerDeclaration), // correspondence source supplier
     	(Field _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	Field.class,	false);
+    	Field.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     ClassMethod compositeTypeGetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration), // correspondence source supplier
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeGetterMethod(innerDeclaration), // tag supplier
-    	ClassMethod.class,	false);
+    	ClassMethod.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     ClassMethod compositeTypeSetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration), // correspondence source supplier
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeSetterMethod(innerDeclaration), // tag supplier
-    	ClassMethod.class,	false);
+    	ClassMethod.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.ChangeNameOfInnerDeclarationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	innerDeclaration, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);

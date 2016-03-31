@@ -2,6 +2,7 @@ package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -98,7 +99,8 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
     	() -> getCorrepondenceSourceEncapsulatedComponentJavaClass(compositeComponentClass, assemblyContext), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,	false);
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.AddAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeComponentClass, assemblyContext, assemblyContextField, newConstructorCall, contextClassImport, constructor, encapsulatedComponentJavaClass);

@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -86,7 +87,8 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // correspondence source supplier
     	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
     	() -> getTagJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // tag supplier
-    	org.emftext.language.java.containers.Package.class,	false);
+    	org.emftext.language.java.containers.Package.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     setPersistenceInformation(javaPackage, () -> getModelPath(sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage), false);
     preProcessElements();
     new mir.effects.pcm2java.RenameJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(

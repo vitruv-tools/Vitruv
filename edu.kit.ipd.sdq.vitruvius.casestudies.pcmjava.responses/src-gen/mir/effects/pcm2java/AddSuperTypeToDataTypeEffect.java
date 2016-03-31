@@ -2,6 +2,7 @@ package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -89,12 +90,14 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceDataTypeImplementation(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,	false);
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     CompilationUnit dataTypeImplementationCU = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceDataTypeImplementationCU(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
     	(CompilationUnit _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	CompilationUnit.class,	false);
+    	CompilationUnit.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.AddSuperTypeToDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	dataType, innerTypeReference, superTypeQualifiedName, namespaceClassifier, dataTypeImplementation, dataTypeImplementationCU);

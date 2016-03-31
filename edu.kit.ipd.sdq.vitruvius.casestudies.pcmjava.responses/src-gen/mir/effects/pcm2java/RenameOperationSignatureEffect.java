@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -62,7 +63,8 @@ public class RenameOperationSignatureEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	InterfaceMethod.class,	false);
+    	InterfaceMethod.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.RenameOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod);

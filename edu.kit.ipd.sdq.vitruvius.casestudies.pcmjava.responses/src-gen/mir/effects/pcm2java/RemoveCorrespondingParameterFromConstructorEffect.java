@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -63,7 +64,8 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
     	() -> getCorrepondenceSourceParam(ctor, correspondenceSource), // correspondence source supplier
     	(OrdinaryParameter _element) -> getCorrespondingModelElementsPreconditionParam(ctor, correspondenceSource, _element), // correspondence precondition checker
     	() -> null, // tag supplier
-    	OrdinaryParameter.class,	false);
+    	OrdinaryParameter.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     postProcessElements();
   }

@@ -2,6 +2,7 @@ package mir.effects.pcm2java;
 
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -52,7 +53,8 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceDatatypesPackage(compositeDataType), // correspondence source supplier
     	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(compositeDataType, _element), // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,	false);
+    	org.emftext.language.java.containers.Package.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.RenameCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeDataType, datatypesPackage);

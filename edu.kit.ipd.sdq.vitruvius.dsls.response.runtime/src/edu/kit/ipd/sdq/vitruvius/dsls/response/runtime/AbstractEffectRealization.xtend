@@ -42,10 +42,18 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	}
 	
 	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
-		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, boolean optional) {
+		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, 
+		CorrespondenceFailHandler correspondenceFailHandler) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val tag = tagSupplier.apply();
-		val retrievedElement = CorrespondenceHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
+		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
+		if (retrievedElements.size != 1) {
+			if (correspondenceFailHandler.handle(retrievedElements, correspondenceSource, elementClass, userInteracting)) {
+				// TODO HK temporary hack to abort effect
+				throw new IllegalStateException();
+			}
+		}
+		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;
 		this.elementStates.put(retrievedElement, 
 			new EffectElementRetrieve(retrievedElement, correspondenceSource, executionState)
 		);
@@ -54,11 +62,19 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	
 	
 	protected def <T extends EObject> T initializeDeleteElementState(Function0<EObject> correspondenceSourceSupplier,
-		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, boolean optional
+		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass,
+		CorrespondenceFailHandler correspondenceFailHandler
 	) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val tag = tagSupplier.apply();
-		val retrievedElement = CorrespondenceHelper.getCorrespondingModelElement(correspondenceSource, elementClass, optional, tag, correspondencePreconditionMethod, blackboard);
+		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
+		if (retrievedElements.size != 1) {
+			if (correspondenceFailHandler.handle(retrievedElements, correspondenceSource, elementClass, userInteracting)) {
+				// TODO HK temporary hack to abort effect
+				throw new IllegalStateException();
+			}
+		}
+		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;
 		this.elementStates.put(retrievedElement, 
 			new EffectElementDelete(retrievedElement, correspondenceSource, executionState)
 		);

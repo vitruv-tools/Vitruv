@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -45,12 +46,14 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceJavaClassifier(sourceElement), // correspondence source supplier
     	(ConcreteClassifier _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	ConcreteClassifier.class,	false);
+    	ConcreteClassifier.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     CompilationUnit compilationUnit = initializeDeleteElementState(
     	() -> getCorrepondenceSourceCompilationUnit(sourceElement), // correspondence source supplier
     	(CompilationUnit _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	CompilationUnit.class,	false);
+    	CompilationUnit.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     postProcessElements();
   }

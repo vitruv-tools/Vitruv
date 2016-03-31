@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -52,12 +53,14 @@ public class RemovedParameterEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	InterfaceMethod.class,	false);
+    	InterfaceMethod.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     OrdinaryParameter javaParameter = initializeDeleteElementState(
     	() -> getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
     	(OrdinaryParameter _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	OrdinaryParameter.class,	false);
+    	OrdinaryParameter.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     postProcessElements();
   }

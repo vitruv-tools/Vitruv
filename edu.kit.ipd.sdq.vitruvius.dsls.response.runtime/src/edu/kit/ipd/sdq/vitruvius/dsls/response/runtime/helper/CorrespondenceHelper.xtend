@@ -9,6 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.Resp
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory
+import java.util.List
 
 final class CorrespondenceHelper {
 	private new() {}
@@ -80,8 +81,8 @@ final class CorrespondenceHelper {
 		return correspondences;
 	}
 
-	public static def <T> getCorrespondingModelElement(EObject sourceElement, Class<T> affectedElementClass,
-		boolean optional, String expectedTag, Function1<T, Boolean> preconditionMethod, Blackboard blackboard) {
+	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
+		String expectedTag, Function1<T, Boolean> preconditionMethod, Blackboard blackboard) {
 		val nonNullPreconditionMethod = if(preconditionMethod != null) preconditionMethod else [T input|true];
 		val targetElements = new ArrayList<T>();
 		try {
@@ -89,24 +90,9 @@ final class CorrespondenceHelper {
 				sourceElement, expectedTag, affectedElementClass);
 			targetElements += correspondingObjects.filterNull.filter(nonNullPreconditionMethod);
 		} catch (RuntimeException ex) {
-			if (!optional) {
-				throw new RuntimeException("An error occured when retrieved the corresponding elements of: " +
-					sourceElement);
-			} else {
-				// The element is optional so there can occur errors when trying to retrieve the corresponding element. Just catch it and go on.
-			}
 		}
 
-		if (targetElements.size() != 1) {
-			if (!optional || targetElements.size() > 1) {
-				throw new IllegalArgumentException(
-					"There were (" + targetElements.size() + ") corresponding elements of type " +
-						affectedElementClass.getSimpleName() + " for " + (if(optional) "optional" else "") +
-						": " + sourceElement);
-			}
-		}
-
-		return if(targetElements.isEmpty()) null else targetElements.get(0);
+		return targetElements;
 	}
 }
 	

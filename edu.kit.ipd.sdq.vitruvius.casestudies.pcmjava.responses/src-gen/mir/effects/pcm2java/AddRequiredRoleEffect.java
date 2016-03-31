@@ -3,6 +3,7 @@ package mir.effects.pcm2java;
 import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -82,12 +83,14 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceRequiredInterface(requiredRole), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	Interface.class,	false);
+    	Interface.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaClass(requiredRole), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,	false);
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiredInterfaceImport, requiredInterfaceField, requiredInterface, javaClass);

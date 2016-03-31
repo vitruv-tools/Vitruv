@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -72,17 +73,20 @@ public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization 
     	() -> getCorrepondenceSourceCompositeTypeField(innerDeclaration, newTypeReference), // correspondence source supplier
     	(Field _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	Field.class,	false);
+    	Field.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     Method compositeTypeGetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
     	(Method _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // tag supplier
-    	Method.class,	false);
+    	Method.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     Method compositeTypeSetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
     	(Method _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // tag supplier
-    	Method.class,	false);
+    	Method.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.ChangeInnerDeclarationTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	innerDeclaration, newTypeReference, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);

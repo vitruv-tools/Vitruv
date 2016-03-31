@@ -1,6 +1,7 @@
 package mir.effects.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -44,7 +45,8 @@ public class ChangedSystemNameEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceSystemPackage(change), // correspondence source supplier
     	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,	false);
+    	org.emftext.language.java.containers.Package.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.ChangedSystemNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, systemPackage);

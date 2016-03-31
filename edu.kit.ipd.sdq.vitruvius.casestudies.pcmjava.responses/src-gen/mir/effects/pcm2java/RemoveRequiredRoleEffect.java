@@ -3,6 +3,7 @@ package mir.effects.pcm2java;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -78,17 +79,20 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,	true);
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
     ClassifierImport requiredInterfaceImport = initializeDeleteElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceImport(requiredRole, requiringEntity), // correspondence source supplier
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	ClassifierImport.class,	true);
+    	ClassifierImport.class,
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
     Field requiredInterfaceField = initializeDeleteElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
     	(Field _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	Field.class,	true);
+    	Field.class,
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
     preProcessElements();
     new mir.effects.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiringEntity, javaClass, requiredInterfaceImport, requiredInterfaceField);

@@ -3,6 +3,7 @@ package mir.effects.pcm2java;
 import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2JavaHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.CorrespondenceFailHandlerFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
@@ -73,13 +74,15 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
     	() -> getCorrepondenceSourceCompilationUnit(classSourceElement, containingPackage, className), // correspondence source supplier
     	(CompilationUnit _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	CompilationUnit.class,	false);
+    	CompilationUnit.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     setPersistenceInformation(compilationUnit, () -> getModelPath(classSourceElement, containingPackage, className, compilationUnit), false);
     ConcreteClassifier javaClassifier = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaClassifier(classSourceElement, containingPackage, className), // correspondence source supplier
     	(ConcreteClassifier _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
-    	ConcreteClassifier.class,	false);
+    	ConcreteClassifier.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
     preProcessElements();
     new mir.effects.pcm2java.RenameJavaClassifierEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	classSourceElement, containingPackage, className, compilationUnit, javaClassifier);

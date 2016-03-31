@@ -34,12 +34,28 @@ public class DataTypeContainerMock implements DataType {
   
   private EObject containerObject;
   
+  public void setRepository__DataType(final Repository arg0) {
+    containedObject.setRepository__DataType(arg0);
+  }
+  
   public Repository getRepository__DataType() {
     return containedObject.getRepository__DataType();
   }
   
-  public void setRepository__DataType(final Repository arg0) {
-    containedObject.setRepository__DataType(arg0);
+  public CDOState cdoState() {
+    return containedObject.cdoState();
+  }
+  
+  public CDOView cdoView() {
+    return containedObject.cdoView();
+  }
+  
+  public CDOID cdoID() {
+    return containedObject.cdoID();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDORevision cdoRevision(final boolean arg0) {
@@ -50,58 +66,6 @@ public class DataTypeContainerMock implements DataType {
     return containedObject.cdoRevision();
   }
   
-  public CDOState cdoState() {
-    return containedObject.cdoState();
-  }
-  
-  public CDOResource cdoDirectResource() {
-    return containedObject.cdoDirectResource();
-  }
-  
-  public CDOView cdoView() {
-    return containedObject.cdoView();
-  }
-  
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
-  }
-  
-  public CDOID cdoID() {
-    return containedObject.cdoID();
-  }
-  
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
-  }
-  
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
-  }
-  
-  public void cdoPrefetch(final int arg0) {
-    containedObject.cdoPrefetch(arg0);
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
-  }
-  
-  public boolean cdoInvalid() {
-    return containedObject.cdoInvalid();
-  }
-  
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
-  }
-  
   public void cdoReload() {
     containedObject.cdoReload();
   }
@@ -110,48 +74,72 @@ public class DataTypeContainerMock implements DataType {
     return containedObject.cdoResource();
   }
   
-  public EObject eContainer() {
-    return containerObject;
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
   }
   
-  public EClass eClass() {
-    return containedObject.eClass();
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
   }
   
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
   }
   
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
   }
   
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
+  public boolean cdoInvalid() {
+    return containedObject.cdoInvalid();
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
+  public void cdoPrefetch(final int arg0) {
+    containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public CDOResource cdoDirectResource() {
+    return containedObject.cdoDirectResource();
   }
   
   public Resource eResource() {
     return containerObject.eResource();
   }
   
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
   }
   
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
   }
   
   public Object eGet(final EStructuralFeature arg0) {
     return containedObject.eGet(arg0);
   }
   
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
   }
   
   public EList eContents() {
@@ -162,24 +150,36 @@ public class DataTypeContainerMock implements DataType {
     return containedObject.eCrossReferences();
   }
   
-  public EReference eContainmentFeature() {
-    return containedObject.eContainmentFeature();
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
+  }
+  
+  public EObject eContainer() {
+    return containerObject;
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
   }
   
   public EStructuralFeature eContainingFeature() {
     return containedObject.eContainingFeature();
   }
   
+  public EReference eContainmentFeature() {
+    return containedObject.eContainmentFeature();
+  }
+  
   public void eNotify(final Notification arg0) {
     containedObject.eNotify(arg0);
   }
   
-  public void eSetDeliver(final boolean arg0) {
-    containedObject.eSetDeliver(arg0);
-  }
-  
   public boolean eDeliver() {
     return containedObject.eDeliver();
+  }
+  
+  public void eSetDeliver(final boolean arg0) {
+    containedObject.eSetDeliver(arg0);
   }
   
   public EList eAdapters() {
