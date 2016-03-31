@@ -43,6 +43,9 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.services,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr.internal,
  edu.kit.ipd.sdq.vitruvius.dsls.response.scoping,
- edu.kit.ipd.sdq.vitruvius.dsls.response.helper
+ edu.kit.ipd.sdq.vitruvius.dsls.response.helper,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.impl,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.util
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder

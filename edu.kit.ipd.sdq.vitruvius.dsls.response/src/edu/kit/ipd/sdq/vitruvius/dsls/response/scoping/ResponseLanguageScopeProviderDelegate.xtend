@@ -16,15 +16,25 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicSingleValu
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.EffectInput
+import org.eclipse.emf.ecore.EcorePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 
 class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
+		// context differs during content assist and validation: once we need to take the context, once the container
 		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
-			if (context.eContainer() instanceof CorrespondingModelElementCreate) {
+			if (context instanceof CorrespondingModelElementCreate
+				|| context.eContainer() instanceof CorrespondingModelElementCreate
+			) {
 				return createQualifiedConcreteEClassScope(context.eResource);
+			} else if (reference.equals(MODEL_ELEMENT__ELEMENT) && 
+				(context.eContainer() instanceof EffectInput || context instanceof EffectInput)
+			) {
+				return createQualifiedEClassScopeWithSpecialInputTypes(context.eResource);
 			} else {
 				return createQualifiedEClassScope(context.eResource)
 			}
@@ -66,4 +76,16 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		return resultScope
 	}
 	
+	
+	def createQualifiedEClassScopeWithSpecialInputTypes(Resource res) {
+		val classifierDescriptions = res.metamodelImports.map[
+			import | collectObjectDescriptions(import.package, true, true, false, import.name)
+		].flatten + #[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null),
+			createEObjectDescription(InputTypesPackage.Literals.STRING, true, null),
+			createEObjectDescription(InputTypesPackage.Literals.INT, true, null)
+		];
+
+		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
+		return resultScope
+	}
 }

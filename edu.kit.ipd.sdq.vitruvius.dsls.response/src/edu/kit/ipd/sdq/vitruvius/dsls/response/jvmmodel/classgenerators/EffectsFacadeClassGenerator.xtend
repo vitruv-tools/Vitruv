@@ -39,7 +39,7 @@ class EffectsFacadeClassGenerator extends ClassGenerator {
 		val effectNameGenerator = effect.effectClassNameGenerator;
 		return effect.toMethod("call" + effect.name, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
-			parameters += generateMethodInputParameters(effect.modelInputElements, effect.javaInputElements);
+			parameters += generateMethodInputParameters(effect.input.modelInputElements, effect.input.javaInputElements);
 			body = '''
 				«effectNameGenerator.qualifiedName» effect = new «effectNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
 				«FOR parameter : parameters»

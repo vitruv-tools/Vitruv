@@ -34,10 +34,13 @@ ImplicitEffect:
 
 ExplicitEffect:
 	'effect:' name=ValidID
-	// TODO HK replace, the distinction is not needed
-	('model input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
-	('other input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?
+	input=EffectInput
 	Effect;
+	
+EffectInput:
+	{EffectInput}
+	('input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
+	('plain java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?;
 	
 CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
 	{CorrespondingModelElementCreate}

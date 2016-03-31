@@ -17,6 +17,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelEle
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
+import org.eclipse.emf.ecore.EClass
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -76,7 +78,18 @@ class ResponseLanguageParameterGenerator {
 	}
 	
 	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<ModelElement> modelElements, Iterable<NamedJavaElement> javaElements) {
-		return modelElements.map[generateParameter(contextObject, it.name, it.element.instanceClass)] + javaElements.map[toParameter(contextObject, it.name, it.type)];
+		return modelElements.map[
+			generateParameter(contextObject, it.name, it.element.mappedInstanceClass)
+		] + javaElements.map[toParameter(contextObject, it.name, it.type)];
+	}
+	
+	private def getMappedInstanceClass(EClass eClass) {
+		if (eClass.instanceClass.equals(InputTypesPackage.Literals.STRING.instanceClass)) {
+			return String;
+		} else if (eClass.equals(InputTypesPackage.Literals.INT)) {
+			return Integer;
+		}
+		return eClass.instanceClass
 	}
 	
 	protected def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
