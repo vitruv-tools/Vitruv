@@ -48,6 +48,7 @@ public class ChangedParameterNameEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	OrdinaryParameter.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangedParameterNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, javaParameter);

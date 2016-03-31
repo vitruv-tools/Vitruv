@@ -46,6 +46,7 @@ public class CreateImplementationForComponentEffect extends AbstractEffectRealiz
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateImplementationForComponentEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	component, componentPackage);

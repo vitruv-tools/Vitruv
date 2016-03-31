@@ -64,18 +64,21 @@ public class ChangeNameOfInnerDeclarationEffect extends AbstractEffectRealizatio
     	() -> null, // tag supplier
     	Field.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     ClassMethod compositeTypeGetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration), // correspondence source supplier
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeGetterMethod(innerDeclaration), // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     ClassMethod compositeTypeSetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration), // correspondence source supplier
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeSetterMethod(innerDeclaration), // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeNameOfInnerDeclarationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	innerDeclaration, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);

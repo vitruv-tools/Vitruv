@@ -44,6 +44,7 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
     	() -> null, // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.UpdateSEFFImplementingMethodNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	seff, classMethod);

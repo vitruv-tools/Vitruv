@@ -55,12 +55,14 @@ public class RemovedParameterEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     OrdinaryParameter javaParameter = initializeDeleteElementState(
     	() -> getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
     	(OrdinaryParameter _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	OrdinaryParameter.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

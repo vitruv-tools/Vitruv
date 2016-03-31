@@ -37,18 +37,6 @@ public class OperationSignatureContainerMock implements OperationSignature {
   
   private EObject containerObject;
   
-  public void setReturnType__OperationSignature(final DataType arg0) {
-    containedObject.setReturnType__OperationSignature(arg0);
-  }
-  
-  public void setInterface__OperationSignature(final OperationInterface arg0) {
-    containedObject.setInterface__OperationSignature(arg0);
-  }
-  
-  public OperationInterface getInterface__OperationSignature() {
-    return containedObject.getInterface__OperationSignature();
-  }
-  
   public boolean ParameterNamesHaveToBeUniqueForASignature(final DiagnosticChain arg0, final Map arg1) {
     return containedObject.ParameterNamesHaveToBeUniqueForASignature(arg0, arg1);
   }
@@ -61,12 +49,24 @@ public class OperationSignatureContainerMock implements OperationSignature {
     return containedObject.getReturnType__OperationSignature();
   }
   
-  public EList getExceptions__Signature() {
-    return containedObject.getExceptions__Signature();
+  public void setReturnType__OperationSignature(final DataType arg0) {
+    containedObject.setReturnType__OperationSignature(arg0);
+  }
+  
+  public OperationInterface getInterface__OperationSignature() {
+    return containedObject.getInterface__OperationSignature();
+  }
+  
+  public void setInterface__OperationSignature(final OperationInterface arg0) {
+    containedObject.setInterface__OperationSignature(arg0);
   }
   
   public EList getFailureType() {
     return containedObject.getFailureType();
+  }
+  
+  public EList getExceptions__Signature() {
+    return containedObject.getExceptions__Signature();
   }
   
   public String getId() {
@@ -77,8 +77,20 @@ public class OperationSignatureContainerMock implements OperationSignature {
     containedObject.setId(arg0);
   }
   
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
+  }
+  
+  public CDORevision cdoRevision(final boolean arg0) {
+    return containedObject.cdoRevision(arg0);
+  }
+  
   public CDOState cdoState() {
     return containedObject.cdoState();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDOView cdoView() {
@@ -89,108 +101,64 @@ public class OperationSignatureContainerMock implements OperationSignature {
     return containedObject.cdoID();
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
-  }
-  
-  public CDORevision cdoRevision(final boolean arg0) {
-    return containedObject.cdoRevision(arg0);
-  }
-  
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
-  }
-  
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
   }
   
   public boolean cdoConflict() {
     return containedObject.cdoConflict();
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
-  }
-  
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
   }
   
   public boolean cdoInvalid() {
     return containedObject.cdoInvalid();
   }
   
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
+  }
+  
   public void cdoPrefetch(final int arg0) {
     containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
+  }
+  
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
   }
   
   public CDOLock cdoWriteOption() {
     return containedObject.cdoWriteOption();
   }
   
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
   public CDOResource cdoDirectResource() {
     return containedObject.cdoDirectResource();
   }
   
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0) {
-    return containedObject.eGet(arg0);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
-  }
-  
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
-  }
-  
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public EObject eContainer() {
+    return containerObject;
   }
   
   public EList eContents() {
     return containedObject.eContents();
   }
   
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
   public TreeIterator eAllContents() {
     return containedObject.eAllContents();
   }
   
-  public EObject eContainer() {
-    return containerObject;
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
   }
   
   public EClass eClass() {
@@ -205,8 +173,36 @@ public class OperationSignatureContainerMock implements OperationSignature {
     return containedObject.eContainmentFeature();
   }
   
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0) {
+    return containedObject.eGet(arg0);
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
   }
   
   public boolean eDeliver() {
@@ -221,11 +217,15 @@ public class OperationSignatureContainerMock implements OperationSignature {
     return containedObject.eAdapters();
   }
   
-  public void setEntityName(final String arg0) {
-    containedObject.setEntityName(arg0);
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
   }
   
   public String getEntityName() {
     return containedObject.getEntityName();
+  }
+  
+  public void setEntityName(final String arg0) {
+    containedObject.setEntityName(arg0);
   }
 }

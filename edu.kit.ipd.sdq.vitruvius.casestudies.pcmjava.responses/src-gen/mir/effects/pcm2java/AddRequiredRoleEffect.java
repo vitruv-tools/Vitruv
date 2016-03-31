@@ -74,23 +74,27 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     	() -> ImportsFactoryImpl.eINSTANCE.createClassifierImport(), // element creation supplier
     	() -> null, // tag supplier
     	ClassifierImport.class);
+    if (isAborted()) return;
     Field requiredInterfaceField = initializeCreateElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceField(requiredRole), // correspondence source supplier
     	() -> MembersFactoryImpl.eINSTANCE.createField(), // element creation supplier
     	() -> null, // tag supplier
     	Field.class);
+    if (isAborted()) return;
     Interface requiredInterface = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceRequiredInterface(requiredRole), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	Interface.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaClass(requiredRole), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiredInterfaceImport, requiredInterfaceField, requiredInterface, javaClass);

@@ -66,6 +66,7 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
     	() -> null, // tag supplier
     	OrdinaryParameter.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

@@ -59,6 +59,7 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	interfaceMethod, returnType, returnTypeClass);

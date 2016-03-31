@@ -61,18 +61,21 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
     	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
     	() -> null, // tag supplier
     	ClassMethod.class);
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class componentClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceComponentClass(seff), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     InterfaceMethod interfaceMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceInterfaceMethod(seff), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateSEFFEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	seff, classMethod, componentClass, interfaceMethod);

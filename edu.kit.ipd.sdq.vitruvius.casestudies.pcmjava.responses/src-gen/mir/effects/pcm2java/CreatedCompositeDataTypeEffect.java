@@ -56,6 +56,7 @@ public class CreatedCompositeDataTypeEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, datatypesPackage);

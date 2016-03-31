@@ -56,6 +56,7 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	component, repositoryPackage);

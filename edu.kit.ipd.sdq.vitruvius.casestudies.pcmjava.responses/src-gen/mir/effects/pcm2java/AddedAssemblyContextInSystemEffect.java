@@ -48,6 +48,7 @@ public class AddedAssemblyContextInSystemEffect extends AbstractEffectRealizatio
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddedAssemblyContextInSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, compositeComponentJavaClass);

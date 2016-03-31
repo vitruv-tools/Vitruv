@@ -46,6 +46,7 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	repository, repositoryPackage);

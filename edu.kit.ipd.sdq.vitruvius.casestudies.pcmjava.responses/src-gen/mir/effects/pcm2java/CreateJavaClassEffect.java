@@ -67,6 +67,7 @@ public class CreateJavaClassEffect extends AbstractEffectRealization {
     	() -> ClassifiersFactoryImpl.eINSTANCE.createClass(), // element creation supplier
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateJavaClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, containingPackage, className, javaClass);

@@ -58,12 +58,14 @@ public class AddOperationSignatureEffect extends AbstractEffectRealization {
     	() -> MembersFactoryImpl.eINSTANCE.createInterfaceMethod(), // element creation supplier
     	() -> null, // tag supplier
     	InterfaceMethod.class);
+    if (isAborted()) return;
     Interface javaInterface = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaInterface(change), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	Interface.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod, javaInterface);

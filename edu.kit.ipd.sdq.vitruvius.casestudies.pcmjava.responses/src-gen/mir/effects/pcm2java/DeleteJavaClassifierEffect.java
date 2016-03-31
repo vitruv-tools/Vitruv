@@ -48,12 +48,14 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	ConcreteClassifier.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     CompilationUnit compilationUnit = initializeDeleteElementState(
     	() -> getCorrepondenceSourceCompilationUnit(sourceElement), // correspondence source supplier
     	(CompilationUnit _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	CompilationUnit.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

@@ -90,22 +90,26 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     	() -> MembersFactoryImpl.eINSTANCE.createField(), // element creation supplier
     	() -> null, // tag supplier
     	Field.class);
+    if (isAborted()) return;
     ClassMethod getterMethod = initializeCreateElementState(
     	() -> getCorrepondenceSourceGetterMethod(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
     	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
     	() -> getTagGetterMethod(compositeDataType, innerDeclaration, dataTypeReference), // tag supplier
     	ClassMethod.class);
+    if (isAborted()) return;
     ClassMethod setterMethod = initializeCreateElementState(
     	() -> getCorrepondenceSourceSetterMethod(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
     	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
     	() -> getTagSetterMethod(compositeDataType, innerDeclaration, dataTypeReference), // tag supplier
     	ClassMethod.class);
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class dataTypeClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceDataTypeClass(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddInnerDeclarationToCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeDataType, innerDeclaration, dataTypeReference, innerDataTypeField, getterMethod, setterMethod, dataTypeClass);

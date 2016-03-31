@@ -55,6 +55,7 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeDataType, datatypesPackage);

@@ -45,6 +45,7 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateImplementationForSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	system, systemPackage);

@@ -44,6 +44,7 @@ public class RemovedSeffEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

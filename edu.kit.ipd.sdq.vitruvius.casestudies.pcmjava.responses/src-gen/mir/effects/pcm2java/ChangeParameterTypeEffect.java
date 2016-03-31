@@ -59,6 +59,7 @@ public class ChangeParameterTypeEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeParameterTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	javaParameter, parameterType, javaParameterTypeClass);

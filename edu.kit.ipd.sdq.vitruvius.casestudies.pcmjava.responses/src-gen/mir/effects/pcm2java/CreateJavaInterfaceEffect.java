@@ -68,6 +68,7 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     	() -> ClassifiersFactoryImpl.eINSTANCE.createInterface(), // element creation supplier
     	() -> null, // tag supplier
     	Interface.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateJavaInterfaceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, containingPackage, className, javaInterface);

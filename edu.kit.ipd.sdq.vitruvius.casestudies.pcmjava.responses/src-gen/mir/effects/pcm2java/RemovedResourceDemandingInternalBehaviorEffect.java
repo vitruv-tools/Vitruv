@@ -49,6 +49,7 @@ public class RemovedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     	() -> null, // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

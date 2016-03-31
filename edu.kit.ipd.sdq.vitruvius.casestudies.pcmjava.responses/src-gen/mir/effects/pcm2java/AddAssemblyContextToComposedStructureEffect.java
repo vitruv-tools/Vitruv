@@ -80,27 +80,32 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
     	() -> MembersFactoryImpl.eINSTANCE.createField(), // element creation supplier
     	() -> null, // tag supplier
     	Field.class);
+    if (isAborted()) return;
     NewConstructorCall newConstructorCall = initializeCreateElementState(
     	() -> getCorrepondenceSourceNewConstructorCall(compositeComponentClass, assemblyContext), // correspondence source supplier
     	() -> InstantiationsFactoryImpl.eINSTANCE.createNewConstructorCall(), // element creation supplier
     	() -> null, // tag supplier
     	NewConstructorCall.class);
+    if (isAborted()) return;
     ClassifierImport contextClassImport = initializeCreateElementState(
     	() -> getCorrepondenceSourceContextClassImport(compositeComponentClass, assemblyContext), // correspondence source supplier
     	() -> ImportsFactoryImpl.eINSTANCE.createClassifierImport(), // element creation supplier
     	() -> null, // tag supplier
     	ClassifierImport.class);
+    if (isAborted()) return;
     Constructor constructor = initializeCreateElementState(
     	() -> getCorrepondenceSourceConstructor(compositeComponentClass, assemblyContext), // correspondence source supplier
     	() -> MembersFactoryImpl.eINSTANCE.createConstructor(), // element creation supplier
     	() -> null, // tag supplier
     	Constructor.class);
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceEncapsulatedComponentJavaClass(compositeComponentClass, assemblyContext), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeComponentClass, assemblyContext, assemblyContextField, newConstructorCall, contextClassImport, constructor, encapsulatedComponentJavaClass);

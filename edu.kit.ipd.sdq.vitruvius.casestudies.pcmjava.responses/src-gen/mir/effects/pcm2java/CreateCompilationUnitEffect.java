@@ -72,6 +72,7 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	CompilationUnit.class);
     setPersistenceInformation(compilationUnit, () -> getModelPath(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), false);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, classifier, containingPackage, compilationUnit);

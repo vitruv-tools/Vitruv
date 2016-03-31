@@ -37,24 +37,16 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
   
   private EObject containerObject;
   
+  public boolean ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(final DiagnosticChain arg0, final Map arg1) {
+    return containedObject.ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(arg0, arg1);
+  }
+  
   public String getSeffTypeID() {
     return containedObject.getSeffTypeID();
   }
   
   public void setSeffTypeID(final String arg0) {
     containedObject.setSeffTypeID(arg0);
-  }
-  
-  public Signature getDescribedService__SEFF() {
-    return containedObject.getDescribedService__SEFF();
-  }
-  
-  public void setDescribedService__SEFF(final Signature arg0) {
-    containedObject.setDescribedService__SEFF(arg0);
-  }
-  
-  public boolean ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(final DiagnosticChain arg0, final Map arg1) {
-    return containedObject.ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(arg0, arg1);
   }
   
   public BasicComponent getBasicComponent_ServiceEffectSpecification() {
@@ -65,8 +57,28 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     containedObject.setBasicComponent_ServiceEffectSpecification(arg0);
   }
   
+  public Signature getDescribedService__SEFF() {
+    return containedObject.getDescribedService__SEFF();
+  }
+  
+  public void setDescribedService__SEFF(final Signature arg0) {
+    containedObject.setDescribedService__SEFF(arg0);
+  }
+  
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
+  }
+  
+  public CDORevision cdoRevision(final boolean arg0) {
+    return containedObject.cdoRevision(arg0);
+  }
+  
   public CDOState cdoState() {
     return containedObject.cdoState();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDOView cdoView() {
@@ -77,108 +89,64 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     return containedObject.cdoID();
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
-  }
-  
-  public CDORevision cdoRevision(final boolean arg0) {
-    return containedObject.cdoRevision(arg0);
-  }
-  
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
-  }
-  
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
   }
   
   public boolean cdoConflict() {
     return containedObject.cdoConflict();
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
-  }
-  
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
   }
   
   public boolean cdoInvalid() {
     return containedObject.cdoInvalid();
   }
   
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
+  }
+  
   public void cdoPrefetch(final int arg0) {
     containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
+  }
+  
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
   }
   
   public CDOLock cdoWriteOption() {
     return containedObject.cdoWriteOption();
   }
   
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
   public CDOResource cdoDirectResource() {
     return containedObject.cdoDirectResource();
   }
   
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0) {
-    return containedObject.eGet(arg0);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
-  }
-  
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
-  }
-  
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public EObject eContainer() {
+    return containerObject;
   }
   
   public EList eContents() {
     return containedObject.eContents();
   }
   
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
   public TreeIterator eAllContents() {
     return containedObject.eAllContents();
   }
   
-  public EObject eContainer() {
-    return containerObject;
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
   }
   
   public EClass eClass() {
@@ -193,8 +161,36 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     return containedObject.eContainmentFeature();
   }
   
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0) {
+    return containedObject.eGet(arg0);
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
   }
   
   public boolean eDeliver() {
@@ -207,5 +203,9 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
   
   public EList eAdapters() {
     return containedObject.eAdapters();
+  }
+  
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
   }
 }

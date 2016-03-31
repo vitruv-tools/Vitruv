@@ -79,12 +79,14 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     org.emftext.language.java.containers.Package datatypesPackage = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceDatatypesPackage(change), // correspondence source supplier
     	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(change, _element), // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedCollectionDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, innerTypeClass, datatypesPackage);

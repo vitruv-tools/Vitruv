@@ -50,6 +50,7 @@ public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealizat
     	() -> null, // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeOperationSignatureOfSeffEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, oldClassMethod);

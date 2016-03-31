@@ -81,18 +81,21 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     ClassifierImport requiredInterfaceImport = initializeDeleteElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceImport(requiredRole, requiringEntity), // correspondence source supplier
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	ClassifierImport.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     Field requiredInterfaceField = initializeDeleteElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
     	(Field _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	Field.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiringEntity, javaClass, requiredInterfaceImport, requiredInterfaceField);

@@ -50,6 +50,7 @@ public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectReal
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeOperationSignatureReturnTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod);

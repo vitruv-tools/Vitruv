@@ -17,12 +17,18 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	private extension val ResponseExecutionState executionState;
+	private boolean aborted;
 	private Map<EObject, EffectElement> elementStates;
 	
 	public new(ResponseExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.executionState = executionState;
 		this.elementStates = new HashMap<EObject, EffectElement>();
+		this.aborted = false;
+	}
+	
+	public def boolean isAborted() {
+		return aborted;
 	}
 	
 	protected def ResponseExecutionState getExecutionState() {
@@ -41,23 +47,31 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 		return createElement;
 	}
 	
-	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
-		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, 
-		CorrespondenceFailHandler correspondenceFailHandler) {
-		val correspondenceSource = correspondenceSourceSupplier.apply();
+	private def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Function1<T, Boolean> correspondencePreconditionMethod, 
+		Function0<String> tagSupplier, Class<T> elementClass, CorrespondenceFailHandler correspondenceFailHandler
+	) {
 		val tag = tagSupplier.apply();
 		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
 		if (retrievedElements.size != 1) {
 			if (correspondenceFailHandler.handle(retrievedElements, correspondenceSource, elementClass, userInteracting)) {
-				// TODO HK temporary hack to abort effect
-				throw new IllegalStateException();
+				aborted = true;
 			}
 		}
 		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;
-		this.elementStates.put(retrievedElement, 
-			new EffectElementRetrieve(retrievedElement, correspondenceSource, executionState)
-		);
 		return retrievedElement;
+	}
+	
+	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
+		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, 
+		CorrespondenceFailHandler correspondenceFailHandler) {
+		val correspondenceSource = correspondenceSourceSupplier.apply();
+		val correspondingElement = correspondenceSource.getCorrespondingElement(correspondencePreconditionMethod, tagSupplier,
+			elementClass, correspondenceFailHandler
+		);
+		this.elementStates.put(correspondingElement, 
+			new EffectElementRetrieve(correspondingElement, correspondenceSource, executionState)
+		);
+		return correspondingElement;
 	}
 	
 	
@@ -70,8 +84,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
 		if (retrievedElements.size != 1) {
 			if (correspondenceFailHandler.handle(retrievedElements, correspondenceSource, elementClass, userInteracting)) {
-				// TODO HK temporary hack to abort effect
-				throw new IllegalStateException();
+				aborted = true;
 			}
 		}
 		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;

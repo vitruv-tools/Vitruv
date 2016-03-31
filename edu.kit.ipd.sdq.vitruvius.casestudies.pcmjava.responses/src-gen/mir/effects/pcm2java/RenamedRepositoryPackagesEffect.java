@@ -67,6 +67,7 @@ public class RenamedRepositoryPackagesEffect extends AbstractEffectRealization {
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     setPersistenceInformation(rootPackage, () -> getModelPath(change, rootPackage), false);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenamedRepositoryPackagesEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, rootPackage);

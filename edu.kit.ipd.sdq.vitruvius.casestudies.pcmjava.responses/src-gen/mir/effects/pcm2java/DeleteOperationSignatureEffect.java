@@ -49,6 +49,7 @@ public class DeleteOperationSignatureEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

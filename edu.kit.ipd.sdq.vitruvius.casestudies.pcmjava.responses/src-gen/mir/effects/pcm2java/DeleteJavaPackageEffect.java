@@ -70,6 +70,7 @@ public class DeleteJavaPackageEffect extends AbstractEffectRealization {
     	() -> getTagJavaPackage(sourceElementMappedToPackage, packageName, expectedTag), // tag supplier
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

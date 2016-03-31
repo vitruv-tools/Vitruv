@@ -90,6 +90,7 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     	org.emftext.language.java.containers.Package.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     setPersistenceInformation(javaPackage, () -> getModelPath(sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage), false);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage);

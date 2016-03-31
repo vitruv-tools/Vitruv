@@ -94,6 +94,7 @@ public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffect
     	() -> ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter(), // element creation supplier
     	() -> null, // tag supplier
     	OrdinaryParameter.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddParameterAndAssignmentToConstructorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);

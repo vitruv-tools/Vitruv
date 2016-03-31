@@ -65,6 +65,7 @@ public class RenameOperationSignatureEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod);

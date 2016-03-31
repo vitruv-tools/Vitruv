@@ -88,6 +88,7 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     	() -> getTagJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, newTag), // tag supplier
     	org.emftext.language.java.containers.Package.class);
     setPersistenceInformation(javaPackage, () -> getModelPath(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), false);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage);

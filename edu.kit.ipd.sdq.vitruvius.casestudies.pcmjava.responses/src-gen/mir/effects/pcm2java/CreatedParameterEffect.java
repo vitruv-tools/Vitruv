@@ -57,12 +57,14 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
     	() -> ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter(), // element creation supplier
     	() -> null, // tag supplier
     	OrdinaryParameter.class);
+    if (isAborted()) return;
     InterfaceMethod interfaceMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedParameterEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, javaParameter, interfaceMethod);

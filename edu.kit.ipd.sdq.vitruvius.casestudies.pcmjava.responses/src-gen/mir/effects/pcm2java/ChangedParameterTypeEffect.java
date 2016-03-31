@@ -56,12 +56,14 @@ public class ChangedParameterTypeEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     OrdinaryParameter javaParameter = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
     	(OrdinaryParameter _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	OrdinaryParameter.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangedParameterTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod, javaParameter);

@@ -52,12 +52,14 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     	() -> null, // tag supplier
     	ClassifierImport.class,
     	CorrespondenceFailHandlerFactory.createDefaultUserDialogHandler(false));
+    if (isAborted()) return;
     NamespaceClassifierReference namespaceClassifierReference = initializeDeleteElementState(
     	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
     	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	NamespaceClassifierReference.class,
     	CorrespondenceFailHandlerFactory.createCustomUserDialogHandler(false, "Due to old TUIDs remove cannot be performed"));
+    if (isAborted()) return;
     preProcessElements();
     postProcessElements();
   }

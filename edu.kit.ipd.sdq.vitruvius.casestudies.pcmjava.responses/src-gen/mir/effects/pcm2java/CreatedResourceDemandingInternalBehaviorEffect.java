@@ -57,12 +57,14 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
     	() -> null, // tag supplier
     	ClassMethod.class);
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class componentClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceComponentClass(change), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, javaMethod, componentClass);

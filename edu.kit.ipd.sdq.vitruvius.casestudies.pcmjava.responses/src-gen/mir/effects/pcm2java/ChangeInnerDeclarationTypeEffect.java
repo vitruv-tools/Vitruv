@@ -75,18 +75,21 @@ public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization 
     	() -> null, // tag supplier
     	Field.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     Method compositeTypeGetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
     	(Method _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // tag supplier
     	Method.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     Method compositeTypeSetterMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
     	(Method _element) -> true, // correspondence precondition checker
     	() -> getTagCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // tag supplier
     	Method.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.ChangeInnerDeclarationTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	innerDeclaration, newTypeReference, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);

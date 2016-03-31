@@ -77,12 +77,14 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
     	CompilationUnit.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     setPersistenceInformation(compilationUnit, () -> getModelPath(classSourceElement, containingPackage, className, compilationUnit), false);
+    if (isAborted()) return;
     ConcreteClassifier javaClassifier = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaClassifier(classSourceElement, containingPackage, className), // correspondence source supplier
     	(ConcreteClassifier _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	ConcreteClassifier.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameJavaClassifierEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	classSourceElement, containingPackage, className, compilationUnit, javaClassifier);

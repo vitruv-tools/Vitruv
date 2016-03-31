@@ -69,23 +69,27 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     	() -> ImportsFactoryImpl.eINSTANCE.createClassifierImport(), // element creation supplier
     	() -> null, // tag supplier
     	ClassifierImport.class);
+    if (isAborted()) return;
     NamespaceClassifierReference namespaceClassifierReference = initializeCreateElementState(
     	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
     	() -> TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference(), // element creation supplier
     	() -> null, // tag supplier
     	NamespaceClassifierReference.class);
+    if (isAborted()) return;
     Interface operationProvidingInterface = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceOperationProvidingInterface(providedRole), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	Interface.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaClass(providedRole), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddProvidedRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	providedRole, interfaceImport, namespaceClassifierReference, operationProvidingInterface, javaClass);

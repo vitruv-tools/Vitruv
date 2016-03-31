@@ -48,6 +48,7 @@ public class RenameResourceDemandingInternalBehaviorEffect extends AbstractEffec
     	() -> null, // tag supplier
     	ClassMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RenameResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, javaMethod);
