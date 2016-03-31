@@ -90,7 +90,7 @@ class ResponseClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	/* TODO HK Fix this after the new change MM is implemented:
+	/* TODO HK (Change MM): Fix this after the new change MM is implemented:
 		 * Delete objects (except root one) are removed from the model and now contained in the ChangeDescription,
 		 * so correspondences cannot be resolved
 		 */

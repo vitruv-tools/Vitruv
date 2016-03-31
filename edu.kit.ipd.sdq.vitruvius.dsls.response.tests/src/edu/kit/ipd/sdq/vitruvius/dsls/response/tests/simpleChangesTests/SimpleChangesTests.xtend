@@ -198,7 +198,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		saveAndSynchronizeChanges(root);
 	}
 
-	// TODO HK Unset does not produce any change event at the moment
+	// TODO HK (Change MM) Unset does not produce any change event at the moment
 	//@Test
 	public def void testUnsetSingleValuedEAttribute() {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
@@ -329,7 +329,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		replaceMultiValuedEAttribute(rootElement, 2, 3);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		// TODO HK This should not be, should be one event
+		// TODO HK (Change MM) This should not be, should be one event
 		compareMonitor.set(ChangeType.RemoveEAttributeValue);
 		compareMonitor.set(ChangeType.InsertEAttributeValue);
 		compareMonitor.assertEqualWithStatic();
@@ -405,7 +405,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		SimpleChangesTestsExecutionMonitor.reinitialize();
 		replaceMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1), nonContainmentNonRootIds.get(2))
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		// TODO HK this should not be... should be one event!
+		// TODO HK (Change MM) this should not be... should be one event!
 		//compareMonitor.set(ChangeType.ReplaceNonContainmentEReference);
 		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
 		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
@@ -417,7 +417,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		assertModelsEqual();
 	}
 	
-	// TODO HK Permute operations are not supported by now? No EChange produced
+	// TODO HK (Change MM) Permute operations are not supported by now? No EChange produced
 	//@Test
 	public def void testPermuteMultiValuedNonContainmentEReference() throws Throwable {
 		for (nonRootId : nonContainmentNonRootIds) {

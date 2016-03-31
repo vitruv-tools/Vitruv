@@ -206,7 +206,7 @@ final class EChangeHelper {
 	public static def String getEChangeFeatureNameOfChangedObject(Trigger change) {
 		val eChange = change.generateEChange()
 		if (EFeatureChange.isAssignableFrom(eChange.instanceClass)) {
-			// TODO HK This is not correct
+			// TODO HK (Change MM) This is not correct
 			return "oldAffectedEObject";
 		} else if (CreateRootEObject.isAssignableFrom(eChange.instanceClass)) {
 			return "newValue"
