@@ -129,7 +129,8 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
       final Class<? extends Collection> selectedClass = ((Class<? extends Collection>[])Conversions.unwrapArray(_converted_collectionDataTypes, Class.class))[selectedType];
       String _entityName = dataType.getEntityName();
       this.effectFacade.callCreateJavaClass(dataType, datatypesPackage, _entityName);
-      this.effectFacade.callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass);
+      String _name_1 = selectedClass.getName();
+      this.effectFacade.callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, _name_1);
     }
   }
 }

@@ -15,7 +15,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.containers.impl.ContainersFactoryImpl;
-import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class CreateJavaPackageEffect extends AbstractEffectRealization {
@@ -23,7 +22,7 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     super(responseExecutionState, calledBy);
   }
   
-  private NamedElement sourceElementMappedToPackage;
+  private EObject sourceElementMappedToPackage;
   
   private org.emftext.language.java.containers.Package parentPackage;
   
@@ -39,7 +38,7 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
   
   private boolean isNewTagSet;
   
-  public void setSourceElementMappedToPackage(final NamedElement sourceElementMappedToPackage) {
+  public void setSourceElementMappedToPackage(final EObject sourceElementMappedToPackage) {
     this.sourceElementMappedToPackage = sourceElementMappedToPackage;
     this.isSourceElementMappedToPackageSet = true;
   }
@@ -59,7 +58,7 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     this.isNewTagSet = true;
   }
   
-  private String getTagJavaPackage(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
+  private String getTagJavaPackage(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     return newTag;
   }
   
@@ -67,18 +66,18 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     return isSourceElementMappedToPackageSet&&isParentPackageSet&&isPackageNameSet&&isNewTagSet;
   }
   
-  private EObject getCorrepondenceSourceJavaPackage(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
+  private EObject getCorrepondenceSourceJavaPackage(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     return sourceElementMappedToPackage;
   }
   
-  private String getModelPath(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
+  private String getModelPath(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
     String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
     return _buildJavaFilePath;
   }
   
   protected void executeEffect() throws IOException {
     getLogger().debug("Called effect CreateJavaPackageEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
+    getLogger().debug("   EObject: " + this.sourceElementMappedToPackage);
     getLogger().debug("   Package: " + this.parentPackage);
     getLogger().debug("   String: " + this.packageName);
     getLogger().debug("   String: " + this.newTag);
@@ -112,7 +111,7 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
+    private void executeUserOperations(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
       boolean _notEquals = (!Objects.equal(parentPackage, null));
       if (_notEquals) {
         EList<String> _namespaces = javaPackage.getNamespaces();

@@ -3,6 +3,7 @@ package mir.effects.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
@@ -101,7 +102,7 @@ public class EffectsFacade extends AbstractEffectsFacade {
     effect.applyEffect();
   }
   
-  public void callCreateJavaPackage(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
+  public void callCreateJavaPackage(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     mir.effects.pcm2java.CreateJavaPackageEffect effect = new mir.effects.pcm2java.CreateJavaPackageEffect(this.executionState, calledBy);
     effect.setSourceElementMappedToPackage(sourceElementMappedToPackage);
     effect.setParentPackage(parentPackage);
@@ -239,11 +240,11 @@ public class EffectsFacade extends AbstractEffectsFacade {
     effect.applyEffect();
   }
   
-  public void callAddSuperTypeToDataType(final DataType dataType, final TypeReference innerTypeReference, final Class<?> superType) {
+  public void callAddSuperTypeToDataType(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
     mir.effects.pcm2java.AddSuperTypeToDataTypeEffect effect = new mir.effects.pcm2java.AddSuperTypeToDataTypeEffect(this.executionState, calledBy);
     effect.setDataType(dataType);
     effect.setInnerTypeReference(innerTypeReference);
-    effect.setSuperType(superType);
+    effect.setSuperTypeQualifiedName(superTypeQualifiedName);
     effect.applyEffect();
   }
 }

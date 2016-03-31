@@ -54,7 +54,7 @@ execute: {
 }
 
 effect: CreateRepositorySubPackages
-model input: pcm.repository.Repository as repository
+input: pcm.repository.Repository as repository
 retrieve element: java.containers.Package as repositoryPackage corresponding to repository
 execute: {
 	callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
@@ -97,7 +97,7 @@ execute: {
 }
 
 effect: CreateImplementationForSystem
-model input: pcm.system.System as system
+input: pcm.system.System as system
 retrieve element: java.containers.Package as systemPackage corresponding to system
 execute: callCreateJavaClass(system, systemPackage, system.entityName + "Impl")
 
@@ -121,7 +121,7 @@ retrieve element: java.classifiers.Class as compositeComponentJavaClass correspo
 execute: callAddAssemblyContextToComposedStructure(compositeComponentJavaClass, change.newValue)
 
 effect: AddAssemblyContextToComposedStructure
-model input: java.classifiers.Class as compositeComponentClass, pcm.core.composition.AssemblyContext as assemblyContext
+input: java.classifiers.Class as compositeComponentClass, pcm.core.composition.AssemblyContext as assemblyContext
 retrieve element: java.classifiers.Class as encapsulatedComponentJavaClass corresponding to assemblyContext.encapsulatedComponent__AssemblyContext
 create element: java.members.Field as assemblyContextField corresponding to assemblyContext
 create element: java.instantiations.NewConstructorCall as newConstructorCall corresponding to assemblyContext
@@ -150,7 +150,7 @@ execute: {
 }
 
 effect: CreateImplementationForComponent
-model input: pcm.repository.RepositoryComponent as component
+input: pcm.repository.RepositoryComponent as component
 retrieve element: java.containers.Package as componentPackage corresponding to component
 execute: callCreateJavaClass(component, componentPackage, component.entityName + "Impl")
 
@@ -162,7 +162,7 @@ execute: {
 }
 
 effect: RenameComponentPackageAndClass
-model input: pcm.repository.RepositoryComponent as component
+input: pcm.repository.RepositoryComponent as component
 retrieve element: java.containers.Package as repositoryPackage corresponding to component.repository__RepositoryComponent
 	with repositoryPackage.name.equals(component.repository__RepositoryComponent.entityName)
 execute: {
@@ -171,7 +171,7 @@ execute: {
 }
 
 effect: RenameComponentClass
-model input: pcm.repository.RepositoryComponent as component
+input: pcm.repository.RepositoryComponent as component
 retrieve element: java.containers.Package as componentPackage corresponding to component
 execute: callRenameJavaClassifier(component, componentPackage, component.entityName + "Impl")
 
@@ -201,7 +201,7 @@ trigger: replace value pcm.repository.Interface[entityName]
 execute: callRenameInterface(change.newAffectedEObject as OperationInterface)
 
 effect: RenameInterface
-model input: pcm.repository.OperationInterface as interf
+input: pcm.repository.OperationInterface as interf
 retrieve element: java.containers.Package as contractsPackage corresponding to interf.repository__Interface
 	with contractsPackage.name == "contracts"
 execute: callRenameJavaClassifier(interf, contractsPackage, interf.entityName)
@@ -224,7 +224,7 @@ trigger: replace value pcm.repository.CompositeDataType[entityName]
 execute: callRenameCompositeDataType(change.newAffectedEObject as CompositeDataType)
 
 effect: RenameCompositeDataType
-model input: pcm.repository.CompositeDataType as compositeDataType
+input: pcm.repository.CompositeDataType as compositeDataType
 retrieve element: java.containers.Package as datatypesPackage corresponding to compositeDataType.repository__DataType with datatypesPackage.name == "datatypes"
 execute: callRenameJavaClassifier(compositeDataType, datatypesPackage, compositeDataType.entityName)
 
@@ -246,7 +246,7 @@ execute: {
 }
 
 effect: AddInnerDeclarationToCompositeDataType
-model input: pcm.repository.CompositeDataType as compositeDataType, pcm.repository.InnerDeclaration as innerDeclaration, java.types.TypeReference as dataTypeReference
+input: pcm.repository.CompositeDataType as compositeDataType, pcm.repository.InnerDeclaration as innerDeclaration, java.types.TypeReference as dataTypeReference
 retrieve element: java.classifiers.Class as dataTypeClass corresponding to compositeDataType
 create element: java.members.Field as innerDataTypeField corresponding to innerDeclaration
 create element: java.members.ClassMethod as getterMethod corresponding to innerDeclaration tag with "getter"
@@ -266,7 +266,7 @@ trigger: replace value pcm.repository.InnerDeclaration[entityName]
 execute: callChangeNameOfInnerDeclaration(change.newAffectedEObject as InnerDeclaration)
 
 effect: ChangeNameOfInnerDeclaration
-model input: pcm.repository.InnerDeclaration as innerDeclaration
+input: pcm.repository.InnerDeclaration as innerDeclaration
 retrieve element: java.members.Field as compositeTypeField corresponding to innerDeclaration
 retrieve element: java.members.ClassMethod as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
 retrieve element: java.members.ClassMethod as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
@@ -290,7 +290,7 @@ execute: {
 }
 
 effect: ChangeInnerDeclarationType
-model input: pcm.repository.InnerDeclaration as innerDeclaration, java.types.TypeReference as newTypeReference
+input: pcm.repository.InnerDeclaration as innerDeclaration, java.types.TypeReference as newTypeReference
 retrieve element: java.members.Field as compositeTypeField corresponding to innerDeclaration
 retrieve element: java.members.Method as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
 retrieve element: java.members.Method as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
@@ -308,8 +308,7 @@ execute: {
 // ################ JAVA PACKAGE EFFECTS ################
 
 effect: CreateJavaPackage
-model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, java.containers.Package as parentPackage
-other input: String as packageName, String as newTag
+input: EObject as sourceElementMappedToPackage, java.containers.Package as parentPackage, String as packageName, String as newTag
 create element: java.containers.Package as javaPackage corresponding to sourceElementMappedToPackage
 	tag with newTag persist as root at project-relative location: buildJavaFilePath(javaPackage)
 execute: {
@@ -321,8 +320,7 @@ execute: {
 }
 
 effect: RenameJavaPackage
-model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, java.containers.Package as parentPackage
-other input: String as packageName, String as expectedTag
+input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, java.containers.Package as parentPackage, String as packageName, String as expectedTag
 retrieve element: java.containers.Package as javaPackage corresponding to sourceElementMappedToPackage
 	tagged with expectedTag	move containing model to project-relative location: buildJavaFilePath(javaPackage)
 execute: {
@@ -335,8 +333,7 @@ execute: {
 }
 
 effect: DeleteJavaPackage
-model input: pcm.core.entity.NamedElement as sourceElementMappedToPackage
-other input: String as packageName, String as expectedTag
+input: pcm.core.entity.NamedElement as sourceElementMappedToPackage, String as packageName, String as expectedTag
 delete element: java.containers.Package as javaPackage corresponding to sourceElementMappedToPackage tagged with expectedTag
 
 
@@ -344,8 +341,7 @@ delete element: java.containers.Package as javaPackage corresponding to sourceEl
 // ################ JAVA CLASS EFFECTS ##################
 
 effect: CreateJavaClass
-model input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.containers.Package as containingPackage
-other input: String as className
+input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.containers.Package as containingPackage, String as className
 create element: java.classifiers.Class as javaClass corresponding to sourceElementMappedToClass
 execute: {
 	javaClass.name = className;
@@ -354,8 +350,7 @@ execute: {
 }
 
 effect: CreateJavaInterface
-model input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.containers.Package as containingPackage
-other input: String as className
+input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.containers.Package as containingPackage, String as className
 create element: java.classifiers.Interface as javaInterface corresponding to sourceElementMappedToClass
 execute: {
 	javaInterface.name = className;
@@ -364,7 +359,7 @@ execute: {
 }
 
 effect: CreateCompilationUnit
-model input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.classifiers.ConcreteClassifier as classifier, java.containers.Package as containingPackage
+input: pcm.core.entity.NamedElement as sourceElementMappedToClass, java.classifiers.ConcreteClassifier as classifier, java.containers.Package as containingPackage
 create element: java.containers.CompilationUnit as compilationUnit corresponding to sourceElementMappedToClass
 	persist as root at project-relative location: buildJavaFilePath(compilationUnit)
 execute: {
@@ -375,8 +370,7 @@ execute: {
 }
 
 effect: RenameJavaClassifier
-model input: pcm.core.entity.NamedElement as classSourceElement, java.containers.Package as containingPackage
-other input: String as className
+input: pcm.core.entity.NamedElement as classSourceElement, java.containers.Package as containingPackage, String as className
 retrieve element: java.containers.CompilationUnit as compilationUnit corresponding to classSourceElement
 	move containing model to project-relative location: buildJavaFilePath(compilationUnit)
 retrieve element: java.classifiers.ConcreteClassifier as javaClassifier corresponding to classSourceElement
@@ -389,7 +383,7 @@ execute: {
 }
 
 effect: DeleteJavaClassifier
-model input: pcm.core.entity.NamedElement as sourceElement
+input: pcm.core.entity.NamedElement as sourceElement
 delete element: java.classifiers.ConcreteClassifier as javaClassifier corresponding to sourceElement
 delete element: java.containers.CompilationUnit as compilationUnit corresponding to sourceElement
 
@@ -408,7 +402,7 @@ precondition: change.newValue instanceof OperationProvidedRole
 execute: callAddProvidedRole(change.newValue as OperationProvidedRole)
 
 effect: AddProvidedRole
-model input: pcm.repository.OperationProvidedRole as providedRole
+input: pcm.repository.OperationProvidedRole as providedRole
 retrieve element: java.classifiers.Interface as operationProvidingInterface corresponding to providedRole.providedInterface__OperationProvidedRole
 retrieve element: java.classifiers.Class as javaClass corresponding to providedRole.providingEntity_ProvidedRole
 create element: java.imports.ClassifierImport as interfaceImport corresponding to providedRole
@@ -448,7 +442,7 @@ execute: callRemoveProvidedRole(change.oldValue)
 // TODO HK Remove optional with the new change MM and correct TUID update. If the providingEntity is changed
 // and thus remove is called, the correspondences cannot be resolved because of faulty correspondences 
 effect: RemoveProvidedRole
-model input: pcm.repository.ProvidedRole as providedRole
+input: pcm.repository.ProvidedRole as providedRole
 delete element: java.imports.ClassifierImport as requiredInterfaceImport corresponding to providedRole optional
 delete element: java.types.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole optional
 
@@ -473,7 +467,7 @@ precondition: change.newValue instanceof OperationRequiredRole
 execute: callAddRequiredRole(change.newValue as OperationRequiredRole)
 
 effect: AddRequiredRole
-model input: pcm.repository.OperationRequiredRole as requiredRole
+input: pcm.repository.OperationRequiredRole as requiredRole
 retrieve element: java.classifiers.Interface as requiredInterface corresponding to requiredRole.requiredInterface__OperationRequiredRole
 retrieve element: java.classifiers.Class as javaClass corresponding to requiredRole.requiringEntity_RequiredRole
 create element: java.imports.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
@@ -493,8 +487,7 @@ execute: {
 }
 
 effect: AddParameterAndAssignmentToConstructor
-model input: pcm.core.entity.NamedElement as parameterCorrespondenceSource, java.members.Constructor as constructor, java.types.NamespaceClassifierReference as typeReference, java.members.Field as fieldToBeAssigned
-other input: String as parameterName
+input: pcm.core.entity.NamedElement as parameterCorrespondenceSource, java.members.Constructor as constructor, java.types.NamespaceClassifierReference as typeReference, java.members.Field as fieldToBeAssigned, String as parameterName
 create element: java.parameters.OrdinaryParameter as newParameter corresponding to parameterCorrespondenceSource
 execute: {
 	newParameter.name = parameterName;
@@ -523,7 +516,7 @@ execute: {
 // They are just there because after a rename they can potentially not be resolved
 // but correspondences shall be removed
 effect: RemoveRequiredRole
-model input: pcm.repository.RequiredRole as requiredRole, pcm.core.entity.InterfaceRequiringEntity as requiringEntity
+input: pcm.repository.RequiredRole as requiredRole, pcm.core.entity.InterfaceRequiringEntity as requiringEntity
 delete element: java.imports.ClassifierImport as requiredInterfaceImport corresponding to requiredRole optional
 delete element: java.members.Field as requiredInterfaceField corresponding to requiredRole optional
 retrieve element: java.classifiers.Class as javaClass corresponding to requiringEntity optional
@@ -571,12 +564,12 @@ execute: {
 }
 
 effect: RemoveCorrespondingParameterFromConstructor
-model input: java.members.Constructor as ctor, pcm.core.entity.NamedElement as correspondenceSource
+input: java.members.Constructor as ctor, pcm.core.entity.NamedElement as correspondenceSource
 delete element: java.parameters.OrdinaryParameter as param corresponding to correspondenceSource
 	with ctor.parameters.contains(param)
 
 effect: ReinitializeOperationRequiredRole
-model input: pcm.repository.OperationRequiredRole as requiredRole
+input: pcm.repository.OperationRequiredRole as requiredRole
 execute: {
 	callRemoveRequiredRole(requiredRole, requiredRole.requiringEntity_RequiredRole);
 	callAddRequiredRole(requiredRole);
@@ -643,7 +636,7 @@ retrieve element: java.members.InterfaceMethod as interfaceMethod corresponding 
 execute: callChangeInterfaceMethodReturnType(interfaceMethod, (change.newAffectedEObject as OperationSignature).returnType__OperationSignature)
 
 effect: ChangeInterfaceMethodReturnType
-model input: java.members.InterfaceMethod as interfaceMethod, pcm.repository.DataType as returnType
+input: java.members.InterfaceMethod as interfaceMethod, pcm.repository.DataType as returnType
 retrieve element: java.classifiers.Class as returnTypeClass corresponding to returnType optional
 execute: {
 	val returnTypeReference = createTypeReference(returnType, returnTypeClass);
@@ -683,7 +676,7 @@ retrieve element: java.parameters.OrdinaryParameter as javaParameter correspondi
 execute: callChangeParameterType(javaParameter, change.newValue)
 
 effect: ChangeParameterType
-model input: java.parameters.OrdinaryParameter as javaParameter, pcm.repository.DataType as parameterType
+input: java.parameters.OrdinaryParameter as javaParameter, pcm.repository.DataType as parameterType
 retrieve element: java.classifiers.Class as javaParameterTypeClass corresponding to parameterType optional
 execute: {
 	val parameterTypeReference = createTypeReference(parameterType, javaParameterTypeClass);
@@ -732,7 +725,7 @@ trigger: insert in list pcm.repository.BasicComponent[serviceEffectSpecification
 execute: callCreateSEFF(change.newValue)
 
 effect: CreateSEFF
-model input: pcm.seff.ServiceEffectSpecification as seff
+input: pcm.seff.ServiceEffectSpecification as seff
 retrieve element: java.classifiers.Class as componentClass corresponding to seff.basicComponent_ServiceEffectSpecification
 retrieve element: java.members.InterfaceMethod as interfaceMethod corresponding to seff.describedService__SEFF
 create element: java.members.ClassMethod as classMethod corresponding to seff
@@ -758,7 +751,7 @@ delete element: java.members.ClassMethod as oldClassMethod corresponding to chan
 execute: callCreateSEFF(change.newAffectedEObject as ResourceDemandingSEFF)
 
 effect: UpdateSEFFImplementingMethodName
-model input: pcm.seff.ServiceEffectSpecification as seff
+input: pcm.seff.ServiceEffectSpecification as seff
 retrieve element: java.members.ClassMethod as classMethod corresponding to seff
 execute: {
 	classMethod.name = seff.describedService__SEFF.entityName;
@@ -798,17 +791,16 @@ execute: {
 	val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
 	
 	callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
-	callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass);
+	callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
 }
 
 effect: AddSuperTypeToDataType
-model input: pcm.repository.DataType as dataType, java.types.TypeReference as innerTypeReference
-other input: Class<?> as superType
+input: pcm.repository.DataType as dataType, java.types.TypeReference as innerTypeReference, String as superTypeQualifiedName
 retrieve element: java.classifiers.Class as dataTypeImplementation corresponding to dataType
 retrieve element: java.containers.CompilationUnit as dataTypeImplementationCU corresponding to dataType
 create element: java.types.NamespaceClassifierReference as namespaceClassifier corresponding to dataType
 execute: {
-	val collectionTypeClassImport = getJavaClassImport(superType.name);
+	val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
 	dataTypeImplementationCU.imports += collectionTypeClassImport;
 	createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
 	val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
