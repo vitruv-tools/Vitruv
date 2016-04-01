@@ -6,25 +6,24 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import java.io.IOException;
 import mir.effects.pcm2java.EffectsFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
-import org.palladiosimulator.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.ProvidedRole;
 
 @SuppressWarnings("all")
-public class RemoveRequiredRoleFromSystemEffect extends AbstractEffectRealization {
-  public RemoveRequiredRoleFromSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+public class AddedProvidedRoleInterfaceProvidingEntityEffect extends AbstractEffectRealization {
+  public AddedProvidedRoleInterfaceProvidingEntityEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
     super(responseExecutionState, calledBy);
   }
   
-  private DeleteNonRootEObjectInList<RequiredRole> change;
+  private CreateNonRootEObjectInList<ProvidedRole> change;
   
   private boolean isChangeSet;
   
-  public void setChange(final DeleteNonRootEObjectInList<RequiredRole> change) {
+  public void setChange(final CreateNonRootEObjectInList<ProvidedRole> change) {
     this.change = change;
     this.isChangeSet = true;
   }
@@ -34,11 +33,11 @@ public class RemoveRequiredRoleFromSystemEffect extends AbstractEffectRealizatio
   }
   
   protected void executeEffect() throws IOException {
-    getLogger().debug("Called effect RemoveRequiredRoleFromSystemEffect with input:");
-    getLogger().debug("   DeleteNonRootEObjectInList: " + this.change);
+    getLogger().debug("Called effect AddedProvidedRoleInterfaceProvidingEntityEffect with input:");
+    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
     preProcessElements();
-    new mir.effects.pcm2java.RemoveRequiredRoleFromSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.effects.pcm2java.AddedProvidedRoleInterfaceProvidingEntityEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
     postProcessElements();
   }
@@ -60,10 +59,9 @@ public class RemoveRequiredRoleFromSystemEffect extends AbstractEffectRealizatio
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final DeleteNonRootEObjectInList<RequiredRole> change) {
-      RequiredRole _oldValue = change.getOldValue();
-      EObject _oldAffectedEObject = change.getOldAffectedEObject();
-      this.effectFacade.callRemoveRequiredRole(_oldValue, ((RepositoryComponent) _oldAffectedEObject));
+    private void executeUserOperations(final CreateNonRootEObjectInList<ProvidedRole> change) {
+      ProvidedRole _newValue = change.getNewValue();
+      this.effectFacade.callAddProvidedRole(((OperationProvidedRole) _newValue));
     }
   }
 }

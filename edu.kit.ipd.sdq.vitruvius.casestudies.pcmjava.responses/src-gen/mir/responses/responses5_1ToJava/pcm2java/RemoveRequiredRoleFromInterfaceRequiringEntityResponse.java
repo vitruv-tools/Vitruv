@@ -5,13 +5,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 
 @SuppressWarnings("all")
-class RemoveRequiredRoleFromComponentResponse extends AbstractResponseRealization {
-  public RemoveRequiredRoleFromComponentResponse(final UserInteracting userInteracting) {
+class RemoveRequiredRoleFromInterfaceRequiringEntityResponse extends AbstractResponseRealization {
+  public RemoveRequiredRoleFromInterfaceRequiringEntityResponse(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -49,7 +49,7 @@ class RemoveRequiredRoleFromComponentResponse extends AbstractResponseRealizatio
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RequiredRoleContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemoveRequiredRoleFromComponentEffect effect = new mir.effects.pcm2java.RemoveRequiredRoleFromComponentEffect(this.executionState, this);
+    mir.effects.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect effect = new mir.effects.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }
@@ -60,6 +60,6 @@ class RemoveRequiredRoleFromComponentResponse extends AbstractResponseRealizatio
     if (!typedChange.getAffectedFeature().getName().equals("requiredRoles_InterfaceRequiringEntity")) {
     	return false;
     }
-    return changedElement instanceof RepositoryComponent;
+    return changedElement instanceof InterfaceRequiringEntity;
   }
 }

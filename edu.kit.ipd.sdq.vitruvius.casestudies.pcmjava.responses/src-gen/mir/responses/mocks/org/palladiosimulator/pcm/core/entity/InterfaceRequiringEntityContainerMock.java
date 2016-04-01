@@ -45,22 +45,6 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     containedObject.setId(arg0);
   }
   
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
-  }
-  
-  public CDORevision cdoRevision(final boolean arg0) {
-    return containedObject.cdoRevision(arg0);
-  }
-  
-  public CDOState cdoState() {
-    return containedObject.cdoState();
-  }
-  
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
-  }
-  
   public CDOView cdoView() {
     return containedObject.cdoView();
   }
@@ -69,12 +53,28 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     return containedObject.cdoID();
   }
   
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
+  public CDOState cdoState() {
+    return containedObject.cdoState();
+  }
+  
+  public CDORevision cdoRevision(final boolean arg0) {
+    return containedObject.cdoRevision(arg0);
+  }
+  
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public boolean cdoConflict() {
     return containedObject.cdoConflict();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
   }
   
   public CDOObjectHistory cdoHistory() {
@@ -85,16 +85,20 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     return containedObject.cdoInvalid();
   }
   
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
   }
   
   public void cdoPrefetch(final int arg0) {
     containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
   }
   
   public CDOResource cdoResource() {
@@ -105,44 +109,24 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     return containedObject.cdoWriteLock();
   }
   
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
-  }
-  
   public CDOResource cdoDirectResource() {
     return containedObject.cdoDirectResource();
-  }
-  
-  public EObject eContainer() {
-    return containerObject;
-  }
-  
-  public EList eContents() {
-    return containedObject.eContents();
-  }
-  
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
-  }
-  
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
-  public EClass eClass() {
-    return containedObject.eClass();
-  }
-  
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
   }
   
   public EReference eContainmentFeature() {
     return containedObject.eContainmentFeature();
   }
   
-  public Resource eResource() {
-    return containerObject.eResource();
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
   }
   
   public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
@@ -157,8 +141,8 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     return containedObject.eIsSet(arg0);
   }
   
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public Resource eResource() {
+    return containerObject.eResource();
   }
   
   public boolean eIsProxy() {
@@ -173,6 +157,26 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
     return containedObject.eInvoke(arg0, arg1);
   }
   
+  public EList eContents() {
+    return containedObject.eContents();
+  }
+  
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
+  }
+  
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
+  }
+  
+  public EObject eContainer() {
+    return containerObject;
+  }
+  
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
+  }
+  
   public boolean eDeliver() {
     return containedObject.eDeliver();
   }
@@ -183,10 +187,6 @@ public class InterfaceRequiringEntityContainerMock implements InterfaceRequiring
   
   public EList eAdapters() {
     return containedObject.eAdapters();
-  }
-  
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
   }
   
   public String getEntityName() {

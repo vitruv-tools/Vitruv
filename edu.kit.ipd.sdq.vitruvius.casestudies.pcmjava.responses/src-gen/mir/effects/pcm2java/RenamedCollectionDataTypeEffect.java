@@ -6,24 +6,24 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
 import java.io.IOException;
 import mir.effects.pcm2java.EffectsFacade;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.palladiosimulator.pcm.repository.OperationProvidedRole;
-import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.CollectionDataType;
 
 @SuppressWarnings("all")
-public class AddedProvidedRoleToComponentEffect extends AbstractEffectRealization {
-  public AddedProvidedRoleToComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+public class RenamedCollectionDataTypeEffect extends AbstractEffectRealization {
+  public RenamedCollectionDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
     super(responseExecutionState, calledBy);
   }
   
-  private CreateNonRootEObjectInList<ProvidedRole> change;
+  private UpdateSingleValuedEAttribute<String> change;
   
   private boolean isChangeSet;
   
-  public void setChange(final CreateNonRootEObjectInList<ProvidedRole> change) {
+  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
     this.change = change;
     this.isChangeSet = true;
   }
@@ -33,11 +33,11 @@ public class AddedProvidedRoleToComponentEffect extends AbstractEffectRealizatio
   }
   
   protected void executeEffect() throws IOException {
-    getLogger().debug("Called effect AddedProvidedRoleToComponentEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("Called effect RenamedCollectionDataTypeEffect with input:");
+    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
     
     preProcessElements();
-    new mir.effects.pcm2java.AddedProvidedRoleToComponentEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.effects.pcm2java.RenamedCollectionDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
     postProcessElements();
   }
@@ -59,9 +59,9 @@ public class AddedProvidedRoleToComponentEffect extends AbstractEffectRealizatio
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<ProvidedRole> change) {
-      ProvidedRole _newValue = change.getNewValue();
-      this.effectFacade.callAddProvidedRole(((OperationProvidedRole) _newValue));
+    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change) {
+      EObject _newAffectedEObject = change.getNewAffectedEObject();
+      this.effectFacade.callRenameCollectionDataType(((CollectionDataType) _newAffectedEObject));
     }
   }
 }

@@ -14,6 +14,7 @@ import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
+import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
@@ -78,6 +79,20 @@ public class EffectsFacade extends AbstractEffectsFacade {
   public void callRenameCompositeDataType(final CompositeDataType compositeDataType) {
     mir.effects.pcm2java.RenameCompositeDataTypeEffect effect = new mir.effects.pcm2java.RenameCompositeDataTypeEffect(this.executionState, calledBy);
     effect.setCompositeDataType(compositeDataType);
+    effect.applyEffect();
+  }
+  
+  public void callAddSuperTypeToDataType(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
+    mir.effects.pcm2java.AddSuperTypeToDataTypeEffect effect = new mir.effects.pcm2java.AddSuperTypeToDataTypeEffect(this.executionState, calledBy);
+    effect.setDataType(dataType);
+    effect.setInnerTypeReference(innerTypeReference);
+    effect.setSuperTypeQualifiedName(superTypeQualifiedName);
+    effect.applyEffect();
+  }
+  
+  public void callRenameCollectionDataType(final CollectionDataType collectionDataType) {
+    mir.effects.pcm2java.RenameCollectionDataTypeEffect effect = new mir.effects.pcm2java.RenameCollectionDataTypeEffect(this.executionState, calledBy);
+    effect.setCollectionDataType(collectionDataType);
     effect.applyEffect();
   }
   
@@ -237,14 +252,6 @@ public class EffectsFacade extends AbstractEffectsFacade {
   public void callUpdateSEFFImplementingMethodName(final ServiceEffectSpecification seff) {
     mir.effects.pcm2java.UpdateSEFFImplementingMethodNameEffect effect = new mir.effects.pcm2java.UpdateSEFFImplementingMethodNameEffect(this.executionState, calledBy);
     effect.setSeff(seff);
-    effect.applyEffect();
-  }
-  
-  public void callAddSuperTypeToDataType(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
-    mir.effects.pcm2java.AddSuperTypeToDataTypeEffect effect = new mir.effects.pcm2java.AddSuperTypeToDataTypeEffect(this.executionState, calledBy);
-    effect.setDataType(dataType);
-    effect.setInnerTypeReference(innerTypeReference);
-    effect.setSuperTypeQualifiedName(superTypeQualifiedName);
     effect.applyEffect();
   }
 }

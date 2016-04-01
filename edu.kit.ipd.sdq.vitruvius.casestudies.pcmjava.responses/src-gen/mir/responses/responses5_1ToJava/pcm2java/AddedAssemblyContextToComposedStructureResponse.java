@@ -5,19 +5,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
-import org.palladiosimulator.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.ComposedStructure;
 
 @SuppressWarnings("all")
-class AddRequiredRoleToComponentResponse extends AbstractResponseRealization {
-  public AddRequiredRoleToComponentResponse(final UserInteracting userInteracting) {
+class AddedAssemblyContextToComposedStructureResponse extends AbstractResponseRealization {
+  public AddedAssemblyContextToComposedStructureResponse(final UserInteracting userInteracting) {
     super(userInteracting);
-  }
-  
-  private boolean checkTriggerPrecondition(final CreateNonRootEObjectInList<RequiredRole> change) {
-    RequiredRole _newValue = change.getNewValue();
-    return (_newValue instanceof OperationRequiredRole);
   }
   
   public static Class<? extends EChange> getTrigger() {
@@ -32,9 +26,6 @@ class AddRequiredRoleToComponentResponse extends AbstractResponseRealization {
     	return false;
     }
     CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
-    if (!checkTriggerPrecondition(typedChange)) {
-    	return false;
-    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
@@ -44,8 +35,8 @@ class AddRequiredRoleToComponentResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectInList<RequiredRole> typedChange = (CreateNonRootEObjectInList<RequiredRole>)change;
-    mir.effects.pcm2java.AddRequiredRoleToComponentEffect effect = new mir.effects.pcm2java.AddRequiredRoleToComponentEffect(this.executionState, this);
+    CreateNonRootEObjectInList<AssemblyContext> typedChange = (CreateNonRootEObjectInList<AssemblyContext>)change;
+    mir.effects.pcm2java.AddedAssemblyContextToComposedStructureEffect effect = new mir.effects.pcm2java.AddedAssemblyContextToComposedStructureEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }
@@ -53,9 +44,9 @@ class AddRequiredRoleToComponentResponse extends AbstractResponseRealization {
   private boolean checkChangedObject(final EChange change) {
     CreateNonRootEObjectInList<?> typedChange = (CreateNonRootEObjectInList<?>)change;
     EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("requiredRoles_InterfaceRequiringEntity")) {
+    if (!typedChange.getAffectedFeature().getName().equals("assemblyContexts__ComposedStructure")) {
     	return false;
     }
-    return changedElement instanceof RepositoryComponent;
+    return changedElement instanceof ComposedStructure;
   }
 }

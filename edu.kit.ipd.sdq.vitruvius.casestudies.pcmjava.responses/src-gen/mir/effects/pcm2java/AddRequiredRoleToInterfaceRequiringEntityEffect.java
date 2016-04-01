@@ -14,8 +14,8 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 
 @SuppressWarnings("all")
-public class AddRequiredRoleToSystemEffect extends AbstractEffectRealization {
-  public AddRequiredRoleToSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+public class AddRequiredRoleToInterfaceRequiringEntityEffect extends AbstractEffectRealization {
+  public AddRequiredRoleToInterfaceRequiringEntityEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
     super(responseExecutionState, calledBy);
   }
   
@@ -33,11 +33,11 @@ public class AddRequiredRoleToSystemEffect extends AbstractEffectRealization {
   }
   
   protected void executeEffect() throws IOException {
-    getLogger().debug("Called effect AddRequiredRoleToSystemEffect with input:");
+    getLogger().debug("Called effect AddRequiredRoleToInterfaceRequiringEntityEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
     preProcessElements();
-    new mir.effects.pcm2java.AddRequiredRoleToSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.effects.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
     postProcessElements();
   }

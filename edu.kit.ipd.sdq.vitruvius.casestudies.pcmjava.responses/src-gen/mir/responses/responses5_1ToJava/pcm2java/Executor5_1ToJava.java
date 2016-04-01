@@ -14,8 +14,7 @@ public class Executor5_1ToJava extends AbstractResponseExecutor {
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryPackagesResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryPackagesResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangedSystemNameResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangedSystemNameResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextInSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextInSystemResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextInCompositeComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextInCompositeComponentResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextToComposedStructureResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextToComposedStructureResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreateComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreateComponentResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenameComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RenameComponentResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.DeleteComponentClassResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.DeleteComponentClassResponse(userInteracting));
@@ -25,19 +24,19 @@ public class Executor5_1ToJava extends AbstractResponseExecutor {
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedCompositeDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreatedCompositeDataTypeResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenamedCompositeDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RenamedCompositeDataTypeResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemovedCompositeDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemovedCompositeDataTypeResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedCollectionDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreatedCollectionDataTypeResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenamedCollectionDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RenamedCollectionDataTypeResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemovedCollectionDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemovedCollectionDataTypeResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedInnerDeclarationToCompositeDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedInnerDeclarationToCompositeDataTypeResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangedNameOfInnerDeclarationResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangedNameOfInnerDeclarationResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangeTypeOfInnerDeclarationResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangeTypeOfInnerDeclarationResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleToSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleToSystemResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleToComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleToComponentResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleInterfaceProvidingEntityResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddedProvidedRoleInterfaceProvidingEntityResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangedProvidedInterfaceOfProvidedRoleResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangedProvidedInterfaceOfProvidedRoleResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangedProvidingEntityOfProvidedRoleResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangedProvidingEntityOfProvidedRoleResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemovedProvidedRoleFromSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemovedProvidedRoleFromSystemResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemovedProvidedRoleFromComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemovedProvidedRoleFromComponentResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToComponentResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToSystemResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromComponentResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromComponentResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromSystemResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromSystemResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToInterfaceRequiringEntityResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.AddRequiredRoleToInterfaceRequiringEntityResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenameOperationRequiredRoleResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RenameOperationRequiredRoleResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangeOperationRequiredRoleEntityResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangeOperationRequiredRoleEntityResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangeOperationRequiredRoleInterfaceResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangeOperationRequiredRoleInterfaceResponse(userInteracting));
@@ -55,6 +54,5 @@ public class Executor5_1ToJava extends AbstractResponseExecutor {
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RemovedSeffResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.RemovedSeffResponse(userInteracting));
-    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedCollectionDataTypeResponse.getTrigger(), new mir.responses.responses5_1ToJava.pcm2java.CreatedCollectionDataTypeResponse(userInteracting));
   }
 }

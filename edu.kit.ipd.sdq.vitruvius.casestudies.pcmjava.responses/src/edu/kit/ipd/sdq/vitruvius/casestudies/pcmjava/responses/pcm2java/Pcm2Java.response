@@ -76,9 +76,11 @@ execute: {
 	for (interface : repository.interfaces__Repository.filter(OperationInterface)) {
 		callRenameInterface(interface);
 	}
-	// TODO HK: Other data types are missing
 	for (dataType : repository.dataTypes__Repository.filter(CompositeDataType)) {
 		callRenameCompositeDataType(dataType);
+	}
+	for (dataType : repository.dataTypes__Repository.filter(CollectionDataType)) {
+		callRenameCollectionDataType(dataType);
 	}
 }
 
@@ -109,13 +111,8 @@ execute: {
 	callRenameJavaClassifier(system, systemPackage, system.entityName + "Impl");
 }
 
-response: AddedAssemblyContextInSystem
-trigger: insert in list pcm.System[assemblyContexts__ComposedStructure]
-retrieve element: java.Class as compositeComponentJavaClass corresponding to change.newAffectedEObject
-execute: callAddAssemblyContextToComposedStructure(compositeComponentJavaClass, change.newValue)
-
-response: AddedAssemblyContextInCompositeComponent
-trigger: insert in list pcm.CompositeComponent[assemblyContexts__ComposedStructure]
+response: AddedAssemblyContextToComposedStructure
+trigger: insert in list pcm.ComposedStructure[assemblyContexts__ComposedStructure]
 retrieve element: java.Class as compositeComponentJavaClass corresponding to change.newAffectedEObject
 execute: callAddAssemblyContextToComposedStructure(compositeComponentJavaClass, change.newValue)
 
@@ -231,6 +228,67 @@ response: RemovedCompositeDataType
 trigger: remove from list pcm.Repository[dataTypes__Repository]
 precondition: change.oldValue instanceof CompositeDataType
 execute: callDeleteJavaClassifier(change.oldValue as CompositeDataType)
+
+response: CreatedCollectionDataType
+trigger: insert in list pcm.Repository[dataTypes__Repository]
+precondition: change.newValue instanceof CollectionDataType
+retrieve element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType
+	on fail do nothing and continue effect
+retrieve element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
+execute: {
+	// create correct (and in case of primitive types wrapped) type reference for the inner type
+	val dataType = change.newValue as CollectionDataType;
+	val innerTypeRef = createTypeReference(dataType.innerType_CollectionDataType, innerTypeClass);
+	var innerTypeClassOrWrapper = innerTypeRef;
+	if (innerTypeRef instanceof PrimitiveType) {
+		innerTypeClassOrWrapper = getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
+	}
+	
+	// Let user select the class to map the collection type to
+	var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
+	collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
+	val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
+	for (collectionDataType : collectionDataTypes) {
+		collectionDataTypeNames.add(collectionDataType.name)
+	}
+	val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
+	val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
+		collectionDataTypeNames)
+	val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
+	
+	callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
+	callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
+}
+
+effect: AddSuperTypeToDataType
+input: pcm.DataType as dataType, java.TypeReference as innerTypeReference, String as superTypeQualifiedName
+retrieve element: java.Class as dataTypeImplementation corresponding to dataType
+retrieve element: java.CompilationUnit as dataTypeImplementationCU corresponding to dataType
+create element: java.NamespaceClassifierReference as namespaceClassifier corresponding to dataType
+execute: {
+	val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
+	dataTypeImplementationCU.imports += collectionTypeClassImport;
+	createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
+	val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
+	qualifiedTypeArgument.typeReference = innerTypeReference;
+	namespaceClassifier.classifierReferences.get(0).typeArguments += qualifiedTypeArgument;
+	dataTypeImplementation.extends = namespaceClassifier;
+}
+
+response: RenamedCollectionDataType
+trigger: replace value pcm.CollectionDataType[entityName]
+execute: callRenameCollectionDataType(change.newAffectedEObject as CollectionDataType)
+
+effect: RenameCollectionDataType
+input: pcm.CollectionDataType as collectionDataType
+retrieve element: java.Package as datatypesPackage corresponding to collectionDataType.repository__DataType with datatypesPackage.name == "datatypes"
+execute: callRenameJavaClassifier(collectionDataType, datatypesPackage, collectionDataType.entityName)
+
+response: RemovedCollectionDataType
+trigger: remove from list pcm.Repository[dataTypes__Repository]
+precondition: change.oldValue instanceof CollectionDataType
+execute: callDeleteJavaClassifier(change.oldValue as CollectionDataType)
+
 
 // ################ DATA TYPES - INNER DECLARATION RESPONSES ################
 
@@ -392,13 +450,8 @@ delete element: java.CompilationUnit as compilationUnit corresponding to sourceE
 // ####################################################
 // ################ PROVIDED ROLES ####################
 
-response: AddedProvidedRoleToSystem
-trigger: insert in list pcm.System[providedRoles_InterfaceProvidingEntity]
-precondition: change.newValue instanceof OperationProvidedRole
-execute: callAddProvidedRole(change.newValue as OperationProvidedRole)
-
-response: AddedProvidedRoleToComponent
-trigger: insert in list pcm.RepositoryComponent[providedRoles_InterfaceProvidingEntity]
+response: AddedProvidedRoleInterfaceProvidingEntity
+trigger: insert in list pcm.InterfaceProvidingEntity[providedRoles_InterfaceProvidingEntity]
 precondition: change.newValue instanceof OperationProvidedRole
 execute: callAddProvidedRole(change.newValue as OperationProvidedRole)
 
@@ -459,13 +512,8 @@ delete element: java.NamespaceClassifierReference as namespaceClassifierReferenc
 // TODO HK implement ctor statement as correspondence (dynamic in explicit effect for each ctor) to remove them easily
 // Use as example for responses best practices chapter
 // TODO HK Implement rename correctly when having all four correspondences correctly 
-response: AddRequiredRoleToComponent
-trigger: insert in list pcm.RepositoryComponent[requiredRoles_InterfaceRequiringEntity]
-precondition: change.newValue instanceof OperationRequiredRole
-execute: callAddRequiredRole(change.newValue as OperationRequiredRole)
-
-response: AddRequiredRoleToSystem
-trigger: insert in list pcm.System[requiredRoles_InterfaceRequiringEntity]
+response: AddRequiredRoleToInterfaceRequiringEntity
+trigger: insert in list pcm.InterfaceRequiringEntity[requiredRoles_InterfaceRequiringEntity]
 precondition: change.newValue instanceof OperationRequiredRole
 execute: callAddRequiredRole(change.newValue as OperationRequiredRole)
 
@@ -501,15 +549,8 @@ execute: {
 }
 
 
-response: RemoveRequiredRoleFromComponent
-trigger: remove from list pcm.RepositoryComponent[requiredRoles_InterfaceRequiringEntity]
-precondition: change.oldValue instanceof OperationRequiredRole
-execute: {
-	callRemoveRequiredRole(change.oldValue, change.oldAffectedEObject as RepositoryComponent);
-}
-
-response: RemoveRequiredRoleFromSystem
-trigger: remove from list pcm.System[requiredRoles_InterfaceRequiringEntity]
+response: RemoveRequiredRoleFromInterfaceRequiringEntity
+trigger: remove from list pcm.InterfaceRequiringEntity[requiredRoles_InterfaceRequiringEntity]
 precondition: change.oldValue instanceof OperationRequiredRole
 execute: {
 	callRemoveRequiredRole(change.oldValue, change.oldAffectedEObject as RepositoryComponent);
@@ -770,51 +811,4 @@ trigger: remove from list pcm.BasicComponent[serviceEffectSpecifications__BasicC
 delete element: java.ClassMethod as classMethod corresponding to change.oldValue
 
 
-
-
-response: CreatedCollectionDataType
-trigger: insert in list pcm.Repository[dataTypes__Repository]
-precondition: change.newValue instanceof CollectionDataType
-retrieve element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType
-	on fail do nothing and continue effect
-retrieve element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
-execute: {
-	// create correct (and in case of primitive types wrapped) type reference for the inner type
-	val dataType = change.newValue as CollectionDataType;
-	val innerTypeRef = createTypeReference(dataType.innerType_CollectionDataType, innerTypeClass);
-	var innerTypeClassOrWrapper = innerTypeRef;
-	if (innerTypeRef instanceof PrimitiveType) {
-		innerTypeClassOrWrapper = getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
-	}
-	
-	// Let user select the class to map the collection type to
-	var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
-	collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
-	val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
-	for (collectionDataType : collectionDataTypes) {
-		collectionDataTypeNames.add(collectionDataType.name)
-	}
-	val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
-	val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
-		collectionDataTypeNames)
-	val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
-	
-	callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
-	callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
-}
-
-effect: AddSuperTypeToDataType
-input: pcm.DataType as dataType, java.TypeReference as innerTypeReference, String as superTypeQualifiedName
-retrieve element: java.Class as dataTypeImplementation corresponding to dataType
-retrieve element: java.CompilationUnit as dataTypeImplementationCU corresponding to dataType
-create element: java.NamespaceClassifierReference as namespaceClassifier corresponding to dataType
-execute: {
-	val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
-	dataTypeImplementationCU.imports += collectionTypeClassImport;
-	createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
-	val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
-	qualifiedTypeArgument.typeReference = innerTypeReference;
-	namespaceClassifier.classifierReferences.get(0).typeArguments += qualifiedTypeArgument;
-	dataTypeImplementation.extends = namespaceClassifier;
-}
 

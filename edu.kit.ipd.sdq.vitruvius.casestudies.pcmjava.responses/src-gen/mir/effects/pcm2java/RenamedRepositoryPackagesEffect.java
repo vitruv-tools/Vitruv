@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.BasicComponent;
+import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.Interface;
@@ -112,6 +113,11 @@ public class RenamedRepositoryPackagesEffect extends AbstractEffectRealization {
       Iterable<CompositeDataType> _filter_2 = Iterables.<CompositeDataType>filter(_dataTypes__Repository, CompositeDataType.class);
       for (final CompositeDataType dataType : _filter_2) {
         this.effectFacade.callRenameCompositeDataType(dataType);
+      }
+      EList<DataType> _dataTypes__Repository_1 = repository.getDataTypes__Repository();
+      Iterable<CollectionDataType> _filter_3 = Iterables.<CollectionDataType>filter(_dataTypes__Repository_1, CollectionDataType.class);
+      for (final CollectionDataType dataType_1 : _filter_3) {
+        this.effectFacade.callRenameCollectionDataType(dataType_1);
       }
     }
   }

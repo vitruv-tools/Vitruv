@@ -6,24 +6,24 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
 import java.io.IOException;
 import mir.effects.pcm2java.EffectsFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import org.palladiosimulator.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.repository.CollectionDataType;
+import org.palladiosimulator.pcm.repository.DataType;
 
 @SuppressWarnings("all")
-public class AddRequiredRoleToComponentEffect extends AbstractEffectRealization {
-  public AddRequiredRoleToComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+public class RemovedCollectionDataTypeEffect extends AbstractEffectRealization {
+  public RemovedCollectionDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
     super(responseExecutionState, calledBy);
   }
   
-  private CreateNonRootEObjectInList<RequiredRole> change;
+  private DeleteNonRootEObjectInList<DataType> change;
   
   private boolean isChangeSet;
   
-  public void setChange(final CreateNonRootEObjectInList<RequiredRole> change) {
+  public void setChange(final DeleteNonRootEObjectInList<DataType> change) {
     this.change = change;
     this.isChangeSet = true;
   }
@@ -33,11 +33,11 @@ public class AddRequiredRoleToComponentEffect extends AbstractEffectRealization 
   }
   
   protected void executeEffect() throws IOException {
-    getLogger().debug("Called effect AddRequiredRoleToComponentEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("Called effect RemovedCollectionDataTypeEffect with input:");
+    getLogger().debug("   DeleteNonRootEObjectInList: " + this.change);
     
     preProcessElements();
-    new mir.effects.pcm2java.AddRequiredRoleToComponentEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.effects.pcm2java.RemovedCollectionDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
     postProcessElements();
   }
@@ -59,9 +59,9 @@ public class AddRequiredRoleToComponentEffect extends AbstractEffectRealization 
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<RequiredRole> change) {
-      RequiredRole _newValue = change.getNewValue();
-      this.effectFacade.callAddRequiredRole(((OperationRequiredRole) _newValue));
+    private void executeUserOperations(final DeleteNonRootEObjectInList<DataType> change) {
+      DataType _oldValue = change.getOldValue();
+      this.effectFacade.callDeleteJavaClassifier(((CollectionDataType) _oldValue));
     }
   }
 }

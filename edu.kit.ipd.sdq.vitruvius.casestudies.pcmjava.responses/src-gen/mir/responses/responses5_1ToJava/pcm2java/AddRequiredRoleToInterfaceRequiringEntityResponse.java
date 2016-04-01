@@ -5,18 +5,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.pcm.repository.OperationProvidedRole;
-import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import org.palladiosimulator.pcm.repository.RequiredRole;
 
 @SuppressWarnings("all")
-class AddedProvidedRoleToSystemResponse extends AbstractResponseRealization {
-  public AddedProvidedRoleToSystemResponse(final UserInteracting userInteracting) {
+class AddRequiredRoleToInterfaceRequiringEntityResponse extends AbstractResponseRealization {
+  public AddRequiredRoleToInterfaceRequiringEntityResponse(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final CreateNonRootEObjectInList<ProvidedRole> change) {
-    ProvidedRole _newValue = change.getNewValue();
-    return (_newValue instanceof OperationProvidedRole);
+  private boolean checkTriggerPrecondition(final CreateNonRootEObjectInList<RequiredRole> change) {
+    RequiredRole _newValue = change.getNewValue();
+    return (_newValue instanceof OperationRequiredRole);
   }
   
   public static Class<? extends EChange> getTrigger() {
@@ -43,8 +44,8 @@ class AddedProvidedRoleToSystemResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectInList<ProvidedRole> typedChange = (CreateNonRootEObjectInList<ProvidedRole>)change;
-    mir.effects.pcm2java.AddedProvidedRoleToSystemEffect effect = new mir.effects.pcm2java.AddedProvidedRoleToSystemEffect(this.executionState, this);
+    CreateNonRootEObjectInList<RequiredRole> typedChange = (CreateNonRootEObjectInList<RequiredRole>)change;
+    mir.effects.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect effect = new mir.effects.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }
@@ -52,9 +53,9 @@ class AddedProvidedRoleToSystemResponse extends AbstractResponseRealization {
   private boolean checkChangedObject(final EChange change) {
     CreateNonRootEObjectInList<?> typedChange = (CreateNonRootEObjectInList<?>)change;
     EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("providedRoles_InterfaceProvidingEntity")) {
+    if (!typedChange.getAffectedFeature().getName().equals("requiredRoles_InterfaceRequiringEntity")) {
     	return false;
     }
-    return changedElement instanceof org.palladiosimulator.pcm.system.System;
+    return changedElement instanceof InterfaceRequiringEntity;
   }
 }

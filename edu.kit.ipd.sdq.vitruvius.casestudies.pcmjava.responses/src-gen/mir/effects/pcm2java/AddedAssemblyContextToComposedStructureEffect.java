@@ -15,8 +15,8 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 
 @SuppressWarnings("all")
-public class AddedAssemblyContextInCompositeComponentEffect extends AbstractEffectRealization {
-  public AddedAssemblyContextInCompositeComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+public class AddedAssemblyContextToComposedStructureEffect extends AbstractEffectRealization {
+  public AddedAssemblyContextToComposedStructureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
     super(responseExecutionState, calledBy);
   }
   
@@ -39,7 +39,7 @@ public class AddedAssemblyContextInCompositeComponentEffect extends AbstractEffe
   }
   
   protected void executeEffect() throws IOException {
-    getLogger().debug("Called effect AddedAssemblyContextInCompositeComponentEffect with input:");
+    getLogger().debug("Called effect AddedAssemblyContextToComposedStructureEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
     org.emftext.language.java.classifiers.Class compositeComponentJavaClass = initializeRetrieveElementState(
@@ -50,7 +50,7 @@ public class AddedAssemblyContextInCompositeComponentEffect extends AbstractEffe
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
     preProcessElements();
-    new mir.effects.pcm2java.AddedAssemblyContextInCompositeComponentEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.effects.pcm2java.AddedAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, compositeComponentJavaClass);
     postProcessElements();
   }

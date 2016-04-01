@@ -39,44 +39,16 @@ public class ParameterContainerMock implements Parameter {
   
   private EObject containerObject;
   
-  public void setParameterName(final String arg0) {
-    containedObject.setParameterName(arg0);
-  }
-  
   public String getParameterName() {
     return containedObject.getParameterName();
   }
   
-  public InfrastructureSignature getInfrastructureSignature__Parameter() {
-    return containedObject.getInfrastructureSignature__Parameter();
-  }
-  
-  public void setInfrastructureSignature__Parameter(final InfrastructureSignature arg0) {
-    containedObject.setInfrastructureSignature__Parameter(arg0);
-  }
-  
-  public OperationSignature getOperationSignature__Parameter() {
-    return containedObject.getOperationSignature__Parameter();
+  public void setParameterName(final String arg0) {
+    containedObject.setParameterName(arg0);
   }
   
   public void setOperationSignature__Parameter(final OperationSignature arg0) {
     containedObject.setOperationSignature__Parameter(arg0);
-  }
-  
-  public void setDataType__Parameter(final DataType arg0) {
-    containedObject.setDataType__Parameter(arg0);
-  }
-  
-  public void setResourceSignature__Parameter(final ResourceSignature arg0) {
-    containedObject.setResourceSignature__Parameter(arg0);
-  }
-  
-  public DataType getDataType__Parameter() {
-    return containedObject.getDataType__Parameter();
-  }
-  
-  public void setEventType__Parameter(final EventType arg0) {
-    containedObject.setEventType__Parameter(arg0);
   }
   
   public EventType getEventType__Parameter() {
@@ -87,12 +59,40 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.getModifier__Parameter();
   }
   
+  public void setDataType__Parameter(final DataType arg0) {
+    containedObject.setDataType__Parameter(arg0);
+  }
+  
+  public void setEventType__Parameter(final EventType arg0) {
+    containedObject.setEventType__Parameter(arg0);
+  }
+  
+  public DataType getDataType__Parameter() {
+    return containedObject.getDataType__Parameter();
+  }
+  
   public ResourceSignature getResourceSignature__Parameter() {
     return containedObject.getResourceSignature__Parameter();
   }
   
   public void setModifier__Parameter(final ParameterModifier arg0) {
     containedObject.setModifier__Parameter(arg0);
+  }
+  
+  public OperationSignature getOperationSignature__Parameter() {
+    return containedObject.getOperationSignature__Parameter();
+  }
+  
+  public void setResourceSignature__Parameter(final ResourceSignature arg0) {
+    containedObject.setResourceSignature__Parameter(arg0);
+  }
+  
+  public void setInfrastructureSignature__Parameter(final InfrastructureSignature arg0) {
+    containedObject.setInfrastructureSignature__Parameter(arg0);
+  }
+  
+  public InfrastructureSignature getInfrastructureSignature__Parameter() {
+    return containedObject.getInfrastructureSignature__Parameter();
   }
   
   public String getEntityName() {
@@ -103,22 +103,6 @@ public class ParameterContainerMock implements Parameter {
     containedObject.setEntityName(arg0);
   }
   
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
-  }
-  
-  public CDORevision cdoRevision(final boolean arg0) {
-    return containedObject.cdoRevision(arg0);
-  }
-  
-  public CDOState cdoState() {
-    return containedObject.cdoState();
-  }
-  
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
-  }
-  
   public CDOView cdoView() {
     return containedObject.cdoView();
   }
@@ -127,12 +111,28 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.cdoID();
   }
   
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
+  public CDOState cdoState() {
+    return containedObject.cdoState();
+  }
+  
+  public CDORevision cdoRevision(final boolean arg0) {
+    return containedObject.cdoRevision(arg0);
+  }
+  
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public boolean cdoConflict() {
     return containedObject.cdoConflict();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
   }
   
   public CDOObjectHistory cdoHistory() {
@@ -143,16 +143,20 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.cdoInvalid();
   }
   
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
   }
   
   public void cdoPrefetch(final int arg0) {
     containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
   }
   
   public CDOResource cdoResource() {
@@ -163,44 +167,24 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.cdoWriteLock();
   }
   
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
-  }
-  
   public CDOResource cdoDirectResource() {
     return containedObject.cdoDirectResource();
-  }
-  
-  public EObject eContainer() {
-    return containerObject;
-  }
-  
-  public EList eContents() {
-    return containedObject.eContents();
-  }
-  
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
-  }
-  
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
-  public EClass eClass() {
-    return containedObject.eClass();
-  }
-  
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
   }
   
   public EReference eContainmentFeature() {
     return containedObject.eContainmentFeature();
   }
   
-  public Resource eResource() {
-    return containerObject.eResource();
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
   }
   
   public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
@@ -215,8 +199,8 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.eIsSet(arg0);
   }
   
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public Resource eResource() {
+    return containerObject.eResource();
   }
   
   public boolean eIsProxy() {
@@ -231,6 +215,26 @@ public class ParameterContainerMock implements Parameter {
     return containedObject.eInvoke(arg0, arg1);
   }
   
+  public EList eContents() {
+    return containedObject.eContents();
+  }
+  
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
+  }
+  
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
+  }
+  
+  public EObject eContainer() {
+    return containerObject;
+  }
+  
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
+  }
+  
   public boolean eDeliver() {
     return containedObject.eDeliver();
   }
@@ -241,9 +245,5 @@ public class ParameterContainerMock implements Parameter {
   
   public EList eAdapters() {
     return containedObject.eAdapters();
-  }
-  
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
   }
 }
