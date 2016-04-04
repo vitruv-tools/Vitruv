@@ -113,7 +113,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
-		for (element : effect.retrieveElements + effect.createElements + effect.deleteElements) {
+		for (element : effect.correspondingElements) {
 			createEObjectNode(parentNode, element);	
 		}
 		

@@ -15,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.generator.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.EffectInput
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
 
 /**
  * This class contains custom validation rules. 
@@ -70,7 +71,7 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
 	def checkEffects(Effect effect) {
-		if (effect.codeBlock == null && !effect.createElements.nullOrEmpty) {
+		if (effect.codeBlock == null && !effect.correspondingElements.filter(CorrespondingModelElementCreate).nullOrEmpty) {
 			warning("Created elements must be initialized and inserted into the target model in the execute block.",
 				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);
 		}

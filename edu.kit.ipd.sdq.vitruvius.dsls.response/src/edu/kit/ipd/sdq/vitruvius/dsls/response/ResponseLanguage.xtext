@@ -29,9 +29,9 @@ Response:
 // ****** EFFECTS ******
 
 fragment Effect:
-	(retrieveElements+=CorrespondingModelElementRetrieve |
-	deleteElements+=CorrespondingModelElementDelete |
-	createElements+=CorrespondingModelElementCreate)*
+	(correspondingElements+=(CorrespondingModelElementRetrieve |
+	CorrespondingModelElementDelete |
+	CorrespondingModelElementCreate))*
 	('execute:' codeBlock=ExecutionCodeBlock)?;
 
 ImplicitEffect:

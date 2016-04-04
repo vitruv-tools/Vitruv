@@ -49,7 +49,7 @@ abstract class EffectClassGenerator extends ClassGenerator {
 		this.effect = effect;
 		this.hasExecutionBlock = effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
-		this.modelElements = (effect.createElements + effect.retrieveElements + effect.deleteElements).filter[complete];
+		this.modelElements = effect.correspondingElements.filter[complete];
 		this.effectClassNameGenerator = effect.effectClassNameGenerator;
 		this.effectsFacadeClassNameGenerator = effect.responsesSegment.effectsFacadeClassNameGenerator;
 		this.effectUserExecutionQualifiedClassName = effectClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
