@@ -75,13 +75,6 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     getLogger().debug("   RequiredRole: " + this.requiredRole);
     getLogger().debug("   InterfaceRequiringEntity: " + this.requiringEntity);
     
-    org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
-    if (isAborted()) return;
     ClassifierImport requiredInterfaceImport = initializeDeleteElementState(
     	() -> getCorrepondenceSourceRequiredInterfaceImport(requiredRole, requiringEntity), // correspondence source supplier
     	(ClassifierImport _element) -> true, // correspondence precondition checker
@@ -96,9 +89,16 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     	Field.class,
     	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
     if (isAborted()) return;
+    org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
+    	() -> getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	() -> null, // tag supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(false));
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole, requiringEntity, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass);
     postProcessElements();
   }
   
@@ -119,7 +119,7 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+    private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
       boolean _equals = Objects.equal(javaClass, null);
       if (_equals) {
         return;

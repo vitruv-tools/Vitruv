@@ -53,12 +53,6 @@ public class AddOperationSignatureEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect AddOperationSignatureEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
-    InterfaceMethod interfaceMethod = initializeCreateElementState(
-    	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
-    	() -> MembersFactoryImpl.eINSTANCE.createInterfaceMethod(), // element creation supplier
-    	() -> null, // tag supplier
-    	InterfaceMethod.class);
-    if (isAborted()) return;
     Interface javaInterface = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceJavaInterface(change), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
@@ -66,9 +60,15 @@ public class AddOperationSignatureEffect extends AbstractEffectRealization {
     	Interface.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
+    InterfaceMethod interfaceMethod = initializeCreateElementState(
+    	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
+    	() -> MembersFactoryImpl.eINSTANCE.createInterfaceMethod(), // element creation supplier
+    	() -> null, // tag supplier
+    	InterfaceMethod.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, interfaceMethod, javaInterface);
+    	change, javaInterface, interfaceMethod);
     postProcessElements();
   }
   
@@ -89,7 +89,7 @@ public class AddOperationSignatureEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<OperationSignature> change, final InterfaceMethod interfaceMethod, final Interface javaInterface) {
+    private void executeUserOperations(final CreateNonRootEObjectInList<OperationSignature> change, final Interface javaInterface, final InterfaceMethod interfaceMethod) {
       OperationSignature _newValue = change.getNewValue();
       String _entityName = _newValue.getEntityName();
       interfaceMethod.setName(_entityName);

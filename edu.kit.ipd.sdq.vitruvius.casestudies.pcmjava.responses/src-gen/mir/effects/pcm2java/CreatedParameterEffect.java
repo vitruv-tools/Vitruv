@@ -52,12 +52,6 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect CreatedParameterEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
-    OrdinaryParameter javaParameter = initializeCreateElementState(
-    	() -> getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
-    	() -> ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter(), // element creation supplier
-    	() -> null, // tag supplier
-    	OrdinaryParameter.class);
-    if (isAborted()) return;
     InterfaceMethod interfaceMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
@@ -65,9 +59,15 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
     	InterfaceMethod.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
+    OrdinaryParameter javaParameter = initializeCreateElementState(
+    	() -> getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
+    	() -> ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter(), // element creation supplier
+    	() -> null, // tag supplier
+    	OrdinaryParameter.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedParameterEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, javaParameter, interfaceMethod);
+    	change, interfaceMethod, javaParameter);
     postProcessElements();
   }
   
@@ -88,7 +88,7 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<Parameter> change, final OrdinaryParameter javaParameter, final InterfaceMethod interfaceMethod) {
+    private void executeUserOperations(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
       Parameter _newValue = change.getNewValue();
       String _parameterName = _newValue.getParameterName();
       javaParameter.setName(_parameterName);

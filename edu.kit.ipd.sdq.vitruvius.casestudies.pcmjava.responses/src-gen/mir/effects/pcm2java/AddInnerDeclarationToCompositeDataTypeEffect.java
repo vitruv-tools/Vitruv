@@ -67,12 +67,12 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     return innerDeclaration;
   }
   
-  private String getTagSetterMethod(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference) {
-    return "setter";
-  }
-  
   private EObject getCorrepondenceSourceDataTypeClass(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference) {
     return compositeDataType;
+  }
+  
+  private String getTagSetterMethod(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference) {
+    return "setter";
   }
   
   private EObject getCorrepondenceSourceGetterMethod(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference) {
@@ -85,6 +85,13 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
     getLogger().debug("   TypeReference: " + this.dataTypeReference);
     
+    org.emftext.language.java.classifiers.Class dataTypeClass = initializeRetrieveElementState(
+    	() -> getCorrepondenceSourceDataTypeClass(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	() -> null, // tag supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    if (isAborted()) return;
     Field innerDataTypeField = initializeCreateElementState(
     	() -> getCorrepondenceSourceInnerDataTypeField(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
     	() -> MembersFactoryImpl.eINSTANCE.createField(), // element creation supplier
@@ -103,16 +110,9 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     	() -> getTagSetterMethod(compositeDataType, innerDeclaration, dataTypeReference), // tag supplier
     	ClassMethod.class);
     if (isAborted()) return;
-    org.emftext.language.java.classifiers.Class dataTypeClass = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDataTypeClass(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	CorrespondenceFailHandlerFactory.createExceptionHandler());
-    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddInnerDeclarationToCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	compositeDataType, innerDeclaration, dataTypeReference, innerDataTypeField, getterMethod, setterMethod, dataTypeClass);
+    	compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod);
     postProcessElements();
   }
   
@@ -137,7 +137,7 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod, final org.emftext.language.java.classifiers.Class dataTypeClass) {
+    private void executeUserOperations(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final org.emftext.language.java.classifiers.Class dataTypeClass, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod) {
       TypeReference _copy = EcoreUtil.<TypeReference>copy(dataTypeReference);
       String _entityName = innerDeclaration.getEntityName();
       Pcm2JavaHelper.createPrivateField(innerDataTypeField, _copy, _entityName);

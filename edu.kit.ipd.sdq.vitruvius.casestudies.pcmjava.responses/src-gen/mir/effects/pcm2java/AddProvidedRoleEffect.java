@@ -64,18 +64,6 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect AddProvidedRoleEffect with input:");
     getLogger().debug("   OperationProvidedRole: " + this.providedRole);
     
-    ClassifierImport interfaceImport = initializeCreateElementState(
-    	() -> getCorrepondenceSourceInterfaceImport(providedRole), // correspondence source supplier
-    	() -> ImportsFactoryImpl.eINSTANCE.createClassifierImport(), // element creation supplier
-    	() -> null, // tag supplier
-    	ClassifierImport.class);
-    if (isAborted()) return;
-    NamespaceClassifierReference namespaceClassifierReference = initializeCreateElementState(
-    	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
-    	() -> TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference(), // element creation supplier
-    	() -> null, // tag supplier
-    	NamespaceClassifierReference.class);
-    if (isAborted()) return;
     Interface operationProvidingInterface = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceOperationProvidingInterface(providedRole), // correspondence source supplier
     	(Interface _element) -> true, // correspondence precondition checker
@@ -90,9 +78,21 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
+    ClassifierImport interfaceImport = initializeCreateElementState(
+    	() -> getCorrepondenceSourceInterfaceImport(providedRole), // correspondence source supplier
+    	() -> ImportsFactoryImpl.eINSTANCE.createClassifierImport(), // element creation supplier
+    	() -> null, // tag supplier
+    	ClassifierImport.class);
+    if (isAborted()) return;
+    NamespaceClassifierReference namespaceClassifierReference = initializeCreateElementState(
+    	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
+    	() -> TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference(), // element creation supplier
+    	() -> null, // tag supplier
+    	NamespaceClassifierReference.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddProvidedRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	providedRole, interfaceImport, namespaceClassifierReference, operationProvidingInterface, javaClass);
+    	providedRole, operationProvidingInterface, javaClass, interfaceImport, namespaceClassifierReference);
     postProcessElements();
   }
   
@@ -113,7 +113,7 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final OperationProvidedRole providedRole, final ClassifierImport interfaceImport, final NamespaceClassifierReference namespaceClassifierReference, final Interface operationProvidingInterface, final org.emftext.language.java.classifiers.Class javaClass) {
+    private void executeUserOperations(final OperationProvidedRole providedRole, final Interface operationProvidingInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport interfaceImport, final NamespaceClassifierReference namespaceClassifierReference) {
       Pcm2JavaHelper.createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
       EList<TypeReference> _implements = javaClass.getImplements();
       _implements.add(namespaceClassifierReference);

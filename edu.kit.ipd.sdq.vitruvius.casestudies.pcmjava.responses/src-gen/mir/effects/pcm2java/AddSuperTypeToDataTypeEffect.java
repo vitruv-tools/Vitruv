@@ -81,12 +81,6 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     getLogger().debug("   TypeReference: " + this.innerTypeReference);
     getLogger().debug("   String: " + this.superTypeQualifiedName);
     
-    NamespaceClassifierReference namespaceClassifier = initializeCreateElementState(
-    	() -> getCorrepondenceSourceNamespaceClassifier(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
-    	() -> TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference(), // element creation supplier
-    	() -> null, // tag supplier
-    	NamespaceClassifierReference.class);
-    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class dataTypeImplementation = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceDataTypeImplementation(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
@@ -101,9 +95,15 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     	CompilationUnit.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
+    NamespaceClassifierReference namespaceClassifier = initializeCreateElementState(
+    	() -> getCorrepondenceSourceNamespaceClassifier(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
+    	() -> TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference(), // element creation supplier
+    	() -> null, // tag supplier
+    	NamespaceClassifierReference.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.AddSuperTypeToDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	dataType, innerTypeReference, superTypeQualifiedName, namespaceClassifier, dataTypeImplementation, dataTypeImplementationCU);
+    	dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier);
     postProcessElements();
   }
   
@@ -124,7 +124,7 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final NamespaceClassifierReference namespaceClassifier, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU) {
+    private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {
       final ClassifierImport collectionTypeClassImport = Pcm2JavaHelper.getJavaClassImport(superTypeQualifiedName);
       EList<Import> _imports = dataTypeImplementationCU.getImports();
       _imports.add(collectionTypeClassImport);

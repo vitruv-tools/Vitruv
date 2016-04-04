@@ -776,7 +776,10 @@ execute: callCreateSEFF(change.newValue)
 effect: CreateSEFF
 input: pcm.ServiceEffectSpecification as seff
 retrieve element: java.Class as componentClass corresponding to seff.basicComponent_ServiceEffectSpecification
+	on fail show user dialog with message "Could not find a corresponding class for the SEFF's component. No corresponding method for the SEFF created." 
+		and abort effect
 retrieve element: java.InterfaceMethod as interfaceMethod corresponding to seff.describedService__SEFF
+	on fail do nothing and abort effect
 create element: java.ClassMethod as classMethod corresponding to seff
 execute: {
 	val signature = seff.describedService__SEFF

@@ -52,12 +52,6 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     getLogger().debug("Called effect CreatedResourceDemandingInternalBehaviorEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
-    ClassMethod javaMethod = initializeCreateElementState(
-    	() -> getCorrepondenceSourceJavaMethod(change), // correspondence source supplier
-    	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
-    	() -> null, // tag supplier
-    	ClassMethod.class);
-    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class componentClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceComponentClass(change), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
@@ -65,9 +59,15 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     	org.emftext.language.java.classifiers.Class.class,
     	CorrespondenceFailHandlerFactory.createExceptionHandler());
     if (isAborted()) return;
+    ClassMethod javaMethod = initializeCreateElementState(
+    	() -> getCorrepondenceSourceJavaMethod(change), // correspondence source supplier
+    	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
+    	() -> null, // tag supplier
+    	ClassMethod.class);
+    if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreatedResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, javaMethod, componentClass);
+    	change, componentClass, javaMethod);
     postProcessElements();
   }
   
@@ -88,7 +88,7 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change, final ClassMethod javaMethod, final org.emftext.language.java.classifiers.Class componentClass) {
+    private void executeUserOperations(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
       ResourceDemandingInternalBehaviour _newValue = change.getNewValue();
       String _entityName = _newValue.getEntityName();
       javaMethod.setName(_entityName);

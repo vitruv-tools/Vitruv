@@ -56,29 +56,29 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
     getLogger().debug("Called effect CreateSEFFEffect with input:");
     getLogger().debug("   ServiceEffectSpecification: " + this.seff);
     
-    ClassMethod classMethod = initializeCreateElementState(
-    	() -> getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
-    	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
-    	() -> null, // tag supplier
-    	ClassMethod.class);
-    if (isAborted()) return;
     org.emftext.language.java.classifiers.Class componentClass = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceComponentClass(seff), // correspondence source supplier
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	org.emftext.language.java.classifiers.Class.class,
-    	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    	CorrespondenceFailHandlerFactory.createCustomUserDialogHandler(true, "Could not find a corresponding class for the SEFF's component. No corresponding method for the SEFF created."));
     if (isAborted()) return;
     InterfaceMethod interfaceMethod = initializeRetrieveElementState(
     	() -> getCorrepondenceSourceInterfaceMethod(seff), // correspondence source supplier
     	(InterfaceMethod _element) -> true, // correspondence precondition checker
     	() -> null, // tag supplier
     	InterfaceMethod.class,
-    	CorrespondenceFailHandlerFactory.createExceptionHandler());
+    	CorrespondenceFailHandlerFactory.createDoNothingHandler(true));
+    if (isAborted()) return;
+    ClassMethod classMethod = initializeCreateElementState(
+    	() -> getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
+    	() -> MembersFactoryImpl.eINSTANCE.createClassMethod(), // element creation supplier
+    	() -> null, // tag supplier
+    	ClassMethod.class);
     if (isAborted()) return;
     preProcessElements();
     new mir.effects.pcm2java.CreateSEFFEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	seff, classMethod, componentClass, interfaceMethod);
+    	seff, componentClass, interfaceMethod, classMethod);
     postProcessElements();
   }
   
@@ -103,7 +103,7 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
       this.effectFacade = new EffectsFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ServiceEffectSpecification seff, final ClassMethod classMethod, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod) {
+    private void executeUserOperations(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
       final Signature signature = seff.getDescribedService__SEFF();
       boolean _and = false;
       boolean _notEquals = (!Objects.equal(signature, null));
