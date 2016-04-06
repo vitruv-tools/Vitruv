@@ -1,0 +1,30 @@
+package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseExecutor;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+
+@SuppressWarnings("all")
+public class ExecutorAllElementTypesToAllElementTypes extends AbstractResponseExecutor {
+  public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
+    super(userInteracting);
+  }
+  
+  protected void setup() {
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedEAttributeResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedEAttributeResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectInListResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectInListResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectInListResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectInListResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectSingleResponseResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectSingleResponseResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectSingleResponseResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectSingleResponseResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.InsertEAttributeValueResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.InsertEAttributeValueResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveEAttributeValueResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveEAttributeValueResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.InsertNonContainmentEReferenceResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.InsertNonContainmentEReferenceResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveNonContainmentEReferenceResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveNonContainmentEReferenceResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForCreateSecondTestModelResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForCreateSecondTestModelResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForDeleteSecondTestModelResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForDeleteSecondTestModelResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationResponse.getTrigger(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationResponse(userInteracting));
+  }
+}
