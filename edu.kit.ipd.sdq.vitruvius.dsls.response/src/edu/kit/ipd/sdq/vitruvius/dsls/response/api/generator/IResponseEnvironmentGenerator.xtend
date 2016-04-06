@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.core.resources.IProject
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.google.inject.ImplementedBy
-import edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl.ResponseEnvironmentGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.environment.ResponseEnvironmentGenerator
 
 @ImplementedBy(ResponseEnvironmentGenerator)
 interface IResponseEnvironmentGenerator {

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.response.generator.impl;
+package edu.kit.ipd.sdq.vitruvius.dsls.response.environment;
 
 import org.eclipse.xtext.xbase.impl.XBlockExpressionImpl
 import org.eclipse.xtend2.lib.StringConcatenationClient
