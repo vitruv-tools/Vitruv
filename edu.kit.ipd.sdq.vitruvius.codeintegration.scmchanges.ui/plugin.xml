@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+      <menu
+            id="edu.kit.ipd.sdq.vitruvius"
+            label="Vitruvius">
+         <command
+               commandId="edu.kit.ipd.sdq.vitruvius.codeintegeration.scmchanges.applyscmchanges"
+               label="Apply SCM Changes"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menu>
+    </menuContribution>
+  </extension>
+  
+  <extension point="org.eclipse.ui.commands">
+    <category
+          id="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges" name="scmchanges">
+    </category>
+    <command
+          categoryId="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges"
+          defaultHandler="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.commands.ApplyScmChangesCommand"
+          description="Apply scm changes to files"
+          id="edu.kit.ipd.sdq.vitruvius.codeintegeration.scmchanges.applyscmchanges"
+          name="Apply SCM Changes">
+    </command>
+  </extension>
+
+</plugin>
