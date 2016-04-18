@@ -86,10 +86,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 			}
 	        oldest = potentiallyOldest;
 			if (oldest != null) {
-				txtOldVersion.setText(oldest.getId().toString());
+				txtOldVersion.setText(oldest.getId().getName());
 			}
 			if (newest != null) {
-				txtNewVersion.setText(newest.getId().toString());
+				txtNewVersion.setText(newest.getId().getName());
 			}
 			validate();
 		} else {
