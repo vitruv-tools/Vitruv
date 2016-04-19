@@ -60,24 +60,24 @@ public class GumTreeChangeExtractor {
       final RootsClassifier classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m);
       ITree _root_5 = srcTreeContext.getRoot();
       final ITree workingTree = _root_5.deepCopy();
-      Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
-      for (final ITree addTree : _dstAddTrees) {
-        {
-          GumTreeChangeExtractor.logger.info("Found ADD");
-          boolean _addNodeToWorkingTree = this.addNodeToWorkingTree(addTree, false, workingTree, mappings);
-          if (_addNodeToWorkingTree) {
-            CompilationUnit _convertTree_1 = converter.convertTree(workingTree);
-            String _string_1 = _convertTree_1.toString();
-            contentList.add(_string_1);
-          }
-        }
-      }
       Set<ITree> _srcDelTrees = classifier.getSrcDelTrees();
       for (final ITree delTree : _srcDelTrees) {
         {
           GumTreeChangeExtractor.logger.info("Found DEL");
           boolean _removeNodeFromWorkingTree = this.removeNodeFromWorkingTree(delTree, true, workingTree, mappings);
           if (_removeNodeFromWorkingTree) {
+            CompilationUnit _convertTree_1 = converter.convertTree(workingTree);
+            String _string_1 = _convertTree_1.toString();
+            contentList.add(_string_1);
+          }
+        }
+      }
+      Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
+      for (final ITree addTree : _dstAddTrees) {
+        {
+          GumTreeChangeExtractor.logger.info("Found ADD");
+          boolean _addNodeToWorkingTree = this.addNodeToWorkingTree(addTree, false, workingTree, mappings);
+          if (_addNodeToWorkingTree) {
             CompilationUnit _convertTree_1 = converter.convertTree(workingTree);
             String _string_1 = _convertTree_1.toString();
             contentList.add(_string_1);
@@ -117,7 +117,7 @@ public class GumTreeChangeExtractor {
           int _id = updTree.getId();
           final ITree updatedNodeInWorkingTree = this.findNodeWithId(workingTree, _id);
           final boolean removed = this.removeNodeFromWorkingTree(updatedNodeInWorkingTree, true, workingTree, mappings);
-          final ITree updatedNodeInDstTree = mappings.getDst(updatedNodeInWorkingTree);
+          final ITree updatedNodeInDstTree = mappings.getDst(updTree);
           final boolean added = this.addNodeToWorkingTree(updatedNodeInDstTree, false, workingTree, mappings);
           boolean _and = false;
           if (!added) {
@@ -181,18 +181,22 @@ public class GumTreeChangeExtractor {
     if (_notEquals) {
       final int parentId = parent.getId();
       final ITree parentInWorkingTree = this.findNodeWithId(workingTree, parentId);
+      boolean _equals = Objects.equal(parentInWorkingTree, null);
+      if (_equals) {
+        return false;
+      }
       final List<ITree> children = parentInWorkingTree.getChildren();
       ITree toDelete = ((ITree) null);
       for (final ITree child : children) {
         int _id = child.getId();
         int _id_1 = delTree.getId();
-        boolean _equals = (_id == _id_1);
-        if (_equals) {
+        boolean _equals_1 = (_id == _id_1);
+        if (_equals_1) {
           toDelete = child;
         }
       }
-      boolean _equals_1 = Objects.equal(toDelete, null);
-      if (_equals_1) {
+      boolean _equals_2 = Objects.equal(toDelete, null);
+      if (_equals_2) {
         throw new RuntimeException("Could not find child.");
       }
       children.remove(toDelete);
@@ -213,6 +217,7 @@ public class GumTreeChangeExtractor {
         return node;
       }
     }
-    throw new RuntimeException("Could not find parent node");
+    GumTreeChangeExtractor.logger.warn("Could not find parent. Probably already deleted from working tree due to earlier operation.");
+    return null;
   }
 }

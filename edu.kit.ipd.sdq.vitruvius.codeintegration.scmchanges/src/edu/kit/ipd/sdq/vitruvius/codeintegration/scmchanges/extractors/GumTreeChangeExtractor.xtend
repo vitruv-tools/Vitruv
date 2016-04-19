@@ -45,15 +45,15 @@ class GumTreeChangeExtractor {
 		
 		val classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m)
 		val workingTree = srcTreeContext.root.deepCopy
-		for (addTree : classifier.dstAddTrees) {
-			logger.info("Found ADD")
-			if (addNodeToWorkingTree(addTree, false, workingTree, mappings)) {
-				contentList.add(converter.convertTree(workingTree).toString)
-			}
-		}
 		for (delTree : classifier.srcDelTrees) {
 			logger.info("Found DEL")
 			if (removeNodeFromWorkingTree(delTree, true, workingTree, mappings)) {
+				contentList.add(converter.convertTree(workingTree).toString)
+			}
+		}
+		for (addTree : classifier.dstAddTrees) {
+			logger.info("Found ADD")
+			if (addNodeToWorkingTree(addTree, false, workingTree, mappings)) {
 				contentList.add(converter.convertTree(workingTree).toString)
 			}
 		}
@@ -73,7 +73,7 @@ class GumTreeChangeExtractor {
 			logger.info("Found UPD")
 			val updatedNodeInWorkingTree = findNodeWithId(workingTree, updTree.id)
 			val removed = removeNodeFromWorkingTree(updatedNodeInWorkingTree, true, workingTree, mappings)
-			val updatedNodeInDstTree = mappings.getDst(updatedNodeInWorkingTree)
+			val updatedNodeInDstTree = mappings.getDst(updTree)
 			val added = addNodeToWorkingTree(updatedNodeInDstTree, false, workingTree, mappings)
 			if (added && removed) {
 				contentList.add(converter.convertTree(workingTree).toString)
@@ -122,6 +122,9 @@ class GumTreeChangeExtractor {
 		if (parent != null) {
 			val parentId = parent.id
 			val parentInWorkingTree = findNodeWithId(workingTree, parentId)
+			if (parentInWorkingTree == null) {
+				return false
+			}
 			val children = parentInWorkingTree.children
 			var toDelete = null as ITree
 			for (child : children) {
@@ -147,7 +150,8 @@ class GumTreeChangeExtractor {
 				return node
 			}
 		}
-		throw new RuntimeException("Could not find parent node")
+		logger.warn("Could not find parent. Probably already deleted from working tree due to earlier operation.")
+		return null
 	}
 	
 	
