@@ -4,18 +4,20 @@ import org.eclipse.core.runtime.IPath;
 
 public class ScmChangeResult {
 	
-	private IPath file;
+	private IPath newFile;
 	private String newContent;
 	private String oldContent;
+	private IPath oldFile;
 
-	public ScmChangeResult(IPath file, String newContent, String oldContent) {
-		this.file = file;
+	public ScmChangeResult(IPath newFile, String newContent, IPath oldFile, String oldContent) {
+		this.newFile = newFile;
 		this.newContent = newContent;
+		this.oldFile = oldFile;
 		this.oldContent = oldContent;
 	}
 
-	public IPath getFile() {
-		return file;
+	public IPath getNewFile() {
+		return newFile;
 	}
 
 	public String getNewContent() {
@@ -24,5 +26,9 @@ public class ScmChangeResult {
 
 	public String getOldContent() {
 		return oldContent;
+	}
+
+	public IPath getOldFile() {
+		return oldFile;
 	}
 }

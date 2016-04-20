@@ -1,22 +1,23 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.IScmChangeExtractor
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult
+import java.io.ByteArrayOutputStream
+import java.util.ArrayList
 import java.util.NoSuchElementException
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import org.eclipse.core.runtime.Path
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
+import org.eclipse.jgit.diff.RenameDetector
+import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.lib.AnyObjectId
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import java.util.ArrayList
-import org.eclipse.jgit.treewalk.filter.PathFilter
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.IScmChangeExtractor
-import java.io.ByteArrayOutputStream
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult
-import org.eclipse.core.runtime.Path
-import org.apache.log4j.Level
 
 class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	
@@ -54,7 +55,10 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 				val diff = git.diff
 				diff.newTree = newTree
 				diff.oldTree = oldTree
-				val diffs = diff.call
+				val rawDiffs = diff.call
+				val renameDetector = new RenameDetector(repository)
+				renameDetector.addAll(rawDiffs)
+				val diffs = renameDetector.compute
 			
 				val result = diffs.map[createResult(it)]
 				allResults.addAll(result)
@@ -84,19 +88,29 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	}
 	
 	private def createResult(DiffEntry entry) {
-		val newObjectLoader = repository.open(entry.newId.toObjectId)
-		val oldObjectLoader = repository.open(entry.oldId.toObjectId)
-		logger.info("Path: " + entry.newPath)
+		var newContent = null as String
+		var oldContent = null as String
 		
-		val newOutStream = new ByteArrayOutputStream()	
-		newObjectLoader.copyTo(newOutStream)
-		val newContent = newOutStream.toString("UTF-8")
+		try {
+			val newObjectLoader = repository.open(entry.newId.toObjectId)
+			val newOutStream = new ByteArrayOutputStream()	
+			newObjectLoader.copyTo(newOutStream)
+			newContent = newOutStream.toString("UTF-8")
+		} catch (MissingObjectException e) {
+			logger.info("File seems to have been removed: " + entry.oldPath)
+		}
 		
-		val oldOutStream = new ByteArrayOutputStream()	
-		oldObjectLoader.copyTo(oldOutStream)
-		val oldContent = oldOutStream.toString("UTF-8")
+		try {
+			val oldObjectLoader = repository.open(entry.oldId.toObjectId)
+			val oldOutStream = new ByteArrayOutputStream()	
+			oldObjectLoader.copyTo(oldOutStream)
+			oldContent = oldOutStream.toString("UTF-8")
+		} catch (MissingObjectException e) {
+			logger.info("File seems to have been added " + entry.newPath)
+		}
+
 		
-		return new ScmChangeResult(Path.fromOSString(entry.newPath), newContent, oldContent)
+		return new ScmChangeResult(Path.fromOSString(entry.newPath), newContent, Path.fromOSString(entry.oldPath), oldContent)
 	}
 	
 }

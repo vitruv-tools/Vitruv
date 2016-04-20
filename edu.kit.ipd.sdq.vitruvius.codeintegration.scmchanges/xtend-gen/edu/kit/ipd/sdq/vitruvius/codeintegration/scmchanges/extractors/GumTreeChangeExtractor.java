@@ -11,8 +11,8 @@ import com.github.gumtreediff.tree.TreeUtils;
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverterImpl;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.OrderByDstOrderComparator;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.OrderbyBreadthFirstOrderingOfCompleteTree;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Level;
@@ -62,8 +62,10 @@ public class GumTreeChangeExtractor {
       final RootsClassifier classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m);
       ITree _root_5 = srcTreeContext.getRoot();
       final ITree workingTree = _root_5.deepCopy();
-      this.processDels(classifier, workingTree, mappings, contentList, converter);
-      this.processAdds(classifier, workingTree, mappings, contentList, converter);
+      ITree _root_6 = srcTreeContext.getRoot();
+      this.processDels(classifier, workingTree, mappings, contentList, converter, _root_6);
+      ITree _root_7 = dstTreeContext.getRoot();
+      this.processAdds(classifier, workingTree, mappings, contentList, converter, _root_7);
       this.processMvs(classifier, workingTree, mappings, contentList, converter);
       this.processUpds(classifier, workingTree, mappings, contentList, converter);
       return contentList;
@@ -74,7 +76,7 @@ public class GumTreeChangeExtractor {
   
   public void processUpds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
     Set<ITree> _srcUpdTrees = classifier.getSrcUpdTrees();
-    final HashSet<ITree> rootUpds = this.getRootChanges(_srcUpdTrees);
+    final ArrayList<ITree> rootUpds = this.getRootChanges(_srcUpdTrees);
     for (final ITree updTree : rootUpds) {
       {
         GumTreeChangeExtractor.logger.info("Found UPD");
@@ -104,7 +106,7 @@ public class GumTreeChangeExtractor {
   
   public void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
     Set<ITree> _srcMvTrees = classifier.getSrcMvTrees();
-    final HashSet<ITree> rootMvs = this.getRootChanges(_srcMvTrees);
+    final ArrayList<ITree> rootMvs = this.getRootChanges(_srcMvTrees);
     for (final ITree mvTree : rootMvs) {
       {
         GumTreeChangeExtractor.logger.info("Found MV");
@@ -132,9 +134,11 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  public void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst) {
     Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
-    final HashSet<ITree> rootAdds = this.getRootChanges(_dstAddTrees);
+    final ArrayList<ITree> rootAdds = this.getRootChanges(_dstAddTrees);
+    OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst);
+    rootAdds.sort(_orderbyBreadthFirstOrderingOfCompleteTree);
     for (final ITree addTree : rootAdds) {
       {
         GumTreeChangeExtractor.logger.info("Found ADD");
@@ -148,9 +152,11 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  public void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeSrc) {
     Set<ITree> _srcDelTrees = classifier.getSrcDelTrees();
-    final HashSet<ITree> rootDels = this.getRootChanges(_srcDelTrees);
+    final ArrayList<ITree> rootDels = this.getRootChanges(_srcDelTrees);
+    OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeSrc, true);
+    rootDels.sort(_orderbyBreadthFirstOrderingOfCompleteTree);
     for (final ITree delTree : rootDels) {
       {
         GumTreeChangeExtractor.logger.info("Found DEL");
@@ -164,8 +170,8 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  private HashSet<ITree> getRootChanges(final Set<ITree> allChanges) {
-    final HashSet<ITree> rootChanges = new HashSet<ITree>();
+  private ArrayList<ITree> getRootChanges(final Set<ITree> allChanges) {
+    final ArrayList<ITree> rootChanges = new ArrayList<ITree>();
     for (final ITree tree : allChanges) {
       ITree _parent = tree.getParent();
       boolean _contains = allChanges.contains(_parent);

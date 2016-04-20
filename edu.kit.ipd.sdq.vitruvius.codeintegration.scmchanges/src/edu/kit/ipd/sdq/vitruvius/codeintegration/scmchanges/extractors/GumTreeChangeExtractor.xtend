@@ -9,10 +9,10 @@ import com.github.gumtreediff.tree.TreeUtils
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverterImpl
 import java.util.ArrayList
 import java.util.Comparator
-import java.util.HashSet
 import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import java.util.List
 
 class GumTreeChangeExtractor {
 	
@@ -49,8 +49,8 @@ class GumTreeChangeExtractor {
 		val classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m)
 		val workingTree = srcTreeContext.root.deepCopy
 		
-		processDels(classifier, workingTree, mappings, contentList, converter)	
-		processAdds(classifier, workingTree, mappings, contentList, converter)	
+		processDels(classifier, workingTree, mappings, contentList, converter, srcTreeContext.root)	
+		processAdds(classifier, workingTree, mappings, contentList, converter, dstTreeContext.root)	
 		processMvs(classifier, workingTree, mappings, contentList, converter)
 		processUpds(classifier, workingTree, mappings, contentList, converter)
 		
@@ -90,8 +90,9 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+	def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst) {
 		val rootAdds = getRootChanges(classifier.dstAddTrees)
+		rootAdds.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst))
 		for (addTree : rootAdds) {
 			logger.info("Found ADD")
 			if (addNodeToWorkingTree(addTree, workingTree, mappings)) {
@@ -100,8 +101,9 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+	def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
 		val rootDels = getRootChanges(classifier.srcDelTrees)
+		rootDels.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeSrc, true))
 		for (delTree : rootDels) {
 			logger.info("Found DEL")
 			if (removeNodeFromWorkingTree(delTree, workingTree, mappings)) {
@@ -111,7 +113,7 @@ class GumTreeChangeExtractor {
 	}
 	
 	private def getRootChanges(Set<ITree> allChanges) {
-		val rootChanges = new HashSet<ITree>()
+		val rootChanges = new ArrayList<ITree>()
 		// Make sure that only root deletions are executed
 		for (tree : allChanges) {
 			if (!allChanges.contains(tree.parent)) {
@@ -186,6 +188,32 @@ class GumTreeChangeExtractor {
 		return null
 	}
 	
+	
+}
+
+class OrderbyBreadthFirstOrderingOfCompleteTree implements Comparator<ITree> {
+	
+	List<ITree> completeTreeOrderedByBreadthFirst;
+	
+	int factor
+	
+	new(ITree completeTree, boolean invert) {
+		this.completeTreeOrderedByBreadthFirst = TreeUtils.breadthFirst(completeTree)
+		this.factor = if (!invert) 1 else -1 
+	}
+	
+	new(ITree completeTree) {
+		this.completeTreeOrderedByBreadthFirst = TreeUtils.breadthFirst(completeTree)
+		this.factor = 1
+	}
+	
+	override compare(ITree o1, ITree o2) {
+		if (completeTreeOrderedByBreadthFirst.indexOf(o1) < completeTreeOrderedByBreadthFirst.indexOf(o2)) {
+			return -1 * factor
+		} else {
+			return 1 * factor
+		}
+	}
 	
 }
 

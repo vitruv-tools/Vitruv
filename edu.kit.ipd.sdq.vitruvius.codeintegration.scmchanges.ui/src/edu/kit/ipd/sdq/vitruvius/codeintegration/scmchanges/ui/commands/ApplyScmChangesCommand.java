@@ -1,9 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.commands;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -53,6 +57,16 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		super();
 		logger.setLevel(Level.ALL);
 	}
+	
+	public boolean isJavaChange(ScmChangeResult changeResult) {
+		boolean newFileHasJavaExtension =  hasJavaExtension(changeResult.getNewFile());
+		boolean oldFileHasJavaExtension =  hasJavaExtension(changeResult.getOldFile());
+		return oldFileHasJavaExtension || newFileHasJavaExtension;
+	}
+
+	private boolean hasJavaExtension(IPath file) {
+		return file.getFileExtension() != null && file.getFileExtension().equals("java");
+	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -94,102 +108,150 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 				return null;
 			}
 			long delay = replaySpeedInMs * 2;
-			for (ScmChangeResult result : results) {
-				GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent());
-				ArrayList<String> contentList = gumTreeChangeExtractor.extract();
-				
-				UIJob scmJob = new UIJob("SCM Job") {
-
-					@Override
-					public IStatus runInUIThread(IProgressMonitor monitor) {
-						try {
-							logger.info("Found change in " + result.getFile().toOSString());
-							IPath path = result.getFile();
-							if (project.exists(path)) {
-								if (!path.getFileExtension().equals("java")) {
-									logger.info(String.format("File extension %s did not match java extension.",
-											path.getFileExtension()));
-									return Status.OK_STATUS;
-								}
-								logger.info(String.format("File %s found in project %s.", path.toOSString(),
-										project.getLocation().toOSString()));
-								IPath absoluteFilePath = project.getLocation().append(path);
-								logger.info(String.format("Absolute file path: %s", absoluteFilePath.toOSString()));
-								IFile file = project.getFile(path);
-								IWorkbenchPage page = window.getActivePage();
-								if (page != null) {
-									ITextEditor editor = (ITextEditor) IDE.openEditor(page, file);
-									
-									int contentDelay = replaySpeedInMs;
-									for (String content : contentList) {
-										UIJob contentJob = new UIJob("Set document content") {
-
-											@Override
-											public IStatus runInUIThread(IProgressMonitor monitor) {
-												IEditorInput input = editor.getEditorInput();
-												IDocument document = editor.getDocumentProvider().getDocument(input);
-																							
-												document.set(content);
-												return Status.OK_STATUS;
-											}
-										};
-										logger.info("Set file content in " + contentDelay + " milliseconds");
-										contentJob.schedule(contentDelay);
-										contentDelay = contentDelay + replaySpeedInMs;
-									}
-									
-									UIJob job = new UIJob("Close editor") {
-										@Override
-										public IStatus runInUIThread(IProgressMonitor monitor) {
-											logger.info("Closing editor");
-											editor.doSave(new NullProgressMonitor());
-											editor.close(true);
-											return Status.OK_STATUS;
-										}
-									};
-									job.schedule(contentDelay);
-									
-									return Status.OK_STATUS;
-								}
-							} else {
-								logger.info(String.format("Could not find file %s in project %s.", path.toOSString(),
-										project.getLocation()));
-							}
-						} catch (RevisionSyntaxException e) {
-							logger.error("Failed to resolve version strings.", e);
-						} catch (PartInitException e) {
-							logger.error("Failed to open editor.", e);
-						}
-						return Status.CANCEL_STATUS;
-					}
-				};
-				scmJob.schedule(delay);
-				delay = delay + (contentList.size() + 3) * replaySpeedInMs;
+			List<ScmChangeResult> javaResults = results.parallelStream().filter(r -> isJavaChange(r)).collect(Collectors.toList());
+			for (ScmChangeResult result : javaResults) {
+				delay = splitAndReplayScmChange(project, window, replaySpeedInMs, delay, result);
 			}
-			UIJob cleanupJob = new UIJob("CleanUp") {
-				@Override
-				public IStatus runInUIThread(IProgressMonitor monitor) {
-					try {
-						logger.info("Checking out master branch");
-						checkoutMasterBranch(repo);
-					} catch (IOException | URISyntaxException e) {
-						logger.error("Failed to checkout master branch", e);
-					}
-					try {
-						project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-						return Status.OK_STATUS;
-					} catch (CoreException e) {
-						logger.error("Failed to refresh project.", e);
-					}
-					return Status.CANCEL_STATUS;
-				}
-			};
-			cleanupJob.schedule(delay + replaySpeedInMs * 5);
+			scheduleCleanup(project, repo, replaySpeedInMs, delay);
 		} else if (dialogResponse == Window.CANCEL) {
 			logger.warn("User pressed Cancel");
 		}
 
 		return null;
+	}
+
+	private long splitAndReplayScmChange(final IProject project, IWorkbenchWindow window, int replaySpeedInMs,
+			long delay, ScmChangeResult result) {
+		List<String> contentList;
+		if (result.getNewContent() != null && result.getOldContent() != null) {
+			GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent());
+			contentList = gumTreeChangeExtractor.extract();
+		} else {
+			contentList = new ArrayList<String>();
+		}
+
+		
+		UIJob scmJob = new UIJob("SCM Job") {
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				try {
+					if (result.getNewContent() == null) {
+						logger.info(String.format("File %s deletion found in SCM. Deleting.",
+								result.getOldFile().toOSString()));
+						project.getFile(result.getOldFile()).delete(true, new NullProgressMonitor());
+						project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+						return Status.OK_STATUS;
+					} else if (result.getOldContent() == null) {
+						logger.info(String.format("File %s creation found in SCM. Creating",
+								result.getNewFile().toOSString()));
+						InputStream stream = new ByteArrayInputStream(
+								result.getNewContent().getBytes(StandardCharsets.UTF_8));
+						project.getFile(result.getNewFile()).create(stream, true, new NullProgressMonitor());
+						project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+						return Status.OK_STATUS;
+					} else if (result.getNewFile() != result.getOldFile()) {
+						logger.info(String.format("File %s moved to %s found in SCM. Deleting old and creating new.",
+								result.getOldFile().toOSString(), result.getNewFile().toOSString()));
+						project.getFile(result.getOldFile()).delete(true, new NullProgressMonitor());
+						// Here we apply old contents, so we can later apply
+						// atomic changes from GumTree one by one, like the file
+						// hasn't been moved.
+						InputStream stream = new ByteArrayInputStream(
+								result.getOldContent().getBytes(StandardCharsets.UTF_8));
+						project.getFile(result.getNewFile()).create(stream, true, new NullProgressMonitor());
+						project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+					}
+					IPath path = result.getNewFile();
+					if (project.exists(path)) {
+						logger.info(String.format("File %s found in project %s.", path.toOSString(),
+								project.getLocation().toOSString()));
+						IPath absoluteFilePath = project.getLocation().append(path);
+						logger.info(String.format("Absolute file path: %s", absoluteFilePath.toOSString()));
+						IFile file = project.getFile(path);
+						IWorkbenchPage page = window.getActivePage();
+						if (page != null) {
+							ITextEditor editor = (ITextEditor) IDE.openEditor(page, file);
+							
+							int contentDelay = replaySpeedInMs;
+							for (String content : contentList) {
+								scheduleContentSet(editor, contentDelay, content);
+								contentDelay = contentDelay + replaySpeedInMs;
+							}
+							
+							scheduleEditorClose(editor, contentDelay);
+							
+							return Status.OK_STATUS;
+						}
+					} else {
+						logger.info(String.format("Could not find file %s in project %s.", path.toOSString(),
+								project.getLocation()));
+					}
+				} catch (RevisionSyntaxException e) {
+					logger.error("Failed to resolve version strings.", e);
+				} catch (PartInitException e) {
+					logger.error("Failed to open editor.", e);
+				} catch (CoreException e) {
+					logger.error("Failed to delete/create file", e);
+				} 
+				return Status.CANCEL_STATUS;
+			}
+
+		};
+		scmJob.schedule(delay);
+		delay = delay + (contentList.size() + 3) * replaySpeedInMs;
+		return delay;
+	}
+
+	private void scheduleCleanup(final IProject project, Repository repo, int replaySpeedInMs, long delay) {
+		UIJob cleanupJob = new UIJob("CleanUp") {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				try {
+					logger.info("Checking out master branch");
+					checkoutMasterBranch(repo);
+				} catch (IOException | URISyntaxException e) {
+					logger.error("Failed to checkout master branch", e);
+				}
+				try {
+					project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+					return Status.OK_STATUS;
+				} catch (CoreException e) {
+					logger.error("Failed to refresh project.", e);
+				}
+				return Status.CANCEL_STATUS;
+			}
+		};
+		cleanupJob.schedule(delay + replaySpeedInMs * 5);
+	}
+	
+	private void scheduleEditorClose(ITextEditor editor, int contentDelay) {
+		UIJob job = new UIJob("Close editor") {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				logger.info("Closing editor");
+				editor.doSave(new NullProgressMonitor());
+				editor.close(true);
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule(contentDelay);
+	}
+	
+	private void scheduleContentSet(ITextEditor editor, int contentDelay, String content) {
+		UIJob contentJob = new UIJob("Set document content") {
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				IEditorInput input = editor.getEditorInput();
+				IDocument document = editor.getDocumentProvider().getDocument(input);
+															
+				document.set(content);
+				return Status.OK_STATUS;
+			}
+		};
+		logger.info("Set file content in " + contentDelay + " milliseconds");
+		contentJob.schedule(contentDelay);
 	}
 
 	private void checkoutCommitInWorkingTree(Repository repository, String name) {
@@ -204,6 +266,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	private void checkoutMasterBranch(Repository repo) throws IOException, URISyntaxException {
 		try (Git git = new Git(repo);) {
 			git.reset().setMode( ResetType.HARD ).call();
+			git.clean().setCleanDirectories(true).call();
 			git.checkout().setName("master").call();
 			git.reset().setMode( ResetType.HARD ).call();
 		} catch (GitAPIException e) {
