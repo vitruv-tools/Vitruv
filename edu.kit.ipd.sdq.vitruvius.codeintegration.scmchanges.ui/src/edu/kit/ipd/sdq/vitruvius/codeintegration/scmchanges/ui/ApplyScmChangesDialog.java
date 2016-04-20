@@ -22,8 +22,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
 public class ApplyScmChangesDialog extends TitleAreaDialog {
@@ -41,6 +44,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	private String oldVersion;
 
 	private Repository repo;
+	
+	private int replaySpeedInMs;
+
+	private Slider replaySpeedSlider;
 
 	public ApplyScmChangesDialog(Shell parentShell, IProject project) {
 		super(parentShell);
@@ -52,6 +59,7 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	public void create() {
 		super.create();
 		setTitle("Apply SCM Changes");
+		setHelpAvailable(false);
 		FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		try {
 			repo = builder.findGitDir(project.getLocation().toFile()).setMustExist(true).readEnvironment().build();
@@ -110,7 +118,37 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		container.setLayout(layout);
 		createOldVersionField(container);
 		createNewVersionField(container);
+		createReplaySpeedSlider(container);
 		return area;
+	}
+
+	private void createReplaySpeedSlider(Composite container) {
+		Label speedSliderLabel = new Label(container, SWT.NONE);
+		speedSliderLabel.setText("Replay Speed");
+		
+		GridData gridData1 = new GridData();
+		gridData1.grabExcessHorizontalSpace = true;
+		gridData1.horizontalAlignment = GridData.FILL;
+		
+		replaySpeedSlider = new Slider(container, SWT.NONE);
+		replaySpeedSlider.setLayoutData(gridData1);
+		replaySpeedSlider.setMinimum(100);
+		replaySpeedSlider.setMaximum(5000);
+		replaySpeedSlider.setIncrement(100);
+		replaySpeedSlider.setPageIncrement(100);
+		replaySpeedSlider.setSelection(1000);
+		
+		Label speedTextLabel = new Label(container, SWT.NONE);
+		speedTextLabel.setText("Time per Change");
+		
+		Text speedText = new Text(container, SWT.NONE);
+		replaySpeedSlider.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				speedText.setText(replaySpeedSlider.getSelection() + " ms");
+			}
+		});
+		speedText.setText(replaySpeedSlider.getSelection() + " ms");
 	}
 
 	private void createOldVersionField(Composite container) {
@@ -151,8 +189,13 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	
 	protected void validate() {
 		if (validate(txtNewVersion, "New") && validate(txtOldVersion, "Old")) {
-			setMessage("Valid versions entered.", IMessageProvider.INFORMATION);
-			getButton(IDialogConstants.OK_ID).setEnabled(true);
+			if (txtNewVersion.getText().equals(txtOldVersion.getText())) {
+				setMessage("Versions are equal. No change possible.", IMessageProvider.ERROR);
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
+			} else {
+				setMessage("Valid versions entered.", IMessageProvider.INFORMATION);
+				getButton(IDialogConstants.OK_ID).setEnabled(true);
+			}
 		} else {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		}
@@ -190,11 +233,16 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	protected void okPressed() {
 		newVersion = txtNewVersion.getText();
 		oldVersion = txtOldVersion.getText();
+		replaySpeedInMs = replaySpeedSlider.getSelection();
 		super.okPressed();
 	}
 
 	public Repository getRepository() {
 		return repo;
+	}
+
+	public int getReplaySpeed() {
+		return replaySpeedInMs;
 	}
 
 }

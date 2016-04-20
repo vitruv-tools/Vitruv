@@ -73,6 +73,8 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 			Repository repo = dialog.getRepository();
 			String newVersion = dialog.getNewVersion();
 			String oldVersion = dialog.getOldVersion();
+			
+			int replaySpeedInMs = dialog.getReplaySpeed();
 
 			logger.info("Checking out oldversion in git");
 			checkoutCommitInWorkingTree(repo, oldVersion);
@@ -91,7 +93,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 				logger.error("Failed to resolve version ids", e);
 				return null;
 			}
-			long delay = 2000;
+			long delay = replaySpeedInMs * 2;
 			for (ScmChangeResult result : results) {
 				GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent());
 				ArrayList<String> contentList = gumTreeChangeExtractor.extract();
@@ -118,7 +120,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 								if (page != null) {
 									ITextEditor editor = (ITextEditor) IDE.openEditor(page, file);
 									
-									int contentDelay = 1000;
+									int contentDelay = replaySpeedInMs;
 									for (String content : contentList) {
 										UIJob contentJob = new UIJob("Set document content") {
 
@@ -133,7 +135,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 										};
 										logger.info("Set file content in " + contentDelay + " milliseconds");
 										contentJob.schedule(contentDelay);
-										contentDelay = contentDelay + 1000;
+										contentDelay = contentDelay + replaySpeedInMs;
 									}
 									
 									UIJob job = new UIJob("Close editor") {
@@ -162,7 +164,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 					}
 				};
 				scmJob.schedule(delay);
-				delay = delay + (contentList.size() + 3) * 1000;
+				delay = delay + (contentList.size() + 3) * replaySpeedInMs;
 			}
 			UIJob cleanupJob = new UIJob("CleanUp") {
 				@Override
@@ -182,7 +184,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 					return Status.CANCEL_STATUS;
 				}
 			};
-			cleanupJob.schedule(delay + 5000);
+			cleanupJob.schedule(delay + replaySpeedInMs * 5);
 		} else if (dialogResponse == Window.CANCEL) {
 			logger.warn("User pressed Cancel");
 		}
