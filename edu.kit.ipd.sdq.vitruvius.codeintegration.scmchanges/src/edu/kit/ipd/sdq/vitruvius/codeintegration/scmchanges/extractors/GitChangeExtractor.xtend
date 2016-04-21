@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.IScmChangeExtractor
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList

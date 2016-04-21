@@ -13,22 +13,36 @@ import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import java.util.List
+import org.eclipse.emf.common.util.URI
+import java.util.HashSet
 
-class GumTreeChangeExtractor {
+class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 	
 	private static final Logger logger = Logger.getLogger(typeof(GumTreeChangeExtractor))
 	
-	String oldContent
+	private String oldContent
 	
-	String newContent
+	private String newContent
 	
-	new(String oldContent, String newContent) {
+	private IContentValidator validator
+	
+	private URI fileUri
+	
+	private int validExtractions
+	
+	private int totalExtractions
+	
+	new(String oldContent, String newContent, URI fileUri) {
 		this.oldContent = oldContent
 		this.newContent = newContent
+		this.fileUri = fileUri
+		this.validator = null
+		this.validExtractions = 0
+		this.totalExtractions = 0
 		logger.setLevel(Level.ALL)
 	}
 	
-	def extract() {
+	override extract() {
 		val generator = new JdtTreeGenerator()
 		val srcTreeContext = generator.generateFromString(oldContent)
 		val dstTreeContext = generator.generateFromString(newContent)
@@ -54,11 +68,27 @@ class GumTreeChangeExtractor {
 		processMvs(classifier, workingTree, mappings, contentList, converter)
 		processUpds(classifier, workingTree, mappings, contentList, converter)
 		
+		contentList.add(converter.convertTree(dstTreeContext.root).toString)
+		
+		totalExtractions = totalExtractions + contentList.size
+		
+		if (validator != null) {
+			val toRemove = new HashSet<String>();
+			for (contentString : contentList) {
+				if (!validator.isValid(contentString, fileUri)) {
+					toRemove.add(contentString)
+				}
+			}
+			contentList.removeAll(toRemove)
+		}
+		
+		validExtractions = validExtractions +  contentList.size
+
 		return contentList
 		
 	}
 	
-	def processUpds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+	private def processUpds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
 		val rootUpds = getRootChanges(classifier.srcUpdTrees)
 		for (updTree : rootUpds) {
 			logger.info("Found UPD")
@@ -74,7 +104,7 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def processMvs(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+	private def processMvs(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
 		val rootMvs = getRootChanges(classifier.srcMvTrees)
 		for (mvTree : rootMvs) {
 			logger.info("Found MV")
@@ -90,7 +120,7 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst) {
+	private def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst) {
 		val rootAdds = getRootChanges(classifier.dstAddTrees)
 		rootAdds.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst))
 		for (addTree : rootAdds) {
@@ -101,7 +131,7 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
+	private def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
 		val rootDels = getRootChanges(classifier.srcDelTrees)
 		rootDels.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeSrc, true))
 		for (delTree : rootDels) {
@@ -114,7 +144,7 @@ class GumTreeChangeExtractor {
 	
 	private def getRootChanges(Set<ITree> allChanges) {
 		val rootChanges = new ArrayList<ITree>()
-		// Make sure that only root deletions are executed
+		// Make sure that only root changes are executed
 		for (tree : allChanges) {
 			if (!allChanges.contains(tree.parent)) {
 				rootChanges.add(tree)
@@ -123,7 +153,7 @@ class GumTreeChangeExtractor {
 		return rootChanges
 	}
 	
-	def addNodeToWorkingTree(ITree addTree, ITree workingTree, MappingStore mappings) {
+	private def addNodeToWorkingTree(ITree addTree, ITree workingTree, MappingStore mappings) {
 		val addCopy = addTree.deepCopy
 		var dstParent = addTree.parent
 		val srcParent = mappings.getSrc(dstParent)
@@ -139,7 +169,6 @@ class GumTreeChangeExtractor {
 			}
 			children.add(pos, addCopy)
 			// we'll try to figure out correct order by looking at dst order
-			
 			children.sort(new OrderByDstOrderComparator(dstParent))
 			parentInWorkingTree.children = children
 			return true
@@ -151,7 +180,7 @@ class GumTreeChangeExtractor {
 		
 	}
 	
-	def removeNodeFromWorkingTree(ITree delTree, ITree workingTree, MappingStore mappings) {
+	private def removeNodeFromWorkingTree(ITree delTree, ITree workingTree, MappingStore mappings) {
 		var srcParent = delTree.parent
 		if (srcParent != null) {
 			val parentId = srcParent.id
@@ -178,7 +207,7 @@ class GumTreeChangeExtractor {
 		}
 	}
 	
-	def findNodeWithId(ITree tree, int id) {
+	private def findNodeWithId(ITree tree, int id) {
 		for (node : TreeUtils.breadthFirst(tree)) {
 			if (node.id == id) {
 				return node
@@ -188,6 +217,17 @@ class GumTreeChangeExtractor {
 		return null
 	}
 	
+	override setValidator(IContentValidator validator) {
+		this.validator = validator
+	}
+	
+	override getNumberOfTotalExtractions() {
+		return totalExtractions;
+	}
+	
+	override getNumberOfValidExtractions() {
+		return validExtractions;
+	}
 	
 }
 

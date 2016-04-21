@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors;
 
 import com.google.common.base.Objects;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.IScmChangeExtractor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.IScmChangeExtractor;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;

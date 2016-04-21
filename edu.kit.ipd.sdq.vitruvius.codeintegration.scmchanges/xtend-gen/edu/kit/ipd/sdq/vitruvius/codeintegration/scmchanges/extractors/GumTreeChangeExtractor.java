@@ -10,31 +10,48 @@ import com.github.gumtreediff.tree.TreeContext;
 import com.github.gumtreediff.tree.TreeUtils;
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverterImpl;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.IAtomicChangeExtractor;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.IContentValidator;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.OrderByDstOrderComparator;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.OrderbyBreadthFirstOrderingOfCompleteTree;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 
 @SuppressWarnings("all")
-public class GumTreeChangeExtractor {
+public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
   private final static Logger logger = Logger.getLogger(GumTreeChangeExtractor.class);
   
   private String oldContent;
   
   private String newContent;
   
-  public GumTreeChangeExtractor(final String oldContent, final String newContent) {
+  private IContentValidator validator;
+  
+  private URI fileUri;
+  
+  private int validExtractions;
+  
+  private int totalExtractions;
+  
+  public GumTreeChangeExtractor(final String oldContent, final String newContent, final URI fileUri) {
     this.oldContent = oldContent;
     this.newContent = newContent;
+    this.fileUri = fileUri;
+    this.validator = null;
+    this.validExtractions = 0;
+    this.totalExtractions = 0;
     GumTreeChangeExtractor.logger.setLevel(Level.ALL);
   }
   
-  public ArrayList<String> extract() {
+  @Override
+  public List<String> extract() {
     try {
       final JdtTreeGenerator generator = new JdtTreeGenerator();
       final TreeContext srcTreeContext = generator.generateFromString(this.oldContent);
@@ -68,13 +85,35 @@ public class GumTreeChangeExtractor {
       this.processAdds(classifier, workingTree, mappings, contentList, converter, _root_7);
       this.processMvs(classifier, workingTree, mappings, contentList, converter);
       this.processUpds(classifier, workingTree, mappings, contentList, converter);
+      ITree _root_8 = dstTreeContext.getRoot();
+      CompilationUnit _convertTree_1 = converter.convertTree(_root_8);
+      String _string_1 = _convertTree_1.toString();
+      contentList.add(_string_1);
+      int _size = contentList.size();
+      int _plus = (this.totalExtractions + _size);
+      this.totalExtractions = _plus;
+      boolean _notEquals = (!Objects.equal(this.validator, null));
+      if (_notEquals) {
+        final HashSet<String> toRemove = new HashSet<String>();
+        for (final String contentString : contentList) {
+          boolean _isValid = this.validator.isValid(contentString, this.fileUri);
+          boolean _not = (!_isValid);
+          if (_not) {
+            toRemove.add(contentString);
+          }
+        }
+        contentList.removeAll(toRemove);
+      }
+      int _size_1 = contentList.size();
+      int _plus_1 = (this.validExtractions + _size_1);
+      this.validExtractions = _plus_1;
       return contentList;
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
   }
   
-  public void processUpds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  private void processUpds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
     Set<ITree> _srcUpdTrees = classifier.getSrcUpdTrees();
     final ArrayList<ITree> rootUpds = this.getRootChanges(_srcUpdTrees);
     for (final ITree updTree : rootUpds) {
@@ -104,7 +143,7 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  private void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
     Set<ITree> _srcMvTrees = classifier.getSrcMvTrees();
     final ArrayList<ITree> rootMvs = this.getRootChanges(_srcMvTrees);
     for (final ITree mvTree : rootMvs) {
@@ -134,7 +173,7 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst) {
+  private void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst) {
     Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
     final ArrayList<ITree> rootAdds = this.getRootChanges(_dstAddTrees);
     OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst);
@@ -152,7 +191,7 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeSrc) {
+  private void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeSrc) {
     Set<ITree> _srcDelTrees = classifier.getSrcDelTrees();
     final ArrayList<ITree> rootDels = this.getRootChanges(_srcDelTrees);
     OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeSrc, true);
@@ -183,7 +222,7 @@ public class GumTreeChangeExtractor {
     return rootChanges;
   }
   
-  public boolean addNodeToWorkingTree(final ITree addTree, final ITree workingTree, final MappingStore mappings) {
+  private boolean addNodeToWorkingTree(final ITree addTree, final ITree workingTree, final MappingStore mappings) {
     final ITree addCopy = addTree.deepCopy();
     ITree dstParent = addTree.getParent();
     final ITree srcParent = mappings.getSrc(dstParent);
@@ -210,7 +249,7 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public boolean removeNodeFromWorkingTree(final ITree delTree, final ITree workingTree, final MappingStore mappings) {
+  private boolean removeNodeFromWorkingTree(final ITree delTree, final ITree workingTree, final MappingStore mappings) {
     ITree srcParent = delTree.getParent();
     boolean _notEquals = (!Objects.equal(srcParent, null));
     if (_notEquals) {
@@ -243,7 +282,7 @@ public class GumTreeChangeExtractor {
     }
   }
   
-  public ITree findNodeWithId(final ITree tree, final int id) {
+  private ITree findNodeWithId(final ITree tree, final int id) {
     List<ITree> _breadthFirst = TreeUtils.breadthFirst(tree);
     for (final ITree node : _breadthFirst) {
       int _id = node.getId();
@@ -254,5 +293,20 @@ public class GumTreeChangeExtractor {
     }
     GumTreeChangeExtractor.logger.warn("Could not find parent. Probably already deleted from working tree due to earlier operation.");
     return null;
+  }
+  
+  @Override
+  public void setValidator(final IContentValidator validator) {
+    this.validator = validator;
+  }
+  
+  @Override
+  public int getNumberOfTotalExtractions() {
+    return this.totalExtractions;
+  }
+  
+  @Override
+  public int getNumberOfValidExtractions() {
+    return this.validExtractions;
   }
 }

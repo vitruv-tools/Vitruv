@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
@@ -47,7 +48,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.GitChangeExtractor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.GumTreeChangeExtractor;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.JaMoPPContentValidator;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.ApplyScmChangesDialog;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.ValidationStatistics;
 
 public class ApplyScmChangesCommand extends AbstractHandler {
 
@@ -109,9 +112,11 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 			}
 			long delay = replaySpeedInMs * 2;
 			List<ScmChangeResult> javaResults = results.parallelStream().filter(r -> isJavaChange(r)).collect(Collectors.toList());
+			ValidationStatistics stats = new ValidationStatistics();
 			for (ScmChangeResult result : javaResults) {
-				delay = splitAndReplayScmChange(project, window, replaySpeedInMs, delay, result);
+				delay = splitAndReplayScmChange(project, window, replaySpeedInMs, delay, result, stats);
 			}
+			logger.info(String.format("%s/%s extractions were valid", stats.getValidExtractions(), stats.getTotalExtractions()));
 			scheduleCleanup(project, repo, replaySpeedInMs, delay);
 		} else if (dialogResponse == Window.CANCEL) {
 			logger.warn("User pressed Cancel");
@@ -121,11 +126,16 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 
 	private long splitAndReplayScmChange(final IProject project, IWorkbenchWindow window, int replaySpeedInMs,
-			long delay, ScmChangeResult result) {
+			long delay, ScmChangeResult result, ValidationStatistics stats) {
 		List<String> contentList;
 		if (result.getNewContent() != null && result.getOldContent() != null) {
-			GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent());
+			IFile file = project.getFile(result.getNewFile());
+			URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
+			GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent(), uri);
+			gumTreeChangeExtractor.setValidator(new JaMoPPContentValidator());
 			contentList = gumTreeChangeExtractor.extract();
+			stats.addValidExtractions(gumTreeChangeExtractor.getNumberOfValidExtractions());
+			stats.addTotalExtractions(gumTreeChangeExtractor.getNumberOfTotalExtractions());
 		} else {
 			contentList = new ArrayList<String>();
 		}
@@ -150,7 +160,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 						project.getFile(result.getNewFile()).create(stream, true, new NullProgressMonitor());
 						project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 						return Status.OK_STATUS;
-					} else if (result.getNewFile() != result.getOldFile()) {
+					} else if (!result.getNewFile().equals(result.getOldFile())) {
 						logger.info(String.format("File %s moved to %s found in SCM. Deleting old and creating new.",
 								result.getOldFile().toOSString(), result.getNewFile().toOSString()));
 						project.getFile(result.getOldFile()).delete(true, new NullProgressMonitor());
@@ -175,6 +185,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 							
 							int contentDelay = replaySpeedInMs;
 							for (String content : contentList) {
+
 								scheduleContentSet(editor, contentDelay, content);
 								contentDelay = contentDelay + replaySpeedInMs;
 							}
@@ -193,7 +204,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 					logger.error("Failed to open editor.", e);
 				} catch (CoreException e) {
 					logger.error("Failed to delete/create file", e);
-				} 
+				}
 				return Status.CANCEL_STATUS;
 			}
 
