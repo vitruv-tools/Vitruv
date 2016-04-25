@@ -22,12 +22,16 @@ class EChangeBridge {
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def static EChange createAdditiveEChangeForEObject(EObject eObject) {
-		if (eObject.eContainer instanceof ChangeDescription) {
-			return createInsertRootChange(eObject, true)
+	def static EChange createAdditiveEChangeForEObject(EObject eObjectToAdd, EObject oldContainer) {
+		val isCreate = oldContainer == null
+		val newContainer = eObjectToAdd.eContainer()
+		val isRootAfterChange = newContainer == null || newContainer instanceof ChangeDescription
+		if (isRootAfterChange) {
+			return createInsertRootChange(eObjectToAdd, isCreate)
+		} else {
+			// FIXME MK ChangeBridge
+//			return createAdditiveReferenceChange
 		}
-		// FIXME MK ChangeBridge
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	def static EChange createSubtractiveEChangeForEObject(EObject eObject) {

@@ -8,13 +8,15 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.change.ChangeDescription
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription
 import java.util.Map.Entry
 import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.change.ListChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 
 class ChangeDescription2ChangeTransformation {
 	
@@ -101,18 +103,20 @@ class ChangeDescription2ChangeTransformation {
 		// --order-bullshit-- = order changes: first deletions, then containment, then non-containment
 		// END LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 		
-	def static List<EChange> transform(ChangeDescription changeDescription) {
+	def static List<EChange> transform(ForwardChangeDescription changeDescription) {
 		val List<EChange> eChanges = new BasicEList<EChange>				
 		if (changeDescription == null) {
 			return eChanges
 		} else {
-			// FIXME MK turn resource changes into normal changes: nothing else but the change mm will be needed anymore
+			// FIXME MK KEEP ON WORKING HERE turn resource changes into normal changes: nothing else but the change mm will be needed anymore
 //			 changeDescription.resourceChanges?.forEach[...]
 //
 			// make the flat attach part of the change description deep by recursively creating changes for all non-default values
-			val objectsToAttach = changeDescription.getObjectsToAttach
-			objectsToAttach?.forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
-			objectsToAttach?.forEach[addChangeForObjectToAttach(it, eChanges)]
+
+			for (objectToAttach : changeDescription.getObjectsToAttach) {
+				recursivelyAddChangesForNonDefaultValues(objectToAttach, eChanges)
+				addChangeForObjectToAttach(objectToAttach, changeDescription.getContainerBeforeReversion(objectToAttach),eChanges)
+			}
 			// make the flat deletion part of the change description deep by recursively creating changes for all referenced objects
 			val objectsToDetach = changeDescription.getObjectsToDetach
 			objectsToDetach?.forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
@@ -192,8 +196,8 @@ class ChangeDescription2ChangeTransformation {
 		}
 	}
     
-	def static addChangeForObjectToAttach(EObject objectToAttach, List<EChange> eChanges) {
-		eChanges.add(EChangeBridge.createAdditiveEChangeForEObject(objectToAttach))
+	def static addChangeForObjectToAttach(EObject objectToAttach, EObject oldContainer, List<EChange> eChanges) {
+		eChanges.add(EChangeBridge.createAdditiveEChangeForEObject(objectToAttach, oldContainer))
 	}
     
 	def private static void recursivelyAddChangesForDeletedObjects(EObject eObject, List<EChange> eChanges) {
@@ -222,27 +226,23 @@ class ChangeDescription2ChangeTransformation {
 		val deletions = new BasicEList
 		val additions = new BasicEList
 		val containmentChanges = new BasicEList
+		val rootChanges = new BasicEList
 		val remainingChanges = new BasicEList
 		for (change : changes) {
-			if (change instanceof SubtractiveEReferenceChange<?>
-				&& (change as SubtractiveEReferenceChange<?>).isDelete
-			) {
-				deletions.add(change)
-			} else if (change instanceof AdditiveEReferenceChange<?>
-				&& (change as AdditiveEReferenceChange<?>).isCreate
-			) {
-				additions.add(change)
-			} else if (change instanceof UpdateEReference<?>
-				&& (change as UpdateEReference<?>).isContainment
-			) {
-				containmentChanges.add(change)
-			} else {
-				remainingChanges.add(change)
+			val target = switch change {
+				SubtractiveEReferenceChange<?> case change.isDelete : deletions
+				AdditiveEReferenceChange<?> case change.isIsCreate : additions
+				InsertRootEObject<?>,
+				RemoveRootEObject<?> : rootChanges
+				UpdateEReference<?> case change.isContainment : containmentChanges
+				default : remainingChanges
 			}
+			target.add(change)
 		}
 		val sortedChanges = new BasicEList(changes.size)
 		sortedChanges.addAll(deletions)
 		sortedChanges.addAll(additions)
+		sortedChanges.addAll(rootChanges)
 		sortedChanges.addAll(containmentChanges)
 		sortedChanges.addAll(remainingChanges)
 		return sortedChanges
