@@ -22,6 +22,8 @@ import static org.eclipse.xtext.xbase.lib.IterableExtensions.*;
 /**
  * Helper class for casting, assertions, etc...
  * 
+ * FIXME HW Merge with edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper and new helpers in sdq.commons
+ * 
  * @author Dominik Werle
  *
  */
