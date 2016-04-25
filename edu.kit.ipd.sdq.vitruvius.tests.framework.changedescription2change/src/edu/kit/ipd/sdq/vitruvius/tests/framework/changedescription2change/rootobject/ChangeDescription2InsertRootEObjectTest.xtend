@@ -8,20 +8,35 @@ import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescript
 class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChangeTest{
 	
 	@Test
-	def public void insertRootEObjectInResource(){
+	def void insertCreateRootEObjectInResource(){
 		// prepare
-		startRecordingOnResource
-		
-		//test
-		resource.contents.add(this.rootElement)
-		
-		//assert
+		startRecordingOnResourceSet
+		// test and assert
+		insertRootEObjectInResource(true)
+	}
+	
+	@Test
+	def void insertNonCreateRootEObjectInResource(){
+		// prepare
+		this.resource1.contents.add(this.rootElement)
+		startRecordingOnResourceSet
+		// test and assert
+		insertRootEObjectInResource(false)
+	}
+	
+	def private void insertRootEObjectInResource(boolean isCreate){
+		// test
+		this.resource2.contents.add(this.rootElement)
+		// assert
+		assertInsertRoot(isCreate)
+	}
+	
+	def private void assertInsertRoot(boolean isCreate) {
 		val changes = getChanges()
 		val insertChange = changes.claimElementAt(0)
 		val setIDChange = changes.claimElementAt(1)
-		// FIXME MK KEEP ON WORKING HERE resolve proxy given in change
-		insertChange.assertInsertRootEObject(this.rootElement, false)
-		setIDChange.assertReplaceSingleValueEAttribute("",this.rootElement.id)
+		insertChange.assertInsertRootEObject(this.rootElement, isCreate)
+		setIDChange.assertReplaceSingleValueEAttribute(null,this.rootElement.id)
 	}
 	
 }

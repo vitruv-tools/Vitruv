@@ -8,17 +8,19 @@ import org.junit.Before
 
 class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransformationTest{
 	
-	var protected Resource resource
+	var rs = new ResourceSetImpl
+	var protected Resource resource1
+	var protected Resource resource2
 	
 	@Before
 	def override beforeTest(){
 		super.beforeTest
-		val rs = new ResourceSetImpl
-		resource = rs.createResource(URI.createFileURI("dummyURI"))
+		resource1 = rs.createResource(URI.createFileURI("dummyURI"))
+		resource2 = rs.createResource(URI.createFileURI("dummyURI2"))
 	}
 	
-	def protected startRecordingOnResource() {
-		this.changeRecorder.startObserving(resource)
+	def protected startRecordingOnResourceSet() {
+		this.changeRecorder.startObserving(rs)
 		this.changeRecorder.beginRec()
 	}
 }

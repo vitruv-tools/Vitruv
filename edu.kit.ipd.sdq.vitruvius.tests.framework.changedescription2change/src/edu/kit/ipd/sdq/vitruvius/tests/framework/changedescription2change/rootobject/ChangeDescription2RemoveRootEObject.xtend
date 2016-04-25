@@ -11,13 +11,13 @@ class ChangeDescription2RemoveRootEObject extends ChangeDescription2RootChangeTe
 	@Before
 	override beforeTest(){
 		super.beforeTest
-		this.resource.contents.add(this.rootElement)
-		startRecordingOnResource	
+		this.resource1.contents.add(this.rootElement)
+		startRecordingOnResourceSet	
 	}
 	
 	@Test
 	def public void testRemoveRootEObject(){
-		this.resource.contents.clear
+		this.resource1.contents.clear
 		assertRemoveEObject(false)		
 	}
 	

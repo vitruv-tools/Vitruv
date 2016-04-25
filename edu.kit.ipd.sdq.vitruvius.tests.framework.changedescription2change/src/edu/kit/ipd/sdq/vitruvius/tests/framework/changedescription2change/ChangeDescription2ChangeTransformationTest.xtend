@@ -4,7 +4,7 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.util.doers.ForwardChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder
 import java.util.List
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.junit.After
