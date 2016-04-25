@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
-import edu.kit.ipd.sdq.vitruvius.framework.util.doers.ForwardChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -79,7 +79,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 	// TODO ML needs @Rule from VitruviusCasestudyTest?
 	def List<EChange> triggerChangeDescription2Change() {
 		val cd = this.changeRecorder.endRec(false)
-//        final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
+//      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
 		LOGGER.trace("monitored change description: " + cd)
         val changes = ChangeDescription2ChangeTransformation.transform(cd)
         LOGGER.trace("transformed changes: " + changes)
