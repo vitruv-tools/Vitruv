@@ -6,17 +6,21 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
-class EffectElementDelete extends EffectElement {
+class EffectCorrespondenceDeletion extends EffectCorrespondenceModification {
+	private final boolean deleteFirst;
+	private final boolean deleteSecond;
 	
-	new(EObject element, EObject correspondenceSource, ResponseExecutionState executionState) {
-		super(element, correspondenceSource, executionState)
+	new(EObject firstElement, boolean deleteFirst, EObject secondElement, boolean deleteSecond, ResponseExecutionState executionState) {
+		super(firstElement, secondElement, executionState);
+		this.deleteFirst = deleteFirst;
+		this.deleteSecond = deleteSecond;
 	}
 	
 	private def removeCorrespondence() {
-		CorrespondenceHelper.removeCorrespondence(blackboard.getCorrespondenceInstance(), correspondenceSource, null, element, null);
+		CorrespondenceHelper.removeCorrespondence(blackboard.getCorrespondenceInstance(), firstElement, null, secondElement, null);
 	}
 	
-	private def void delete() {
+	private def void delete(EObject element) {
 		if (element == null) {
 			return;
 		}
@@ -35,14 +39,15 @@ class EffectElementDelete extends EffectElement {
 
 	override public preProcess() {
 		removeCorrespondence();
-		delete();
+		if (deleteFirst) {
+			delete(firstElement);
+		}
+		if (deleteSecond) {
+			delete(secondElement);
+		}
 	}
 		
 	override public postProcess() {
-		// Do nothing
-	}
-	
-	override public updateTUIDs() {
 		// Do nothing
 	}
 	

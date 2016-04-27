@@ -2,18 +2,19 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper.*;
-import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 
-class EffectElementRetrieve extends EffectElement implements PersistableEffectElement {
+class EffectElementRetrieve extends EffectElement {
+	protected final EObject element;
+	protected final EObject correspondenceSource;
 	private final TUID oldTUID;
-	private PersistenceInformation moveInformation;
+	private boolean updateTUID = true;
 	
 	new(EObject element, EObject correspondenceSource, ResponseExecutionState executionState) {
-		super(element, correspondenceSource, executionState);
+		super(executionState);
 		this.oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(element);
+		this.element = element;
+		this.correspondenceSource = correspondenceSource;
 	}
 	
 	private def void updateTUID() {
@@ -22,43 +23,21 @@ class EffectElementRetrieve extends EffectElement implements PersistableEffectEl
 		}
 	}
 	
-	protected def renameModel() {
-		val movePath = moveInformation.pathSupplier.apply();
-		if (correspondenceSource.eResource() == null) {
-			throw new IllegalStateException("Element must be in a resource to determine the containing project.");			
-		}
-		val sourceRoot = element.modelRoot;
-		val oldVURI = if (sourceRoot.eResource() != null) {
-			VURI.getInstance(sourceRoot.eResource());
-		}
-		val newVURI = if (moveInformation.pathIsSourceRelative) {
-			// TODO HK This can eventually go wrong, if the renamed model is not persisted yet
-			VURI.getInstance(getURIFromSourceResourceFolder(element, movePath, blackboard));
-		} else {
-			VURI.getInstance(getURIFromSourceProjectFolder(correspondenceSource, movePath, blackboard));
-		}
-		EcoreUtil.remove(sourceRoot);
-		transformationResult.addRootEObjectToSave(sourceRoot, newVURI);
-		transformationResult.addVURIToDeleteIfNotNull(oldVURI);
-	}
-	
-	
 	override public preProcess() {
 		// Do nothing
 	}
 	
 	override public postProcess() {
-		if (moveInformation != null) {
-			renameModel();
-		}
+		// Do nothing
 	}
 	
-	override public updateTUIDs() {
-		updateTUID();
+	public def updateTUIDs() {
+		if (updateTUID) 
+			updateTUID();
 	}
 	
-	override setPersistenceInformation(PersistenceInformation moveInformation) {
-		this.moveInformation = moveInformation;
+	public def disableTUIDUpdate() {
+		updateTUID = false;
 	}
 	
 }
