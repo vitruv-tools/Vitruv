@@ -17,6 +17,7 @@ import com.github.gumtreediff.tree.ITree;
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverter;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverterImpl;
+import org.junit.Assert;
 
 public class GumTree2JdtAstConverterTest {
 	
@@ -35,6 +36,7 @@ public class GumTree2JdtAstConverterTest {
 		
 		GumTree2JdtAstConverter converter = new GumTree2JdtAstConverterImpl();
 		CompilationUnit cu = converter.convertTree(tree);
+		Assert.assertNotNull(cu);
 		logger.info("\n\n" + cu.toString());
 	}
 	

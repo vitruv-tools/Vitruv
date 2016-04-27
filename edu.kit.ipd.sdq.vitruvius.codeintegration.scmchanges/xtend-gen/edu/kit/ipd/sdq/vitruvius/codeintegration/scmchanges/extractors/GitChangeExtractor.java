@@ -28,7 +28,6 @@ import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -48,12 +47,6 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
   @Override
   public List<ScmChangeResult> extract(final AnyObjectId newVersion, final AnyObjectId oldVersion) {
     try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Computing changes between git repo versions ");
-      _builder.append(newVersion, "");
-      _builder.append(" to ");
-      _builder.append(oldVersion, "");
-      GitChangeExtractor.logger.info(_builder);
       final ObjectReader reader = this.repository.newObjectReader();
       final Git git = new Git(this.repository);
       final RevWalk revWalk = new RevWalk(this.repository);
@@ -88,8 +81,10 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
             final RenameDetector renameDetector = new RenameDetector(this.repository);
             renameDetector.addAll(rawDiffs);
             final List<DiffEntry> diffs = renameDetector.compute();
+            final ObjectId toCommitId = toCommit.getId();
+            final ObjectId fromCommitId = fromCommit.getId();
             final Function1<DiffEntry, ScmChangeResult> _function_1 = (DiffEntry it) -> {
-              return this.createResult(it);
+              return this.createResult(it, fromCommitId, toCommitId);
             };
             final List<ScmChangeResult> result = ListExtensions.<DiffEntry, ScmChangeResult>map(diffs, _function_1);
             allResults.addAll(result);
@@ -132,7 +127,7 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
     return revsNewToOld;
   }
   
-  private ScmChangeResult createResult(final DiffEntry entry) {
+  private ScmChangeResult createResult(final DiffEntry entry, final ObjectId oldVersion, final ObjectId newVersion) {
     try {
       String newContent = ((String) null);
       String oldContent = ((String) null);
@@ -174,9 +169,11 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
       }
       String _newPath_1 = entry.getNewPath();
       IPath _fromOSString = Path.fromOSString(_newPath_1);
+      String _name = newVersion.getName();
       String _oldPath_1 = entry.getOldPath();
       IPath _fromOSString_1 = Path.fromOSString(_oldPath_1);
-      return new ScmChangeResult(_fromOSString, newContent, _fromOSString_1, oldContent);
+      String _name_1 = oldVersion.getName();
+      return new ScmChangeResult(_fromOSString, newContent, _name, _fromOSString_1, oldContent, _name_1);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

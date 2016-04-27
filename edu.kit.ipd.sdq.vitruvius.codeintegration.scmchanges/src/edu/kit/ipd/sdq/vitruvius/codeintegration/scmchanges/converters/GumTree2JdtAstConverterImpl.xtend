@@ -43,7 +43,7 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 		// Add child by using the structuralProperty descriptors
 		val parentProperties = parent.structuralPropertiesForType
 		val propertyId = tree.getMetadata("propertyId")
-		logger.info(String.format("Looking for parent property of child with type %s with propertyId %s", astNode.class, propertyId))
+		//logger.info(String.format("Looking for parent property of child with type %s with propertyId %s", astNode.class, propertyId))
 		var found = false
 		for (property : parentProperties) {
 			val propertyDescr = property as StructuralPropertyDescriptor;
@@ -53,9 +53,9 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 					if (childDescr.childType.isAssignableFrom(ASTNode.nodeClassForType(tree.type))) {
 						if (!found) {
 							parent.setStructuralProperty(propertyDescr, astNode)
-							logger.info(
-								String.format("Added node of type %s to property %s of parent of type %s",
-									astNode.class, childDescr, parent.class))
+//							logger.info(
+//								String.format("Added node of type %s to property %s of parent of type %s",
+//									astNode.class, childDescr, parent.class))
 							found = true
 						} else {
 							logger.error(
@@ -71,9 +71,9 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 						if (!found) {
 							val childList = parent.getStructuralProperty(propertyDescr) as List<ASTNode>
 							childList.add(astNode)
-							logger.info(
-								String.format("Added node of type %s to list-property %s of parent of type %s",
-									astNode.class, childListDescr, parent.class))
+//							logger.info(
+//								String.format("Added node of type %s to list-property %s of parent of type %s",
+//									astNode.class, childListDescr, parent.class))
 							found = true
 						} else {
 							logger.error(
@@ -98,13 +98,6 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 		for (ITree child : tree.children) {
 			createAstNode(child, ast, astNode)
 		}
-	}
-
-	/** 
-	 * Reverse of com.github.gumtreediff.gen.jdt.JdtVisitor#getLabel
-	 * */
-	private def void injectGumtreeLabel(ASTNode node, String label) {
-		// TODO
 	}
 
 }

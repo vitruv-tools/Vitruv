@@ -17,6 +17,8 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
+import org.eclipse.jgit.diff.DiffEntry.Side
+import org.eclipse.jgit.lib.ObjectId
 
 class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	
@@ -30,8 +32,6 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	}
 	
 	override extract(AnyObjectId newVersion, AnyObjectId oldVersion) {
-		//TODO if commits are not neighbors iterate over each commit-pair between
-		logger.info('''Computing changes between git repo versions «newVersion» to «oldVersion»''')
 		val reader = repository.newObjectReader()
 		val git = new Git(repository)
 		val revWalk = new RevWalk(repository)
@@ -59,7 +59,9 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 				renameDetector.addAll(rawDiffs)
 				val diffs = renameDetector.compute
 			
-				val result = diffs.map[createResult(it)]
+				val toCommitId = toCommit.id
+				val fromCommitId = fromCommit.id
+				val result = diffs.map[createResult(it, fromCommitId, toCommitId)]
 				allResults.addAll(result)
 				
 				fromCommit = toCommit
@@ -86,10 +88,9 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 		return revsNewToOld
 	}
 	
-	private def createResult(DiffEntry entry) {
+	private def createResult(DiffEntry entry, ObjectId oldVersion, ObjectId newVersion) {
 		var newContent = null as String
 		var oldContent = null as String
-		
 		try {
 			val newObjectLoader = repository.open(entry.newId.toObjectId)
 			val newOutStream = new ByteArrayOutputStream()	
@@ -109,7 +110,7 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 		}
 
 		
-		return new ScmChangeResult(Path.fromOSString(entry.newPath), newContent, Path.fromOSString(entry.oldPath), oldContent)
+		return new ScmChangeResult(Path.fromOSString(entry.newPath), newContent, newVersion.getName, Path.fromOSString(entry.oldPath), oldContent, oldVersion.getName)
 	}
 	
 }

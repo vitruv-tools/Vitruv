@@ -51,9 +51,6 @@ public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
     }
     final List parentProperties = parent.structuralPropertiesForType();
     final Object propertyId = tree.getMetadata("propertyId");
-    Class<? extends ASTNode> _class = astNode.getClass();
-    String _format = String.format("Looking for parent property of child with type %s with propertyId %s", _class, propertyId);
-    GumTree2JdtAstConverterImpl.logger.info(_format);
     boolean found = false;
     for (final Object property : parentProperties) {
       {
@@ -71,17 +68,13 @@ public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
             if (_isAssignableFrom) {
               if ((!found)) {
                 parent.setStructuralProperty(propertyDescr, astNode);
-                Class<? extends ASTNode> _class_1 = astNode.getClass();
-                Class<? extends ASTNode> _class_2 = parent.getClass();
-                String _format_1 = String.format("Added node of type %s to property %s of parent of type %s", _class_1, childDescr, _class_2);
-                GumTree2JdtAstConverterImpl.logger.info(_format_1);
                 found = true;
               } else {
-                Class<? extends ASTNode> _class_3 = astNode.getClass();
-                Class<? extends ASTNode> _class_4 = parent.getClass();
-                String _format_2 = String.format(
-                  "Would add node of type %s to property %s of parent of type %s, but was already assigned.", _class_3, childDescr, _class_4);
-                GumTree2JdtAstConverterImpl.logger.error(_format_2);
+                Class<? extends ASTNode> _class = astNode.getClass();
+                Class<? extends ASTNode> _class_1 = parent.getClass();
+                String _format = String.format(
+                  "Would add node of type %s to property %s of parent of type %s, but was already assigned.", _class, childDescr, _class_1);
+                GumTree2JdtAstConverterImpl.logger.error(_format);
               }
             }
           } else {
@@ -97,17 +90,13 @@ public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
                   Object _structuralProperty = parent.getStructuralProperty(propertyDescr);
                   final List<ASTNode> childList = ((List<ASTNode>) _structuralProperty);
                   childList.add(astNode);
-                  Class<? extends ASTNode> _class_5 = astNode.getClass();
-                  Class<? extends ASTNode> _class_6 = parent.getClass();
-                  String _format_3 = String.format("Added node of type %s to list-property %s of parent of type %s", _class_5, childListDescr, _class_6);
-                  GumTree2JdtAstConverterImpl.logger.info(_format_3);
                   found = true;
                 } else {
-                  Class<? extends ASTNode> _class_7 = astNode.getClass();
-                  Class<? extends ASTNode> _class_8 = parent.getClass();
-                  String _format_4 = String.format(
-                    "Would add node of type %s to list-property %s of parent of type %s, but was already assigned.", _class_7, childListDescr, _class_8);
-                  GumTree2JdtAstConverterImpl.logger.error(_format_4);
+                  Class<? extends ASTNode> _class_2 = astNode.getClass();
+                  Class<? extends ASTNode> _class_3 = parent.getClass();
+                  String _format_1 = String.format(
+                    "Would add node of type %s to list-property %s of parent of type %s, but was already assigned.", _class_2, childListDescr, _class_3);
+                  GumTree2JdtAstConverterImpl.logger.error(_format_1);
                 }
               }
             } else {
@@ -123,20 +112,14 @@ public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
       }
     }
     if ((!found)) {
-      Class<? extends ASTNode> _class_1 = astNode.getClass();
-      Class<? extends ASTNode> _class_2 = parent.getClass();
-      String _format_1 = String.format("Did not find property for node of type %s in parent of type %s", _class_1, _class_2);
-      GumTree2JdtAstConverterImpl.logger.warn(_format_1);
+      Class<? extends ASTNode> _class = astNode.getClass();
+      Class<? extends ASTNode> _class_1 = parent.getClass();
+      String _format = String.format("Did not find property for node of type %s in parent of type %s", _class, _class_1);
+      GumTree2JdtAstConverterImpl.logger.warn(_format);
     }
     List<ITree> _children = tree.getChildren();
     for (final ITree child : _children) {
       this.createAstNode(child, ast, astNode);
     }
-  }
-  
-  /**
-   * Reverse of com.github.gumtreediff.gen.jdt.JdtVisitor#getLabel
-   */
-  private void injectGumtreeLabel(final ASTNode node, final String label) {
   }
 }

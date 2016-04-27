@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jgit.lib.ObjectId;
 
 public class ScmChangeResult {
 	
@@ -8,12 +9,16 @@ public class ScmChangeResult {
 	private String newContent;
 	private String oldContent;
 	private IPath oldFile;
+	private String newVersionId;
+	private String oldVersionId;
 
-	public ScmChangeResult(IPath newFile, String newContent, IPath oldFile, String oldContent) {
+	public ScmChangeResult(IPath newFile, String newContent, String newVersionId, IPath oldFile, String oldContent, String oldVersionId) {
 		this.newFile = newFile;
 		this.newContent = newContent;
+		this.newVersionId = newVersionId;
 		this.oldFile = oldFile;
 		this.oldContent = oldContent;
+		this.oldVersionId = oldVersionId;
 	}
 
 	public IPath getNewFile() {
@@ -30,5 +35,13 @@ public class ScmChangeResult {
 
 	public IPath getOldFile() {
 		return oldFile;
+	}
+
+	public String getNewVersionId() {
+		return newVersionId;
+	}
+
+	public String getOldVersionId() {
+		return oldVersionId;
 	}
 }

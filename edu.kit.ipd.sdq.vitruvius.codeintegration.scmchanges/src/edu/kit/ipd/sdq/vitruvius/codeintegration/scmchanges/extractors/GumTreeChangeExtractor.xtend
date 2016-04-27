@@ -15,23 +15,24 @@ import org.apache.log4j.Logger
 import java.util.List
 import org.eclipse.emf.common.util.URI
 import java.util.HashSet
+import java.util.Random
 
 class GumTreeChangeExtractor implements IAtomicChangeExtractor {
-	
+
 	private static final Logger logger = Logger.getLogger(typeof(GumTreeChangeExtractor))
-	
+
 	private String oldContent
-	
+
 	private String newContent
-	
+
 	private IContentValidator validator
-	
+
 	private URI fileUri
-	
+
 	private int validExtractions
-	
+
 	private int totalExtractions
-	
+
 	new(String oldContent, String newContent, URI fileUri) {
 		this.oldContent = oldContent
 		this.newContent = newContent
@@ -41,7 +42,7 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 		this.totalExtractions = 0
 		logger.setLevel(Level.ALL)
 	}
-	
+
 	override extract() {
 		val generator = new JdtTreeGenerator()
 		val srcTreeContext = generator.generateFromString(oldContent)
@@ -50,28 +51,28 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 		logger.info(srcTreeContext.root.toPrettyString(srcTreeContext))
 		logger.info(" --- DESTINATION TREE --- ")
 		logger.info(dstTreeContext.root.toPrettyString(dstTreeContext))
-		
+
 		val contentList = new ArrayList()
 		val converter = new GumTree2JdtAstConverterImpl()
-		
+
 		contentList.add(converter.convertTree(srcTreeContext.root).toString)
-		
-		val m = Matchers.getInstance().getMatcher(srcTreeContext.root, dstTreeContext.root); // retrieve the default matcher
+
+		val m = Matchers.getInstance().getMatcher(srcTreeContext.root, dstTreeContext.root);
 		m.match();
 		val mappings = m.getMappings();
-		
+
 		val classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m)
 		val workingTree = srcTreeContext.root.deepCopy
-		
-		processDels(classifier, workingTree, mappings, contentList, converter, srcTreeContext.root)	
-		processAdds(classifier, workingTree, mappings, contentList, converter, dstTreeContext.root)	
-		processMvs(classifier, workingTree, mappings, contentList, converter)
-		processUpds(classifier, workingTree, mappings, contentList, converter)
-		
+
+		processDels(classifier, workingTree, mappings, contentList, converter, srcTreeContext.root)
+		processAdds(classifier, workingTree, mappings, contentList, converter, dstTreeContext.root, srcTreeContext.root)
+		processUpds(classifier, workingTree, mappings, contentList, converter, srcTreeContext.root)
+		processMvs(classifier, workingTree, mappings, contentList, converter, srcTreeContext.root)
+
 		contentList.add(converter.convertTree(dstTreeContext.root).toString)
-		
+
 		totalExtractions = totalExtractions + contentList.size
-		
+
 		if (validator != null) {
 			val toRemove = new HashSet<String>();
 			for (contentString : contentList) {
@@ -81,67 +82,94 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 			}
 			contentList.removeAll(toRemove)
 		}
-		
-		validExtractions = validExtractions +  contentList.size
+
+		validExtractions = validExtractions + contentList.size
 
 		return contentList
-		
+
 	}
-	
-	private def processUpds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+
+	private def processUpds(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
 		val rootUpds = getRootChanges(classifier.srcUpdTrees)
 		for (updTree : rootUpds) {
-			logger.info("Found UPD")
 			val updatedNodeInWorkingTree = findNodeWithId(workingTree, updTree.id)
-			val removed = removeNodeFromWorkingTree(updatedNodeInWorkingTree, workingTree, mappings)
-			val updatedNodeInDstTree = mappings.getDst(updTree)
-			val added = addNodeToWorkingTree(updatedNodeInDstTree, workingTree, mappings)
-			if (added && removed) {
-				contentList.add(converter.convertTree(workingTree).toString)
-			} else if (! (!added && !removed)) {
-				logger.warn("Couldn't add or remove but the other.")
+			val nodeInDstTree = mappings.getDst(updTree)
+			if (updatedNodeInWorkingTree == null) {
+				val nodeInWorkingTree = findNodeWithId(workingTree, nodeInDstTree.id)
+				if (nodeInWorkingTree == null) {
+					logger.warn("Did not find updated node in working tree. How can this happen? FIXME")
+				}
+			} else {
+				logger.info("Found UPD")
+				val removed = removeNodeFromWorkingTree(updatedNodeInWorkingTree, workingTree, mappings)
+				val added = addNodeToWorkingTree(nodeInDstTree, workingTree, completeSrc, mappings)
+				if (added || removed) {
+					contentList.add(converter.convertTree(workingTree).toString)
+				} else {
+					logger.warn("Couldn't add or remove for update. How can this happen? FIXME")
+				}
 			}
 		}
 	}
-	
-	private def processMvs(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+
+	private def processMvs(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
 		val rootMvs = getRootChanges(classifier.srcMvTrees)
 		for (mvTree : rootMvs) {
-			logger.info("Found MV")
 			val movedNodeInWorkingTree = findNodeWithId(workingTree, mvTree.id)
-			val removed = removeNodeFromWorkingTree(movedNodeInWorkingTree, workingTree, mappings)
-			val movedNodeInDstTree = mappings.getDst(mvTree)
-			val added = addNodeToWorkingTree(movedNodeInDstTree, workingTree, mappings)
-			if (added && removed) {
-				contentList.add(converter.convertTree(workingTree).toString)
-			} else if (! (!added && !removed)) {
-				logger.warn("Couldn't add or remove but the other.")
+			val nodeInDstTree = mappings.getDst(mvTree)
+			if (movedNodeInWorkingTree == null) {
+				val nodeInWorkingTree = findNodeWithId(workingTree, nodeInDstTree.id)
+				if (nodeInWorkingTree == null) {
+					logger.warn("Did not find moved node in working tree. How can this happen? FIXME")
+				}
+			} else {
+				logger.info("Found MV")
+				val removed = removeNodeFromWorkingTree(movedNodeInWorkingTree, workingTree, mappings)
+				val movedNodeInDstTree = mappings.getDst(mvTree)
+				val added = addNodeToWorkingTree(movedNodeInDstTree, workingTree, completeSrc, mappings)
+				if (removed || added) {
+					contentList.add(converter.convertTree(workingTree).toString)
+				} else {
+					// Check if node is already in dst (happens in some situations due to the GumTree algorithm
+					val nodeInWorkingTree = findNodeWithId(workingTree, nodeInDstTree.id)
+					if (nodeInWorkingTree == null) {
+						logger.warn("Did not find moved node in working tree. How can this happen? FIXME")
+					}
+				}
 			}
 		}
 	}
-	
-	private def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst) {
+
+	private def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst, ITree completeSrc) {
 		val rootAdds = getRootChanges(classifier.dstAddTrees)
 		rootAdds.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst))
 		for (addTree : rootAdds) {
 			logger.info("Found ADD")
-			if (addNodeToWorkingTree(addTree, workingTree, mappings)) {
+			if (addNodeToWorkingTree(addTree, workingTree, completeSrc, mappings)) {
 				contentList.add(converter.convertTree(workingTree).toString)
+			} else {
+				logger.warn("Couldn't add node.")
 			}
 		}
 	}
-	
-	private def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings, ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
+
+	private def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeSrc) {
 		val rootDels = getRootChanges(classifier.srcDelTrees)
 		rootDels.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeSrc, true))
 		for (delTree : rootDels) {
 			logger.info("Found DEL")
 			if (removeNodeFromWorkingTree(delTree, workingTree, mappings)) {
 				contentList.add(converter.convertTree(workingTree).toString)
+			} else {
+				logger.warn("Couldn't delete node.")
 			}
 		}
 	}
-	
+
 	private def getRootChanges(Set<ITree> allChanges) {
 		val rootChanges = new ArrayList<ITree>()
 		// Make sure that only root changes are executed
@@ -152,8 +180,9 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 		}
 		return rootChanges
 	}
-	
-	private def addNodeToWorkingTree(ITree addTree, ITree workingTree, MappingStore mappings) {
+
+	private def addNodeToWorkingTree(ITree addTree, ITree workingTree, ITree srcTree, MappingStore mappings) {
+		changeIdsWhereNeeded(addTree, workingTree, srcTree)
 		val addCopy = addTree.deepCopy
 		var dstParent = addTree.parent
 		val srcParent = mappings.getSrc(dstParent)
@@ -161,6 +190,9 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 		if (srcParent != null) {
 			val parentId = srcParent.id
 			val parentInWorkingTree = findNodeWithId(workingTree, parentId)
+			if (parentInWorkingTree == null) {
+				return false
+			}
 			val children = parentInWorkingTree.children
 			var pos = addTree.positionInParent
 			if (pos > children.size) {
@@ -172,14 +204,23 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 			children.sort(new OrderByDstOrderComparator(dstParent))
 			parentInWorkingTree.children = children
 			return true
-			
+
 		} else {
-			logger.warn("Did not find parent in src. Should only happen for non-root changes, that we should exclude earlier.")
 			return false
 		}
-		
+
 	}
-	
+
+	def changeIdsWhereNeeded(ITree tree, ITree workingTree, ITree srcTree) {
+		val random = new Random()
+		for (ITree node : tree.breadthFirst) {
+			while (findNodeWithId(workingTree, node.id) != null || findNodeWithId(srcTree, node.id) != null) {
+				logger.info("Had to change id of added node, because it existed in the working tree or in src Tree.")
+				node.id = random.nextInt
+			}
+		}
+	}
+
 	private def removeNodeFromWorkingTree(ITree delTree, ITree workingTree, MappingStore mappings) {
 		var srcParent = delTree.parent
 		if (srcParent != null) {
@@ -196,57 +237,61 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 				}
 			}
 			if (toDelete == null) {
-				throw new RuntimeException("Could not find child.")
+				return false
 			}
 			children.remove(toDelete)
 			parentInWorkingTree.children = children
 			return true
 		} else {
-			logger.warn("Did not find parent in src. Should only happen for non-root changes, that we should exclude earlier.")
 			return false
 		}
 	}
-	
+
 	private def findNodeWithId(ITree tree, int id) {
+		var count = 0
+		var result = null as ITree
 		for (node : TreeUtils.breadthFirst(tree)) {
 			if (node.id == id) {
-				return node
+				count++
+				result = node
 			}
 		}
-		logger.warn("Could not find parent. Probably already deleted from working tree due to earlier operation.")
-		return null
+		if (count > 1) {
+			throw new RuntimeException("Found same id " + count + " times in tree. Id: " + id)
+		}
+		return result
 	}
-	
+
 	override setValidator(IContentValidator validator) {
 		this.validator = validator
 	}
-	
+
 	override getNumberOfTotalExtractions() {
 		return totalExtractions;
 	}
-	
+
 	override getNumberOfValidExtractions() {
 		return validExtractions;
 	}
-	
+
 }
 
 class OrderbyBreadthFirstOrderingOfCompleteTree implements Comparator<ITree> {
-	
+
 	List<ITree> completeTreeOrderedByBreadthFirst;
-	
+
 	int factor
-	
+
 	new(ITree completeTree, boolean invert) {
 		this.completeTreeOrderedByBreadthFirst = TreeUtils.breadthFirst(completeTree)
-		this.factor = if (!invert) 1 else -1 
+		this.factor = if(!invert) 1 else -1
 	}
-	
+
 	new(ITree completeTree) {
 		this.completeTreeOrderedByBreadthFirst = TreeUtils.breadthFirst(completeTree)
 		this.factor = 1
 	}
-	
+
 	override compare(ITree o1, ITree o2) {
 		if (completeTreeOrderedByBreadthFirst.indexOf(o1) < completeTreeOrderedByBreadthFirst.indexOf(o2)) {
 			return -1 * factor
@@ -254,20 +299,20 @@ class OrderbyBreadthFirstOrderingOfCompleteTree implements Comparator<ITree> {
 			return 1 * factor
 		}
 	}
-	
+
 }
 
 /**
  * Used to sort children of a node by what the order looks like in the dst tree
  */
 class OrderByDstOrderComparator implements Comparator<ITree> {
-	
+
 	ITree dstParent
-	
+
 	new(ITree dstParent) {
 		this.dstParent = dstParent
 	}
-	
+
 	override compare(ITree o1, ITree o2) {
 		var dst1 = null as ITree;
 		var dst2 = null as ITree;
@@ -289,5 +334,5 @@ class OrderByDstOrderComparator implements Comparator<ITree> {
 			1
 		}
 	}
-	
+
 }

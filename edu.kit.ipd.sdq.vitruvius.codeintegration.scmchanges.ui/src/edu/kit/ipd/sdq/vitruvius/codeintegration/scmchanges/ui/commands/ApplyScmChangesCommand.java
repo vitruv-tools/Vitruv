@@ -16,6 +16,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -184,6 +185,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		List<UIJob> jobs = new ArrayList<UIJob>();
 		List<String> contentList;
 		if (result.getNewContent() != null && result.getOldContent() != null) {
+			logger.info(String.format("Extracting atomic changes between version %s and %s for file %s.", result.getOldVersionId(), result.getNewVersionId(), result.getNewFile()));
 			IFile file = project.getFile(result.getNewFile());
 			URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 			GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent(), uri);
@@ -276,7 +278,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	private void createFileWithMissingParentDirs(final IProject project, IPath filePath, InputStream stream)
 			throws CoreException {
 		IPath dirPath = filePath.removeLastSegments(1);
-		IFile directory = project.getFile(dirPath);
+		IFolder directory = project.getFolder(dirPath);
 		if (!directory.exists()) {
 			logger.info("Parent directory does not exist. Creating: " + dirPath.toOSString());
 			IPath absolutePath = directory.getLocation();

@@ -17,6 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.OrderbyBr
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -82,11 +83,14 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       ITree _root_6 = srcTreeContext.getRoot();
       this.processDels(classifier, workingTree, mappings, contentList, converter, _root_6);
       ITree _root_7 = dstTreeContext.getRoot();
-      this.processAdds(classifier, workingTree, mappings, contentList, converter, _root_7);
-      this.processMvs(classifier, workingTree, mappings, contentList, converter);
-      this.processUpds(classifier, workingTree, mappings, contentList, converter);
-      ITree _root_8 = dstTreeContext.getRoot();
-      CompilationUnit _convertTree_1 = converter.convertTree(_root_8);
+      ITree _root_8 = srcTreeContext.getRoot();
+      this.processAdds(classifier, workingTree, mappings, contentList, converter, _root_7, _root_8);
+      ITree _root_9 = srcTreeContext.getRoot();
+      this.processUpds(classifier, workingTree, mappings, contentList, converter, _root_9);
+      ITree _root_10 = srcTreeContext.getRoot();
+      this.processMvs(classifier, workingTree, mappings, contentList, converter, _root_10);
+      ITree _root_11 = dstTreeContext.getRoot();
+      CompilationUnit _convertTree_1 = converter.convertTree(_root_11);
       String _string_1 = _convertTree_1.toString();
       contentList.add(_string_1);
       int _size = contentList.size();
@@ -113,67 +117,89 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     }
   }
   
-  private void processUpds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  private void processUpds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeSrc) {
     Set<ITree> _srcUpdTrees = classifier.getSrcUpdTrees();
     final ArrayList<ITree> rootUpds = this.getRootChanges(_srcUpdTrees);
     for (final ITree updTree : rootUpds) {
       {
-        GumTreeChangeExtractor.logger.info("Found UPD");
         int _id = updTree.getId();
         final ITree updatedNodeInWorkingTree = this.findNodeWithId(workingTree, _id);
-        final boolean removed = this.removeNodeFromWorkingTree(updatedNodeInWorkingTree, workingTree, mappings);
-        final ITree updatedNodeInDstTree = mappings.getDst(updTree);
-        final boolean added = this.addNodeToWorkingTree(updatedNodeInDstTree, workingTree, mappings);
-        boolean _and = false;
-        if (!added) {
-          _and = false;
+        final ITree nodeInDstTree = mappings.getDst(updTree);
+        boolean _equals = Objects.equal(updatedNodeInWorkingTree, null);
+        if (_equals) {
+          int _id_1 = nodeInDstTree.getId();
+          final ITree nodeInWorkingTree = this.findNodeWithId(workingTree, _id_1);
+          boolean _equals_1 = Objects.equal(nodeInWorkingTree, null);
+          if (_equals_1) {
+            GumTreeChangeExtractor.logger.warn("Did not find updated node in working tree. How can this happen? FIXME");
+          }
         } else {
-          _and = removed;
-        }
-        if (_and) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
-        } else {
-          if ((!((!added) && (!removed)))) {
-            GumTreeChangeExtractor.logger.warn("Couldn\'t add or remove but the other.");
+          GumTreeChangeExtractor.logger.info("Found UPD");
+          final boolean removed = this.removeNodeFromWorkingTree(updatedNodeInWorkingTree, workingTree, mappings);
+          final boolean added = this.addNodeToWorkingTree(nodeInDstTree, workingTree, completeSrc, mappings);
+          boolean _or = false;
+          if (added) {
+            _or = true;
+          } else {
+            _or = removed;
+          }
+          if (_or) {
+            CompilationUnit _convertTree = converter.convertTree(workingTree);
+            String _string = _convertTree.toString();
+            contentList.add(_string);
+          } else {
+            GumTreeChangeExtractor.logger.warn("Couldn\'t add or remove for update. How can this happen? FIXME");
           }
         }
       }
     }
   }
   
-  private void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  private void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeSrc) {
     Set<ITree> _srcMvTrees = classifier.getSrcMvTrees();
     final ArrayList<ITree> rootMvs = this.getRootChanges(_srcMvTrees);
     for (final ITree mvTree : rootMvs) {
       {
-        GumTreeChangeExtractor.logger.info("Found MV");
         int _id = mvTree.getId();
         final ITree movedNodeInWorkingTree = this.findNodeWithId(workingTree, _id);
-        final boolean removed = this.removeNodeFromWorkingTree(movedNodeInWorkingTree, workingTree, mappings);
-        final ITree movedNodeInDstTree = mappings.getDst(mvTree);
-        final boolean added = this.addNodeToWorkingTree(movedNodeInDstTree, workingTree, mappings);
-        boolean _and = false;
-        if (!added) {
-          _and = false;
+        final ITree nodeInDstTree = mappings.getDst(mvTree);
+        boolean _equals = Objects.equal(movedNodeInWorkingTree, null);
+        if (_equals) {
+          int _id_1 = nodeInDstTree.getId();
+          final ITree nodeInWorkingTree = this.findNodeWithId(workingTree, _id_1);
+          boolean _equals_1 = Objects.equal(nodeInWorkingTree, null);
+          if (_equals_1) {
+            GumTreeChangeExtractor.logger.warn("Did not find moved node in working tree. How can this happen? FIXME");
+          }
         } else {
-          _and = removed;
-        }
-        if (_and) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
-        } else {
-          if ((!((!added) && (!removed)))) {
-            GumTreeChangeExtractor.logger.warn("Couldn\'t add or remove but the other.");
+          GumTreeChangeExtractor.logger.info("Found MV");
+          final boolean removed = this.removeNodeFromWorkingTree(movedNodeInWorkingTree, workingTree, mappings);
+          final ITree movedNodeInDstTree = mappings.getDst(mvTree);
+          final boolean added = this.addNodeToWorkingTree(movedNodeInDstTree, workingTree, completeSrc, mappings);
+          boolean _or = false;
+          if (removed) {
+            _or = true;
+          } else {
+            _or = added;
+          }
+          if (_or) {
+            CompilationUnit _convertTree = converter.convertTree(workingTree);
+            String _string = _convertTree.toString();
+            contentList.add(_string);
+          } else {
+            int _id_2 = nodeInDstTree.getId();
+            final ITree nodeInWorkingTree_1 = this.findNodeWithId(workingTree, _id_2);
+            boolean _equals_2 = Objects.equal(nodeInWorkingTree_1, null);
+            if (_equals_2) {
+              GumTreeChangeExtractor.logger.warn("Did not find moved node in working tree. How can this happen? FIXME");
+            }
           }
         }
       }
     }
   }
   
-  private void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst) {
+  private void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst, final ITree completeSrc) {
     Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
     final ArrayList<ITree> rootAdds = this.getRootChanges(_dstAddTrees);
     OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst);
@@ -181,11 +207,13 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     for (final ITree addTree : rootAdds) {
       {
         GumTreeChangeExtractor.logger.info("Found ADD");
-        boolean _addNodeToWorkingTree = this.addNodeToWorkingTree(addTree, workingTree, mappings);
+        boolean _addNodeToWorkingTree = this.addNodeToWorkingTree(addTree, workingTree, completeSrc, mappings);
         if (_addNodeToWorkingTree) {
           CompilationUnit _convertTree = converter.convertTree(workingTree);
           String _string = _convertTree.toString();
           contentList.add(_string);
+        } else {
+          GumTreeChangeExtractor.logger.warn("Couldn\'t add node.");
         }
       }
     }
@@ -204,6 +232,8 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
           CompilationUnit _convertTree = converter.convertTree(workingTree);
           String _string = _convertTree.toString();
           contentList.add(_string);
+        } else {
+          GumTreeChangeExtractor.logger.warn("Couldn\'t delete node.");
         }
       }
     }
@@ -222,7 +252,8 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     return rootChanges;
   }
   
-  private boolean addNodeToWorkingTree(final ITree addTree, final ITree workingTree, final MappingStore mappings) {
+  private boolean addNodeToWorkingTree(final ITree addTree, final ITree workingTree, final ITree srcTree, final MappingStore mappings) {
+    this.changeIdsWhereNeeded(addTree, workingTree, srcTree);
     final ITree addCopy = addTree.deepCopy();
     ITree dstParent = addTree.getParent();
     final ITree srcParent = mappings.getSrc(dstParent);
@@ -230,6 +261,10 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     if (_notEquals) {
       final int parentId = srcParent.getId();
       final ITree parentInWorkingTree = this.findNodeWithId(workingTree, parentId);
+      boolean _equals = Objects.equal(parentInWorkingTree, null);
+      if (_equals) {
+        return false;
+      }
       final List<ITree> children = parentInWorkingTree.getChildren();
       int pos = addTree.positionInParent();
       int _size = children.size();
@@ -244,8 +279,21 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       parentInWorkingTree.setChildren(children);
       return true;
     } else {
-      GumTreeChangeExtractor.logger.warn("Did not find parent in src. Should only happen for non-root changes, that we should exclude earlier.");
       return false;
+    }
+  }
+  
+  public void changeIdsWhereNeeded(final ITree tree, final ITree workingTree, final ITree srcTree) {
+    final Random random = new Random();
+    Iterable<ITree> _breadthFirst = tree.breadthFirst();
+    for (final ITree node : _breadthFirst) {
+      while (((!Objects.equal(this.findNodeWithId(workingTree, node.getId()), null)) || (!Objects.equal(this.findNodeWithId(srcTree, node.getId()), null)))) {
+        {
+          GumTreeChangeExtractor.logger.info("Had to change id of added node, because it existed in the working tree or in src Tree.");
+          int _nextInt = random.nextInt();
+          node.setId(_nextInt);
+        }
+      }
     }
   }
   
@@ -271,28 +319,32 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       }
       boolean _equals_2 = Objects.equal(toDelete, null);
       if (_equals_2) {
-        throw new RuntimeException("Could not find child.");
+        return false;
       }
       children.remove(toDelete);
       parentInWorkingTree.setChildren(children);
       return true;
     } else {
-      GumTreeChangeExtractor.logger.warn("Did not find parent in src. Should only happen for non-root changes, that we should exclude earlier.");
       return false;
     }
   }
   
   private ITree findNodeWithId(final ITree tree, final int id) {
+    int count = 0;
+    ITree result = ((ITree) null);
     List<ITree> _breadthFirst = TreeUtils.breadthFirst(tree);
     for (final ITree node : _breadthFirst) {
       int _id = node.getId();
       boolean _equals = (_id == id);
       if (_equals) {
-        return node;
+        count++;
+        result = node;
       }
     }
-    GumTreeChangeExtractor.logger.warn("Could not find parent. Probably already deleted from working tree due to earlier operation.");
-    return null;
+    if ((count > 1)) {
+      throw new RuntimeException(((("Found same id " + Integer.valueOf(count)) + " times in tree. Id: ") + Integer.valueOf(id)));
+    }
+    return result;
   }
   
   @Override
