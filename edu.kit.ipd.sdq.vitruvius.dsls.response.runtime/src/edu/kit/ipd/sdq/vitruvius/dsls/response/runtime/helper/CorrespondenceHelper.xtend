@@ -31,7 +31,7 @@ final class CorrespondenceHelper {
 		}
 	}
 
-	public static def removeCorrespondence(CorrespondenceInstance<Correspondence> correspondenceInstance,
+	public static def removeCorrespondencesBetweenElements(CorrespondenceInstance<Correspondence> correspondenceInstance,
 		EObject source, EObject sourceParent, EObject target, EObject targetParent) {
 		val correspondenceInstanceView = correspondenceInstance.responseView;
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
@@ -42,6 +42,16 @@ final class CorrespondenceHelper {
 				(correspondence.BTUIDs.contains(sourceTUID) && correspondence.ATUIDs.contains(targetTUID))) {
 				correspondenceInstanceView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 			}
+		}
+	}
+	
+	public static def removeCorrespondencesOfObject(CorrespondenceInstance<Correspondence> correspondenceInstance,
+		EObject source, EObject sourceParent) {
+		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
+		val correspondenceInstanceView = correspondenceInstance.responseView;
+		val correspondences = correspondenceInstanceView.getCorrespondencesForTUIDs(#[sourceTUID]);
+		for (correspondence : correspondences.toList) {
+			correspondenceInstanceView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 		}
 	}
 

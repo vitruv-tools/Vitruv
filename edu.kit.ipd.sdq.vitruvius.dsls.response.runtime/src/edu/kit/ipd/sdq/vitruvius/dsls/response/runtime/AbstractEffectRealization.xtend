@@ -13,96 +13,100 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import java.util.Collections
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectCorrespondenceDeletion
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectCorrespondenceCreation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectCorrespondenceModification
-import java.util.List
-import java.util.ArrayList
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElement
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	private extension val ResponseExecutionState executionState;
-	protected final List<EffectCorrespondenceModification> correspondenceStates;
-	protected final Map<EObject, EffectElementRetrieve> retrieveElementStates;
+	protected final Map<EObject, EffectElement> elementStates;
 	private boolean aborted = false;
 	
 	public new(ResponseExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.executionState = executionState;
-		this.correspondenceStates = new ArrayList<EffectCorrespondenceModification>();
-		this.retrieveElementStates = new HashMap<EObject, EffectElementRetrieve>();
+		this.elementStates = new HashMap<EObject, EffectElement>();
 	}
 	
 	protected def ResponseExecutionState getExecutionState() {
 		return executionState;
 	}
 	
-	protected def void initializeCreateCorrespondenceState(EObject firstElement, EObject secondElement, String tag) {
-		this.correspondenceStates.add(new EffectCorrespondenceCreation(firstElement, secondElement, executionState, tag));
+	protected def void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
+		if (!elementStates.containsKey(firstElement)) {
+			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.blackboard.correspondenceInstance));
+		}
+		this.elementStates.get(firstElement).addCorrespondingElement(secondElement, tag);
 	}
 	
 	protected def isAborted() {
 		return aborted;
 	}
 	
-	protected def void initializeDeleteCorrespondenceState(EObject firstElement, boolean deleteFirst, 
-		EObject secondElement, boolean deleteSecond
+	protected def void markObjectDelete(EObject element) {
+		this.elementStates.get(element).setDelete();
+	}
+	
+	protected def void removeCorrespondenceBetween(EObject firstElement, EObject secondElement
 	) {
-		if (deleteFirst) {
-			retrieveElementStates.get(firstElement).disableTUIDUpdate();
+		if (!elementStates.containsKey(firstElement)) {
+			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.blackboard.correspondenceInstance));
 		}
-		if (deleteSecond) {
-			retrieveElementStates.get(secondElement).disableTUIDUpdate();
-		}
-		this.correspondenceStates.add(new EffectCorrespondenceDeletion(firstElement, deleteFirst, secondElement, deleteSecond, executionState));
+		this.elementStates.get(firstElement).removeCorrespondingElement(secondElement);
 	}
 	
 	private def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Function1<T, Boolean> correspondencePreconditionMethod, 
-		Function0<String> tagSupplier, Class<T> elementClass, boolean optional, boolean required
+		Function0<String> tagSupplier, Class<T> elementClass
 	) {
 		val tag = tagSupplier.apply();
 		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
-		if (retrievedElements.size != 1) {
-			if (retrievedElements.size == 0 && optional) {
-				return null;
-			}
-			if (retrievedElements.size == 0 && required) {
-				aborted = true;
-				return null;
-			}
+		if (retrievedElements.size > 1) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource, elementClass, executionState.userInteracting);
 		}
 		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;
 		return retrievedElement;
 	}
 	
+	protected def initializeCreateElementState(EObject element) {
+		this.elementStates.put(element, new EffectElementCreate(element, executionState.blackboard.correspondenceInstance));
+	}
+	
 	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
 		Function1<T, Boolean> correspondencePreconditionMethod, Function0<String> tagSupplier, Class<T> elementClass, 
-		boolean optional, boolean required) {
+		boolean optional, boolean required, boolean absence) {
 		val correspondenceSource = correspondenceSourceSupplier.apply();
 		val correspondingElement = correspondenceSource.getCorrespondingElement(correspondencePreconditionMethod, tagSupplier,
-			elementClass, optional, required
+			elementClass
 		);
-		this.retrieveElementStates.put(correspondingElement, 
-			new EffectElementRetrieve(correspondingElement, correspondenceSource, executionState)
-		);
+		if (correspondingElement == null && required) {
+			aborted = true;
+		}
+		if (correspondingElement != null && absence) {
+			aborted = true;
+		}
+		
+		if (correspondingElement != null) {
+			this.elementStates.put(correspondingElement, 
+				new EffectElementRetrieve(correspondingElement, executionState.blackboard.correspondenceInstance)
+			);
+		}
 		return correspondingElement;
 	}
 	
 	protected def preProcessElements() {
-		for (state : correspondenceStates) {
+		for (state : elementStates.values) {
 			state.preProcess();
 		}
 	}
 	
 	protected def postProcessElements() {
-		for (state : correspondenceStates) {
-			state.postProcess();
-		}
-		for (element : retrieveElementStates.keySet) {
-			retrieveElementStates.get(element).updateTUIDs();
+//		for (state : correspondenceStates) {
+//			state.postProcess();
+//		}
+		for (element : elementStates.keySet) {
+			elementStates.get(element).postProcess();
+			elementStates.get(element).updateTUID();
 		}
 	}
 	
