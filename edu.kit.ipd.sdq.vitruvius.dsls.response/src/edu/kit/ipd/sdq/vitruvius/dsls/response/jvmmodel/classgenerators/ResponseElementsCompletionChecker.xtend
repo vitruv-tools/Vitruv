@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RetrieveModelEle
 
 class ResponseElementsCompletionChecker {
 	public def boolean isComplete(RetrieveModelElement retrieveElement) {
-		return !retrieveElement?.element.name.nullOrEmpty && retrieveElement?.correspondenceSource?.code != null && retrieveElement?.element.complete;
+		return retrieveElement?.correspondenceSource?.code != null && retrieveElement?.element.complete;
 	}
 	
 	public def boolean isComplete(ModelElement element) {

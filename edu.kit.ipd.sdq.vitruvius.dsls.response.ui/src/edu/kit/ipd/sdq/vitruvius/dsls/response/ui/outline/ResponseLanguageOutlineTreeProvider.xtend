@@ -22,7 +22,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Routine
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreateCorrespondence
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.DeleteCorrespondenceElementReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RemoveCorrespondence
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RetrieveModelElement
@@ -134,10 +133,6 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CreateCorrespondence createCorrespondence) {
 		createEObjectNode(parentNode, createCorrespondence);
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, DeleteCorrespondenceElementReference deleteCorrespondence) {
-		createEObjectNode(parentNode, deleteCorrespondence);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CodeBlock codeBlock) {

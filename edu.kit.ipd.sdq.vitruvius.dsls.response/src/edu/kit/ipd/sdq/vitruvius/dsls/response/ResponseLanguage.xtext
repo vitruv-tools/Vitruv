@@ -31,7 +31,7 @@ InvariantViolationEvent:
 
 Trigger:
 	'trigger:' (ModelChange | InvariantViolationEvent)
-	('precondition:' precondition=PreconditionCodeBlock)?;
+	('check:' precondition=PreconditionCodeBlock)?;
 
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
@@ -70,7 +70,7 @@ ArbitraryModelElementChange:
 
 
 fragment Routine:
-	matching=Matching
+	matching=Matching?
 	effect=Effect;
 
 ImplicitRoutine:
@@ -78,10 +78,15 @@ ImplicitRoutine:
 
 Matching:
 	{Matching}
-	retrievedElements+=RetrieveModelElement*;
+	'match:'
+	retrievedElements+=RetrieveModelElement*
+	('check:' condition=PreconditionCodeBlock)?;
 
 Effect:
 	{Effect}
+	'effect:'
+	(elementCreation += CreateElement |
+		elementDeletion += DeleteElement)*
 	(correspondenceCreation += CreateCorrespondence | 
 		correspondenceDeletion += RemoveCorrespondence)*
 	('execute:' codeBlock=ExecutionCodeBlock)?;
@@ -104,31 +109,25 @@ fragment Taggable:
 	tag=TagCodeBlock;
 
 RetrieveModelElement:
-	(required?='retrieve required element:' | optional?='retrieve optional element:' | 'retrieve element:') 
+	(required?='retrieve required element:' | optional?='retrieve optional element:' | abscence?='require absence of element:') 
 	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
-DeleteCorrespondenceElementReference:
-	(delete?="delete-element" | "keep-element") ExistingElementReference;
-
-CreateCorrespondenceElementReference returns ElementReference:
-	UseElementReference | NewElementReference;
-	
-fragment ExistingElementReference:
+ExistingElementReference:
 	CodeBlock;	
 
-UseElementReference:
-	"existing-element" ExistingElementReference;
-
-NewElementReference:
-	"create-element" element=NamedModelElement;
+CreateElement:
+	"create element:" element=NamedModelElement;
 	
+DeleteElement:
+	"delete element:" element=ExistingElementReference;
+
 CreateCorrespondence:
-	"create correspondence:" firstElement=CreateCorrespondenceElementReference "," secondElement=CreateCorrespondenceElementReference
+	"add correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference
 	('tag with' Taggable)?;
 	
 RemoveCorrespondence:
-	"remove correspondence:" firstElement=DeleteCorrespondenceElementReference "," secondElement=DeleteCorrespondenceElementReference;
+	"remove correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
 
 
 // ****** CODE BLOCKS ******

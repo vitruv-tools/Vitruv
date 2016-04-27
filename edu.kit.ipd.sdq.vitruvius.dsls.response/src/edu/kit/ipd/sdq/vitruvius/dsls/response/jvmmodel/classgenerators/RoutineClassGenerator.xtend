@@ -18,19 +18,22 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerato
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NewElementReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExistingElementReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreateCorrespondence
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Taggable
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Routine
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RetrieveModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreateElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.DeleteElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Matching
 
 abstract class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
 	protected final boolean hasExecutionBlock;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	protected final Iterable<RetrieveModelElement> retrievedElements;
-	protected final Iterable<NewElementReference> createElements;
+	protected final Iterable<CreateElement> createElements;
+	protected final Iterable<DeleteElement> deleteElements;
 	private final String routineUserExecutionQualifiedClassName;
 	private final ClassNameGenerator routineClassNameGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
@@ -42,9 +45,9 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		this.routine = routine;
 		this.hasExecutionBlock = routine.effect.codeBlock != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
-		this.retrievedElements = routine.matching.retrievedElements.filter[complete];
-		this.createElements = (routine.effect.correspondenceCreation.map[firstElement] 
-			+ routine.effect.correspondenceCreation.map[secondElement]).filter(NewElementReference);
+		this.retrievedElements = routine.matching?.retrievedElements?.filter[complete]?:newArrayList();
+		this.createElements = routine.effect.elementCreation;
+		this.deleteElements = routine.effect.elementDeletion;
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = routine.responsesSegment.routinesFacadeClassNameGenerator;
 		this.routineUserExecutionQualifiedClassName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
@@ -54,18 +57,30 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 	
 	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject);
 	
+	protected def Iterable<JvmFormalParameter> generateInputAndRetrievedElementsParameters(EObject sourceObject) {
+		return generateInputParameters(sourceObject) + retrievedElements.map[if (it.element != null) sourceObject.generateModelElementParameter(it.element) else null].filterNull;
+	}
+	
 	protected def Iterable<JvmFormalParameter> generateAccessibleElementsParameters(EObject sourceObject) {
-		return generateInputParameters(sourceObject) + retrievedElements.map[sourceObject.generateModelElementParameter(it.element)] + createElements.map[sourceObject.generateModelElementParameter(it.element)];
+		return generateInputAndRetrievedElementsParameters(sourceObject) + createElements.map[sourceObject.generateModelElementParameter(it.element)];
+	}
+	
+	protected def Iterable<String> getInputAndRetrievedElementsParameterNames() {
+		return inputParameterNames + retrievedElements.map[it.element.name].filterNull;
 	}
 	
 	protected def Iterable<String> getAccessibleElementsParameterNames() {
-		return retrievedElements.map[it.element.name] + createElements.map[it.element.name];
+		return inputAndRetrievedElementsParameterNames + createElements.map[it.element.name];
 	}
 	
 	protected abstract def Iterable<String> getInputParameterNames();
 	
 	protected def getParameterCallListWithModelInputAndAccesibleElements(String... parameterStrings) {
-		getParameterCallList(inputParameterNames + accessibleElementsParameterNames + parameterStrings);
+		getParameterCallList(accessibleElementsParameterNames + parameterStrings);
+	}
+	
+	protected def getParameterCallListWithModelInputAndRetrievedElements(String... parameterStrings) {
+		getParameterCallList(inputAndRetrievedElementsParameterNames + parameterStrings);
 	}
 	
 	protected def getParameterCallListWithModelInput(String... parameterStrings) {
@@ -235,6 +250,17 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		];
 	}
 	
+	protected def generateMethodMatcherPrecondition(Matching matching) {
+		if (matching?.condition == null) {
+			return null;
+		}
+		val methodName = "checkMatcherPrecondition";
+		return matching.condition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
+			visibility = JvmVisibility.PRIVATE;
+			parameters += generateInputAndRetrievedElementsParameters();
+			body = matching.condition.code;
+		];
+	}
 	
 	
 	protected def generateMethodExecuteEffect() {
@@ -244,14 +270,15 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		CollectionBridge.mapFixed(retrievedElements, 
 				[modelElementInitialization.put(it, getInitializationCode(it, getParameterCallListWithModelInput()))]);
 		
+		val matcherMethodPrecondition = generateMethodMatcherPrecondition(routine.matching);
+		
 		val elementReferences = <EObject, String>newHashMap();
 		CollectionBridge.mapFixed((routine.effect.correspondenceCreation.map[firstElement] + routine.effect.correspondenceCreation.map[secondElement]
 			+ routine.effect.correspondenceDeletion.map[firstElement] + routine.effect.correspondenceDeletion.map[secondElement]).filter(ExistingElementReference),
 			[elementReferences.put(it, generateMethodGetElement(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)''')]);
+		CollectionBridge.mapFixed(routine.effect.elementDeletion.map[element],
+			[elementReferences.put(it, generateMethodGetElement(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)''')]);
 			
-		CollectionBridge.mapFixed((routine.effect.correspondenceCreation.map[firstElement] + routine.effect.correspondenceCreation.map[secondElement]).filter(NewElementReference),
-			[elementReferences.put(it, it.element.name)]);
-		
 		val tagMethodCalls = <CreateCorrespondence, String>newHashMap();
 		CollectionBridge.mapFixed(routine.effect.correspondenceCreation,
 			[tagMethodCalls.put(it, if (it.tag != null) {generateMethodGetCreateTag(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)'''} else {'''""'''})]);
@@ -271,18 +298,25 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 				if (isAborted()) {
 					return;
 				}
-				
+				«IF matcherMethodPrecondition != null»
+					if (!«matcherMethodPrecondition.simpleName»(«getParameterCallListWithModelInputAndRetrievedElements()»)) {
+						return;
+					}
+				«ENDIF»
 				«FOR createElement : createElements»
 					«getElementCreationCode(createElement)»
 				«ENDFOR»
+				«FOR deleteElement : deleteElements»
+					markObjectDelete(«elementReferences.get(deleteElement.element)»);
+				«ENDFOR»
 
 				«FOR correspondenceCreate : routine.effect.correspondenceCreation»
-					initializeCreateCorrespondenceState(«elementReferences.get(correspondenceCreate.firstElement)», «
+					addCorrespondenceBetween(«elementReferences.get(correspondenceCreate.firstElement)», «
 						elementReferences.get(correspondenceCreate.secondElement)», «tagMethodCalls.get(correspondenceCreate)»);
 				«ENDFOR»
 				«FOR correspondenceDelete : routine.effect.correspondenceDeletion»
-					initializeDeleteCorrespondenceState(«elementReferences.get(correspondenceDelete.firstElement)», «correspondenceDelete.firstElement.delete», «
-						elementReferences.get(correspondenceDelete.secondElement)», «correspondenceDelete.secondElement.delete»);
+					removeCorrespondenceBetween(«elementReferences.get(correspondenceDelete.firstElement)», «
+						elementReferences.get(correspondenceDelete.secondElement)»);
 				«ENDFOR»				
 				preProcessElements();
 				«IF hasExecutionBlock»
@@ -323,19 +357,22 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		val correspondenceSourceSupplier = getCorrespondenceSourceSupplier(retrieveElement);
 		val tagSupplier = getTagSupplier(retrieveElement);
 		return '''
-			«affectedElementClass.javaClass» «retrieveElement.element.name» = initializeRetrieveElementState(
+			«IF !retrieveElement.element.name.nullOrEmpty»«affectedElementClass.javaClass» «retrieveElement.element.name» = «
+			ENDIF»initializeRetrieveElementState(
 				«correspondenceSourceSupplier», // correspondence source supplier
 				«correspondingElementPreconditionChecker», // correspondence precondition checker
 				«tagSupplier», // tag supplier
 				«affectedElementClass.javaClass».class,
-				«retrieveElement.optional», «retrieveElement.required»);
+				«retrieveElement.optional», «retrieveElement.required», «retrieveElement.abscence»);
 		'''	
 	}
 	
-	private def StringConcatenationClient getElementCreationCode(NewElementReference elementCreate) {
+	private def StringConcatenationClient getElementCreationCode(CreateElement elementCreate) {
 		val affectedElementClass = elementCreate.element.element;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
-		return '''«affectedElementClass.instanceClass» «elementCreate.element.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();'''
+		return '''
+			«affectedElementClass.instanceClass» «elementCreate.element.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+			initializeCreateElementState(«elementCreate.element.name»);'''
 	}
 	
 }
