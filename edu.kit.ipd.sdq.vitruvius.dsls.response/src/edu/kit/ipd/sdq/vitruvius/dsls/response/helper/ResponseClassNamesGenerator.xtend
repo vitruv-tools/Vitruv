@@ -6,18 +6,18 @@ import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Routine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
 	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".java";
 	private static val RESPONSES_PACKAGE = "responses";
-	private static String EFFECTS_PACKAGE = "effects";
-	private static String EFFECTS_FACADE_CLASS_NAME = "EffectsFacade";
+	private static String ROUTINES_PACKAGE = "routines";
+	private static String ROUTINES_FACADE_CLASS_NAME = "RoutinesFacade";
 	
 	private new() {}
 	
@@ -39,7 +39,7 @@ final class ResponseClassNamesGenerator {
 		«basicMirPackageQualifiedName».«RESPONSES_PACKAGE»'''
 	
 	public static def String getBasicEffectsPackageQualifiedName() '''
-		«basicMirPackageQualifiedName».«EFFECTS_PACKAGE»'''	
+		«basicMirPackageQualifiedName».«ROUTINES_PACKAGE»'''	
 	
 	private static def String getMetamodelIdentifier(URI uri) {
 		if (uri.lastSegment.nullOrEmpty) {
@@ -75,16 +75,16 @@ final class ResponseClassNamesGenerator {
 		return new ExecutorClassNameGenerator(responsesSegment);
 	}
 	
-	public static def ClassNameGenerator getEffectsFacadeClassNameGenerator(ResponsesSegment responsesSegment) {
-		return new EffectsFacadeClassNameGenerator(responsesSegment);
+	public static def ClassNameGenerator getRoutinesFacadeClassNameGenerator(ResponsesSegment responsesSegment) {
+		return new RoutinesFacadeClassNameGenerator(responsesSegment);
 	}
 	
 	public static def ClassNameGenerator getResponseClassNameGenerator(Response response) {
 		return new ResponseClassNameGenerator(response);
 	}
 	
-	public static def ClassNameGenerator getEffectClassNameGenerator(Effect effect) {
-		return new EffectClassNameGenerator(effect);
+	public static def ClassNameGenerator getRoutineClassNameGenerator(Routine routine) {
+		return new RoutineClassNameGenerator(routine);
 	}
 	
 	public static abstract class ClassNameGenerator {
@@ -136,36 +136,36 @@ final class ResponseClassNamesGenerator {
 			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name.toFirstLower»'''		
 	}
 	
-	private static class EffectClassNameGenerator extends ClassNameGenerator {
-		private val Effect effect;
-		public new(Effect effect) {
-			this.effect = effect;
+	private static class RoutineClassNameGenerator extends ClassNameGenerator {
+		private val Routine routine;
+		public new(Routine routine) {
+			this.routine = routine;
 		}
 		
 		public override String getSimpleName() '''
-			«effect.effectName»Effect'''
+			«routine.routineName»Effect'''
 		
-		private static def dispatch String getEffectName(ImplicitEffect effect) {
-			return effect.containingResponse.name
+		private static def dispatch String getRoutineName(ImplicitRoutine routine) {
+			return routine.containingResponse.name
 		}
 		
-		private static def dispatch String getEffectName(ExplicitEffect effect) {
-			return effect.name
+		private static def dispatch String getRoutineName(ExplicitRoutine routine) {
+			return routine.name
 		}
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«effect.responsesSegment.name.toFirstLower»'''
+			«basicEffectsPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
 		
 	}
 	
-	private static class EffectsFacadeClassNameGenerator extends ClassNameGenerator {
+	private static class RoutinesFacadeClassNameGenerator extends ClassNameGenerator {
 		private val ResponsesSegment responsesSegment;
 		public new(ResponsesSegment responsesSegment) {
 			this.responsesSegment = responsesSegment;
 		}
 		
 		public override String getSimpleName() '''
-			«EFFECTS_FACADE_CLASS_NAME»'''
+			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
 			«basicEffectsPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		

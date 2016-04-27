@@ -7,15 +7,15 @@ import org.eclipse.xtext.validation.Check
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage
 import java.util.HashMap
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.EffectInput
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Routine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RoutineInput
 
 /**
  * This class contains custom validation rules. 
@@ -40,48 +40,48 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 			}
 			alreadyCheckedResponses.put(responseName, response);
 		}
-		val alreadyCheckedEffects = new HashMap<String, Effect>();
-		for (implicitEffect : responseSegment.responses.map[effect]) {
-			alreadyCheckedEffects.put(implicitEffect.effectClassNameGenerator.simpleName, implicitEffect);
+		val alreadyCheckedEffects = new HashMap<String, Routine>();
+		for (implicitRoutine : responseSegment.responses.map[routine]) {
+			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 		}
-		for (effect : responseSegment.effects) {
-			val effectName = effect.effectClassNameGenerator.simpleName
-			if (alreadyCheckedEffects.containsKey(effectName)) {
-				val errorMessage = "Duplicate effect name: " + effectName;
-				error(errorMessage, effect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
-				val duplicateNameEffect = alreadyCheckedEffects.get(effectName);
-				if (duplicateNameEffect instanceof ImplicitEffect) {
+		for (routine : responseSegment.routines) {
+			val routineName = routine.routineClassNameGenerator.simpleName
+			if (alreadyCheckedEffects.containsKey(routineName)) {
+				val errorMessage = "Duplicate effect name: " + routineName;
+				error(errorMessage, routine, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
+				val duplicateNameEffect = alreadyCheckedEffects.get(routineName);
+				if (duplicateNameEffect instanceof ImplicitRoutine) {
 					error(errorMessage, duplicateNameEffect.containingResponse,
 						ResponseLanguagePackage.Literals.RESPONSE__NAME);
-				} else if (duplicateNameEffect instanceof ExplicitEffect) {
-					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_EFFECT__NAME);
+				} else if (duplicateNameEffect instanceof ExplicitRoutine) {
+					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
 				}
 			}
-			alreadyCheckedEffects.put(effectName, effect);
+			alreadyCheckedEffects.put(routineName, routine);
 		}
 	}
 
 	@Check
-	def checkCorrespondingElementSpecification(CorrespondingModelElementSpecification element) {
+	def checkCorrespondingElementSpecification(ModelElement element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.",
-				ResponseLanguagePackage.Literals.CORRESPONDING_MODEL_ELEMENT_SPECIFICATION__NAME);
+				MirBasePackage.Literals.MODEL_ELEMENT__NAME);
 		}
 	}
 
-	@Check
-	def checkEffects(Effect effect) {
-		if (effect.codeBlock == null && !effect.correspondingElements.filter(CorrespondingModelElementCreate).nullOrEmpty) {
-			warning("Created elements must be initialized and inserted into the target model in the execute block.",
-				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);
-		}
-	}
+//	@Check
+//	def checkEffects(Effect effect) {
+//		if (effect.impact.codeBlock == null && !effect.impact..filter(CorrespondingModelElementCreate).nullOrEmpty) {
+//			warning("Created elements must be initialized and inserted into the target model in the execute block.",
+//				ResponseLanguagePackage.Literals.EFFECT__CODE_BLOCK);
+//		}
+//	}
 	
 	@Check
-	def checkEffectInput(EffectInput effectInput) {
+	def checkEffectInput(RoutineInput effectInput) {
 		if (!effectInput.javaInputElements.empty) {
 			warning("Using plain Java elements is discouraged. Try to use model elements and make list inputs to single valued input of other effect that is called for each element.",
-				ResponseLanguagePackage.Literals.EFFECT_INPUT__JAVA_INPUT_ELEMENTS);
+				ResponseLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 		}
 	}
 

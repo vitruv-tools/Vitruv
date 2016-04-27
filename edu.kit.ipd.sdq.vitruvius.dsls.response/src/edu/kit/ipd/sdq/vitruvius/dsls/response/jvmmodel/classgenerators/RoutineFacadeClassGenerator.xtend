@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
 import java.util.List
 import org.eclipse.xtext.common.types.JvmOperation
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import org.eclipse.xtext.common.types.JvmVisibility
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
@@ -10,19 +9,20 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 
-class EffectsFacadeClassGenerator extends ClassGenerator {
-	private val List<ExplicitEffect> effects;
-	private val ClassNameGenerator effectFacadeNameGenerator;
+class RoutineFacadeClassGenerator extends ClassGenerator {
+	private val List<ExplicitRoutine> routines;
+	private val ClassNameGenerator routinesFacadeNameGenerator;
 	
 	new(ResponsesSegment responsesSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		this.effects = responsesSegment.effects;
-		this.effectFacadeNameGenerator = responsesSegment.effectsFacadeClassNameGenerator;
+		this.routines = responsesSegment.routines;
+		this.routinesFacadeNameGenerator = responsesSegment.routinesFacadeClassNameGenerator;
 	}
 	
 	public override generateClass() {
-		generateUnassociatedClass(effectFacadeNameGenerator.qualifiedName) [
+		generateUnassociatedClass(routinesFacadeNameGenerator.qualifiedName) [
 			superTypes += typeRef(AbstractEffectsFacade);
 			members += toConstructor() [
 				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
@@ -31,17 +31,17 @@ class EffectsFacadeClassGenerator extends ClassGenerator {
 				parameters += calledByParameter;
 				body = '''super(«responseExecutionStateParameter.name», «calledByParameter.name»);'''
 			]
-			members += effects.map[generateCallMethod];
+			members += routines.map[generateCallMethod];
 		]
 	}
 	
-	private def JvmOperation generateCallMethod(ExplicitEffect effect) {
-		val effectNameGenerator = effect.effectClassNameGenerator;
-		return effect.toMethod("call" + effect.name, typeRef(Void.TYPE)) [
+	private def JvmOperation generateCallMethod(ExplicitRoutine routine) {
+		val routineNameGenerator = routine.routineClassNameGenerator;
+		return routine.toMethod("call" + routine.name, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
-			parameters += generateMethodInputParameters(effect.input.modelInputElements, effect.input.javaInputElements);
+			parameters += generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«effectNameGenerator.qualifiedName» effect = new «effectNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
+				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
 				«FOR parameter : parameters»
 					effect.set«parameter.name.toFirstUpper»(«parameter.name»);
 				«ENDFOR»

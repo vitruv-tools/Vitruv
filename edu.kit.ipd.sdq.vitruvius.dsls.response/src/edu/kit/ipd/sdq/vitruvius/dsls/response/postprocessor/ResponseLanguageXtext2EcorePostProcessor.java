@@ -23,13 +23,13 @@ public class ResponseLanguageXtext2EcorePostProcessor implements IXtext2EcorePos
 		final EPackage ePackage = metamodel.getEPackage();
 		final EClass responsesSegmentEClass = getEClass(ePackage, "ResponsesSegment");
 		final EClass responseEClass = getEClass(ePackage, "Response");
-		final EClass effectEClass = getEClass(ePackage, "ExplicitEffect");
+		final EClass effectEClass = getEClass(ePackage, "ExplicitRoutine");
 		
 		// Add an opposite reference for the metamodel pair to the response
 		final EReference responsesSegmentResponsesReference = (EReference)responsesSegmentEClass.getEStructuralFeature("responses");
 		addResponsesSegmentEReference(responseEClass, responsesSegmentResponsesReference);
 		
-		final EReference responsesSegmentEffectsReference = (EReference)responsesSegmentEClass.getEStructuralFeature("effects");
+		final EReference responsesSegmentEffectsReference = (EReference)responsesSegmentEClass.getEStructuralFeature("routines");
 		addResponsesSegmentEReference(effectEClass, responsesSegmentEffectsReference);
 	}
 	

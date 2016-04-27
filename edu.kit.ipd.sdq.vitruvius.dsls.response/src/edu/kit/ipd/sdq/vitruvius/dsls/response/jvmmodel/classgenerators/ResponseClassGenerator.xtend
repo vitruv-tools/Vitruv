@@ -25,18 +25,18 @@ class ResponseClassGenerator extends ClassGenerator {
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
 	private final ClassNameGenerator responseClassNameGenerator;
-	private final ClassNameGenerator effectClassNameGenerator;
+	private final ClassNameGenerator routineClassNameGenerator;
 	
 	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (response?.trigger == null || response?.effect == null) {
+		if (response?.trigger == null || response?.routine == null) {
 			throw new IllegalArgumentException();
 		}
 		this.response = response;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.change = response.trigger.generateEChangeInstanceClass();
 		this.responseClassNameGenerator = response.responseClassNameGenerator;
-		this.effectClassNameGenerator = response.effect.effectClassNameGenerator;
+		this.routineClassNameGenerator = response.routine.routineClassNameGenerator;
 	}
 		
 	public override JvmGenericType generateClass() {
@@ -84,7 +84,7 @@ class ResponseClassGenerator extends ClassGenerator {
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
 				«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
-				«effectClassNameGenerator.qualifiedName» effect = new «effectClassNameGenerator.qualifiedName»(this.executionState, this);
+				«routineClassNameGenerator.qualifiedName» effect = new «routineClassNameGenerator.qualifiedName»(this.executionState, this);
 				effect.setChange(«typedChangeName»);
 				effect.applyEffect();'''
 		];

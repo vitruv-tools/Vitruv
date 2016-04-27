@@ -4,33 +4,31 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import org.eclipse.emf.ecore.EClass
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicConcreteModelElementChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObjectChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import org.eclipse.emf.ecore.EPackage
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ArbitraryModelElementChange
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.InvariantViolationEvent
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.response.environment.SimpleTextXBlockExpression
 import org.eclipse.xtext.xbase.XBlockExpression
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RetrieveModelElement
 
 final class ResponseLanguageHelper {
 	private new() {}
 	
 	public static def Response getContainingResponse(CodeBlock codeBlock) {
 		val effect = codeBlock.eContainer();
-		if (effect instanceof ImplicitEffect) {
+		if (effect instanceof Effect) {
 			return getContainingResponse(effect);
 		}
 		return null;
@@ -46,13 +44,13 @@ final class ResponseLanguageHelper {
 	
 	public static def Response getContainingResponse(CorrespondingObjectCodeBlock correspondenceSourceBlock) {
 		val correspondingModelElementSpecification = correspondenceSourceBlock.eContainer();
-		if (correspondingModelElementSpecification instanceof CorrespondingModelElementSpecification) {
+		if (correspondingModelElementSpecification instanceof RetrieveModelElement) {
 			return getContainingResponse(correspondingModelElementSpecification);
 		}
 		return null;
 	}
 	
-	public static def Response getContainingResponse(CorrespondingModelElementSpecification correspondingModelElementSpecification) {
+	public static def Response getContainingResponse(RetrieveModelElement correspondingModelElementSpecification) {
 		var EObject currentObject = correspondingModelElementSpecification;
 		while (!(currentObject instanceof Response) && currentObject != null) {
 			currentObject = currentObject.eContainer();
@@ -64,8 +62,16 @@ final class ResponseLanguageHelper {
 		}
 	}
 	
-	public static def Response getContainingResponse(ImplicitEffect effect) {
-		val response = effect.eContainer();
+	public static def Response getContainingResponse(Effect effect) {
+		val routine = effect.eContainer();
+		if (routine instanceof ImplicitRoutine) {
+			return getContainingResponse(routine);
+		}
+		return null;
+	}
+	
+	public static def Response getContainingResponse(ImplicitRoutine routine) {
+		val response = routine.eContainer();
 		if (response instanceof Response) {
 			return response;
 		}
@@ -80,12 +86,12 @@ final class ResponseLanguageHelper {
 		return null;
 	}
 	
-	public static def dispatch ResponsesSegment getResponsesSegment(ExplicitEffect effect) {
-		return effect.responsesSegment
+	public static def dispatch ResponsesSegment getResponsesSegment(ExplicitRoutine routine) {
+		return routine.responsesSegment
 	}
 	
-	public static def dispatch ResponsesSegment getResponsesSegment(ImplicitEffect effect) {
-		return effect.containingResponse.responsesSegment;
+	public static def dispatch ResponsesSegment getResponsesSegment(ImplicitRoutine routine) {
+		return routine.containingResponse.responsesSegment;
 	}
 	
 	public static def dispatch EClass getChangedModelElementClass(Trigger change) {
@@ -100,17 +106,17 @@ final class ResponseLanguageHelper {
 		change?.changedFeature?.element;
 	}
 	
-	public static def dispatch EPackage getSourceMetamodel(AtomicConcreteModelElementChange change) {
-		return change.changedModelElementClass?.EPackage;
-	}
-	
-	public static def dispatch EPackage getSourceMetamodel(ArbitraryModelElementChange change) {
-		change?.changedModel?.model.package;
-	}
-
-	public static def dispatch EPackage getSourceMetamodel(InvariantViolationEvent change) {
-		throw new UnsupportedOperationException();
-	}
+//	public static def dispatch EPackage getSourceMetamodel(AtomicConcreteModelElementChange change) {
+//		return change.changedModelElementClass?.EPackage;
+//	}
+//	
+//	public static def dispatch EPackage getSourceMetamodel(ArbitraryModelElementChange change) {
+//		change?.changedModel?.model.package;
+//	}
+//
+//	public static def dispatch EPackage getSourceMetamodel(InvariantViolationEvent change) {
+//		throw new UnsupportedOperationException();
+//	}
 	
 	public static def dispatch String getXBlockExpressionText(XExpression expression) '''
 		{

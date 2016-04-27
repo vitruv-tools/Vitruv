@@ -4,18 +4,18 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmFormalParameter
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitEffect
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
 
-class ImplicitEffectClassGenerator extends EffectClassGenerator {
+class ImplicitRoutineClassGenerator extends RoutineClassGenerator {
 	protected final Class<? extends EChange> change;
 	protected final Response containingResponse;
 	
-	public new(ImplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
-		super(effect, typesBuilderExtensionProvider);
-		this.containingResponse = effect.containingResponse;
+	public new(ImplicitRoutine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+		super(routine, typesBuilderExtensionProvider);
+		this.containingResponse = routine.containingResponse;
 		this.change = containingResponse.trigger.generateEChangeInstanceClass();
 	}
 		

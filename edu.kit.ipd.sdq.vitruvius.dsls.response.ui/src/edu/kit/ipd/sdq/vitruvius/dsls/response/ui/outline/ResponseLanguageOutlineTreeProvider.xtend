@@ -18,13 +18,14 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicRootObject
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MirBasePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementDelete
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementRetrieve
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Routine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreateCorrespondence
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.DeleteCorrespondenceElementReference
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RemoveCorrespondence
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RetrieveModelElement
 
 /**
  * Outline structure definition for a response file.
@@ -49,8 +50,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		for (response: responsesSegment.responses) {
 			createChildren(segmentNode, response);	
 		}
-		for (effect: responsesSegment.effects) {
-			createChildren(segmentNode, effect);	
+		for (routine : responsesSegment.routines) {
+			createChildren(segmentNode, routine);	
 		}
 	}
 	
@@ -80,10 +81,10 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			createChildren(triggerNode, response.trigger.precondition)
 		}
 		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
-			ResponseLanguagePackage.Literals.RESPONSE__EFFECT,
-			imageDispatcher.invoke(response.effect), "effect", response.effect == null);
-		if (response.effect != null) {
-			createChildren(effectsNode, response.effect);
+			ResponseLanguagePackage.Literals.RESPONSE__ROUTINE,
+			imageDispatcher.invoke(response.routine), "effect", response.routine == null);
+		if (response.routine != null) {
+			createChildren(effectsNode, response.routine);
 		}
 	}
 	
@@ -112,12 +113,31 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
+		for (element : routine.matching.retrievedElements) {
+			createEObjectNode(parentNode, element);	
+		}
+		
+		createChildren(parentNode, routine.effect);
+	}
+	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
-		for (element : effect.correspondingElements) {
+		for (element : effect.correspondenceCreation) {
+			createEObjectNode(parentNode, element);	
+		}
+		for (element : effect.correspondenceDeletion) {
 			createEObjectNode(parentNode, element);	
 		}
 		
 		createChildren(parentNode, effect.codeBlock);
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, CreateCorrespondence createCorrespondence) {
+		createEObjectNode(parentNode, createCorrespondence);
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, DeleteCorrespondenceElementReference deleteCorrespondence) {
+		createEObjectNode(parentNode, deleteCorrespondence);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CodeBlock codeBlock) {
@@ -132,8 +152,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "response: " + response.name;
 	}
 	
-	protected def Object _text(ExplicitEffect effect) {
-		return "effect: " + effect.name;
+	protected def Object _text(ExplicitRoutine routine) {
+		return "effect: " + routine.name;
 	}
 	
 	protected def Object _text(ResponsesSegment responsesSegment) {
@@ -161,27 +181,35 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(PreconditionCodeBlock preconditionBlock) {
-		return "Precondition Block"
+		return "precondition Block"
 	}
 	
 	protected def Object _text(CodeBlock codeBlock) {
-		return "Execution Block"
+		return "execution Block"
 	}
 	
-	protected def Object _text(CorrespondingModelElementCreate elementCreate) {
-		"Create element: " + elementCreate.elementText;
+//	protected def Object _text(CorrespondingModelElementCreate elementCreate) {
+//		"Create element: " + elementCreate.elementText;
+//	}
+	
+	protected def Object _text(RetrieveModelElement elementRetrieve) {
+		"retrieve element: " + elementRetrieve.elementText;
 	}
 	
-	protected def Object _text(CorrespondingModelElementRetrieve elementRetrieve) {
-		"Retrieve element: " + elementRetrieve.elementText;
+	protected def Object _text(CreateCorrespondence createCorrespondence) {
+		"new correspondence";
 	}
 	
-	protected def Object _text(CorrespondingModelElementDelete elementDelete) {
-		"Delete element: " + elementDelete.elementText;
+	protected def Object _text(RemoveCorrespondence removeCorrespondence) {
+		"remove correspondence";
 	}
 	
-	private def String getElementText(CorrespondingModelElementSpecification elementSpecification) {
-		return elementSpecification.name + " (" + elementSpecification.elementType?.element?.name + ")"
+//	protected def Object _text(CorrespondingModelElementDelete elementDelete) {
+//		"Delete element: " + elementDelete.elementText;
+//	}
+	
+	private def String getElementText(RetrieveModelElement retrieveElement) {
+		return retrieveElement.element.name + " (" + retrieveElement.element?.element?.name + ")"
 	}
 	
 	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {
@@ -196,7 +224,15 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(CorrespondingModelElementSpecification elementSpecification) {
+	protected def boolean _isLeaf(RetrieveModelElement element) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(CreateCorrespondence correspondenceCreate) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(RemoveCorrespondence element) {
 		return true;
 	}
 	

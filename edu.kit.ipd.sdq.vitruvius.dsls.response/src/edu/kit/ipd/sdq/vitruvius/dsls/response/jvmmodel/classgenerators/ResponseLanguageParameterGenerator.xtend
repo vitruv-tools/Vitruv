@@ -3,14 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementSpecification
 import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
@@ -19,6 +17,7 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -35,9 +34,9 @@ class ResponseLanguageParameterGenerator {
 		_typesBuilder = typesBuilder;
 	}
 	
-	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, CorrespondingModelElementSpecification elementSpecification) {
-		if (elementSpecification?.elementType?.element != null) {
-			return parameterContext.generateParameter(elementSpecification.name, elementSpecification.elementType.element.instanceClass);
+	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, ModelElement element) {
+		if (element?.element != null) {
+			return parameterContext.generateParameter(element.name, element.element.instanceClass);
 		}	
 		return null;
 	}

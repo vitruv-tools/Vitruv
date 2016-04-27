@@ -7,15 +7,15 @@ import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
-import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ImplicitEffectClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.MockClassGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExplicitEffectClassGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.EffectsFacadeClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExecutorClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ImplicitRoutineClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExplicitRoutineClassGenerator
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.RoutineFacadeClassGenerator
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -38,7 +38,7 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			return;
 		}
 		
-		val effectClass = new ImplicitEffectClassGenerator(response.effect, typesBuilderExtensionProvider).generateClass();
+		val effectClass = new ImplicitRoutineClassGenerator(response.routine, typesBuilderExtensionProvider).generateClass();
 		acceptor.accept(effectClass);
 		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
 		val mockType = new MockClassGenerator(response.trigger, typesBuilderExtensionProvider).generateClass();
@@ -48,12 +48,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
-	def dispatch void generate(ExplicitEffect effect, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void generate(ExplicitRoutine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		acceptor.accept(new ExplicitEffectClassGenerator(effect, typesBuilderExtensionProvider).generateClass());
+		acceptor.accept(new ExplicitRoutineClassGenerator(routine, typesBuilderExtensionProvider).generateClass());
 	}
 	
 	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
@@ -63,8 +63,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		updateBuilders();
 		
 		for (responsesSegment : file.responsesSegments) {
-			acceptor.accept(new EffectsFacadeClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());
-			for (effect : responsesSegment.effects) {
+			acceptor.accept(new RoutineFacadeClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());
+			for (effect : responsesSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
 			for (response : responsesSegment.responses) {

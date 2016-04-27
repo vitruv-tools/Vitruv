@@ -16,7 +16,7 @@ public class ResponseBuilder implements IResponseBuilder {
 	
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
-		this.response.effect = ResponseLanguageFactory.eINSTANCE.createImplicitEffect();
+		this.response.routine = ResponseLanguageFactory.eINSTANCE.createImplicitRoutine();
 		this.responsesSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
 		responsesSegment.responses += this.response;
 	}
@@ -30,7 +30,6 @@ public class ResponseBuilder implements IResponseBuilder {
 		val trigger = ResponseLanguageFactory.eINSTANCE.createArbitraryModelElementChange();
 		val metamodelImport = generateMetamodelImport(sourceMetamodel);
 		this.responsesSegment.fromMetamodel = generateMetamodelReference(metamodelImport);
-		trigger.changedModel = generateMetamodelReference(metamodelImport);
 		this.response.trigger = trigger;
 		return this;
 	}
@@ -44,7 +43,11 @@ public class ResponseBuilder implements IResponseBuilder {
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
 		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionCodeBlock();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
-		this.response.effect.codeBlock = executionBlock;
+		val matching = ResponseLanguageFactory.eINSTANCE.createMatching();
+		val effect = ResponseLanguageFactory.eINSTANCE.createEffect();
+		effect.codeBlock = executionBlock;
+		this.response.routine.effect = effect;
+		this.response.routine.matching = matching;
 		return this;
 	}
 	

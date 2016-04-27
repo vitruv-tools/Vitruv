@@ -16,121 +16,13 @@ ResponsesSegment:
 	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
 	'called' name=ValidID
 	(responses+=Response |
-		effects+=ExplicitEffect)*;
+		routines+=ExplicitRoutine)*;
 
 Response:
 	(documentation=ML_COMMENT)?
 	'response:' name=ValidID
 	trigger=Trigger
-	effect=ImplicitEffect;
-
-
-
-// ****** EFFECTS ******
-
-fragment Effect:
-	(correspondingElements+=(CorrespondingModelElementRetrieve |
-	CorrespondingModelElementDelete |
-	CorrespondingModelElementCreate))*
-	('execute:' codeBlock=ExecutionCodeBlock)?;
-
-ImplicitEffect:
-	Effect;
-
-ExplicitEffect:
-	'effect:' name=ValidID
-	input=EffectInput
-	Effect;
-	
-EffectInput:
-	{EffectInput}
-	('input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
-	('plain java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?;
-
-
-
-// ****** CORRESPONDENCE SPECIFICATION ******	
-
-fragment CorrespondingModelElementSpecification:
-	elementType=ModelElement 'as' name=ValidID 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock;
-
-CorrespondingModelElementCreate returns CorrespondingModelElementCreate:
-	{CorrespondingModelElementCreate}
-	'create element:' CorrespondingModelElementSpecification ('tag with' tag=TagCodeBlock)? (persistence=ModelPersistence)?;
-
-fragment CorrespondingModelElementRetrieveOrDelete:
-	CorrespondingModelElementSpecification ('tagged with' tag=TagCodeBlock)? ('with' precondition=PreconditionCodeBlock)?
-	(failSpecification=CorrespondenceFailSpecification)?;
-
-CorrespondingModelElementRetrieve returns CorrespondingModelElementRetrieve:
-	{CorrespondingModelElementRetrieve}
-	'retrieve element:' CorrespondingModelElementRetrieveOrDelete (persistence=ModelMove)?;
-
-CorrespondingModelElementDelete returns CorrespondingModelElementDelete:
-	{CorrespondingModelElementDelete}
-	'delete element:' CorrespondingModelElementRetrieveOrDelete;
-
-ModelPersistence returns ModelLocation:
-	(useRelativeToSource?='persist as root at changed model relative location:'
-	| useRelativeToProject?='persist as root at project-relative location:') modelPath=ModelPathCodeBlock;
-	
-ModelMove returns ModelLocation:
-	(useRelativeToSource?='move containing model relative to original location:'
-	| useRelativeToProject?='move containing model to project-relative location:') modelPath=ModelPathCodeBlock;
-
-
-
-// ****** CORRESPONDENCE FAIL ******
-
-CorrespondenceFailSpecification:
-	'on fail' (CorrespondenceFailException | CorrespondenceFailAction);
-
-CorrespondenceFailException:
-	{CorrespondenceFailException}
-	'throw exception';
-
-CorrespondenceFailAction:
-	(CorrespondenceFailDialog | CorrespondenceFailDoNothing /*| CorrespondenceFailCodeBlock */) (abortEffect?='and abort effect' | 'and continue effect');
-	
-CorrespondenceFailDoNothing:
-	{CorrespondenceFailDoNothing}
-	'do nothing';
-	
-CorrespondenceFailDialog:
-	('show default user dialog' {CorrespondenceFailDefaultDialog}
-	| 'show user dialog with message' {CorrespondenceFailCustomDialog} message=STRING);
-	
-/*CorrespondenceFailCodeBlock returns CorrespondenceFailCodeBlock:
-	CodeBlock;*/
-
-
-
-// ****** CODE BLOCKS ******
-
-TagCodeBlock returns TagCodeBlock:
-	{TagCodeBlock}
-	CodeBlock;
-
-PreconditionCodeBlock returns PreconditionCodeBlock:
-	{PreconditionCodeBlock}
-	CodeBlock;
-
-CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
-	{CorrespondingObjectCodeBlock}
-	CodeBlock;
-
-ModelPathCodeBlock returns ModelPathCodeBlock:
-	{ModelPathCodeBlock}
-	CodeBlock;
-
-ExecutionCodeBlock returns ExecutionCodeBlock:
-	{ExecutionCodeBlock}
-	CodeBlock;
-
-fragment CodeBlock:
-	code=XExpression;
-
-
+	routine=ImplicitRoutine;
 
 // ****** TRIGGER ******
 
@@ -170,5 +62,93 @@ AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 	{SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
-	'change in instance of' changedModel=MetamodelReference;
+	{ArbitraryModelElementChange} 'any change';
+
+
+
+// ****** EFFECTS ******
+
+
+fragment Routine:
+	matching=Matching
+	effect=Effect;
+
+ImplicitRoutine:
+	Routine;	
+
+Matching:
+	{Matching}
+	retrievedElements+=RetrieveModelElement*;
+
+Effect:
+	{Effect}
+	(correspondenceCreation += CreateCorrespondence | 
+		correspondenceDeletion += RemoveCorrespondence)*
+	('execute:' codeBlock=ExecutionCodeBlock)?;
+
+ExplicitRoutine:
+	'routine:' name=ValidID
+	input=RoutineInput
+	Routine;
 	
+RoutineInput:
+	{RoutineInput}
+	('input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
+	('plain java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?;
+
+
+
+// ****** CORRESPONDENCE SPECIFICATION ******	
+
+fragment Taggable:
+	tag=TagCodeBlock;
+
+RetrieveModelElement:
+	(required?='retrieve required element:' | optional?='retrieve optional element:' | 'retrieve element:') 
+	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+
+DeleteCorrespondenceElementReference:
+	(delete?="delete-element" | "keep-element") ExistingElementReference;
+
+CreateCorrespondenceElementReference returns ElementReference:
+	UseElementReference | NewElementReference;
+	
+fragment ExistingElementReference:
+	CodeBlock;	
+
+UseElementReference:
+	"existing-element" ExistingElementReference;
+
+NewElementReference:
+	"create-element" element=NamedModelElement;
+	
+CreateCorrespondence:
+	"create correspondence:" firstElement=CreateCorrespondenceElementReference "," secondElement=CreateCorrespondenceElementReference
+	('tag with' Taggable)?;
+	
+RemoveCorrespondence:
+	"remove correspondence:" firstElement=DeleteCorrespondenceElementReference "," secondElement=DeleteCorrespondenceElementReference;
+
+
+// ****** CODE BLOCKS ******
+
+TagCodeBlock returns TagCodeBlock:
+	{TagCodeBlock}
+	CodeBlock;
+
+PreconditionCodeBlock returns PreconditionCodeBlock:
+	{PreconditionCodeBlock}
+	CodeBlock;
+
+CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
+	{CorrespondingObjectCodeBlock}
+	CodeBlock;
+
+ExecutionCodeBlock returns ExecutionCodeBlock:
+	{ExecutionCodeBlock}
+	CodeBlock;
+
+fragment CodeBlock:
+	code=XExpression;
+

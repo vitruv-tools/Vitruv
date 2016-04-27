@@ -14,10 +14,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicMultiValue
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicSingleValuedFeatureChange
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingModelElementCreate
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.EffectInput
 import org.eclipse.emf.ecore.EcorePackage
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.NewElementReference
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RoutineInput
 
 class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
@@ -26,12 +26,12 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
-			if (context instanceof CorrespondingModelElementCreate
-				|| context.eContainer() instanceof CorrespondingModelElementCreate
+			if (context instanceof NewElementReference
+				|| context.eContainer() instanceof NewElementReference
 			) {
 				return createQualifiedEClassScopeWithoutAbstract(context.eResource);
 			} else if (reference.equals(MODEL_ELEMENT__ELEMENT) && 
-				(context.eContainer() instanceof EffectInput || context instanceof EffectInput)
+				(context.eContainer() instanceof RoutineInput || context instanceof RoutineInput)
 			) {
 				return createQualifiedEClassScopeWithSpecialInputTypes(context.eResource);
 			} else {

@@ -1,20 +1,20 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitEffect
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmFormalParameter
-import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
+import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 
-class ExplicitEffectClassGenerator extends EffectClassGenerator {
+class ExplicitRoutineClassGenerator extends RoutineClassGenerator {
 	private final List<ModelElement> modelInputElements;
 	private final List<NamedJavaElement> javaInputElements;
 	
-	public new(ExplicitEffect effect, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
-		super(effect, typesBuilderExtensionProvider);
-		modelInputElements = effect.input.modelInputElements;
-		javaInputElements = effect.input.javaInputElements;
+	public new(ExplicitRoutine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+		super(routine, typesBuilderExtensionProvider);
+		modelInputElements = routine.input.modelInputElements;
+		javaInputElements = routine.input.javaInputElements;
 	}
 		
 	protected override Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
