@@ -46,7 +46,7 @@ class DeleteRootTestResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     DeleteRootEObject<Root> typedChange = (DeleteRootEObject<Root>)change;
-    mir.effects.simpleChangesTests.DeleteRootTestEffect effect = new mir.effects.simpleChangesTests.DeleteRootTestEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.DeleteRootTestEffect effect = new mir.routines.simpleChangesTests.DeleteRootTestEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

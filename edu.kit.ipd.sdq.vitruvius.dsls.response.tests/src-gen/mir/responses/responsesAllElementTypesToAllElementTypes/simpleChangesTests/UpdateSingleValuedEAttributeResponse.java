@@ -35,7 +35,7 @@ class UpdateSingleValuedEAttributeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<Integer> typedChange = (UpdateSingleValuedEAttribute<Integer>)change;
-    mir.effects.simpleChangesTests.UpdateSingleValuedEAttributeEffect effect = new mir.effects.simpleChangesTests.UpdateSingleValuedEAttributeEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.UpdateSingleValuedEAttributeEffect effect = new mir.routines.simpleChangesTests.UpdateSingleValuedEAttributeEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

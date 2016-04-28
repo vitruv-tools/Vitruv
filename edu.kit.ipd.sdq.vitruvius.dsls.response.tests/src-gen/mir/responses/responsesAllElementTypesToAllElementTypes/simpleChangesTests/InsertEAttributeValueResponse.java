@@ -35,7 +35,7 @@ class InsertEAttributeValueResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEAttributeValue<Integer> typedChange = (InsertEAttributeValue<Integer>)change;
-    mir.effects.simpleChangesTests.InsertEAttributeValueEffect effect = new mir.effects.simpleChangesTests.InsertEAttributeValueEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.InsertEAttributeValueEffect effect = new mir.routines.simpleChangesTests.InsertEAttributeValueEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

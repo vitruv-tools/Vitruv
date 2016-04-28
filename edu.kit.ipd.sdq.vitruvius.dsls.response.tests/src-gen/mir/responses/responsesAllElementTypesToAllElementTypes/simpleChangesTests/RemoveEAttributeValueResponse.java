@@ -35,7 +35,7 @@ class RemoveEAttributeValueResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEAttributeValue<Integer> typedChange = (RemoveEAttributeValue<Integer>)change;
-    mir.effects.simpleChangesTests.RemoveEAttributeValueEffect effect = new mir.effects.simpleChangesTests.RemoveEAttributeValueEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.RemoveEAttributeValueEffect effect = new mir.routines.simpleChangesTests.RemoveEAttributeValueEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

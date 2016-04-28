@@ -32,10 +32,6 @@ public class NonRootContainerMock implements NonRoot {
     containedObject.setId(arg0);
   }
   
-  public EObject eContainer() {
-    return containerObject;
-  }
-  
   public EStructuralFeature eContainingFeature() {
     return containedObject.eContainingFeature();
   }
@@ -44,24 +40,12 @@ public class NonRootContainerMock implements NonRoot {
     return containedObject.eContainmentFeature();
   }
   
-  public EClass eClass() {
-    return containedObject.eClass();
+  public EObject eContainer() {
+    return containerObject;
   }
   
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
-  }
-  
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
   }
   
   public Object eGet(final EStructuralFeature arg0) {
@@ -72,12 +56,24 @@ public class NonRootContainerMock implements NonRoot {
     return containedObject.eGet(arg0, arg1);
   }
   
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
   public void eUnset(final EStructuralFeature arg0) {
     containedObject.eUnset(arg0);
   }
   
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
   }
   
   public EList eCrossReferences() {
@@ -90,6 +86,10 @@ public class NonRootContainerMock implements NonRoot {
   
   public TreeIterator eAllContents() {
     return containedObject.eAllContents();
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
   }
   
   public EList eAdapters() {

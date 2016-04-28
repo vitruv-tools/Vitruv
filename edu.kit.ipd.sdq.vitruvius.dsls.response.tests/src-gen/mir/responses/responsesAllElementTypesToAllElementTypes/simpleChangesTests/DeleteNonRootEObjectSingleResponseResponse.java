@@ -40,7 +40,7 @@ class DeleteNonRootEObjectSingleResponseResponse extends AbstractResponseRealiza
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect effect = new mir.effects.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect effect = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

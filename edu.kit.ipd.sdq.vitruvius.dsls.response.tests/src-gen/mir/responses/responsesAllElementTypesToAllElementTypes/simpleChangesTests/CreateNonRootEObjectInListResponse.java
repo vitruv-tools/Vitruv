@@ -36,7 +36,7 @@ class CreateNonRootEObjectInListResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<NonRoot> typedChange = (CreateNonRootEObjectInList<NonRoot>)change;
-    mir.effects.simpleChangesTests.CreateNonRootEObjectInListEffect effect = new mir.effects.simpleChangesTests.CreateNonRootEObjectInListEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.CreateNonRootEObjectInListEffect effect = new mir.routines.simpleChangesTests.CreateNonRootEObjectInListEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

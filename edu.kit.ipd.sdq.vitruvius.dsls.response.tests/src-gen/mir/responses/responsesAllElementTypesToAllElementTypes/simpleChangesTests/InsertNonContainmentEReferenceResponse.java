@@ -36,7 +36,7 @@ class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization
   
   public void executeResponse(final EChange change) {
     InsertNonContainmentEReference<NonRoot> typedChange = (InsertNonContainmentEReference<NonRoot>)change;
-    mir.effects.simpleChangesTests.InsertNonContainmentEReferenceEffect effect = new mir.effects.simpleChangesTests.InsertNonContainmentEReferenceEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

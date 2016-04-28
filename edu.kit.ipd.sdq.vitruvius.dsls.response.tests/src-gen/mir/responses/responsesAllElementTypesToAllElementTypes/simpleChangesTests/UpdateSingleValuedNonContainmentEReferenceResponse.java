@@ -40,7 +40,7 @@ class UpdateSingleValuedNonContainmentEReferenceResponse extends AbstractRespons
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect effect = new mir.effects.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

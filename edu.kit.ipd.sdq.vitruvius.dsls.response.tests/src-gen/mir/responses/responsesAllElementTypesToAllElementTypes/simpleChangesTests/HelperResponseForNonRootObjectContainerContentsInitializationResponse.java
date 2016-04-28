@@ -36,7 +36,7 @@ class HelperResponseForNonRootObjectContainerContentsInitializationResponse exte
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<NonRoot> typedChange = (CreateNonRootEObjectInList<NonRoot>)change;
-    mir.effects.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect effect = new mir.effects.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

@@ -36,7 +36,7 @@ class CreateNonRootEObjectSingleResponseResponse extends AbstractResponseRealiza
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectSingle<NonRoot> typedChange = (CreateNonRootEObjectSingle<NonRoot>)change;
-    mir.effects.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect effect = new mir.effects.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect(this.executionState, this);
+    mir.routines.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect effect = new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }
