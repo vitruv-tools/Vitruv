@@ -40,7 +40,7 @@ class RemovedSeffResponse extends AbstractResponseRealization {
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.seff.ServiceEffectSpecificationContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemovedSeffEffect effect = new mir.effects.pcm2java.RemovedSeffEffect(this.executionState, this);
+    mir.routines.pcm2java.RemovedSeffEffect effect = new mir.routines.pcm2java.RemovedSeffEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

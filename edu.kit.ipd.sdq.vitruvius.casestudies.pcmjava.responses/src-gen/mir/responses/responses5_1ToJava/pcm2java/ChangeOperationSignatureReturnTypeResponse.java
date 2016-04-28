@@ -40,7 +40,7 @@ class ChangeOperationSignatureReturnTypeResponse extends AbstractResponseRealiza
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.ChangeOperationSignatureReturnTypeEffect effect = new mir.effects.pcm2java.ChangeOperationSignatureReturnTypeEffect(this.executionState, this);
+    mir.routines.pcm2java.ChangeOperationSignatureReturnTypeEffect effect = new mir.routines.pcm2java.ChangeOperationSignatureReturnTypeEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

@@ -35,7 +35,7 @@ class RenamedRepositoryPackagesResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.effects.pcm2java.RenamedRepositoryPackagesEffect effect = new mir.effects.pcm2java.RenamedRepositoryPackagesEffect(this.executionState, this);
+    mir.routines.pcm2java.RenamedRepositoryPackagesEffect effect = new mir.routines.pcm2java.RenamedRepositoryPackagesEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

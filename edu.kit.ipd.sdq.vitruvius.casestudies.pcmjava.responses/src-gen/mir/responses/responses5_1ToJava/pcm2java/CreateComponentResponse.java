@@ -36,7 +36,7 @@ class CreateComponentResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<RepositoryComponent> typedChange = (CreateNonRootEObjectInList<RepositoryComponent>)change;
-    mir.effects.pcm2java.CreateComponentEffect effect = new mir.effects.pcm2java.CreateComponentEffect(this.executionState, this);
+    mir.routines.pcm2java.CreateComponentEffect effect = new mir.routines.pcm2java.CreateComponentEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

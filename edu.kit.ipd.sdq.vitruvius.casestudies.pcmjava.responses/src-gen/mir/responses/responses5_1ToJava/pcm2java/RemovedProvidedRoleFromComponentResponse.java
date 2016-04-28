@@ -40,7 +40,7 @@ class RemovedProvidedRoleFromComponentResponse extends AbstractResponseRealizati
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ProvidedRoleContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemovedProvidedRoleFromComponentEffect effect = new mir.effects.pcm2java.RemovedProvidedRoleFromComponentEffect(this.executionState, this);
+    mir.routines.pcm2java.RemovedProvidedRoleFromComponentEffect effect = new mir.routines.pcm2java.RemovedProvidedRoleFromComponentEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

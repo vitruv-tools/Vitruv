@@ -40,7 +40,7 @@ class RemovedParameterResponse extends AbstractResponseRealization {
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ParameterContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemovedParameterEffect effect = new mir.effects.pcm2java.RemovedParameterEffect(this.executionState, this);
+    mir.routines.pcm2java.RemovedParameterEffect effect = new mir.routines.pcm2java.RemovedParameterEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

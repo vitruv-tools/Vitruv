@@ -35,7 +35,7 @@ class RenameOperationSignatureResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.effects.pcm2java.RenameOperationSignatureEffect effect = new mir.effects.pcm2java.RenameOperationSignatureEffect(this.executionState, this);
+    mir.routines.pcm2java.RenameOperationSignatureEffect effect = new mir.routines.pcm2java.RenameOperationSignatureEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

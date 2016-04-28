@@ -34,7 +34,7 @@ class CreatedSystemResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateRootEObject<org.palladiosimulator.pcm.system.System> typedChange = (CreateRootEObject<org.palladiosimulator.pcm.system.System>)change;
-    mir.effects.pcm2java.CreatedSystemEffect effect = new mir.effects.pcm2java.CreatedSystemEffect(this.executionState, this);
+    mir.routines.pcm2java.CreatedSystemEffect effect = new mir.routines.pcm2java.CreatedSystemEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

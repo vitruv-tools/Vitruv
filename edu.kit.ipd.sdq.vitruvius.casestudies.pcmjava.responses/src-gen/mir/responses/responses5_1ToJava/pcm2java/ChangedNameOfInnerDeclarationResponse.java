@@ -35,7 +35,7 @@ class ChangedNameOfInnerDeclarationResponse extends AbstractResponseRealization 
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.effects.pcm2java.ChangedNameOfInnerDeclarationEffect effect = new mir.effects.pcm2java.ChangedNameOfInnerDeclarationEffect(this.executionState, this);
+    mir.routines.pcm2java.ChangedNameOfInnerDeclarationEffect effect = new mir.routines.pcm2java.ChangedNameOfInnerDeclarationEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

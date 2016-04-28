@@ -36,7 +36,7 @@ class AddOperationSignatureResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<OperationSignature> typedChange = (CreateNonRootEObjectInList<OperationSignature>)change;
-    mir.effects.pcm2java.AddOperationSignatureEffect effect = new mir.effects.pcm2java.AddOperationSignatureEffect(this.executionState, this);
+    mir.routines.pcm2java.AddOperationSignatureEffect effect = new mir.routines.pcm2java.AddOperationSignatureEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

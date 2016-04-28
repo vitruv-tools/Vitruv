@@ -46,43 +46,48 @@ called pcm2java
 
 response: CreatePackagesForRepository
 trigger: insert root pcm.Repository
+effect:
 execute: {
 	val repository = change.newValue;
 	callCreateJavaPackage(repository, null, repository.entityName, "repository_root");
 	callCreateRepositorySubPackages(repository);
 }
 
-effect: CreateRepositorySubPackages
+routine: CreateRepositorySubPackages
 input: pcm.Repository as repository
-retrieve element: java.Package as repositoryPackage corresponding to repository
-execute: {
-	callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
-	callCreateJavaPackage(repository, repositoryPackage, "contracts", "contracts");
-}
+match:
+	retrieve required element: java.Package as repositoryPackage corresponding to repository
+effect:
+	execute: {
+		callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
+		callCreateJavaPackage(repository, repositoryPackage, "contracts", "contracts");
+	}
 
 response: RenamedRepositoryPackages
 trigger: replace value pcm.Repository[entityName]
-retrieve element: java.Package as rootPackage corresponding to change.newAffectedEObject
-	tagged with "repository_root"
-	move containing model to project-relative location: buildJavaFilePath(rootPackage)
-execute: {
-	val repository = change.newAffectedEObject as Repository;
-	rootPackage.name = change.newValue;
-	callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
-	callRenameJavaPackage(repository, rootPackage, "datatypes", "datatypes");	
-	for (component : repository.components__Repository.filter(BasicComponent)) {
-		callRenameComponentPackageAndClass(component);
+match:
+	retrieve required element: java.Package as rootPackage corresponding to change.newAffectedEObject
+		tagged with "repository_root"
+effect: 
+	execute: {
+		val repository = change.newAffectedEObject as Repository;
+		rootPackage.name = change.newValue;
+		callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
+		callRenameJavaPackage(repository, rootPackage, "datatypes", "datatypes");	
+		for (component : repository.components__Repository.filter(BasicComponent)) {
+			callRenameComponentPackageAndClass(component);
+		}
+		for (interface : repository.interfaces__Repository.filter(OperationInterface)) {
+			callRenameInterface(interface);
+		}
+		for (dataType : repository.dataTypes__Repository.filter(CompositeDataType)) {
+			callRenameCompositeDataType(dataType);
+		}
+		for (dataType : repository.dataTypes__Repository.filter(CollectionDataType)) {
+			callRenameCollectionDataType(dataType);
+		}
+		persistProjectRelative(change.newAffectedEObject, rootPackage, buildJavaFilePath(rootPackage));
 	}
-	for (interface : repository.interfaces__Repository.filter(OperationInterface)) {
-		callRenameInterface(interface);
-	}
-	for (dataType : repository.dataTypes__Repository.filter(CompositeDataType)) {
-		callRenameCompositeDataType(dataType);
-	}
-	for (dataType : repository.dataTypes__Repository.filter(CollectionDataType)) {
-		callRenameCollectionDataType(dataType);
-	}
-}
 
 
 
@@ -91,93 +96,116 @@ execute: {
 
 response: CreatedSystem
 trigger: insert root pcm.System
-execute: {
+effect: execute: {
 	val system = change.newValue;
 	callCreateJavaPackage(system, null, system.entityName, "root_system");
 	callCreateImplementationForSystem(system);
 }
 
-effect: CreateImplementationForSystem
+routine: CreateImplementationForSystem
 input: pcm.System as system
-retrieve element: java.Package as systemPackage corresponding to system
-execute: callCreateJavaClass(system, systemPackage, system.entityName + "Impl")
+match:
+	retrieve required element: java.Package as systemPackage corresponding to system
+effect: 
+	execute: callCreateJavaClass(system, systemPackage, system.entityName + "Impl")
 
 response: ChangedSystemName
 trigger: replace value pcm.System[entityName]
-retrieve element: java.Package as systemPackage corresponding to change.newAffectedEObject
-execute: {
-	val system = change.newAffectedEObject as org.palladiosimulator.pcm.system.System;
-	callRenameJavaPackage(system, null, system.entityName, null);
-	callRenameJavaClassifier(system, systemPackage, system.entityName + "Impl");
-}
+match:
+	retrieve required element: java.Package as systemPackage corresponding to change.newAffectedEObject
+effect: 
+	execute: {
+		val system = change.newAffectedEObject as org.palladiosimulator.pcm.system.System;
+		callRenameJavaPackage(system, null, system.entityName, null);
+		callRenameJavaClassifier(system, systemPackage, system.entityName + "Impl");
+	}
 
 response: AddedAssemblyContextToComposedStructure
 trigger: insert in list pcm.ComposedStructure[assemblyContexts__ComposedStructure]
-retrieve element: java.Class as compositeComponentJavaClass corresponding to change.newAffectedEObject
-execute: callAddAssemblyContextToComposedStructure(compositeComponentJavaClass, change.newValue)
+match:
+	retrieve required element: java.Class as compositeComponentJavaClass corresponding to change.newAffectedEObject
+effect: 
+	execute: callAddAssemblyContextToComposedStructure(compositeComponentJavaClass, change.newValue)
 
-effect: AddAssemblyContextToComposedStructure
+routine: AddAssemblyContextToComposedStructure
 input: java.Class as compositeComponentClass, pcm.AssemblyContext as assemblyContext
-retrieve element: java.Class as encapsulatedComponentJavaClass corresponding to assemblyContext.encapsulatedComponent__AssemblyContext
-create element: java.Field as assemblyContextField corresponding to assemblyContext
-create element: java.NewConstructorCall as newConstructorCall corresponding to assemblyContext
-create element: java.ClassifierImport as contextClassImport corresponding to assemblyContext
-create element: java.Constructor as constructor corresponding to assemblyContext
-execute: {
-	val TypeReference typeRef = createNamespaceClassifierReference(encapsulatedComponentJavaClass);
-	createPrivateField(assemblyContextField, typeRef, assemblyContext.entityName);
-	compositeComponentClass.members += assemblyContextField;
-	addConstructorToClass(constructor, compositeComponentClass)
-	addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentClass, encapsulatedComponentJavaClass)
-	createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
-}
+match:
+	retrieve required element: java.Class as encapsulatedComponentJavaClass corresponding to assemblyContext.encapsulatedComponent__AssemblyContext
+effect: 
+	create element: java.Field as assemblyContextField
+	create element: java.NewConstructorCall as newConstructorCall
+	create element: java.ClassifierImport as contextClassImport
+	create element: java.Constructor as constructor
+	add correspondence: assemblyContextField, assemblyContext
+	add correspondence: newConstructorCall, assemblyContext
+	add correspondence: contextClassImport, assemblyContext
+	add correspondence: constructor, assemblyContext
+	execute: {
+		val TypeReference typeRef = createNamespaceClassifierReference(encapsulatedComponentJavaClass);
+		createPrivateField(assemblyContextField, typeRef, assemblyContext.entityName);
+		compositeComponentClass.members += assemblyContextField;
+		addConstructorToClass(constructor, compositeComponentClass)
+		addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentClass, encapsulatedComponentJavaClass)
+		createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
+	}
 
 // #####################################################
 // ################ COMPONENT RESPONSES ################
 
 response: CreateComponent
 trigger: insert in list pcm.Repository[components__Repository]
-retrieve element: java.Package as repositoryPackage corresponding to change.newValue.repository__RepositoryComponent
-	with change.newValue.repository__RepositoryComponent.entityName.equals(repositoryPackage.name)
-execute: {
-	val component = change.newValue;
-	callCreateJavaPackage(component, repositoryPackage, component.entityName, null);
-	callCreateImplementationForComponent(component);
-}
+match:
+	retrieve required element: java.Package as repositoryPackage corresponding to change.newValue.repository__RepositoryComponent
+		tagged with "repository_root"
+effect: 
+	execute: {
+		val component = change.newValue;
+		callCreateJavaPackage(component, repositoryPackage, component.entityName, null);
+		callCreateImplementationForComponent(component);
+	}
 
-effect: CreateImplementationForComponent
+routine: CreateImplementationForComponent
 input: pcm.RepositoryComponent as component
-retrieve element: java.Package as componentPackage corresponding to component
-execute: callCreateJavaClass(component, componentPackage, component.entityName + "Impl")
+match:
+	retrieve required element: java.Package as componentPackage corresponding to component
+effect: 
+	execute: callCreateJavaClass(component, componentPackage, component.entityName + "Impl")
 
 response: RenameComponent
 trigger: replace value pcm.RepositoryComponent[entityName]
-execute: {
-	val component = change.newAffectedEObject as RepositoryComponent;
-	callRenameComponentPackageAndClass(component);
-}
+effect: 
+	execute: {
+		val component = change.newAffectedEObject as RepositoryComponent;
+		callRenameComponentPackageAndClass(component);
+	}
 
-effect: RenameComponentPackageAndClass
+routine: RenameComponentPackageAndClass
 input: pcm.RepositoryComponent as component
-retrieve element: java.Package as repositoryPackage corresponding to component.repository__RepositoryComponent
-	with repositoryPackage.name.equals(component.repository__RepositoryComponent.entityName)
-execute: {
-	callRenameJavaPackage(component, repositoryPackage, component.entityName, null);
-	callRenameComponentClass(component);
-}
+match:
+	retrieve required element: java.Package as repositoryPackage corresponding to component.repository__RepositoryComponent
+		with repositoryPackage.name.equals(component.repository__RepositoryComponent.entityName)
+effect: 
+	execute: {
+		callRenameJavaPackage(component, repositoryPackage, component.entityName, null);
+		callRenameComponentClass(component);
+	}
 
-effect: RenameComponentClass
+routine: RenameComponentClass
 input: pcm.RepositoryComponent as component
-retrieve element: java.Package as componentPackage corresponding to component
-execute: callRenameJavaClassifier(component, componentPackage, component.entityName + "Impl")
+match:
+	retrieve required element: java.Package as componentPackage corresponding to component
+effect: 
+	execute: callRenameJavaClassifier(component, componentPackage, component.entityName + "Impl")
 
 response: DeleteComponentClass
 trigger: remove from list pcm.Repository[components__Repository]
-execute: callDeleteJavaClassifier(change.oldValue)
+effect: 
+	execute: callDeleteJavaClassifier(change.oldValue)
 
 response: DeletePackageForBasicComponent
 trigger: remove from list pcm.Repository[components__Repository]
-execute: callDeleteJavaPackage(change.oldValue, change.oldValue.entityName, "")
+effect: 
+	execute: callDeleteJavaPackage(change.oldValue, change.oldValue.entityName, "")
 
 
 // #####################################################
@@ -185,22 +213,27 @@ execute: callDeleteJavaPackage(change.oldValue, change.oldValue.entityName, "")
 
 response: CreateInterface
 trigger: insert in list pcm.Repository[interfaces__Repository]
-retrieve element: java.Package as contractsPackage corresponding to change.newAffectedEObject
-	with contractsPackage.name == "contracts"
-execute: {
-	val interf = change.newValue;
-	callCreateJavaInterface(interf, contractsPackage, interf.entityName);
-}
+match:
+	retrieve required element: java.Package as contractsPackage corresponding to change.newAffectedEObject
+		with contractsPackage.name == "contracts"
+effect: 
+	execute: {
+		val interf = change.newValue;
+		callCreateJavaInterface(interf, contractsPackage, interf.entityName);
+	}
 
 response: RenamedInterface
 trigger: replace value pcm.Interface[entityName]
-execute: callRenameInterface(change.newAffectedEObject as OperationInterface)
+effect: 
+	execute: callRenameInterface(change.newAffectedEObject as OperationInterface)
 
-effect: RenameInterface
+routine: RenameInterface
 input: pcm.OperationInterface as interf
-retrieve element: java.Package as contractsPackage corresponding to interf.repository__Interface
-	with contractsPackage.name == "contracts"
-execute: callRenameJavaClassifier(interf, contractsPackage, interf.entityName)
+match:
+	retrieve required element: java.Package as contractsPackage corresponding to interf.repository__Interface
+		with contractsPackage.name == "contracts"
+effect: 
+	execute: callRenameJavaClassifier(interf, contractsPackage, interf.entityName)
 
 
 // ######################################################
@@ -208,243 +241,294 @@ execute: callRenameJavaClassifier(interf, contractsPackage, interf.entityName)
 
 response: CreatedCompositeDataType
 trigger: insert in list pcm.Repository[dataTypes__Repository]
-precondition: change.newValue instanceof CompositeDataType
-retrieve element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
-execute: {
-	val compositeDataType = change.newValue as CompositeDataType;
-	callCreateJavaClass(compositeDataType, datatypesPackage, compositeDataType.entityName);
-}
+	check: change.newValue instanceof CompositeDataType
+match:
+	retrieve required element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
+effect: 
+	execute: {
+		val compositeDataType = change.newValue as CompositeDataType;
+		callCreateJavaClass(compositeDataType, datatypesPackage, compositeDataType.entityName);
+	}
 
 response: RenamedCompositeDataType
 trigger: replace value pcm.CompositeDataType[entityName]
-execute: callRenameCompositeDataType(change.newAffectedEObject as CompositeDataType)
+effect: 
+	execute: callRenameCompositeDataType(change.newAffectedEObject as CompositeDataType)
 
-effect: RenameCompositeDataType
+routine: RenameCompositeDataType
 input: pcm.CompositeDataType as compositeDataType
-retrieve element: java.Package as datatypesPackage corresponding to compositeDataType.repository__DataType with datatypesPackage.name == "datatypes"
-execute: callRenameJavaClassifier(compositeDataType, datatypesPackage, compositeDataType.entityName)
+match:
+	retrieve required element: java.Package as datatypesPackage corresponding to compositeDataType.repository__DataType with datatypesPackage.name == "datatypes"
+effect: 
+	execute: callRenameJavaClassifier(compositeDataType, datatypesPackage, compositeDataType.entityName)
 
 response: RemovedCompositeDataType
 trigger: remove from list pcm.Repository[dataTypes__Repository]
-precondition: change.oldValue instanceof CompositeDataType
-execute: callDeleteJavaClassifier(change.oldValue as CompositeDataType)
+	check: change.oldValue instanceof CompositeDataType
+effect: 
+	execute: callDeleteJavaClassifier(change.oldValue as CompositeDataType)
 
 response: CreatedCollectionDataType
 trigger: insert in list pcm.Repository[dataTypes__Repository]
-precondition: change.newValue instanceof CollectionDataType
-retrieve element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType
-	on fail do nothing and continue effect
-retrieve element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
-execute: {
-	// create correct (and in case of primitive types wrapped) type reference for the inner type
-	val dataType = change.newValue as CollectionDataType;
-	val innerTypeRef = createTypeReference(dataType.innerType_CollectionDataType, innerTypeClass);
-	var innerTypeClassOrWrapper = innerTypeRef;
-	if (innerTypeRef instanceof PrimitiveType) {
-		innerTypeClassOrWrapper = getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
-	}
+	check: change.newValue instanceof CollectionDataType
+match:
+	retrieve optional element: java.Class as innerTypeClass corresponding to (change.newValue as CollectionDataType).innerType_CollectionDataType
+	retrieve required element: java.Package as datatypesPackage corresponding to change.newAffectedEObject with datatypesPackage.name == "datatypes"
+effect:
+	execute: {
+		// create correct (and in case of primitive types wrapped) type reference for the inner type
+		val dataType = change.newValue as CollectionDataType;
+		val innerTypeRef = createTypeReference(dataType.innerType_CollectionDataType, innerTypeClass);
+		var innerTypeClassOrWrapper = innerTypeRef;
+		if (innerTypeRef instanceof PrimitiveType) {
+			innerTypeClassOrWrapper = getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
+		}
+		
+		// Let user select the class to map the collection type to
+		var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
+		collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
+		val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
+		for (collectionDataType : collectionDataTypes) {
+			collectionDataTypeNames.add(collectionDataType.name)
+		}
+		val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
+		val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
+			collectionDataTypeNames)
+		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
 	
-	// Let user select the class to map the collection type to
-	var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
-	collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
-	val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
-	for (collectionDataType : collectionDataTypes) {
-		collectionDataTypeNames.add(collectionDataType.name)
+		callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
+		callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
 	}
-	val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
-	val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
-		collectionDataTypeNames)
-	val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
-	
-	callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
-	callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
-}
 
-effect: AddSuperTypeToDataType
+routine: AddSuperTypeToDataType
 input: pcm.DataType as dataType, java.TypeReference as innerTypeReference, String as superTypeQualifiedName
-retrieve element: java.Class as dataTypeImplementation corresponding to dataType
-retrieve element: java.CompilationUnit as dataTypeImplementationCU corresponding to dataType
-create element: java.NamespaceClassifierReference as namespaceClassifier corresponding to dataType
-execute: {
-	val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
-	dataTypeImplementationCU.imports += collectionTypeClassImport;
-	createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
-	val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
-	qualifiedTypeArgument.typeReference = innerTypeReference;
-	namespaceClassifier.classifierReferences.get(0).typeArguments += qualifiedTypeArgument;
-	dataTypeImplementation.extends = namespaceClassifier;
-}
+match:
+	retrieve required element: java.Class as dataTypeImplementation corresponding to dataType
+	retrieve required element: java.CompilationUnit as dataTypeImplementationCU corresponding to dataType
+effect: 
+	create element: java.NamespaceClassifierReference as namespaceClassifier
+	add correspondence: namespaceClassifier, dataType
+	execute: {
+		val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
+		dataTypeImplementationCU.imports += collectionTypeClassImport;
+		createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
+		val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
+		qualifiedTypeArgument.typeReference = innerTypeReference;
+		namespaceClassifier.classifierReferences.get(0).typeArguments += qualifiedTypeArgument;
+		dataTypeImplementation.extends = namespaceClassifier;
+	}
 
 response: RenamedCollectionDataType
 trigger: replace value pcm.CollectionDataType[entityName]
-execute: callRenameCollectionDataType(change.newAffectedEObject as CollectionDataType)
+effect: 
+	execute: callRenameCollectionDataType(change.newAffectedEObject as CollectionDataType)
 
-effect: RenameCollectionDataType
+routine: RenameCollectionDataType
 input: pcm.CollectionDataType as collectionDataType
-retrieve element: java.Package as datatypesPackage corresponding to collectionDataType.repository__DataType with datatypesPackage.name == "datatypes"
-execute: callRenameJavaClassifier(collectionDataType, datatypesPackage, collectionDataType.entityName)
+match:
+	retrieve required element: java.Package as datatypesPackage corresponding to collectionDataType.repository__DataType with datatypesPackage.name == "datatypes"
+effect: 
+	execute: callRenameJavaClassifier(collectionDataType, datatypesPackage, collectionDataType.entityName)
 
 response: RemovedCollectionDataType
 trigger: remove from list pcm.Repository[dataTypes__Repository]
-precondition: change.oldValue instanceof CollectionDataType
-execute: callDeleteJavaClassifier(change.oldValue as CollectionDataType)
+	check: change.oldValue instanceof CollectionDataType
+effect: 
+	execute: callDeleteJavaClassifier(change.oldValue as CollectionDataType)
 
 
 // ################ DATA TYPES - INNER DECLARATION RESPONSES ################
 
 response: AddedInnerDeclarationToCompositeDataType
 trigger: insert in list pcm.CompositeDataType[innerDeclaration_CompositeDataType]
-retrieve element: java.Class as nonPrimitiveInnerDataTypeClass corresponding to change.newValue.datatype_InnerDeclaration
-	on fail do nothing and continue effect
-execute: {
-	val innerDataTypeReference = createTypeReference(change.newValue.datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
-	val compositeDataType = change.newAffectedEObject as CompositeDataType;
-	val innerDeclaration = change.newValue;
-	callAddInnerDeclarationToCompositeDataType(compositeDataType, innerDeclaration, innerDataTypeReference);
-}
+match:
+	retrieve optional element: java.Class as nonPrimitiveInnerDataTypeClass corresponding to change.newValue.datatype_InnerDeclaration
+effect: 
+	execute: {
+		val innerDataTypeReference = createTypeReference(change.newValue.datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
+		val compositeDataType = change.newAffectedEObject as CompositeDataType;
+		val innerDeclaration = change.newValue;
+		callAddInnerDeclarationToCompositeDataType(compositeDataType, innerDeclaration, innerDataTypeReference);
+	}
 
-effect: AddInnerDeclarationToCompositeDataType
+routine: AddInnerDeclarationToCompositeDataType
 input: pcm.CompositeDataType as compositeDataType, pcm.InnerDeclaration as innerDeclaration, java.TypeReference as dataTypeReference
-retrieve element: java.Class as dataTypeClass corresponding to compositeDataType
-create element: java.Field as innerDataTypeField corresponding to innerDeclaration
-create element: java.ClassMethod as getterMethod corresponding to innerDeclaration tag with "getter"
-create element: java.ClassMethod as setterMethod corresponding to innerDeclaration tag with "setter"
-execute: {
-	createPrivateField(innerDataTypeField, EcoreUtil.copy(dataTypeReference), innerDeclaration.entityName);
-	createSetter(innerDataTypeField, setterMethod);	
-	createGetter(innerDataTypeField, getterMethod);
-	dataTypeClass.members += innerDataTypeField;
-	dataTypeClass.members += getterMethod;
-	dataTypeClass.members += setterMethod;
-	sortMembers(dataTypeClass.members);
-}
+match:
+	retrieve required element: java.Class as dataTypeClass corresponding to compositeDataType
+effect: 
+	create element: java.Field as innerDataTypeField
+	create element: java.ClassMethod as getterMethod
+	create element: java.ClassMethod as setterMethod
+	add correspondence: innerDataTypeField, innerDeclaration
+	add correspondence: getterMethod, innerDeclaration tag with "getter"
+	add correspondence: setterMethod, innerDeclaration tag with "setter"
+	execute: {
+		createPrivateField(innerDataTypeField, EcoreUtil.copy(dataTypeReference), innerDeclaration.entityName);
+		createSetter(innerDataTypeField, setterMethod);	
+		createGetter(innerDataTypeField, getterMethod);
+		dataTypeClass.members += innerDataTypeField;
+		dataTypeClass.members += getterMethod;
+		dataTypeClass.members += setterMethod;
+		sortMembers(dataTypeClass.members);
+	}
 
 response: ChangedNameOfInnerDeclaration
 trigger: replace value pcm.InnerDeclaration[entityName]
-execute: callChangeNameOfInnerDeclaration(change.newAffectedEObject as InnerDeclaration)
+effect: 
+	execute: callChangeNameOfInnerDeclaration(change.newAffectedEObject as InnerDeclaration)
 
-effect: ChangeNameOfInnerDeclaration
+routine: ChangeNameOfInnerDeclaration
 input: pcm.InnerDeclaration as innerDeclaration
-retrieve element: java.Field as compositeTypeField corresponding to innerDeclaration
-retrieve element: java.ClassMethod as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
-retrieve element: java.ClassMethod as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
-execute: {
-	val newName = innerDeclaration.entityName;
-	compositeTypeField.name = newName;
-	compositeTypeGetterMethod.name = "get" + newName.toFirstUpper;
-	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
-		val parameter = compositeTypeSetterMethod.parameters.get(0)
-		parameter.name = "set" + newName.toFirstUpper;
+match:
+	retrieve required element: java.Field as compositeTypeField corresponding to innerDeclaration
+	retrieve required element: java.ClassMethod as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
+	retrieve required element: java.ClassMethod as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
+effect: 
+	execute: {
+		val newName = innerDeclaration.entityName;
+		compositeTypeField.name = newName;
+		compositeTypeGetterMethod.name = "get" + newName.toFirstUpper;
+		if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
+			val parameter = compositeTypeSetterMethod.parameters.get(0)
+			parameter.name = "set" + newName.toFirstUpper;
+		}
 	}
-}
 
 response: ChangeTypeOfInnerDeclaration
 trigger: replace value pcm.InnerDeclaration[datatype_InnerDeclaration]
-retrieve element: java.Class as newJavaDataType corresponding to change.newValue
-	on fail do nothing and continue effect
-execute: {
-	val innerDeclaration = change.newAffectedEObject as InnerDeclaration;
-	val newDataTypeReference = createTypeReference(change.newValue, newJavaDataType);
-	callChangeInnerDeclarationType(innerDeclaration, newDataTypeReference);
-}
-
-effect: ChangeInnerDeclarationType
-input: pcm.InnerDeclaration as innerDeclaration, java.TypeReference as newTypeReference
-retrieve element: java.Field as compositeTypeField corresponding to innerDeclaration
-retrieve element: java.Method as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
-retrieve element: java.Method as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
-execute: {
-	compositeTypeField.typeReference = EcoreUtil.copy(newTypeReference);
-	compositeTypeGetterMethod.typeReference = EcoreUtil.copy(newTypeReference);
-	if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
-		val parameter = compositeTypeSetterMethod.parameters.get(0)
-		parameter.typeReference = EcoreUtil.copy(newTypeReference)
+match:
+	retrieve optional element: java.Class as newJavaDataType corresponding to change.newValue
+effect: 
+	execute: {
+		val innerDeclaration = change.newAffectedEObject as InnerDeclaration;
+		val newDataTypeReference = createTypeReference(change.newValue, newJavaDataType);
+		callChangeInnerDeclarationType(innerDeclaration, newDataTypeReference);
 	}
-}
+
+routine: ChangeInnerDeclarationType
+input: pcm.InnerDeclaration as innerDeclaration, java.TypeReference as newTypeReference
+match:
+	retrieve required element: java.Field as compositeTypeField corresponding to innerDeclaration
+	retrieve required element: java.Method as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
+	retrieve required element: java.Method as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
+effect: 
+	execute: {
+		compositeTypeField.typeReference = EcoreUtil.copy(newTypeReference);
+		compositeTypeGetterMethod.typeReference = EcoreUtil.copy(newTypeReference);
+		if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
+			val parameter = compositeTypeSetterMethod.parameters.get(0)
+			parameter.typeReference = EcoreUtil.copy(newTypeReference)
+		}
+	}
 
 
 // ######################################################
 // ################ JAVA PACKAGE EFFECTS ################
 
-effect: CreateJavaPackage
+routine: CreateJavaPackage
 input: EObject as sourceElementMappedToPackage, java.Package as parentPackage, String as packageName, String as newTag
-create element: java.Package as javaPackage corresponding to sourceElementMappedToPackage
-	tag with newTag persist as root at project-relative location: buildJavaFilePath(javaPackage)
-execute: {
-	if (parentPackage != null) {
-		javaPackage.namespaces += parentPackage.namespaces;
-		javaPackage.namespaces += parentPackage.name; 
+match:
+	require absence of element: java.Package corresponding to sourceElementMappedToPackage tagged with newTag
+effect: 
+	create element: java.Package as javaPackage
+	add correspondence: javaPackage, sourceElementMappedToPackage
+		tag with newTag //persist as root at project-relative location: buildJavaFilePath(javaPackage)
+	execute: {
+		if (parentPackage != null) {
+			javaPackage.namespaces += parentPackage.namespaces;
+			javaPackage.namespaces += parentPackage.name; 
+		}
+		javaPackage.name = packageName;
+		persistProjectRelative(sourceElementMappedToPackage, javaPackage, buildJavaFilePath(javaPackage));
 	}
-	javaPackage.name = packageName;
-}
 
-effect: RenameJavaPackage
+routine: RenameJavaPackage
 input: pcm.NamedElement as sourceElementMappedToPackage, java.Package as parentPackage, String as packageName, String as expectedTag
-retrieve element: java.Package as javaPackage corresponding to sourceElementMappedToPackage
-	tagged with expectedTag	move containing model to project-relative location: buildJavaFilePath(javaPackage)
-execute: {
-	javaPackage.namespaces.clear();
-	if (parentPackage != null) {
-		javaPackage.namespaces += parentPackage.namespaces;
-		javaPackage.namespaces += parentPackage.name; 
+match:
+	retrieve required element: java.Package as javaPackage corresponding to sourceElementMappedToPackage
+		tagged with expectedTag	//move containing model to project-relative location: buildJavaFilePath(javaPackage)
+effect: 
+	execute: {
+		javaPackage.namespaces.clear();
+		if (parentPackage != null) {
+			javaPackage.namespaces += parentPackage.namespaces;
+			javaPackage.namespaces += parentPackage.name; 
+		}
+		javaPackage.name = packageName;
+		persistProjectRelative(sourceElementMappedToPackage, javaPackage, buildJavaFilePath(javaPackage));
 	}
-	javaPackage.name = packageName;
-}
 
-effect: DeleteJavaPackage
+routine: DeleteJavaPackage
 input: pcm.NamedElement as sourceElementMappedToPackage, String as packageName, String as expectedTag
-delete element: java.Package as javaPackage corresponding to sourceElementMappedToPackage tagged with expectedTag
+match:
+	retrieve required element: java.Package as javaPackage corresponding to sourceElementMappedToPackage tagged with expectedTag
+effect: 
+	delete element: javaPackage
 
 
 // ######################################################
 // ################ JAVA CLASS EFFECTS ##################
 
-effect: CreateJavaClass
+routine: CreateJavaClass
 input: pcm.NamedElement as sourceElementMappedToClass, java.Package as containingPackage, String as className
-create element: java.Class as javaClass corresponding to sourceElementMappedToClass
-execute: {
-	javaClass.name = className;
-	javaClass.addModifier(ModifiersFactory.eINSTANCE.createPublic());
-	callCreateCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage);
-}
+effect: 
+	create element: java.Class as javaClass
+	add correspondence: javaClass, sourceElementMappedToClass
+	execute: {
+		javaClass.name = className;
+		javaClass.addModifier(ModifiersFactory.eINSTANCE.createPublic());
+		callCreateCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage);
+	}
 
-effect: CreateJavaInterface
+routine: CreateJavaInterface
 input: pcm.NamedElement as sourceElementMappedToClass, java.Package as containingPackage, String as className
-create element: java.Interface as javaInterface corresponding to sourceElementMappedToClass
-execute: {
-	javaInterface.name = className;
-	javaInterface.addModifier(ModifiersFactory.eINSTANCE.createPublic());
-	callCreateCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
-}
+effect: 
+	create element: java.Interface as javaInterface
+	add correspondence: javaInterface, sourceElementMappedToClass
+	execute: {
+		javaInterface.name = className;
+		javaInterface.addModifier(ModifiersFactory.eINSTANCE.createPublic());
+		callCreateCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
+	}
 
-effect: CreateCompilationUnit
+routine: CreateCompilationUnit
 input: pcm.NamedElement as sourceElementMappedToClass, java.ConcreteClassifier as classifier, java.Package as containingPackage
-create element: java.CompilationUnit as compilationUnit corresponding to sourceElementMappedToClass
-	persist as root at project-relative location: buildJavaFilePath(compilationUnit)
-execute: {
-	compilationUnit.namespaces += containingPackage.namespaces;
-	compilationUnit.namespaces += containingPackage.name;
-	compilationUnit.name = classifier.name;
-	compilationUnit.classifiers.add(classifier);
-}
+effect: 
+	create element:  java.CompilationUnit as compilationUnit
+	add correspondence: compilationUnit, sourceElementMappedToClass
+		//persist as root at project-relative location: buildJavaFilePath(compilationUnit)
+	execute: {
+		compilationUnit.namespaces += containingPackage.namespaces;
+		compilationUnit.namespaces += containingPackage.name;
+		compilationUnit.name = classifier.name;
+		compilationUnit.classifiers.add(classifier);
+		persistProjectRelative(sourceElementMappedToClass, compilationUnit, buildJavaFilePath(compilationUnit));
+	}
 
-effect: RenameJavaClassifier
+routine: RenameJavaClassifier
 input: pcm.NamedElement as classSourceElement, java.Package as containingPackage, String as className
-retrieve element: java.CompilationUnit as compilationUnit corresponding to classSourceElement
-	move containing model to project-relative location: buildJavaFilePath(compilationUnit)
-retrieve element: java.ConcreteClassifier as javaClassifier corresponding to classSourceElement
-execute: {
-	javaClassifier.name = className;
-	compilationUnit.name = className;
-	compilationUnit.namespaces.clear;
-	compilationUnit.namespaces += containingPackage.namespaces;
-	compilationUnit.namespaces += containingPackage.name;
-}
+match:
+	retrieve required element: java.CompilationUnit as compilationUnit corresponding to classSourceElement
+		//move containing model to project-relative location: buildJavaFilePath(compilationUnit)
+	retrieve required element: java.ConcreteClassifier as javaClassifier corresponding to classSourceElement
+effect: 
+	execute: {
+		javaClassifier.name = className;
+		compilationUnit.name = className;
+		compilationUnit.namespaces.clear;
+		compilationUnit.namespaces += containingPackage.namespaces;
+		compilationUnit.namespaces += containingPackage.name;
+		persistProjectRelative(classSourceElement, compilationUnit, buildJavaFilePath(compilationUnit));
+	}
 
-effect: DeleteJavaClassifier
+routine: DeleteJavaClassifier
 input: pcm.NamedElement as sourceElement
-delete element: java.ConcreteClassifier as javaClassifier corresponding to sourceElement
-delete element: java.CompilationUnit as compilationUnit corresponding to sourceElement
+match:
+	retrieve required element: java.ConcreteClassifier as javaClassifier corresponding to sourceElement
+	retrieve required element: java.CompilationUnit as compilationUnit corresponding to sourceElement
+effect: 
+	delete element: javaClassifier
+	delete element: compilationUnit
 
 
 // ####################################################
@@ -452,56 +536,65 @@ delete element: java.CompilationUnit as compilationUnit corresponding to sourceE
 
 response: AddedProvidedRoleInterfaceProvidingEntity
 trigger: insert in list pcm.InterfaceProvidingEntity[providedRoles_InterfaceProvidingEntity]
-precondition: change.newValue instanceof OperationProvidedRole
-execute: callAddProvidedRole(change.newValue as OperationProvidedRole)
+	check: change.newValue instanceof OperationProvidedRole
+effect: execute: callAddProvidedRole(change.newValue as OperationProvidedRole)
 
-effect: AddProvidedRole
+routine: AddProvidedRole
 input: pcm.OperationProvidedRole as providedRole
-retrieve element: java.Interface as operationProvidingInterface corresponding to providedRole.providedInterface__OperationProvidedRole
-retrieve element: java.Class as javaClass corresponding to providedRole.providingEntity_ProvidedRole
-create element: java.ClassifierImport as interfaceImport corresponding to providedRole
-create element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
-execute: {
-	createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
-	javaClass.implements.add(namespaceClassifierReference)
-	addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
-}
+match:
+	retrieve required element: java.Interface as operationProvidingInterface corresponding to providedRole.providedInterface__OperationProvidedRole
+	retrieve required element: java.Class as javaClass corresponding to providedRole.providingEntity_ProvidedRole
+effect: 
+	create element: java.ClassifierImport as interfaceImport
+	create element: java.NamespaceClassifierReference as namespaceClassifierReference
+	add correspondence: interfaceImport, providedRole
+	add correspondence: namespaceClassifierReference,  providedRole
+	execute: {
+		createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
+		javaClass.implements.add(namespaceClassifierReference)
+		addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
+	}
 
 response: ChangedProvidedInterfaceOfProvidedRole
 trigger: replace value pcm.OperationProvidedRole[providedInterface__OperationProvidedRole]
-execute: {
-	val operationProvidedRole = change.newAffectedEObject as OperationProvidedRole;
-	callRemoveProvidedRole(operationProvidedRole);
-	callAddProvidedRole(operationProvidedRole);
-}
+effect: 
+	execute: {
+		val operationProvidedRole = change.newAffectedEObject as OperationProvidedRole;
+		callRemoveProvidedRole(operationProvidedRole);
+		callAddProvidedRole(operationProvidedRole);
+	}
 
 response: ChangedProvidingEntityOfProvidedRole
 trigger: replace value pcm.OperationProvidedRole[providingEntity_ProvidedRole]
-execute: {
-	val operationProvidedRole = change.newAffectedEObject as OperationProvidedRole;
-	// TODO HK Reenable with the new change MM when we can remove the provided role because the TUID 
-	// of the containing component will get updated then and so the provided role correspondences can be resolved
-	// callRemoveProvidedRole(operationProvidedRole);
-	callAddProvidedRole(operationProvidedRole);
-}
+effect: 
+	execute: {
+		val operationProvidedRole = change.newAffectedEObject as OperationProvidedRole;	
+		// TODO HK Reenable with the new change MM when we can remove the provided role because the TUID 
+		// of the containing component will get updated then and so the provided role correspondences can be resolved
+		// callRemoveProvidedRole(operationProvidedRole);
+		callAddProvidedRole(operationProvidedRole);
+	}
 
 response: RemovedProvidedRoleFromSystem
 trigger: remove from list pcm.System[providedRoles_InterfaceProvidingEntity]
-execute: callRemoveProvidedRole(change.oldValue)
+effect: 
+	execute: callRemoveProvidedRole(change.oldValue)
 
 response: RemovedProvidedRoleFromComponent
 trigger: remove from list pcm.RepositoryComponent[providedRoles_InterfaceProvidingEntity]
-execute: callRemoveProvidedRole(change.oldValue)
+effect: 
+	execute: callRemoveProvidedRole(change.oldValue)
 
 // TODO HK Remove optional with the new change MM and correct TUID update. If the providingEntity is changed
 // and thus remove is called, the correspondences cannot be resolved because of faulty correspondences 
-effect: RemoveProvidedRole
+routine: RemoveProvidedRole
 input: pcm.ProvidedRole as providedRole
-delete element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
-	on fail show default user dialog and continue effect
-delete element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
-	on fail show user dialog with message "Due to old TUIDs remove cannot be performed" and continue effect
-
+match:
+	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
+	retrieve optional element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
+effect: 
+	delete element: requiredInterfaceImport
+	delete element: namespaceClassifierReference
 
 // ####################################################
 // ################ REQUIRED ROLES ####################
@@ -514,129 +607,144 @@ delete element: java.NamespaceClassifierReference as namespaceClassifierReferenc
 // TODO HK Implement rename correctly when having all four correspondences correctly 
 response: AddRequiredRoleToInterfaceRequiringEntity
 trigger: insert in list pcm.InterfaceRequiringEntity[requiredRoles_InterfaceRequiringEntity]
-precondition: change.newValue instanceof OperationRequiredRole
-execute: callAddRequiredRole(change.newValue as OperationRequiredRole)
+	check: change.newValue instanceof OperationRequiredRole
+effect: 
+	execute: callAddRequiredRole(change.newValue as OperationRequiredRole)
 
-effect: AddRequiredRole
+routine: AddRequiredRole
 input: pcm.OperationRequiredRole as requiredRole
-retrieve element: java.Interface as requiredInterface corresponding to requiredRole.requiredInterface__OperationRequiredRole
-retrieve element: java.Class as javaClass corresponding to requiredRole.requiringEntity_RequiredRole
-create element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
-create element: java.Field as requiredInterfaceField corresponding to requiredRole
-execute: {
-	val typeRef = createNamespaceClassifierReference(requiredInterface);
-	addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
-	val requiredRoleName = requiredRole.entityName;
-	createPrivateField(requiredInterfaceField, EcoreUtil.copy(typeRef), requiredRoleName);
-	javaClass.members += requiredInterfaceField;
-	if (javaClass.members.filter(typeof(Constructor)).nullOrEmpty) {
-		addConstructorToClass(javaClass)
+match:
+	retrieve required element: java.Interface as requiredInterface corresponding to requiredRole.requiredInterface__OperationRequiredRole
+	retrieve required element: java.Class as javaClass corresponding to requiredRole.requiringEntity_RequiredRole
+effect: 
+	create element: java.ClassifierImport as requiredInterfaceImport
+	create element: java.Field as requiredInterfaceField
+	add correspondence: requiredInterfaceImport, requiredRole
+	add correspondence: requiredInterfaceField, requiredRole
+	execute: {
+		val typeRef = createNamespaceClassifierReference(requiredInterface);
+		addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+		val requiredRoleName = requiredRole.entityName;
+		createPrivateField(requiredInterfaceField, EcoreUtil.copy(typeRef), requiredRoleName);
+		javaClass.members += requiredInterfaceField;
+		if (javaClass.members.filter(typeof(Constructor)).nullOrEmpty) {
+			addConstructorToClass(javaClass)
+		}
+		for (ctor : javaClass.members.filter(typeof(Constructor))) {
+			callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
+		}
 	}
-	for (ctor : javaClass.members.filter(typeof(Constructor))) {
-		callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
-	}
-}
 
-effect: AddParameterAndAssignmentToConstructor
+routine: AddParameterAndAssignmentToConstructor
 input: pcm.NamedElement as parameterCorrespondenceSource, java.Constructor as constructor, java.NamespaceClassifierReference as typeReference, java.Field as fieldToBeAssigned, String as parameterName
-create element: java.OrdinaryParameter as newParameter corresponding to parameterCorrespondenceSource
-execute: {
-	newParameter.name = parameterName;
-	newParameter.typeReference = EcoreUtil.copy(typeReference);
-	constructor.parameters.add(newParameter)
-	val asssignment = createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
-	constructor.statements.add(asssignment)
-}
+effect: 
+	create element: java.OrdinaryParameter as newParameter
+	add correspondence: newParameter, parameterCorrespondenceSource
+	execute: {
+		newParameter.name = parameterName;
+		newParameter.typeReference = EcoreUtil.copy(typeReference);
+		constructor.parameters.add(newParameter)
+		val asssignment = createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
+		constructor.statements.add(asssignment)
+	}
 
 
 response: RemoveRequiredRoleFromInterfaceRequiringEntity
 trigger: remove from list pcm.InterfaceRequiringEntity[requiredRoles_InterfaceRequiringEntity]
-precondition: change.oldValue instanceof OperationRequiredRole
-execute: {
-	callRemoveRequiredRole(change.oldValue, change.oldAffectedEObject as RepositoryComponent);
-}
+	check: change.oldValue instanceof OperationRequiredRole
+effect: 
+	execute: {
+		callRemoveRequiredRole(change.oldValue, change.oldAffectedEObject as RepositoryComponent);
+	}
 
 // TODO HK Remove the optionals and the null check in the execute block. 
 // They are just there because after a rename they can potentially not be resolved
 // but correspondences shall be removed
-effect: RemoveRequiredRole
+routine: RemoveRequiredRole
 input: pcm.RequiredRole as requiredRole, pcm.InterfaceRequiringEntity as requiringEntity
-delete element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
-	on fail do nothing and continue effect
-delete element: java.Field as requiredInterfaceField corresponding to requiredRole
-	on fail do nothing and continue effect
-retrieve element: java.Class as javaClass corresponding to requiringEntity
-	on fail do nothing and continue effect
-execute: {
-	if (javaClass == null) {
-		return
-	}
-	for (ctor : javaClass.members.filter(typeof(Constructor))) {
-		callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
-		var Statement statementToRemove = null;
-		for (statement : ctor.statements) {
-			if (statement instanceof ExpressionStatement) {
-				val assignmentExpression = statement.expression
-				if (assignmentExpression instanceof AssignmentExpression) {
-					val selfReference = assignmentExpression.child;
-					if (selfReference instanceof SelfReference) {
-						val fieldReference = selfReference.next;
-						if (fieldReference instanceof IdentifierReference) {
-							val field = fieldReference.target;
-							if (field instanceof Field) {
-								if (field.name.equals(requiredRole.entityName)) {
-									statementToRemove = statement;
+match:
+	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
+	retrieve optional element: java.Field as requiredInterfaceField corresponding to requiredRole
+	retrieve optional element: java.Class as javaClass corresponding to requiringEntity
+effect: 
+	delete element: requiredInterfaceImport
+	delete element: requiredInterfaceField
+	execute: {
+		if (javaClass == null) {
+			return
+		}
+		for (ctor : javaClass.members.filter(typeof(Constructor))) {
+			callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
+			var Statement statementToRemove = null;
+			for (statement : ctor.statements) {
+				if (statement instanceof ExpressionStatement) {
+					val assignmentExpression = statement.expression
+					if (assignmentExpression instanceof AssignmentExpression) {
+						val selfReference = assignmentExpression.child;
+						if (selfReference instanceof SelfReference) {
+							val fieldReference = selfReference.next;
+							if (fieldReference instanceof IdentifierReference) {
+								val field = fieldReference.target;
+								if (field instanceof Field) {
+									if (field.name.equals(requiredRole.entityName)) {
+										statementToRemove = statement;
+									}
 								}
 							}
+							
 						}
-						
 					}
-				
 				}
 			}
-		}
-//		var Parameter parameterToRemove = null;
-//		for (parameter : ctor.parameters) {
-//			if (parameter.name.equals(requiredRole.entityName)) {
-//				parameterToRemove = parameter;
+//			var Parameter parameterToRemove = null;
+//			for (parameter : ctor.parameters) {
+//				if (parameter.name.equals(requiredRole.entityName)) {
+//					parameterToRemove = parameter;
+//				}
 //			}
-//		}
-		if (statementToRemove != null) {
-			ctor.statements.remove(statementToRemove);
+			if (statementToRemove != null) {
+				ctor.statements.remove(statementToRemove);
+			}
+//			if (parameterToRemove != null) {
+//				ctor.parameters.remove(parameterToRemove);
+//			}
 		}
-//		if (parameterToRemove != null) {
-//			ctor.parameters.remove(parameterToRemove);
-//		}
 	}
-}
 
-effect: RemoveCorrespondingParameterFromConstructor
+routine: RemoveCorrespondingParameterFromConstructor
 input: java.Constructor as ctor, pcm.NamedElement as correspondenceSource
-delete element: java.OrdinaryParameter as param corresponding to correspondenceSource
-	with ctor.parameters.contains(param)
+match:
+	retrieve required element: java.OrdinaryParameter as param corresponding to correspondenceSource
+		with ctor.parameters.contains(param)
+effect: 
+	delete element: param
 
-effect: ReinitializeOperationRequiredRole
+routine: ReinitializeOperationRequiredRole
 input: pcm.OperationRequiredRole as requiredRole
-execute: {
-	callRemoveRequiredRole(requiredRole, requiredRole.requiringEntity_RequiredRole);
-	callAddRequiredRole(requiredRole);
-}
+effect: 
+	execute: {
+		callRemoveRequiredRole(requiredRole, requiredRole.requiringEntity_RequiredRole);
+		callAddRequiredRole(requiredRole);
+	}
 
 response: RenameOperationRequiredRole
 trigger: replace value pcm.OperationRequiredRole[entityName]
-execute: callReinitializeOperationRequiredRole(change.newAffectedEObject as OperationRequiredRole)
+effect: 
+	execute: callReinitializeOperationRequiredRole(change.newAffectedEObject as OperationRequiredRole)
 
 response: ChangeOperationRequiredRoleEntity
 trigger: replace value pcm.OperationRequiredRole[requiringEntity_RequiredRole]
-execute: {
-	val requiredRole = change.newAffectedEObject as OperationRequiredRole;
-	callRemoveRequiredRole(requiredRole, change.oldValue);
-	callAddRequiredRole(requiredRole);
-}
+effect: 
+	execute: {
+		val requiredRole = change.newAffectedEObject as OperationRequiredRole;
+		callRemoveRequiredRole(requiredRole, change.oldValue);
+		callAddRequiredRole(requiredRole);
+	}
 
 response: ChangeOperationRequiredRoleInterface
 trigger: replace value pcm.OperationRequiredRole[requiredInterface__OperationRequiredRole]
-execute: callReinitializeOperationRequiredRole(change.newAffectedEObject as OperationRequiredRole)
+effect: 
+	execute: callReinitializeOperationRequiredRole(change.newAffectedEObject as OperationRequiredRole)
 
 
 // ##########################################################
@@ -646,18 +754,22 @@ execute: callReinitializeOperationRequiredRole(change.newAffectedEObject as Oper
 // Use more reasonable correspondences than Michael
 response: AddOperationSignature
 trigger: insert in list pcm.OperationInterface[signatures__OperationInterface]
-retrieve element: java.Interface as javaInterface corresponding to change.newAffectedEObject
-create element: java.InterfaceMethod as interfaceMethod corresponding to change.newValue
-execute: {
-	interfaceMethod.name = change.newValue.entityName;
-	callChangeInterfaceMethodReturnType(interfaceMethod, change.newValue.returnType__OperationSignature);
-	javaInterface.members += interfaceMethod;
-}
+match:
+	retrieve required element: java.Interface as javaInterface corresponding to change.newAffectedEObject
+effect: 
+	create element: java.InterfaceMethod as interfaceMethod
+	add correspondence: interfaceMethod, change.newValue
+	execute: {
+		interfaceMethod.name = change.newValue.entityName;
+		callChangeInterfaceMethodReturnType(interfaceMethod, change.newValue.returnType__OperationSignature);
+		javaInterface.members += interfaceMethod;
+	}
 
 response: RenameOperationSignature
 trigger: replace value pcm.OperationSignature[entityName]
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
-execute: {
+match:
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
+effect: execute: {
 	val operationSignature = change.newAffectedEObject as OperationSignature;
 	val operationInterface = operationSignature.interface__OperationSignature;
 	interfaceMethod.name = change.newValue;
@@ -679,64 +791,80 @@ execute: {
 
 response: ChangeOperationSignatureReturnType
 trigger: replace value pcm.OperationSignature[returnType__OperationSignature]
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
-execute: callChangeInterfaceMethodReturnType(interfaceMethod, (change.newAffectedEObject as OperationSignature).returnType__OperationSignature)
+match: 
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
+effect: 
+	execute: callChangeInterfaceMethodReturnType(interfaceMethod, (change.newAffectedEObject as OperationSignature).returnType__OperationSignature)
 
-effect: ChangeInterfaceMethodReturnType
+routine: ChangeInterfaceMethodReturnType
 input: java.InterfaceMethod as interfaceMethod, pcm.DataType as returnType
-retrieve element: java.Class as returnTypeClass corresponding to returnType
-	on fail do nothing and continue effect
-execute: {
-	val returnTypeReference = createTypeReference(returnType, returnTypeClass);
-	interfaceMethod.typeReference = returnTypeReference;
-}
+match: 
+	retrieve optional element: java.Class as returnTypeClass corresponding to returnType
+effect: 
+	execute: {
+		val returnTypeReference = createTypeReference(returnType, returnTypeClass);
+		interfaceMethod.typeReference = returnTypeReference;
+	}
 
 response: DeleteOperationSignature
 trigger: remove from list pcm.OperationInterface[signatures__OperationInterface]
-delete element: java.InterfaceMethod as interfaceMethod corresponding to change.oldValue
-
+match:
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.oldValue
+effect: 
+	delete element: interfaceMethod
 
 // ################################################################################
 // ################################## PARAMETERS ##################################
 
 response: CreatedParameter
 trigger: insert in list pcm.OperationSignature[parameters__OperationSignature]
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
-create element: java.OrdinaryParameter as javaParameter corresponding to change.newValue
-execute: {
-	javaParameter.name = change.newValue.parameterName;
-	callChangeParameterType(javaParameter, change.newValue.dataType__Parameter);
-	interfaceMethod.parameters += javaParameter;
-}
+match:
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
+effect: 
+	create element: java.OrdinaryParameter as javaParameter
+	add correspondence: javaParameter, change.newValue
+	execute: {
+		javaParameter.name = change.newValue.parameterName;
+		callChangeParameterType(javaParameter, change.newValue.dataType__Parameter);
+		interfaceMethod.parameters += javaParameter;
+	}
 
 response: ChangedParameterName
 trigger: replace value pcm.Parameter[parameterName]
-retrieve element: java.OrdinaryParameter as javaParameter corresponding to change.newAffectedEObject
-execute: {
-	javaParameter.name = change.newValue;
-}
+match:
+	retrieve required element: java.OrdinaryParameter as javaParameter corresponding to change.newAffectedEObject
+effect: 
+	execute: {
+		javaParameter.name = change.newValue;
+	}
 
 response: ChangedParameterType
 trigger: replace value pcm.Parameter[dataType__Parameter]
-// retrieve the interface method to update the TUID according to the new parameter type
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject.eContainer
-retrieve element: java.OrdinaryParameter as javaParameter corresponding to change.newAffectedEObject
-execute: callChangeParameterType(javaParameter, change.newValue)
+match:
+	// retrieve the interface method to update the TUID according to the new parameter type
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject.eContainer
+	retrieve required element: java.OrdinaryParameter as javaParameter corresponding to change.newAffectedEObject
+effect: 
+	execute: callChangeParameterType(javaParameter, change.newValue)
 
-effect: ChangeParameterType
+routine: ChangeParameterType
 input: java.OrdinaryParameter as javaParameter, pcm.DataType as parameterType
-retrieve element: java.Class as javaParameterTypeClass corresponding to parameterType
-	on fail do nothing and continue effect
-execute: {
-	val parameterTypeReference = createTypeReference(parameterType, javaParameterTypeClass);
-	javaParameter.typeReference = parameterTypeReference;
-}
+match:
+	retrieve optional element: java.Class as javaParameterTypeClass corresponding to parameterType
+effect: 
+	execute: {
+		val parameterTypeReference = createTypeReference(parameterType, javaParameterTypeClass);
+		javaParameter.typeReference = parameterTypeReference;
+	}
 
 response: RemovedParameter
 trigger: remove from list pcm.OperationSignature[parameters__OperationSignature]
-// retrieve the interface method to update the TUID according to the removed parameter type
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
-delete element: java.OrdinaryParameter as javaParameter corresponding to change.oldValue
+match:
+	// retrieve the interface method to update the TUID according to the removed parameter type
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.newAffectedEObject
+	retrieve required element: java.OrdinaryParameter as javaParameter corresponding to change.oldValue
+effect: 
+	delete element: javaParameter
 
 
 // ################################################################################
@@ -744,26 +872,32 @@ delete element: java.OrdinaryParameter as javaParameter corresponding to change.
 
 response: CreatedResourceDemandingInternalBehavior
 trigger: insert in list pcm.BasicComponent[resourceDemandingInternalBehaviours__BasicComponent]
-retrieve element: java.Class as componentClass corresponding to change.newAffectedEObject
-create element: java.ClassMethod as javaMethod corresponding to change.newValue
-execute: {
-	javaMethod.name = change.newValue.entityName;
-	javaMethod.typeReference = TypesFactory.eINSTANCE.createVoid;
-	componentClass.members += javaMethod;
-}
+match:
+	retrieve required element: java.Class as componentClass corresponding to change.newAffectedEObject
+effect: 
+	create element: java.ClassMethod as javaMethod
+	add correspondence: javaMethod, change.newValue
+	execute: {
+		javaMethod.name = change.newValue.entityName;
+		javaMethod.typeReference = TypesFactory.eINSTANCE.createVoid;
+		componentClass.members += javaMethod;
+	}
 
 response: RenameResourceDemandingInternalBehavior
 trigger: replace value pcm.ResourceDemandingInternalBehaviour[entityName]
-retrieve element: java.ClassMethod as javaMethod corresponding to change.newAffectedEObject
-execute: {
-	javaMethod.name = change.newValue;
-}
+match:
+	retrieve required element: java.ClassMethod as javaMethod corresponding to change.newAffectedEObject
+effect: 
+	execute: {
+		javaMethod.name = change.newValue;
+	}
 
 response: RemovedResourceDemandingInternalBehavior
 trigger: remove from list pcm.BasicComponent[resourceDemandingInternalBehaviours__BasicComponent]
-delete element: java.ClassMethod as javaMethod corresponding to change.oldValue
-
-
+match:
+	retrieve required element: java.ClassMethod as javaMethod corresponding to change.oldValue
+effect: 
+	delete element: javaMethod
 
 
 // ################################################################################
@@ -771,47 +905,52 @@ delete element: java.ClassMethod as javaMethod corresponding to change.oldValue
 
 response: CreatedSEFF
 trigger: insert in list pcm.BasicComponent[serviceEffectSpecifications__BasicComponent]
-execute: callCreateSEFF(change.newValue)
+effect: execute: callCreateSEFF(change.newValue)
 
-effect: CreateSEFF
+routine: CreateSEFF
 input: pcm.ServiceEffectSpecification as seff
-retrieve element: java.Class as componentClass corresponding to seff.basicComponent_ServiceEffectSpecification
-	on fail show user dialog with message "Could not find a corresponding class for the SEFF's component. No corresponding method for the SEFF created." 
-		and abort effect
-retrieve element: java.InterfaceMethod as interfaceMethod corresponding to seff.describedService__SEFF
-	on fail do nothing and abort effect
-create element: java.ClassMethod as classMethod corresponding to seff
-execute: {
-	val signature = seff.describedService__SEFF
-	val sigIsOpSig = signature != null && signature instanceof OperationSignature
-	if (!sigIsOpSig) {
-		return;
+match:
+	retrieve required element: java.Class as componentClass corresponding to seff.basicComponent_ServiceEffectSpecification
+	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to seff.describedService__SEFF
+	check: seff.describedService__SEFF instanceof OperationSignature
+effect: 
+	create element: java.ClassMethod as classMethod
+	add correspondence: classMethod, seff
+	execute: {
+		initializeClassMethod(classMethod, interfaceMethod, true);
+		var correspondingClassMethod = componentClass.findMethodInClass(classMethod)
+		if (null == correspondingClassMethod) {
+			componentClass.members.add(classMethod)
+			correspondingClassMethod = classMethod
+		} else {
+			correspondingClassMethod.name = interfaceMethod.name
+		}
 	}
-	initializeClassMethod(classMethod, interfaceMethod, true);
-	var correspondingClassMethod = componentClass.findMethodInClass(classMethod)
-	if (null == correspondingClassMethod) {
-		componentClass.members.add(classMethod)
-		correspondingClassMethod = classMethod
-	} else {
-		correspondingClassMethod.name = interfaceMethod.name
-	}
-}
 
 response: ChangeOperationSignatureOfSeff
 trigger: replace value pcm.ResourceDemandingSEFF[describedService__SEFF]
-delete element: java.ClassMethod as oldClassMethod corresponding to change.newAffectedEObject
-execute: callCreateSEFF(change.newAffectedEObject as ResourceDemandingSEFF)
+match:
+	retrieve required element: java.ClassMethod as oldClassMethod corresponding to change.newAffectedEObject
+effect: 
+	delete element: oldClassMethod
+	//remove correspondence: oldClassMethod, change.newAffectedEObject
+	execute: callCreateSEFF(change.newAffectedEObject as ResourceDemandingSEFF)
 
-effect: UpdateSEFFImplementingMethodName
+routine: UpdateSEFFImplementingMethodName
 input: pcm.ServiceEffectSpecification as seff
-retrieve element: java.ClassMethod as classMethod corresponding to seff
-execute: {
-	classMethod.name = seff.describedService__SEFF.entityName;
-}
+match:
+	retrieve required element: java.ClassMethod as classMethod corresponding to seff
+effect: 
+	execute: {
+		classMethod.name = seff.describedService__SEFF.entityName;
+	}
 
 response: RemovedSeff
 trigger: remove from list pcm.BasicComponent[serviceEffectSpecifications__BasicComponent]
-delete element: java.ClassMethod as classMethod corresponding to change.oldValue
+match:
+	retrieve required element: java.ClassMethod as classMethod corresponding to change.oldValue
+effect: 
+	delete element: classMethod
 
 
 

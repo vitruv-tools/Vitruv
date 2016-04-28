@@ -45,7 +45,7 @@ class AddedProvidedRoleInterfaceProvidingEntityResponse extends AbstractResponse
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<ProvidedRole> typedChange = (CreateNonRootEObjectInList<ProvidedRole>)change;
-    mir.effects.pcm2java.AddedProvidedRoleInterfaceProvidingEntityEffect effect = new mir.effects.pcm2java.AddedProvidedRoleInterfaceProvidingEntityEffect(this.executionState, this);
+    mir.routines.pcm2java.AddedProvidedRoleInterfaceProvidingEntityEffect effect = new mir.routines.pcm2java.AddedProvidedRoleInterfaceProvidingEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

@@ -35,7 +35,7 @@ class CreatePackagesForRepositoryResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateRootEObject<Repository> typedChange = (CreateRootEObject<Repository>)change;
-    mir.effects.pcm2java.CreatePackagesForRepositoryEffect effect = new mir.effects.pcm2java.CreatePackagesForRepositoryEffect(this.executionState, this);
+    mir.routines.pcm2java.CreatePackagesForRepositoryEffect effect = new mir.routines.pcm2java.CreatePackagesForRepositoryEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

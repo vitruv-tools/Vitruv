@@ -40,7 +40,7 @@ class RemovedResourceDemandingInternalBehaviorResponse extends AbstractResponseR
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviourContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemovedResourceDemandingInternalBehaviorEffect effect = new mir.effects.pcm2java.RemovedResourceDemandingInternalBehaviorEffect(this.executionState, this);
+    mir.routines.pcm2java.RemovedResourceDemandingInternalBehaviorEffect effect = new mir.routines.pcm2java.RemovedResourceDemandingInternalBehaviorEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

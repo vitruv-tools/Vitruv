@@ -49,7 +49,7 @@ class RemovedCollectionDataTypeResponse extends AbstractResponseRealization {
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemovedCollectionDataTypeEffect effect = new mir.effects.pcm2java.RemovedCollectionDataTypeEffect(this.executionState, this);
+    mir.routines.pcm2java.RemovedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RemovedCollectionDataTypeEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

@@ -35,7 +35,7 @@ class RenameOperationRequiredRoleResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.effects.pcm2java.RenameOperationRequiredRoleEffect effect = new mir.effects.pcm2java.RenameOperationRequiredRoleEffect(this.executionState, this);
+    mir.routines.pcm2java.RenameOperationRequiredRoleEffect effect = new mir.routines.pcm2java.RenameOperationRequiredRoleEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

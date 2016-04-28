@@ -36,7 +36,7 @@ class CreatedResourceDemandingInternalBehaviorResponse extends AbstractResponseR
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> typedChange = (CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour>)change;
-    mir.effects.pcm2java.CreatedResourceDemandingInternalBehaviorEffect effect = new mir.effects.pcm2java.CreatedResourceDemandingInternalBehaviorEffect(this.executionState, this);
+    mir.routines.pcm2java.CreatedResourceDemandingInternalBehaviorEffect effect = new mir.routines.pcm2java.CreatedResourceDemandingInternalBehaviorEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

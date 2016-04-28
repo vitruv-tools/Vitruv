@@ -45,7 +45,7 @@ class AddRequiredRoleToInterfaceRequiringEntityResponse extends AbstractResponse
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<RequiredRole> typedChange = (CreateNonRootEObjectInList<RequiredRole>)change;
-    mir.effects.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect effect = new mir.effects.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect(this.executionState, this);
+    mir.routines.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect effect = new mir.routines.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

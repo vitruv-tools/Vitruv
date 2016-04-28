@@ -35,7 +35,7 @@ class ChangedParameterNameResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.effects.pcm2java.ChangedParameterNameEffect effect = new mir.effects.pcm2java.ChangedParameterNameEffect(this.executionState, this);
+    mir.routines.pcm2java.ChangedParameterNameEffect effect = new mir.routines.pcm2java.ChangedParameterNameEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

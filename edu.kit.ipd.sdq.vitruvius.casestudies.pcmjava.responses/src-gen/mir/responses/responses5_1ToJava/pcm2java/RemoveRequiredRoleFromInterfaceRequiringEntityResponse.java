@@ -49,7 +49,7 @@ class RemoveRequiredRoleFromInterfaceRequiringEntityResponse extends AbstractRes
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RequiredRoleContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.effects.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect effect = new mir.effects.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect(this.executionState, this);
+    mir.routines.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect effect = new mir.routines.pcm2java.RemoveRequiredRoleFromInterfaceRequiringEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

@@ -36,7 +36,7 @@ class CreateInterfaceResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<Interface> typedChange = (CreateNonRootEObjectInList<Interface>)change;
-    mir.effects.pcm2java.CreateInterfaceEffect effect = new mir.effects.pcm2java.CreateInterfaceEffect(this.executionState, this);
+    mir.routines.pcm2java.CreateInterfaceEffect effect = new mir.routines.pcm2java.CreateInterfaceEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }

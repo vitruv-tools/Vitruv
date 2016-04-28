@@ -36,7 +36,7 @@ class AddedInnerDeclarationToCompositeDataTypeResponse extends AbstractResponseR
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<InnerDeclaration> typedChange = (CreateNonRootEObjectInList<InnerDeclaration>)change;
-    mir.effects.pcm2java.AddedInnerDeclarationToCompositeDataTypeEffect effect = new mir.effects.pcm2java.AddedInnerDeclarationToCompositeDataTypeEffect(this.executionState, this);
+    mir.routines.pcm2java.AddedInnerDeclarationToCompositeDataTypeEffect effect = new mir.routines.pcm2java.AddedInnerDeclarationToCompositeDataTypeEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
   }
