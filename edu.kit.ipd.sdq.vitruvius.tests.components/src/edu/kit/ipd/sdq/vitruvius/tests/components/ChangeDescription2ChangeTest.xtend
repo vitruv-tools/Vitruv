@@ -81,7 +81,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 		val cd = this.changeRecorder.endRec(false)
 //      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
 		LOGGER.trace("monitored change description: " + cd)
-        val changes = ChangeDescription2ChangeTransformation.transform(cd)
+        val changes = new ChangeDescription2ChangeTransformation(cd).transform()
         LOGGER.trace("transformed changes: " + changes)
         cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
         this.changeRecorder.beginRec()

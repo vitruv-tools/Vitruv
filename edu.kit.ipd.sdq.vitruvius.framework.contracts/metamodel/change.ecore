@@ -251,10 +251,15 @@
   </eSubpackages>
   <eSubpackages name="root" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Root/1.0"
       nsPrefix="root">
+    <eClassifiers xsi:type="ecore:EClass" name="ERootChange" abstract="true" eSuperTypes="#//EAtomicChange">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          defaultValueLiteral=""/>
+    </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="InsertRootEObject">
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//root/ERootChange"/>
       <eGenericSuperTypes eClassifier="#//AdditiveEReferenceChange">
         <eTypeArguments eTypeParameter="#//root/InsertRootEObject/T"/>
       </eGenericSuperTypes>
@@ -263,6 +268,7 @@
       <eTypeParameters name="T">
         <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eTypeParameters>
+      <eGenericSuperTypes eClassifier="#//root/ERootChange"/>
       <eGenericSuperTypes eClassifier="#//SubtractiveEReferenceChange">
         <eTypeArguments eTypeParameter="#//root/RemoveRootEObject/T"/>
       </eGenericSuperTypes>
@@ -332,7 +338,7 @@
           <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/A"/>
           <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/F"/>
         </eBounds>
-        <eBounds eClassifier="#//AdditiveEReferenceChange">
+        <eBounds eClassifier="#//AdditiveEChange">
           <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
         </eBounds>
       </eTypeParameters>

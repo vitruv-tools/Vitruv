@@ -386,7 +386,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g2 = createEGenericType(replaceInEListEClass_F);
         g1.getETypeArguments().add(g2);
         replaceInEListEClass_I.getEBounds().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
+        g1 = createEGenericType(theChangePackage.getAdditiveEChange());
         g2 = createEGenericType(replaceInEListEClass_T);
         g1.getETypeArguments().add(g2);
         replaceInEListEClass_I.getEBounds().add(g1);

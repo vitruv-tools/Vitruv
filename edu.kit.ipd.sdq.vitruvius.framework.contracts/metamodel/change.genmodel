@@ -111,6 +111,9 @@
     </nestedGenPackages>
     <nestedGenPackages prefix="Root" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change"
         disposableProviderFactory="true" ecorePackage="change.ecore#//root">
+      <genClasses image="false" ecoreClass="change.ecore#//root/ERootChange">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute change.ecore#//root/ERootChange/uri"/>
+      </genClasses>
       <genClasses ecoreClass="change.ecore#//root/InsertRootEObject">
         <genTypeParameters ecoreTypeParameter="change.ecore#//root/InsertRootEObject/T"/>
       </genClasses>

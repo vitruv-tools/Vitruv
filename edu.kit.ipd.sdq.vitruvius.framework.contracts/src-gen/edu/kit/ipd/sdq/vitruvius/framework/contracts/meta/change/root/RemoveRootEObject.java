@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RemoveRootEObject<T extends EObject> extends SubtractiveEReferenceChange<T> {
+public interface RemoveRootEObject<T extends EObject> extends ERootChange, SubtractiveEReferenceChange<T> {
 } // RemoveRootEObject

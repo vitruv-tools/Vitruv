@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
@@ -84,7 +84,7 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
                 return createMoveEObjectAdapter();
             }
             @Override
-            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
                 return createReplaceInEListAdapter();
             }
             @Override

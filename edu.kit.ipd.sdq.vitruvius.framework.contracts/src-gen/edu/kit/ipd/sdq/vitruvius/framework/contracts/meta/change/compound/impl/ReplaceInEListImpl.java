@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
@@ -34,7 +34,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Re
  *
  * @generated
  */
-public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEReferenceChange<T>> extends ECompoundChangeImpl implements ReplaceInEList<A, F, T, R, I> {
+public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEChange<T>> extends ECompoundChangeImpl implements ReplaceInEList<A, F, T, R, I> {
     /**
      * The cached value of the '{@link #getRemoveChange() <em>Remove Change</em>}' containment reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->

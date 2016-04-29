@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -57,6 +58,43 @@ public interface RootPackage extends EPackage {
     RootPackage eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl.init();
 
     /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.ERootChangeImpl <em>ERoot Change</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.ERootChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl#getERootChange()
+     * @generated
+     */
+    int EROOT_CHANGE = 0;
+
+    /**
+     * The feature id for the '<em><b>Uri</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EROOT_CHANGE__URI = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>ERoot Change</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EROOT_CHANGE_FEATURE_COUNT = ChangePackage.EATOMIC_CHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>ERoot Change</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EROOT_CHANGE_OPERATION_COUNT = ChangePackage.EATOMIC_CHANGE_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -64,7 +102,16 @@ public interface RootPackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl#getInsertRootEObject()
      * @generated
      */
-    int INSERT_ROOT_EOBJECT = 0;
+    int INSERT_ROOT_EOBJECT = 1;
+
+    /**
+     * The feature id for the '<em><b>Uri</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_ROOT_EOBJECT__URI = EROOT_CHANGE__URI;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -73,7 +120,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT__NEW_VALUE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE;
+    int INSERT_ROOT_EOBJECT__NEW_VALUE = EROOT_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -82,7 +129,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT__IS_CREATE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE;
+    int INSERT_ROOT_EOBJECT__IS_CREATE = EROOT_CHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Insert Root EObject</em>' class.
@@ -91,7 +138,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.ADDITIVE_EREFERENCE_CHANGE_FEATURE_COUNT + 0;
+    int INSERT_ROOT_EOBJECT_FEATURE_COUNT = EROOT_CHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -100,7 +147,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT___GET_NEW_VALUE = ChangePackage.ADDITIVE_EREFERENCE_CHANGE___GET_NEW_VALUE;
+    int INSERT_ROOT_EOBJECT___GET_NEW_VALUE = EROOT_CHANGE_OPERATION_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Insert Root EObject</em>' class.
@@ -109,7 +156,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.ADDITIVE_EREFERENCE_CHANGE_OPERATION_COUNT + 0;
+    int INSERT_ROOT_EOBJECT_OPERATION_COUNT = EROOT_CHANGE_OPERATION_COUNT + 1;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RemoveRootEObjectImpl <em>Remove Root EObject</em>}' class.
@@ -119,7 +166,16 @@ public interface RootPackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl#getRemoveRootEObject()
      * @generated
      */
-    int REMOVE_ROOT_EOBJECT = 1;
+    int REMOVE_ROOT_EOBJECT = 2;
+
+    /**
+     * The feature id for the '<em><b>Uri</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_ROOT_EOBJECT__URI = EROOT_CHANGE__URI;
 
     /**
      * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -128,7 +184,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT__OLD_VALUE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE;
+    int REMOVE_ROOT_EOBJECT__OLD_VALUE = EROOT_CHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -137,7 +193,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT__IS_DELETE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
+    int REMOVE_ROOT_EOBJECT__IS_DELETE = EROOT_CHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Remove Root EObject</em>' class.
@@ -146,7 +202,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE_FEATURE_COUNT + 0;
+    int REMOVE_ROOT_EOBJECT_FEATURE_COUNT = EROOT_CHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -155,7 +211,7 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT___GET_OLD_VALUE = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE___GET_OLD_VALUE;
+    int REMOVE_ROOT_EOBJECT___GET_OLD_VALUE = EROOT_CHANGE_OPERATION_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Remove Root EObject</em>' class.
@@ -164,8 +220,29 @@ public interface RootPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE_OPERATION_COUNT + 0;
+    int REMOVE_ROOT_EOBJECT_OPERATION_COUNT = EROOT_CHANGE_OPERATION_COUNT + 1;
 
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange <em>ERoot Change</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>ERoot Change</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange
+     * @generated
+     */
+    EClass getERootChange();
+
+    /**
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange#getUri <em>Uri</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Uri</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange#getUri()
+     * @see #getERootChange()
+     * @generated
+     */
+    EAttribute getERootChange_Uri();
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject <em>Insert Root EObject</em>}'.
@@ -210,6 +287,24 @@ public interface RootPackage extends EPackage {
      * @generated
      */
     interface Literals {
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.ERootChangeImpl <em>ERoot Change</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.ERootChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl#getERootChange()
+         * @generated
+         */
+        EClass EROOT_CHANGE = eINSTANCE.getERootChange();
+
+        /**
+         * The meta object literal for the '<em><b>Uri</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute EROOT_CHANGE__URI = eINSTANCE.getERootChange_Uri();
+
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.InsertRootEObjectImpl <em>Insert Root EObject</em>}' class.
          * <!-- begin-user-doc -->

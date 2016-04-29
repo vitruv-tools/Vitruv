@@ -72,9 +72,18 @@ public class RootSwitch<T1> extends Switch<T1> {
     @Override
     protected T1 doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
+            case RootPackage.EROOT_CHANGE: {
+                ERootChange eRootChange = (ERootChange)theEObject;
+                T1 result = caseERootChange(eRootChange);
+                if (result == null) result = caseEAtomicChange(eRootChange);
+                if (result == null) result = caseEChange(eRootChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case RootPackage.INSERT_ROOT_EOBJECT: {
                 InsertRootEObject<?> insertRootEObject = (InsertRootEObject<?>)theEObject;
                 T1 result = caseInsertRootEObject(insertRootEObject);
+                if (result == null) result = caseERootChange(insertRootEObject);
                 if (result == null) result = caseAdditiveEReferenceChange(insertRootEObject);
                 if (result == null) result = caseAdditiveEChange(insertRootEObject);
                 if (result == null) result = caseEAtomicChange(insertRootEObject);
@@ -85,6 +94,7 @@ public class RootSwitch<T1> extends Switch<T1> {
             case RootPackage.REMOVE_ROOT_EOBJECT: {
                 RemoveRootEObject<?> removeRootEObject = (RemoveRootEObject<?>)theEObject;
                 T1 result = caseRemoveRootEObject(removeRootEObject);
+                if (result == null) result = caseERootChange(removeRootEObject);
                 if (result == null) result = caseSubtractiveEReferenceChange(removeRootEObject);
                 if (result == null) result = caseSubtractiveEChange(removeRootEObject);
                 if (result == null) result = caseEAtomicChange(removeRootEObject);
@@ -94,6 +104,21 @@ public class RootSwitch<T1> extends Switch<T1> {
             }
             default: return defaultCase(theEObject);
         }
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>ERoot Change</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>ERoot Change</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseERootChange(ERootChange object) {
+        return null;
     }
 
     /**

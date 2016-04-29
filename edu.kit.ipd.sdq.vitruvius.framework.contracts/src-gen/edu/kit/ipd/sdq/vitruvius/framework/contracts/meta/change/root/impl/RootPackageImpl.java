@@ -25,11 +25,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -44,6 +46,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * @generated
  */
 public class RootPackageImpl extends EPackageImpl implements RootPackage {
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass eRootChangeEClass = null;
+
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -144,6 +153,24 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getERootChange() {
+        return eRootChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getERootChange_Uri() {
+        return (EAttribute)eRootChangeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getInsertRootEObject() {
         return insertRootEObjectEClass;
     }
@@ -185,6 +212,9 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         isCreated = true;
 
         // Create classes and their features
+        eRootChangeEClass = createEClass(EROOT_CHANGE);
+        createEAttribute(eRootChangeEClass, EROOT_CHANGE__URI);
+
         insertRootEObjectEClass = createEClass(INSERT_ROOT_EOBJECT);
 
         removeRootEObjectEClass = createEClass(REMOVE_ROOT_EOBJECT);
@@ -227,16 +257,24 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
         removeRootEObjectEClass_T.getEBounds().add(g1);
 
         // Add supertypes to classes
+        eRootChangeEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
+        g1 = createEGenericType(this.getERootChange());
+        insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
         EGenericType g2 = createEGenericType(insertRootEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getERootChange());
+        removeRootEObjectEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
         g2 = createEGenericType(removeRootEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         removeRootEObjectEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
+        initEClass(eRootChangeEClass, ERootChange.class, "ERootChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getERootChange_Uri(), ecorePackage.getEString(), "uri", "", 1, 1, ERootChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         initEClass(insertRootEObjectEClass, InsertRootEObject.class, "InsertRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(removeRootEObjectEClass, RemoveRootEObject.class, "RemoveRootEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

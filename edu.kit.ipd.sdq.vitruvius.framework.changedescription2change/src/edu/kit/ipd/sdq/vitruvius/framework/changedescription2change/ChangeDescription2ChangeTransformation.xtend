@@ -1,22 +1,25 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changedescription2change
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import java.util.List
-import org.eclipse.emf.common.util.BasicEList
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription
-import java.util.Map.Entry
-import org.eclipse.emf.ecore.change.FeatureChange
-import org.eclipse.emf.ecore.change.ListChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription
+import java.util.List
+import java.util.Map.Entry
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.change.ChangeKind
+import org.eclipse.emf.ecore.change.FeatureChange
+import org.eclipse.emf.ecore.change.ListChange
+import org.eclipse.emf.ecore.change.ResourceChange
+
+import static extension edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class ChangeDescription2ChangeTransformation {
 	
@@ -103,123 +106,128 @@ class ChangeDescription2ChangeTransformation {
 		// --order-bullshit-- = order changes: first deletions, then containment, then non-containment
 		// END LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 		
-	def static List<EChange> transform(ForwardChangeDescription changeDescription) {
-		val List<EChange> eChanges = new BasicEList<EChange>				
+	var ForwardChangeDescription changeDescription
+	val List<EChange> eChanges
+	
+	new(ForwardChangeDescription changeDescription) {
+		this.changeDescription = changeDescription
+		this.eChanges = new BasicEList<EChange>	
+	}
+		
+	def List<EChange> transform() {			
 		if (changeDescription == null) {
 			return eChanges
 		} else {
-			// FIXME MK KEEP ON WORKING HERE turn resource changes into normal changes: nothing else but the change mm will be needed anymore
-//			 changeDescription.resourceChanges?.forEach[...]
-//
-			// make the flat attach part of the change description deep by recursively creating changes for all non-default values
 
+			changeDescription.resourceChanges?.forEach[addChangeForResourceChange(it)]
+
+			// make the flat attach part of the change description deep by recursively creating changes for all non-default values
 			for (objectToAttach : changeDescription.getObjectsToAttach) {
-				recursivelyAddChangesForNonDefaultValues(objectToAttach, eChanges)
-				addChangeForObjectToAttach(objectToAttach, changeDescription.getContainerBeforeReversion(objectToAttach),eChanges)
+				recursivelyAddChangesForNonDefaultValues(objectToAttach)
+				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
 			}
 			// make the flat deletion part of the change description deep by recursively creating changes for all referenced objects
-			val objectsToDetach = changeDescription.getObjectsToDetach
-			objectsToDetach?.forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
-			objectsToDetach?.forEach[addChangeForObjectToDetach(it, eChanges)]
+			for (objectToDetach : changeDescription.getObjectsToDetach) {
+				recursivelyAddChangesForIndirectlyDeletedObjects(objectToDetach)
+				addChangeForObjectToDetach(objectToDetach, changeDescription.getNewContainer(objectToDetach))
+			}
 			// add all first level changes
-			changeDescription.objectChanges?.forEach[addConvertedChanges(it, eChanges)]
+			changeDescription.objectChanges?.forEach[addChangeForObjectChange(it)]
 			// sort changes: first deletions, then additions, then containment, then non-containment
 			val sortedEChanges = sortChanges(eChanges)
 			return sortedEChanges
 		}
 	}
 	
-	def private static void recursivelyAddChangesForNonDefaultValues(EObject eObject, List<EChange> eChanges) {
-		if (hasNonDefaultValue(eObject)) {
+	def private void addChangeForResourceChange(ResourceChange resourceChange) {
+		val resourceURI = resourceChange.resourceURI
+		for (listChange : resourceChange.listChanges) {
+			switch listChange.kind.value {
+				case ChangeKind.ADD : addChangeForAddResourceChange(resourceChange, resourceURI)
+				case ChangeKind.REMOVE : addChangeForRemoveResourceChange(resourceChange, listChange, resourceURI)
+			}
+		}
+	}
+	
+	def private void addChangeForAddResourceChange(ResourceChange resourceChange, String resourceURI) {
+		val rootElementsList = resourceChange.value
+		var rootToAdd = rootElementsList.claimNotMany as EObject
+		var oldRootContainer = rootToAdd.eContainer
+		var oldRootResource = rootToAdd.eResource
+		eChanges.add(ChangeDescription2ChangeUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, resourceURI))
+	}
+	
+	def private void addChangeForRemoveResourceChange(ResourceChange resourceChange, ListChange listChange, String resourceURI) {
+		val rootElementListIndex = listChange.index
+		// The resource is also in the state before the change was applied (like the model elements).
+		// Therefore, we are able to obtain the removed root Element from it.
+		val rootToRemove = resourceChange.resource.contents.get(rootElementListIndex)
+		var newRootContainer = changeDescription.getNewContainer(rootToRemove)
+		var newRootResource = changeDescription.getNewResource(rootToRemove)
+		eChanges.add(ChangeDescription2ChangeUtil.createRemoveRootChange(rootToRemove, newRootContainer, newRootResource, resourceURI))
+	}
+	
+	def private void recursivelyAddChangesForNonDefaultValues(EObject eObject) {
+		if (eObject.hasNonDefaultValue()) {
 			val metaclass = eObject.eClass
 			for (feature : metaclass.EAllStructuralFeatures) {
-				if (hasChangeableUnderivedPersistedNotContainingNonDefaultValue(eObject, feature)) {
-					eChanges.add(edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation.createAdditiveChangeForValue(eObject, feature))
-					getReferenceValueList(eObject, feature).forEach[recursivelyAddChangesForNonDefaultValues(it, eChanges)]
+				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
+					eChanges.add(ChangeDescription2ChangeUtil.createAdditiveChangeForValue(eObject, feature))
+					eObject.getReferenceValueList(feature).forEach[recursivelyAddChangesForNonDefaultValues(it)]
 				}
 			}
 		}
 	}
-	
-	def private static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EReference reference) {
-		return EChangeBridge.createAdditiveEChangeForReferencedObject(eObject, reference)
+    
+	def private AdditiveEReferenceChange<?> addChangeForObjectToAttach(EObject objectToAttach, EObject newContainer) {
+		if (isNotRootAndNotAlreadyProcessed(objectToAttach, newContainer)) {
+			// eChanges.add(createAdditive..)
+//			throw new UnsupportedOperationException()
+		}
 	}
 	
-	def private static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EAttribute attribute) {
-		return EChangeBridge.createAdditiveEChangeForAttributeValue(eObject, attribute)
+	def private boolean isNotRootAndNotAlreadyProcessed(EObject eObject, EObject newContainer) {
+		val wasOrIsRoot = wasRootBeforeChange(eObject) || isRootAfterChange(eObject, newContainer)
+		if (wasOrIsRoot) {
+			var rootChangeForObjectProcessed = false
+			for (eChange : eChanges) {
+				rootChangeForObjectProcessed = rootChangeForObjectProcessed || switch eChange {
+					InsertRootEObject<?> : eChange.newValue == eObject
+					RemoveRootEObject<?> : eChange.oldValue == eObject
+					default : false
+				}
+			}
+			if (!rootChangeForObjectProcessed) {
+				throw new RuntimeException("No resource change was processed for this root element: '" + eObject + "'" )
+			}
+		} 
+		return !wasOrIsRoot
 	}
-	
-	def private static boolean hasNonDefaultValue(EObject eObject) {
-		var hasNonDefaultValue = false
-		for (feature : eObject.eClass.EAllStructuralFeatures) {
-			if (isChangeableUnderivedPersistedNotContainingFeature(eObject, feature)) {
-				hasNonDefaultValue = hasNonDefaultValue || hasNonDefaultValue(eObject, feature)
+    
+	def private void recursivelyAddChangesForIndirectlyDeletedObjects(EObject parent) {
+		for (containmentReference : parent.eClass.EAllContainments) {
+			for (child : parent.getReferenceValueList(containmentReference)) {
+				eChanges.add(ChangeDescription2ChangeUtil.createSubtractiveEChangeForReferencedObject(parent, child, containmentReference))
+				recursivelyAddChangesForIndirectlyDeletedObjects(child)
 			}
 		}
-		return hasNonDefaultValue
 	}
 	
-	def private static boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
-        return feature.isChangeable() && !feature.isDerived() && !feature.isTransient() && feature != eObject.eContainingFeature();
-	}
-	
-	def private static boolean hasNonDefaultValue(EObject eObject, EStructuralFeature feature) {
-		val value = eObject.eGet(feature)
-		if (feature.many) {
-			val eList = value as EList<?>
-			return eList != null && !eList.isEmpty
-		} else {
-			// TODO MK is equals for feature default value comparison okay or is identity (===) needed?
-			return value != feature.defaultValue
-		}
-	}
-	
-	def private static boolean hasChangeableUnderivedPersistedNotContainingNonDefaultValue(EObject eObject, EStructuralFeature feature) {
-		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && hasNonDefaultValue(eObject, feature)
-	}
-	
-	def private static dispatch EList<EObject> getReferenceValueList(EObject eObject, EStructuralFeature feature) {
-		return new BasicEList
-	}
-	
-	def private static dispatch EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
-		return getValueList(eObject, reference) as EList<EObject>
-	}
-	
-	// FIXME MK move to EObjectUtil
-	def private static EList<?> getValueList(EObject eObject, EStructuralFeature feature) {
-		val value = eObject.eGet(feature)
-		if (feature.many && value != null) {
-			return value as EList<?>
-		} else {
-			return new BasicEList(#[value])
-		}
-	}
-    
-	def static addChangeForObjectToAttach(EObject objectToAttach, EObject oldContainer, List<EChange> eChanges) {
-		eChanges.add(EChangeBridge.createAdditiveEChangeForEObject(objectToAttach, oldContainer))
-	}
-    
-	def private static void recursivelyAddChangesForDeletedObjects(EObject eObject, List<EChange> eChanges) {
-		for (containmentReference : eObject.eClass.EAllContainments) {
-			eChanges.add(EChangeBridge.createSubtractiveEChangeForReferencedObject(eObject, containmentReference))
-			getReferenceValueList(eObject,containmentReference).forEach[recursivelyAddChangesForDeletedObjects(it, eChanges)]
-		}
-	}
-	
-	def private static void addConvertedChanges(Entry<EObject, EList<FeatureChange>> entry, List<EChange> eChanges) {
+	def private void addChangeForObjectChange(Entry<EObject, EList<FeatureChange>> entry) {
 		val affectedEObject = entry.key
 		val featureChanges = entry.value
-		featureChanges.forEach[eChanges.addAll(convertChange(affectedEObject, it.feature, it.value, it.referenceValue, it.listChanges))]
+		featureChanges.forEach[eChanges.addAll(addChangeForFeatureChange(affectedEObject, it.feature, it.value, it.referenceValue, it.listChanges))]
 	}
 	
-	def private static List<EChange> convertChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
+	def private List<EChange> addChangeForFeatureChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
 		// FIXME MK CONVERSION LOGIC
 		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def static addChangeForObjectToDetach(EObject objectToDetach, List<EChange> eChanges) {
-		eChanges.add(EChangeBridge.createSubtractiveEChangeForEObject(objectToDetach))
+	def private void addChangeForObjectToDetach(EObject objectToDetach, EObject newContainer) {
+		if (isNotRootAndNotAlreadyProcessed(objectToDetach, newContainer)) {
+			eChanges.add(ChangeDescription2ChangeUtil.createSubtractiveEChangeForEObject(objectToDetach))
+		}
 	}
 		
 	def private static List<EChange> sortChanges(List<EChange> changes) {

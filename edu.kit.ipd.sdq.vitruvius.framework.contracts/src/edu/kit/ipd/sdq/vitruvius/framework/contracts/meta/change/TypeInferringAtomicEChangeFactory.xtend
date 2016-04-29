@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory
@@ -22,13 +23,32 @@ import org.eclipse.emf.ecore.EStructuralFeature
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 
+/**
+ * Factory class for elements of change models. 
+ * Infers types (i.e. metaclasses and feature types) from parameters where possible.<br/>
+ * 
+ * Can be used by any transformation that creates change models.
+ */
 final class TypeInferringAtomicEChangeFactory {
 	
-	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, boolean isCreate) {
+	def static <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, boolean isCreate, String resourceURI) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
 		c.newValue = newValue
 		c.isCreate = isCreate
+		setRootChangeFeatures(c, resourceURI)
 		return c
+	}
+	
+	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, boolean isDelete, String resourceURI) {
+		val c = RootFactory.eINSTANCE.createRemoveRootEObject
+		c.oldValue = oldValue
+		c.isDelete = isDelete
+		setRootChangeFeatures(c, resourceURI)
+		return c
+	}
+	
+	def private static setRootChangeFeatures(ERootChange c, String resourceURI) {
+		c.uri = resourceURI
 	}
 	
 	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldObject, boolean isDelete) {
@@ -37,7 +57,7 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	private def static <T extends EObject> void setSubtractiveEReferenceChangeFeatures(SubtractiveEReferenceChange<T> c, T oldEObject, boolean isDelete) {
+	def private  static <T extends EObject> void setSubtractiveEReferenceChangeFeatures(SubtractiveEReferenceChange<T> c, T oldEObject, boolean isDelete) {
 		c.isDelete = isDelete
 	}
 	

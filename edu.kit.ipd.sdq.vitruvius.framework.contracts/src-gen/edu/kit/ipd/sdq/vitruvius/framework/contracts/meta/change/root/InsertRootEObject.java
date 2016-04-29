@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface InsertRootEObject<T extends EObject> extends AdditiveEReferenceChange<T> {
+public interface InsertRootEObject<T extends EObject> extends ERootChange, AdditiveEReferenceChange<T> {
 } // InsertRootEObject

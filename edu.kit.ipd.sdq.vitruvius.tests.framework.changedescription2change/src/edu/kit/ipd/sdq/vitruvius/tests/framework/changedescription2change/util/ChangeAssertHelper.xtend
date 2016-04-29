@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.Replac
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList
@@ -20,6 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
@@ -27,11 +29,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 class ChangeAssertHelper {
 
@@ -117,6 +118,11 @@ class ChangeAssertHelper {
 			Assert.assertEquals("Change " + additiveReference + " shall not be a create change",
 				additiveReference.isIsCreate, expectedValue)
 		}
+				
+		def static void assertUri(ERootChange rootChange, String expectedValue) {
+			Assert.assertEquals("Change " + rootChange + " shall have the uri " + expectedValue,
+				rootChange.uri, expectedValue)
+		}
 
 		def static void assertReplaceSingleValuedEReference(List<?> changes, Object expectedOldValue,
 			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
@@ -167,16 +173,18 @@ class ChangeAssertHelper {
 			return unsetChange.subtractiveChanges
 		}
 
-		def public static assertInsertRootEObject(EChange change, Object newValue, boolean isCreate) {
+		def public static assertInsertRootEObject(EChange change, Object newValue, boolean isCreate, String uri) {
 			val insertRoot = change.assertObjectInstanceOf(InsertRootEObject)
 			insertRoot.assertNewValue(newValue)
 			insertRoot.assertIsCreate(isCreate)
+			insertRoot.assertUri(uri)
 		}
 
-		def public static assertRemoveRootEObject(List<?> changes, Object oldValue, boolean isDelete) {
-			val removeRoot = changes.assertSingleChangeWithType(RemoveRootEObject)
+		def public static assertRemoveRootEObject(EChange change, Object oldValue, boolean isDelete, String uri) {
+			val removeRoot = change.assertObjectInstanceOf(RemoveRootEObject)
 			removeRoot.assertOldValue(oldValue)
 			removeRoot.assertIsDelete(isDelete)
+			removeRoot.assertUri(uri)
 		}
 
 		def public static assertMoveEObject(List<?> changes, int atomicChanges) {

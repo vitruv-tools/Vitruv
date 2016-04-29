@@ -1,35 +1,23 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.rootobject
 
-import org.junit.Test
-import org.junit.Before
 import org.eclipse.emf.ecore.util.EcoreUtil
-
-import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
+import org.junit.Test
 
 class ChangeDescription2RemoveRootEObject extends ChangeDescription2RootChangeTest{
 	
-	@Before
-	override beforeTest(){
-		super.beforeTest
-		this.resource1.contents.add(this.rootElement)
-		startRecordingOnResourceSet	
+	@Test
+	def void removeDeleteRootEObjectInResource(){
+		// prepare
+		insertRootEObjectInResource(this.resource1)
+		startRecordingOnResourceSet
+		// test
+		removeRootEObjectInResource()
+		// assert
+		val isDelete = true
+		assertRemoveRoot(0, isDelete, this.uri1)
 	}
 	
-	@Test
-	def public void testRemoveRootEObject(){
-		this.resource1.contents.clear
-		assertRemoveEObject(false)		
-	}
-	
-	@Test
-	def public void testRemoveRootEObjectWithDelete(){
+	def private void removeRootEObjectInResource(){
 		EcoreUtil.delete(this.rootElement)
-		assertRemoveEObject(true)	
-	}
-	
-	def assertRemoveEObject(boolean isDelete) {
-		val changes = getChanges()
-		changes.assertRemoveRootEObject(this.rootElement, isDelete)
-	}
-		
+	}	
 }

@@ -11,6 +11,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- org.eclipse.emf.ecore.change
+ org.eclipse.emf.ecore.change,
+ edu.kit.ipd.sdq.commons.util.emf
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changedescription2change
 

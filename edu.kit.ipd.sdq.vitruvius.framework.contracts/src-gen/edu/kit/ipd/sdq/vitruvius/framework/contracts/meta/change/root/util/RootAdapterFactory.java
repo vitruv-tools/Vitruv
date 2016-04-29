@@ -74,6 +74,10 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
     protected RootSwitch<Adapter> modelSwitch =
         new RootSwitch<Adapter>() {
             @Override
+            public Adapter caseERootChange(ERootChange object) {
+                return createERootChangeAdapter();
+            }
+            @Override
             public <T extends EObject> Adapter caseInsertRootEObject(InsertRootEObject<T> object) {
                 return createInsertRootEObjectAdapter();
             }
@@ -124,6 +128,20 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
         return modelSwitch.doSwitch((EObject)target);
     }
 
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange <em>ERoot Change</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange
+     * @generated
+     */
+    public Adapter createERootChangeAdapter() {
+        return null;
+    }
 
     /**
      * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject <em>Insert Root EObject</em>}'.

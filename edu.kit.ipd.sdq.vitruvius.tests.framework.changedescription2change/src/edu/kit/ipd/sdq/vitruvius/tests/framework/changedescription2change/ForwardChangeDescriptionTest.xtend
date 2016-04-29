@@ -20,10 +20,10 @@ class ForwardChangeDescriptionTest extends ChangeDescription2RootChangeTest {
 		
 		//assert
 		val fcd = this.changeRecorder.endRec()
-		val Map<EObject,EObject> attachContainersBefore = createMapForEachElement(fcd.objectsToAttach,[fcd.getContainerBeforeReversion(it)])
-		val Map<EObject,EReference> attachReferencesBefore = createMapForEachElement(fcd.objectsToAttach,[fcd.getContainmentReferenceBeforeReversion(it)])
-		val Map<EObject,EObject> detachContainersBefore = createMapForEachElement(fcd.objectsToDetach,[fcd.getContainerBeforeReversion(it)])
-		val Map<EObject,EReference> detachReferencesBefore = createMapForEachElement(fcd.objectsToDetach,[fcd.getContainmentReferenceBeforeReversion(it)])
+		val Map<EObject,EObject> attachContainersBefore = createMapForEachElement(fcd.objectsToAttach,[fcd.getNewContainer(it)])
+		val Map<EObject,EReference> attachReferencesBefore = createMapForEachElement(fcd.objectsToAttach,[fcd.getNewContainmentReference(it)])
+		val Map<EObject,EObject> detachContainersBefore = createMapForEachElement(fcd.objectsToDetach,[fcd.getNewContainer(it)])
+		val Map<EObject,EReference> detachReferencesBefore = createMapForEachElement(fcd.objectsToDetach,[fcd.getNewContainmentReference(it)])
 		
 		val cdi = fcd.changeDescription
 		val Map<EObject,EObject> attachContainersAfter = createMapForEachElement(fcd.objectsToAttach,[cdi.getOldContainer(it)])

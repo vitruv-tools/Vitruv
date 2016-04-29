@@ -11,7 +11,7 @@ import org.junit.After
 import org.junit.Before
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
-
+import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 /** 
  * This class is the test class for the new {@link ChangeDescription2ChangeTransformation}. It
  * reuses some test cases from the test for the old metamodel that can be found in the project
@@ -22,6 +22,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescript
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected ForwardChangeRecorder changeRecorder
 	var protected Root rootElement
+	var protected List<EChange> changes
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
 	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
@@ -48,8 +49,19 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	public def List<EChange> getChanges() {
+		if (this.changes == null) {
+			this.changes = endRecording()
+		}
+		return this.changes
+	}
+	
+	public def EChange claimChange(int index) {
+		return getChanges().claimElementAt(index)
+	}
+	
+	public def List<EChange> endRecording() {
 		val changesDescriptions = changeRecorder.endRec()
-		return ChangeDescription2ChangeTransformation.transform(changesDescriptions)
+		return new ChangeDescription2ChangeTransformation(changesDescriptions).transform()
 	}
 	
 	public def startRecording(){
