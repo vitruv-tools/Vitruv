@@ -9,11 +9,12 @@ import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import org.eclipse.xtend.lib.annotations.Delegate
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.change.impl.ChangeDescriptionImplUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.change.ChangeDescriptionUtil.*
+import org.eclipse.emf.ecore.resource.Resource
 
 /**
  * A forward change description that encapsulates the state before a change,
  * the delta to obtain the state after a change,
- * and information about the containment of attached and detached objects before the change happened.<br/>
+ * and information about the containment and resource of attached and detached objects after the change happened.<br/>
  * 
  * EMF's {@link ChangeDescription}, however always yields containment information before the last application of the change,
  * even if this application was a call to {@link ChangeDescription#applyAndReverse applyAndReverse} or {@link ChangeDescription#copyAndReverse copyAndReverse}!
@@ -26,7 +27,11 @@ class ForwardChangeDescription implements ChangeDescription {
 	/**
 	 * maps objects to their container and containment before the recorded change is reversed
 	 */
-	val Map<EObject, Pair<EObject, EReference>> containmentBeforeReversion
+	val Map<EObject, Pair<EObject, EReference>> containmentsBeforeReversion
+	/**
+	 * maps objects to their resource before the recorded change is reversed
+	 */
+	val Map<EObject, Resource> resourcesBeforeReversion
 	
 	/**
 	 * Creates a new forward change description using the given backward change description by copying and reversing it if the given map is not {@code null} and otherwise applying and reversing it.
@@ -34,7 +39,8 @@ class ForwardChangeDescription implements ChangeDescription {
 	new(ChangeDescription backwardChangeDescription, Map<EObject, URI> eObjectToProxyURIMap) {
 		val cdi = backwardChangeDescription.asImpl()
 		this.changeDescription = cdi
-		this.containmentBeforeReversion = cdi.getContainmentBeforeReversion()
+		this.containmentsBeforeReversion = cdi.getContainmentsBeforeReversion()
+		this.resourcesBeforeReversion = cdi.getResourcesBeforeReversion()
 		if (eObjectToProxyURIMap == null) {
 			this.applyAndReverse()
 		} else {
@@ -49,11 +55,15 @@ class ForwardChangeDescription implements ChangeDescription {
 		this(changeDescription, null)
 	}
 	
-	def EObject getContainerBeforeReversion(EObject eObject) {
-		return containmentBeforeReversion.get(eObject)?.getKey()
+	def EObject getNewContainer(EObject eObject) {
+		return containmentsBeforeReversion.get(eObject)?.getKey()
 	}
 	
-	def EReference getContainmentReferenceBeforeReversion(EObject eObject) {
-		return containmentBeforeReversion.get(eObject)?.getValue()
+	def EReference getNewContainmentReference(EObject eObject) {
+		return containmentsBeforeReversion.get(eObject)?.getValue()
+	}
+	
+	def Resource getNewResource(EObject rootObject) {
+		return resourcesBeforeReversion.get(rootObject)
 	}
 }
