@@ -57,7 +57,7 @@ class ChangeDescription2ChangeUtil {
 	}
 	
 	def private static boolean isRootContainer(EObject container) {
-		return container == null || container instanceof ChangeDescription
+		return container == null //|| container instanceof ChangeDescription
 	}
 	
 	def static EChange createSubtractiveEChangeForEObject(EObject eObject) {
@@ -103,13 +103,28 @@ class ChangeDescription2ChangeUtil {
 	}
 	
 	def static InsertRootEObject<?> createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI) {
-		val isCreate = isRootContainer(oldRootContainer) && oldRootResource == null
+		val isCreate = isCreate(oldRootContainer, oldRootResource)
 		return createInsertRootChange(rootToInsert, isCreate, resourceURI)
 	}
 	
+	def static boolean isCreate(EObject oldContainer, Resource oldResource) {
+		return (oldContainer == null || oldContainer instanceof ChangeDescription) && oldResource == null
+	}
+	
+	def static boolean isDelete(EObject newContainer, Resource newResource) {
+		return (newContainer == null || newContainer instanceof ChangeDescription) && newResource == null
+	}
+	
 	def static RemoveRootEObject<?> createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, String resourceURI) {
-		val isDelete = isRootContainer(newRootContainer) && newRootResource == null
+		val isDelete = isDelete(newRootContainer, newRootResource)
 		return createRemoveRootChange(rootToRemove, isDelete, resourceURI)
 	}
 	
+	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue) {
+		val isContainment = affectedReference.containment
+		val oldContainer = referenceValue.eContainer
+		val oldResource = referenceValue.eResource
+		val isCreate = isContainment && isCreate(oldContainer,oldResource)
+		return createInsertReferenceChange(affectedEObject, affectedReference, index, referenceValue, isCreate)
+	}
 }

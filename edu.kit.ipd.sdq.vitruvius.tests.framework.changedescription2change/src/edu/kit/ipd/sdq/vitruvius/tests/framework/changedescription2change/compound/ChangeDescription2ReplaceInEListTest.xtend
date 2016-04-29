@@ -25,7 +25,7 @@ class ChangeDescription2ReplaceInEListTest extends ChangeDescription2ChangeTrans
 		val insertAndRemoveChange = changes.assertReplaceInEList(2)
 		#[insertAndRemoveChange.first].assertSubtractiveChange(this.rootElement,
 			MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0, true, true)
-		#[insertAndRemoveChange.second].assertInsertEReference(this.rootElement,
+		insertAndRemoveChange.second.assertInsertEReference(this.rootElement,
 			MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot2, 0, true, true)
 	}
 
@@ -46,7 +46,7 @@ class ChangeDescription2ReplaceInEListTest extends ChangeDescription2ChangeTrans
 		val insertAndRemoveChange = changes.assertReplaceInEList(2)
 		#[insertAndRemoveChange.first].assertSubtractiveChange(this.rootElement,
 			MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0, false, false)
-		#[insertAndRemoveChange.second].assertInsertEReference(this.rootElement,
+		insertAndRemoveChange.second.assertInsertEReference(this.rootElement,
 			MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot2, 0, false, false) 
 	}
 	

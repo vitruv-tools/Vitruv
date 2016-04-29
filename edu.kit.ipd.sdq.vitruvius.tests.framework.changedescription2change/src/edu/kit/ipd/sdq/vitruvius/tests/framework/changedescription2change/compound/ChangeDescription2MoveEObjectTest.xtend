@@ -23,7 +23,7 @@ class ChangeDescription2MoveEObjectTest extends ChangeDescription2ChangeTransfor
 		moveChanges.second.assertAffectedEObject(this.rootElement)
 		moveChanges.second.assertAffectedEFeature(
 			this.rootElement.getFeautreByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME))
-		#[moveChanges.third].assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME,
+		moveChanges.third.assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME,
 			nonRoot, 0, true, false)
 		moveChanges.fourth.assertAffectedEObject(this.rootElement)
 		moveChanges.fourth.assertAffectedEFeature(this.rootElement.getFeautreByName(MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME))

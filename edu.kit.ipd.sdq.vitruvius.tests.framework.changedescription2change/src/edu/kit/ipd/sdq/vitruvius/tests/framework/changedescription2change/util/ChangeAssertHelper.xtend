@@ -214,9 +214,9 @@ class ChangeAssertHelper {
 					eCompoundChange.atomicChanges.size, atomicChanges)
 			}
 
-			def public static assertInsertEReference(List<?> changes, EObject affectedEObject, String featureName,
+			def public static assertInsertEReference(EChange change, EObject affectedEObject, String featureName,
 				Object expectedNewValue, int expectedIndex, boolean isContainment, boolean isCreate) {
-				val insertEReference = changes.assertSingleChangeWithType(InsertEReference)
+				val insertEReference = change.assertObjectInstanceOf(InsertEReference)
 				insertEReference.assertAffectedEObject(affectedEObject)
 				insertEReference.assertAffectedEFeature(affectedEObject.getFeautreByName(featureName))
 				insertEReference.assertNewValue(expectedNewValue)

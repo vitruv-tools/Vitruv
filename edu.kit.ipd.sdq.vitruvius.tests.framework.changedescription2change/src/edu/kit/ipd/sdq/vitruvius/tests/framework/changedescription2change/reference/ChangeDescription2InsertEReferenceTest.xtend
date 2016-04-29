@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.reference
 
+import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
-import java.util.List
-import org.eclipse.emf.ecore.EObject
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
@@ -38,26 +36,33 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 	}
 
 	def private testInsertInContainmentEReference(int expectedIndex) {
+		// prepare
 		startRecording
-		val nonRoot = createNonRootInInsertEFerence(false)
-		val changes = getChanges()
-		changes.assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, true, true)
+		// test
+		val nonRoot = createAndAddNonRootToRootMultiReference()
+		// assert
+		val isContainment = true
+		val isCreate = true
+		claimChange(0).assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
+			expectedIndex, isContainment, isCreate)
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
-		// prepare --> add nonRoot to 
-		val nonRoot = createNonRootInInsertEFerence(true);
+		// prepare 
+		val nonRoot = createAndAddNonRootToRootMultiReference()
+		startRecording
 		// test
 		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
-		// assert	
-		val changes = getChanges()
-		changes.assertInsertEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, false, false)
+		// assert
+		val isContainment = false
+		val isCreate = false
+		claimChange(0).assertInsertEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
+			expectedIndex, isContainment, isCreate)
 	}
-
-	def private createNonRootInInsertEFerence(boolean startRecording) {
-		val feature = this.rootElement.getFeautreByName(MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME)
-		feature.createAndAddNonRootToFeature(startRecording)
+	
+	def private NonRoot createAndAddNonRootToRootMultiReference() {
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
+		this.rootElement.multiValuedContainmentEReference.add(nonRoot)
+		return nonRoot
 	}
 }

@@ -109,11 +109,12 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, T newValue, int index) {
+	def static <A extends EObject, T extends EObject> InsertEReference<A,T> createInsertReferenceChange(A affectedEObject, EReference affectedReference, int index, T newValue, boolean isCreate) {
 		val c = ReferenceFactory.eINSTANCE.createInsertEReference()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
 		c.newValue = newValue
 		c.index = index
+		c.isCreate = isCreate
 		return c
 	}
 	

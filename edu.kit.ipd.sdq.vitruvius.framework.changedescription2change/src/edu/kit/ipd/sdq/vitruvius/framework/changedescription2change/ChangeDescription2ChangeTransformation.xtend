@@ -11,8 +11,9 @@ import java.util.List
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.change.ChangeKind
 import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.change.ListChange
@@ -132,7 +133,7 @@ class ChangeDescription2ChangeTransformation {
 				addChangeForObjectToDetach(objectToDetach, changeDescription.getNewContainer(objectToDetach))
 			}
 			// add all first level changes
-			changeDescription.objectChanges?.forEach[addChangeForObjectChange(it)]
+			changeDescription.objectChanges?.forEach[addChangesForObjectChange(it)]
 			// sort changes: first deletions, then additions, then containment, then non-containment
 			val sortedEChanges = sortChanges(eChanges)
 			return sortedEChanges
@@ -213,15 +214,28 @@ class ChangeDescription2ChangeTransformation {
 		}
 	}
 	
-	def private void addChangeForObjectChange(Entry<EObject, EList<FeatureChange>> entry) {
+	def private void addChangesForObjectChange(Entry<EObject, EList<FeatureChange>> entry) {
 		val affectedEObject = entry.key
 		val featureChanges = entry.value
-		featureChanges.forEach[eChanges.addAll(addChangeForFeatureChange(affectedEObject, it.feature, it.value, it.referenceValue, it.listChanges))]
+		featureChanges.forEach[eChanges.addAll(createChangesForFeatureChange(affectedEObject, it.feature, it))]
 	}
 	
-	def private List<EChange> addChangeForFeatureChange(EObject affectedEObject, EStructuralFeature feature, Object object, EObject object2, EList<ListChange> list) {
-		// FIXME MK CONVERSION LOGIC
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject, EReference affectedReference, FeatureChange featureChange) {
+		if (affectedReference.isMany) {
+			return featureChange.listChanges.mapFixed[createChangeForMultiReferenceChange(affectedEObject, affectedReference, it.index, it.kind, it.referenceValues)].flatten.toList
+		}
+	}
+	
+	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference, int index, ChangeKind changeKind, EList<EObject> referenceValues) {
+		switch changeKind.value {
+			case ChangeKind.ADD : referenceValues.mapFixed[ChangeDescription2ChangeUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)]
+//			case ChangeKind.REMOVE : 
+		}
+	}
+	
+	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject, EAttribute affectedAttribute, FeatureChange featureChange) {
+//		return addChangeForFeatureChange(affectedEObject, featureChange.feature, featureChange.value, featureChange.referenceValue, featureChange.listChanges)
+		throw new UnsupportedOperationException()
 	}
 	
 	def private void addChangeForObjectToDetach(EObject objectToDetach, EObject newContainer) {
