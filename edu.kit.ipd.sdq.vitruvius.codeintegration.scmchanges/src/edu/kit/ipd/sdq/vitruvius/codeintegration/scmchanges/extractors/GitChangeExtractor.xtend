@@ -17,7 +17,6 @@ import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
-import org.eclipse.jgit.diff.DiffEntry.Side
 import org.eclipse.jgit.lib.ObjectId
 
 class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {

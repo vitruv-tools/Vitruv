@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jgit.lib.ObjectId;
 
 public class ScmChangeResult {
 	

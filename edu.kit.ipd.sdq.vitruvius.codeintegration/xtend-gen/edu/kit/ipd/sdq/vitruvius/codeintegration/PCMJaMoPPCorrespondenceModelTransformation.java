@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.commons.Commentable;
@@ -79,7 +80,7 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
   
   private String pcmPath;
   
-  private String jamoppPath;
+  private List<IPath> jamoppPaths;
   
   @Accessors(AccessorType.PUBLIC_GETTER)
   private Resource scdm;
@@ -102,14 +103,14 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
   
   private IPath projectBase;
   
-  public PCMJaMoPPCorrespondenceModelTransformation(final String scdmPath, final String pcmPath, final String jamoppPath, final VSUMImpl vsum, final IPath projectBase) {
+  public PCMJaMoPPCorrespondenceModelTransformation(final String scdmPath, final String pcmPath, final List<IPath> jamoppPaths, final VSUMImpl vsum, final IPath projectBase) {
     VURI mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
     VURI mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
     CorrespondenceInstanceDecorator _correspondenceInstanceOriginal = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
     this.cInstance = ((CorrespondenceInstanceDecorator) _correspondenceInstanceOriginal);
     this.scdmPath = scdmPath;
     this.pcmPath = pcmPath;
-    this.jamoppPath = jamoppPath;
+    this.jamoppPaths = jamoppPaths;
     HashSet<org.emftext.language.java.containers.Package> _hashSet = new HashSet<org.emftext.language.java.containers.Package>();
     this.packages = _hashSet;
     this.projectBase = projectBase;
@@ -134,14 +135,18 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
       EList<EObject> _contents = this.pcm.getContents();
       EObject _get = _contents.get(0);
       this.pcmRepo = ((Repository) _get);
-      List<Resource> _loadJaMoPPResourceSet = ResourceLoadingHelper.loadJaMoPPResourceSet(this.jamoppPath);
+      final Function1<IPath, String> _function = (IPath path) -> {
+        return path.toString();
+      };
+      List<String> _map = ListExtensions.<IPath, String>map(this.jamoppPaths, _function);
+      List<Resource> _loadJaMoPPResourceSet = ResourceLoadingHelper.loadJaMoPPResourceSet(_map);
       this.jaMoppResources = _loadJaMoPPResourceSet;
-      final Consumer<Resource> _function = (Resource it) -> {
+      final Consumer<Resource> _function_1 = (Resource it) -> {
         EList<EObject> _contents_1 = it.getContents();
         Iterable<org.emftext.language.java.containers.Package> _filter = Iterables.<org.emftext.language.java.containers.Package>filter(_contents_1, org.emftext.language.java.containers.Package.class);
         Iterables.<org.emftext.language.java.containers.Package>addAll(this.packages, _filter);
       };
-      this.jaMoppResources.forEach(_function);
+      this.jaMoppResources.forEach(_function_1);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

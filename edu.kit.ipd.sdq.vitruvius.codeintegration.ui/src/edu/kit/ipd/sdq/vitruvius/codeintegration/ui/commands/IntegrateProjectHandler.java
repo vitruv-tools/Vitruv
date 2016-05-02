@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
@@ -45,6 +48,7 @@ public class IntegrateProjectHandler extends AbstractHandler {
         return null;
 	}
 
+	@SuppressWarnings("restriction")
 	public void integrateProject(final IProject project) {
 		// IPath projectPath = project.getFullPath(); // workspace relative Path
         final IPath projectPath = project.getLocation(); // absolute path
@@ -52,7 +56,14 @@ public class IntegrateProjectHandler extends AbstractHandler {
 
         final IPath scdmPath = models.addFileExtension("sourcecodedecorator");
         final IPath pcmPath = models.addFileExtension("repository");
-        final IPath srcPath = projectPath.append("src");
+        
+        IPath[] srcPaths = ResourceUtils.getAllJavaSourceLocations(project);
+        List<IPath> jamoppPaths = new ArrayList<>();
+        for (IPath path : srcPaths) {
+        	IPath projectRelative = path.removeFirstSegments(1);
+        	IPath abs = project.getLocation().append(projectRelative);
+        	jamoppPaths.add(abs);
+        }
         
         final IPath projectBase = projectPath.removeLastSegments(1);
 
@@ -67,7 +78,7 @@ public class IntegrateProjectHandler extends AbstractHandler {
                 metaRepository.getMetamodel(VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)));
 
         final PCMJaMoPPCorrespondenceModelTransformation transformation = new PCMJaMoPPCorrespondenceModelTransformation(
-                scdmPath.toString(), pcmPath.toString(), srcPath.toString(), vsum, projectBase);
+                scdmPath.toString(), pcmPath.toString(), jamoppPaths, vsum, projectBase);
 
         transformation.createCorrespondences();
 	}

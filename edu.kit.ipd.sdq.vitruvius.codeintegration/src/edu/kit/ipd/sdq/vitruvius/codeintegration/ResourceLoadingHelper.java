@@ -38,6 +38,23 @@ public class ResourceLoadingHelper {
                 extractLayoutInformation);
         return jamoppreader.getSourceResources();
     }
+    
+    /**
+     * Loads a set of JaMoPP resources from the defined java project source paths.
+     *
+     * @param paths
+     *            src paths of the java project
+     * @return a List of resources containing the extracted JaMoPP resources.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    public static List<Resource> loadJaMoPPResourceSet(final List<String> paths) throws IOException {
+        final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
+        final boolean extractLayoutInformation = true;
+        jamoppreader.extractSoftwareModel(paths, new NullProgressMonitor(), null,
+                extractLayoutInformation);
+        return jamoppreader.getSourceResources();
+    }
 
     /**
      * Loads the specified (.sourcecodedecorator) file.

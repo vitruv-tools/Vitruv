@@ -39,6 +39,7 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
+import java.util.ArrayList
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -53,7 +54,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	// Absolute paths needed
 	private String scdmPath; // in, single file
 	private String pcmPath; // in, single file
-	private String jamoppPath; // in, root src folder, directory
+	private List<IPath> jamoppPaths; // all src folders
 	@Accessors(PUBLIC_GETTER)
 	private Resource scdm
 	private Resource pcm
@@ -70,7 +71,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 	private IPath projectBase
 
-	new(String scdmPath, String pcmPath, String jamoppPath, VSUMImpl vsum, IPath projectBase) {
+	new(String scdmPath, String pcmPath, List<IPath> jamoppPaths, VSUMImpl vsum, IPath projectBase) {
 
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
@@ -80,7 +81,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 		this.scdmPath = scdmPath;
 		this.pcmPath = pcmPath;
-		this.jamoppPath = jamoppPath;
+		this.jamoppPaths = jamoppPaths;
 		this.packages = new HashSet<Package>();
 		this.projectBase = projectBase;
 		this.modelProviding = vsum
@@ -100,8 +101,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// Load pcm, scdm and jamopp resourceSet
 		scdm = ResourceLoadingHelper.loadSCDMResource(scdmPath)
 		pcm = ResourceLoadingHelper.loadPCMRepositoryResource(pcmPath)
-		pcmRepo = pcm.contents.get(0) as Repository;
-		jaMoppResources = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPath)
+		pcmRepo = pcm.contents.get(0) as Repository
+		jaMoppResources = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPaths.map[path | path.toString])
 
 		// Get all jaMopp packages from resourceSet  
 		jaMoppResources.forEach[packages.addAll((contents.filter(typeof(Package))))]
