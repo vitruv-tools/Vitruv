@@ -39,7 +39,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		// prepare
 		startRecording
 		// test
-		val nonRoot = createAndAddNonRootToRootMultiReference()
+		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
 		// assert
 		val isContainment = true
 		val isCreate = true
@@ -49,7 +49,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 
 	def private testInsertInEReference(int expectedIndex) {
 		// prepare 
-		val nonRoot = createAndAddNonRootToRootMultiReference()
+		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
 		startRecording
 		// test
 		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
@@ -60,9 +60,9 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 			expectedIndex, isContainment, isCreate)
 	}
 	
-	def private NonRoot createAndAddNonRootToRootMultiReference() {
+	def private NonRoot createAndAddNonRootToRootMultiReference(int index) {
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.multiValuedContainmentEReference.add(nonRoot)
+		this.rootElement.multiValuedContainmentEReference.add(index, nonRoot)
 		return nonRoot
 	}
 }

@@ -65,6 +65,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	public def startRecording(){
+		this.changes = null
 		this.changeRecorder.beginRec()
 	}
 	
