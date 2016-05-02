@@ -136,6 +136,11 @@ class ChangeDescription2ChangeTransformation {
 			changeDescription.objectChanges?.forEach[addChangesForObjectChange(it)]
 			// sort changes: first deletions, then additions, then containment, then non-containment
 			val sortedEChanges = sortChanges(eChanges)
+			// now that we have model elements to describe the forward change,
+			// we do not need the forward change description,
+			// but we need the model itself to be in the state after the change.
+			// Therefore, we apply the change again which also reverts the change description that is no longer needed
+			changeDescription.applyAndReverse
 			return sortedEChanges
 		}
 	}
