@@ -62,7 +62,7 @@ class ChangeDescription2ChangeUtil {
 	
 	def static EChange createSubtractiveEChangeForEObject(EObject eObject) {
 		// FIXME MK ChangeBridge
-//		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {

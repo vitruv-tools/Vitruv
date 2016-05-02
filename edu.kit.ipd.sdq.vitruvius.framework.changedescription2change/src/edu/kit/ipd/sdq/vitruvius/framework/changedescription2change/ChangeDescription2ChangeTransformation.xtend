@@ -234,7 +234,7 @@ class ChangeDescription2ChangeTransformation {
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference, int index, ChangeKind changeKind, EList<EObject> referenceValues) {
 		switch changeKind.value {
 			case ChangeKind.ADD : referenceValues.mapFixed[ChangeDescription2ChangeUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)]
-//			case ChangeKind.REMOVE : 
+			case ChangeKind.REMOVE : throw new UnsupportedOperationException()
 		}
 	}
 	

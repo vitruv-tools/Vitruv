@@ -16,8 +16,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		// unset 
 		this.rootElement.eUnset(this.rootElement.getFeautreByName(MULTI_VALUE_E_ATTRIBUTE_NAME))
 
-		val changes = getChanges()
-		val subtractiveChanges = changes.assertExplicitUnset
+		val subtractiveChanges = claimChange(0).assertExplicitUnset.subtractiveChanges
 		subtractiveChanges.assertRemoveEAttribute(this.rootElement, MULTI_VALUE_E_ATTRIBUTE_NAME, 42, 0)
 	}
 

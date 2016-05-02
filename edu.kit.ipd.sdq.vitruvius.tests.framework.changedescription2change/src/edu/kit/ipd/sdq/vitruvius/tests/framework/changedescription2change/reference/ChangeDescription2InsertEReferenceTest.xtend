@@ -1,13 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.reference
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
-import edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.ChangeDescription2ChangeTransformationTest
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 
-class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
+class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 
 	@Test
 	def public void testInsertEReferenceNonContainment() {
@@ -43,8 +41,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		// assert
 		val isContainment = true
 		val isCreate = true
-		claimChange(0).assertInsertEReference(this.rootElement, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, isContainment, isCreate)
+		assertInsertEReference(nonRoot, MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment, isCreate)
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
@@ -56,13 +53,11 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTra
 		// assert
 		val isContainment = false
 		val isCreate = false
-		claimChange(0).assertInsertEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot,
-			expectedIndex, isContainment, isCreate)
+		assertInsertEReference(nonRoot, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, expectedIndex, isContainment, isCreate)
 	}
 	
-	def private NonRoot createAndAddNonRootToRootMultiReference(int index) {
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.multiValuedContainmentEReference.add(index, nonRoot)
-		return nonRoot
+	def private void assertInsertEReference(NonRoot nonRoot, String featureName, int expectedIndex, boolean isContainment, boolean isCreate) {
+		claimChange(0).assertInsertEReference(this.rootElement, featureName, nonRoot,
+			expectedIndex, isContainment, isCreate)
 	}
 }

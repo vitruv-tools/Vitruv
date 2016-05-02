@@ -18,7 +18,7 @@ class ChangeDescription2MoveEObjectTest extends ChangeDescription2ChangeTransfor
 		// assert
 		val changes = getChanges()
 		val moveChanges = changes.assertMoveEObject(2)
-		#[moveChanges.first].assertSubtractiveChange(this.rootElement, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
+		moveChanges.first.assertRemoveEReference(this.rootElement, SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME,
 			nonRoot, 0, true, false)
 		moveChanges.second.assertAffectedEObject(this.rootElement)
 		moveChanges.second.assertAffectedEFeature(

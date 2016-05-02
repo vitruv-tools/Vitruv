@@ -44,7 +44,7 @@ class ChangeAssertHelper {
 		return assertObjectInstanceOf(changes.get(0), type)
 	}
 
-	public static def <T> assertObjectInstanceOf(Object object, Class<T> type) {
+	public static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
 		Assert.assertTrue("The object " + object.class.simpleName + " should be type of " + type.simpleName,
 			type.isInstance(object))
 		return type.cast(object)
@@ -143,17 +143,18 @@ class ChangeAssertHelper {
 			Assert.assertEquals("The value is not at the correct index", change.index, expectedIndex)
 		}
 
-		def public static assertSubtractiveChange(List<?> changes, EObject affectedEObject, String affectedFeatureName,
-			Object oldValue, int expectedOldIndex, boolean isContainment, boolean isDelete) {
-			val change = assertSingleChangeWithType(changes, RemoveEReference)
-			change.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedFeatureName))
-			change.assertAffectedEObject(affectedEObject)
-			change.assertOldValue(oldValue)
-			if (change instanceof RemoveFromEList) {
-				change.assertIndex(expectedOldIndex)
+		def public static <A extends EObject, T extends EObject> RemoveEReference<A,T> assertRemoveEReference(EChange change, A affectedEObject, String affectedFeatureName,
+			T oldValue, int expectedOldIndex, boolean isContainment, boolean isDelete) {
+			val subtractiveChange = assertObjectInstanceOf(change, RemoveEReference)
+			subtractiveChange.assertAffectedEFeature(affectedEObject.getFeautreByName(affectedFeatureName))
+			subtractiveChange.assertAffectedEObject(affectedEObject)
+			subtractiveChange.assertOldValue(oldValue)
+			if (subtractiveChange instanceof RemoveFromEList) {
+				subtractiveChange.assertIndex(expectedOldIndex)
 			}
-			change.assertContainment(isContainment)
-			change.assertIsDelete(isDelete)
+			subtractiveChange.assertContainment(isContainment)
+			subtractiveChange.assertIsDelete(isDelete)
+			return subtractiveChange
 		}
 
 		def public static assertRemoveEAttribute(List<?> changes, EObject affecteEObject, String featureName,
@@ -166,11 +167,11 @@ class ChangeAssertHelper {
 			removeEAttributeValue.assertIndex(expectedOldIndex)
 		}
 
-		def public static List<?> assertExplicitUnset(List<?> changes) {
-			val unsetChange = changes.assertSingleChangeWithType(ExplicitUnsetEFeature)
+		def public static ExplicitUnsetEFeature<?,?,?,?> assertExplicitUnset(EChange change) {
+			val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEFeature)
 			Assert.assertEquals("atomic changes should be the same than the subtractive changes",
 				unsetChange.atomicChanges, unsetChange.subtractiveChanges)
-			return unsetChange.subtractiveChanges
+			return unsetChange
 		}
 
 		def public static assertInsertRootEObject(EChange change, Object newValue, boolean isCreate, String uri) {
@@ -214,8 +215,8 @@ class ChangeAssertHelper {
 					eCompoundChange.atomicChanges.size, atomicChanges)
 			}
 
-			def public static assertInsertEReference(EChange change, EObject affectedEObject, String featureName,
-				Object expectedNewValue, int expectedIndex, boolean isContainment, boolean isCreate) {
+			def public static <A extends EObject, T extends EObject> InsertEReference<A,T> assertInsertEReference(EChange change, A affectedEObject, String featureName,
+				T expectedNewValue, int expectedIndex, boolean isContainment, boolean isCreate) {
 				val insertEReference = change.assertObjectInstanceOf(InsertEReference)
 				insertEReference.assertAffectedEObject(affectedEObject)
 				insertEReference.assertAffectedEFeature(affectedEObject.getFeautreByName(featureName))
@@ -223,6 +224,7 @@ class ChangeAssertHelper {
 				insertEReference.assertIndex(expectedIndex)
 				insertEReference.assertContainment(isContainment)
 				insertEReference.assertIsCreate(isCreate)
+				return insertEReference
 			}
 
 			def public static assertInsertEAttribute(List<?> changes, EObject affectedEObject, String featureName,
