@@ -11,26 +11,28 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 	def private void testRemoveEReference(boolean isContainment, boolean isExplicitUnset) {
 		// prepare
 		val nonRoot = createAndSetNonRootToRootSingleReference()
-		if (!isContainment) {
-			// add element to non-containment reference before removing it
+		// add element to right reference in order to be able to remove it later
+		if (isContainment) {
+			this.rootElement.multiValuedContainmentEReference.add(nonRoot)
+		} else {
 			this.rootElement.multiValuedNonContainmentEReference.add(nonRoot)
 		}
 		startRecording
 		var EChange removeChange
 		// test
 		if (isExplicitUnset) {
-			if (isContainment) {
-				this.rootElement.multiValuedNonContainmentEReference.remove(nonRoot)
-			} else {
-				this.rootElement.multiValuedContainmentEReference.remove(nonRoot)
-			}
-			removeChange = claimChange(0)
-		} else {
 			val featureName = if (isContainment) MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME else MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME 
 			val feature = this.rootElement.getFeautreByName(featureName)
 			this.rootElement.eUnset(feature)
 			val unsetChange = claimChange(0).assertExplicitUnset()
 			removeChange = unsetChange.subtractiveChanges?.get(0)
+		} else {
+			if (isContainment) {
+				this.rootElement.multiValuedContainmentEReference.remove(nonRoot)
+			} else {
+				this.rootElement.multiValuedNonContainmentEReference.remove(nonRoot)
+			}
+			removeChange = claimChange(0)
 		}
 		// assert 
 		val isDelete = isContainment

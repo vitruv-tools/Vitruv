@@ -127,4 +127,10 @@ class ChangeDescription2ChangeUtil {
 		val isCreate = isContainment && isCreate(oldContainer,oldResource)
 		return createInsertReferenceChange(affectedEObject, affectedReference, index, referenceValue, isCreate)
 	}
+	
+	def static EChange createRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, EObject newContainer, Resource newResource) {
+		val isContainment = affectedReference.containment
+		val isDelete = isContainment && isDelete(newContainer,newResource)
+		return createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index, isDelete)
+	}
 }

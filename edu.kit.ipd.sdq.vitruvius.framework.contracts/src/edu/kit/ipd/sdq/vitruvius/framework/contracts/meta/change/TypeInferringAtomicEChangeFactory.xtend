@@ -131,7 +131,9 @@ final class TypeInferringAtomicEChangeFactory {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
 		setSubtractiveEReferenceChangeFeatures(c,oldEObject,isDelete)
+		c.oldValue = oldEObject
 		c.index = index
+		c.isDelete = isDelete
 		return c
 	}
 	

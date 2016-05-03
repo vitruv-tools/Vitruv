@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.change.ResourceChange
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import java.util.Collections
 
 class ChangeDescription2ChangeTransformation {
 	
@@ -227,15 +228,36 @@ class ChangeDescription2ChangeTransformation {
 	
 	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject, EReference affectedReference, FeatureChange featureChange) {
 		if (affectedReference.isMany) {
-			return featureChange.listChanges.mapFixed[createChangeForMultiReferenceChange(affectedEObject, affectedReference, it.index, it.kind, it.referenceValues)].flatten.toList
+			val listChanges = featureChange.listChanges
+			val resultChanges = listChanges.mapFixed[createChangeForMultiReferenceChange(affectedEObject, affectedReference, it.index, it.kind, it.referenceValues)].flatten.toList
+			val elementsReferencedAfterChange = featureChange.referenceValue
+			if (elementsReferencedAfterChange == null && listChanges?.isEmpty) {
+				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
+				for (var index = 0; index < elementsReferencedBeforeChange.size; index++) {
+					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
+					resultChanges.addAll(createChangeForMultiReferenceChange(affectedEObject, affectedReference, index, ChangeKind.REMOVE_LITERAL, #[elementReferencedBeforeChange]))
+				}
+			}
+			return resultChanges
 		}
 	}
 	
-	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference, int index, ChangeKind changeKind, EList<EObject> referenceValues) {
-		switch changeKind.value {
-			case ChangeKind.ADD : referenceValues.mapFixed[ChangeDescription2ChangeUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)]
-			case ChangeKind.REMOVE : throw new UnsupportedOperationException()
+	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference, int index, ChangeKind changeKind, List<EObject> referenceValues) {
+		switch changeKind {
+			case ChangeKind.ADD_LITERAL : referenceValues.mapFixed[ChangeDescription2ChangeUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)]
+			case ChangeKind.REMOVE_LITERAL : createChangeForRemoveReferenceChange(affectedEObject, affectedReference, index, referenceValues)
+			default : Collections.emptyList()
 		}
+	}
+	
+	def private List<EChange> createChangeForRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, List<EObject> referenceValues) {
+		val resultList = newArrayList()
+		for (referenceValue : referenceValues) {
+			var newContainer = changeDescription.getNewContainer(referenceValue)
+			var newResource = changeDescription.getNewResource(referenceValue)
+			resultList.add(ChangeDescription2ChangeUtil.createRemoveReferenceChange(affectedEObject, affectedReference, index, referenceValue, newContainer, newResource))
+		}
+		return resultList
 	}
 	
 	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject, EAttribute affectedAttribute, FeatureChange featureChange) {
