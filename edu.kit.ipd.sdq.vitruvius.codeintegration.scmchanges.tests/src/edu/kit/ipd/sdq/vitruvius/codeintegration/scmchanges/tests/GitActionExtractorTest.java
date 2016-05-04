@@ -7,6 +7,7 @@ import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -49,7 +50,7 @@ public class GitActionExtractorTest {
 		ObjectId oldId = repo.resolve(OLD_COMMIT_ID);
 		ObjectId newId = repo.resolve(NEW_COMMIT_ID);
 		
-		GitChangeExtractor extractorUnderTest = new GitChangeExtractor(repo);
+		GitChangeExtractor extractorUnderTest = new GitChangeExtractor(repo, Path.fromOSString(""));
 		extractorUnderTest.extract(newId, oldId);
 
 	}

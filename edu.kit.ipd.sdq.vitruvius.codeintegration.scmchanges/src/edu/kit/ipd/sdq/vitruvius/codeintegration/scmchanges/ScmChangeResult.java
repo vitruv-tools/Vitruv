@@ -4,24 +4,30 @@ import org.eclipse.core.runtime.IPath;
 
 public class ScmChangeResult {
 	
-	private IPath newFile;
+	private IPath newFileWithOffset;
 	private String newContent;
 	private String oldContent;
-	private IPath oldFile;
+	private IPath oldFileWithOffset;
 	private String newVersionId;
 	private String oldVersionId;
 
-	public ScmChangeResult(IPath newFile, String newContent, String newVersionId, IPath oldFile, String oldContent, String oldVersionId) {
-		this.newFile = newFile;
+	public ScmChangeResult(IPath repoProjectOffset, IPath newFile, String newContent, String newVersionId, IPath oldFile, String oldContent, String oldVersionId) {
+		this.newFileWithOffset = applyOffset(newFile, repoProjectOffset);
 		this.newContent = newContent;
 		this.newVersionId = newVersionId;
-		this.oldFile = oldFile;
+		this.oldFileWithOffset = applyOffset(oldFile, repoProjectOffset);
 		this.oldContent = oldContent;
 		this.oldVersionId = oldVersionId;
 	}
+	
+	private IPath applyOffset(IPath relativeToRepo, IPath offset) {
+		int matching = relativeToRepo.matchingFirstSegments(offset);
+		IPath fileWithOffset = relativeToRepo.removeFirstSegments(matching);
+		return fileWithOffset;
+	}
 
-	public IPath getNewFile() {
-		return newFile;
+	public IPath getNewFileWithOffset() {
+		return newFileWithOffset;
 	}
 
 	public String getNewContent() {
@@ -32,8 +38,8 @@ public class ScmChangeResult {
 		return oldContent;
 	}
 
-	public IPath getOldFile() {
-		return oldFile;
+	public IPath getOldFileWithOffset() {
+		return oldFileWithOffset;
 	}
 
 	public String getNewVersionId() {

@@ -18,6 +18,7 @@ import org.eclipse.jgit.revwalk.RevSort
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.core.runtime.IPath
 
 class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	
@@ -25,9 +26,12 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 	
 	private Repository repository
 	
-	new(Repository repository) {
+	private IPath projectRepoOffset
+	
+	new(Repository repository, IPath projectRepoOffset) {
 		logger.level = Level.ALL
 		this.repository = repository
+		this.projectRepoOffset = projectRepoOffset
 	}
 	
 	override extract(AnyObjectId newVersion, AnyObjectId oldVersion) {
@@ -109,7 +113,7 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 		}
 
 		
-		return new ScmChangeResult(Path.fromOSString(entry.newPath), newContent, newVersion.getName, Path.fromOSString(entry.oldPath), oldContent, oldVersion.getName)
+		return new ScmChangeResult(projectRepoOffset, Path.fromOSString(entry.newPath), newContent, newVersion.getName, Path.fromOSString(entry.oldPath), oldContent, oldVersion.getName)
 	}
 	
 }

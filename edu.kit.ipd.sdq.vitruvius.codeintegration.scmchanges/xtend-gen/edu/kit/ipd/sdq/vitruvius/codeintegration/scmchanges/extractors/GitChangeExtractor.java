@@ -39,9 +39,12 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
   
   private Repository repository;
   
-  public GitChangeExtractor(final Repository repository) {
+  private IPath projectRepoOffset;
+  
+  public GitChangeExtractor(final Repository repository, final IPath projectRepoOffset) {
     GitChangeExtractor.logger.setLevel(Level.ALL);
     this.repository = repository;
+    this.projectRepoOffset = projectRepoOffset;
   }
   
   @Override
@@ -173,7 +176,7 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
       String _oldPath_1 = entry.getOldPath();
       IPath _fromOSString_1 = Path.fromOSString(_oldPath_1);
       String _name_1 = oldVersion.getName();
-      return new ScmChangeResult(_fromOSString, newContent, _name, _fromOSString_1, oldContent, _name_1);
+      return new ScmChangeResult(this.projectRepoOffset, _fromOSString, newContent, _name, _fromOSString_1, oldContent, _name_1);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

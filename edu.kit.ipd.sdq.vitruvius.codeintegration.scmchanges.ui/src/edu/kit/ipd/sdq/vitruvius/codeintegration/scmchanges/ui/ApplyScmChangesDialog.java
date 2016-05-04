@@ -49,6 +49,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 	private Slider replaySpeedSlider;
 
+	private Text txtCheckoutVersion;
+
+	private String cleanupCheckoutVersion;
+
 	public ApplyScmChangesDialog(Shell parentShell, IProject project) {
 		super(parentShell);
 		this.project = project;
@@ -119,7 +123,37 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		createOldVersionField(container);
 		createNewVersionField(container);
 		createReplaySpeedSlider(container);
+		createCleanupSection(container);
 		return area;
+	}
+
+	private void createCleanupSection(Composite container) {
+		GridData gridData1 = new GridData();
+		gridData1.grabExcessHorizontalSpace = true;
+		Label cleanupLabel = new Label(container, SWT.NONE);
+		cleanupLabel.setText("Cleanup options:");
+		cleanupLabel.setLayoutData(gridData1);
+		
+		//empty for grid
+		new Label(container, SWT.NONE);
+		
+		Label checkoutLabel = new Label(container, SWT.NONE);
+		checkoutLabel.setText("Checkout version(empty to disable):");
+		
+		GridData gridData2 = new GridData();
+		gridData2.grabExcessHorizontalSpace = true;
+		gridData2.horizontalAlignment = GridData.FILL;
+
+		txtCheckoutVersion = new Text(container, SWT.BORDER);
+		txtCheckoutVersion.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				validate();
+			}
+		});
+		txtCheckoutVersion.setLayoutData(gridData2);
+		
+		
 	}
 
 	private void createReplaySpeedSlider(Composite container) {
@@ -142,6 +176,7 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		speedTextLabel.setText("Time per Change");
 		
 		Text speedText = new Text(container, SWT.NONE);
+		speedText.setEditable(false);
 		replaySpeedSlider.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -188,6 +223,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	}
 	
 	protected void validate() {
+		if (!txtCheckoutVersion.getText().isEmpty() && !validate(txtCheckoutVersion, "Cleanup-Checkout")) {
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
+			return;
+		}
 		if (validate(txtNewVersion, "New") && validate(txtOldVersion, "Old")) {
 			if (txtNewVersion.getText().equals(txtOldVersion.getText())) {
 				setMessage("Versions are equal. No change possible.", IMessageProvider.ERROR);
@@ -234,6 +273,7 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		newVersion = txtNewVersion.getText();
 		oldVersion = txtOldVersion.getText();
 		replaySpeedInMs = replaySpeedSlider.getSelection();
+		cleanupCheckoutVersion = txtCheckoutVersion.getText();
 		super.okPressed();
 	}
 
@@ -243,6 +283,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 	public int getReplaySpeed() {
 		return replaySpeedInMs;
+	}
+
+	public String getCleanupCheckoutVersion() {
+		return cleanupCheckoutVersion;
 	}
 
 }
