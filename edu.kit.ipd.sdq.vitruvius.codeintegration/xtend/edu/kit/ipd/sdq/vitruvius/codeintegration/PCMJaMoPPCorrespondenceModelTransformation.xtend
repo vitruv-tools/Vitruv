@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
@@ -38,8 +38,6 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
-import java.util.ArrayList
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -62,7 +60,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	private List<Resource> jaMoppResources
 	private Repository pcmRepo
 	@Accessors(PUBLIC_GETTER)
-	private CorrespondenceInstanceDecorator cInstance
+	private CorrespondenceInstance<Correspondence> cInstance
 
 	private ModelProviding modelProviding
 
@@ -77,7 +75,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
 		// FIXME do that without a cast
-		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB) as CorrespondenceInstanceDecorator;
+		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
 
 		this.scdmPath = scdmPath;
 		this.pcmPath = pcmPath;

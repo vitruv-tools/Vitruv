@@ -29,6 +29,9 @@
   </extension>
   
   <extension point="org.eclipse.ui.commands">
+    <category
+          id="edu.kit.ipd.sdq.vitruvius.codeintegration" name="codeintegration">
+    </category>
     <command
           categoryId="edu.kit.ipd.sdq.vitruvius.codeintegration"
           defaultHandler="edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler"

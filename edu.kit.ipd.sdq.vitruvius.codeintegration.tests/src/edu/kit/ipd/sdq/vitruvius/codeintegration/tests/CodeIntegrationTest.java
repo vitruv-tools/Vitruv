@@ -54,6 +54,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
+@SuppressWarnings("restriction")
 public class CodeIntegrationTest {
 
     private static final Logger logger = Logger.getLogger(CodeIntegrationTest.class.getSimpleName());
@@ -184,7 +185,7 @@ public class CodeIntegrationTest {
     }
 
     protected void assertStandardCodeIntegrationTest() throws Throwable {
-        final CorrespondenceInstance ci = this.getCorrespondenceInstance();
+        final CorrespondenceInstance<Correspondence> ci = this.getCorrespondenceInstance();
         // TODO check if correspondences are correct
         final Set<Correspondence> correspondences = ci.getAllCorrespondencesWithoutDependencies();
         Assert.assertNotNull(correspondences);
@@ -243,7 +244,6 @@ public class CodeIntegrationTest {
         return vsum;
     }
 
-    @SuppressWarnings("restriction")
     private PCMJavaBuilder getPCMJavaBuilderFromProject() throws Throwable {
         final Project project = (Project) this.testProject;
         final ResourceInfo info = project.getResourceInfo(false, false);

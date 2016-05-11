@@ -9,7 +9,7 @@
             label="Vitruvius">
          <command
                commandId="edu.kit.ipd.sdq.vitruvius.codeintegeration.scmchanges.applyscmchanges"
-               label="Apply SCM Changes"
+               label="Replay SCM Changes"
                style="push">
             <visibleWhen
                   checkEnabled="false">

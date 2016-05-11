@@ -93,7 +93,7 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
   private Repository pcmRepo;
   
   @Accessors(AccessorType.PUBLIC_GETTER)
-  private CorrespondenceInstanceDecorator cInstance;
+  private CorrespondenceInstance<Correspondence> cInstance;
   
   private ModelProviding modelProviding;
   
@@ -107,7 +107,7 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
     VURI mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
     VURI mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
     CorrespondenceInstanceDecorator _correspondenceInstanceOriginal = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
-    this.cInstance = ((CorrespondenceInstanceDecorator) _correspondenceInstanceOriginal);
+    this.cInstance = _correspondenceInstanceOriginal;
     this.scdmPath = scdmPath;
     this.pcmPath = pcmPath;
     this.jamoppPaths = jamoppPaths;
@@ -498,7 +498,7 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
   }
   
   @Pure
-  public CorrespondenceInstanceDecorator getCInstance() {
+  public CorrespondenceInstance<Correspondence> getCInstance() {
     return this.cInstance;
   }
 }

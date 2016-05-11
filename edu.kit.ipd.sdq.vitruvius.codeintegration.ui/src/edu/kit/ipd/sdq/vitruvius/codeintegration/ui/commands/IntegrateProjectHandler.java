@@ -24,6 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
+@SuppressWarnings("restriction")
 public class IntegrateProjectHandler extends AbstractHandler {
 	
 	private Logger logger = Logger.getLogger(IntegrateProjectHandler.class.getName());
@@ -48,7 +49,6 @@ public class IntegrateProjectHandler extends AbstractHandler {
         return null;
 	}
 
-	@SuppressWarnings("restriction")
 	public void integrateProject(final IProject project) {
 		// IPath projectPath = project.getFullPath(); // workspace relative Path
         final IPath projectPath = project.getLocation(); // absolute path

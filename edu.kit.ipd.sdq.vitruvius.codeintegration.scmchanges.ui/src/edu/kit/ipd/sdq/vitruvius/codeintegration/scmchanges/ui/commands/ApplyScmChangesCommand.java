@@ -57,6 +57,7 @@ import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.GitChange
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.GumTreeChangeExtractor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.JaMoPPContentValidator;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.ApplyScmChangesDialog;
+import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.NonBlockingNextStepDialog;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.ValidationStatistics;
 
 public class ApplyScmChangesCommand extends AbstractHandler {
@@ -98,6 +99,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 			String newVersion = dialog.getNewVersion();
 			String oldVersion = dialog.getOldVersion();
 			int replaySpeedInMs = dialog.getReplaySpeed();
+			boolean manualControl = dialog.isManualControlEnabled();
 			
 
 			String repoRoot = repo.getDirectory().getAbsoluteFile().toString();
@@ -126,7 +128,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 			List<ScmChangeResult> javaResults = results.parallelStream().filter(r -> isJavaChange(r)).collect(Collectors.toList());
 			ValidationStatistics stats = new ValidationStatistics();
 			List<UIJob> jobs = new ArrayList<UIJob>();
-			createJobs(project, window, javaResults, stats, jobs, repo, replaySpeedInMs, dialog, relativeProjectInRepo);
+			createJobs(project, window, javaResults, stats, jobs, repo, replaySpeedInMs, dialog, relativeProjectInRepo, manualControl);
 		} else if (dialogResponse == Window.CANCEL) {
 			logger.warn("User pressed Cancel");
 		}
@@ -135,7 +137,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 
 	private void createJobs(final IProject project, IWorkbenchWindow window, List<ScmChangeResult> javaResults,
-			ValidationStatistics stats, List<UIJob> jobs, Repository repo, int replaySpeedInMs, ApplyScmChangesDialog dialog, String relativeProjectInRepo) {
+			ValidationStatistics stats, List<UIJob> jobs, Repository repo, int replaySpeedInMs, ApplyScmChangesDialog dialog, String relativeProjectInRepo, boolean manualControl) {
 		Job gumtreeJob = new Job("Extracting AST Changes") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -158,12 +160,64 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 				if (!cleanupCheckoutVersion.isEmpty()) {
 					jobs.add(createCleanupJob(project, repo, cleanupCheckoutVersion));
 				}
-				
-				scheduleJobs(jobs, replaySpeedInMs);
+				if (!manualControl) {
+					scheduleJobs(jobs, replaySpeedInMs);
+				} else {
+					startJobsInManualControlMode(jobs);
+				}
 			}
 		});
 		gumtreeJob.schedule();
 		
+	}
+
+	private void startJobsInManualControlMode(List<UIJob> jobs) {
+		Job replayJob = new Job("Replay Job") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				SubMonitor progress = SubMonitor.convert(monitor, jobs.size());
+				int currentJobIdx = 0;
+				return scheduleRecursively(jobs, currentJobIdx, progress);
+			}
+		};
+		replayJob.schedule();
+	}
+
+	private IStatus scheduleRecursively(List<UIJob> jobs, int currentJobIdx, SubMonitor progress) {
+		if (progress.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		UIJob currentJob = jobs.get(currentJobIdx);
+		currentJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				progress.worked(1);
+				int nextJobIdx = currentJobIdx + 1;
+				if (nextJobIdx < jobs.size()) {
+					UIJob job = new UIJob("Next Step Dialog") {
+						@Override
+						public IStatus runInUIThread(IProgressMonitor monitor) {
+							IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+							Shell activeShell = window.getShell();
+							NonBlockingNextStepDialog nextStepDialog = new NonBlockingNextStepDialog(activeShell) {
+								
+								@Override
+								protected void onClose(int returnCode) {
+									if (returnCode == 0) {
+										scheduleRecursively(jobs, nextJobIdx, progress);
+									}
+								}
+							};
+							nextStepDialog.open();
+							return Status.OK_STATUS;
+						}
+					};
+					job.schedule();
+				}
+			}
+		});
+		currentJob.schedule();
+		return Status.OK_STATUS;
 	}
 
 	private void scheduleJobs(final List<UIJob> jobs, int replaySpeedInMs) {

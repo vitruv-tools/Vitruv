@@ -18,8 +18,11 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -52,6 +55,8 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	private Text txtCheckoutVersion;
 
 	private String cleanupCheckoutVersion;
+
+	protected boolean allowManualControl = false;
 
 	public ApplyScmChangesDialog(Shell parentShell, IProject project) {
 		super(parentShell);
@@ -123,8 +128,29 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		createOldVersionField(container);
 		createNewVersionField(container);
 		createReplaySpeedSlider(container);
+		createManualControlSwitch(container);
 		createCleanupSection(container);
 		return area;
+	}
+
+	private void createManualControlSwitch(Composite container) {
+		Label manualControl = new Label(container, SWT.NONE);
+		manualControl.setText("Manual Control of Replay");
+		
+		Button manualControlButton = new Button(container, SWT.CHECK);
+		manualControlButton.addSelectionListener(new SelectionAdapter() {
+
+	        @Override
+	        public void widgetSelected(SelectionEvent event) {
+	            Button btn = (Button) event.getSource();
+	            allowManualControl = btn.getSelection();
+	            if (allowManualControl) {
+	            	replaySpeedSlider.setEnabled(false);
+	            } else {
+	            	replaySpeedSlider.setEnabled(true);
+	            }
+	        }
+	    });
 	}
 
 	private void createCleanupSection(Composite container) {
@@ -287,6 +313,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 	public String getCleanupCheckoutVersion() {
 		return cleanupCheckoutVersion;
+	}
+	
+	public boolean isManualControlEnabled() {
+		return allowManualControl;
 	}
 
 }
