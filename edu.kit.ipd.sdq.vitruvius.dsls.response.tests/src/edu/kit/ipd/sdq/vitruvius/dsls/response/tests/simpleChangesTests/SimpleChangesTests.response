@@ -142,11 +142,12 @@ response: RemoveEAttributeValue
 trigger: remove from list minimal.Root[multiValuedEAttribute] 
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.newAffectedEObject
-execute: {
-	val sourceValueList = (change.newAffectedEObject as allElementTypes.Root).multiValuedEAttribute;
-	targetElement.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
-	SimpleChangesTestsExecutionMonitor.instance.set(RemoveEAttributeValue);
-}
+effect:
+	execute: {
+		val sourceValueList = (change.newAffectedEObject as allElementTypes.Root).multiValuedEAttribute;
+		targetElement.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
+		SimpleChangesTestsExecutionMonitor.instance.set(RemoveEAttributeValue);
+	}
 
 /*
  * InsertNonContainmentEReference

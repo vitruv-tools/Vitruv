@@ -20,18 +20,32 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
     return (!Objects.equal(_newValue, null));
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return CreateNonRootEObjectSingle.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("nonRootObjectContainerHelper")) {
+    	return false;
+    }
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof CreateNonRootEObjectSingle<?>)) {
     	return false;
     }
     CreateNonRootEObjectSingle typedChange = (CreateNonRootEObjectSingle)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
@@ -39,23 +53,10 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof CreateNonRootEObjectSingle<?>;
-  }
-  
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectSingle<NonRootObjectContainerHelper> typedChange = (CreateNonRootEObjectSingle<NonRootObjectContainerHelper>)change;
     mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    CreateNonRootEObjectSingle<?> typedChange = (CreateNonRootEObjectSingle<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("nonRootObjectContainerHelper")) {
-    	return false;
-    }
-    return changedElement instanceof Root;
   }
 }

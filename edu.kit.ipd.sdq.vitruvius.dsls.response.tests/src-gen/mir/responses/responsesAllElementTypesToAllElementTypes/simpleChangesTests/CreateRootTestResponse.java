@@ -21,18 +21,28 @@ class CreateRootTestResponse extends AbstractResponseRealization {
     return _equals;
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return CreateRootEObject.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final CreateRootEObject<Root> change) {
+    EObject changedElement = change.getNewValue();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof CreateRootEObject<?>)) {
     	return false;
     }
     CreateRootEObject typedChange = (CreateRootEObject)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
@@ -40,20 +50,10 @@ class CreateRootTestResponse extends AbstractResponseRealization {
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof CreateRootEObject<?>;
-  }
-  
   public void executeResponse(final EChange change) {
     CreateRootEObject<Root> typedChange = (CreateRootEObject<Root>)change;
     mir.routines.simpleChangesTests.CreateRootTestEffect effect = new mir.routines.simpleChangesTests.CreateRootTestEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    CreateRootEObject<?> typedChange = (CreateRootEObject<?>)change;
-    EObject changedElement = typedChange.getNewValue();
-    return changedElement instanceof Root;
   }
 }

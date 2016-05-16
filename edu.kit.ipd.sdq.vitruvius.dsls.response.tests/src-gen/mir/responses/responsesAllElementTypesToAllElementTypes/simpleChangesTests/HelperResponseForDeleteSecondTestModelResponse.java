@@ -21,18 +21,28 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
     return _equals;
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return DeleteRootEObject.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final DeleteRootEObject<Root> change) {
+    EObject changedElement = change.getOldValue();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof DeleteRootEObject<?>)) {
     	return false;
     }
     DeleteRootEObject typedChange = (DeleteRootEObject)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
@@ -40,20 +50,10 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof DeleteRootEObject<?>;
-  }
-  
   public void executeResponse(final EChange change) {
     DeleteRootEObject<Root> typedChange = (DeleteRootEObject<Root>)change;
     mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    DeleteRootEObject<?> typedChange = (DeleteRootEObject<?>)change;
-    EObject changedElement = typedChange.getOldValue();
-    return changedElement instanceof Root;
   }
 }

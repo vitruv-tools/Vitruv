@@ -1,12 +1,10 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
-import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference;
-import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization {
@@ -14,15 +12,12 @@ class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return InsertNonContainmentEReference.class;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
-    	return false;
-    }
-    if (!checkChangedObject(change)) {
+    if (!(change instanceof InsertNonContainmentEReference<?>)) {
     	return false;
     }
     InsertNonContainmentEReference typedChange = (InsertNonContainmentEReference)change;
@@ -30,23 +25,10 @@ class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof InsertNonContainmentEReference<?>;
-  }
-  
   public void executeResponse(final EChange change) {
     InsertNonContainmentEReference<NonRoot> typedChange = (InsertNonContainmentEReference<NonRoot>)change;
     mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    InsertNonContainmentEReference<?> typedChange = (InsertNonContainmentEReference<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
-    	return false;
-    }
-    return changedElement instanceof Root;
   }
 }

@@ -1,12 +1,10 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
-import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.RemoveNonContainmentEReference;
-import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization {
@@ -14,24 +12,17 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return RemoveNonContainmentEReference.class;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
-    	return false;
-    }
-    if (!checkChangedObject(change)) {
+    if (!(change instanceof RemoveNonContainmentEReference<?>)) {
     	return false;
     }
     RemoveNonContainmentEReference typedChange = (RemoveNonContainmentEReference)change;
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
-  }
-  
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof RemoveNonContainmentEReference<?>;
   }
   
   public void executeResponse(final EChange change) {
@@ -43,14 +34,5 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
     mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    RemoveNonContainmentEReference<?> typedChange = (RemoveNonContainmentEReference<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
-    	return false;
-    }
-    return changedElement instanceof Root;
   }
 }
