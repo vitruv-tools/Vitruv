@@ -28,7 +28,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 				body = '''
 					«FOR response : responsesSegment.responses»
 						«val responseNameGenerator = response.responseClassNameGenerator»
-						this.addResponse(«responseNameGenerator.qualifiedName».getTrigger(), new «responseNameGenerator.qualifiedName»(userInteracting));
+						this.addResponse(«responseNameGenerator.qualifiedName».getExpectedChangeType(), new «responseNameGenerator.qualifiedName»(userInteracting));
 					«ENDFOR»
 				'''
 			]

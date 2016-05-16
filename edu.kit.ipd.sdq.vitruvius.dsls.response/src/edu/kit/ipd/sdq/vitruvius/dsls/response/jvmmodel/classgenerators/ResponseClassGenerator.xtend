@@ -40,7 +40,7 @@ class ResponseClassGenerator extends ClassGenerator {
 	}
 		
 	public override JvmGenericType generateClass() {
-		generateMethodGetTrigger();
+		generateMethodGetExpectedChangeType();
 		generateMethodCheckPrecondition();
 		generateMethodExecuteResponse();
 
@@ -61,6 +61,13 @@ class ResponseClassGenerator extends ClassGenerator {
 		]
 	}
 	
+	protected def generateMethodGetExpectedChangeType() {
+		val methodName = "getExpectedChangeType";
+		return getOrGenerateMethod(methodName, typeRef(Class, wildcardExtends(typeRef(EChange)))) [
+			static = true;
+			body = '''return «change».class;'''
+		];
+	}
 	
 	/**
 	 * Generates method: applyChange
@@ -111,41 +118,25 @@ class ResponseClassGenerator extends ClassGenerator {
 		»«change»«IF trigger instanceof ConcreteModelElementChange»<«getGenericTypeParameterOfChange(trigger)»>«ENDIF»'''
 		
 		
-	protected def generateMethodGetTrigger() {
-		val methodName = "getTrigger";
-		return getOrGenerateMethod(methodName, typeRef(Class, wildcardExtends(typeRef(EChange)))) [
-			static = true;
-			body = '''return «change».class;'''
-		];
-	}
-	
-	/** 
-	 * Generated method: checkPrecondition : boolean
-	 * 
-	 * <p>Evaluates the precondition specified in the response
-	 * 
-	 * <p>Methods parameters are: 
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 * 
-	 * <p>Precondition: precondition code block must exist.
-	 */
 	protected def generateMethodCheckPrecondition() {
 		val methodName = PRECONDITION_METHOD_NAME;
-		val operationsToCallBeforeCast = getPreconditionMethodsBeforeCast();
-		val operationsToCallAfterCast = getPreconditionMethodsAfterCast();
+		val preconditionMethods = getPreconditionMethods();
+		val changeType = if (!change.equals(EChange)) {
+				typeRef(change, wildcard);
+			} else {
+				typeRef(change);
+			}
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			val changeParameter = generateUntypedChangeParameter(response);
 			val typedChangeClass = change;
 			visibility = JvmVisibility.PUBLIC;
 			parameters += changeParameter
 			body = '''
-				«FOR operation : operationsToCallBeforeCast»
-					if (!«operation.simpleName»(«changeParameter.name»)) {
-						return false;
-					}
-				«ENDFOR»
+				if (!(«changeParameter.name» instanceof «changeType»)) {
+					return false;
+				}
 				«typedChangeClass» typedChange = («typedChangeClass»)«changeParameter.name»;
-				«FOR operation : operationsToCallAfterCast»
+				«FOR operation : preconditionMethods»
 					if (!«operation.simpleName»(typedChange)) {
 						return false;
 					}
@@ -155,32 +146,7 @@ class ResponseClassGenerator extends ClassGenerator {
 				'''
 		];
 	}
-	
-	protected def generateMethodCheckChangeType() {
-		val methodName = "checkChangeType";
-		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
-			val changeParameter = generateUntypedChangeParameter;
-			visibility = JvmVisibility.PRIVATE;
-			parameters += changeParameter;
-			val changeType = if (!change.equals(EChange)) {
-				typeRef(change, wildcard);
-			} else {
-				typeRef(change);
-			}
-			body = '''return «changeParameter.name» instanceof «changeType»;''';
-		];	
-	}
-	
-	/** 
-	 * Generated method: checkPrecondition : boolean
-	 * 
-	 * <p>Evaluates the precondition specified in the response
-	 * 
-	 * <p>Methods parameters are: 
-	 * 	<li>1. change: the change event ({@link EChange})</li>
-	 * 
-	 * <p>Precondition: precondition code block must exist.
-	 */
+
 	protected def JvmOperation generateMethodCheckUserDefinedPrecondition(PreconditionCodeBlock preconditionBlock) {
 		val methodName = TRIGGER_PRECONDITION_METHOD_NAME;
 		
@@ -191,19 +157,13 @@ class ResponseClassGenerator extends ClassGenerator {
 		];		
 	}
 	
-	protected def Iterable<JvmOperation> getPreconditionMethodsBeforeCast() {
+	protected def Iterable<JvmOperation> getPreconditionMethods() {
 		val methods = <JvmOperation>newArrayList();
-		methods += generateMethodCheckChangeType();
 		if (response.trigger instanceof ConcreteModelElementChange) {
 			methods += generateMethodCheckChangedObject();
 		}
-		return methods;
-	}
-	
-	protected def Iterable<JvmOperation> getPreconditionMethodsAfterCast() {
-		val methods = <JvmOperation>newArrayList();
 		if (hasPreconditionBlock) {
-			methods += generateMethodCheckUserDefinedPrecondition(response.trigger.precondition);
+			methods += generateMethodCheckUserDefinedPrecondition(response.trigger.precondition);	
 		}
 		return methods;
 	}
@@ -217,7 +177,7 @@ class ResponseClassGenerator extends ClassGenerator {
 	 * 	<li>1. change: the change event ({@link EChange})</li>
 	 */
 	protected def generateMethodCheckChangedObject() {
-		val methodName = "checkChangedObject";
+		val methodName = "checkChangeProperties";
 		
 		if (!(response.trigger instanceof ConcreteModelElementChange)) {
 			throw new IllegalStateException();
@@ -227,19 +187,25 @@ class ResponseClassGenerator extends ClassGenerator {
 		val changedElement = response.trigger.changedModelElementClass;
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			val changeParameter = generateUntypedChangeParameter();
+			val changeParameter = generateChangeParameter(response.trigger);
 			parameters += changeParameter;
-			val typedChangeName = "typedChange";
-			val typedChangeClassGenericString = if (!change.equals(EChange)) "<?>" else ""
+//			val typedChangeName = "typedChange";
+//			val typedChangeClassGenericString = if (!change.equals(EChange)) "<?>" else ""
 			body = '''
-				«change»«typedChangeClassGenericString» «typedChangeName» = («change»«typedChangeClassGenericString»)«changeParameter.name»;
-				«EObject» changedElement = «typedChangeName».get«changeEvent.EChangeFeatureNameOfChangedObject.toFirstUpper»();
+«««				«change»«typedChangeClassGenericString» «typedChangeName» = («change»«typedChangeClassGenericString»)«changeParameter.name»;
+				«EObject» changedElement = «changeParameter.name».get«changeEvent.EChangeFeatureNameOfChangedObject.toFirstUpper»();
+				// Check model element type
+				if (!(changedElement instanceof «changedElement.instanceClass»)) {
+					return false;
+				}
+				
 				«IF changeEvent instanceof AtomicFeatureChange»
-					if (!«typedChangeName».getAffectedFeature().getName().equals("«changeEvent.changedFeature.feature.name»")) {
+					// Check feature
+					if (!«changeParameter.name».getAffectedFeature().getName().equals("«changeEvent.changedFeature.feature.name»")) {
 						return false;
 					}
 				«ENDIF»
-				return changedElement instanceof «changedElement.instanceClass»;
+				return true;
 			'''
 		];
 	}
