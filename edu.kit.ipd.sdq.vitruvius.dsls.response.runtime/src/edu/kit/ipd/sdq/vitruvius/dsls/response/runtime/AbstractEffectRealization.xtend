@@ -12,11 +12,12 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElementCreate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.EffectElement
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	private extension val ResponseExecutionState executionState;
@@ -35,7 +36,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	
 	protected def void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
 		if (!elementStates.containsKey(firstElement)) {
-			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.blackboard.correspondenceInstance));
+			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.correspondenceInstance));
 		}
 		this.elementStates.get(firstElement).addCorrespondingElement(secondElement, tag);
 	}
@@ -51,7 +52,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	protected def void removeCorrespondenceBetween(EObject firstElement, EObject secondElement
 	) {
 		if (!elementStates.containsKey(firstElement)) {
-			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.blackboard.correspondenceInstance));
+			elementStates.put(firstElement, new EffectElementRetrieve(firstElement, executionState.correspondenceInstance));
 		}
 		this.elementStates.get(firstElement).removeCorrespondingElement(secondElement);
 	}
@@ -60,7 +61,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 		Function0<String> tagSupplier, Class<T> elementClass
 	) {
 		val tag = tagSupplier.apply();
-		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, blackboard);
+		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, correspondenceInstance);
 		if (retrievedElements.size > 1) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource, elementClass, executionState.userInteracting);
 		}
@@ -69,7 +70,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	}
 	
 	protected def initializeCreateElementState(EObject element) {
-		this.elementStates.put(element, new EffectElementCreate(element, executionState.blackboard.correspondenceInstance));
+		this.elementStates.put(element, new EffectElementCreate(element, executionState.correspondenceInstance));
 	}
 	
 	protected def <T extends EObject> T initializeRetrieveElementState(Function0<EObject> correspondenceSourceSupplier, 
@@ -88,7 +89,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 		
 		if (correspondingElement != null) {
 			this.elementStates.put(correspondingElement, 
-				new EffectElementRetrieve(correspondingElement, executionState.blackboard.correspondenceInstance)
+				new EffectElementRetrieve(correspondingElement, executionState.correspondenceInstance)
 			);
 		}
 		return correspondingElement;
@@ -131,12 +132,12 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 	public static class UserExecution {
 		protected final UserInteracting userInteracting;
 		protected final TransformationResult transformationResult;
-		protected final Blackboard blackboard;
+		protected final CorrespondenceInstance<Correspondence> correspondenceInstance;
 	
 		new(ResponseExecutionState executionState) {
 			this.userInteracting = executionState.userInteracting;
 			this.transformationResult = executionState.transformationResult;
-			this.blackboard = executionState.blackboard;
+			this.correspondenceInstance = executionState.correspondenceInstance;
 		}
 		
 		protected def persistProjectRelative(EObject alreadyPersistedObject, EObject element, String persistencePath) {
@@ -146,7 +147,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving {
 			val oldVURI = if (element.eResource() != null) {
 				VURI.getInstance(element.eResource());
 			}
-			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, blackboard);
+			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceInstance);
 			EcoreUtil.remove(element);
 			transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
 			transformationResult.addVURIToDeleteIfNotNull(oldVURI);

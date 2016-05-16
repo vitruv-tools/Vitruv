@@ -39,7 +39,7 @@ abstract class AbstractResponseExecutor  {
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
 			result.add(EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, blackboard)]) as Command);
+					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, blackboard.correspondenceInstance)]) as Command);
 		}
 		return result;
 	}

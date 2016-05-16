@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper
 import java.util.ArrayList
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
@@ -92,11 +91,11 @@ final class CorrespondenceHelper {
 	}
 
 	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
-		String expectedTag, Function1<T, Boolean> preconditionMethod, Blackboard blackboard) {
+		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceInstance<Correspondence> correspondenceInstance) {
 		val nonNullPreconditionMethod = if(preconditionMethod != null) preconditionMethod else [T input|true];
 		val targetElements = new ArrayList<T>();
 		try {
-			val correspondingObjects = getCorrespondingObjectsOfType(blackboard.getCorrespondenceInstance(),
+			val correspondingObjects = getCorrespondingObjectsOfType(correspondenceInstance,
 				sourceElement, expectedTag, affectedElementClass);
 			targetElements += correspondingObjects.filterNull.filter(nonNullPreconditionMethod);
 		} catch (RuntimeException ex) {
