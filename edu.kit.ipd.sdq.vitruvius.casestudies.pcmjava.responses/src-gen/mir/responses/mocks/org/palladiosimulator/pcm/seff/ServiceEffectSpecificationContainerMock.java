@@ -37,18 +37,6 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
   
   private EObject containerObject;
   
-  public boolean ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(final DiagnosticChain arg0, final Map arg1) {
-    return containedObject.ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(arg0, arg1);
-  }
-  
-  public Signature getDescribedService__SEFF() {
-    return containedObject.getDescribedService__SEFF();
-  }
-  
-  public void setDescribedService__SEFF(final Signature arg0) {
-    containedObject.setDescribedService__SEFF(arg0);
-  }
-  
   public BasicComponent getBasicComponent_ServiceEffectSpecification() {
     return containedObject.getBasicComponent_ServiceEffectSpecification();
   }
@@ -57,32 +45,40 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     containedObject.setBasicComponent_ServiceEffectSpecification(arg0);
   }
   
-  public void setSeffTypeID(final String arg0) {
-    containedObject.setSeffTypeID(arg0);
-  }
-  
   public String getSeffTypeID() {
     return containedObject.getSeffTypeID();
   }
   
-  public CDOResource cdoDirectResource() {
-    return containedObject.cdoDirectResource();
+  public void setSeffTypeID(final String arg0) {
+    containedObject.setSeffTypeID(arg0);
   }
   
-  public CDOID cdoID() {
-    return containedObject.cdoID();
+  public void setDescribedService__SEFF(final Signature arg0) {
+    containedObject.setDescribedService__SEFF(arg0);
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
+  public Signature getDescribedService__SEFF() {
+    return containedObject.getDescribedService__SEFF();
+  }
+  
+  public boolean ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(final DiagnosticChain arg0, final Map arg1) {
+    return containedObject.ReferencedSignatureMustBelongToInterfaceReferencedByProvidedRole(arg0, arg1);
+  }
+  
+  public CDORevision cdoRevision() {
+    return containedObject.cdoRevision();
   }
   
   public CDORevision cdoRevision(final boolean arg0) {
     return containedObject.cdoRevision(arg0);
   }
   
-  public CDORevision cdoRevision() {
-    return containedObject.cdoRevision();
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
+  }
+  
+  public CDOID cdoID() {
+    return containedObject.cdoID();
   }
   
   public CDOState cdoState() {
@@ -93,68 +89,68 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     return containedObject.cdoView();
   }
   
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
+  public CDOResource cdoDirectResource() {
+    return containedObject.cdoDirectResource();
   }
   
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
   }
   
   public CDOObjectHistory cdoHistory() {
     return containedObject.cdoHistory();
   }
   
-  public void cdoPrefetch(final int arg0) {
-    containedObject.cdoPrefetch(arg0);
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
   }
   
   public boolean cdoInvalid() {
     return containedObject.cdoInvalid();
   }
   
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
+  public void cdoPrefetch(final int arg0) {
+    containedObject.cdoPrefetch(arg0);
   }
   
   public CDOLock cdoReadLock() {
     return containedObject.cdoReadLock();
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
   public void cdoReload() {
     containedObject.cdoReload();
   }
   
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
   }
   
-  public EReference eContainmentFeature() {
-    return containedObject.eContainmentFeature();
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
+  }
+  
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
   }
   
   public EObject eContainer() {
     return containerObject;
   }
   
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
   public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
     return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0) {
-    return containedObject.eGet(arg0);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
   }
   
   public Resource eResource() {
@@ -165,20 +161,28 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     return containedObject.eIsSet(arg0);
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0) {
+    return containedObject.eGet(arg0);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
   }
   
   public boolean eIsProxy() {
     return containedObject.eIsProxy();
   }
   
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
   }
   
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
+  public EReference eContainmentFeature() {
+    return containedObject.eContainmentFeature();
   }
   
   public EList eContents() {
@@ -189,23 +193,19 @@ public class ServiceEffectSpecificationContainerMock implements ServiceEffectSpe
     return containedObject.eAllContents();
   }
   
-  public EClass eClass() {
-    return containedObject.eClass();
-  }
-  
-  public EList eAdapters() {
-    return containedObject.eAdapters();
-  }
-  
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public boolean eDeliver() {
+    return containedObject.eDeliver();
   }
   
   public void eSetDeliver(final boolean arg0) {
     containedObject.eSetDeliver(arg0);
   }
   
-  public boolean eDeliver() {
-    return containedObject.eDeliver();
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
+  }
+  
+  public EList eAdapters() {
+    return containedObject.eAdapters();
   }
 }

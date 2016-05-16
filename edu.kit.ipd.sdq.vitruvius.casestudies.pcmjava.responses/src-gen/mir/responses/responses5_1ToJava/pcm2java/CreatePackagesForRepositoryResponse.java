@@ -13,24 +13,30 @@ class CreatePackagesForRepositoryResponse extends AbstractResponseRealization {
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return CreateRootEObject.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final CreateRootEObject<Repository> change) {
+    EObject changedElement = change.getNewValue();
+    // Check model element type
+    if (!(changedElement instanceof Repository)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
-    	return false;
-    }
-    CreateRootEObject typedChange = (CreateRootEObject)change;
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof CreateRootEObject<?>;
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof CreateRootEObject<?>)) {
+    	return false;
+    }
+    CreateRootEObject typedChange = (CreateRootEObject)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    return true;
   }
   
   public void executeResponse(final EChange change) {
@@ -38,11 +44,5 @@ class CreatePackagesForRepositoryResponse extends AbstractResponseRealization {
     mir.routines.pcm2java.CreatePackagesForRepositoryEffect effect = new mir.routines.pcm2java.CreatePackagesForRepositoryEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    CreateRootEObject<?> typedChange = (CreateRootEObject<?>)change;
-    EObject changedElement = typedChange.getNewValue();
-    return changedElement instanceof Repository;
   }
 }

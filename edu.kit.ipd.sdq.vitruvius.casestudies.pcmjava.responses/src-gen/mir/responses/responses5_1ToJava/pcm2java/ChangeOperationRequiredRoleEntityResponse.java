@@ -14,24 +14,34 @@ class ChangeOperationRequiredRoleEntityResponse extends AbstractResponseRealizat
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return UpdateSingleValuedNonContainmentEReference.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final UpdateSingleValuedNonContainmentEReference<InterfaceRequiringEntity> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof OperationRequiredRole)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("requiringEntity_RequiredRole")) {
     	return false;
     }
-    UpdateSingleValuedNonContainmentEReference typedChange = (UpdateSingleValuedNonContainmentEReference)change;
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof UpdateSingleValuedNonContainmentEReference<?>;
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof UpdateSingleValuedNonContainmentEReference<?>)) {
+    	return false;
+    }
+    UpdateSingleValuedNonContainmentEReference typedChange = (UpdateSingleValuedNonContainmentEReference)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    return true;
   }
   
   public void executeResponse(final EChange change) {
@@ -43,14 +53,5 @@ class ChangeOperationRequiredRoleEntityResponse extends AbstractResponseRealizat
     mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    UpdateSingleValuedNonContainmentEReference<?> typedChange = (UpdateSingleValuedNonContainmentEReference<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("requiringEntity_RequiredRole")) {
-    	return false;
-    }
-    return changedElement instanceof OperationRequiredRole;
   }
 }

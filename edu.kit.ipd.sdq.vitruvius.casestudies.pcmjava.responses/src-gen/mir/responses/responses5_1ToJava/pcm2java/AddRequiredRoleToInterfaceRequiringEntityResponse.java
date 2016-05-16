@@ -20,18 +20,32 @@ class AddRequiredRoleToInterfaceRequiringEntityResponse extends AbstractResponse
     return (_newValue instanceof OperationRequiredRole);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return CreateNonRootEObjectInList.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final CreateNonRootEObjectInList<RequiredRole> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof InterfaceRequiringEntity)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("requiredRoles_InterfaceRequiringEntity")) {
+    	return false;
+    }
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof CreateNonRootEObjectInList<?>)) {
     	return false;
     }
     CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
@@ -39,23 +53,10 @@ class AddRequiredRoleToInterfaceRequiringEntityResponse extends AbstractResponse
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof CreateNonRootEObjectInList<?>;
-  }
-  
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<RequiredRole> typedChange = (CreateNonRootEObjectInList<RequiredRole>)change;
     mir.routines.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect effect = new mir.routines.pcm2java.AddRequiredRoleToInterfaceRequiringEntityEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    CreateNonRootEObjectInList<?> typedChange = (CreateNonRootEObjectInList<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("requiredRoles_InterfaceRequiringEntity")) {
-    	return false;
-    }
-    return changedElement instanceof InterfaceRequiringEntity;
   }
 }

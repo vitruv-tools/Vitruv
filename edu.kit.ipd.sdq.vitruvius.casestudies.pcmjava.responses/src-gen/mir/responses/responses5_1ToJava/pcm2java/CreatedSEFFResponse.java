@@ -14,24 +14,34 @@ class CreatedSEFFResponse extends AbstractResponseRealization {
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return CreateNonRootEObjectInList.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final CreateNonRootEObjectInList<ServiceEffectSpecification> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof BasicComponent)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("serviceEffectSpecifications__BasicComponent")) {
     	return false;
     }
-    CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof CreateNonRootEObjectInList<?>;
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof CreateNonRootEObjectInList<?>)) {
+    	return false;
+    }
+    CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    return true;
   }
   
   public void executeResponse(final EChange change) {
@@ -39,14 +49,5 @@ class CreatedSEFFResponse extends AbstractResponseRealization {
     mir.routines.pcm2java.CreatedSEFFEffect effect = new mir.routines.pcm2java.CreatedSEFFEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    CreateNonRootEObjectInList<?> typedChange = (CreateNonRootEObjectInList<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("serviceEffectSpecifications__BasicComponent")) {
-    	return false;
-    }
-    return changedElement instanceof BasicComponent;
   }
 }

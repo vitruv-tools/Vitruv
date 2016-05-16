@@ -14,24 +14,34 @@ class RemovedParameterResponse extends AbstractResponseRealization {
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return DeleteNonRootEObjectInList.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final DeleteNonRootEObjectInList<Parameter> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof OperationSignature)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("parameters__OperationSignature")) {
     	return false;
     }
-    DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof DeleteNonRootEObjectInList<?>;
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof DeleteNonRootEObjectInList<?>)) {
+    	return false;
+    }
+    DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    return true;
   }
   
   public void executeResponse(final EChange change) {
@@ -43,14 +53,5 @@ class RemovedParameterResponse extends AbstractResponseRealization {
     mir.routines.pcm2java.RemovedParameterEffect effect = new mir.routines.pcm2java.RemovedParameterEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    DeleteNonRootEObjectInList<?> typedChange = (DeleteNonRootEObjectInList<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("parameters__OperationSignature")) {
-    	return false;
-    }
-    return changedElement instanceof OperationSignature;
   }
 }

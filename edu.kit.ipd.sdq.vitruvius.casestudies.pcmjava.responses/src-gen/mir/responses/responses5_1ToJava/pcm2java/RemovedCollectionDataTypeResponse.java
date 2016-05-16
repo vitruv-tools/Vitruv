@@ -20,27 +20,37 @@ class RemovedCollectionDataTypeResponse extends AbstractResponseRealization {
     return (_oldValue instanceof CollectionDataType);
   }
   
-  public static Class<? extends EChange> getTrigger() {
+  public static Class<? extends EChange> getExpectedChangeType() {
     return DeleteNonRootEObjectInList.class;
   }
   
-  public boolean checkPrecondition(final EChange change) {
-    if (!checkChangeType(change)) {
+  private boolean checkChangeProperties(final DeleteNonRootEObjectInList<DataType> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Repository)) {
     	return false;
     }
-    if (!checkChangedObject(change)) {
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("dataTypes__Repository")) {
+    	return false;
+    }
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof DeleteNonRootEObjectInList<?>)) {
     	return false;
     }
     DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
-  }
-  
-  private boolean checkChangeType(final EChange change) {
-    return change instanceof DeleteNonRootEObjectInList<?>;
   }
   
   public void executeResponse(final EChange change) {
@@ -52,14 +62,5 @@ class RemovedCollectionDataTypeResponse extends AbstractResponseRealization {
     mir.routines.pcm2java.RemovedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RemovedCollectionDataTypeEffect(this.executionState, this);
     effect.setChange(typedChange);
     effect.applyEffect();
-  }
-  
-  private boolean checkChangedObject(final EChange change) {
-    DeleteNonRootEObjectInList<?> typedChange = (DeleteNonRootEObjectInList<?>)change;
-    EObject changedElement = typedChange.getOldAffectedEObject();
-    if (!typedChange.getAffectedFeature().getName().equals("dataTypes__Repository")) {
-    	return false;
-    }
-    return changedElement instanceof Repository;
   }
 }
