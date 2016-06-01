@@ -32,7 +32,9 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -40,6 +42,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -76,6 +79,9 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 
 	private boolean hasJavaExtension(IPath file) {
+		if (file == null) {
+			return false;
+		}
 		return file.getFileExtension() != null && file.getFileExtension().equals("java");
 	}
 
@@ -96,8 +102,8 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		if (dialogResponse == Window.OK) {
 			logger.info("User pressed OK");
 			Repository repo = dialog.getRepository();
-			String newVersion = dialog.getNewVersion();
-			String oldVersion = dialog.getOldVersion();
+			ObjectId newVersion = dialog.getNewVersion();
+			ObjectId oldVersion = dialog.getOldVersion();
 			int replaySpeedInMs = dialog.getReplaySpeed();
 			boolean manualControl = dialog.isManualControlEnabled();
 			
@@ -116,24 +122,58 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 				logger.error("Failed to refresh project", e);
 				return null;
 			}
-
 			GitChangeExtractor changeExtractor = new GitChangeExtractor(repo, Path.fromOSString(relativeProjectInRepo));
 			List<ScmChangeResult> results;
-			try {
-				results = changeExtractor.extract(repo.resolve(newVersion), repo.resolve(oldVersion));
-			} catch (RevisionSyntaxException | IOException e) {
-				logger.error("Failed to resolve version ids", e);
-				return null;
-			}
+			results = changeExtractor.extract(newVersion, oldVersion);
+
 			List<ScmChangeResult> javaResults = results.parallelStream().filter(r -> isJavaChange(r)).collect(Collectors.toList());
+			List<IPath> pathsToIgnore = dialog.getPathsToIgnore();
+			List<ScmChangeResult> unignoredResults = javaResults.parallelStream().filter(r -> !isIgnored(r, pathsToIgnore)).collect(Collectors.toList());
 			ValidationStatistics stats = new ValidationStatistics();
 			List<UIJob> jobs = new ArrayList<UIJob>();
-			createJobs(project, window, javaResults, stats, jobs, repo, replaySpeedInMs, dialog, relativeProjectInRepo, manualControl);
+			createJobs(project, window, unignoredResults, stats, jobs, repo, replaySpeedInMs, dialog, relativeProjectInRepo, manualControl);
 		} else if (dialogResponse == Window.CANCEL) {
 			logger.warn("User pressed Cancel");
 		}
 
 		return null;
+	}
+
+	private boolean isIgnored(ScmChangeResult r, List<IPath> pathsToIgnore) {
+		IPath oldPath = r.getOldFileWithOffset();
+		IPath newPath = r.getNewFileWithOffset();
+		for (IPath pathToIgnore : pathsToIgnore) {
+			if (oldPath != null && newPath != null) {
+				boolean oldIgnored = pathToIgnore.isPrefixOf(oldPath);
+				boolean newIgnored = pathToIgnore.isPrefixOf(newPath);
+				if (oldIgnored && newIgnored) {
+					if (oldPath.equals(newPath)) {
+						logger.info("Ignoring change to " + newPath);
+					} else {
+						logger.info("Ignoring move from " + oldPath + " to " + newPath);
+					}
+					return true;
+				} else if (oldIgnored || newIgnored) {
+					logger.warn("Move between ignored and unignored paths. From " + oldPath + " to " + newPath);
+				}
+			} else if (oldPath != null) {
+				boolean oldIgnored = pathToIgnore.isPrefixOf(oldPath);
+				if (oldIgnored) {
+					logger.info("Ignoring deletion of " + oldPath);
+					return true;
+				}
+			} else if (newPath != null) {
+				boolean newIgnored = pathToIgnore.isPrefixOf(newPath);
+				if (newIgnored) {
+					logger.info("Ignoring creation of " + newPath);
+					return true;
+				}
+			} else {
+				logger.warn("Empty change. Should not occur");
+			}
+			
+		}
+		return false;
 	}
 
 	private void createJobs(final IProject project, IWorkbenchWindow window, List<ScmChangeResult> javaResults,
@@ -199,7 +239,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 						public IStatus runInUIThread(IProgressMonitor monitor) {
 							IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 							Shell activeShell = window.getShell();
-							NonBlockingNextStepDialog nextStepDialog = new NonBlockingNextStepDialog(activeShell) {
+							NonBlockingNextStepDialog nextStepDialog = new NonBlockingNextStepDialog(activeShell, jobs, nextJobIdx) {
 								
 								@Override
 								protected void onClose(int returnCode) {
@@ -262,17 +302,76 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		}
 
 		jobs.add(createScmStepInitJob(project, window, result));
+		Integer scrollToLine = null;
+		String oldContent = null;
 		for (String content : contentList) {
-			jobs.add(createContentSetJob(content, project, result.getNewFileWithOffset(), window));
+			if (oldContent != null) {
+				scrollToLine = computeFirstChangedLine(oldContent, content);
+			}
+			if (scrollToLine != null) {
+				jobs.add(createScrollToLineJob(scrollToLine, project, result.getNewFileWithOffset(), window));
+			}
+			jobs.add(createContentSetJob(content, scrollToLine, project, result.getNewFileWithOffset(), window));
+			oldContent = content;
 		}
 		if (contentList.size() > 1) {
 			jobs.add(createEditorCloseJob(project, result.getNewFileWithOffset(), window));
 		}
 		return jobs;
 	}
+	
+	private UIJob createScrollToLineJob(int scrollToLine, IProject project, IPath path,
+			IWorkbenchWindow window) {
+		UIJob contentJob = new UIJob("Scroll to line " + scrollToLine) {
 
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				try {
+					IFile file = project.getFile(path);
+					IWorkbenchPage page = window.getActivePage();
+					if (page != null) {
+						ITextEditor editor;
+						editor = (ITextEditor) IDE.openEditor(page, file);
+						IEditorInput input = editor.getEditorInput();
+						IDocument document = editor.getDocumentProvider().getDocument(input);
+						
+						logger.info("Scrolling to line " + scrollToLine);
+						IRegion lineInfo = document.getLineInformation(scrollToLine);
+						editor.selectAndReveal(lineInfo.getOffset(), 0);
+						return Status.OK_STATUS;
+					} else {
+						logger.warn("Couldn't set content because page was null.");
+						return Status.CANCEL_STATUS;
+					}
+				} catch (PartInitException | BadLocationException e) {
+					logger.error("Failed to scroll", e);
+				}
+				return Status.CANCEL_STATUS;
+			}
+		};
+		return contentJob;
+	}
+
+	private Integer computeFirstChangedLine(String oldContent, String newContent) {
+		String[] splitOld = oldContent.split("\n");
+		String[] splitNew = newContent.split("\n");
+		int lineIndex = 0;
+		boolean matched = true;
+		while (matched && lineIndex < splitOld.length && lineIndex < splitNew.length) {
+			if (!splitNew[lineIndex].equals(splitOld[lineIndex])) {
+				matched = false;
+			} else {
+				lineIndex++;
+			}
+		}
+		if (matched || lineIndex == 0) {
+			return null;
+		}
+		return lineIndex;
+	}
+	
 	private UIJob createScmStepInitJob(final IProject project, IWorkbenchWindow window, ScmChangeResult result) {
-		UIJob scmJob = new UIJob("SCM Job") {
+		UIJob scmJob = new UIJob("Open Editor for file: " +  result.getNewFileWithOffset().toOSString()) {
 
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -402,7 +501,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		return job;
 	}
 	
-	private UIJob createContentSetJob(String content, IProject project, IPath path, IWorkbenchWindow window) {
+	private UIJob createContentSetJob(String content, Integer scrollToLine, IProject project, IPath path, IWorkbenchWindow window) {
 		UIJob contentJob = new UIJob("Set document content") {
 
 			@Override
@@ -411,18 +510,21 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 					IFile file = project.getFile(path);
 					IWorkbenchPage page = window.getActivePage();
 					if (page != null) {
-						ITextEditor editor;
-						editor = (ITextEditor) IDE.openEditor(page, file);
+						ITextEditor editor = (ITextEditor) IDE.openEditor(page, file);
 						IEditorInput input = editor.getEditorInput();
 						IDocument document = editor.getDocumentProvider().getDocument(input);
-
 						document.set(content);
+						
+						if (scrollToLine != null) {
+							IRegion lineInfo = document.getLineInformation(scrollToLine);
+							editor.selectAndReveal(lineInfo.getOffset(), 0);
+						}
 						return Status.OK_STATUS;
 					} else {
 						logger.warn("Couldn't set content because page was null.");
 						return Status.CANCEL_STATUS;
 					}
-				} catch (PartInitException e) {
+				} catch (PartInitException | BadLocationException e) {
 					logger.error("Failed to set content", e);
 				}
 				return Status.CANCEL_STATUS;
@@ -431,9 +533,9 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 		return contentJob;
 	}
 
-	private void checkoutCommitInWorkingTree(Repository repository, String name) {
+	private void checkoutCommitInWorkingTree(Repository repository, ObjectId oldVersion) {
 		try (Git git = new Git(repository);) {
-			git.checkout().setName(name).call();
+			git.checkout().setName(oldVersion.getName()).call();
 		} catch (GitAPIException e) {
 			logger.error("Couldn't checkout old commit to working tree");
 			e.printStackTrace();

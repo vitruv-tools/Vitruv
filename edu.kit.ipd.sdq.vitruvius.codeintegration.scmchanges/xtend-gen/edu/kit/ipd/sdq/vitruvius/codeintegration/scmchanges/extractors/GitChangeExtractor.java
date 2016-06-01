@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.IScmChangeExtractor;
 import java.io.ByteArrayOutputStream;
@@ -14,19 +16,17 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.RenameDetector;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.AbbreviatedObjectId;
-import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevTree;
-import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 
 @SuppressWarnings("all")
-public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
+public class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
   private final static Logger logger = Logger.getLogger(GitChangeExtractor.class);
   
   private Repository repository;
@@ -47,23 +47,26 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
     this.projectRepoOffset = projectRepoOffset;
   }
   
+  public <T extends Object> Iterable<T> reverse(final Iterable<T> iterable) {
+    final ArrayList<T> toReverse = new ArrayList<T>();
+    for (final T element : iterable) {
+      toReverse.add(element);
+    }
+    final List<T> reversed = Lists.<T>reverse(toReverse);
+    return ((Iterable<T>) reversed);
+  }
+  
   @Override
-  public List<ScmChangeResult> extract(final AnyObjectId newVersion, final AnyObjectId oldVersion) {
+  public List<ScmChangeResult> extract(final ObjectId newVersion, final ObjectId oldVersion) {
     try {
       final ObjectReader reader = this.repository.newObjectReader();
       final Git git = new Git(this.repository);
-      final RevWalk revWalk = new RevWalk(this.repository);
       try {
-        RevCommit _parseCommit = revWalk.parseCommit(newVersion);
-        revWalk.markStart(_parseCommit);
-        final RevCommit oldCommit = revWalk.parseCommit(oldVersion);
-        revWalk.sort(RevSort.COMMIT_TIME_DESC);
-        final ArrayList<RevCommit> revsNewToOld = this.findNewToOld(revWalk, oldCommit);
-        final Function1<RevCommit, Integer> _function = (RevCommit it) -> {
-          return Integer.valueOf(it.getCommitTime());
-        };
-        final List<RevCommit> oldToNew = IterableExtensions.<RevCommit, Integer>sortBy(revsNewToOld, _function);
-        final Iterator<RevCommit> commitIterator = oldToNew.iterator();
+        final LogCommand log = git.log();
+        log.addRange(oldVersion, newVersion);
+        final Iterable<RevCommit> revsNewToOld = log.call();
+        final Iterable<RevCommit> revsOldToNew = this.<RevCommit>reverse(revsNewToOld);
+        final Iterator<RevCommit> commitIterator = revsOldToNew.iterator();
         RevCommit fromCommit = commitIterator.next();
         RevCommit toCommit = commitIterator.next();
         final ArrayList<ScmChangeResult> allResults = new ArrayList<ScmChangeResult>();
@@ -86,11 +89,15 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
             final List<DiffEntry> diffs = renameDetector.compute();
             final ObjectId toCommitId = toCommit.getId();
             final ObjectId fromCommitId = fromCommit.getId();
-            final Function1<DiffEntry, ScmChangeResult> _function_1 = (DiffEntry it) -> {
+            final Function1<DiffEntry, ScmChangeResult> _function = (DiffEntry it) -> {
               return this.createResult(it, fromCommitId, toCommitId);
             };
-            final List<ScmChangeResult> result = ListExtensions.<DiffEntry, ScmChangeResult>map(diffs, _function_1);
-            allResults.addAll(result);
+            final List<ScmChangeResult> result = ListExtensions.<DiffEntry, ScmChangeResult>map(diffs, _function);
+            final Function1<ScmChangeResult, Boolean> _function_1 = (ScmChangeResult r) -> {
+              return Boolean.valueOf((!Objects.equal(r, null)));
+            };
+            final Iterable<ScmChangeResult> filteredResult = IterableExtensions.<ScmChangeResult>filter(result, _function_1);
+            Iterables.<ScmChangeResult>addAll(allResults, filteredResult);
             fromCommit = toCommit;
             RevCommit _xtrycatchfinallyexpression = null;
             try {
@@ -116,67 +123,78 @@ public class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
     }
   }
   
-  public ArrayList<RevCommit> findNewToOld(final RevWalk revWalk, final RevCommit oldCommit) {
-    final ArrayList<RevCommit> revsNewToOld = new ArrayList<RevCommit>();
-    for (final RevCommit rev : revWalk) {
-      {
-        revsNewToOld.add(rev);
-        boolean _equals = rev.equals(oldCommit);
-        if (_equals) {
-          return revsNewToOld;
-        }
-      }
-    }
-    return revsNewToOld;
-  }
-  
   private ScmChangeResult createResult(final DiffEntry entry, final ObjectId oldVersion, final ObjectId newVersion) {
     try {
-      String newContent = ((String) null);
-      String oldContent = ((String) null);
+      String newContent = null;
+      String oldContent = null;
+      String _newPath = entry.getNewPath();
+      IPath newPath = Path.fromOSString(_newPath);
+      String _oldPath = entry.getOldPath();
+      IPath oldPath = Path.fromOSString(_oldPath);
       try {
-        AbbreviatedObjectId _newId = entry.getNewId();
-        ObjectId _objectId = _newId.toObjectId();
-        final ObjectLoader newObjectLoader = this.repository.open(_objectId);
-        final ByteArrayOutputStream newOutStream = new ByteArrayOutputStream();
-        newObjectLoader.copyTo(newOutStream);
-        String _string = newOutStream.toString("UTF-8");
-        newContent = _string;
+        boolean _isPrefixOf = this.projectRepoOffset.isPrefixOf(newPath);
+        if (_isPrefixOf) {
+          AbbreviatedObjectId _newId = entry.getNewId();
+          ObjectId _objectId = _newId.toObjectId();
+          final ObjectLoader newObjectLoader = this.repository.open(_objectId);
+          final ByteArrayOutputStream newOutStream = new ByteArrayOutputStream();
+          newObjectLoader.copyTo(newOutStream);
+          String _string = newOutStream.toString("UTF-8");
+          newContent = _string;
+        }
       } catch (final Throwable _t) {
         if (_t instanceof MissingObjectException) {
           final MissingObjectException e = (MissingObjectException)_t;
-          String _oldPath = entry.getOldPath();
-          String _plus = ("File seems to have been removed: " + _oldPath);
+          String _oldPath_1 = entry.getOldPath();
+          String _plus = ("File seems to have been removed: " + _oldPath_1);
           GitChangeExtractor.logger.info(_plus);
         } else {
           throw Exceptions.sneakyThrow(_t);
         }
       }
       try {
-        AbbreviatedObjectId _oldId = entry.getOldId();
-        ObjectId _objectId_1 = _oldId.toObjectId();
-        final ObjectLoader oldObjectLoader = this.repository.open(_objectId_1);
-        final ByteArrayOutputStream oldOutStream = new ByteArrayOutputStream();
-        oldObjectLoader.copyTo(oldOutStream);
-        String _string_1 = oldOutStream.toString("UTF-8");
-        oldContent = _string_1;
+        boolean _isPrefixOf_1 = this.projectRepoOffset.isPrefixOf(oldPath);
+        if (_isPrefixOf_1) {
+          AbbreviatedObjectId _oldId = entry.getOldId();
+          ObjectId _objectId_1 = _oldId.toObjectId();
+          final ObjectLoader oldObjectLoader = this.repository.open(_objectId_1);
+          final ByteArrayOutputStream oldOutStream = new ByteArrayOutputStream();
+          oldObjectLoader.copyTo(oldOutStream);
+          String _string_1 = oldOutStream.toString("UTF-8");
+          oldContent = _string_1;
+        }
       } catch (final Throwable _t_1) {
         if (_t_1 instanceof MissingObjectException) {
           final MissingObjectException e_1 = (MissingObjectException)_t_1;
-          String _newPath = entry.getNewPath();
-          String _plus_1 = ("File seems to have been added " + _newPath);
+          String _newPath_1 = entry.getNewPath();
+          String _plus_1 = ("File seems to have been added " + _newPath_1);
           GitChangeExtractor.logger.info(_plus_1);
         } else {
           throw Exceptions.sneakyThrow(_t_1);
         }
       }
-      String _newPath_1 = entry.getNewPath();
-      IPath _fromOSString = Path.fromOSString(_newPath_1);
+      boolean _and = false;
+      boolean _equals = Objects.equal(newContent, null);
+      if (!_equals) {
+        _and = false;
+      } else {
+        boolean _equals_1 = Objects.equal(oldContent, null);
+        _and = _equals_1;
+      }
+      if (_and) {
+        return null;
+      }
+      boolean _equals_2 = Objects.equal(newContent, null);
+      if (_equals_2) {
+        newPath = null;
+      }
+      boolean _equals_3 = Objects.equal(oldContent, null);
+      if (_equals_3) {
+        oldPath = null;
+      }
       String _name = newVersion.getName();
-      String _oldPath_1 = entry.getOldPath();
-      IPath _fromOSString_1 = Path.fromOSString(_oldPath_1);
       String _name_1 = oldVersion.getName();
-      return new ScmChangeResult(this.projectRepoOffset, _fromOSString, newContent, _name, _fromOSString_1, oldContent, _name_1);
+      return new ScmChangeResult(this.projectRepoOffset, newPath, newContent, _name, oldPath, oldContent, _name_1);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

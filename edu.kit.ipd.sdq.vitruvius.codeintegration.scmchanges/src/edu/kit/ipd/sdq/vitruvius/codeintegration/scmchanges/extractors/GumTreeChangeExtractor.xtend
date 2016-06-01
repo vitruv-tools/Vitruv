@@ -77,6 +77,7 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 
 		totalExtractions = totalExtractions + contentList.size
 
+		logger.info("Validating content list...")
 		if (validator != null) {
 			val toRemove = new HashSet<String>();
 			for (contentString : contentList) {

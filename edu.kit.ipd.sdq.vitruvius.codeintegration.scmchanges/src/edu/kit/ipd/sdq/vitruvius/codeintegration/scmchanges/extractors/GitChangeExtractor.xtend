@@ -1,26 +1,23 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 
+import com.google.common.collect.Lists
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ScmChangeResult
 import java.io.ByteArrayOutputStream
 import java.util.ArrayList
 import java.util.NoSuchElementException
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
+import org.eclipse.core.runtime.IPath
 import org.eclipse.core.runtime.Path
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.RenameDetector
 import org.eclipse.jgit.errors.MissingObjectException
-import org.eclipse.jgit.lib.AnyObjectId
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.revwalk.RevCommit
-import org.eclipse.jgit.revwalk.RevSort
-import org.eclipse.jgit.revwalk.RevWalk
-import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.lib.ObjectId
-import org.eclipse.core.runtime.IPath
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.treewalk.CanonicalTreeParser
 
-class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
+class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
 	
 	private static final Logger logger = Logger.getLogger(typeof(GitChangeExtractor))
 	
@@ -34,18 +31,25 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 		this.projectRepoOffset = projectRepoOffset
 	}
 	
-	override extract(AnyObjectId newVersion, AnyObjectId oldVersion) {
+	def <T> reverse(Iterable<T> iterable) {
+		val toReverse = new ArrayList<T>()
+		for (element : iterable) {
+			toReverse.add(element)
+		}
+		val reversed = Lists.reverse(toReverse)
+		return reversed as Iterable<T>
+	}
+	
+	override extract(ObjectId newVersion, ObjectId oldVersion) {
 		val reader = repository.newObjectReader()
 		val git = new Git(repository)
-		val revWalk = new RevWalk(repository)
 		try {
-			revWalk.markStart(revWalk.parseCommit(newVersion))
-			val oldCommit = revWalk.parseCommit(oldVersion)
+			val log = git.log
+			log.addRange(oldVersion, newVersion)
+			val revsNewToOld = log.call
+			val revsOldToNew = revsNewToOld.reverse
 			
-			revWalk.sort(RevSort.COMMIT_TIME_DESC)
-			val revsNewToOld = findNewToOld(revWalk, oldCommit)
-			val oldToNew = revsNewToOld.sortBy[it.commitTime]
-			val commitIterator = oldToNew.iterator
+			val commitIterator = revsOldToNew.iterator
 			var fromCommit = commitIterator.next
 			var toCommit = commitIterator.next
 			val allResults = new ArrayList()
@@ -65,7 +69,8 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 				val toCommitId = toCommit.id
 				val fromCommitId = fromCommit.id
 				val result = diffs.map[createResult(it, fromCommitId, toCommitId)]
-				allResults.addAll(result)
+				val filteredResult = result.filter[r | r != null]
+				allResults.addAll(filteredResult)
 				
 				fromCommit = toCommit
 				toCommit = try {commitIterator.next} catch (NoSuchElementException e) {null}
@@ -80,40 +85,50 @@ class GitChangeExtractor implements IScmChangeExtractor<AnyObjectId> {
 		
 	}
 	
-	def findNewToOld(RevWalk revWalk, RevCommit oldCommit) {
-		val revsNewToOld = new ArrayList
-		for (rev : revWalk) {
-			revsNewToOld.add(rev)
-			if (rev.equals(oldCommit)) {
-				return revsNewToOld
-			}
-		}
-		return revsNewToOld
-	}
-	
 	private def createResult(DiffEntry entry, ObjectId oldVersion, ObjectId newVersion) {
-		var newContent = null as String
-		var oldContent = null as String
+		var String newContent = null
+		var String oldContent = null
+			
+		var newPath = Path.fromOSString(entry.newPath)
+		var oldPath = Path.fromOSString(entry.oldPath)
+		
 		try {
-			val newObjectLoader = repository.open(entry.newId.toObjectId)
-			val newOutStream = new ByteArrayOutputStream()	
-			newObjectLoader.copyTo(newOutStream)
-			newContent = newOutStream.toString("UTF-8")
+			// Only set content if newpath is in project 
+			if (projectRepoOffset.isPrefixOf(newPath)) {
+				val newObjectLoader = repository.open(entry.newId.toObjectId)
+				val newOutStream = new ByteArrayOutputStream()	
+				newObjectLoader.copyTo(newOutStream)
+				newContent = newOutStream.toString("UTF-8")
+			}
 		} catch (MissingObjectException e) {
 			logger.info("File seems to have been removed: " + entry.oldPath)
 		}
 		
 		try {
-			val oldObjectLoader = repository.open(entry.oldId.toObjectId)
-			val oldOutStream = new ByteArrayOutputStream()	
-			oldObjectLoader.copyTo(oldOutStream)
-			oldContent = oldOutStream.toString("UTF-8")
+			// Only set content if oldpath is in project 
+			if (projectRepoOffset.isPrefixOf(oldPath)) {
+				val oldObjectLoader = repository.open(entry.oldId.toObjectId)
+				val oldOutStream = new ByteArrayOutputStream()	
+				oldObjectLoader.copyTo(oldOutStream)
+				oldContent = oldOutStream.toString("UTF-8")
+			}
 		} catch (MissingObjectException e) {
 			logger.info("File seems to have been added " + entry.newPath)
 		}
 
+		if (newContent == null && oldContent == null) {
+			// Change not in project at all
+			return null
+		}
 		
-		return new ScmChangeResult(projectRepoOffset, Path.fromOSString(entry.newPath), newContent, newVersion.getName, Path.fromOSString(entry.oldPath), oldContent, oldVersion.getName)
+		if (newContent == null) {
+			newPath = null
+		}
+		if (oldContent == null) {
+			oldPath = null
+		}
+
+		return new ScmChangeResult(projectRepoOffset, newPath, newContent, newVersion.getName, oldPath, oldContent, oldVersion.getName)
 	}
 	
 }

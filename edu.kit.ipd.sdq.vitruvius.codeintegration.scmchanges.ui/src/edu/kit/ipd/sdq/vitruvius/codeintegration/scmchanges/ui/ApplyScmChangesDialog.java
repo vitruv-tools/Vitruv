@@ -1,10 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -12,8 +16,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -42,9 +48,9 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 	private Text txtNewVersion;
 
-	private String newVersion;
+	private ObjectId newVersion;
 
-	private String oldVersion;
+	private ObjectId oldVersion;
 
 	private Repository repo;
 	
@@ -57,6 +63,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	private String cleanupCheckoutVersion;
 
 	protected boolean allowManualControl = false;
+
+	private Text txtIgnorePaths;
+
+	private List<IPath> ignorePaths;
 
 	public ApplyScmChangesDialog(Shell parentShell, IProject project) {
 		super(parentShell);
@@ -129,8 +139,21 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		createNewVersionField(container);
 		createReplaySpeedSlider(container);
 		createManualControlSwitch(container);
+		createIgnorePathsField(container);
 		createCleanupSection(container);
 		return area;
+	}
+	
+	private void createIgnorePathsField(Composite container) {
+		Label ignorePathsLabel = new Label(container, SWT.NONE);
+		ignorePathsLabel.setText("Ignore paths (comma sep.)");
+
+		GridData dataIgnorePaths = new GridData();
+		dataIgnorePaths.grabExcessHorizontalSpace = true;
+		dataIgnorePaths.horizontalAlignment = GridData.FILL;
+
+		txtIgnorePaths = new Text(container, SWT.BORDER);
+		txtIgnorePaths.setLayoutData(dataIgnorePaths);
 	}
 
 	private void createManualControlSwitch(Composite container) {
@@ -257,12 +280,46 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 			if (txtNewVersion.getText().equals(txtOldVersion.getText())) {
 				setMessage("Versions are equal. No change possible.", IMessageProvider.ERROR);
 				getButton(IDialogConstants.OK_ID).setEnabled(false);
+			} else if (!areReachable(txtNewVersion, txtOldVersion)) {
+				getButton(IDialogConstants.OK_ID).setEnabled(false);
 			} else {
 				setMessage("Valid versions entered.", IMessageProvider.INFORMATION);
 				getButton(IDialogConstants.OK_ID).setEnabled(true);
 			}
 		} else {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
+		}
+	}
+	
+	private ObjectId stringToRevId(String stringId) throws IOException {
+		ObjectId rev = null;
+		Ref ref = repo.findRef(stringId);
+		if (ref != null) {
+			final Ref repoPeeled = repo.peel(ref);
+			if(repoPeeled.getPeeledObjectId() != null) {
+				return repoPeeled.getPeeledObjectId();
+			}
+			return ref.getObjectId();
+		} else {
+			rev = repo.resolve(stringId);
+		}
+		return rev;
+	}
+
+	private boolean areReachable(Text txtNewVersion, Text txtOldVersion) {
+		try (RevWalk revWalk = new RevWalk(repo)){
+			ObjectId oldRev = stringToRevId(txtOldVersion.getText());
+			ObjectId newRev = stringToRevId(txtNewVersion.getText());
+			boolean isMerged = revWalk.isMergedInto(revWalk.parseCommit(oldRev), revWalk.parseCommit(newRev));
+			if (isMerged) {
+				return true;
+			} else {
+				setMessage("New Version cannot be reached from old version", IMessageProvider.ERROR);
+				return false;
+			}
+		} catch (RevisionSyntaxException | IOException e) {
+			setMessage("Something during version resolving.", IMessageProvider.ERROR);
+			return false;
 		}
 	}
 
@@ -273,7 +330,8 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		} else {
 			ObjectId rev;
 			try {
-				rev = repo.resolve(txtField.getText());
+				String idTxt = txtField.getText();
+				rev = stringToRevId(idTxt);
 				if (rev == null) {
 					setMessage(name + " Version not found in repository.", IMessageProvider.ERROR);
 					return false;
@@ -286,21 +344,34 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		return true;
 	}
 
-	public String getNewVersion() {
+	public ObjectId getNewVersion() {
 		return newVersion;
 	}
 
-	public String getOldVersion() {
+	public ObjectId getOldVersion() {
 		return oldVersion;
 	}
 
 	@Override
 	protected void okPressed() {
-		newVersion = txtNewVersion.getText();
-		oldVersion = txtOldVersion.getText();
+		try {
+			newVersion = stringToRevId(txtNewVersion.getText());
+			oldVersion = stringToRevId(txtOldVersion.getText());
+		} catch (IOException e) {
+			throw new RuntimeException("Should be avoided by validation. Please fix.");
+		}
 		replaySpeedInMs = replaySpeedSlider.getSelection();
 		cleanupCheckoutVersion = txtCheckoutVersion.getText();
+		ignorePaths = splitPaths(txtIgnorePaths.getText());
 		super.okPressed();
+	}
+
+	private List<IPath> splitPaths(String text) {
+		List<IPath> paths = new ArrayList<>();
+		for (String pathString : text.split(",")) {
+			paths.add(Path.fromOSString(pathString));
+		}
+		return paths;
 	}
 
 	public Repository getRepository() {
@@ -317,6 +388,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	
 	public boolean isManualControlEnabled() {
 		return allowManualControl;
+	}
+	
+	public List<IPath> getPathsToIgnore() {
+		return ignorePaths;
 	}
 
 }

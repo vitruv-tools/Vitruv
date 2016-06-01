@@ -4,10 +4,10 @@ import org.eclipse.core.runtime.IPath;
 
 public class ScmChangeResult {
 	
-	private IPath newFileWithOffset;
 	private String newContent;
 	private String oldContent;
 	private IPath oldFileWithOffset;
+	private IPath newFileWithOffset;
 	private String newVersionId;
 	private String oldVersionId;
 
@@ -19,8 +19,11 @@ public class ScmChangeResult {
 		this.oldContent = oldContent;
 		this.oldVersionId = oldVersionId;
 	}
-	
+
 	private IPath applyOffset(IPath relativeToRepo, IPath offset) {
+		if (relativeToRepo == null) {
+			return null;
+		}
 		int matching = relativeToRepo.matchingFirstSegments(offset);
 		IPath fileWithOffset = relativeToRepo.removeFirstSegments(matching);
 		return fileWithOffset;

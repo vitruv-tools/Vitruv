@@ -101,6 +101,7 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       int _size = contentList.size();
       int _plus = (this.totalExtractions + _size);
       this.totalExtractions = _plus;
+      GumTreeChangeExtractor.logger.info("Validating content list...");
       boolean _notEquals = (!Objects.equal(this.validator, null));
       if (_notEquals) {
         final HashSet<String> toRemove = new HashSet<String>();
