@@ -26,17 +26,20 @@ package class EMFModelPreparer extends ConcreteChangePreparer {
 			if (eChange instanceof EFeatureChange<?>) {
 				val featureChange = eChange as EFeatureChange<?>
 				val oldEObject = featureChange.oldAffectedEObject
-				val newEObject = featureChange.newAffectedEObject				
-				val correspondenceInstances = this.correspondenceProviding.getOrCreateAllCorrespondenceInstances(emc.URI)
-				for (correspondenceInstance : correspondenceInstances) {
-				    EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
-									
-						override call() throws Exception {
-							correspondenceInstance.updateTUID(oldEObject, newEObject)
-							return null
-						}
-				    	
-				    }, this.modelProviding)
+				val newEObject = featureChange.newAffectedEObject
+				if (oldEObject != null && newEObject != null) {
+					val correspondenceInstances = this.correspondenceProviding.
+						getOrCreateAllCorrespondenceInstances(emc.URI)
+					for (correspondenceInstance : correspondenceInstances) {
+						EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+
+							override call() throws Exception {
+								correspondenceInstance.updateTUID(oldEObject, newEObject)
+								return null
+							}
+
+						}, this.modelProviding)
+					}
 				}
 			}
 			return emc
