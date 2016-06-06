@@ -38,6 +38,9 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import org.emftext.language.java.members.Constructor
+import org.emftext.language.java.statements.StatementListContainer
+import org.emftext.language.java.parameters.Parametrizable
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -207,9 +210,22 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	}
 
 	private def createMethodCorrespondence(MethodLevelSourceCodeLink methodLink) {
-		var jamoppMethod = resolveJaMoppProxy(methodLink.function) as Method;
+		val jamoppFunction = resolveJaMoppProxy(methodLink.function);
+		// need both these interfaces below which constructor and method both implement.
+		// No common interface for both in the hierarchy though.
+		var Commentable jamoppCommentable;
+		var Parametrizable jamoppParametrizable;
+		if (jamoppFunction instanceof Method) {
+			jamoppCommentable = jamoppFunction;
+			jamoppParametrizable = jamoppFunction;
+		} else if (jamoppFunction instanceof Constructor) {
+			jamoppCommentable = jamoppFunction;
+			jamoppParametrizable = jamoppFunction;
+		} else {
+			throw new RuntimeException("Unexpected type in method level source code link.");
+		}
 		var pcmMethod = methodLink.operation as OperationSignature;
-		var jamoppInterface = jamoppMethod.containingConcreteClassifier
+		var jamoppInterface = jamoppCommentable.containingConcreteClassifier
 		var pcmInterface = pcmMethod.interface__OperationSignature
 
 		// Get parent Interface <-> Type correspondence from correspondence instance
@@ -222,12 +238,12 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		}
 
 		// 7. OperationSignature <-> jaMopp Method correspondence
-		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppMethod, interfaceCorrespondence.get(0));
+		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppFunction, interfaceCorrespondence.get(0));
 
 		for (pcmParam : pcmMethod.parameters__OperationSignature) {
 
 			// Find matching jaMopp parameter by name
-			var jamoppParam = jamoppMethod.parameters.findFirst[jp|jp.name.equals(pcmParam.entityName)];
+			var jamoppParam = jamoppParametrizable.parameters.findFirst[jp|jp.name.equals(pcmParam.entityName)];
 			if (jamoppParam != null) {
 
 				// 8. PCM Parameter <-> jaMopp Parameter correspondence	
