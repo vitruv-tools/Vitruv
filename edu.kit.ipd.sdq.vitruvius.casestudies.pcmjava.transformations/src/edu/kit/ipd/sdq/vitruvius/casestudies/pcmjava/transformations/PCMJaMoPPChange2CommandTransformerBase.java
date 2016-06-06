@@ -1,16 +1,21 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.emftext.language.java.classifiers.Interface;
+import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence;
@@ -19,16 +24,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject;
@@ -105,41 +114,149 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
                 .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
                     @Override
                     public TransformationResult call() {
-                        // execute command converting
-                        final boolean createdByIntegration = PCMJaMoPPChange2CommandTransformerBase.this
-                                .elementsInChangeHaveBeenCreatedByIntegration(emfModelChange, blackboard);
-                        if (createdByIntegration) {
-                            PCMJaMoPPChange2CommandTransformerBase.this.userInteracting.showMessage(
-                                    UserInteractionType.MODELESS,
-                                    "Elements in change created by integration. Fix manually.");
-                            return new TransformationResult();
-                        } else {
-                            final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
-                                    .executeTransformationForChange(emfModelChange.getEChange());
-                            return transformationResult;
-                        }
+                    	if (handledByIntegration(emfModelChange, blackboard)) {
+                    		return new TransformationResult();
+                    	}
+                        
+                        // Standard Vitruvius Process:
+                        final TransformationResult transformationResult = PCMJaMoPPChange2CommandTransformerBase.this.transformationExecuter
+                                .executeTransformationForChange(emfModelChange.getEChange());
+                        return transformationResult;
                     }
                 });
 
         return command;
     }
+    
+    private boolean handledByIntegration(final EMFModelChange emfModelChange, final Blackboard blackboard) {
+    	final boolean isNewClassOrInterfaceInIntegratedArea = isNewClassOrInterfaceInIntegratedArea(emfModelChange,
+    			blackboard);
+    	if (isNewClassOrInterfaceInIntegratedArea) {
+    		showNewTypeInIntegratedAreaDialog();
+            return true;
+    	}
+        final Set<EObject> correspondingIntegratedEObjects = getCorrespondingEObjectsIfIntegrated(emfModelChange, blackboard);
+        if (correspondingIntegratedEObjects != null) {
+        	StringBuffer buffer = new StringBuffer();
+        	buffer.append("Elements in change were integrated into Vitruvius.\n");
+        	buffer.append("Please fix manually. Corresponding object(s):\n");
+        	for (EObject obj : correspondingIntegratedEObjects) {
+        		String name = getReadableName(obj);
+        		buffer.append("\n");
+        		buffer.append(name);
+        	}
+            PCMJaMoPPChange2CommandTransformerBase.this.userInteracting.showMessage(
+                    UserInteractionType.MODAL,
+                    buffer.toString());
+            return true;
+        } 
+        return false;
+	}
+    
+    private void showNewTypeInIntegratedAreaDialog() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Created class or interface in area with integrated objects.\n");
+		buffer.append("Please handle consistency manually.");
+		PCMJaMoPPChange2CommandTransformerBase.this.userInteracting.showMessage(
+		        UserInteractionType.MODAL,
+		        buffer.toString());
+	}
 
-    protected boolean elementsInChangeHaveBeenCreatedByIntegration(final EMFModelChange emfModelChange,
+	private boolean isNewClassOrInterfaceInIntegratedArea(EMFModelChange emfModelChange,
             final Blackboard blackboard) {
-        final CorrespondenceInstance<?> ci = blackboard.getCorrespondenceInstance();
-        final VURI mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
-        final VURI mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
+    	final EChange eChange = emfModelChange.getEChange();
+        if (eChange instanceof CreateNonRootEObjectInList) { 
+        	//Check if this is a creation of a class or interface on file level.
+        	//In this case we need to check if any siblings in the package have been integrated
+        	final CreateNonRootEObjectInList<?> change = (CreateNonRootEObjectInList<?>) eChange;
+        	Class<?> classOfAffected = change.getNewAffectedEObject().eClass().getInstanceClass();
+        	Class<?> classOfCreated = change.getNewValue().eClass().getInstanceClass();
+        	if (classOfAffected.equals(CompilationUnit.class) && 
+        			(classOfCreated.equals(org.emftext.language.java.classifiers.Class.class) || 
+        			 classOfCreated.equals(Interface.class))) {
+        		CompilationUnit cu = (CompilationUnit) change.getNewAffectedEObject();
+                final InternalCorrespondenceInstance ci = blackboard.getCorrespondenceInstance();
+                TUID newCompilationUnitTuid = ci.calculateTUIDFromEObject(cu);
+                String packagePartOfNewTuid = getPackagePart(newCompilationUnitTuid);
+    			for (Correspondence corr : ci.getAllCorrespondences()) {
+    				if (corr instanceof IntegrationCorrespondence) {
+    					IntegrationCorrespondence integrationCorr = (IntegrationCorrespondence) corr;
+	    				if (integrationCorr.isCreatedByIntegration()) {
+	    					ArrayList<TUID> allTUIDs = new ArrayList<TUID>();
+	    					allTUIDs.addAll(corr.getATUIDs());
+	    					allTUIDs.addAll(corr.getBTUIDs());
+	    					for (TUID tuid : allTUIDs) {
+	    						String packagePart = getPackagePart(tuid);
+	    						if (packagePartOfNewTuid.startsWith(packagePart)) {
+	    							// Is in same package or child package of a package with integrated objects
+	    							return true;
+	    						}
+	    					}
+	    				}
+    				}
+    			}
+        	}
+    	} 
+        return false;
+	}
+
+    private String getPackagePart(TUID newCompilationUnitTuid) {
+		String originalTuidAsString = newCompilationUnitTuid.toString();
+		int lastSlashIndex = originalTuidAsString.lastIndexOf("/");
+		return originalTuidAsString.substring(0, lastSlashIndex);
+	}
+
+	private String getReadableName(EObject obj) {
+    	String name = getDirectNameIfNamed(obj);
+		String className = obj.eClass().getName();
+    	EObject container = obj.eContainer();
+    	while (name == null) {
+    		if (container == null) {
+    			name = className;
+    		} else {
+    			String containerName = getDirectNameIfNamed(container);
+    			if (containerName != null) {
+    				String containerClassName = container.eClass().getName();
+					name = className + " in " + containerClassName + ": " + containerName;
+    			} else {
+    				container = container.eContainer();
+    			}
+    		}
+    	}
+		return name;
+	}
+
+	private String getDirectNameIfNamed(EObject obj) {
+		String name = null;
+		String className = obj.eClass().getName();
+		if (obj instanceof NamedElement) {
+			NamedElement named = (NamedElement) obj;
+			name =  className + ": " + named.getEntityName();
+		} else if (obj instanceof org.emftext.language.java.commons.NamedElement) {
+			org.emftext.language.java.commons.NamedElement named = (org.emftext.language.java.commons.NamedElement) obj;
+			name =  className + ": " + named.getName();
+		}
+		return name;
+	}
+
+	/**
+     * 
+     * @return set of corresponding EObjects if integrated, else null
+     */
+    private Set<EObject> getCorrespondingEObjectsIfIntegrated(final EMFModelChange emfModelChange,
+            final Blackboard blackboard) {
+        final CorrespondenceInstance<Correspondence> ci = blackboard.getCorrespondenceInstance();
 
         final EChange eChange = emfModelChange.getEChange();
         EObject eObj = null;
         if (eChange instanceof EFeatureChange<?>) {
-            final EFeatureChange<?> featureChange = (EFeatureChange<?>) emfModelChange.getEChange();
+            final EFeatureChange<?> featureChange = (EFeatureChange<?>) eChange;
             eObj = featureChange.getNewAffectedEObject();
         } else if (eChange instanceof ReplaceRootEObject<?>) {
-            final ReplaceRootEObject<?> replChange = (ReplaceRootEObject<?>) emfModelChange.getEChange();
+            final ReplaceRootEObject<?> replChange = (ReplaceRootEObject<?>) eChange;
             eObj = replChange.getNewValue();
         } else if (eChange instanceof DeleteRootEObject<?>) {
-            final DeleteRootEObject<?> delChange = (DeleteRootEObject<?>) emfModelChange.getEChange();
+            final DeleteRootEObject<?> delChange = (DeleteRootEObject<?>) eChange;
             eObj = delChange.getOldValue();
         }
 
@@ -149,13 +266,21 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
             final Set<EObject> set = CollectionBridge.toSet(eObj);
             final Set<IntegrationCorrespondence> correspondences = integrationView
                     .getCorrespondencesThatInvolveAtLeast(set);
+            Set<EObject> correspondingObjects = new HashSet<EObject>();
             for (final IntegrationCorrespondence integratedCorrespondence : correspondences) {
                 if (integratedCorrespondence.isCreatedByIntegration()) {
-                    return true;
+                	EList<EObject> as = integratedCorrespondence.getAs();
+                	EList<EObject> bs = integratedCorrespondence.getAs();
+                	if (as.contains(eObj)) {
+                		correspondingObjects.addAll(bs);
+                	} else {
+                		correspondingObjects.addAll(as);
+                	}
+                	return correspondingObjects;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private List<Command> transformCompositeChange(final CompositeChange compositeChange, final Blackboard blackboard) {
