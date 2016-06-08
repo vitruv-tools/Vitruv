@@ -10,7 +10,7 @@ import org.eclipse.ui.progress.UIJob;
 public abstract class NonBlockingNextStepDialog extends MessageDialog {
 
 	public NonBlockingNextStepDialog(Shell parent, List<UIJob> jobs, int nextJobIdx) {
-		super(parent, "Perform Next Step", null, getJobName(jobs, nextJobIdx), MessageDialog.CONFIRM, createButtonLabels(), 0);
+		super(parent, "Perform Next Step " + nextJobIdx + "/" + jobs.size(), null, getJobName(jobs, nextJobIdx), MessageDialog.CONFIRM, createButtonLabels(), 0);
 		this.setBlockOnOpen(false);
 		this.setShellStyle(SWT.TITLE | SWT.CLOSE);
 	}

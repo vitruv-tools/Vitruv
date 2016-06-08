@@ -212,6 +212,10 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 
 	private void startJobsInManualControlMode(List<UIJob> jobs) {
+		if (jobs.size() < 1) {
+			logger.warn("No Jobs to schedule!");
+			return;
+		}
 		Job replayJob = new Job("Replay Job") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -324,7 +328,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	
 	private UIJob createScrollToLineJob(int scrollToLine, IProject project, IPath path,
 			IWorkbenchWindow window) {
-		UIJob contentJob = new UIJob("Scroll to line " + scrollToLine) {
+		UIJob contentJob = new UIJob("Scroll to line " + (scrollToLine + 1)) {
 
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {

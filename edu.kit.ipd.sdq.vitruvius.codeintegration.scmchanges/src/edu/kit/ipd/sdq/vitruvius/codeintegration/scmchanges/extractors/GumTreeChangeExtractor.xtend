@@ -66,8 +66,8 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 
 		val contentList = new ArrayList()
 		val converter = new GumTree2JdtAstConverterImpl()
-
-		contentList.add(converter.convertTree(srcTreeContext.root).toString)
+		converter.convertTree(srcTreeContext.root)
+		contentList.add(converter.lastConvertedAsText)
 
 		val m = Matchers.getInstance().getMatcher(srcTreeContext.root, dstTreeContext.root)
 		m.match()
@@ -123,7 +123,8 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 	}
 	
 	private def appendExtractedContent(ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree workingTree) {
-		val extractedContent = converter.convertTree(workingTree).toString
+		converter.convertTree(workingTree)
+		val extractedContent = converter.lastConvertedAsText
 		if (removeNeighbouringDuplicates && extractedContent.equals(contentList.last)) {
 			logger.info("Content did not change compared to last element in content list. Ignoring.")
 		} else {

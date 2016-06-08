@@ -21,7 +21,6 @@ import java.util.Set;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
@@ -83,9 +82,9 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       final ArrayList<String> contentList = new ArrayList<String>();
       final GumTree2JdtAstConverterImpl converter = new GumTree2JdtAstConverterImpl();
       ITree _root_2 = srcTreeContext.getRoot();
-      CompilationUnit _convertTree = converter.convertTree(_root_2);
-      String _string = _convertTree.toString();
-      contentList.add(_string);
+      converter.convertTree(_root_2);
+      String _lastConvertedAsText = converter.getLastConvertedAsText();
+      contentList.add(_lastConvertedAsText);
       Matchers _instance = Matchers.getInstance();
       ITree _root_3 = srcTreeContext.getRoot();
       ITree _root_4 = dstTreeContext.getRoot();
@@ -162,8 +161,8 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
   private Boolean appendExtractedContent(final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree workingTree) {
     boolean _xblockexpression = false;
     {
-      CompilationUnit _convertTree = converter.convertTree(workingTree);
-      final String extractedContent = _convertTree.toString();
+      converter.convertTree(workingTree);
+      final String extractedContent = converter.getLastConvertedAsText();
       boolean _xifexpression = false;
       boolean _and = false;
       if (!this.removeNeighbouringDuplicates) {

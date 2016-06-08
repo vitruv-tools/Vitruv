@@ -6,5 +6,7 @@ import com.github.gumtreediff.tree.ITree;
 public interface GumTree2JdtAstConverter {
 	
 	CompilationUnit convertTree(ITree gumTree);
+	
+	String getLastConvertedAsText();
 
 }

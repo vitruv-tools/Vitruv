@@ -15,6 +15,8 @@ import org.eclipse.jgit.diff.RenameDetector
 import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 
 class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
@@ -40,20 +42,53 @@ class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
 		return reversed as Iterable<T>
 	}
 	
+	def pathExists(ObjectId from, ObjectId to) {
+		val checkWalk = new RevWalk(repository)
+		return checkWalk.isMergedInto(checkWalk.parseCommit(from),
+			checkWalk.parseCommit(to))
+	}
+	
+	def getNextCommit(RevCommit toCommit, ObjectId oldVersion) {
+		for (child : toCommit.parents) {
+			if (pathExists(oldVersion, child.id)) {
+				if (toCommit.parentCount > 1) {
+					logger.warn("Commit " + toCommit + " has multiple parents. Choosing random path to parent: " + child +
+						" Changes in other path will only be applied during merge. Not as atomic as possible...")
+				}
+				return child
+			}
+		}
+	}
+	
 	override extract(ObjectId newVersion, ObjectId oldVersion) {
 		val reader = repository.newObjectReader()
 		val git = new Git(repository)
 		try {
-			val log = git.log
-			log.addRange(oldVersion, newVersion)
-			val revsNewToOld = log.call
-			val revsOldToNew = revsNewToOld.reverse
+			val walk = new RevWalk(repository)
+			var reachedOldVersion = false
+			val newestCommit = walk.parseCommit(newVersion)
+			val oldestCommit = walk.parseCommit(oldVersion)
+			val commitList = new ArrayList<RevCommit>()
+			commitList.add(newestCommit)
+			var currentTo = newestCommit
+			while (!reachedOldVersion) {
+				val nextCommitId = getNextCommit(currentTo, oldVersion).id
+				val nextCommit = walk.parseCommit(nextCommitId)
+				commitList.add(nextCommit);
+				if (nextCommit == oldestCommit) {
+					reachedOldVersion = true
+				}
+				currentTo = nextCommit
+			}
 			
-			val commitIterator = revsOldToNew.iterator
+			val commitIterator = commitList.reverse.iterator
 			var fromCommit = commitIterator.next
 			var toCommit = commitIterator.next
 			val allResults = new ArrayList()
 			while (toCommit != null) {
+				val toCommitId = toCommit.id
+				val fromCommitId = fromCommit.id
+				logger.info("Git diffing from " + fromCommitId + " to " + toCommitId)
 				val newTree = new CanonicalTreeParser
 				newTree.reset(reader, toCommit.tree.id)
 				val oldTree = new CanonicalTreeParser
@@ -65,25 +100,26 @@ class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
 				val renameDetector = new RenameDetector(repository)
 				renameDetector.addAll(rawDiffs)
 				val diffs = renameDetector.compute
-			
-				val toCommitId = toCommit.id
-				val fromCommitId = fromCommit.id
+
 				val result = diffs.map[createResult(it, fromCommitId, toCommitId)]
 				val filteredResult = result.filter[r | r != null]
 				allResults.addAll(filteredResult)
-				
 				fromCommit = toCommit
 				toCommit = try {commitIterator.next} catch (NoSuchElementException e) {null}
 			}
 			
 			return allResults
 
+		} catch (Throwable e) {
+			logger.fatal("Error during git extraction",e)
+			throw new RuntimeException(e)
 		} finally {
 			git.close
 			reader.close
 		}
 		
 	}
+
 	
 	private def createResult(DiffEntry entry, ObjectId oldVersion, ObjectId newVersion) {
 		var String newContent = null

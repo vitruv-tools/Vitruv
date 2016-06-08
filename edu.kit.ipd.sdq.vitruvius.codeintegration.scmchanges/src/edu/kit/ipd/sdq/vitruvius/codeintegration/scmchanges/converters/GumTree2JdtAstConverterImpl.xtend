@@ -11,22 +11,50 @@ import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor
 import org.apache.log4j.Logger
 import java.util.Map
 import org.eclipse.jdt.core.dom.SimplePropertyDescriptor
+import org.eclipse.jdt.core.dom.ASTParser
+import org.eclipse.jface.text.Document
+import org.eclipse.jdt.core.dom.CompilationUnit
 
 class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 	
 	private static final Logger logger = Logger.getLogger(typeof(GumTree2JdtAstConverterImpl).name);
+	
+	private String lastConvertedAsText = null
 
 	override convertTree(ITree gumTree) {
-		val ast = AST.newAST(AST.JLS8)
-		val root = ast.newCompilationUnit
+		val parser = ASTParser.newParser(AST.JLS8)
+		//Empty document. Allows recording all changes; then printing
+		val document = new Document("");
+		parser.setSource(document.get().toCharArray());
+		val unit = parser.createAST(null) as CompilationUnit;
+		unit.recordModifications();
 		for (ITree child : gumTree.children) {
-			createAstNode(child, ast, root)
+			createAstNode(child, unit.AST, unit)
 		}
-		return root
+		val edits = unit.rewrite(document, null)
+		edits.apply(document);
+		lastConvertedAsText = document.get()
+		return unit
+	}
+	
+	override getLastConvertedAsText() {
+		return lastConvertedAsText
 	}
 
 	private def void createAstNode(ITree tree, AST ast, ASTNode parent) {
 		val astNode = ast.createInstance(tree.type)
+		
+		//clean newly created node (remove all child properties in lists). E.g. array type gets created with one dimension by default. 
+		//We'll add that later anyways so we'd end up with one more than needed.
+		val newNodeProperties = astNode.structuralPropertiesForType
+		for (property : newNodeProperties) {
+			val propertyDescr = property as StructuralPropertyDescriptor;
+			if (propertyDescr.childListProperty) {
+				val list = astNode.getStructuralProperty(propertyDescr) as List<ASTNode>
+				list.clear
+			}
+		}
+		
 		
 		val properties = tree.getMetadata("properties") as Map<String, Object>
 		for (entry : properties.entrySet) {

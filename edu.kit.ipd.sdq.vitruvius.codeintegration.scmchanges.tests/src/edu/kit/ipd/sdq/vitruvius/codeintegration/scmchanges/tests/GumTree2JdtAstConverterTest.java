@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.Assert;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
@@ -17,7 +18,6 @@ import com.github.gumtreediff.tree.ITree;
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverter;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters.GumTree2JdtAstConverterImpl;
-import org.junit.Assert;
 
 public class GumTree2JdtAstConverterTest {
 	
@@ -37,7 +37,7 @@ public class GumTree2JdtAstConverterTest {
 		GumTree2JdtAstConverter converter = new GumTree2JdtAstConverterImpl();
 		CompilationUnit cu = converter.convertTree(tree);
 		Assert.assertNotNull(cu);
-		logger.info("\n\n" + cu.toString());
+		logger.info("\n\n" + converter.getLastConvertedAsText());
 	}
 	
 

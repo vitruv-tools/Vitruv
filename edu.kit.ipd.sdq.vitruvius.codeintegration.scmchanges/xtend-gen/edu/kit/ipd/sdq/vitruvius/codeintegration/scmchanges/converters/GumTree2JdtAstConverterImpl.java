@@ -9,30 +9,68 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ChildListPropertyDescriptor;
 import org.eclipse.jdt.core.dom.ChildPropertyDescriptor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SimplePropertyDescriptor;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
+import org.eclipse.jface.text.Document;
+import org.eclipse.text.edits.TextEdit;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 
 @SuppressWarnings("all")
 public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
   private final static Logger logger = Logger.getLogger(GumTree2JdtAstConverterImpl.class.getName());
   
+  private String lastConvertedAsText = null;
+  
   @Override
   public CompilationUnit convertTree(final ITree gumTree) {
-    final AST ast = AST.newAST(AST.JLS8);
-    final CompilationUnit root = ast.newCompilationUnit();
-    List<ITree> _children = gumTree.getChildren();
-    for (final ITree child : _children) {
-      this.createAstNode(child, ast, root);
+    try {
+      final ASTParser parser = ASTParser.newParser(AST.JLS8);
+      final Document document = new Document("");
+      String _get = document.get();
+      char[] _charArray = _get.toCharArray();
+      parser.setSource(_charArray);
+      ASTNode _createAST = parser.createAST(null);
+      final CompilationUnit unit = ((CompilationUnit) _createAST);
+      unit.recordModifications();
+      List<ITree> _children = gumTree.getChildren();
+      for (final ITree child : _children) {
+        AST _aST = unit.getAST();
+        this.createAstNode(child, _aST, unit);
+      }
+      final TextEdit edits = unit.rewrite(document, null);
+      edits.apply(document);
+      String _get_1 = document.get();
+      this.lastConvertedAsText = _get_1;
+      return unit;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
     }
-    return root;
+  }
+  
+  @Override
+  public String getLastConvertedAsText() {
+    return this.lastConvertedAsText;
   }
   
   private void createAstNode(final ITree tree, final AST ast, final ASTNode parent) {
     int _type = tree.getType();
     final ASTNode astNode = ast.createInstance(_type);
+    final List newNodeProperties = astNode.structuralPropertiesForType();
+    for (final Object property : newNodeProperties) {
+      {
+        final StructuralPropertyDescriptor propertyDescr = ((StructuralPropertyDescriptor) property);
+        boolean _isChildListProperty = propertyDescr.isChildListProperty();
+        if (_isChildListProperty) {
+          Object _structuralProperty = astNode.getStructuralProperty(propertyDescr);
+          final List<ASTNode> list = ((List<ASTNode>) _structuralProperty);
+          list.clear();
+        }
+      }
+    }
     Object _metadata = tree.getMetadata("properties");
     final Map<String, Object> properties = ((Map<String, Object>) _metadata);
     Set<Map.Entry<String, Object>> _entrySet = properties.entrySet();
@@ -52,9 +90,9 @@ public class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
     final List parentProperties = parent.structuralPropertiesForType();
     final Object propertyId = tree.getMetadata("propertyId");
     boolean found = false;
-    for (final Object property : parentProperties) {
+    for (final Object property_1 : parentProperties) {
       {
-        final StructuralPropertyDescriptor propertyDescr = ((StructuralPropertyDescriptor) property);
+        final StructuralPropertyDescriptor propertyDescr = ((StructuralPropertyDescriptor) property_1);
         String _id = propertyDescr.getId();
         boolean _equals = Objects.equal(_id, propertyId);
         if (_equals) {
