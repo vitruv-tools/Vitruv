@@ -186,7 +186,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 					if (monitor.isCanceled()) {
 						return Status.CANCEL_STATUS;
 					}
-					jobs.addAll(createJobsForScmChange(project, window, result, stats));
+					jobs.addAll(createJobsForScmChange(project, window, result, stats, dialog.isJamoppValidationEnabled()));
 					progress.worked(1);
 				}
 				return Status.OK_STATUS;
@@ -285,7 +285,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 
 	private List<UIJob> createJobsForScmChange(final IProject project, IWorkbenchWindow window,
-			ScmChangeResult result, ValidationStatistics stats) {
+			ScmChangeResult result, ValidationStatistics stats, boolean enableJamoppValidation) {
 		List<UIJob> jobs = new ArrayList<UIJob>();
 		List<String> contentList;
 		if (result.getNewContent() != null && result.getOldContent() != null) {
@@ -293,7 +293,9 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 			IFile file = project.getFile(result.getNewFileWithOffset());
 			URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 			GumTreeChangeExtractor gumTreeChangeExtractor = new GumTreeChangeExtractor(result.getOldContent(), result.getNewContent(), uri);
-			gumTreeChangeExtractor.setValidator(new JaMoPPContentValidator());
+			if (enableJamoppValidation) {
+				gumTreeChangeExtractor.setValidator(new JaMoPPContentValidator());
+			}
 			contentList = gumTreeChangeExtractor.extract();
 			stats.addValidExtractions(gumTreeChangeExtractor.getNumberOfValidExtractions());
 			stats.addTotalExtractions(gumTreeChangeExtractor.getNumberOfTotalExtractions());
@@ -371,7 +373,7 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 	}
 	
 	private UIJob createScmStepInitJob(final IProject project, IWorkbenchWindow window, ScmChangeResult result) {
-		UIJob scmJob = new UIJob("Open Editor for file: " +  result.getNewFileWithOffset().toOSString()) {
+		UIJob scmJob = new UIJob("Perform file operations and open editor if needed\n" + result) {
 
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {

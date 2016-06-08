@@ -52,4 +52,39 @@ public class ScmChangeResult {
 	public String getOldVersionId() {
 		return oldVersionId;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Change:\n");
+		if (newFileWithOffset != null && oldFileWithOffset != null) {
+			if (newFileWithOffset.equals(oldFileWithOffset)) {
+				buffer.append("Content Change in: ");
+				buffer.append(newFileWithOffset);
+				buffer.append("\n");
+			} else {
+				buffer.append("File moved from ");
+				buffer.append(oldFileWithOffset);
+				buffer.append(" to ");
+				buffer.append(newFileWithOffset);
+				buffer.append("\n");
+				if (oldContent.equals(newContent)) {
+					buffer.append("Content did not change\n");
+				} else {
+					buffer.append("Content changed\n");
+				}
+			}
+		} else if (newFileWithOffset != null) {
+			buffer.append("New file at ");
+			buffer.append(newFileWithOffset);
+			buffer.append("\n");
+		} else if (oldFileWithOffset != null) {
+			buffer.append("Removed file at ");
+			buffer.append(oldFileWithOffset);
+			buffer.append("\n");
+		} else {
+			buffer.append("Empty change. Should not occur.");
+		}
+		return buffer.toString();
+	}
 }

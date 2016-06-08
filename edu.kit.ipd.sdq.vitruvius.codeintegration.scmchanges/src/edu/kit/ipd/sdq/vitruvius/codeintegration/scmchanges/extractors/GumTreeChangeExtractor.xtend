@@ -35,6 +35,8 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 	private int validExtractions
 
 	private int totalExtractions
+	
+	private boolean removeNeighbouringDuplicates = true
 
 	new(String oldContent, String newContent, URI fileUri) {
 		this.oldContent = oldContent
@@ -44,6 +46,11 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 		this.validExtractions = 0
 		this.totalExtractions = 0
 		logger.setLevel(Level.ALL)
+	}
+	
+	new(String oldContent, String newContent, URI fileUri, boolean removeNeighbouringDuplicates) {
+		this(oldContent, newContent, fileUri)
+		this.removeNeighbouringDuplicates = removeNeighbouringDuplicates
 	}
 
 	override extract() {
@@ -62,18 +69,23 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 
 		contentList.add(converter.convertTree(srcTreeContext.root).toString)
 
-		val m = Matchers.getInstance().getMatcher(srcTreeContext.root, dstTreeContext.root);
-		m.match();
-		val mappings = m.getMappings();
+		val m = Matchers.getInstance().getMatcher(srcTreeContext.root, dstTreeContext.root)
+		m.match()
+		val mappings = m.getMappings()
 
 		val classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m)
+		
+		val lazyDelete = new ArrayList
 
-		processDels(classifier, srcTreeContext.root, mappings, contentList, converter)
-		processAdds(classifier, srcTreeContext.root, mappings, contentList, converter, dstTreeContext.root)
+		processDels(classifier, srcTreeContext.root, mappings, contentList, converter, lazyDelete)
+		processAdds(classifier, srcTreeContext.root, mappings, contentList, converter, dstTreeContext.root, lazyDelete)
+		if (!lazyDelete.isEmpty) {
+			logger.warn("Not all lazy deletes successful. FIXME")
+		}
 		processUpds(classifier, srcTreeContext.root, mappings, contentList, converter)
 		processMvs(classifier, srcTreeContext.root, mappings, contentList, converter)
 
-		contentList.add(converter.convertTree(dstTreeContext.root).toString)
+		appendExtractedContent(contentList, converter, dstTreeContext.root)
 
 		totalExtractions = totalExtractions + contentList.size
 
@@ -103,10 +115,19 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 			val removed = removeNodeFromWorkingTree(updTree, mappings)
 			val added = addNodeToWorkingTree(nodeInDstTree, mappings)
 			if (added || removed) {
-				contentList.add(converter.convertTree(workingTree).toString)
+				appendExtractedContent(contentList, converter, workingTree)
 			} else {
 				logger.info("Couldn't add or remove for UPD. Happens if changes were already covered by ADDs and DELs")
 			}
+		}
+	}
+	
+	private def appendExtractedContent(ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree workingTree) {
+		val extractedContent = converter.convertTree(workingTree).toString
+		if (removeNeighbouringDuplicates && extractedContent.equals(contentList.last)) {
+			logger.info("Content did not change compared to last element in content list. Ignoring.")
+		} else {
+			contentList.add(extractedContent)
 		}
 	}
 
@@ -119,7 +140,7 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 			val removed = removeNodeFromWorkingTree(mvTree, mappings)
 			val added = addNodeToWorkingTree(nodeInDstTree, mappings)
 			if (removed || added) {
-				contentList.add(converter.convertTree(workingTree).toString)
+				appendExtractedContent(contentList, converter, workingTree)
 			} else {
 				logger.info("Couldn't add or remove for MV. Happens if changes were already covered by ADDs and DELs")
 			}
@@ -127,31 +148,63 @@ class GumTreeChangeExtractor implements IAtomicChangeExtractor {
 	}
 
 	private def processAdds(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
-		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst) {
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ITree completeDst, ArrayList<ITree> lazyDelete) {
 		val rootAdds = getRootChanges(classifier.dstAddTrees)
 		rootAdds.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst))
 		for (addTree : rootAdds) {
 			logger.info("Found ADD")
+			handleLazyRemovalIfNeeded(addTree, mappings, lazyDelete)
 			if (addNodeToWorkingTree(addTree, mappings)) {
-				contentList.add(converter.convertTree(workingTree).toString)
+				appendExtractedContent(contentList, converter, workingTree)
 			} else {
 				logger.warn("Couldn't add node. How can this happen? FIXME")
 			}
 		}
 	}
+	
+	private def handleLazyRemovalIfNeeded(ITree addTree, MappingStore mappings, ArrayList<ITree> lazyDelete) {
+		if (addTree.type == 40 || addTree.type == 42) {
+			// Name -> Try finding lazy deletable corresponding tree
+			logger.info("Found added Name Tree. Looking for lazy removable opposite")
+			val srcParent = mappings.getSrc(addTree.parent)
+			var ITree deleted = null
+			for (lazyTree : lazyDelete) {
+				if (lazyTree.parent == srcParent && lazyTree.positionInParent == addTree.positionInParent) {
+					logger.info("Found lazy opposite. Removing")
+					removeNodeFromWorkingTree(lazyTree, mappings);
+					deleted = lazyTree
+				}
+			}
+			if (deleted != null) {
+				lazyDelete.remove(deleted)
+			}
+		}
+	}
 
 	private def processDels(RootsClassifier classifier, ITree workingTree, MappingStore mappings,
-		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter) {
+		ArrayList<String> contentList, GumTree2JdtAstConverterImpl converter, ArrayList<ITree> lazyDelete) {
 		val rootDels = getRootChanges(classifier.srcDelTrees)
 		rootDels.sort(new OrderbyBreadthFirstOrderingOfCompleteTree(workingTree, true))
 		for (delTree : rootDels) {
-			logger.info("Found DEL")
-			if (removeNodeFromWorkingTree(delTree, mappings)) {
-				contentList.add(converter.convertTree(workingTree).toString)
-			} else {
-				logger.warn("Couldn't delete node. How can this happen? FIXME")
+			if (!shouldPerformLazyDelete(delTree, lazyDelete)) {
+				logger.info("Found DEL")
+				if (removeNodeFromWorkingTree(delTree, mappings)) {
+					appendExtractedContent(contentList, converter, workingTree)
+				} else {
+					logger.warn("Couldn't delete node. How can this happen? FIXME")
+				}
 			}
 		}
+	}
+	
+	private def shouldPerformLazyDelete(ITree delTree, ArrayList<ITree> lazyDelete) {
+		if (delTree.type == 40 || delTree.type == 42) {
+			// Name -> Try lazy delete to avoid MISSING names in content
+			logger.info("Found removed Name Tree. Avoid broken code with \"MISSING\" by doing lazy delete")
+			lazyDelete.add(delTree)
+			return true
+		}
+		return false
 	}
 
 	private def getRootChanges(Set<ITree> allChanges) {

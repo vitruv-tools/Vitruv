@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
@@ -44,6 +45,8 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
   
   private int totalExtractions;
   
+  private boolean removeNeighbouringDuplicates = true;
+  
   public GumTreeChangeExtractor(final String oldContent, final String newContent, final URI fileUri) {
     this.oldContent = oldContent;
     this.newContent = newContent;
@@ -52,6 +55,11 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     this.validExtractions = 0;
     this.totalExtractions = 0;
     GumTreeChangeExtractor.logger.setLevel(Level.ALL);
+  }
+  
+  public GumTreeChangeExtractor(final String oldContent, final String newContent, final URI fileUri, final boolean removeNeighbouringDuplicates) {
+    this(oldContent, newContent, fileUri);
+    this.removeNeighbouringDuplicates = removeNeighbouringDuplicates;
   }
   
   @Override
@@ -85,19 +93,23 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
       m.match();
       final MappingStore mappings = m.getMappings();
       final RootsClassifier classifier = new RootsClassifier(srcTreeContext, dstTreeContext, m);
+      final ArrayList<ITree> lazyDelete = new ArrayList<ITree>();
       ITree _root_5 = srcTreeContext.getRoot();
-      this.processDels(classifier, _root_5, mappings, contentList, converter);
+      this.processDels(classifier, _root_5, mappings, contentList, converter, lazyDelete);
       ITree _root_6 = srcTreeContext.getRoot();
       ITree _root_7 = dstTreeContext.getRoot();
-      this.processAdds(classifier, _root_6, mappings, contentList, converter, _root_7);
+      this.processAdds(classifier, _root_6, mappings, contentList, converter, _root_7, lazyDelete);
+      boolean _isEmpty = lazyDelete.isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        GumTreeChangeExtractor.logger.warn("Not all lazy deletes successful. FIXME");
+      }
       ITree _root_8 = srcTreeContext.getRoot();
       this.processUpds(classifier, _root_8, mappings, contentList, converter);
       ITree _root_9 = srcTreeContext.getRoot();
       this.processMvs(classifier, _root_9, mappings, contentList, converter);
       ITree _root_10 = dstTreeContext.getRoot();
-      CompilationUnit _convertTree_1 = converter.convertTree(_root_10);
-      String _string_1 = _convertTree_1.toString();
-      contentList.add(_string_1);
+      this.appendExtractedContent(contentList, converter, _root_10);
       int _size = contentList.size();
       int _plus = (this.totalExtractions + _size);
       this.totalExtractions = _plus;
@@ -107,8 +119,8 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
         final HashSet<String> toRemove = new HashSet<String>();
         for (final String contentString : contentList) {
           boolean _isValid = this.validator.isValid(contentString, this.fileUri);
-          boolean _not = (!_isValid);
-          if (_not) {
+          boolean _not_1 = (!_isValid);
+          if (_not_1) {
             toRemove.add(contentString);
           }
         }
@@ -139,14 +151,36 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
           _or = removed;
         }
         if (_or) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
+          this.appendExtractedContent(contentList, converter, workingTree);
         } else {
           GumTreeChangeExtractor.logger.info("Couldn\'t add or remove for UPD. Happens if changes were already covered by ADDs and DELs");
         }
       }
     }
+  }
+  
+  private Boolean appendExtractedContent(final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree workingTree) {
+    boolean _xblockexpression = false;
+    {
+      CompilationUnit _convertTree = converter.convertTree(workingTree);
+      final String extractedContent = _convertTree.toString();
+      boolean _xifexpression = false;
+      boolean _and = false;
+      if (!this.removeNeighbouringDuplicates) {
+        _and = false;
+      } else {
+        String _last = IterableExtensions.<String>last(contentList);
+        boolean _equals = extractedContent.equals(_last);
+        _and = _equals;
+      }
+      if (_and) {
+        GumTreeChangeExtractor.logger.info("Content did not change compared to last element in content list. Ignoring.");
+      } else {
+        _xifexpression = contentList.add(extractedContent);
+      }
+      _xblockexpression = _xifexpression;
+    }
+    return Boolean.valueOf(_xblockexpression);
   }
   
   private void processMvs(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
@@ -165,9 +199,7 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
           _or = added;
         }
         if (_or) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
+          this.appendExtractedContent(contentList, converter, workingTree);
         } else {
           GumTreeChangeExtractor.logger.info("Couldn\'t add or remove for MV. Happens if changes were already covered by ADDs and DELs");
         }
@@ -175,7 +207,7 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     }
   }
   
-  private void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst) {
+  private void processAdds(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ITree completeDst, final ArrayList<ITree> lazyDelete) {
     Set<ITree> _dstAddTrees = classifier.getDstAddTrees();
     final ArrayList<ITree> rootAdds = this.getRootChanges(_dstAddTrees);
     OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(completeDst);
@@ -183,11 +215,10 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     for (final ITree addTree : rootAdds) {
       {
         GumTreeChangeExtractor.logger.info("Found ADD");
+        this.handleLazyRemovalIfNeeded(addTree, mappings, lazyDelete);
         boolean _addNodeToWorkingTree = this.addNodeToWorkingTree(addTree, mappings);
         if (_addNodeToWorkingTree) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
+          this.appendExtractedContent(contentList, converter, workingTree);
         } else {
           GumTreeChangeExtractor.logger.warn("Couldn\'t add node. How can this happen? FIXME");
         }
@@ -195,24 +226,92 @@ public class GumTreeChangeExtractor implements IAtomicChangeExtractor {
     }
   }
   
-  private void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter) {
+  private boolean handleLazyRemovalIfNeeded(final ITree addTree, final MappingStore mappings, final ArrayList<ITree> lazyDelete) {
+    boolean _xifexpression = false;
+    boolean _or = false;
+    int _type = addTree.getType();
+    boolean _equals = (_type == 40);
+    if (_equals) {
+      _or = true;
+    } else {
+      int _type_1 = addTree.getType();
+      boolean _equals_1 = (_type_1 == 42);
+      _or = _equals_1;
+    }
+    if (_or) {
+      boolean _xblockexpression = false;
+      {
+        GumTreeChangeExtractor.logger.info("Found added Name Tree. Looking for lazy removable opposite");
+        ITree _parent = addTree.getParent();
+        final ITree srcParent = mappings.getSrc(_parent);
+        ITree deleted = null;
+        for (final ITree lazyTree : lazyDelete) {
+          boolean _and = false;
+          ITree _parent_1 = lazyTree.getParent();
+          boolean _equals_2 = Objects.equal(_parent_1, srcParent);
+          if (!_equals_2) {
+            _and = false;
+          } else {
+            int _positionInParent = lazyTree.positionInParent();
+            int _positionInParent_1 = addTree.positionInParent();
+            boolean _equals_3 = (_positionInParent == _positionInParent_1);
+            _and = _equals_3;
+          }
+          if (_and) {
+            GumTreeChangeExtractor.logger.info("Found lazy opposite. Removing");
+            this.removeNodeFromWorkingTree(lazyTree, mappings);
+            deleted = lazyTree;
+          }
+        }
+        boolean _xifexpression_1 = false;
+        boolean _notEquals = (!Objects.equal(deleted, null));
+        if (_notEquals) {
+          _xifexpression_1 = lazyDelete.remove(deleted);
+        }
+        _xblockexpression = _xifexpression_1;
+      }
+      _xifexpression = _xblockexpression;
+    }
+    return _xifexpression;
+  }
+  
+  private void processDels(final RootsClassifier classifier, final ITree workingTree, final MappingStore mappings, final ArrayList<String> contentList, final GumTree2JdtAstConverterImpl converter, final ArrayList<ITree> lazyDelete) {
     Set<ITree> _srcDelTrees = classifier.getSrcDelTrees();
     final ArrayList<ITree> rootDels = this.getRootChanges(_srcDelTrees);
     OrderbyBreadthFirstOrderingOfCompleteTree _orderbyBreadthFirstOrderingOfCompleteTree = new OrderbyBreadthFirstOrderingOfCompleteTree(workingTree, true);
     rootDels.sort(_orderbyBreadthFirstOrderingOfCompleteTree);
     for (final ITree delTree : rootDels) {
-      {
+      boolean _shouldPerformLazyDelete = this.shouldPerformLazyDelete(delTree, lazyDelete);
+      boolean _not = (!_shouldPerformLazyDelete);
+      if (_not) {
         GumTreeChangeExtractor.logger.info("Found DEL");
         boolean _removeNodeFromWorkingTree = this.removeNodeFromWorkingTree(delTree, mappings);
         if (_removeNodeFromWorkingTree) {
-          CompilationUnit _convertTree = converter.convertTree(workingTree);
-          String _string = _convertTree.toString();
-          contentList.add(_string);
+          this.appendExtractedContent(contentList, converter, workingTree);
         } else {
           GumTreeChangeExtractor.logger.warn("Couldn\'t delete node. How can this happen? FIXME");
         }
       }
     }
+  }
+  
+  private boolean shouldPerformLazyDelete(final ITree delTree, final ArrayList<ITree> lazyDelete) {
+    boolean _or = false;
+    int _type = delTree.getType();
+    boolean _equals = (_type == 40);
+    if (_equals) {
+      _or = true;
+    } else {
+      int _type_1 = delTree.getType();
+      boolean _equals_1 = (_type_1 == 42);
+      _or = _equals_1;
+    }
+    if (_or) {
+      GumTreeChangeExtractor.logger.info("Found removed Name Tree. Avoid broken code with \"MISSING\" by doing lazy delete");
+      lazyDelete.add(delTree);
+      return true;
+    }
+    return false;
   }
   
   private ArrayList<ITree> getRootChanges(final Set<ITree> allChanges) {

@@ -68,6 +68,8 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 	private List<IPath> ignorePaths;
 
+	private boolean enableJamoppValidation;
+
 	public ApplyScmChangesDialog(Shell parentShell, IProject project) {
 		super(parentShell);
 		this.project = project;
@@ -140,6 +142,7 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 		createReplaySpeedSlider(container);
 		createManualControlSwitch(container);
 		createIgnorePathsField(container);
+		createEnableJaMoPPValidationSwitch(container);
 		createCleanupSection(container);
 		return area;
 	}
@@ -154,6 +157,23 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 
 		txtIgnorePaths = new Text(container, SWT.BORDER);
 		txtIgnorePaths.setLayoutData(dataIgnorePaths);
+	}
+	
+	private void createEnableJaMoPPValidationSwitch(Composite container) {
+		enableJamoppValidation = true;
+		Label jamoppValidationLabel = new Label(container, SWT.NONE);
+		jamoppValidationLabel.setText("Enable JaMoPP Validation");
+		
+		Button jamoppValidationButton = new Button(container, SWT.CHECK);
+		jamoppValidationButton.setSelection(enableJamoppValidation);
+		jamoppValidationButton.addSelectionListener(new SelectionAdapter() {
+
+	        @Override
+	        public void widgetSelected(SelectionEvent event) {
+	            Button btn = (Button) event.getSource();
+	            enableJamoppValidation = btn.getSelection();
+	        }
+	    });
 	}
 
 	private void createManualControlSwitch(Composite container) {
@@ -392,6 +412,10 @@ public class ApplyScmChangesDialog extends TitleAreaDialog {
 	
 	public List<IPath> getPathsToIgnore() {
 		return ignorePaths;
+	}
+	
+	public boolean isJamoppValidationEnabled() {
+		return enableJamoppValidation;
 	}
 
 }

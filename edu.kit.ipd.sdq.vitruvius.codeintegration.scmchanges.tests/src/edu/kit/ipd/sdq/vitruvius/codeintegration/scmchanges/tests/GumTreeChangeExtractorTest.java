@@ -29,6 +29,8 @@ public class GumTreeChangeExtractorTest {
 	private static final String TEST_WRAP_SAMPLE2 = "samples/wrap_assignment_version2.java";
 	private static final String TEST_PARAMS_SAMPLE1 = "samples/params_version1.java";
 	private static final String TEST_PARAMS_SAMPLE2 = "samples/params_version2.java";
+	private static final String TEST_MISSING_SAMPLE1 = "samples/MISSING_version1.java";
+	private static final String TEST_MISSING_SAMPLE2 = "samples/MISSING_version2.java";
 	
 	@Test
 	public void testRealExampleContent() throws IOException, URISyntaxException {
@@ -36,7 +38,7 @@ public class GumTreeChangeExtractorTest {
 		String content2 = readFile(TEST_REAL_SAMPLE2);
 		URI uri = URI.createFileURI(TEST_REAL_SAMPLE2);
 		
-		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri);
+		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri, false);
 		List<String> results = extractor.extract();
 		
 		// Compare the last state of the working tree, to the direct representation of the dst tree
@@ -49,7 +51,7 @@ public class GumTreeChangeExtractorTest {
 		String content2 = readFile(TEST_CONCAT_SAMPLE2);
 		URI uri = URI.createFileURI(TEST_CONCAT_SAMPLE2);
 		
-		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri);
+		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri, false);
 		List<String> results = extractor.extract();
 		
 		// Compare the last state of the working tree, to the direct representation of the dst tree
@@ -62,11 +64,25 @@ public class GumTreeChangeExtractorTest {
 		String content2 = readFile(TEST_WRAP_SAMPLE2);
 		URI uri = URI.createFileURI(TEST_CONCAT_SAMPLE2);
 		
-		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri);
+		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri, false);
 		List<String> results = extractor.extract();
 		
 		// Compare the last state of the working tree, to the direct representation of the dst tree
 		Assert.assertEquals(results.get(results.size() - 1), results.get(results.size() - 2));
+	}
+	
+	@Test
+	public void testMISSING() throws IOException, URISyntaxException {
+		String content1 = readFile(TEST_MISSING_SAMPLE1);
+		String content2 = readFile(TEST_MISSING_SAMPLE2);
+		URI uri = URI.createFileURI(TEST_CONCAT_SAMPLE2);
+		
+		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri, true);
+		List<String> results = extractor.extract();
+		
+		for (String content : results) {
+			Assert.assertFalse(content.contains("MISSING"));
+		}
 	}
 	
 	@Test
@@ -75,7 +91,7 @@ public class GumTreeChangeExtractorTest {
 		String content2 = readFile(TEST_PARAMS_SAMPLE2);
 		URI uri = URI.createFileURI(TEST_CONCAT_SAMPLE2);
 		
-		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri);
+		GumTreeChangeExtractor extractor = new GumTreeChangeExtractor(content1, content2, uri, false);
 		List<String> results = extractor.extract();
 		
 		// Compare the last state of the working tree, to the direct representation of the dst tree
