@@ -43,10 +43,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.commons.Commentable;
 import org.emftext.language.java.containers.CompilationUnit;
+import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.parameters.OrdinaryParameter;
+import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.Type;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.DataType;
@@ -215,17 +217,13 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
     return this.addCorrespondence(this.pcmRepo, _rootPackage);
   }
   
-  private Correspondence createComponentClassCorrespondence(final ComponentImplementingClassesLink componentClassLink) {
-    Correspondence _xblockexpression = null;
-    {
-      RepositoryComponent pcmComponent = componentClassLink.getComponent();
-      Correspondence _xifexpression = null;
-      if ((pcmComponent instanceof BasicComponent)) {
-        Correspondence _xblockexpression_1 = null;
+  private void createComponentClassCorrespondence(final ComponentImplementingClassesLink componentClassLink) {
+    RepositoryComponent pcmComponent = componentClassLink.getComponent();
+    if ((pcmComponent instanceof BasicComponent)) {
+      EList<ConcreteClassifier> _implementingClasses = componentClassLink.getImplementingClasses();
+      for (final ConcreteClassifier implementingClass : _implementingClasses) {
         {
-          EList<ConcreteClassifier> _implementingClasses = componentClassLink.getImplementingClasses();
-          ConcreteClassifier _get = _implementingClasses.get(0);
-          final ConcreteClassifier desreolvedClassInSCDM = this.<ConcreteClassifier>deresolveIfNesessary(_get);
+          final ConcreteClassifier desreolvedClassInSCDM = this.<ConcreteClassifier>deresolveIfNesessary(implementingClass);
           ConcreteClassifier jamoppClass = this.<ConcreteClassifier>resolveJaMoppProxy(desreolvedClassInSCDM);
           final org.emftext.language.java.containers.Package package_ = this.getPackageForCommentable(jamoppClass);
           final Repository deresolvedPcmRepo = this.<Repository>deresolveIfNesessary(this.pcmRepo);
@@ -238,13 +236,10 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
           this.addCorrespondence(pcmComponent, package_, parentRepoPackageCorr);
           CompilationUnit _containingCompilationUnit = jamoppClass.getContainingCompilationUnit();
           this.addCorrespondence(pcmComponent, _containingCompilationUnit, parentRepoPackageCorr);
-          _xblockexpression_1 = this.addCorrespondence(pcmComponent, jamoppClass, parentRepoPackageCorr);
+          this.addCorrespondence(pcmComponent, jamoppClass, parentRepoPackageCorr);
         }
-        _xifexpression = _xblockexpression_1;
       }
-      _xblockexpression = _xifexpression;
     }
-    return _xblockexpression;
   }
   
   private Correspondence createInterfaceCorrespondence(final InterfaceSourceCodeLink interfaceLink) {
@@ -270,11 +265,23 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
   
   private void createMethodCorrespondence(final MethodLevelSourceCodeLink methodLink) {
     Member _function = methodLink.getFunction();
-    Member _resolveJaMoppProxy = this.<Member>resolveJaMoppProxy(_function);
-    Method jamoppMethod = ((Method) _resolveJaMoppProxy);
+    final Member jamoppFunction = this.<Member>resolveJaMoppProxy(_function);
+    Commentable jamoppCommentable = null;
+    Parametrizable jamoppParametrizable = null;
+    if ((jamoppFunction instanceof Method)) {
+      jamoppCommentable = jamoppFunction;
+      jamoppParametrizable = ((Parametrizable)jamoppFunction);
+    } else {
+      if ((jamoppFunction instanceof Constructor)) {
+        jamoppCommentable = jamoppFunction;
+        jamoppParametrizable = ((Parametrizable)jamoppFunction);
+      } else {
+        throw new RuntimeException("Unexpected type in method level source code link.");
+      }
+    }
     Signature _operation = methodLink.getOperation();
     OperationSignature pcmMethod = ((OperationSignature) _operation);
-    ConcreteClassifier jamoppInterface = jamoppMethod.getContainingConcreteClassifier();
+    ConcreteClassifier jamoppInterface = jamoppCommentable.getContainingConcreteClassifier();
     OperationInterface pcmInterface = pcmMethod.getInterface__OperationSignature();
     final OperationInterface deresolvedPcmInterface = this.<OperationInterface>deresolveIfNesessary(pcmInterface);
     final ConcreteClassifier deresolvedJamoppInterface = this.<ConcreteClassifier>deresolveIfNesessary(jamoppInterface);
@@ -287,11 +294,11 @@ public class PCMJaMoPPCorrespondenceModelTransformation {
     }
     final Set<Correspondence> _converted_interfaceCorrespondence = (Set<Correspondence>)interfaceCorrespondence;
     Correspondence _get = ((Correspondence[])Conversions.unwrapArray(_converted_interfaceCorrespondence, Correspondence.class))[0];
-    Correspondence methodCorrespondence = this.addCorrespondence(pcmMethod, jamoppMethod, _get);
+    Correspondence methodCorrespondence = this.addCorrespondence(pcmMethod, jamoppFunction, _get);
     EList<Parameter> _parameters__OperationSignature = pcmMethod.getParameters__OperationSignature();
     for (final Parameter pcmParam : _parameters__OperationSignature) {
       {
-        EList<org.emftext.language.java.parameters.Parameter> _parameters = jamoppMethod.getParameters();
+        EList<org.emftext.language.java.parameters.Parameter> _parameters = jamoppParametrizable.getParameters();
         final Function1<org.emftext.language.java.parameters.Parameter, Boolean> _function_1 = (org.emftext.language.java.parameters.Parameter jp) -> {
           String _name = jp.getName();
           String _entityName = pcmParam.getEntityName();

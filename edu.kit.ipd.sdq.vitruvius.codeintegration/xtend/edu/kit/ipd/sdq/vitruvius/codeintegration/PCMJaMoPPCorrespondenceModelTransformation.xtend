@@ -171,24 +171,26 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		if (pcmComponent instanceof BasicComponent) {
 
 			// TODO: Decide which class actually is the implementing class for the component
-			val desreolvedClassInSCDM = deresolveIfNesessary(componentClassLink.implementingClasses.get(0))
-			var jamoppClass = resolveJaMoppProxy(desreolvedClassInSCDM)
-			val package = getPackageForCommentable(jamoppClass)
-
-			val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
-			val deresolvedRootPackage = deresolveIfNesessary(getRootPackage)
-
-			var parentRepoPackageCorr = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet,
-				deresolvedRootPackage.toSet).claimOne
-
-			// 2. Component <-> Package correspondence
-			addCorrespondence(pcmComponent, package, parentRepoPackageCorr)
-
-			// 3. Component <-> CompUnit correspondence
-			addCorrespondence(pcmComponent, jamoppClass.containingCompilationUnit, parentRepoPackageCorr)
-
-			// 4. Component <-> Class correspondence
-			addCorrespondence(pcmComponent, jamoppClass, parentRepoPackageCorr)
+			for (implementingClass : componentClassLink.implementingClasses) {
+				val desreolvedClassInSCDM = deresolveIfNesessary(implementingClass)
+				var jamoppClass = resolveJaMoppProxy(desreolvedClassInSCDM)
+				val package = getPackageForCommentable(jamoppClass)
+	
+				val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
+				val deresolvedRootPackage = deresolveIfNesessary(getRootPackage)
+	
+				var parentRepoPackageCorr = cInstance.getCorrespondencesBetweenEObjects(deresolvedPcmRepo.toSet,
+					deresolvedRootPackage.toSet).claimOne
+	
+				// 2. Component <-> Package correspondence
+				addCorrespondence(pcmComponent, package, parentRepoPackageCorr)
+	
+				// 3. Component <-> CompUnit correspondence
+				addCorrespondence(pcmComponent, jamoppClass.containingCompilationUnit, parentRepoPackageCorr)
+	
+				// 4. Component <-> Class correspondence
+				addCorrespondence(pcmComponent, jamoppClass, parentRepoPackageCorr)
+			}
 		}
 	}
 
