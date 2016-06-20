@@ -10,10 +10,10 @@ class JaMoPPContentValidator implements IContentValidator {
 	
 	override isValid(String content, URI contentUri) {
 		try {
-			val parser = new JaMoPPParser();
-			val inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+			val parser = new JaMoPPParser()
+			val inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))
 			// Check if parseable TODO how to check?!
-			val cu = parser.parseCompilationUnitFromInputStream(contentUri, inputStream);
+			val cu = parser.parseCompilationUnitFromInputStream(contentUri, inputStream)
 			if (cu != null) {
 				return true
 			}

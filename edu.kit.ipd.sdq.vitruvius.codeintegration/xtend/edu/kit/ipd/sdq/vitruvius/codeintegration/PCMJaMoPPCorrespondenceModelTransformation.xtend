@@ -48,13 +48,13 @@ import org.emftext.language.java.parameters.Parametrizable
  */
 class PCMJaMoPPCorrespondenceModelTransformation {
 
-	private HashSet<String> existingEntries = new HashSet;
+	private HashSet<String> existingEntries = new HashSet
 	protected Logger logger = Logger.getRootLogger
 
 	// Absolute paths needed
-	private String scdmPath; // in, single file
-	private String pcmPath; // in, single file
-	private List<IPath> jamoppPaths; // all src folders
+	private String scdmPath // in, single file
+	private String pcmPath // in, single file
+	private List<IPath> jamoppPaths // all src folders
 	@Accessors(PUBLIC_GETTER)
 	private Resource scdm
 	private Resource pcm
@@ -77,13 +77,13 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
 		// FIXME do that without a cast
-		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
+		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB)
 
-		this.scdmPath = scdmPath;
-		this.pcmPath = pcmPath;
-		this.jamoppPaths = jamoppPaths;
-		this.packages = new HashSet<Package>();
-		this.projectBase = projectBase;
+		this.scdmPath = scdmPath
+		this.pcmPath = pcmPath
+		this.jamoppPaths = jamoppPaths
+		this.packages = new HashSet<Package>()
+		this.projectBase = projectBase
 		this.modelProviding = vsum
 		logger.level = Level.ALL
 	}
@@ -151,7 +151,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		EclipseBridge.getRegisteredExtensions(PCMJaMoPPIntegrationExtending.ID,
 			VitruviusConstants.getExtensionPropertyName(), PCMJaMoPPIntegrationExtending).forEach [
 			it.afterBasicTransformations(this)
-		];
+		]
 
 	}
 
@@ -163,7 +163,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 //		addCorrespondence(pcmRepo, jaMoppPackage)
 //	}
 	private def createComponentClassCorrespondence(ComponentImplementingClassesLink componentClassLink) {
-		var pcmComponent = componentClassLink.component;
+		var pcmComponent = componentClassLink.component
 
 		// CompositeComponents do not have a corresponding implementing class
 		// TODO: What correspondence for compComponent ?
@@ -193,8 +193,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	}
 
 	private def createInterfaceCorrespondence(InterfaceSourceCodeLink interfaceLink) {
-		var pcmInterface = interfaceLink.interface;
-		var jamoppType = resolveJaMoppProxy(interfaceLink.gastClass) as Type;
+		var pcmInterface = interfaceLink.interface
+		var jamoppType = resolveJaMoppProxy(interfaceLink.gastClass) as Type
 
 		// Get parent Repository <-> Package correspondence from correspondence instance	
 		val deresolvedPcmRepo = deresolveIfNesessary(pcmRepo)
@@ -210,21 +210,21 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	}
 
 	private def createMethodCorrespondence(MethodLevelSourceCodeLink methodLink) {
-		val jamoppFunction = resolveJaMoppProxy(methodLink.function);
+		val jamoppFunction = resolveJaMoppProxy(methodLink.function)
 		// need both these interfaces below which constructor and method both implement.
 		// No common interface for both in the hierarchy though.
-		var Commentable jamoppCommentable;
-		var Parametrizable jamoppParametrizable;
+		var Commentable jamoppCommentable
+		var Parametrizable jamoppParametrizable
 		if (jamoppFunction instanceof Method) {
-			jamoppCommentable = jamoppFunction;
-			jamoppParametrizable = jamoppFunction;
+			jamoppCommentable = jamoppFunction
+			jamoppParametrizable = jamoppFunction
 		} else if (jamoppFunction instanceof Constructor) {
-			jamoppCommentable = jamoppFunction;
-			jamoppParametrizable = jamoppFunction;
+			jamoppCommentable = jamoppFunction
+			jamoppParametrizable = jamoppFunction
 		} else {
-			throw new RuntimeException("Unexpected type in method level source code link.");
+			throw new RuntimeException("Unexpected type in method level source code link.")
 		}
-		var pcmMethod = methodLink.operation as OperationSignature;
+		var pcmMethod = methodLink.operation as OperationSignature
 		var jamoppInterface = jamoppCommentable.containingConcreteClassifier
 		var pcmInterface = pcmMethod.interface__OperationSignature
 
@@ -238,12 +238,12 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		}
 
 		// 7. OperationSignature <-> jaMopp Method correspondence
-		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppFunction, interfaceCorrespondence.get(0));
+		var methodCorrespondence = addCorrespondence(pcmMethod, jamoppFunction, interfaceCorrespondence.get(0))
 
 		for (pcmParam : pcmMethod.parameters__OperationSignature) {
 
 			// Find matching jaMopp parameter by name
-			var jamoppParam = jamoppParametrizable.parameters.findFirst[jp|jp.name.equals(pcmParam.entityName)];
+			var jamoppParam = jamoppParametrizable.parameters.findFirst[jp|jp.name.equals(pcmParam.entityName)]
 			if (jamoppParam != null) {
 
 				// 8. PCM Parameter <-> jaMopp Parameter correspondence	
@@ -296,8 +296,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	 * */
 	public def <T extends EObject> T resolveJaMoppProxy(T proxy) {
 		if (proxy == null || !proxy.eIsProxy())
-			return proxy;
-		return EcoreUtil.resolve(proxy, jaMoppResources.get(0).resourceSet) as T;
+			return proxy
+		return EcoreUtil.resolve(proxy, jaMoppResources.get(0).resourceSet) as T
 	}
 
 	/**
@@ -319,7 +319,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	}
 
 	protected def Correspondence addCorrespondence(EObject pcmObject, EObject jamoppObject) {
-		return addCorrespondence(pcmObject, jamoppObject, null);
+		return addCorrespondence(pcmObject, jamoppObject, null)
 	}
 
 	/**
@@ -339,12 +339,12 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 			cInstance.calculateTUIDFromEObject(deresolvedB).toString
 		if (!existingEntries.contains(identifier)) {
 			val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
-			val integratedCorrespondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList);
+			val integratedCorrespondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList)
 			
-			existingEntries.add(identifier);
-			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);
+			existingEntries.add(identifier)
+			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB)
 
-			return integratedCorrespondence;
+			return integratedCorrespondence
 		}
 	}
 	

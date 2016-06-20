@@ -74,7 +74,7 @@ class GitChangeExtractor implements IScmChangeExtractor<ObjectId> {
 			while (!reachedOldVersion) {
 				val nextCommitId = getNextCommit(currentTo, oldVersion).id
 				val nextCommit = walk.parseCommit(nextCommitId)
-				commitList.add(nextCommit);
+				commitList.add(nextCommit)
 				if (nextCommit == oldestCommit) {
 					reachedOldVersion = true
 				}

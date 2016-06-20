@@ -47,7 +47,7 @@ class IntegrationChange2CommandTransformer {
 		// only return response commands, if one of the other 2 checks are successful
 		val responseCommands = createResponseCommands(change, blackboard)
 		val newClassOrInterfaceInIntegratedAreaCommand = createNewClassOrInterfaceInIntegratedAreaCommand(
-			change, blackboard);
+			change, blackboard)
     	if (newClassOrInterfaceInIntegratedAreaCommand != null) {
     		if (responseCommands != null) {
 				return responseCommands
@@ -94,7 +94,7 @@ class IntegrationChange2CommandTransformer {
                 val packagePartOfNewTuid = getPackagePart(newCompilationUnitTuid)
     			for (Correspondence corr : ci.getAllCorrespondences()) {
     				if (corr instanceof IntegrationCorrespondence) {
-    					val integrationCorr = corr as IntegrationCorrespondence;
+    					val integrationCorr = corr as IntegrationCorrespondence
 	    				if (integrationCorr.isCreatedByIntegration()) {
 	    					val allTUIDs = new ArrayList<TUID>()
 	    					allTUIDs.addAll(corr.getATUIDs())
@@ -140,52 +140,52 @@ class IntegrationChange2CommandTransformer {
 	    	buffer.append("Please fix manually. Corresponding object(s):\n")
 	    	for (EObject obj : correspondingIntegratedEObjects) {
 	    		val name = getReadableName(obj)
-	    		buffer.append("\n");
-	    		buffer.append(name);
+	    		buffer.append("\n")
+	    		buffer.append(name)
 	    	}
 			val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
 				new Callable<TransformationResult>() {
 					override call() throws Exception {
-						userInteracting.showMessage(UserInteractionType.MODAL, buffer.toString());
+						userInteracting.showMessage(UserInteractionType.MODAL, buffer.toString())
 						return new TransformationResult()
 					}
 				})
 	    	return command
         } 
-        return null;
+        return null
 	}
 	
 	private def getReadableName(EObject obj) {
-    	var name = getDirectNameIfNamed(obj);
-		val className = obj.eClass().getName();
-    	var container = obj.eContainer();
+    	var name = getDirectNameIfNamed(obj)
+		val className = obj.eClass().getName()
+    	var container = obj.eContainer()
     	while (name == null) {
     		if (container == null) {
-    			name = className;
+    			name = className
     		} else {
-    			val containerName = getDirectNameIfNamed(container);
+    			val containerName = getDirectNameIfNamed(container)
     			if (containerName != null) {
-    				val containerClassName = container.eClass().getName();
-					name = className + " in " + containerClassName + ": " + containerName;
+    				val containerClassName = container.eClass().getName()
+					name = className + " in " + containerClassName + ": " + containerName
     			} else {
-    				container = container.eContainer();
+    				container = container.eContainer()
     			}
     		}
     	}
-		return name;
+		return name
 	}
 
 	private def getDirectNameIfNamed(EObject obj) {
-		var String name = null;
-		val className = obj.eClass().getName();
+		var String name = null
+		val className = obj.eClass().getName()
 		if (obj instanceof NamedElement) {
-			val named = obj as NamedElement;
+			val named = obj as NamedElement
 			name =  className + ": " + named.getEntityName()
 		} else if (obj instanceof org.emftext.language.java.commons.NamedElement) {
-			val named = obj as org.emftext.language.java.commons.NamedElement;
-			name =  className + ": " + named.getName();
+			val named = obj as org.emftext.language.java.commons.NamedElement
+			name =  className + ": " + named.getName()
 		}
-		return name;
+		return name
 	}
 
 	/**

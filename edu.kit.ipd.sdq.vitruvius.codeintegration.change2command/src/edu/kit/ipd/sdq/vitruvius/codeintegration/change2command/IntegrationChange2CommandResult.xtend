@@ -5,7 +5,7 @@ import java.util.List
 
 class IntegrationChange2CommandResult {
 	
-	private List<? extends Command> commands;
+	private List<? extends Command> commands
 	
 	new(List<? extends Command> commands) {
 		this.commands = commands

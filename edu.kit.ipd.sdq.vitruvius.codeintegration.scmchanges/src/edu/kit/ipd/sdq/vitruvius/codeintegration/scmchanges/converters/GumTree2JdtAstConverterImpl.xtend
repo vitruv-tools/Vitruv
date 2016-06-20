@@ -17,22 +17,22 @@ import org.eclipse.jdt.core.dom.CompilationUnit
 
 class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 	
-	private static final Logger logger = Logger.getLogger(typeof(GumTree2JdtAstConverterImpl).name);
+	private static final Logger logger = Logger.getLogger(typeof(GumTree2JdtAstConverterImpl).name)
 	
 	private String lastConvertedAsText = null
 
 	override convertTree(ITree gumTree) {
 		val parser = ASTParser.newParser(AST.JLS8)
-		//Empty document. Allows recording all changes; then printing
-		val document = new Document("");
-		parser.setSource(document.get().toCharArray());
-		val unit = parser.createAST(null) as CompilationUnit;
-		unit.recordModifications();
+		//Empty document. Allows recording all changes then printing
+		val document = new Document("")
+		parser.setSource(document.get().toCharArray())
+		val unit = parser.createAST(null) as CompilationUnit
+		unit.recordModifications()
 		for (ITree child : gumTree.children) {
 			createAstNode(child, unit.AST, unit)
 		}
 		val edits = unit.rewrite(document, null)
-		edits.apply(document);
+		edits.apply(document)
 		lastConvertedAsText = document.get()
 		return unit
 	}
@@ -48,7 +48,7 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 		//We'll add that later anyways so we'd end up with one more than needed.
 		val newNodeProperties = astNode.structuralPropertiesForType
 		for (property : newNodeProperties) {
-			val propertyDescr = property as StructuralPropertyDescriptor;
+			val propertyDescr = property as StructuralPropertyDescriptor
 			if (propertyDescr.childListProperty) {
 				val list = astNode.getStructuralProperty(propertyDescr) as List<ASTNode>
 				list.clear
@@ -74,7 +74,7 @@ class GumTree2JdtAstConverterImpl implements GumTree2JdtAstConverter {
 		//logger.info(String.format("Looking for parent property of child with type %s with propertyId %s", astNode.class, propertyId))
 		var found = false
 		for (property : parentProperties) {
-			val propertyDescr = property as StructuralPropertyDescriptor;
+			val propertyDescr = property as StructuralPropertyDescriptor
 			if (propertyDescr.id == propertyId) {
 				if (propertyDescr.childProperty) {
 					val childDescr = propertyDescr as ChildPropertyDescriptor
