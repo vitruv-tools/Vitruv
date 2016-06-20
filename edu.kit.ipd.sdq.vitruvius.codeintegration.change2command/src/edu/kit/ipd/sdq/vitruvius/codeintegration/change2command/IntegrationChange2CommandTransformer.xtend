@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
@@ -44,18 +43,23 @@ class IntegrationChange2CommandTransformer {
 	}
 	
 	private def createCommandsList(EChange change, Blackboard blackboard) {
+		// Since all correspondences are considered (not only IntegrationCorrespondences),
+		// only return response commands, if one of the other 2 checks are successful
 		val responseCommands = createResponseCommands(change, blackboard)
-		if (responseCommands != null) {
-			return responseCommands
-		}
 		val newClassOrInterfaceInIntegratedAreaCommand = createNewClassOrInterfaceInIntegratedAreaCommand(
 			change, blackboard);
     	if (newClassOrInterfaceInIntegratedAreaCommand != null) {
+    		if (responseCommands != null) {
+				return responseCommands
+			}
     		val commands = newClassOrInterfaceInIntegratedAreaCommand.toList as List<? extends Command>
     		return commands
     	}
     	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, blackboard)
     	if (defaultIntegrationChangeCommand != null) {
+    		if (responseCommands != null) {
+				return responseCommands
+			}
     		val commands = defaultIntegrationChangeCommand.toList as List<? extends Command>
     		return commands
     	}
