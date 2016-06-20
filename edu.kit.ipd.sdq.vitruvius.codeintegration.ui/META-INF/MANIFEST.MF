@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.commands,
- org.apache.log4j;bundle-version="1.2.15",
+ org.apache.log4j,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.jdt.core,
@@ -17,5 +17,5 @@ Require-Bundle: org.eclipse.core.commands,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.codeintegration,
  org.eclipse.core.resources,
- org.eclipse.jst.ws;bundle-version="1.0.750"
+ org.eclipse.jst.ws
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands

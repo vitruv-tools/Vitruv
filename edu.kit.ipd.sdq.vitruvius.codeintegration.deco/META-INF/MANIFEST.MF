@@ -10,12 +10,15 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.util,
  org.apache.log4j,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ org.emftext.language.java,
+ org.palladiosimulator.pcm
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.impl,

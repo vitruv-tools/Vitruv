@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Integration Response
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.response
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.palladiosimulator.pcm,
+ org.emftext.language.java,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ com.google.guava,
+ org.eclipse.core.resources,
+ org.apache.log4j,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping,
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
+ edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: mir.responses.responsesJavaTo5_1.rename

@@ -39,7 +39,6 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.emftext.language.java.members.Constructor
-import org.emftext.language.java.statements.StatementListContainer
 import org.emftext.language.java.parameters.Parametrizable
 
 /**
@@ -170,7 +169,6 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// TODO: What correspondence for compComponent ?
 		if (pcmComponent instanceof BasicComponent) {
 
-			// TODO: Decide which class actually is the implementing class for the component
 			for (implementingClass : componentClassLink.implementingClasses) {
 				val desreolvedClassInSCDM = deresolveIfNesessary(implementingClass)
 				var jamoppClass = resolveJaMoppProxy(desreolvedClassInSCDM)

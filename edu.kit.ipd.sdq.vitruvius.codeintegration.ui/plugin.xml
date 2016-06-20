@@ -37,7 +37,7 @@
           defaultHandler="edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler"
           description="Integrate Project into Vitruvius Approach"
           id="edu.kit.ipd.sdq.vitruvius.codeintegeration.integrateproject"
-          name="Integreate Project">
+          name="Integrate Project">
     </command>
   </extension>
 
