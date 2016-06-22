@@ -9,6 +9,5 @@ trigger: replace value java.Method[name]
 match:
 	retrieve required element: pcm.OperationSignature as operationSignature corresponding to change.newAffectedEObject
 effect: execute: {
-	val operationInterface = operationSignature.interface__OperationSignature;
-	operationInterface.entityName = change.newValue;
+	operationSignature.entityName = change.newValue
 }

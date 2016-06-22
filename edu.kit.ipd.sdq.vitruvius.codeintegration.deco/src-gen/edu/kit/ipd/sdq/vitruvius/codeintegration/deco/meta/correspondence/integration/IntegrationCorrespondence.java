@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,32 +20,32 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * @model
  * @generated
  */
-public interface IntegrationCorrespondence extends Correspondence {
+public interface IntegrationCorrespondence extends ResponseCorrespondence {
 
     /**
-     * Returns the value of the '<em><b>Created By Integration</b></em>' attribute.
-     * The default value is <code>"false"</code>.
-     * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Created By Integration</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Created By Integration</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Created By Integration</em>' attribute.
-     * @see #setCreatedByIntegration(boolean)
-     * @see edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationPackage#getIntegrationCorrespondence_CreatedByIntegration()
-     * @model default="false"
-     * @generated
-     */
+	 * @return the value of the '<em>Created By Integration</em>' attribute.
+	 * @see #setCreatedByIntegration(boolean)
+	 * @see edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationPackage#getIntegrationCorrespondence_CreatedByIntegration()
+	 * @model default="false"
+	 * @generated
+	 */
     boolean isCreatedByIntegration();
 
     /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence#isCreatedByIntegration <em>Created By Integration</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence#isCreatedByIntegration <em>Created By Integration</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Created By Integration</em>' attribute.
-     * @see #isCreatedByIntegration()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Created By Integration</em>' attribute.
+	 * @see #isCreatedByIntegration()
+	 * @generated
+	 */
     void setCreatedByIntegration(boolean value);
 } // IntegrationCorrespondence

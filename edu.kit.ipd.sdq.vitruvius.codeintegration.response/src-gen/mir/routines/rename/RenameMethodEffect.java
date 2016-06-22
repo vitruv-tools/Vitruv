@@ -8,7 +8,6 @@ import java.io.IOException;
 import mir.routines.rename.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 
 @SuppressWarnings("all")
@@ -57,7 +56,7 @@ public class RenameMethodEffect extends AbstractEffectRealization {
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
-    private mir.routines.rename.RoutinesFacade effectFacade;
+    private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -65,9 +64,8 @@ public class RenameMethodEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final OperationSignature operationSignature) {
-      final OperationInterface operationInterface = operationSignature.getInterface__OperationSignature();
       String _newValue = change.getNewValue();
-      operationInterface.setEntityName(_newValue);
+      operationSignature.setEntityName(_newValue);
     }
   }
 }

@@ -20,76 +20,76 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  */
 public class IntegrationFactoryImpl extends EFactoryImpl implements IntegrationFactory {
 	/**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public static IntegrationFactory init() {
-        try {
-            IntegrationFactory theIntegrationFactory = (IntegrationFactory)EPackage.Registry.INSTANCE.getEFactory(IntegrationPackage.eNS_URI);
-            if (theIntegrationFactory != null) {
-                return theIntegrationFactory;
-            }
-        }
-        catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new IntegrationFactoryImpl();
-    }
+		try {
+			IntegrationFactory theIntegrationFactory = (IntegrationFactory)EPackage.Registry.INSTANCE.getEFactory(IntegrationPackage.eNS_URI);
+			if (theIntegrationFactory != null) {
+				return theIntegrationFactory;
+			}
+		}
+		catch (Exception exception) {
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new IntegrationFactoryImpl();
+	}
 
 	/**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public IntegrationFactoryImpl() {
-        super();
-    }
+		super();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	@Override
 	public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case IntegrationPackage.INTEGRATION_CORRESPONDENCE: return createIntegrationCorrespondence();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eClass.getClassifierID()) {
+			case IntegrationPackage.INTEGRATION_CORRESPONDENCE: return createIntegrationCorrespondence();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public IntegrationCorrespondence createIntegrationCorrespondence() {
-        IntegrationCorrespondenceImpl integrationCorrespondence = new IntegrationCorrespondenceImpl();
-        return integrationCorrespondence;
-    }
+		IntegrationCorrespondenceImpl integrationCorrespondence = new IntegrationCorrespondenceImpl();
+		return integrationCorrespondence;
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
 	public IntegrationPackage getIntegrationPackage() {
-        return (IntegrationPackage)getEPackage();
-    }
+		return (IntegrationPackage)getEPackage();
+	}
 
 	/**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @deprecated
-     * @generated
-     */
+	 * @deprecated
+	 * @generated
+	 */
 	@Deprecated
 	public static IntegrationPackage getPackage() {
-        return IntegrationPackage.eINSTANCE;
-    }
+		return IntegrationPackage.eINSTANCE;
+	}
 
 } //IntegrationFactoryImpl
