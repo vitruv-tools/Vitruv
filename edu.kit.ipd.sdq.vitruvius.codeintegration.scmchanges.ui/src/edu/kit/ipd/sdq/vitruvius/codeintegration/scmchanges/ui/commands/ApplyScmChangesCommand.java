@@ -128,7 +128,8 @@ public class ApplyScmChangesCommand extends AbstractHandler {
 
 			List<ScmChangeResult> javaResults = results.parallelStream().filter(r -> isJavaChange(r)).collect(Collectors.toList());
 			List<IPath> pathsToIgnore = dialog.getPathsToIgnore();
-			List<ScmChangeResult> unignoredResults = javaResults.parallelStream().filter(r -> !isIgnored(r, pathsToIgnore)).collect(Collectors.toList());
+			List<IPath> nonEmptyPathsToIgnore = pathsToIgnore.stream().filter(p -> !p.isEmpty()).collect(Collectors.toList());
+			List<ScmChangeResult> unignoredResults = javaResults.parallelStream().filter(r -> !isIgnored(r, nonEmptyPathsToIgnore)).collect(Collectors.toList());
 			ValidationStatistics stats = new ValidationStatistics();
 			List<UIJob> jobs = new ArrayList<UIJob>();
 			createJobs(project, window, unignoredResults, stats, jobs, repo, replaySpeedInMs, dialog, relativeProjectInRepo, manualControl);
