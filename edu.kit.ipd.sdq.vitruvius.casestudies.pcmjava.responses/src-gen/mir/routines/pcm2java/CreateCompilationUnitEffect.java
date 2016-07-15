@@ -17,8 +17,9 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class CreateCompilationUnitEffect extends AbstractEffectRealization {
-  public CreateCompilationUnitEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateCompilationUnitEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage) {
     super(responseExecutionState, calledBy);
+    				this.sourceElementMappedToClass = sourceElementMappedToClass;this.classifier = classifier;this.containingPackage = containingPackage;
   }
   
   private NamedElement sourceElementMappedToClass;
@@ -26,27 +27,6 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
   private ConcreteClassifier classifier;
   
   private org.emftext.language.java.containers.Package containingPackage;
-  
-  private boolean isSourceElementMappedToClassSet;
-  
-  private boolean isClassifierSet;
-  
-  private boolean isContainingPackageSet;
-  
-  public void setSourceElementMappedToClass(final NamedElement sourceElementMappedToClass) {
-    this.sourceElementMappedToClass = sourceElementMappedToClass;
-    this.isSourceElementMappedToClassSet = true;
-  }
-  
-  public void setClassifier(final ConcreteClassifier classifier) {
-    this.classifier = classifier;
-    this.isClassifierSet = true;
-  }
-  
-  public void setContainingPackage(final org.emftext.language.java.containers.Package containingPackage) {
-    this.containingPackage = containingPackage;
-    this.isContainingPackageSet = true;
-  }
   
   private EObject getElement0(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
     return compilationUnit;
@@ -56,27 +36,20 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     return sourceElementMappedToClass;
   }
   
-  public boolean allParametersSet() {
-    return isSourceElementMappedToClassSet&&isClassifierSet&&isContainingPackageSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateCompilationUnitEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
     getLogger().debug("   ConcreteClassifier: " + this.classifier);
     getLogger().debug("   Package: " + this.containingPackage);
     
-    if (isAborted()) {
-    	return;
-    }
     CompilationUnit compilationUnit = ContainersFactoryImpl.eINSTANCE.createCompilationUnit();
     initializeCreateElementState(compilationUnit);
     
     addCorrespondenceBetween(getElement0(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), getElement1(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), "");
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, classifier, containingPackage, compilationUnit);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -85,7 +58,7 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {

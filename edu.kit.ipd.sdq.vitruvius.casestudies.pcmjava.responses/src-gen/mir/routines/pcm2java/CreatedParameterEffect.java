@@ -17,18 +17,12 @@ import org.palladiosimulator.pcm.repository.Parameter;
 
 @SuppressWarnings("all")
 public class CreatedParameterEffect extends AbstractEffectRealization {
-  public CreatedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreatedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<Parameter> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateNonRootEObjectInList<Parameter> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateNonRootEObjectInList<Parameter> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
     return javaParameter;
@@ -39,36 +33,32 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
   private EObject getCorrepondenceSourceInterfaceMethod(final CreateNonRootEObjectInList<Parameter> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedParameterEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
-    InterfaceMethod interfaceMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	InterfaceMethod.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
     	return;
     }
+    initializeRetrieveElementState(interfaceMethod);
     OrdinaryParameter javaParameter = ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter();
     initializeCreateElementState(javaParameter);
     
     addCorrespondenceBetween(getElement0(change, interfaceMethod, javaParameter), getElement1(change, interfaceMethod, javaParameter), "");
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreatedParameterEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod, javaParameter);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -77,7 +67,7 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {

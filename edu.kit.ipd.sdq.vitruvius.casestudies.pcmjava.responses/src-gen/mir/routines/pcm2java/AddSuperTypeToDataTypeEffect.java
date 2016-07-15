@@ -24,8 +24,9 @@ import org.palladiosimulator.pcm.repository.DataType;
 
 @SuppressWarnings("all")
 public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
-  public AddSuperTypeToDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public AddSuperTypeToDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
     super(responseExecutionState, calledBy);
+    				this.dataType = dataType;this.innerTypeReference = innerTypeReference;this.superTypeQualifiedName = superTypeQualifiedName;
   }
   
   private DataType dataType;
@@ -33,27 +34,6 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
   private TypeReference innerTypeReference;
   
   private String superTypeQualifiedName;
-  
-  private boolean isDataTypeSet;
-  
-  private boolean isInnerTypeReferenceSet;
-  
-  private boolean isSuperTypeQualifiedNameSet;
-  
-  public void setDataType(final DataType dataType) {
-    this.dataType = dataType;
-    this.isDataTypeSet = true;
-  }
-  
-  public void setInnerTypeReference(final TypeReference innerTypeReference) {
-    this.innerTypeReference = innerTypeReference;
-    this.isInnerTypeReferenceSet = true;
-  }
-  
-  public void setSuperTypeQualifiedName(final String superTypeQualifiedName) {
-    this.superTypeQualifiedName = superTypeQualifiedName;
-    this.isSuperTypeQualifiedNameSet = true;
-  }
   
   private EObject getElement0(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {
     return namespaceClassifier;
@@ -63,8 +43,38 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     return dataType;
   }
   
-  public boolean allParametersSet() {
-    return isDataTypeSet&&isInnerTypeReferenceSet&&isSuperTypeQualifiedNameSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine AddSuperTypeToDataTypeEffect with input:");
+    getLogger().debug("   DataType: " + this.dataType);
+    getLogger().debug("   TypeReference: " + this.innerTypeReference);
+    getLogger().debug("   String: " + this.superTypeQualifiedName);
+    
+    org.emftext.language.java.classifiers.Class dataTypeImplementation = getCorrespondingElement(
+    	getCorrepondenceSourceDataTypeImplementation(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (dataTypeImplementation == null) {
+    	return;
+    }
+    initializeRetrieveElementState(dataTypeImplementation);
+    CompilationUnit dataTypeImplementationCU = getCorrespondingElement(
+    	getCorrepondenceSourceDataTypeImplementationCU(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
+    	CompilationUnit.class,
+    	(CompilationUnit _element) -> true, // correspondence precondition checker
+    	null);
+    if (dataTypeImplementationCU == null) {
+    	return;
+    }
+    initializeRetrieveElementState(dataTypeImplementationCU);
+    NamespaceClassifierReference namespaceClassifier = TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference();
+    initializeCreateElementState(namespaceClassifier);
+    
+    addCorrespondenceBetween(getElement0(dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier), getElement1(dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier), "");
+    preprocessElementStates();
+    new mir.routines.pcm2java.AddSuperTypeToDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceDataTypeImplementationCU(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
@@ -75,44 +85,13 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
     return dataType;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine AddSuperTypeToDataTypeEffect with input:");
-    getLogger().debug("   DataType: " + this.dataType);
-    getLogger().debug("   TypeReference: " + this.innerTypeReference);
-    getLogger().debug("   String: " + this.superTypeQualifiedName);
-    
-    org.emftext.language.java.classifiers.Class dataTypeImplementation = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDataTypeImplementation(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	false, true, false);
-    CompilationUnit dataTypeImplementationCU = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDataTypeImplementationCU(dataType, innerTypeReference, superTypeQualifiedName), // correspondence source supplier
-    	(CompilationUnit _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	CompilationUnit.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    NamespaceClassifierReference namespaceClassifier = TypesFactoryImpl.eINSTANCE.createNamespaceClassifierReference();
-    initializeCreateElementState(namespaceClassifier);
-    
-    addCorrespondenceBetween(getElement0(dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier), getElement1(dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier), "");
-    preProcessElements();
-    new mir.routines.pcm2java.AddSuperTypeToDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	dataType, innerTypeReference, superTypeQualifiedName, dataTypeImplementation, dataTypeImplementationCU, namespaceClassifier);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {

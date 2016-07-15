@@ -28,27 +28,14 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 
 @SuppressWarnings("all")
 public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
-  public RemoveRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RemoveRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     super(responseExecutionState, calledBy);
+    				this.requiredRole = requiredRole;this.requiringEntity = requiringEntity;
   }
   
   private RequiredRole requiredRole;
   
   private InterfaceRequiringEntity requiringEntity;
-  
-  private boolean isRequiredRoleSet;
-  
-  private boolean isRequiringEntitySet;
-  
-  public void setRequiredRole(final RequiredRole requiredRole) {
-    this.requiredRole = requiredRole;
-    this.isRequiredRoleSet = true;
-  }
-  
-  public void setRequiringEntity(final InterfaceRequiringEntity requiringEntity) {
-    this.requiringEntity = requiringEntity;
-    this.isRequiringEntitySet = true;
-  }
   
   private EObject getCorrepondenceSourceRequiredInterfaceField(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     return requiredRole;
@@ -66,47 +53,37 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     return requiredInterfaceField;
   }
   
-  public boolean allParametersSet() {
-    return isRequiredRoleSet&&isRequiringEntitySet;
-  }
-  
   private EObject getCorrepondenceSourceJavaClass(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     return requiringEntity;
   }
   
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RemoveRequiredRoleEffect with input:");
     getLogger().debug("   RequiredRole: " + this.requiredRole);
     getLogger().debug("   InterfaceRequiringEntity: " + this.requiringEntity);
     
-    ClassifierImport requiredInterfaceImport = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceRequiredInterfaceImport(requiredRole, requiringEntity), // correspondence source supplier
-    	(ClassifierImport _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    ClassifierImport requiredInterfaceImport = getCorrespondingElement(
+    	getCorrepondenceSourceRequiredInterfaceImport(requiredRole, requiringEntity), // correspondence source supplier
     	ClassifierImport.class,
-    	true, false, false);
-    Field requiredInterfaceField = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
-    	(Field _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    	(ClassifierImport _element) -> true, // correspondence precondition checker
+    	null);
+    Field requiredInterfaceField = getCorrespondingElement(
+    	getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
     	Field.class,
-    	true, false, false);
-    org.emftext.language.java.classifiers.Class javaClass = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    	(Field _element) -> true, // correspondence precondition checker
+    	null);
+    org.emftext.language.java.classifiers.Class javaClass = getCorrespondingElement(
+    	getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
     	org.emftext.language.java.classifiers.Class.class,
-    	true, false, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
-    markObjectDelete(getElement1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    deleteObject(getElement0(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
+    deleteObject(getElement1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -115,7 +92,7 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {

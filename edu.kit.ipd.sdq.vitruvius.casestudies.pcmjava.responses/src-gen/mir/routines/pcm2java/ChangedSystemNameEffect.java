@@ -11,46 +11,36 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class ChangedSystemNameEffect extends AbstractEffectRealization {
-  public ChangedSystemNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangedSystemNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedEAttribute<String> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getCorrepondenceSourceSystemPackage(final UpdateSingleValuedEAttribute<String> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangedSystemNameEffect with input:");
     getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
     
-    org.emftext.language.java.containers.Package systemPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceSystemPackage(change), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    org.emftext.language.java.containers.Package systemPackage = getCorrespondingElement(
+    	getCorrepondenceSourceSystemPackage(change), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	null);
+    if (systemPackage == null) {
     	return;
     }
+    initializeRetrieveElementState(systemPackage);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.ChangedSystemNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, systemPackage);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -59,7 +49,7 @@ public class ChangedSystemNameEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final org.emftext.language.java.containers.Package systemPackage) {

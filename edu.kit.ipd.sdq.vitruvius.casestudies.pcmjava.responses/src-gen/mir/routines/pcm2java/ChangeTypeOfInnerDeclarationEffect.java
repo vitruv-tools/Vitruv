@@ -15,46 +15,32 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration;
 
 @SuppressWarnings("all")
 public class ChangeTypeOfInnerDeclarationEffect extends AbstractEffectRealization {
-  public ChangeTypeOfInnerDeclarationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangeTypeOfInnerDeclarationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<DataType> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedNonContainmentEReference<DataType> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedNonContainmentEReference<DataType> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getCorrepondenceSourceNewJavaDataType(final UpdateSingleValuedNonContainmentEReference<DataType> change) {
     DataType _newValue = change.getNewValue();
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeTypeOfInnerDeclarationEffect with input:");
     getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
     
-    org.emftext.language.java.classifiers.Class newJavaDataType = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceNewJavaDataType(change), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    org.emftext.language.java.classifiers.Class newJavaDataType = getCorrespondingElement(
+    	getCorrepondenceSourceNewJavaDataType(change), // correspondence source supplier
     	org.emftext.language.java.classifiers.Class.class,
-    	true, false, false);
-    if (isAborted()) {
-    	return;
-    }
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, newJavaDataType);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -63,7 +49,7 @@ public class ChangeTypeOfInnerDeclarationEffect extends AbstractEffectRealizatio
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<DataType> change, final org.emftext.language.java.classifiers.Class newJavaDataType) {

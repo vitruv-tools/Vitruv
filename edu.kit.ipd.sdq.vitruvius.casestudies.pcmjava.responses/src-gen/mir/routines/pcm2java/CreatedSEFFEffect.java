@@ -11,35 +11,22 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 @SuppressWarnings("all")
 public class CreatedSEFFEffect extends AbstractEffectRealization {
-  public CreatedSEFFEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreatedSEFFEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<ServiceEffectSpecification> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateNonRootEObjectInList<ServiceEffectSpecification> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateNonRootEObjectInList<ServiceEffectSpecification> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedSEFFEffect with input:");
     getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
     
-    if (isAborted()) {
-    	return;
-    }
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreatedSEFFEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -48,7 +35,7 @@ public class CreatedSEFFEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateNonRootEObjectInList<ServiceEffectSpecification> change) {

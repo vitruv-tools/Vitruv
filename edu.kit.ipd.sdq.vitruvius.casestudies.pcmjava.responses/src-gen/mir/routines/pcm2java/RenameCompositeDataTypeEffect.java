@@ -13,21 +13,31 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 @SuppressWarnings("all")
 public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
-  public RenameCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CompositeDataType compositeDataType) {
     super(responseExecutionState, calledBy);
+    				this.compositeDataType = compositeDataType;
   }
   
   private CompositeDataType compositeDataType;
   
-  private boolean isCompositeDataTypeSet;
-  
-  public void setCompositeDataType(final CompositeDataType compositeDataType) {
-    this.compositeDataType = compositeDataType;
-    this.isCompositeDataTypeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isCompositeDataTypeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameCompositeDataTypeEffect with input:");
+    getLogger().debug("   CompositeDataType: " + this.compositeDataType);
+    
+    org.emftext.language.java.containers.Package datatypesPackage = getCorrespondingElement(
+    	getCorrepondenceSourceDatatypesPackage(compositeDataType), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(compositeDataType, _element), // correspondence precondition checker
+    	null);
+    if (datatypesPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(datatypesPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenameCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	compositeDataType, datatypesPackage);
+    postprocessElementStates();
   }
   
   private boolean getCorrespondingModelElementsPreconditionDatatypesPackage(final CompositeDataType compositeDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
@@ -41,33 +51,13 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     return _repository__DataType;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RenameCompositeDataTypeEffect with input:");
-    getLogger().debug("   CompositeDataType: " + this.compositeDataType);
-    
-    org.emftext.language.java.containers.Package datatypesPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDatatypesPackage(compositeDataType), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(compositeDataType, _element), // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.RenameCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	compositeDataType, datatypesPackage);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CompositeDataType compositeDataType, final org.emftext.language.java.containers.Package datatypesPackage) {

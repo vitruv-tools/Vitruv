@@ -13,18 +13,12 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
-  public DeleteJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public DeleteJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElement) {
     super(responseExecutionState, calledBy);
+    				this.sourceElement = sourceElement;
   }
   
   private NamedElement sourceElement;
-  
-  private boolean isSourceElementSet;
-  
-  public void setSourceElement(final NamedElement sourceElement) {
-    this.sourceElement = sourceElement;
-    this.isSourceElementSet = true;
-  }
   
   private EObject getElement0(final NamedElement sourceElement, final ConcreteClassifier javaClassifier, final CompilationUnit compilationUnit) {
     return javaClassifier;
@@ -34,38 +28,37 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
     return compilationUnit;
   }
   
-  public boolean allParametersSet() {
-    return isSourceElementSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine DeleteJavaClassifierEffect with input:");
+    getLogger().debug("   NamedElement: " + this.sourceElement);
+    
+    ConcreteClassifier javaClassifier = getCorrespondingElement(
+    	getCorrepondenceSourceJavaClassifier(sourceElement), // correspondence source supplier
+    	ConcreteClassifier.class,
+    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaClassifier == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaClassifier);
+    CompilationUnit compilationUnit = getCorrespondingElement(
+    	getCorrepondenceSourceCompilationUnit(sourceElement), // correspondence source supplier
+    	CompilationUnit.class,
+    	(CompilationUnit _element) -> true, // correspondence precondition checker
+    	null);
+    if (compilationUnit == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compilationUnit);
+    deleteObject(getElement0(sourceElement, javaClassifier, compilationUnit));
+    deleteObject(getElement1(sourceElement, javaClassifier, compilationUnit));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceJavaClassifier(final NamedElement sourceElement) {
     return sourceElement;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine DeleteJavaClassifierEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElement);
-    
-    ConcreteClassifier javaClassifier = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceJavaClassifier(sourceElement), // correspondence source supplier
-    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	ConcreteClassifier.class,
-    	false, true, false);
-    CompilationUnit compilationUnit = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceCompilationUnit(sourceElement), // correspondence source supplier
-    	(CompilationUnit _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	CompilationUnit.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(sourceElement, javaClassifier, compilationUnit));
-    markObjectDelete(getElement1(sourceElement, javaClassifier, compilationUnit));
-    
-    preProcessElements();
-    postProcessElements();
   }
   
   private EObject getCorrepondenceSourceCompilationUnit(final NamedElement sourceElement) {
@@ -78,7 +71,7 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
   }
 }

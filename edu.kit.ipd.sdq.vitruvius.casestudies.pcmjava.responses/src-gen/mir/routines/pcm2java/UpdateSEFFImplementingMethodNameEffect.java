@@ -13,41 +13,31 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 @SuppressWarnings("all")
 public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealization {
-  public UpdateSEFFImplementingMethodNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public UpdateSEFFImplementingMethodNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
     super(responseExecutionState, calledBy);
+    				this.seff = seff;
   }
   
   private ServiceEffectSpecification seff;
   
-  private boolean isSeffSet;
-  
-  public void setSeff(final ServiceEffectSpecification seff) {
-    this.seff = seff;
-    this.isSeffSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isSeffSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine UpdateSEFFImplementingMethodNameEffect with input:");
     getLogger().debug("   ServiceEffectSpecification: " + this.seff);
     
-    ClassMethod classMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    ClassMethod classMethod = getCorrespondingElement(
+    	getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
     	ClassMethod.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (classMethod == null) {
     	return;
     }
+    initializeRetrieveElementState(classMethod);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.UpdateSEFFImplementingMethodNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	seff, classMethod);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceClassMethod(final ServiceEffectSpecification seff) {
@@ -60,7 +50,7 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final ServiceEffectSpecification seff, final ClassMethod classMethod) {

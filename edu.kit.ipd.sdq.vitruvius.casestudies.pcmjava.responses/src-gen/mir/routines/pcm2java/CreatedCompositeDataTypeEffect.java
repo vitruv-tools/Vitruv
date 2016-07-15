@@ -14,21 +14,31 @@ import org.palladiosimulator.pcm.repository.DataType;
 
 @SuppressWarnings("all")
 public class CreatedCompositeDataTypeEffect extends AbstractEffectRealization {
-  public CreatedCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreatedCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<DataType> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateNonRootEObjectInList<DataType> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateNonRootEObjectInList<DataType> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreatedCompositeDataTypeEffect with input:");
+    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    
+    org.emftext.language.java.containers.Package datatypesPackage = getCorrespondingElement(
+    	getCorrepondenceSourceDatatypesPackage(change), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(change, _element), // correspondence precondition checker
+    	null);
+    if (datatypesPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(datatypesPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreatedCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, datatypesPackage);
+    postprocessElementStates();
   }
   
   private boolean getCorrespondingModelElementsPreconditionDatatypesPackage(final CreateNonRootEObjectInList<DataType> change, final org.emftext.language.java.containers.Package datatypesPackage) {
@@ -42,33 +52,13 @@ public class CreatedCompositeDataTypeEffect extends AbstractEffectRealization {
     return _newAffectedEObject;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine CreatedCompositeDataTypeEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
-    
-    org.emftext.language.java.containers.Package datatypesPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDatatypesPackage(change), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionDatatypesPackage(change, _element), // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.CreatedCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, datatypesPackage);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateNonRootEObjectInList<DataType> change, final org.emftext.language.java.containers.Package datatypesPackage) {

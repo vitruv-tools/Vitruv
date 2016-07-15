@@ -15,8 +15,9 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class RenameJavaPackageEffect extends AbstractEffectRealization {
-  public RenameJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag) {
     super(responseExecutionState, calledBy);
+    				this.sourceElementMappedToPackage = sourceElementMappedToPackage;this.parentPackage = parentPackage;this.packageName = packageName;this.expectedTag = expectedTag;
   }
   
   private NamedElement sourceElementMappedToPackage;
@@ -27,36 +28,27 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
   
   private String expectedTag;
   
-  private boolean isSourceElementMappedToPackageSet;
-  
-  private boolean isParentPackageSet;
-  
-  private boolean isPackageNameSet;
-  
-  private boolean isExpectedTagSet;
-  
-  public void setSourceElementMappedToPackage(final NamedElement sourceElementMappedToPackage) {
-    this.sourceElementMappedToPackage = sourceElementMappedToPackage;
-    this.isSourceElementMappedToPackageSet = true;
-  }
-  
-  public void setParentPackage(final org.emftext.language.java.containers.Package parentPackage) {
-    this.parentPackage = parentPackage;
-    this.isParentPackageSet = true;
-  }
-  
-  public void setPackageName(final String packageName) {
-    this.packageName = packageName;
-    this.isPackageNameSet = true;
-  }
-  
-  public void setExpectedTag(final String expectedTag) {
-    this.expectedTag = expectedTag;
-    this.isExpectedTagSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isSourceElementMappedToPackageSet&&isParentPackageSet&&isPackageNameSet&&isExpectedTagSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameJavaPackageEffect with input:");
+    getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
+    getLogger().debug("   Package: " + this.parentPackage);
+    getLogger().debug("   String: " + this.packageName);
+    getLogger().debug("   String: " + this.expectedTag);
+    
+    org.emftext.language.java.containers.Package javaPackage = getCorrespondingElement(
+    	getCorrepondenceSourceJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	getRetrieveTag0(sourceElementMappedToPackage, parentPackage, packageName, expectedTag));
+    if (javaPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenameJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage);
+    postprocessElementStates();
   }
   
   private String getRetrieveTag0(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag) {
@@ -67,36 +59,13 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     return sourceElementMappedToPackage;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RenameJavaPackageEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
-    getLogger().debug("   Package: " + this.parentPackage);
-    getLogger().debug("   String: " + this.packageName);
-    getLogger().debug("   String: " + this.expectedTag);
-    
-    org.emftext.language.java.containers.Package javaPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceJavaPackage(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> getRetrieveTag0(sourceElementMappedToPackage, parentPackage, packageName, expectedTag), // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.RenameJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag, final org.emftext.language.java.containers.Package javaPackage) {

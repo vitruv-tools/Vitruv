@@ -55,8 +55,7 @@ class CreatedCompositeDataTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<DataType> typedChange = (CreateNonRootEObjectInList<DataType>)change;
-    mir.routines.pcm2java.CreatedCompositeDataTypeEffect effect = new mir.routines.pcm2java.CreatedCompositeDataTypeEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.CreatedCompositeDataTypeEffect effect = new mir.routines.pcm2java.CreatedCompositeDataTypeEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

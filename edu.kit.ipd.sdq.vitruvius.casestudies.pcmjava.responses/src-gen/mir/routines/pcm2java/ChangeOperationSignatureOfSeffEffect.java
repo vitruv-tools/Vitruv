@@ -14,51 +14,41 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 
 @SuppressWarnings("all")
 public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealization {
-  public ChangeOperationSignatureOfSeffEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangeOperationSignatureOfSeffEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<Signature> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedNonContainmentEReference<Signature> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedNonContainmentEReference<Signature> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final UpdateSingleValuedNonContainmentEReference<Signature> change, final ClassMethod oldClassMethod) {
     return oldClassMethod;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ChangeOperationSignatureOfSeffEffect with input:");
+    getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
+    
+    ClassMethod oldClassMethod = getCorrespondingElement(
+    	getCorrepondenceSourceOldClassMethod(change), // correspondence source supplier
+    	ClassMethod.class,
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (oldClassMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(oldClassMethod);
+    deleteObject(getElement0(change, oldClassMethod));
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, oldClassMethod);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceOldClassMethod(final UpdateSingleValuedNonContainmentEReference<Signature> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine ChangeOperationSignatureOfSeffEffect with input:");
-    getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
-    
-    ClassMethod oldClassMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceOldClassMethod(change), // correspondence source supplier
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	ClassMethod.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(change, oldClassMethod));
-    
-    preProcessElements();
-    new mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, oldClassMethod);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -67,7 +57,7 @@ public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealizat
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<Signature> change, final ClassMethod oldClassMethod) {

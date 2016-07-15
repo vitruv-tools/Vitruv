@@ -50,8 +50,7 @@ class ChangedProvidingEntityOfProvidedRoleResponse extends AbstractResponseReali
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntityContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.routines.pcm2java.ChangedProvidingEntityOfProvidedRoleEffect effect = new mir.routines.pcm2java.ChangedProvidingEntityOfProvidedRoleEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.ChangedProvidingEntityOfProvidedRoleEffect effect = new mir.routines.pcm2java.ChangedProvidingEntityOfProvidedRoleEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

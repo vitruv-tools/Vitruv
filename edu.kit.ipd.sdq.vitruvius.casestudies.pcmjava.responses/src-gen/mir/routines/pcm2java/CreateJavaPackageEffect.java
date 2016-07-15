@@ -15,8 +15,9 @@ import org.emftext.language.java.containers.impl.ContainersFactoryImpl;
 
 @SuppressWarnings("all")
 public class CreateJavaPackageEffect extends AbstractEffectRealization {
-  public CreateJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     super(responseExecutionState, calledBy);
+    				this.sourceElementMappedToPackage = sourceElementMappedToPackage;this.parentPackage = parentPackage;this.packageName = packageName;this.newTag = newTag;
   }
   
   private EObject sourceElementMappedToPackage;
@@ -27,34 +28,6 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
   
   private String newTag;
   
-  private boolean isSourceElementMappedToPackageSet;
-  
-  private boolean isParentPackageSet;
-  
-  private boolean isPackageNameSet;
-  
-  private boolean isNewTagSet;
-  
-  public void setSourceElementMappedToPackage(final EObject sourceElementMappedToPackage) {
-    this.sourceElementMappedToPackage = sourceElementMappedToPackage;
-    this.isSourceElementMappedToPackageSet = true;
-  }
-  
-  public void setParentPackage(final org.emftext.language.java.containers.Package parentPackage) {
-    this.parentPackage = parentPackage;
-    this.isParentPackageSet = true;
-  }
-  
-  public void setPackageName(final String packageName) {
-    this.packageName = packageName;
-    this.isPackageNameSet = true;
-  }
-  
-  public void setNewTag(final String newTag) {
-    this.newTag = newTag;
-    this.isNewTagSet = true;
-  }
-  
   private EObject getElement0(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
     return javaPackage;
   }
@@ -63,8 +36,28 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     return sourceElementMappedToPackage;
   }
   
-  public boolean allParametersSet() {
-    return isSourceElementMappedToPackageSet&&isParentPackageSet&&isPackageNameSet&&isNewTagSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateJavaPackageEffect with input:");
+    getLogger().debug("   EObject: " + this.sourceElementMappedToPackage);
+    getLogger().debug("   Package: " + this.parentPackage);
+    getLogger().debug("   String: " + this.packageName);
+    getLogger().debug("   String: " + this.newTag);
+    
+    if (getCorrespondingElement(
+    	getCorrepondenceSourcenull(sourceElementMappedToPackage, parentPackage, packageName, newTag), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	getRetrieveTag0(sourceElementMappedToPackage, parentPackage, packageName, newTag)) != null) {
+    	return;
+    }
+    org.emftext.language.java.containers.Package javaPackage = ContainersFactoryImpl.eINSTANCE.createPackage();
+    initializeCreateElementState(javaPackage);
+    
+    addCorrespondenceBetween(getElement0(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), getElement1(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), getTag0(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage));
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreateJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage);
+    postprocessElementStates();
   }
   
   private String getRetrieveTag0(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
@@ -79,39 +72,13 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     return sourceElementMappedToPackage;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine CreateJavaPackageEffect with input:");
-    getLogger().debug("   EObject: " + this.sourceElementMappedToPackage);
-    getLogger().debug("   Package: " + this.parentPackage);
-    getLogger().debug("   String: " + this.packageName);
-    getLogger().debug("   String: " + this.newTag);
-    
-    initializeRetrieveElementState(
-    	() -> getCorrepondenceSourcenull(sourceElementMappedToPackage, parentPackage, packageName, newTag), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> getRetrieveTag0(sourceElementMappedToPackage, parentPackage, packageName, newTag), // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, false, true);
-    if (isAborted()) {
-    	return;
-    }
-    org.emftext.language.java.containers.Package javaPackage = ContainersFactoryImpl.eINSTANCE.createPackage();
-    initializeCreateElementState(javaPackage);
-    
-    addCorrespondenceBetween(getElement0(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), getElement1(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), getTag0(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage));
-    preProcessElements();
-    new mir.routines.pcm2java.CreateJavaPackageEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {

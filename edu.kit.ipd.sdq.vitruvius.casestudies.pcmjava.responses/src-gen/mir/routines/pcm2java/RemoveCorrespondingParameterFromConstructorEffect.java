@@ -15,34 +15,37 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractEffectRealization {
-  public RemoveCorrespondingParameterFromConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RemoveCorrespondingParameterFromConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final NamedElement correspondenceSource) {
     super(responseExecutionState, calledBy);
+    				this.ctor = ctor;this.correspondenceSource = correspondenceSource;
   }
   
   private Constructor ctor;
   
   private NamedElement correspondenceSource;
   
-  private boolean isCtorSet;
-  
-  private boolean isCorrespondenceSourceSet;
-  
-  public void setCtor(final Constructor ctor) {
-    this.ctor = ctor;
-    this.isCtorSet = true;
-  }
-  
-  public void setCorrespondenceSource(final NamedElement correspondenceSource) {
-    this.correspondenceSource = correspondenceSource;
-    this.isCorrespondenceSourceSet = true;
-  }
-  
   private EObject getElement0(final Constructor ctor, final NamedElement correspondenceSource, final OrdinaryParameter param) {
     return param;
   }
   
-  public boolean allParametersSet() {
-    return isCtorSet&&isCorrespondenceSourceSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RemoveCorrespondingParameterFromConstructorEffect with input:");
+    getLogger().debug("   Constructor: " + this.ctor);
+    getLogger().debug("   NamedElement: " + this.correspondenceSource);
+    
+    OrdinaryParameter param = getCorrespondingElement(
+    	getCorrepondenceSourceParam(ctor, correspondenceSource), // correspondence source supplier
+    	OrdinaryParameter.class,
+    	(OrdinaryParameter _element) -> getCorrespondingModelElementsPreconditionParam(ctor, correspondenceSource, _element), // correspondence precondition checker
+    	null);
+    if (param == null) {
+    	return;
+    }
+    initializeRetrieveElementState(param);
+    deleteObject(getElement0(ctor, correspondenceSource, param));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private boolean getCorrespondingModelElementsPreconditionParam(final Constructor ctor, final NamedElement correspondenceSource, final OrdinaryParameter param) {
@@ -55,33 +58,13 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
     return correspondenceSource;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RemoveCorrespondingParameterFromConstructorEffect with input:");
-    getLogger().debug("   Constructor: " + this.ctor);
-    getLogger().debug("   NamedElement: " + this.correspondenceSource);
-    
-    OrdinaryParameter param = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceParam(ctor, correspondenceSource), // correspondence source supplier
-    	(OrdinaryParameter _element) -> getCorrespondingModelElementsPreconditionParam(ctor, correspondenceSource, _element), // correspondence precondition checker
-    	() -> null, // tag supplier
-    	OrdinaryParameter.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(ctor, correspondenceSource, param));
-    
-    preProcessElements();
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
   }
 }

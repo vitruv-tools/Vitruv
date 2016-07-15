@@ -45,8 +45,7 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.routines.pcm2java.RenamedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RenamedCollectionDataTypeEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.RenamedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RenamedCollectionDataTypeEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

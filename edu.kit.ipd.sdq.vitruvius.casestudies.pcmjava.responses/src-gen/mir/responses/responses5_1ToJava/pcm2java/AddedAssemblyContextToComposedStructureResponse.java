@@ -46,8 +46,7 @@ class AddedAssemblyContextToComposedStructureResponse extends AbstractResponseRe
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<AssemblyContext> typedChange = (CreateNonRootEObjectInList<AssemblyContext>)change;
-    mir.routines.pcm2java.AddedAssemblyContextToComposedStructureEffect effect = new mir.routines.pcm2java.AddedAssemblyContextToComposedStructureEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.AddedAssemblyContextToComposedStructureEffect effect = new mir.routines.pcm2java.AddedAssemblyContextToComposedStructureEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

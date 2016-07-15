@@ -1,0 +1,51 @@
+package mir.responses.responses5_1ToJava.pcm2java;
+
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.pcm.repository.Parameter;
+
+@SuppressWarnings("all")
+class RenamedParameterResponse extends AbstractResponseRealization {
+  public RenamedParameterResponse(final UserInteracting userInteracting) {
+    super(userInteracting);
+  }
+  
+  public static Class<? extends EChange> getExpectedChangeType() {
+    return UpdateSingleValuedEAttribute.class;
+  }
+  
+  private boolean checkChangeProperties(final UpdateSingleValuedEAttribute<String> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Parameter)) {
+    	return false;
+    }
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("parameterName")) {
+    	return false;
+    }
+    return true;
+  }
+  
+  public boolean checkPrecondition(final EChange change) {
+    if (!(change instanceof UpdateSingleValuedEAttribute<?>)) {
+    	return false;
+    }
+    UpdateSingleValuedEAttribute typedChange = (UpdateSingleValuedEAttribute)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    return true;
+  }
+  
+  public void executeResponse(final EChange change) {
+    UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
+    mir.routines.pcm2java.RenamedParameterEffect effect = new mir.routines.pcm2java.RenamedParameterEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
+  }
+}

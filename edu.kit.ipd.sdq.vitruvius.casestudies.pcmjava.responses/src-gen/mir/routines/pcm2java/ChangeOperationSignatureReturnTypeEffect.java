@@ -14,46 +14,36 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 
 @SuppressWarnings("all")
 public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectRealization {
-  public ChangeOperationSignatureReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangeOperationSignatureReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<DataType> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedNonContainmentEReference<DataType> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedNonContainmentEReference<DataType> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
   
   private EObject getCorrepondenceSourceInterfaceMethod(final UpdateSingleValuedNonContainmentEReference<DataType> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeOperationSignatureReturnTypeEffect with input:");
     getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
     
-    InterfaceMethod interfaceMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	InterfaceMethod.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
     	return;
     }
+    initializeRetrieveElementState(interfaceMethod);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.ChangeOperationSignatureReturnTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -62,7 +52,7 @@ public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectReal
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<DataType> change, final InterfaceMethod interfaceMethod) {

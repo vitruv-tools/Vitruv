@@ -15,8 +15,9 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 @SuppressWarnings("all")
 public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
-  public CreateJavaInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateJavaInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
+    				this.sourceElementMappedToClass = sourceElementMappedToClass;this.containingPackage = containingPackage;this.className = className;
   }
   
   private NamedElement sourceElementMappedToClass;
@@ -24,27 +25,6 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
   private org.emftext.language.java.containers.Package containingPackage;
   
   private String className;
-  
-  private boolean isSourceElementMappedToClassSet;
-  
-  private boolean isContainingPackageSet;
-  
-  private boolean isClassNameSet;
-  
-  public void setSourceElementMappedToClass(final NamedElement sourceElementMappedToClass) {
-    this.sourceElementMappedToClass = sourceElementMappedToClass;
-    this.isSourceElementMappedToClassSet = true;
-  }
-  
-  public void setContainingPackage(final org.emftext.language.java.containers.Package containingPackage) {
-    this.containingPackage = containingPackage;
-    this.isContainingPackageSet = true;
-  }
-  
-  public void setClassName(final String className) {
-    this.className = className;
-    this.isClassNameSet = true;
-  }
   
   private EObject getElement0(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
     return javaInterface;
@@ -54,27 +34,20 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     return sourceElementMappedToClass;
   }
   
-  public boolean allParametersSet() {
-    return isSourceElementMappedToClassSet&&isContainingPackageSet&&isClassNameSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateJavaInterfaceEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
     getLogger().debug("   Package: " + this.containingPackage);
     getLogger().debug("   String: " + this.className);
     
-    if (isAborted()) {
-    	return;
-    }
     Interface javaInterface = ClassifiersFactoryImpl.eINSTANCE.createInterface();
     initializeCreateElementState(javaInterface);
     
     addCorrespondenceBetween(getElement0(sourceElementMappedToClass, containingPackage, className, javaInterface), getElement1(sourceElementMappedToClass, containingPackage, className, javaInterface), "");
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreateJavaInterfaceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, containingPackage, className, javaInterface);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -83,7 +56,7 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {

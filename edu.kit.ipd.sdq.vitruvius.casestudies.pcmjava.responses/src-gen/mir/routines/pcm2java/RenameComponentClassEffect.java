@@ -11,45 +11,35 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 @SuppressWarnings("all")
 public class RenameComponentClassEffect extends AbstractEffectRealization {
-  public RenameComponentClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameComponentClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
+    				this.component = component;
   }
   
   private RepositoryComponent component;
   
-  private boolean isComponentSet;
-  
-  public void setComponent(final RepositoryComponent component) {
-    this.component = component;
-    this.isComponentSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isComponentSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameComponentClassEffect with input:");
+    getLogger().debug("   RepositoryComponent: " + this.component);
+    
+    org.emftext.language.java.containers.Package componentPackage = getCorrespondingElement(
+    	getCorrepondenceSourceComponentPackage(component), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	null);
+    if (componentPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(componentPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenameComponentClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	component, componentPackage);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceComponentPackage(final RepositoryComponent component) {
     return component;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RenameComponentClassEffect with input:");
-    getLogger().debug("   RepositoryComponent: " + this.component);
-    
-    org.emftext.language.java.containers.Package componentPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceComponentPackage(component), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.RenameComponentClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	component, componentPackage);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -58,7 +48,7 @@ public class RenameComponentClassEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package componentPackage) {

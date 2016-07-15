@@ -46,8 +46,7 @@ class CreatedSEFFResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<ServiceEffectSpecification> typedChange = (CreateNonRootEObjectInList<ServiceEffectSpecification>)change;
-    mir.routines.pcm2java.CreatedSEFFEffect effect = new mir.routines.pcm2java.CreatedSEFFEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.CreatedSEFFEffect effect = new mir.routines.pcm2java.CreatedSEFFEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

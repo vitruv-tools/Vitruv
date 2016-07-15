@@ -45,8 +45,7 @@ class RenamedCompositeDataTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.routines.pcm2java.RenamedCompositeDataTypeEffect effect = new mir.routines.pcm2java.RenamedCompositeDataTypeEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.RenamedCompositeDataTypeEffect effect = new mir.routines.pcm2java.RenamedCompositeDataTypeEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

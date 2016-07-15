@@ -45,8 +45,7 @@ class RenameResourceDemandingInternalBehaviorResponse extends AbstractResponseRe
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect effect = new mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect effect = new mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

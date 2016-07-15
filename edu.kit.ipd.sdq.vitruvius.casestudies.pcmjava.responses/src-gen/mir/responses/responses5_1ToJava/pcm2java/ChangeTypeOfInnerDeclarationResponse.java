@@ -50,8 +50,7 @@ class ChangeTypeOfInnerDeclarationResponse extends AbstractResponseRealization {
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.routines.pcm2java.ChangeTypeOfInnerDeclarationEffect effect = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.ChangeTypeOfInnerDeclarationEffect effect = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

@@ -44,8 +44,7 @@ class ChangedSystemNameResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.routines.pcm2java.ChangedSystemNameEffect effect = new mir.routines.pcm2java.ChangedSystemNameEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.ChangedSystemNameEffect effect = new mir.routines.pcm2java.ChangedSystemNameEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

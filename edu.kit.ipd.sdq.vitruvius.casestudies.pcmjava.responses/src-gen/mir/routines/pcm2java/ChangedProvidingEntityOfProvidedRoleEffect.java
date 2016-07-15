@@ -13,35 +13,22 @@ import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 
 @SuppressWarnings("all")
 public class ChangedProvidingEntityOfProvidedRoleEffect extends AbstractEffectRealization {
-  public ChangedProvidingEntityOfProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangedProvidingEntityOfProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<InterfaceProvidingEntity> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedNonContainmentEReference<InterfaceProvidingEntity> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedNonContainmentEReference<InterfaceProvidingEntity> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangedProvidingEntityOfProvidedRoleEffect with input:");
     getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
     
-    if (isAborted()) {
-    	return;
-    }
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.ChangedProvidingEntityOfProvidedRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -50,7 +37,7 @@ public class ChangedProvidingEntityOfProvidedRoleEffect extends AbstractEffectRe
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<InterfaceProvidingEntity> change) {

@@ -29,46 +29,36 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 @SuppressWarnings("all")
 public class RenameOperationSignatureEffect extends AbstractEffectRealization {
-  public RenameOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedEAttribute<String> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
   
   private EObject getCorrepondenceSourceInterfaceMethod(final UpdateSingleValuedEAttribute<String> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameOperationSignatureEffect with input:");
     getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
     
-    InterfaceMethod interfaceMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
     	InterfaceMethod.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
     	return;
     }
+    initializeRetrieveElementState(interfaceMethod);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.RenameOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, interfaceMethod);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -77,7 +67,7 @@ public class RenameOperationSignatureEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final InterfaceMethod interfaceMethod) {

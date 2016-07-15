@@ -11,35 +11,22 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 
 @SuppressWarnings("all")
 public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectRealization {
-  public ReinitializeOperationRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ReinitializeOperationRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
+    				this.requiredRole = requiredRole;
   }
   
   private OperationRequiredRole requiredRole;
   
-  private boolean isRequiredRoleSet;
-  
-  public void setRequiredRole(final OperationRequiredRole requiredRole) {
-    this.requiredRole = requiredRole;
-    this.isRequiredRoleSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isRequiredRoleSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ReinitializeOperationRequiredRoleEffect with input:");
     getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
     
-    if (isAborted()) {
-    	return;
-    }
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -48,7 +35,7 @@ public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectReali
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final OperationRequiredRole requiredRole) {

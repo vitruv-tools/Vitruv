@@ -13,22 +13,12 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 @SuppressWarnings("all")
 public class RenameInterfaceEffect extends AbstractEffectRealization {
-  public RenameInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationInterface interf) {
     super(responseExecutionState, calledBy);
+    				this.interf = interf;
   }
   
   private OperationInterface interf;
-  
-  private boolean isInterfSet;
-  
-  public void setInterf(final OperationInterface interf) {
-    this.interf = interf;
-    this.isInterfSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isInterfSet;
-  }
   
   private boolean getCorrespondingModelElementsPreconditionContractsPackage(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {
     String _name = contractsPackage.getName();
@@ -36,29 +26,29 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
     return _equals;
   }
   
-  private EObject getCorrepondenceSourceContractsPackage(final OperationInterface interf) {
-    Repository _repository__Interface = interf.getRepository__Interface();
-    return _repository__Interface;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameInterfaceEffect with input:");
     getLogger().debug("   OperationInterface: " + this.interf);
     
-    org.emftext.language.java.containers.Package contractsPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceContractsPackage(interf), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionContractsPackage(interf, _element), // correspondence precondition checker
-    	() -> null, // tag supplier
+    org.emftext.language.java.containers.Package contractsPackage = getCorrespondingElement(
+    	getCorrepondenceSourceContractsPackage(interf), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionContractsPackage(interf, _element), // correspondence precondition checker
+    	null);
+    if (contractsPackage == null) {
     	return;
     }
+    initializeRetrieveElementState(contractsPackage);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.RenameInterfaceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	interf, contractsPackage);
-    postProcessElements();
+    postprocessElementStates();
+  }
+  
+  private EObject getCorrepondenceSourceContractsPackage(final OperationInterface interf) {
+    Repository _repository__Interface = interf.getRepository__Interface();
+    return _repository__Interface;
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -67,7 +57,7 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {

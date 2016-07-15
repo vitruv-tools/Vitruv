@@ -20,8 +20,9 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration;
 
 @SuppressWarnings("all")
 public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffectRealization {
-  public AddInnerDeclarationToCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public AddInnerDeclarationToCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference) {
     super(responseExecutionState, calledBy);
+    				this.compositeDataType = compositeDataType;this.innerDeclaration = innerDeclaration;this.dataTypeReference = dataTypeReference;
   }
   
   private CompositeDataType compositeDataType;
@@ -29,27 +30,6 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
   private InnerDeclaration innerDeclaration;
   
   private TypeReference dataTypeReference;
-  
-  private boolean isCompositeDataTypeSet;
-  
-  private boolean isInnerDeclarationSet;
-  
-  private boolean isDataTypeReferenceSet;
-  
-  public void setCompositeDataType(final CompositeDataType compositeDataType) {
-    this.compositeDataType = compositeDataType;
-    this.isCompositeDataTypeSet = true;
-  }
-  
-  public void setInnerDeclaration(final InnerDeclaration innerDeclaration) {
-    this.innerDeclaration = innerDeclaration;
-    this.isInnerDeclarationSet = true;
-  }
-  
-  public void setDataTypeReference(final TypeReference dataTypeReference) {
-    this.dataTypeReference = dataTypeReference;
-    this.isDataTypeReferenceSet = true;
-  }
   
   private EObject getElement0(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final org.emftext.language.java.classifiers.Class dataTypeClass, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod) {
     return innerDataTypeField;
@@ -59,8 +39,35 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     return getterMethod;
   }
   
-  public boolean allParametersSet() {
-    return isCompositeDataTypeSet&&isInnerDeclarationSet&&isDataTypeReferenceSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine AddInnerDeclarationToCompositeDataTypeEffect with input:");
+    getLogger().debug("   CompositeDataType: " + this.compositeDataType);
+    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
+    getLogger().debug("   TypeReference: " + this.dataTypeReference);
+    
+    org.emftext.language.java.classifiers.Class dataTypeClass = getCorrespondingElement(
+    	getCorrepondenceSourceDataTypeClass(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (dataTypeClass == null) {
+    	return;
+    }
+    initializeRetrieveElementState(dataTypeClass);
+    Field innerDataTypeField = MembersFactoryImpl.eINSTANCE.createField();
+    initializeCreateElementState(innerDataTypeField);
+    ClassMethod getterMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
+    initializeCreateElementState(getterMethod);
+    ClassMethod setterMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
+    initializeCreateElementState(setterMethod);
+    
+    addCorrespondenceBetween(getElement0(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement3(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), "");
+    addCorrespondenceBetween(getElement1(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement4(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getTag0(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod));
+    addCorrespondenceBetween(getElement2(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement5(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getTag1(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod));
+    preprocessElementStates();
+    new mir.routines.pcm2java.AddInnerDeclarationToCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod);
+    postprocessElementStates();
   }
   
   private EObject getElement4(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final org.emftext.language.java.classifiers.Class dataTypeClass, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod) {
@@ -91,44 +98,13 @@ public class AddInnerDeclarationToCompositeDataTypeEffect extends AbstractEffect
     return "getter";
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine AddInnerDeclarationToCompositeDataTypeEffect with input:");
-    getLogger().debug("   CompositeDataType: " + this.compositeDataType);
-    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
-    getLogger().debug("   TypeReference: " + this.dataTypeReference);
-    
-    org.emftext.language.java.classifiers.Class dataTypeClass = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceDataTypeClass(compositeDataType, innerDeclaration, dataTypeReference), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    Field innerDataTypeField = MembersFactoryImpl.eINSTANCE.createField();
-    initializeCreateElementState(innerDataTypeField);
-    ClassMethod getterMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
-    initializeCreateElementState(getterMethod);
-    ClassMethod setterMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
-    initializeCreateElementState(setterMethod);
-    
-    addCorrespondenceBetween(getElement0(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement3(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), "");
-    addCorrespondenceBetween(getElement1(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement4(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getTag0(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod));
-    addCorrespondenceBetween(getElement2(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getElement5(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod), getTag1(compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod));
-    preProcessElements();
-    new mir.routines.pcm2java.AddInnerDeclarationToCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	compositeDataType, innerDeclaration, dataTypeReference, dataTypeClass, innerDataTypeField, getterMethod, setterMethod);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CompositeDataType compositeDataType, final InnerDeclaration innerDeclaration, final TypeReference dataTypeReference, final org.emftext.language.java.classifiers.Class dataTypeClass, final Field innerDataTypeField, final ClassMethod getterMethod, final ClassMethod setterMethod) {

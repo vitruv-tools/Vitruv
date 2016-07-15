@@ -11,45 +11,35 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization {
-  public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
+    				this.repository = repository;
   }
   
   private Repository repository;
   
-  private boolean isRepositorySet;
-  
-  public void setRepository(final Repository repository) {
-    this.repository = repository;
-    this.isRepositorySet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isRepositorySet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateRepositorySubPackagesEffect with input:");
+    getLogger().debug("   Repository: " + this.repository);
+    
+    org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
+    	getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	null);
+    if (repositoryPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(repositoryPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	repository, repositoryPackage);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
     return repository;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine CreateRepositorySubPackagesEffect with input:");
-    getLogger().debug("   Repository: " + this.repository);
-    
-    org.emftext.language.java.containers.Package repositoryPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, repositoryPackage);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -58,7 +48,7 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {

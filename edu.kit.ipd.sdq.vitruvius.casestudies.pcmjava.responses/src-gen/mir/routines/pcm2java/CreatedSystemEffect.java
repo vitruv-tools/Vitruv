@@ -10,35 +10,22 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreatedSystemEffect extends AbstractEffectRealization {
-  public CreatedSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreatedSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateRootEObject<org.palladiosimulator.pcm.system.System> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedSystemEffect with input:");
     getLogger().debug("   CreateRootEObject: " + this.change);
     
-    if (isAborted()) {
-    	return;
-    }
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreatedSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -47,7 +34,7 @@ public class CreatedSystemEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {

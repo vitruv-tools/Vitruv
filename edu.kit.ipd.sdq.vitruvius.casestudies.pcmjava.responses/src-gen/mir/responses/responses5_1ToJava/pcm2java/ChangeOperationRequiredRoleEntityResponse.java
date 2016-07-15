@@ -50,8 +50,7 @@ class ChangeOperationRequiredRoleEntityResponse extends AbstractResponseRealizat
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntityContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

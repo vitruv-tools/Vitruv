@@ -12,46 +12,36 @@ import org.emftext.language.java.members.ClassMethod;
 
 @SuppressWarnings("all")
 public class RenameResourceDemandingInternalBehaviorEffect extends AbstractEffectRealization {
-  public RenameResourceDemandingInternalBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameResourceDemandingInternalBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedEAttribute<String> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameResourceDemandingInternalBehaviorEffect with input:");
+    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    
+    ClassMethod javaMethod = getCorrespondingElement(
+    	getCorrepondenceSourceJavaMethod(change), // correspondence source supplier
+    	ClassMethod.class,
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaMethod);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, javaMethod);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceJavaMethod(final UpdateSingleValuedEAttribute<String> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RenameResourceDemandingInternalBehaviorEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
-    
-    ClassMethod javaMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceJavaMethod(change), // correspondence source supplier
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	ClassMethod.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.RenameResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, javaMethod);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -60,7 +50,7 @@ public class RenameResourceDemandingInternalBehaviorEffect extends AbstractEffec
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final ClassMethod javaMethod) {

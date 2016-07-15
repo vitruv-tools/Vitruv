@@ -12,35 +12,22 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 
 @SuppressWarnings("all")
 public class RenamedCompositeDataTypeEffect extends AbstractEffectRealization {
-  public RenamedCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenamedCompositeDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedEAttribute<String> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenamedCompositeDataTypeEffect with input:");
     getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
     
-    if (isAborted()) {
-    	return;
-    }
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.RenamedCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -49,7 +36,7 @@ public class RenamedCompositeDataTypeEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change) {

@@ -17,18 +17,12 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 
 @SuppressWarnings("all")
 public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffectRealization {
-  public CreatedResourceDemandingInternalBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreatedResourceDemandingInternalBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
     return javaMethod;
@@ -39,36 +33,32 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreatedResourceDemandingInternalBehaviorEffect with input:");
+    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    
+    org.emftext.language.java.classifiers.Class componentClass = getCorrespondingElement(
+    	getCorrepondenceSourceComponentClass(change), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (componentClass == null) {
+    	return;
+    }
+    initializeRetrieveElementState(componentClass);
+    ClassMethod javaMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
+    initializeCreateElementState(javaMethod);
+    
+    addCorrespondenceBetween(getElement0(change, componentClass, javaMethod), getElement1(change, componentClass, javaMethod), "");
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreatedResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, componentClass, javaMethod);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceComponentClass(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine CreatedResourceDemandingInternalBehaviorEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
-    
-    org.emftext.language.java.classifiers.Class componentClass = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceComponentClass(change), // correspondence source supplier
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    ClassMethod javaMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
-    initializeCreateElementState(javaMethod);
-    
-    addCorrespondenceBetween(getElement0(change, componentClass, javaMethod), getElement1(change, componentClass, javaMethod), "");
-    preProcessElements();
-    new mir.routines.pcm2java.CreatedResourceDemandingInternalBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, componentClass, javaMethod);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -77,7 +67,7 @@ public class CreatedResourceDemandingInternalBehaviorEffect extends AbstractEffe
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateNonRootEObjectInList<ResourceDemandingInternalBehaviour> change, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {

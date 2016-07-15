@@ -50,8 +50,7 @@ class ChangeOperationRequiredRoleInterfaceResponse extends AbstractResponseReali
     if (oldValue != null) {
     	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.OperationInterfaceContainerMock(oldValue, typedChange.getOldAffectedEObject()));
     }
-    mir.routines.pcm2java.ChangeOperationRequiredRoleInterfaceEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleInterfaceEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.ChangeOperationRequiredRoleInterfaceEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleInterfaceEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

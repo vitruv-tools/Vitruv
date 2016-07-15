@@ -46,8 +46,7 @@ class CreatedParameterResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectInList<Parameter> typedChange = (CreateNonRootEObjectInList<Parameter>)change;
-    mir.routines.pcm2java.CreatedParameterEffect effect = new mir.routines.pcm2java.CreatedParameterEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.pcm2java.CreatedParameterEffect effect = new mir.routines.pcm2java.CreatedParameterEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

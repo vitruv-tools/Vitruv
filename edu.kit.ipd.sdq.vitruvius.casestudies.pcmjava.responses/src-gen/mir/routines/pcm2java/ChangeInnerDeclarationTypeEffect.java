@@ -18,30 +18,52 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration;
 
 @SuppressWarnings("all")
 public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization {
-  public ChangeInnerDeclarationTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public ChangeInnerDeclarationTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration, final TypeReference newTypeReference) {
     super(responseExecutionState, calledBy);
+    				this.innerDeclaration = innerDeclaration;this.newTypeReference = newTypeReference;
   }
   
   private InnerDeclaration innerDeclaration;
   
   private TypeReference newTypeReference;
   
-  private boolean isInnerDeclarationSet;
-  
-  private boolean isNewTypeReferenceSet;
-  
-  public void setInnerDeclaration(final InnerDeclaration innerDeclaration) {
-    this.innerDeclaration = innerDeclaration;
-    this.isInnerDeclarationSet = true;
-  }
-  
-  public void setNewTypeReference(final TypeReference newTypeReference) {
-    this.newTypeReference = newTypeReference;
-    this.isNewTypeReferenceSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isInnerDeclarationSet&&isNewTypeReferenceSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ChangeInnerDeclarationTypeEffect with input:");
+    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
+    getLogger().debug("   TypeReference: " + this.newTypeReference);
+    
+    Field compositeTypeField = getCorrespondingElement(
+    	getCorrepondenceSourceCompositeTypeField(innerDeclaration, newTypeReference), // correspondence source supplier
+    	Field.class,
+    	(Field _element) -> true, // correspondence precondition checker
+    	null);
+    if (compositeTypeField == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compositeTypeField);
+    Method compositeTypeGetterMethod = getCorrespondingElement(
+    	getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
+    	Method.class,
+    	(Method _element) -> true, // correspondence precondition checker
+    	getRetrieveTag0(innerDeclaration, newTypeReference));
+    if (compositeTypeGetterMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compositeTypeGetterMethod);
+    Method compositeTypeSetterMethod = getCorrespondingElement(
+    	getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
+    	Method.class,
+    	(Method _element) -> true, // correspondence precondition checker
+    	getRetrieveTag1(innerDeclaration, newTypeReference));
+    if (compositeTypeSetterMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compositeTypeSetterMethod);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.ChangeInnerDeclarationTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	innerDeclaration, newTypeReference, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);
+    postprocessElementStates();
   }
   
   private String getRetrieveTag0(final InnerDeclaration innerDeclaration, final TypeReference newTypeReference) {
@@ -64,46 +86,13 @@ public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization 
     return innerDeclaration;
   }
   
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine ChangeInnerDeclarationTypeEffect with input:");
-    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
-    getLogger().debug("   TypeReference: " + this.newTypeReference);
-    
-    Field compositeTypeField = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceCompositeTypeField(innerDeclaration, newTypeReference), // correspondence source supplier
-    	(Field _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	Field.class,
-    	false, true, false);
-    Method compositeTypeGetterMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceCompositeTypeGetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
-    	(Method _element) -> true, // correspondence precondition checker
-    	() -> getRetrieveTag0(innerDeclaration, newTypeReference), // tag supplier
-    	Method.class,
-    	false, true, false);
-    Method compositeTypeSetterMethod = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceCompositeTypeSetterMethod(innerDeclaration, newTypeReference), // correspondence source supplier
-    	(Method _element) -> true, // correspondence precondition checker
-    	() -> getRetrieveTag1(innerDeclaration, newTypeReference), // tag supplier
-    	Method.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.pcm2java.ChangeInnerDeclarationTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	innerDeclaration, newTypeReference, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);
-    postProcessElements();
-  }
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
     private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final InnerDeclaration innerDeclaration, final TypeReference newTypeReference, final Field compositeTypeField, final Method compositeTypeGetterMethod, final Method compositeTypeSetterMethod) {

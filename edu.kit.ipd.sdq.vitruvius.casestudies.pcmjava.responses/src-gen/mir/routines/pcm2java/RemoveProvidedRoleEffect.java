@@ -13,18 +13,12 @@ import org.palladiosimulator.pcm.repository.ProvidedRole;
 
 @SuppressWarnings("all")
 public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
-  public RemoveProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RemoveProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ProvidedRole providedRole) {
     super(responseExecutionState, calledBy);
+    				this.providedRole = providedRole;
   }
   
   private ProvidedRole providedRole;
-  
-  private boolean isProvidedRoleSet;
-  
-  public void setProvidedRole(final ProvidedRole providedRole) {
-    this.providedRole = providedRole;
-    this.isProvidedRoleSet = true;
-  }
   
   private EObject getElement0(final ProvidedRole providedRole, final ClassifierImport requiredInterfaceImport, final NamespaceClassifierReference namespaceClassifierReference) {
     return requiredInterfaceImport;
@@ -38,38 +32,29 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     return namespaceClassifierReference;
   }
   
-  public boolean allParametersSet() {
-    return isProvidedRoleSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RemoveProvidedRoleEffect with input:");
+    getLogger().debug("   ProvidedRole: " + this.providedRole);
+    
+    ClassifierImport requiredInterfaceImport = getCorrespondingElement(
+    	getCorrepondenceSourceRequiredInterfaceImport(providedRole), // correspondence source supplier
+    	ClassifierImport.class,
+    	(ClassifierImport _element) -> true, // correspondence precondition checker
+    	null);
+    NamespaceClassifierReference namespaceClassifierReference = getCorrespondingElement(
+    	getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
+    	NamespaceClassifierReference.class,
+    	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
+    	null);
+    deleteObject(getElement0(providedRole, requiredInterfaceImport, namespaceClassifierReference));
+    deleteObject(getElement1(providedRole, requiredInterfaceImport, namespaceClassifierReference));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceNamespaceClassifierReference(final ProvidedRole providedRole) {
     return providedRole;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RemoveProvidedRoleEffect with input:");
-    getLogger().debug("   ProvidedRole: " + this.providedRole);
-    
-    ClassifierImport requiredInterfaceImport = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceRequiredInterfaceImport(providedRole), // correspondence source supplier
-    	(ClassifierImport _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	ClassifierImport.class,
-    	true, false, false);
-    NamespaceClassifierReference namespaceClassifierReference = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
-    	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	NamespaceClassifierReference.class,
-    	true, false, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(providedRole, requiredInterfaceImport, namespaceClassifierReference));
-    markObjectDelete(getElement1(providedRole, requiredInterfaceImport, namespaceClassifierReference));
-    
-    preProcessElements();
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -78,7 +63,7 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
   }
 }

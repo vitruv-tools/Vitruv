@@ -10,45 +10,35 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreateImplementationForSystemEffect extends AbstractEffectRealization {
-  public CreateImplementationForSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateImplementationForSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.palladiosimulator.pcm.system.System system) {
     super(responseExecutionState, calledBy);
+    				this.system = system;
   }
   
   private org.palladiosimulator.pcm.system.System system;
-  
-  private boolean isSystemSet;
-  
-  public void setSystem(final org.palladiosimulator.pcm.system.System system) {
-    this.system = system;
-    this.isSystemSet = true;
-  }
   
   private EObject getCorrepondenceSourceSystemPackage(final org.palladiosimulator.pcm.system.System system) {
     return system;
   }
   
-  public boolean allParametersSet() {
-    return isSystemSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateImplementationForSystemEffect with input:");
     getLogger().debug("   System: " + this.system);
     
-    org.emftext.language.java.containers.Package systemPackage = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceSystemPackage(system), // correspondence source supplier
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    org.emftext.language.java.containers.Package systemPackage = getCorrespondingElement(
+    	getCorrepondenceSourceSystemPackage(system), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	null);
+    if (systemPackage == null) {
     	return;
     }
+    initializeRetrieveElementState(systemPackage);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.pcm2java.CreateImplementationForSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	system, systemPackage);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -57,7 +47,7 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
