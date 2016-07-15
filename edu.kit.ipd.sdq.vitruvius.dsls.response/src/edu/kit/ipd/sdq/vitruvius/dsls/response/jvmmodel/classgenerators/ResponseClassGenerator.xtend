@@ -91,9 +91,8 @@ class ResponseClassGenerator extends ClassGenerator {
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
 				«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
-				«routineClassNameGenerator.qualifiedName» effect = new «routineClassNameGenerator.qualifiedName»(this.executionState, this);
-				effect.setChange(«typedChangeName»);
-				effect.applyEffect();'''
+				«routineClassNameGenerator.qualifiedName» effect = new «routineClassNameGenerator.qualifiedName»(this.executionState, this, «typedChangeName»);
+				effect.applyRoutine();'''
 		];
 	}
 	

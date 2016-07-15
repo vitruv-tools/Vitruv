@@ -71,7 +71,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		val result = new ArrayList<Command>();
 		for (executor : responseExecutors) {
 			LOGGER.debug('''Calling executor «executor» for change event «change»''');
-			result += executor.generateCommandsForEvent(change, blackboard);
+			result += executor.generateCommandsForEvent(change, blackboard.correspondenceInstance);
 		}
 		return result;
 	}

@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
 
-abstract class EffectElement extends Loggable {
+abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;
 	private final List<Pair<EObject, String>> newCorrespondingElements;
 	private final List<EObject> oldCorrespondingElements;
@@ -24,14 +24,14 @@ abstract class EffectElement extends Loggable {
 		this.delete = false;
 	}
 	
-	public def void preProcess() {
+	public override void preprocess() {
 		removeCorrespondences();
 		if (delete) {
-			delete();
+			performDeletion();
 		}
 	}
 	
-	public def void postProcess() {
+	public override void postprocess() {
 		addCorrespondences();
 	}
 
@@ -56,19 +56,19 @@ abstract class EffectElement extends Loggable {
 	
 	public def void updateTUID();
 	
-	public def void addCorrespondingElement(EObject newCorrespondingElement, String tag) {
+	public override void addCorrespondingElement(EObject newCorrespondingElement, String tag) {
 		this.newCorrespondingElements += new Pair(newCorrespondingElement, tag);
 	}
 	
-	public def void removeCorrespondingElement(EObject oldCorrespondingElement) {
+	public override void removeCorrespondingElement(EObject oldCorrespondingElement) {
 		this.oldCorrespondingElements -= oldCorrespondingElement;
 	}
 	
-	public def void setDelete() {
+	public override void delete() {
 		this.delete = true;
 	}
 	
-	protected def void delete() {
+	protected def void performDeletion() {
 		if (element == null) {
 			return;
 		}

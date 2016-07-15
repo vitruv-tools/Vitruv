@@ -6,12 +6,13 @@ import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
-abstract class AbstractResponseExecutor  {
+abstract class AbstractResponseExecutor implements ResponseExecutor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;
@@ -28,27 +29,18 @@ abstract class AbstractResponseExecutor  {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public def List<Command> generateCommandsForEvent(EChange event, Blackboard blackboard) {
-		return handleEvent(event, blackboard);
-	}
-
-	protected def List<Command> callRelevantResponses(EChange event, Blackboard blackboard) {
+	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceInstance<Correspondence> correspondenceInstance) {
 		val result = new ArrayList<Command>();
 		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
 		LOGGER.debug("Call relevant responses");
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
 			result.add(EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, blackboard.correspondenceInstance)]) as Command);
+					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, correspondenceInstance)]) as Command);
 		}
 		return result;
 	}
 
-	protected def List<Command> handleEvent(EChange event, Blackboard blackboard) {
-		return this.callRelevantResponses(event, blackboard);
-	}
-
 	protected abstract def void setup();
-	
 	
 }

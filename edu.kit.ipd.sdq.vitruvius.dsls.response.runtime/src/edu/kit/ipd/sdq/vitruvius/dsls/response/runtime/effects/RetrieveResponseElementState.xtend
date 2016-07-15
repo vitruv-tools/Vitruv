@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 
-class EffectElementRetrieve extends EffectElement {
+class RetrieveResponseElementState extends AbstractResponseElementState {
 	private final TUID oldTUID;
 		
 	new(EObject element, CorrespondenceInstance<Correspondence> correspondenceInstance) {

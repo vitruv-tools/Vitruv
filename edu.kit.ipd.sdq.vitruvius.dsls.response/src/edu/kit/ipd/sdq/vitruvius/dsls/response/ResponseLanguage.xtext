@@ -114,7 +114,7 @@ RetrieveModelElement:
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
 ExistingElementReference:
-	CodeBlock;	
+	CodeBlock;
 
 CreateElement:
 	"create element:" element=NamedModelElement;
