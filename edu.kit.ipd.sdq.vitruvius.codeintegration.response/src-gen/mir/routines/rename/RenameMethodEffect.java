@@ -12,46 +12,36 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 
 @SuppressWarnings("all")
 public class RenameMethodEffect extends AbstractEffectRealization {
-  public RenameMethodEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RenameMethodEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedEAttribute<String> change;
   
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedEAttribute<String> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
-  
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameMethodEffect with input:");
+    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    
+    OperationSignature operationSignature = getCorrespondingElement(
+    	getCorrepondenceSourceOperationSignature(change), // correspondence source supplier
+    	OperationSignature.class,
+    	(OperationSignature _element) -> true, // correspondence precondition checker
+    	null);
+    if (operationSignature == null) {
+    	return;
+    }
+    initializeRetrieveElementState(operationSignature);
+    
+    preprocessElementStates();
+    new mir.routines.rename.RenameMethodEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, operationSignature);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceOperationSignature(final UpdateSingleValuedEAttribute<String> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine RenameMethodEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
-    
-    OperationSignature operationSignature = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceOperationSignature(change), // correspondence source supplier
-    	(OperationSignature _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	OperationSignature.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.rename.RenameMethodEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, operationSignature);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -60,7 +50,7 @@ public class RenameMethodEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.rename.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final OperationSignature operationSignature) {

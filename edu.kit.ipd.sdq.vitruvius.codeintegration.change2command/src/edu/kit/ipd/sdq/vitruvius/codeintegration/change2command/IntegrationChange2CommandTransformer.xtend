@@ -68,7 +68,7 @@ class IntegrationChange2CommandTransformer {
 	
 	def createResponseCommands(EChange change, Blackboard blackboard) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
-		val commands = executor.generateCommandsForEvent(change, blackboard)
+		val commands = executor.generateCommandsForEvent(change, blackboard.correspondenceInstance)
 		if (commands != null && commands.size > 0) {
 			return commands
 		}

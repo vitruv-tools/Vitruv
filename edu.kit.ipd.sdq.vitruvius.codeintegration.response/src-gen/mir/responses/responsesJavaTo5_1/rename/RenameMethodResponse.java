@@ -45,8 +45,7 @@ class RenameMethodResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
-    mir.routines.rename.RenameMethodEffect effect = new mir.routines.rename.RenameMethodEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.rename.RenameMethodEffect effect = new mir.routines.rename.RenameMethodEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }
