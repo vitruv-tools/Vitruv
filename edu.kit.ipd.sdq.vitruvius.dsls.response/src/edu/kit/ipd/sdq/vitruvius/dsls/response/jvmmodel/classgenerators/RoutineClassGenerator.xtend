@@ -338,14 +338,18 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 					if («retrieveElement.element.name» == null) {
 						return;
 					}
-					initializeRetrieveElementState(«retrieveElement.element.name»);
 				«ENDIF»
+				initializeRetrieveElementState(«retrieveElement.element.name»);
 			«ELSEIF retrieveElement.abscence»
 				if («retrieveStatement» != null) {
 					return;
 				}
-			«ELSE»
-				«retrieveStatement»
+			«ELSEIF retrieveElement.required || retrieveElement.optional»
+				if («retrieveStatement» == null) {
+					return;
+				} else {
+					initializeRetrieveElementState(«retrieveStatement»);
+				}
 			«ENDIF»
 		'''	
 	}
