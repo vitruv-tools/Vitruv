@@ -12,49 +12,39 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class HelperResponseForDeleteSecondTestModelEffect extends AbstractEffectRealization {
-  public HelperResponseForDeleteSecondTestModelEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public HelperResponseForDeleteSecondTestModelEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DeleteRootEObject<Root> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private DeleteRootEObject<Root> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final DeleteRootEObject<Root> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final DeleteRootEObject<Root> change, final Root oldModel) {
     return oldModel;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine HelperResponseForDeleteSecondTestModelEffect with input:");
+    getLogger().debug("   DeleteRootEObject: " + this.change);
+    
+    Root oldModel = getCorrespondingElement(
+    	getCorrepondenceSourceOldModel(change), // correspondence source supplier
+    	Root.class,
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (oldModel == null) {
+    	return;
+    }
+    initializeRetrieveElementState(oldModel);
+    deleteObject(getElement0(change, oldModel));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceOldModel(final DeleteRootEObject<Root> change) {
     Root _oldValue = change.getOldValue();
     return _oldValue;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine HelperResponseForDeleteSecondTestModelEffect with input:");
-    getLogger().debug("   DeleteRootEObject: " + this.change);
-    
-    Root oldModel = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceOldModel(change), // correspondence source supplier
-    	(Root _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	Root.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    markObjectDelete(getElement0(change, oldModel));
-    
-    preProcessElements();
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -63,7 +53,7 @@ public class HelperResponseForDeleteSecondTestModelEffect extends AbstractEffect
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
   }
 }

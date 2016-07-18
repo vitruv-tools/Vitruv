@@ -14,18 +14,12 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class DeleteNonRootEObjectInListEffect extends AbstractEffectRealization {
-  public DeleteNonRootEObjectInListEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public DeleteNonRootEObjectInListEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DeleteNonRootEObjectInList<NonRoot> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private DeleteNonRootEObjectInList<NonRoot> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final DeleteNonRootEObjectInList<NonRoot> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final DeleteNonRootEObjectInList<NonRoot> change, final NonRoot targetElement) {
     return targetElement;
@@ -36,29 +30,25 @@ public class DeleteNonRootEObjectInListEffect extends AbstractEffectRealization 
     return _oldValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteNonRootEObjectInListEffect with input:");
     getLogger().debug("   DeleteNonRootEObjectInList: " + this.change);
     
-    NonRoot targetElement = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetElement(change), // correspondence source supplier
-    	(NonRoot _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    NonRoot targetElement = getCorrespondingElement(
+    	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
     	NonRoot.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(NonRoot _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
     	return;
     }
-    markObjectDelete(getElement0(change, targetElement));
+    initializeRetrieveElementState(targetElement);
+    deleteObject(getElement0(change, targetElement));
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.simpleChangesTests.DeleteNonRootEObjectInListEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -67,7 +57,7 @@ public class DeleteNonRootEObjectInListEffect extends AbstractEffectRealization 
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final DeleteNonRootEObjectInList<NonRoot> change, final NonRoot targetElement) {

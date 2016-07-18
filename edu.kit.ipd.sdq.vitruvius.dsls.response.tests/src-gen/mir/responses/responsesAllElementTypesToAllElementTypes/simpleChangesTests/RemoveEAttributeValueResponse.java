@@ -1,9 +1,11 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
+import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.RemoveEAttributeValue;
+import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class RemoveEAttributeValueResponse extends AbstractResponseRealization {
@@ -15,19 +17,35 @@ class RemoveEAttributeValueResponse extends AbstractResponseRealization {
     return RemoveEAttributeValue.class;
   }
   
+  private boolean checkChangeProperties(final RemoveEAttributeValue<Integer> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
+    	return false;
+    }
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    	return false;
+    }
+    return true;
+  }
+  
   public boolean checkPrecondition(final EChange change) {
     if (!(change instanceof RemoveEAttributeValue<?>)) {
     	return false;
     }
     RemoveEAttributeValue typedChange = (RemoveEAttributeValue)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
   public void executeResponse(final EChange change) {
     RemoveEAttributeValue<Integer> typedChange = (RemoveEAttributeValue<Integer>)change;
-    mir.routines.simpleChangesTests.RemoveEAttributeValueEffect effect = new mir.routines.simpleChangesTests.RemoveEAttributeValueEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.RemoveEAttributeValueEffect effect = new mir.routines.simpleChangesTests.RemoveEAttributeValueEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

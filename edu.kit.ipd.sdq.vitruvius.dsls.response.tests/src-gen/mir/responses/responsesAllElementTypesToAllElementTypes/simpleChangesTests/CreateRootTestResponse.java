@@ -52,8 +52,7 @@ class CreateRootTestResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     CreateRootEObject<Root> typedChange = (CreateRootEObject<Root>)change;
-    mir.routines.simpleChangesTests.CreateRootTestEffect effect = new mir.routines.simpleChangesTests.CreateRootTestEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.CreateRootTestEffect effect = new mir.routines.simpleChangesTests.CreateRootTestEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

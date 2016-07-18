@@ -52,8 +52,7 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
   
   public void executeResponse(final EChange change) {
     DeleteRootEObject<Root> typedChange = (DeleteRootEObject<Root>)change;
-    mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

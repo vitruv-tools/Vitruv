@@ -32,36 +32,36 @@ public class NonRootContainerMock implements NonRoot {
     containedObject.setId(arg0);
   }
   
-  public EObject eContainer() {
-    return containerObject;
-  }
-  
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
   public EClass eClass() {
     return containedObject.eClass();
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
+  public EObject eContainer() {
+    return containerObject;
   }
   
   public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
     return containedObject.eInvoke(arg0, arg1);
   }
   
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
   public Resource eResource() {
     return containerObject.eResource();
   }
   
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
-  }
-  
   public void eSet(final EStructuralFeature arg0, final Object arg1) {
     containedObject.eSet(arg0, arg1);
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
   }
   
   public Object eGet(final EStructuralFeature arg0) {
@@ -72,39 +72,39 @@ public class NonRootContainerMock implements NonRoot {
     return containedObject.eGet(arg0, arg1);
   }
   
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
-  }
-  
-  public EReference eContainmentFeature() {
-    return containedObject.eContainmentFeature();
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
   }
   
   public EList eContents() {
     return containedObject.eContents();
   }
   
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
   }
   
-  public boolean eDeliver() {
-    return containedObject.eDeliver();
+  public EReference eContainmentFeature() {
+    return containedObject.eContainmentFeature();
   }
   
-  public void eSetDeliver(final boolean arg0) {
-    containedObject.eSetDeliver(arg0);
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
+  }
+  
+  public EList eAdapters() {
+    return containedObject.eAdapters();
   }
   
   public void eNotify(final Notification arg0) {
     containedObject.eNotify(arg0);
   }
   
-  public EList eAdapters() {
-    return containedObject.eAdapters();
+  public void eSetDeliver(final boolean arg0) {
+    containedObject.eSetDeliver(arg0);
+  }
+  
+  public boolean eDeliver() {
+    return containedObject.eDeliver();
   }
 }

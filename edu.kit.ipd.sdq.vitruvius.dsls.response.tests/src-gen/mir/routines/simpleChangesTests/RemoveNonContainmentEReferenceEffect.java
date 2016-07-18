@@ -17,46 +17,36 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class RemoveNonContainmentEReferenceEffect extends AbstractEffectRealization {
-  public RemoveNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RemoveNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveNonContainmentEReference<NonRoot> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private RemoveNonContainmentEReference<NonRoot> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final RemoveNonContainmentEReference<NonRoot> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getCorrepondenceSourceTargetRoot(final RemoveNonContainmentEReference<NonRoot> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RemoveNonContainmentEReferenceEffect with input:");
     getLogger().debug("   RemoveNonContainmentEReference: " + this.change);
     
-    Root targetRoot = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetRoot(change), // correspondence source supplier
-    	(Root _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    Root targetRoot = getCorrespondingElement(
+    	getCorrepondenceSourceTargetRoot(change), // correspondence source supplier
     	Root.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetRoot == null) {
     	return;
     }
+    initializeRetrieveElementState(targetRoot);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetRoot);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -65,7 +55,7 @@ public class RemoveNonContainmentEReferenceEffect extends AbstractEffectRealizat
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final RemoveNonContainmentEReference<NonRoot> change, final Root targetRoot) {

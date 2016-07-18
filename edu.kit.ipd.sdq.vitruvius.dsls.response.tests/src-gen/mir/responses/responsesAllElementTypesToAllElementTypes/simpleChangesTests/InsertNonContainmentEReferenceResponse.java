@@ -1,10 +1,12 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
+import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference;
+import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization {
@@ -16,19 +18,35 @@ class InsertNonContainmentEReferenceResponse extends AbstractResponseRealization
     return InsertNonContainmentEReference.class;
   }
   
+  private boolean checkChangeProperties(final InsertNonContainmentEReference<NonRoot> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
+    	return false;
+    }
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
+    	return false;
+    }
+    return true;
+  }
+  
   public boolean checkPrecondition(final EChange change) {
     if (!(change instanceof InsertNonContainmentEReference<?>)) {
     	return false;
     }
     InsertNonContainmentEReference typedChange = (InsertNonContainmentEReference)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
   public void executeResponse(final EChange change) {
     InsertNonContainmentEReference<NonRoot> typedChange = (InsertNonContainmentEReference<NonRoot>)change;
-    mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

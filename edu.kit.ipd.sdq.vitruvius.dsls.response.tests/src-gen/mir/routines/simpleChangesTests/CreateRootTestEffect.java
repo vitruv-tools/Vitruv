@@ -13,18 +13,12 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreateRootTestEffect extends AbstractEffectRealization {
-  public CreateRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateRootEObject<Root> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateRootEObject<Root> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateRootEObject<Root> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final CreateRootEObject<Root> change, final Root newRoot) {
     return newRoot;
@@ -35,25 +29,18 @@ public class CreateRootTestEffect extends AbstractEffectRealization {
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateRootTestEffect with input:");
     getLogger().debug("   CreateRootEObject: " + this.change);
     
-    if (isAborted()) {
-    	return;
-    }
     Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
     initializeCreateElementState(newRoot);
     
     addCorrespondenceBetween(getElement0(change, newRoot), getElement1(change, newRoot), "");
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.simpleChangesTests.CreateRootTestEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, newRoot);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -62,7 +49,7 @@ public class CreateRootTestEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateRootEObject<Root> change, final Root newRoot) {

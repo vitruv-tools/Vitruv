@@ -1,9 +1,11 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
+import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.InsertEAttributeValue;
+import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class InsertEAttributeValueResponse extends AbstractResponseRealization {
@@ -15,19 +17,35 @@ class InsertEAttributeValueResponse extends AbstractResponseRealization {
     return InsertEAttributeValue.class;
   }
   
+  private boolean checkChangeProperties(final InsertEAttributeValue<Integer> change) {
+    EObject changedElement = change.getOldAffectedEObject();
+    // Check model element type
+    if (!(changedElement instanceof Root)) {
+    	return false;
+    }
+    
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    	return false;
+    }
+    return true;
+  }
+  
   public boolean checkPrecondition(final EChange change) {
     if (!(change instanceof InsertEAttributeValue<?>)) {
     	return false;
     }
     InsertEAttributeValue typedChange = (InsertEAttributeValue)change;
+    if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
   public void executeResponse(final EChange change) {
     InsertEAttributeValue<Integer> typedChange = (InsertEAttributeValue<Integer>)change;
-    mir.routines.simpleChangesTests.InsertEAttributeValueEffect effect = new mir.routines.simpleChangesTests.InsertEAttributeValueEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.InsertEAttributeValueEffect effect = new mir.routines.simpleChangesTests.InsertEAttributeValueEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

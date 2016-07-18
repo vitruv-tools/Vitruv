@@ -14,57 +14,50 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class UpdateSingleValuedNonContainmentEReferenceEffect extends AbstractEffectRealization {
-  public UpdateSingleValuedNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public UpdateSingleValuedNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<NonRoot> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private UpdateSingleValuedNonContainmentEReference<NonRoot> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final UpdateSingleValuedNonContainmentEReference<NonRoot> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getCorrepondenceSourceTargetElement(final UpdateSingleValuedNonContainmentEReference<NonRoot> change) {
     NonRoot _newValue = change.getNewValue();
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine UpdateSingleValuedNonContainmentEReferenceEffect with input:");
+    getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
+    
+    Root targetContainer = getCorrespondingElement(
+    	getCorrepondenceSourceTargetContainer(change), // correspondence source supplier
+    	Root.class,
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetContainer == null) {
+    	return;
+    }
+    initializeRetrieveElementState(targetContainer);
+    NonRoot targetElement = getCorrespondingElement(
+    	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
+    	NonRoot.class,
+    	(NonRoot _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
+    	return;
+    }
+    initializeRetrieveElementState(targetElement);
+    
+    preprocessElementStates();
+    new mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    	change, targetContainer, targetElement);
+    postprocessElementStates();
   }
   
   private EObject getCorrepondenceSourceTargetContainer(final UpdateSingleValuedNonContainmentEReference<NonRoot> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
-  }
-  
-  protected void executeEffect() throws IOException {
-    getLogger().debug("Called routine UpdateSingleValuedNonContainmentEReferenceEffect with input:");
-    getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
-    
-    Root targetContainer = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetContainer(change), // correspondence source supplier
-    	(Root _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	Root.class,
-    	false, true, false);
-    NonRoot targetElement = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetElement(change), // correspondence source supplier
-    	(NonRoot _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
-    	NonRoot.class,
-    	false, true, false);
-    if (isAborted()) {
-    	return;
-    }
-    
-    preProcessElements();
-    new mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, targetContainer, targetElement);
-    postProcessElements();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -73,7 +66,7 @@ public class UpdateSingleValuedNonContainmentEReferenceEffect extends AbstractEf
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<NonRoot> change, final Root targetContainer, final NonRoot targetElement) {

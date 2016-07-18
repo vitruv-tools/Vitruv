@@ -15,46 +15,36 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class RemoveEAttributeValueEffect extends AbstractEffectRealization {
-  public RemoveEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public RemoveEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveEAttributeValue<Integer> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private RemoveEAttributeValue<Integer> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final RemoveEAttributeValue<Integer> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getCorrepondenceSourceTargetElement(final RemoveEAttributeValue<Integer> change) {
     EObject _newAffectedEObject = change.getNewAffectedEObject();
     return _newAffectedEObject;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RemoveEAttributeValueEffect with input:");
     getLogger().debug("   RemoveEAttributeValue: " + this.change);
     
-    Root targetElement = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetElement(change), // correspondence source supplier
-    	(Root _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    Root targetElement = getCorrespondingElement(
+    	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
     	Root.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
     	return;
     }
+    initializeRetrieveElementState(targetElement);
     
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.simpleChangesTests.RemoveEAttributeValueEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -63,7 +53,7 @@ public class RemoveEAttributeValueEffect extends AbstractEffectRealization {
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final RemoveEAttributeValue<Integer> change, final Root targetElement) {

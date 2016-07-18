@@ -52,8 +52,7 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
   
   public void executeResponse(final EChange change) {
     CreateRootEObject<Root> typedChange = (CreateRootEObject<Root>)change;
-    mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }

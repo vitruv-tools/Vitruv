@@ -15,18 +15,12 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectRealization {
-  public CreateNonRootEObjectSingleResponseEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  public CreateNonRootEObjectSingleResponseEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectSingle<NonRoot> change) {
     super(responseExecutionState, calledBy);
+    				this.change = change;
   }
   
   private CreateNonRootEObjectSingle<NonRoot> change;
-  
-  private boolean isChangeSet;
-  
-  public void setChange(final CreateNonRootEObjectSingle<NonRoot> change) {
-    this.change = change;
-    this.isChangeSet = true;
-  }
   
   private EObject getElement0(final CreateNonRootEObjectSingle<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     return newNonRoot;
@@ -42,31 +36,27 @@ public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectReal
     return _newValue;
   }
   
-  public boolean allParametersSet() {
-    return isChangeSet;
-  }
-  
-  protected void executeEffect() throws IOException {
+  protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateNonRootEObjectSingleResponseEffect with input:");
     getLogger().debug("   CreateNonRootEObjectSingle: " + this.change);
     
-    Root targetElement = initializeRetrieveElementState(
-    	() -> getCorrepondenceSourceTargetElement(change), // correspondence source supplier
-    	(Root _element) -> true, // correspondence precondition checker
-    	() -> null, // tag supplier
+    Root targetElement = getCorrespondingElement(
+    	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
     	Root.class,
-    	false, true, false);
-    if (isAborted()) {
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
     	return;
     }
+    initializeRetrieveElementState(targetElement);
     NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
     initializeCreateElementState(newNonRoot);
     
     addCorrespondenceBetween(getElement0(change, targetElement, newNonRoot), getElement1(change, targetElement, newNonRoot), "");
-    preProcessElements();
+    preprocessElementStates();
     new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement, newNonRoot);
-    postProcessElements();
+    postprocessElementStates();
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -75,7 +65,7 @@ public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectReal
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new RoutinesFacade(responseExecutionState, calledBy);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
     private void executeUserOperations(final CreateNonRootEObjectSingle<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {

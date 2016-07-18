@@ -55,8 +55,7 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   
   public void executeResponse(final EChange change) {
     CreateNonRootEObjectSingle<NonRootObjectContainerHelper> typedChange = (CreateNonRootEObjectSingle<NonRootObjectContainerHelper>)change;
-    mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect(this.executionState, this);
-    effect.setChange(typedChange);
-    effect.applyEffect();
+    mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect(this.executionState, this, typedChange);
+    effect.applyRoutine();
   }
 }
