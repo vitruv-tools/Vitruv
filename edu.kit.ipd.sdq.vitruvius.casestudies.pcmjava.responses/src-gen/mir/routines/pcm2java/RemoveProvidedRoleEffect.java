@@ -41,11 +41,13 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     	ClassifierImport.class,
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(requiredInterfaceImport);
     NamespaceClassifierReference namespaceClassifierReference = getCorrespondingElement(
     	getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
     	NamespaceClassifierReference.class,
     	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(namespaceClassifierReference);
     deleteObject(getElement0(providedRole, requiredInterfaceImport, namespaceClassifierReference));
     deleteObject(getElement1(providedRole, requiredInterfaceImport, namespaceClassifierReference));
     

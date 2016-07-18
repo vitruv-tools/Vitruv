@@ -36,32 +36,32 @@ public class OperationInterfaceContainerMock implements OperationInterface {
   
   private EObject containerObject;
   
-  public boolean SignaturesHaveToBeUniqueForAnInterface(final DiagnosticChain arg0, final Map arg1) {
-    return containedObject.SignaturesHaveToBeUniqueForAnInterface(arg0, arg1);
-  }
-  
   public EList getSignatures__OperationInterface() {
     return containedObject.getSignatures__OperationInterface();
   }
   
-  public void setRepository__Interface(final Repository arg0) {
-    containedObject.setRepository__Interface(arg0);
-  }
-  
-  public EList getProtocols__Interface() {
-    return containedObject.getProtocols__Interface();
-  }
-  
-  public Repository getRepository__Interface() {
-    return containedObject.getRepository__Interface();
+  public boolean SignaturesHaveToBeUniqueForAnInterface(final DiagnosticChain arg0, final Map arg1) {
+    return containedObject.SignaturesHaveToBeUniqueForAnInterface(arg0, arg1);
   }
   
   public EList getParentInterfaces__Interface() {
     return containedObject.getParentInterfaces__Interface();
   }
   
+  public Repository getRepository__Interface() {
+    return containedObject.getRepository__Interface();
+  }
+  
   public EList getRequiredCharacterisations() {
     return containedObject.getRequiredCharacterisations();
+  }
+  
+  public EList getProtocols__Interface() {
+    return containedObject.getProtocols__Interface();
+  }
+  
+  public void setRepository__Interface(final Repository arg0) {
+    containedObject.setRepository__Interface(arg0);
   }
   
   public boolean NoProtocolTypeIDUsedTwice(final DiagnosticChain arg0, final Map arg1) {
@@ -80,6 +80,10 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.cdoDirectResource();
   }
   
+  public CDOID cdoID() {
+    return containedObject.cdoID();
+  }
+  
   public CDOLockState cdoLockState() {
     return containedObject.cdoLockState();
   }
@@ -96,32 +100,20 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.cdoView();
   }
   
-  public CDOID cdoID() {
-    return containedObject.cdoID();
-  }
-  
   public CDOState cdoState() {
     return containedObject.cdoState();
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
   }
   
   public CDOLock cdoReadLock() {
     return containedObject.cdoReadLock();
   }
   
-  public void cdoReload() {
-    containedObject.cdoReload();
-  }
-  
   public CDOResource cdoResource() {
     return containedObject.cdoResource();
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
   }
   
   public void cdoPrefetch(final int arg0) {
@@ -132,64 +124,36 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.cdoInvalid();
   }
   
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
   }
   
   public CDOObjectHistory cdoHistory() {
     return containedObject.cdoHistory();
   }
   
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
+  public void cdoReload() {
+    containedObject.cdoReload();
   }
   
-  public EReference eContainmentFeature() {
-    return containedObject.eContainmentFeature();
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
+  }
+  
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
   }
   
   public EStructuralFeature eContainingFeature() {
     return containedObject.eContainingFeature();
   }
   
-  public EObject eContainer() {
-    return containerObject;
+  public EReference eContainmentFeature() {
+    return containedObject.eContainmentFeature();
   }
   
-  public EClass eClass() {
-    return containedObject.eClass();
-  }
-  
-  public Object eGet(final EStructuralFeature arg0) {
-    return containedObject.eGet(arg0);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
-  }
-  
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public void eSet(final EStructuralFeature arg0, final Object arg1) {
-    containedObject.eSet(arg0, arg1);
-  }
-  
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
   }
   
   public EList eContents() {
@@ -200,24 +164,60 @@ public class OperationInterfaceContainerMock implements OperationInterface {
     return containedObject.eCrossReferences();
   }
   
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public EObject eContainer() {
+    return containerObject;
+  }
+  
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
+  }
+  
+  public Object eGet(final EStructuralFeature arg0) {
+    return containedObject.eGet(arg0);
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
+  }
+  
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public void eSet(final EStructuralFeature arg0, final Object arg1) {
+    containedObject.eSet(arg0, arg1);
+  }
+  
+  public EClass eClass() {
+    return containedObject.eClass();
   }
   
   public EList eAdapters() {
     return containedObject.eAdapters();
   }
   
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public boolean eDeliver() {
+    return containedObject.eDeliver();
   }
   
   public void eSetDeliver(final boolean arg0) {
     containedObject.eSetDeliver(arg0);
   }
   
-  public boolean eDeliver() {
-    return containedObject.eDeliver();
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
   }
   
   public String getEntityName() {

@@ -67,16 +67,19 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     	ClassifierImport.class,
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(requiredInterfaceImport);
     Field requiredInterfaceField = getCorrespondingElement(
     	getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
     	Field.class,
     	(Field _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(requiredInterfaceField);
     org.emftext.language.java.classifiers.Class javaClass = getCorrespondingElement(
     	getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(javaClass);
     deleteObject(getElement0(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     deleteObject(getElement1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     

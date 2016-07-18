@@ -33,6 +33,7 @@ public class ChangeParameterTypeEffect extends AbstractEffectRealization {
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(javaParameterTypeClass);
     
     preprocessElementStates();
     new mir.routines.pcm2java.ChangeParameterTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(

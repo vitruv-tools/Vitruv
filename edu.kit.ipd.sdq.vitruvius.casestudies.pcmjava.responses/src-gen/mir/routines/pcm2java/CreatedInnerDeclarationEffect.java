@@ -32,6 +32,7 @@ public class CreatedInnerDeclarationEffect extends AbstractEffectRealization {
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(nonPrimitiveInnerDataTypeClass);
     
     preprocessElementStates();
     new mir.routines.pcm2java.CreatedInnerDeclarationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(

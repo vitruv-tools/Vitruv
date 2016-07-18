@@ -47,6 +47,7 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
+    initializeRetrieveElementState(innerTypeClass);
     org.emftext.language.java.containers.Package datatypesPackage = getCorrespondingElement(
     	getCorrepondenceSourceDatatypesPackage(change), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
