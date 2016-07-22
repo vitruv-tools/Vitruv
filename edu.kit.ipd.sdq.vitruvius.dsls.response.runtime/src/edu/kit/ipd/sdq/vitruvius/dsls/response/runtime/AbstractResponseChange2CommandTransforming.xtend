@@ -9,7 +9,6 @@ import org.eclipse.emf.common.command.Command
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 
@@ -41,41 +40,44 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		val commands = new ArrayList<Command>();
 
 		for (Change change : changes) {
-			commands.addAll(this.handleChange(change, blackboard));
+			commands.addAll(this.processChange(change, blackboard));
 		}
 
 		blackboard.pushCommands(commands);
 	}
 
-	private def List<Command> handleChange(Change change, Blackboard blackboard) {
+	private def List<Command> processChange(Change change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (preprocessor : preprocessors) {
 			if (preprocessor.doesProcess(change)) {
 				result.addAll(preprocessor.processChange(change, userInteracting, blackboard));	
 			}
 		}
-		if (change instanceof CompositeChange) {
-			for (Change c : (change as CompositeChange).getChanges()) {
-				result.addAll(this.handleChange(c, blackboard));
-			}
-		} else if (change instanceof EMFModelChange) {
-			result.addAll(this.handleEChange((change as EMFModelChange).getEChange(), blackboard));
-		} else {
-			throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
-		}
-
+		result.addAll(change.handleChange(blackboard));
 		return result;
 	}
 	
-	private def List<Command> handleEChange(EChange change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(Change change, Blackboard blackboard) {
+		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
+	}
+	
+	private def dispatch List<Command> handleChange(CompositeChange change, Blackboard blackboard) {
+		val result = new ArrayList<Command>();
+		for (Change c : change.getChanges()) {
+			result.addAll(this.processChange(c, blackboard));
+		}
+		return result
+	}
+	
+	private def dispatch List<Command> handleChange(EMFModelChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (executor : responseExecutors) {
 			LOGGER.debug('''Calling executor «executor» for change event «change»''');
-			result += executor.generateCommandsForEvent(change, blackboard.correspondenceInstance);
+			result += executor.generateCommandsForEvent(change.getEChange(), blackboard.correspondenceInstance);
 		}
-		return result;
+		return result
 	}
-
+	
 	override setUserInteracting(UserInteracting userInteracting) {
 		this.userInteracting = userInteracting;
 		this.cleanAndSetup();
