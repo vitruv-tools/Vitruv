@@ -26,8 +26,8 @@ class ResponseLanguageParameterGenerator {
 	package static val USER_INTERACTING_PARAMETER_NAME = "userInteracting";
 	package static val RESPONSE_EXECUTION_STATE_PARAMETER_NAME = "responseExecutionState";
 	
-	protected extension static JvmTypeReferenceBuilder _typeReferenceBuilder;
-	protected extension edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations _typesBuilder;	
+	protected final extension static JvmTypeReferenceBuilder _typeReferenceBuilder;
+	protected final extension edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations _typesBuilder;	
 	
 	new (JvmTypeReferenceBuilder typeReferenceBuilder, edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations typesBuilder) {
 		_typeReferenceBuilder = typeReferenceBuilder;
