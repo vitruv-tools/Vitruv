@@ -19,9 +19,9 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		}
 		startRecording
 		var EChange removeChange
+		val featureName = if (isContainment) MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME else MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME
 		// test
-		if (isExplicitUnset) {
-			val featureName = if (isContainment) MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME else MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME 
+		if (isExplicitUnset) { 
 			val feature = this.rootElement.getFeautreByName(featureName)
 			this.rootElement.eUnset(feature)
 			val unsetChange = claimChange(0).assertExplicitUnset()
@@ -36,7 +36,7 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		}
 		// assert 
 		val isDelete = isContainment
-		removeChange.assertRemoveEReference(this.rootElement, MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME, nonRoot, 0,
+		removeChange.assertRemoveEReference(this.rootElement, featureName, nonRoot, 0,
 			isContainment, isDelete)
 	}
 	
