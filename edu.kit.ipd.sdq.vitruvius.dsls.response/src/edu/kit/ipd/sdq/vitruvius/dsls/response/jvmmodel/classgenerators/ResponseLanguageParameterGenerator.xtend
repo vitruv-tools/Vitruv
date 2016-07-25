@@ -18,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
+import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -26,8 +27,8 @@ class ResponseLanguageParameterGenerator {
 	package static val USER_INTERACTING_PARAMETER_NAME = "userInteracting";
 	package static val RESPONSE_EXECUTION_STATE_PARAMETER_NAME = "responseExecutionState";
 	
-	protected final extension static JvmTypeReferenceBuilder _typeReferenceBuilder;
-	protected final extension edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations _typesBuilder;	
+	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
+	protected final extension JvmTypesBuilderWithoutAssociations _typesBuilder;	
 	
 	new (JvmTypeReferenceBuilder typeReferenceBuilder, edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations typesBuilder) {
 		_typeReferenceBuilder = typeReferenceBuilder;
