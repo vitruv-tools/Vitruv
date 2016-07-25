@@ -31,10 +31,10 @@ public class ResourceLoadingHelper {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static List<Resource> loadJaMoPPResourceSet(final String path) throws IOException {
+    public static List<Resource> loadJaMoPPResourceSet(final File path) throws IOException {
         final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
         final boolean extractLayoutInformation = true;
-        jamoppreader.extractSoftwareModel(Collections.singletonList(path), new NullProgressMonitor(), null,
+        jamoppreader.extractSoftwareModelFromFolders(Collections.singletonList(path), new NullProgressMonitor(), null,
                 extractLayoutInformation);
         return jamoppreader.getSourceResources();
     }
@@ -48,10 +48,10 @@ public class ResourceLoadingHelper {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public static List<Resource> loadJaMoPPResourceSet(final List<String> paths) throws IOException {
-        final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
+    public static List<Resource> loadJaMoPPResourceSet(final List<File> paths) throws IOException {
+    	final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
         final boolean extractLayoutInformation = true;
-        jamoppreader.extractSoftwareModel(paths, new NullProgressMonitor(), null,
+        jamoppreader.extractSoftwareModelFromFolders(paths, new NullProgressMonitor(), null,
                 extractLayoutInformation);
         return jamoppreader.getSourceResources();
     }

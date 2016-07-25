@@ -102,7 +102,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		scdm = ResourceLoadingHelper.loadSCDMResource(scdmPath)
 		pcm = ResourceLoadingHelper.loadPCMRepositoryResource(pcmPath)
 		pcmRepo = pcm.contents.get(0) as Repository
-		jaMoppResources = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPaths.map[path | path.toString])
+		jaMoppResources = ResourceLoadingHelper.loadJaMoPPResourceSet(jamoppPaths.map[path | path.toFile])
 
 		// Get all jaMopp packages from resourceSet  
 		jaMoppResources.forEach[packages.addAll((contents.filter(typeof(Package))))]
