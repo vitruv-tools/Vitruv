@@ -2,17 +2,19 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.SubtractiveAttributeEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateAttributeEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromListEChangeImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -38,7 +40,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> extends RemoveFromEListImpl implements RemoveEAttributeValue<A, T> {
+public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> extends RemoveFromListEChangeImpl implements RemoveEAttributeValue<A, T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -274,14 +276,12 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
@@ -291,9 +291,21 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveEAttributeChange.class) {
+        if (baseClass == FeatureEChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE: return ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE;
+                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
+                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == SubtractiveAttributeEChange.class) {
+            switch (derivedFeatureID) {
+                case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE;
                 default: return -1;
             }
         }
@@ -307,14 +319,12 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (baseFeatureID) {
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
@@ -324,9 +334,21 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveEAttributeChange.class) {
+        if (baseClass == FeatureEChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE__OLD_VALUE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == SubtractiveAttributeEChange.class) {
+            switch (baseFeatureID) {
+                case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
                 default: return -1;
             }
         }

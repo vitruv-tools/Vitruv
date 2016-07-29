@@ -1,0 +1,21 @@
+/**
+ */
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Update Attribute EChange</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ *
+ * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage#getUpdateAttributeEChange()
+ * @model abstract="true"
+ * @generated
+ */
+public interface UpdateAttributeEChange<A extends EObject> extends FeatureEChange<A, EAttribute> {
+} // UpdateAttributeEChange

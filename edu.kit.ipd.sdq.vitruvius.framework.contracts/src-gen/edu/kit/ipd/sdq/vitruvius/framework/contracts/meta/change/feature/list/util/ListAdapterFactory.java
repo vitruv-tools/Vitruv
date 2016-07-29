@@ -2,10 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.*;
 
@@ -73,36 +70,24 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
     protected ListSwitch<Adapter> modelSwitch =
         new ListSwitch<Adapter>() {
             @Override
-            public Adapter caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
-                return createUpdateSingleEListEntryAdapter();
+            public Adapter caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+                return createUpdateSingleListEntryEChangeAdapter();
             }
             @Override
-            public Adapter caseInsertInEList(InsertInEList object) {
-                return createInsertInEListAdapter();
+            public Adapter caseInsertInListEChange(InsertInListEChange object) {
+                return createInsertInListEChangeAdapter();
             }
             @Override
-            public Adapter caseRemoveFromEList(RemoveFromEList object) {
-                return createRemoveFromEListAdapter();
+            public Adapter caseRemoveFromListEChange(RemoveFromListEChange object) {
+                return createRemoveFromListEChangeAdapter();
             }
             @Override
-            public Adapter casePermuteEList(PermuteEList object) {
-                return createPermuteEListAdapter();
+            public Adapter casePermuteListEChange(PermuteListEChange object) {
+                return createPermuteListEChangeAdapter();
             }
             @Override
-            public Adapter caseEChange(EChange object) {
-                return createEChangeAdapter();
-            }
-            @Override
-            public Adapter caseEAtomicChange(EAtomicChange object) {
-                return createEAtomicChangeAdapter();
-            }
-            @Override
-            public Adapter caseUpdateEFeature(UpdateEFeature object) {
-                return createUpdateEFeatureAdapter();
-            }
-            @Override
-            public Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
-                return createUpdateMultiValuedEFeatureAdapter();
+            public Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+                return createUpdateMultiValuedFeatureEChangeAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -125,114 +110,72 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry <em>Update Single EList Entry</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange <em>Update Single List Entry EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange
      * @generated
      */
-    public Adapter createUpdateSingleEListEntryAdapter() {
+    public Adapter createUpdateSingleListEntryEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList <em>Insert In EList</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange <em>Insert In List EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange
      * @generated
      */
-    public Adapter createInsertInEListAdapter() {
+    public Adapter createInsertInListEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList <em>Remove From EList</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange <em>Remove From List EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange
      * @generated
      */
-    public Adapter createRemoveFromEListAdapter() {
+    public Adapter createRemoveFromListEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList <em>Permute EList</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange <em>Permute List EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange
      * @generated
      */
-    public Adapter createPermuteEListAdapter() {
+    public Adapter createPermuteListEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange <em>EChange</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange
      * @generated
      */
-    public Adapter createEChangeAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange <em>EAtomic Change</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange
-     * @generated
-     */
-    public Adapter createEAtomicChangeAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature <em>Update EFeature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature
-     * @generated
-     */
-    public Adapter createUpdateEFeatureAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature <em>Update Multi Valued EFeature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature
-     * @generated
-     */
-    public Adapter createUpdateMultiValuedEFeatureAdapter() {
+    public Adapter createUpdateMultiValuedFeatureEChangeAdapter() {
         return null;
     }
 

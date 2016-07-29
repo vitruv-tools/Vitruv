@@ -20,15 +20,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Li
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -53,7 +56,21 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass updateEReferenceEClass = null;
+    private EClass updateReferenceEChangeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass additiveReferenceEChangeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass subtractiveReferenceEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -169,8 +186,8 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUpdateEReference() {
-        return updateEReferenceEClass;
+    public EClass getUpdateReferenceEChange() {
+        return updateReferenceEChangeEClass;
     }
 
     /**
@@ -178,8 +195,26 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EOperation getUpdateEReference__IsContainment() {
-        return updateEReferenceEClass.getEOperations().get(0);
+    public EOperation getUpdateReferenceEChange__IsContainment() {
+        return updateReferenceEChangeEClass.getEOperations().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAdditiveReferenceEChange() {
+        return additiveReferenceEChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getSubtractiveReferenceEChange() {
+        return subtractiveReferenceEChangeEClass;
     }
 
     /**
@@ -246,8 +281,12 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         isCreated = true;
 
         // Create classes and their features
-        updateEReferenceEClass = createEClass(UPDATE_EREFERENCE);
-        createEOperation(updateEReferenceEClass, UPDATE_EREFERENCE___IS_CONTAINMENT);
+        updateReferenceEChangeEClass = createEClass(UPDATE_REFERENCE_ECHANGE);
+        createEOperation(updateReferenceEChangeEClass, UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT);
+
+        additiveReferenceEChangeEClass = createEClass(ADDITIVE_REFERENCE_ECHANGE);
+
+        subtractiveReferenceEChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_ECHANGE);
 
         replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
 
@@ -287,7 +326,11 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 
         // Create type parameters
-        ETypeParameter updateEReferenceEClass_A = addETypeParameter(updateEReferenceEClass, "A");
+        ETypeParameter updateReferenceEChangeEClass_A = addETypeParameter(updateReferenceEChangeEClass, "A");
+        ETypeParameter additiveReferenceEChangeEClass_A = addETypeParameter(additiveReferenceEChangeEClass, "A");
+        ETypeParameter additiveReferenceEChangeEClass_T = addETypeParameter(additiveReferenceEChangeEClass, "T");
+        ETypeParameter subtractiveReferenceEChangeEClass_A = addETypeParameter(subtractiveReferenceEChangeEClass, "A");
+        ETypeParameter subtractiveReferenceEChangeEClass_T = addETypeParameter(subtractiveReferenceEChangeEClass, "T");
         ETypeParameter replaceSingleValuedEReferenceEClass_A = addETypeParameter(replaceSingleValuedEReferenceEClass, "A");
         ETypeParameter replaceSingleValuedEReferenceEClass_T = addETypeParameter(replaceSingleValuedEReferenceEClass, "T");
         ETypeParameter insertEReferenceEClass_A = addETypeParameter(insertEReferenceEClass, "A");
@@ -298,7 +341,15 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
-        updateEReferenceEClass_A.getEBounds().add(g1);
+        updateReferenceEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        additiveReferenceEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        additiveReferenceEChangeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        subtractiveReferenceEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        subtractiveReferenceEChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         replaceSingleValuedEReferenceEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
@@ -315,57 +366,73 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
         permuteEReferencesEClass_A.getEBounds().add(g1);
 
         // Add supertypes to classes
-        g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
-        EGenericType g2 = createEGenericType(updateEReferenceEClass_A);
+        g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
+        EGenericType g2 = createEGenericType(updateReferenceEChangeEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(ecorePackage.getEReference());
         g1.getETypeArguments().add(g2);
-        updateEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedEFeature());
+        updateReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theChangePackage.getEObjectAddedEChange());
+        g2 = createEGenericType(additiveReferenceEChangeEClass_T);
+        g1.getETypeArguments().add(g2);
+        additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateReferenceEChange());
+        g2 = createEGenericType(additiveReferenceEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        additiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theChangePackage.getEObjectSubtractedEChange());
+        g2 = createEGenericType(subtractiveReferenceEChangeEClass_T);
+        g1.getETypeArguments().add(g2);
+        subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateReferenceEChange());
+        g2 = createEGenericType(subtractiveReferenceEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        subtractiveReferenceEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedFeatureEChange());
         replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEReference());
+        g1 = createEGenericType(this.getSubtractiveReferenceEChange());
         g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
         g1.getETypeArguments().add(g2);
-        replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
         g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
+        g1 = createEGenericType(this.getAdditiveReferenceEChange());
+        g2 = createEGenericType(replaceSingleValuedEReferenceEClass_A);
+        g1.getETypeArguments().add(g2);
         g2 = createEGenericType(replaceSingleValuedEReferenceEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getInsertInEList());
+        g1 = createEGenericType(theListPackage.getInsertInListEChange());
         insertEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEReference());
+        g1 = createEGenericType(this.getAdditiveReferenceEChange());
         g2 = createEGenericType(insertEReferenceEClass_A);
         g1.getETypeArguments().add(g2);
-        insertEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
         g2 = createEGenericType(insertEReferenceEClass_T);
         g1.getETypeArguments().add(g2);
         insertEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getRemoveFromEList());
+        g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
         removeEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEReference());
+        g1 = createEGenericType(this.getSubtractiveReferenceEChange());
         g2 = createEGenericType(removeEReferenceEClass_A);
         g1.getETypeArguments().add(g2);
-        removeEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
         g2 = createEGenericType(removeEReferenceEClass_T);
         g1.getETypeArguments().add(g2);
         removeEReferenceEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getPermuteEList());
+        g1 = createEGenericType(theListPackage.getPermuteListEChange());
         permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEReference());
+        g1 = createEGenericType(this.getUpdateReferenceEChange());
         g2 = createEGenericType(permuteEReferencesEClass_A);
         g1.getETypeArguments().add(g2);
         permuteEReferencesEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(updateEReferenceEClass, UpdateEReference.class, "UpdateEReference", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateReferenceEChangeEClass, UpdateReferenceEChange.class, "UpdateReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEOperation(getUpdateEReference__IsContainment(), ecorePackage.getEBoolean(), "isContainment", 1, 1, IS_UNIQUE, IS_ORDERED);
+        initEOperation(getUpdateReferenceEChange__IsContainment(), ecorePackage.getEBoolean(), "isContainment", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        initEClass(additiveReferenceEChangeEClass, AdditiveReferenceEChange.class, "AdditiveReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(subtractiveReferenceEChangeEClass, SubtractiveReferenceEChange.class, "SubtractiveReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

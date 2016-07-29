@@ -16,18 +16,19 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribu
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.FeaturePackageImpl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -35,6 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootP
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -49,28 +51,28 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass updateSingleEListEntryEClass = null;
+    private EClass updateSingleListEntryEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass insertInEListEClass = null;
+    private EClass insertInListEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass removeFromEListEClass = null;
+    private EClass removeFromListEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass permuteEListEClass = null;
+    private EClass permuteListEChangeEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -158,8 +160,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUpdateSingleEListEntry() {
-        return updateSingleEListEntryEClass;
+    public EClass getUpdateSingleListEntryEChange() {
+        return updateSingleListEntryEChangeEClass;
     }
 
     /**
@@ -167,8 +169,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getUpdateSingleEListEntry_Index() {
-        return (EAttribute)updateSingleEListEntryEClass.getEStructuralFeatures().get(0);
+    public EAttribute getUpdateSingleListEntryEChange_Index() {
+        return (EAttribute)updateSingleListEntryEChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -176,8 +178,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getInsertInEList() {
-        return insertInEListEClass;
+    public EClass getInsertInListEChange() {
+        return insertInListEChangeEClass;
     }
 
     /**
@@ -185,8 +187,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getRemoveFromEList() {
-        return removeFromEListEClass;
+    public EClass getRemoveFromListEChange() {
+        return removeFromListEChangeEClass;
     }
 
     /**
@@ -194,8 +196,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getRemoveFromEList_RemovedObjectURIFragment() {
-        return (EAttribute)removeFromEListEClass.getEStructuralFeatures().get(0);
+    public EClass getPermuteListEChange() {
+        return permuteListEChangeEClass;
     }
 
     /**
@@ -203,17 +205,8 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getPermuteEList() {
-        return permuteEListEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EAttribute getPermuteEList_NewIndicesForElementsAtOldIndices() {
-        return (EAttribute)permuteEListEClass.getEStructuralFeatures().get(0);
+    public EAttribute getPermuteListEChange_NewIndicesForElementsAtOldIndices() {
+        return (EAttribute)permuteListEChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -244,16 +237,15 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         isCreated = true;
 
         // Create classes and their features
-        updateSingleEListEntryEClass = createEClass(UPDATE_SINGLE_ELIST_ENTRY);
-        createEAttribute(updateSingleEListEntryEClass, UPDATE_SINGLE_ELIST_ENTRY__INDEX);
+        updateSingleListEntryEChangeEClass = createEClass(UPDATE_SINGLE_LIST_ENTRY_ECHANGE);
+        createEAttribute(updateSingleListEntryEChangeEClass, UPDATE_SINGLE_LIST_ENTRY_ECHANGE__INDEX);
 
-        insertInEListEClass = createEClass(INSERT_IN_ELIST);
+        insertInListEChangeEClass = createEClass(INSERT_IN_LIST_ECHANGE);
 
-        removeFromEListEClass = createEClass(REMOVE_FROM_ELIST);
-        createEAttribute(removeFromEListEClass, REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT);
+        removeFromListEChangeEClass = createEClass(REMOVE_FROM_LIST_ECHANGE);
 
-        permuteEListEClass = createEClass(PERMUTE_ELIST);
-        createEAttribute(permuteEListEClass, PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES);
+        permuteListEChangeEClass = createEClass(PERMUTE_LIST_ECHANGE);
+        createEAttribute(permuteListEChangeEClass, PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES);
     }
 
     /**
@@ -287,22 +279,21 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         // Set bounds for type parameters
 
         // Add supertypes to classes
-        updateSingleEListEntryEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedEFeature());
-        insertInEListEClass.getESuperTypes().add(this.getUpdateSingleEListEntry());
-        removeFromEListEClass.getESuperTypes().add(this.getUpdateSingleEListEntry());
-        permuteEListEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedEFeature());
+        updateSingleListEntryEChangeEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
+        insertInListEChangeEClass.getESuperTypes().add(this.getUpdateSingleListEntryEChange());
+        removeFromListEChangeEClass.getESuperTypes().add(this.getUpdateSingleListEntryEChange());
+        permuteListEChangeEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(updateSingleEListEntryEClass, UpdateSingleEListEntry.class, "UpdateSingleEListEntry", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getUpdateSingleEListEntry_Index(), ecorePackage.getEInt(), "index", "0", 1, 1, UpdateSingleEListEntry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(updateSingleListEntryEChangeEClass, UpdateSingleListEntryEChange.class, "UpdateSingleListEntryEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getUpdateSingleListEntryEChange_Index(), ecorePackage.getEInt(), "index", "0", 1, 1, UpdateSingleListEntryEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(insertInEListEClass, InsertInEList.class, "InsertInEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(insertInListEChangeEClass, InsertInListEChange.class, "InsertInListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(removeFromEListEClass, RemoveFromEList.class, "RemoveFromEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getRemoveFromEList_RemovedObjectURIFragment(), ecorePackage.getEString(), "removedObjectURIFragment", "0", 1, 1, RemoveFromEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(removeFromListEChangeEClass, RemoveFromListEChange.class, "RemoveFromListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(permuteEListEClass, PermuteEList.class, "PermuteEList", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getPermuteEList_NewIndicesForElementsAtOldIndices(), ecorePackage.getEInt(), "newIndicesForElementsAtOldIndices", null, 1, -1, PermuteEList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(permuteListEChangeEClass, PermuteListEChange.class, "PermuteListEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getPermuteListEChange_NewIndicesForElementsAtOldIndices(), ecorePackage.getEInt(), "newIndicesForElementsAtOldIndices", null, 1, -1, PermuteListEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     }
 
 } //ListPackageImpl

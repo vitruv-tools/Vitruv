@@ -2,14 +2,17 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateAttributeEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteListEChangeImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -34,7 +37,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEListImpl implements PermuteEAttributeValues<A> {
+public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteListEChangeImpl implements PermuteEAttributeValues<A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -229,14 +232,24 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-                case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == FeatureEChange.class) {
+            switch (derivedFeatureID) {
+                case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
+                case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
@@ -251,14 +264,24 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteEList
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (baseFeatureID) {
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE;
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == FeatureEChange.class) {
+            switch (baseFeatureID) {
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE;
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }

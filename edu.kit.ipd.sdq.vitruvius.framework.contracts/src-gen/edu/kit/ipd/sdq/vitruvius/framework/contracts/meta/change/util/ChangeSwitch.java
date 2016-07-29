@@ -72,17 +72,17 @@ public class ChangeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ChangePackage.EATOMIC_CHANGE: {
-                EAtomicChange eAtomicChange = (EAtomicChange)theEObject;
-                T1 result = caseEAtomicChange(eAtomicChange);
-                if (result == null) result = caseEChange(eAtomicChange);
+            case ChangePackage.ATOMIC_ECHANGE: {
+                AtomicEChange atomicEChange = (AtomicEChange)theEObject;
+                T1 result = caseAtomicEChange(atomicEChange);
+                if (result == null) result = caseEChange(atomicEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ChangePackage.ADDITIVE_ECHANGE: {
                 AdditiveEChange<?> additiveEChange = (AdditiveEChange<?>)theEObject;
                 T1 result = caseAdditiveEChange(additiveEChange);
-                if (result == null) result = caseEAtomicChange(additiveEChange);
+                if (result == null) result = caseAtomicEChange(additiveEChange);
                 if (result == null) result = caseEChange(additiveEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -90,44 +90,26 @@ public class ChangeSwitch<T1> extends Switch<T1> {
             case ChangePackage.SUBTRACTIVE_ECHANGE: {
                 SubtractiveEChange<?> subtractiveEChange = (SubtractiveEChange<?>)theEObject;
                 T1 result = caseSubtractiveEChange(subtractiveEChange);
-                if (result == null) result = caseEAtomicChange(subtractiveEChange);
+                if (result == null) result = caseAtomicEChange(subtractiveEChange);
                 if (result == null) result = caseEChange(subtractiveEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE: {
-                AdditiveEAttributeChange<?> additiveEAttributeChange = (AdditiveEAttributeChange<?>)theEObject;
-                T1 result = caseAdditiveEAttributeChange(additiveEAttributeChange);
-                if (result == null) result = caseAdditiveEChange(additiveEAttributeChange);
-                if (result == null) result = caseEAtomicChange(additiveEAttributeChange);
-                if (result == null) result = caseEChange(additiveEAttributeChange);
+            case ChangePackage.EOBJECT_ADDED_ECHANGE: {
+                EObjectAddedEChange<?> eObjectAddedEChange = (EObjectAddedEChange<?>)theEObject;
+                T1 result = caseEObjectAddedEChange(eObjectAddedEChange);
+                if (result == null) result = caseAdditiveEChange(eObjectAddedEChange);
+                if (result == null) result = caseAtomicEChange(eObjectAddedEChange);
+                if (result == null) result = caseEChange(eObjectAddedEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case ChangePackage.SUBTRACTIVE_EATTRIBUTE_CHANGE: {
-                SubtractiveEAttributeChange<?> subtractiveEAttributeChange = (SubtractiveEAttributeChange<?>)theEObject;
-                T1 result = caseSubtractiveEAttributeChange(subtractiveEAttributeChange);
-                if (result == null) result = caseSubtractiveEChange(subtractiveEAttributeChange);
-                if (result == null) result = caseEAtomicChange(subtractiveEAttributeChange);
-                if (result == null) result = caseEChange(subtractiveEAttributeChange);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case ChangePackage.ADDITIVE_EREFERENCE_CHANGE: {
-                AdditiveEReferenceChange<?> additiveEReferenceChange = (AdditiveEReferenceChange<?>)theEObject;
-                T1 result = caseAdditiveEReferenceChange(additiveEReferenceChange);
-                if (result == null) result = caseAdditiveEChange(additiveEReferenceChange);
-                if (result == null) result = caseEAtomicChange(additiveEReferenceChange);
-                if (result == null) result = caseEChange(additiveEReferenceChange);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE: {
-                SubtractiveEReferenceChange<?> subtractiveEReferenceChange = (SubtractiveEReferenceChange<?>)theEObject;
-                T1 result = caseSubtractiveEReferenceChange(subtractiveEReferenceChange);
-                if (result == null) result = caseSubtractiveEChange(subtractiveEReferenceChange);
-                if (result == null) result = caseEAtomicChange(subtractiveEReferenceChange);
-                if (result == null) result = caseEChange(subtractiveEReferenceChange);
+            case ChangePackage.EOBJECT_SUBTRACTED_ECHANGE: {
+                EObjectSubtractedEChange<?> eObjectSubtractedEChange = (EObjectSubtractedEChange<?>)theEObject;
+                T1 result = caseEObjectSubtractedEChange(eObjectSubtractedEChange);
+                if (result == null) result = caseSubtractiveEChange(eObjectSubtractedEChange);
+                if (result == null) result = caseAtomicEChange(eObjectSubtractedEChange);
+                if (result == null) result = caseEChange(eObjectSubtractedEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -151,17 +133,17 @@ public class ChangeSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseEAtomicChange(EAtomicChange object) {
+    public T1 caseAtomicEChange(AtomicEChange object) {
         return null;
     }
 
@@ -196,62 +178,32 @@ public class ChangeSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive EAttribute Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive EAttribute Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseAdditiveEAttributeChange(AdditiveEAttributeChange<T> object) {
+    public <T extends EObject> T1 caseEObjectAddedEChange(EObjectAddedEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseSubtractiveEAttributeChange(SubtractiveEAttributeChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseAdditiveEReferenceChange(AdditiveEReferenceChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
+    public <T extends EObject> T1 caseEObjectSubtractedEChange(EObjectSubtractedEChange<T> object) {
         return null;
     }
 

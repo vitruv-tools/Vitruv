@@ -58,14 +58,14 @@ public interface ListPackage extends EPackage {
     ListPackage eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl.init();
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleEListEntryImpl <em>Update Single EList Entry</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleListEntryEChangeImpl <em>Update Single List Entry EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleEListEntryImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getUpdateSingleEListEntry()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleListEntryEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getUpdateSingleListEntryEChange()
      * @generated
      */
-    int UPDATE_SINGLE_ELIST_ENTRY = 0;
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE = 0;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -74,35 +74,35 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_SINGLE_ELIST_ENTRY__INDEX = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__INDEX = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Update Single EList Entry</em>' class.
+     * The number of structural features of the '<em>Update Single List Entry EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The number of operations of the '<em>Update Single EList Entry</em>' class.
+     * The number of operations of the '<em>Update Single List Entry EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_SINGLE_ELIST_ENTRY_OPERATION_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_OPERATION_COUNT + 0;
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInEListImpl <em>Insert In EList</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInListEChangeImpl <em>Insert In List EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInEListImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getInsertInEList()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInListEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getInsertInListEChange()
      * @generated
      */
-    int INSERT_IN_ELIST = 1;
+    int INSERT_IN_LIST_ECHANGE = 1;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -111,35 +111,35 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_IN_ELIST__INDEX = UPDATE_SINGLE_ELIST_ENTRY__INDEX;
+    int INSERT_IN_LIST_ECHANGE__INDEX = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__INDEX;
 
     /**
-     * The number of structural features of the '<em>Insert In EList</em>' class.
+     * The number of structural features of the '<em>Insert In List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INSERT_IN_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 0;
+    int INSERT_IN_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Insert In EList</em>' class.
+     * The number of operations of the '<em>Insert In List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INSERT_IN_ELIST_OPERATION_COUNT = UPDATE_SINGLE_ELIST_ENTRY_OPERATION_COUNT + 0;
+    int INSERT_IN_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl <em>Remove From EList</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromListEChangeImpl <em>Remove From List EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getRemoveFromEList()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromListEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getRemoveFromListEChange()
      * @generated
      */
-    int REMOVE_FROM_ELIST = 2;
+    int REMOVE_FROM_LIST_ECHANGE = 2;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -148,44 +148,35 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_FROM_ELIST__INDEX = UPDATE_SINGLE_ELIST_ENTRY__INDEX;
+    int REMOVE_FROM_LIST_ECHANGE__INDEX = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__INDEX;
 
     /**
-     * The feature id for the '<em><b>Removed Object URI Fragment</b></em>' attribute.
+     * The number of structural features of the '<em>Remove From List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 0;
+    int REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Remove From EList</em>' class.
+     * The number of operations of the '<em>Remove From List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_FROM_ELIST_FEATURE_COUNT = UPDATE_SINGLE_ELIST_ENTRY_FEATURE_COUNT + 1;
+    int REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Remove From EList</em>' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteListEChangeImpl <em>Permute List EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_FROM_ELIST_OPERATION_COUNT = UPDATE_SINGLE_ELIST_ENTRY_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl <em>Permute EList</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getPermuteEList()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteListEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getPermuteListEChange()
      * @generated
      */
-    int PERMUTE_ELIST = 3;
+    int PERMUTE_LIST_ECHANGE = 3;
 
     /**
      * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
@@ -194,99 +185,88 @@ public interface ListPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 0;
+    int PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>Permute EList</em>' class.
+     * The number of structural features of the '<em>Permute List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_FEATURE_COUNT + 1;
+    int PERMUTE_LIST_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The number of operations of the '<em>Permute EList</em>' class.
+     * The number of operations of the '<em>Permute List EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_ELIST_OPERATION_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE_OPERATION_COUNT + 0;
+    int PERMUTE_LIST_ECHANGE_OPERATION_COUNT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry <em>Update Single EList Entry</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange <em>Update Single List Entry EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Update Single EList Entry</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry
+     * @return the meta object for class '<em>Update Single List Entry EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange
      * @generated
      */
-    EClass getUpdateSingleEListEntry();
+    EClass getUpdateSingleListEntryEChange();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry#getIndex <em>Index</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange#getIndex <em>Index</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute '<em>Index</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry#getIndex()
-     * @see #getUpdateSingleEListEntry()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange#getIndex()
+     * @see #getUpdateSingleListEntryEChange()
      * @generated
      */
-    EAttribute getUpdateSingleEListEntry_Index();
+    EAttribute getUpdateSingleListEntryEChange_Index();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList <em>Insert In EList</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange <em>Insert In List EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Insert In EList</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList
+     * @return the meta object for class '<em>Insert In List EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange
      * @generated
      */
-    EClass getInsertInEList();
+    EClass getInsertInListEChange();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList <em>Remove From EList</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange <em>Remove From List EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Remove From EList</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList
+     * @return the meta object for class '<em>Remove From List EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange
      * @generated
      */
-    EClass getRemoveFromEList();
+    EClass getRemoveFromListEChange();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList#getRemovedObjectURIFragment <em>Removed Object URI Fragment</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange <em>Permute List EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Removed Object URI Fragment</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList#getRemovedObjectURIFragment()
-     * @see #getRemoveFromEList()
+     * @return the meta object for class '<em>Permute List EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange
      * @generated
      */
-    EAttribute getRemoveFromEList_RemovedObjectURIFragment();
+    EClass getPermuteListEChange();
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList <em>Permute EList</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Permute EList</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList
-     * @generated
-     */
-    EClass getPermuteEList();
-
-    /**
-     * Returns the meta object for the attribute list '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}'.
+     * Returns the meta object for the attribute list '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange#getNewIndicesForElementsAtOldIndices <em>New Indices For Elements At Old Indices</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the attribute list '<em>New Indices For Elements At Old Indices</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList#getNewIndicesForElementsAtOldIndices()
-     * @see #getPermuteEList()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange#getNewIndicesForElementsAtOldIndices()
+     * @see #getPermuteListEChange()
      * @generated
      */
-    EAttribute getPermuteEList_NewIndicesForElementsAtOldIndices();
+    EAttribute getPermuteListEChange_NewIndicesForElementsAtOldIndices();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -312,14 +292,14 @@ public interface ListPackage extends EPackage {
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleEListEntryImpl <em>Update Single EList Entry</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleListEntryEChangeImpl <em>Update Single List Entry EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleEListEntryImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getUpdateSingleEListEntry()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.UpdateSingleListEntryEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getUpdateSingleListEntryEChange()
          * @generated
          */
-        EClass UPDATE_SINGLE_ELIST_ENTRY = eINSTANCE.getUpdateSingleEListEntry();
+        EClass UPDATE_SINGLE_LIST_ENTRY_ECHANGE = eINSTANCE.getUpdateSingleListEntryEChange();
 
         /**
          * The meta object literal for the '<em><b>Index</b></em>' attribute feature.
@@ -327,45 +307,37 @@ public interface ListPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute UPDATE_SINGLE_ELIST_ENTRY__INDEX = eINSTANCE.getUpdateSingleEListEntry_Index();
+        EAttribute UPDATE_SINGLE_LIST_ENTRY_ECHANGE__INDEX = eINSTANCE.getUpdateSingleListEntryEChange_Index();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInEListImpl <em>Insert In EList</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInListEChangeImpl <em>Insert In List EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInEListImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getInsertInEList()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInListEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getInsertInListEChange()
          * @generated
          */
-        EClass INSERT_IN_ELIST = eINSTANCE.getInsertInEList();
+        EClass INSERT_IN_LIST_ECHANGE = eINSTANCE.getInsertInListEChange();
 
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl <em>Remove From EList</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromListEChangeImpl <em>Remove From List EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromEListImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getRemoveFromEList()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.RemoveFromListEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getRemoveFromListEChange()
          * @generated
          */
-        EClass REMOVE_FROM_ELIST = eINSTANCE.getRemoveFromEList();
+        EClass REMOVE_FROM_LIST_ECHANGE = eINSTANCE.getRemoveFromListEChange();
 
         /**
-         * The meta object literal for the '<em><b>Removed Object URI Fragment</b></em>' attribute feature.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteListEChangeImpl <em>Permute List EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteListEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getPermuteListEChange()
          * @generated
          */
-        EAttribute REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT = eINSTANCE.getRemoveFromEList_RemovedObjectURIFragment();
-
-        /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl <em>Permute EList</em>}' class.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.PermuteEListImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.ListPackageImpl#getPermuteEList()
-         * @generated
-         */
-        EClass PERMUTE_ELIST = eINSTANCE.getPermuteEList();
+        EClass PERMUTE_LIST_ECHANGE = eINSTANCE.getPermuteListEChange();
 
         /**
          * The meta object literal for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list feature.
@@ -373,7 +345,7 @@ public interface ListPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = eINSTANCE.getPermuteEList_NewIndicesForElementsAtOldIndices();
+        EAttribute PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = eINSTANCE.getPermuteListEChange_NewIndicesForElementsAtOldIndices();
 
     }
 

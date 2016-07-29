@@ -3,20 +3,20 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.util;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.*;
 
@@ -83,27 +83,52 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     @Override
     protected T1 doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-            case ReferencePackage.UPDATE_EREFERENCE: {
-                UpdateEReference<?> updateEReference = (UpdateEReference<?>)theEObject;
-                T1 result = caseUpdateEReference(updateEReference);
-                if (result == null) result = caseEFeatureChange(updateEReference);
-                if (result == null) result = caseEAtomicChange(updateEReference);
-                if (result == null) result = caseEChange(updateEReference);
+            case ReferencePackage.UPDATE_REFERENCE_ECHANGE: {
+                UpdateReferenceEChange<?> updateReferenceEChange = (UpdateReferenceEChange<?>)theEObject;
+                T1 result = caseUpdateReferenceEChange(updateReferenceEChange);
+                if (result == null) result = caseFeatureEChange(updateReferenceEChange);
+                if (result == null) result = caseAtomicEChange(updateReferenceEChange);
+                if (result == null) result = caseEChange(updateReferenceEChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE: {
+                AdditiveReferenceEChange<?, ?> additiveReferenceEChange = (AdditiveReferenceEChange<?, ?>)theEObject;
+                T1 result = caseAdditiveReferenceEChange(additiveReferenceEChange);
+                if (result == null) result = caseEObjectAddedEChange(additiveReferenceEChange);
+                if (result == null) result = caseUpdateReferenceEChange(additiveReferenceEChange);
+                if (result == null) result = caseAdditiveEChange(additiveReferenceEChange);
+                if (result == null) result = caseFeatureEChange(additiveReferenceEChange);
+                if (result == null) result = caseAtomicEChange(additiveReferenceEChange);
+                if (result == null) result = caseEChange(additiveReferenceEChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE: {
+                SubtractiveReferenceEChange<?, ?> subtractiveReferenceEChange = (SubtractiveReferenceEChange<?, ?>)theEObject;
+                T1 result = caseSubtractiveReferenceEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseEObjectSubtractedEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseUpdateReferenceEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseSubtractiveEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseFeatureEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseAtomicEChange(subtractiveReferenceEChange);
+                if (result == null) result = caseEChange(subtractiveReferenceEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
                 ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
                 T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
-                if (result == null) result = caseUpdateSingleValuedEFeature(replaceSingleValuedEReference);
-                if (result == null) result = caseUpdateEReference(replaceSingleValuedEReference);
-                if (result == null) result = caseSubtractiveEReferenceChange(replaceSingleValuedEReference);
-                if (result == null) result = caseAdditiveEReferenceChange(replaceSingleValuedEReference);
-                if (result == null) result = caseUpdateEFeature(replaceSingleValuedEReference);
-                if (result == null) result = caseEFeatureChange(replaceSingleValuedEReference);
+                if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseSubtractiveReferenceEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseAdditiveReferenceEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
-                if (result == null) result = caseEAtomicChange(replaceSingleValuedEReference);
+                if (result == null) result = caseAtomicEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseEChange(replaceSingleValuedEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -111,15 +136,15 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
             case ReferencePackage.INSERT_EREFERENCE: {
                 InsertEReference<?, ?> insertEReference = (InsertEReference<?, ?>)theEObject;
                 T1 result = caseInsertEReference(insertEReference);
-                if (result == null) result = caseInsertInEList(insertEReference);
-                if (result == null) result = caseUpdateEReference(insertEReference);
-                if (result == null) result = caseAdditiveEReferenceChange(insertEReference);
-                if (result == null) result = caseUpdateSingleEListEntry(insertEReference);
-                if (result == null) result = caseEFeatureChange(insertEReference);
+                if (result == null) result = caseInsertInListEChange(insertEReference);
+                if (result == null) result = caseAdditiveReferenceEChange(insertEReference);
+                if (result == null) result = caseUpdateSingleListEntryEChange(insertEReference);
+                if (result == null) result = caseEObjectAddedEChange(insertEReference);
+                if (result == null) result = caseUpdateReferenceEChange(insertEReference);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertEReference);
                 if (result == null) result = caseAdditiveEChange(insertEReference);
-                if (result == null) result = caseUpdateMultiValuedEFeature(insertEReference);
-                if (result == null) result = caseUpdateEFeature(insertEReference);
-                if (result == null) result = caseEAtomicChange(insertEReference);
+                if (result == null) result = caseFeatureEChange(insertEReference);
+                if (result == null) result = caseAtomicEChange(insertEReference);
                 if (result == null) result = caseEChange(insertEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -127,15 +152,15 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
             case ReferencePackage.REMOVE_EREFERENCE: {
                 RemoveEReference<?, ?> removeEReference = (RemoveEReference<?, ?>)theEObject;
                 T1 result = caseRemoveEReference(removeEReference);
-                if (result == null) result = caseRemoveFromEList(removeEReference);
-                if (result == null) result = caseUpdateEReference(removeEReference);
-                if (result == null) result = caseSubtractiveEReferenceChange(removeEReference);
-                if (result == null) result = caseUpdateSingleEListEntry(removeEReference);
-                if (result == null) result = caseEFeatureChange(removeEReference);
+                if (result == null) result = caseRemoveFromListEChange(removeEReference);
+                if (result == null) result = caseSubtractiveReferenceEChange(removeEReference);
+                if (result == null) result = caseUpdateSingleListEntryEChange(removeEReference);
+                if (result == null) result = caseEObjectSubtractedEChange(removeEReference);
+                if (result == null) result = caseUpdateReferenceEChange(removeEReference);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeEReference);
                 if (result == null) result = caseSubtractiveEChange(removeEReference);
-                if (result == null) result = caseUpdateMultiValuedEFeature(removeEReference);
-                if (result == null) result = caseUpdateEFeature(removeEReference);
-                if (result == null) result = caseEAtomicChange(removeEReference);
+                if (result == null) result = caseFeatureEChange(removeEReference);
+                if (result == null) result = caseAtomicEChange(removeEReference);
                 if (result == null) result = caseEChange(removeEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -143,12 +168,11 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
             case ReferencePackage.PERMUTE_EREFERENCES: {
                 PermuteEReferences<?> permuteEReferences = (PermuteEReferences<?>)theEObject;
                 T1 result = casePermuteEReferences(permuteEReferences);
-                if (result == null) result = casePermuteEList(permuteEReferences);
-                if (result == null) result = caseUpdateEReference(permuteEReferences);
-                if (result == null) result = caseUpdateMultiValuedEFeature(permuteEReferences);
-                if (result == null) result = caseEFeatureChange(permuteEReferences);
-                if (result == null) result = caseUpdateEFeature(permuteEReferences);
-                if (result == null) result = caseEAtomicChange(permuteEReferences);
+                if (result == null) result = casePermuteListEChange(permuteEReferences);
+                if (result == null) result = caseUpdateReferenceEChange(permuteEReferences);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteEReferences);
+                if (result == null) result = caseFeatureEChange(permuteEReferences);
+                if (result == null) result = caseAtomicEChange(permuteEReferences);
                 if (result == null) result = caseEChange(permuteEReferences);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -158,17 +182,47 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update EReference</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Reference EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update EReference</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Reference EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject> T1 caseUpdateEReference(UpdateEReference<A> object) {
+    public <A extends EObject> T1 caseUpdateReferenceEChange(UpdateReferenceEChange<A> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Additive Reference EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Additive Reference EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <A extends EObject, T extends EObject> T1 caseAdditiveReferenceEChange(AdditiveReferenceEChange<A, T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive Reference EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive Reference EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <A extends EObject, T extends EObject> T1 caseSubtractiveReferenceEChange(SubtractiveReferenceEChange<A, T> object) {
         return null;
     }
 
@@ -248,92 +302,32 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseEAtomicChange(EAtomicChange object) {
+    public T1 caseAtomicEChange(AtomicEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<A, F> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T1 caseUpdateEFeature(UpdateEFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EReference Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends EObject> T1 caseSubtractiveEReferenceChange(SubtractiveEReferenceChange<T> object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseFeatureEChange(FeatureEChange<A, F> object) {
         return null;
     }
 
@@ -353,92 +347,137 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive EReference Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EObject Added EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends EObject> T1 caseAdditiveEReferenceChange(AdditiveEReferenceChange<T> object) {
+    public <T extends EObject> T1 caseEObjectAddedEChange(EObjectAddedEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
+    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EObject Subtracted EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
+    public <T extends EObject> T1 caseEObjectSubtractedEChange(EObjectSubtractedEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseInsertInEList(InsertInEList object) {
+    public T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseRemoveFromEList(RemoveFromEList object) {
+    public T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 casePermuteEList(PermuteEList object) {
+    public T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseInsertInListEChange(InsertInListEChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 caseRemoveFromListEChange(RemoveFromListEChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 casePermuteListEChange(PermuteListEChange object) {
         return null;
     }
 

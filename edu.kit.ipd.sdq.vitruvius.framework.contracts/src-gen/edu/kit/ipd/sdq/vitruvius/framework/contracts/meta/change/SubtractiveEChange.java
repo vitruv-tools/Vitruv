@@ -13,7 +13,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface SubtractiveEChange<T extends Object> extends EAtomicChange {
+public interface SubtractiveEChange<T extends Object> extends AtomicEChange {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

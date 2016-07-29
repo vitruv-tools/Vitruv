@@ -2,6 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage;
@@ -60,14 +62,14 @@ public interface ReferencePackage extends EPackage {
     ReferencePackage eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl.init();
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateEReferenceImpl <em>Update EReference</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateReferenceEChangeImpl <em>Update Reference EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateEReferenceImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getUpdateEReference()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateReferenceEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getUpdateReferenceEChange()
      * @generated
      */
-    int UPDATE_EREFERENCE = 0;
+    int UPDATE_REFERENCE_ECHANGE = 0;
 
     /**
      * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -76,7 +78,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
+    int UPDATE_REFERENCE_ECHANGE__AFFECTED_FEATURE = FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
 
     /**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -85,16 +87,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
+    int UPDATE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
     /**
-     * The number of structural features of the '<em>Update EReference</em>' class.
+     * The number of structural features of the '<em>Update Reference EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_EREFERENCE_FEATURE_COUNT = FeaturePackage.EFEATURE_CHANGE_FEATURE_COUNT + 0;
+    int UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT = FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Is Containment</em>' operation.
@@ -103,16 +105,180 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_EREFERENCE___IS_CONTAINMENT = FeaturePackage.EFEATURE_CHANGE_OPERATION_COUNT + 0;
+    int UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT = FeaturePackage.FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>Update EReference</em>' class.
+     * The number of operations of the '<em>Update Reference EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_EREFERENCE_OPERATION_COUNT = FeaturePackage.EFEATURE_CHANGE_OPERATION_COUNT + 1;
+    int UPDATE_REFERENCE_ECHANGE_OPERATION_COUNT = FeaturePackage.FEATURE_ECHANGE_OPERATION_COUNT + 1;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.AdditiveReferenceEChangeImpl <em>Additive Reference EChange</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.AdditiveReferenceEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getAdditiveReferenceEChange()
+     * @generated
+     */
+    int ADDITIVE_REFERENCE_ECHANGE = 1;
+
+    /**
+     * The feature id for the '<em><b>New Value</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE = ChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
+
+    /**
+     * The feature id for the '<em><b>Is Create</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE__IS_CREATE = ChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = ChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = ChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Additive Reference EChange</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT = ChangePackage.EOBJECT_ADDED_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The operation id for the '<em>Get New Value</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE = ChangePackage.EOBJECT_ADDED_ECHANGE___GET_NEW_VALUE;
+
+    /**
+     * The operation id for the '<em>Is Containment</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = ChangePackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Additive Reference EChange</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT = ChangePackage.EOBJECT_ADDED_ECHANGE_OPERATION_COUNT + 1;
+
+    /**
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.SubtractiveReferenceEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getSubtractiveReferenceEChange()
+     * @generated
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE = 2;
+
+    /**
+     * The feature id for the '<em><b>Old Value</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
+
+    /**
+     * The feature id for the '<em><b>Is Delete</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE__IS_DELETE = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Subtractive Reference EChange</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The operation id for the '<em>Get Old Value</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE___GET_OLD_VALUE = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE___GET_OLD_VALUE;
+
+    /**
+     * The operation id for the '<em>Is Containment</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE___IS_CONTAINMENT = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Subtractive Reference EChange</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUBTRACTIVE_REFERENCE_ECHANGE_OPERATION_COUNT = ChangePackage.EOBJECT_SUBTRACTED_ECHANGE_OPERATION_COUNT + 1;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.
@@ -122,25 +288,7 @@ public interface ReferencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getReplaceSingleValuedEReference()
      * @generated
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE = 1;
-
-    /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 1;
+    int REPLACE_SINGLE_VALUED_EREFERENCE = 3;
 
     /**
      * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -149,7 +297,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 2;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -158,7 +306,25 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 3;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -167,7 +333,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 4;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -176,7 +342,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 5;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 5;
 
     /**
      * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
@@ -185,16 +351,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_FEATURE_COUNT + 6;
-
-    /**
-     * The operation id for the '<em>Is Containment</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_OPERATION_COUNT + 0;
+    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 6;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -203,7 +360,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_OPERATION_COUNT + 1;
+    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The operation id for the '<em>Is Containment</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -212,7 +378,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_OPERATION_COUNT + 2;
+    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
@@ -221,7 +387,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE_OPERATION_COUNT + 3;
+    int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 3;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -231,7 +397,7 @@ public interface ReferencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getInsertEReference()
      * @generated
      */
-    int INSERT_EREFERENCE = 2;
+    int INSERT_EREFERENCE = 4;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -240,25 +406,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE__INDEX = ListPackage.INSERT_IN_ELIST__INDEX;
-
-    /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EREFERENCE__AFFECTED_FEATURE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 1;
+    int INSERT_EREFERENCE__INDEX = ListPackage.INSERT_IN_LIST_ECHANGE__INDEX;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -267,7 +415,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE__NEW_VALUE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 2;
+    int INSERT_EREFERENCE__NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -276,7 +424,25 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE__IS_CREATE = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 3;
+    int INSERT_EREFERENCE__IS_CREATE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EREFERENCE__AFFECTED_FEATURE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Insert EReference</em>' class.
@@ -285,16 +451,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_ELIST_FEATURE_COUNT + 4;
-
-    /**
-     * The operation id for the '<em>Is Containment</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_ELIST_OPERATION_COUNT + 0;
+    int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -303,7 +460,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE___GET_NEW_VALUE = ListPackage.INSERT_IN_ELIST_OPERATION_COUNT + 1;
+    int INSERT_EREFERENCE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The operation id for the '<em>Is Containment</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Insert EReference</em>' class.
@@ -312,7 +478,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_ELIST_OPERATION_COUNT + 2;
+    int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -322,7 +488,7 @@ public interface ReferencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getRemoveEReference()
      * @generated
      */
-    int REMOVE_EREFERENCE = 3;
+    int REMOVE_EREFERENCE = 5;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -331,34 +497,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE__INDEX = ListPackage.REMOVE_FROM_ELIST__INDEX;
-
-    /**
-     * The feature id for the '<em><b>Removed Object URI Fragment</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE__REMOVED_OBJECT_URI_FRAGMENT = ListPackage.REMOVE_FROM_ELIST__REMOVED_OBJECT_URI_FRAGMENT;
-
-    /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 1;
+    int REMOVE_EREFERENCE__INDEX = ListPackage.REMOVE_FROM_LIST_ECHANGE__INDEX;
 
     /**
      * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -367,7 +506,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE__OLD_VALUE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 2;
+    int REMOVE_EREFERENCE__OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -376,7 +515,25 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE__IS_DELETE = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 3;
+    int REMOVE_EREFERENCE__IS_DELETE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EREFERENCE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Remove EReference</em>' class.
@@ -385,16 +542,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_ELIST_FEATURE_COUNT + 4;
-
-    /**
-     * The operation id for the '<em>Is Containment</em>' operation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_ELIST_OPERATION_COUNT + 0;
+    int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -403,7 +551,16 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_ELIST_OPERATION_COUNT + 1;
+    int REMOVE_EREFERENCE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
+
+    /**
+     * The operation id for the '<em>Is Containment</em>' operation.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Remove EReference</em>' class.
@@ -412,7 +569,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_ELIST_OPERATION_COUNT + 2;
+    int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
@@ -422,7 +579,7 @@ public interface ReferencePackage extends EPackage {
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
      * @generated
      */
-    int PERMUTE_EREFERENCES = 4;
+    int PERMUTE_EREFERENCES = 6;
 
     /**
      * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
@@ -431,7 +588,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_ELIST__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
+    int PERMUTE_EREFERENCES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
 
     /**
      * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -440,7 +597,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 0;
+    int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -449,7 +606,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 1;
+    int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Permute EReferences</em>' class.
@@ -458,7 +615,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_ELIST_FEATURE_COUNT + 2;
+    int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Is Containment</em>' operation.
@@ -467,7 +624,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES___IS_CONTAINMENT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 0;
+    int PERMUTE_EREFERENCES___IS_CONTAINMENT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Permute EReferences</em>' class.
@@ -476,27 +633,48 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES_OPERATION_COUNT = ListPackage.PERMUTE_ELIST_OPERATION_COUNT + 1;
+    int PERMUTE_EREFERENCES_OPERATION_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 1;
+
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference <em>Update EReference</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange <em>Update Reference EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>Update EReference</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference
+     * @return the meta object for class '<em>Update Reference EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
      * @generated
      */
-    EClass getUpdateEReference();
+    EClass getUpdateReferenceEChange();
 
     /**
-     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference#isContainment() <em>Is Containment</em>}' operation.
+     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange#isContainment() <em>Is Containment</em>}' operation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the '<em>Is Containment</em>' operation.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateEReference#isContainment()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange#isContainment()
      * @generated
      */
-    EOperation getUpdateEReference__IsContainment();
+    EOperation getUpdateReferenceEChange__IsContainment();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange <em>Additive Reference EChange</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Additive Reference EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange
+     * @generated
+     */
+    EClass getAdditiveReferenceEChange();
+
+    /**
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange <em>Subtractive Reference EChange</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Subtractive Reference EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange
+     * @generated
+     */
+    EClass getSubtractiveReferenceEChange();
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
@@ -562,14 +740,14 @@ public interface ReferencePackage extends EPackage {
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateEReferenceImpl <em>Update EReference</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateReferenceEChangeImpl <em>Update Reference EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateEReferenceImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getUpdateEReference()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.UpdateReferenceEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getUpdateReferenceEChange()
          * @generated
          */
-        EClass UPDATE_EREFERENCE = eINSTANCE.getUpdateEReference();
+        EClass UPDATE_REFERENCE_ECHANGE = eINSTANCE.getUpdateReferenceEChange();
 
         /**
          * The meta object literal for the '<em><b>Is Containment</b></em>' operation.
@@ -577,7 +755,27 @@ public interface ReferencePackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EOperation UPDATE_EREFERENCE___IS_CONTAINMENT = eINSTANCE.getUpdateEReference__IsContainment();
+        EOperation UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT = eINSTANCE.getUpdateReferenceEChange__IsContainment();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.AdditiveReferenceEChangeImpl <em>Additive Reference EChange</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.AdditiveReferenceEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getAdditiveReferenceEChange()
+         * @generated
+         */
+        EClass ADDITIVE_REFERENCE_ECHANGE = eINSTANCE.getAdditiveReferenceEChange();
+
+        /**
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.SubtractiveReferenceEChangeImpl <em>Subtractive Reference EChange</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.SubtractiveReferenceEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl#getSubtractiveReferenceEChange()
+         * @generated
+         */
+        EClass SUBTRACTIVE_REFERENCE_ECHANGE = eINSTANCE.getSubtractiveReferenceEChange();
 
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReplaceSingleValuedEReferenceImpl <em>Replace Single Valued EReference</em>}' class.

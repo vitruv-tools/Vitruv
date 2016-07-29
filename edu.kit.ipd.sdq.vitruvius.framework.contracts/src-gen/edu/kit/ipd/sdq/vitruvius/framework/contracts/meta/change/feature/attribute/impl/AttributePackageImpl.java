@@ -10,13 +10,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.C
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AdditiveAttributeEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.SubtractiveAttributeEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateAttributeEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.FeaturePackageImpl;
 
@@ -29,10 +31,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -52,7 +56,21 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass updateEAttributeEClass = null;
+    private EClass updateAttributeEChangeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass additiveAttributeEChangeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass subtractiveAttributeEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -168,8 +186,44 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUpdateEAttribute() {
-        return updateEAttributeEClass;
+    public EClass getUpdateAttributeEChange() {
+        return updateAttributeEChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getAdditiveAttributeEChange() {
+        return additiveAttributeEChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getAdditiveAttributeEChange_NewValue() {
+        return (EAttribute)additiveAttributeEChangeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getSubtractiveAttributeEChange() {
+        return subtractiveAttributeEChangeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getSubtractiveAttributeEChange_OldValue() {
+        return (EAttribute)subtractiveAttributeEChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -236,7 +290,13 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         isCreated = true;
 
         // Create classes and their features
-        updateEAttributeEClass = createEClass(UPDATE_EATTRIBUTE);
+        updateAttributeEChangeEClass = createEClass(UPDATE_ATTRIBUTE_ECHANGE);
+
+        additiveAttributeEChangeEClass = createEClass(ADDITIVE_ATTRIBUTE_ECHANGE);
+        createEAttribute(additiveAttributeEChangeEClass, ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE);
+
+        subtractiveAttributeEChangeEClass = createEClass(SUBTRACTIVE_ATTRIBUTE_ECHANGE);
+        createEAttribute(subtractiveAttributeEChangeEClass, SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE);
 
         replaceSingleValuedEAttributeEClass = createEClass(REPLACE_SINGLE_VALUED_EATTRIBUTE);
 
@@ -276,7 +336,11 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         ListPackage theListPackage = (ListPackage)EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI);
 
         // Create type parameters
-        ETypeParameter updateEAttributeEClass_A = addETypeParameter(updateEAttributeEClass, "A");
+        ETypeParameter updateAttributeEChangeEClass_A = addETypeParameter(updateAttributeEChangeEClass, "A");
+        ETypeParameter additiveAttributeEChangeEClass_A = addETypeParameter(additiveAttributeEChangeEClass, "A");
+        ETypeParameter additiveAttributeEChangeEClass_T = addETypeParameter(additiveAttributeEChangeEClass, "T");
+        ETypeParameter subtractiveAttributeEChangeEClass_A = addETypeParameter(subtractiveAttributeEChangeEClass, "A");
+        ETypeParameter subtractiveAttributeEChangeEClass_T = addETypeParameter(subtractiveAttributeEChangeEClass, "T");
         ETypeParameter replaceSingleValuedEAttributeEClass_A = addETypeParameter(replaceSingleValuedEAttributeEClass, "A");
         ETypeParameter replaceSingleValuedEAttributeEClass_T = addETypeParameter(replaceSingleValuedEAttributeEClass, "T");
         ETypeParameter insertEAttributeValueEClass_A = addETypeParameter(insertEAttributeValueEClass, "A");
@@ -287,7 +351,15 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
-        updateEAttributeEClass_A.getEBounds().add(g1);
+        updateAttributeEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        additiveAttributeEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        additiveAttributeEChangeEClass_T.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        subtractiveAttributeEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaObject());
+        subtractiveAttributeEChangeEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         replaceSingleValuedEAttributeEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
@@ -304,55 +376,75 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         permuteEAttributeValuesEClass_A.getEBounds().add(g1);
 
         // Add supertypes to classes
-        g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
-        EGenericType g2 = createEGenericType(updateEAttributeEClass_A);
+        g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
+        EGenericType g2 = createEGenericType(updateAttributeEChangeEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(ecorePackage.getEAttribute());
         g1.getETypeArguments().add(g2);
-        updateEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedEFeature());
+        updateAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theChangePackage.getAdditiveEChange());
+        g2 = createEGenericType(additiveAttributeEChangeEClass_T);
+        g1.getETypeArguments().add(g2);
+        additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateAttributeEChange());
+        g2 = createEGenericType(additiveAttributeEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        additiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theChangePackage.getSubtractiveEChange());
+        g2 = createEGenericType(subtractiveAttributeEChangeEClass_T);
+        g1.getETypeArguments().add(g2);
+        subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateAttributeEChange());
+        g2 = createEGenericType(subtractiveAttributeEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedFeatureEChange());
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEAttribute());
+        g1 = createEGenericType(this.getSubtractiveAttributeEChange());
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
         g1.getETypeArguments().add(g2);
-        replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveEAttributeChange());
+        g1 = createEGenericType(this.getAdditiveAttributeEChange());
+        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
+        g1.getETypeArguments().add(g2);
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_T);
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getInsertInEList());
+        g1 = createEGenericType(theListPackage.getInsertInListEChange());
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEAttribute());
+        g1 = createEGenericType(this.getAdditiveAttributeEChange());
         g2 = createEGenericType(insertEAttributeValueEClass_A);
         g1.getETypeArguments().add(g2);
-        insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getAdditiveEAttributeChange());
         g2 = createEGenericType(insertEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getRemoveFromEList());
+        g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEAttribute());
+        g1 = createEGenericType(this.getSubtractiveAttributeEChange());
         g2 = createEGenericType(removeEAttributeValueEClass_A);
         g1.getETypeArguments().add(g2);
-        removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEAttributeChange());
         g2 = createEGenericType(removeEAttributeValueEClass_T);
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(theListPackage.getPermuteEList());
+        g1 = createEGenericType(theListPackage.getPermuteListEChange());
         permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
-        g1 = createEGenericType(this.getUpdateEAttribute());
+        g1 = createEGenericType(this.getUpdateAttributeEChange());
         g2 = createEGenericType(permuteEAttributeValuesEClass_A);
         g1.getETypeArguments().add(g2);
         permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(updateEAttributeEClass, UpdateEAttribute.class, "UpdateEAttribute", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateAttributeEChangeEClass, UpdateAttributeEChange.class, "UpdateAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(additiveAttributeEChangeEClass, AdditiveAttributeEChange.class, "AdditiveAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(additiveAttributeEChangeEClass_T);
+        initEAttribute(getAdditiveAttributeEChange_NewValue(), g1, "newValue", null, 1, 1, AdditiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(subtractiveAttributeEChangeEClass, SubtractiveAttributeEChange.class, "SubtractiveAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(subtractiveAttributeEChangeEClass_T);
+        initEAttribute(getSubtractiveAttributeEChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(replaceSingleValuedEAttributeEClass, ReplaceSingleValuedEAttribute.class, "ReplaceSingleValuedEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

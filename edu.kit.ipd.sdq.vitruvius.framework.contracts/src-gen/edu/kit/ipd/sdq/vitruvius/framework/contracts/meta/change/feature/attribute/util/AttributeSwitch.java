@@ -2,23 +2,21 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.*;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleEListEntry;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -83,27 +81,48 @@ public class AttributeSwitch<T1> extends Switch<T1> {
     @Override
     protected T1 doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-            case AttributePackage.UPDATE_EATTRIBUTE: {
-                UpdateEAttribute<?> updateEAttribute = (UpdateEAttribute<?>)theEObject;
-                T1 result = caseUpdateEAttribute(updateEAttribute);
-                if (result == null) result = caseEFeatureChange(updateEAttribute);
-                if (result == null) result = caseEAtomicChange(updateEAttribute);
-                if (result == null) result = caseEChange(updateEAttribute);
+            case AttributePackage.UPDATE_ATTRIBUTE_ECHANGE: {
+                UpdateAttributeEChange<?> updateAttributeEChange = (UpdateAttributeEChange<?>)theEObject;
+                T1 result = caseUpdateAttributeEChange(updateAttributeEChange);
+                if (result == null) result = caseFeatureEChange(updateAttributeEChange);
+                if (result == null) result = caseAtomicEChange(updateAttributeEChange);
+                if (result == null) result = caseEChange(updateAttributeEChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE: {
+                AdditiveAttributeEChange<?, ?> additiveAttributeEChange = (AdditiveAttributeEChange<?, ?>)theEObject;
+                T1 result = caseAdditiveAttributeEChange(additiveAttributeEChange);
+                if (result == null) result = caseAdditiveEChange(additiveAttributeEChange);
+                if (result == null) result = caseUpdateAttributeEChange(additiveAttributeEChange);
+                if (result == null) result = caseFeatureEChange(additiveAttributeEChange);
+                if (result == null) result = caseAtomicEChange(additiveAttributeEChange);
+                if (result == null) result = caseEChange(additiveAttributeEChange);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE: {
+                SubtractiveAttributeEChange<?, ?> subtractiveAttributeEChange = (SubtractiveAttributeEChange<?, ?>)theEObject;
+                T1 result = caseSubtractiveAttributeEChange(subtractiveAttributeEChange);
+                if (result == null) result = caseSubtractiveEChange(subtractiveAttributeEChange);
+                if (result == null) result = caseUpdateAttributeEChange(subtractiveAttributeEChange);
+                if (result == null) result = caseFeatureEChange(subtractiveAttributeEChange);
+                if (result == null) result = caseAtomicEChange(subtractiveAttributeEChange);
+                if (result == null) result = caseEChange(subtractiveAttributeEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
                 ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
                 T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
-                if (result == null) result = caseUpdateSingleValuedEFeature(replaceSingleValuedEAttribute);
-                if (result == null) result = caseUpdateEAttribute(replaceSingleValuedEAttribute);
-                if (result == null) result = caseSubtractiveEAttributeChange(replaceSingleValuedEAttribute);
-                if (result == null) result = caseAdditiveEAttributeChange(replaceSingleValuedEAttribute);
-                if (result == null) result = caseUpdateEFeature(replaceSingleValuedEAttribute);
-                if (result == null) result = caseEFeatureChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseSubtractiveAttributeEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseAdditiveAttributeEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
-                if (result == null) result = caseEAtomicChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -111,15 +130,14 @@ public class AttributeSwitch<T1> extends Switch<T1> {
             case AttributePackage.INSERT_EATTRIBUTE_VALUE: {
                 InsertEAttributeValue<?, ?> insertEAttributeValue = (InsertEAttributeValue<?, ?>)theEObject;
                 T1 result = caseInsertEAttributeValue(insertEAttributeValue);
-                if (result == null) result = caseInsertInEList(insertEAttributeValue);
-                if (result == null) result = caseUpdateEAttribute(insertEAttributeValue);
-                if (result == null) result = caseAdditiveEAttributeChange(insertEAttributeValue);
-                if (result == null) result = caseUpdateSingleEListEntry(insertEAttributeValue);
-                if (result == null) result = caseEFeatureChange(insertEAttributeValue);
+                if (result == null) result = caseInsertInListEChange(insertEAttributeValue);
+                if (result == null) result = caseAdditiveAttributeEChange(insertEAttributeValue);
+                if (result == null) result = caseUpdateSingleListEntryEChange(insertEAttributeValue);
                 if (result == null) result = caseAdditiveEChange(insertEAttributeValue);
-                if (result == null) result = caseUpdateMultiValuedEFeature(insertEAttributeValue);
-                if (result == null) result = caseUpdateEFeature(insertEAttributeValue);
-                if (result == null) result = caseEAtomicChange(insertEAttributeValue);
+                if (result == null) result = caseUpdateAttributeEChange(insertEAttributeValue);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertEAttributeValue);
+                if (result == null) result = caseFeatureEChange(insertEAttributeValue);
+                if (result == null) result = caseAtomicEChange(insertEAttributeValue);
                 if (result == null) result = caseEChange(insertEAttributeValue);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -127,15 +145,14 @@ public class AttributeSwitch<T1> extends Switch<T1> {
             case AttributePackage.REMOVE_EATTRIBUTE_VALUE: {
                 RemoveEAttributeValue<?, ?> removeEAttributeValue = (RemoveEAttributeValue<?, ?>)theEObject;
                 T1 result = caseRemoveEAttributeValue(removeEAttributeValue);
-                if (result == null) result = caseRemoveFromEList(removeEAttributeValue);
-                if (result == null) result = caseUpdateEAttribute(removeEAttributeValue);
-                if (result == null) result = caseSubtractiveEAttributeChange(removeEAttributeValue);
-                if (result == null) result = caseUpdateSingleEListEntry(removeEAttributeValue);
-                if (result == null) result = caseEFeatureChange(removeEAttributeValue);
+                if (result == null) result = caseRemoveFromListEChange(removeEAttributeValue);
+                if (result == null) result = caseSubtractiveAttributeEChange(removeEAttributeValue);
+                if (result == null) result = caseUpdateSingleListEntryEChange(removeEAttributeValue);
                 if (result == null) result = caseSubtractiveEChange(removeEAttributeValue);
-                if (result == null) result = caseUpdateMultiValuedEFeature(removeEAttributeValue);
-                if (result == null) result = caseUpdateEFeature(removeEAttributeValue);
-                if (result == null) result = caseEAtomicChange(removeEAttributeValue);
+                if (result == null) result = caseUpdateAttributeEChange(removeEAttributeValue);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeEAttributeValue);
+                if (result == null) result = caseFeatureEChange(removeEAttributeValue);
+                if (result == null) result = caseAtomicEChange(removeEAttributeValue);
                 if (result == null) result = caseEChange(removeEAttributeValue);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -143,12 +160,11 @@ public class AttributeSwitch<T1> extends Switch<T1> {
             case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: {
                 PermuteEAttributeValues<?> permuteEAttributeValues = (PermuteEAttributeValues<?>)theEObject;
                 T1 result = casePermuteEAttributeValues(permuteEAttributeValues);
-                if (result == null) result = casePermuteEList(permuteEAttributeValues);
-                if (result == null) result = caseUpdateEAttribute(permuteEAttributeValues);
-                if (result == null) result = caseUpdateMultiValuedEFeature(permuteEAttributeValues);
-                if (result == null) result = caseEFeatureChange(permuteEAttributeValues);
-                if (result == null) result = caseUpdateEFeature(permuteEAttributeValues);
-                if (result == null) result = caseEAtomicChange(permuteEAttributeValues);
+                if (result == null) result = casePermuteListEChange(permuteEAttributeValues);
+                if (result == null) result = caseUpdateAttributeEChange(permuteEAttributeValues);
+                if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteEAttributeValues);
+                if (result == null) result = caseFeatureEChange(permuteEAttributeValues);
+                if (result == null) result = caseAtomicEChange(permuteEAttributeValues);
                 if (result == null) result = caseEChange(permuteEAttributeValues);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
@@ -158,17 +174,47 @@ public class AttributeSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update EAttribute</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Attribute EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update EAttribute</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Attribute EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject> T1 caseUpdateEAttribute(UpdateEAttribute<A> object) {
+    public <A extends EObject> T1 caseUpdateAttributeEChange(UpdateAttributeEChange<A> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Additive Attribute EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Additive Attribute EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <A extends EObject, T extends Object> T1 caseAdditiveAttributeEChange(AdditiveAttributeEChange<A, T> object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive Attribute EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive Attribute EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <A extends EObject, T extends Object> T1 caseSubtractiveAttributeEChange(SubtractiveAttributeEChange<A, T> object) {
         return null;
     }
 
@@ -248,92 +294,32 @@ public class AttributeSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseEAtomicChange(EAtomicChange object) {
+    public T1 caseAtomicEChange(AtomicEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseEFeatureChange(EFeatureChange<A, F> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T1 caseUpdateEFeature(UpdateEFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T1 caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Subtractive EAttribute Change</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public <T extends Object> T1 caseSubtractiveEAttributeChange(SubtractiveEAttributeChange<T> object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseFeatureEChange(FeatureEChange<A, F> object) {
         return null;
     }
 
@@ -353,92 +339,107 @@ public class AttributeSwitch<T1> extends Switch<T1> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Additive EAttribute Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Additive EAttribute Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Subtractive EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <T extends Object> T1 caseAdditiveEAttributeChange(AdditiveEAttributeChange<T> object) {
+    public <T extends Object> T1 caseSubtractiveEChange(SubtractiveEChange<T> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
+    public T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Single EList Entry</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateSingleEListEntry(UpdateSingleEListEntry object) {
+    public T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Insert In EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Single List Entry EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseInsertInEList(InsertInEList object) {
+    public T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Remove From EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Insert In List EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseRemoveFromEList(RemoveFromEList object) {
+    public T1 caseInsertInListEChange(InsertInListEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Permute EList</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Remove From List EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 casePermuteEList(PermuteEList object) {
+    public T1 caseRemoveFromListEChange(RemoveFromListEChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Permute List EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T1 casePermuteListEChange(PermuteListEChange object) {
         return null;
     }
 

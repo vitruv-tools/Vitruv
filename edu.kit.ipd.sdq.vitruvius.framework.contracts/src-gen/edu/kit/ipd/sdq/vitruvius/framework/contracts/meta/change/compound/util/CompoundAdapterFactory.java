@@ -4,13 +4,15 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.util;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.*;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -76,19 +78,19 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
     protected CompoundSwitch<Adapter> modelSwitch =
         new CompoundSwitch<Adapter>() {
             @Override
-            public Adapter caseECompoundChange(ECompoundChange object) {
-                return createECompoundChangeAdapter();
+            public Adapter caseCompoundEChange(CompoundEChange object) {
+                return createCompoundEChangeAdapter();
             }
             @Override
             public <A extends EObject, B extends EObject, T extends EObject> Adapter caseMoveEObject(MoveEObject<A, B, T> object) {
                 return createMoveEObjectAdapter();
             }
             @Override
-            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange & FeatureEChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
                 return createReplaceInEListAdapter();
             }
             @Override
-            public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> Adapter caseExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F, T, S> object) {
                 return createExplicitUnsetEFeatureAdapter();
             }
             @Override
@@ -116,16 +118,16 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange <em>ECompound Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange <em>EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange
      * @generated
      */
-    public Adapter createECompoundChangeAdapter() {
+    public Adapter createCompoundEChangeAdapter() {
         return null;
     }
 

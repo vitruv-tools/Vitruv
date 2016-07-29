@@ -2,9 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEAttributeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -17,5 +16,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends UpdateSingleValuedEFeature, UpdateEAttribute<A>, SubtractiveEAttributeChange<T>, AdditiveEAttributeChange<T> {
+public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends UpdateSingleValuedFeatureEChange, SubtractiveAttributeEChange<A, T>, AdditiveAttributeEChange<A, T> {
 } // ReplaceSingleValuedEAttribute

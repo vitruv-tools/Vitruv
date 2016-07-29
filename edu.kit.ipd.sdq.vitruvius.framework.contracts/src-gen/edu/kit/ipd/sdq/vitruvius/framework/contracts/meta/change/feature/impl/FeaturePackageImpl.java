@@ -8,12 +8,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.Compou
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage;
 
@@ -28,9 +27,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -51,28 +52,21 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass eFeatureChangeEClass = null;
+    private EClass featureEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass updateEFeatureEClass = null;
+    private EClass updateMultiValuedFeatureEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass updateMultiValuedEFeatureEClass = null;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private EClass updateSingleValuedEFeatureEClass = null;
+    private EClass updateSingleValuedFeatureEChangeEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -160,8 +154,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getEFeatureChange() {
-        return eFeatureChangeEClass;
+    public EClass getFeatureEChange() {
+        return featureEChangeEClass;
     }
 
     /**
@@ -169,8 +163,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getEFeatureChange_AffectedFeature() {
-        return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(0);
+    public EReference getFeatureEChange_AffectedFeature() {
+        return (EReference)featureEChangeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -178,8 +172,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getEFeatureChange_AffectedEObject() {
-        return (EReference)eFeatureChangeEClass.getEStructuralFeatures().get(1);
+    public EReference getFeatureEChange_AffectedEObject() {
+        return (EReference)featureEChangeEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -187,8 +181,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUpdateEFeature() {
-        return updateEFeatureEClass;
+    public EClass getUpdateMultiValuedFeatureEChange() {
+        return updateMultiValuedFeatureEChangeEClass;
     }
 
     /**
@@ -196,17 +190,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getUpdateMultiValuedEFeature() {
-        return updateMultiValuedEFeatureEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EClass getUpdateSingleValuedEFeature() {
-        return updateSingleValuedEFeatureEClass;
+    public EClass getUpdateSingleValuedFeatureEChange() {
+        return updateSingleValuedFeatureEChangeEClass;
     }
 
     /**
@@ -237,15 +222,13 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         isCreated = true;
 
         // Create classes and their features
-        eFeatureChangeEClass = createEClass(EFEATURE_CHANGE);
-        createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_FEATURE);
-        createEReference(eFeatureChangeEClass, EFEATURE_CHANGE__AFFECTED_EOBJECT);
+        featureEChangeEClass = createEClass(FEATURE_ECHANGE);
+        createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
+        createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
 
-        updateEFeatureEClass = createEClass(UPDATE_EFEATURE);
+        updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
-        updateMultiValuedEFeatureEClass = createEClass(UPDATE_MULTI_VALUED_EFEATURE);
-
-        updateSingleValuedEFeatureEClass = createEClass(UPDATE_SINGLE_VALUED_EFEATURE);
+        updateSingleValuedFeatureEChangeEClass = createEClass(UPDATE_SINGLE_VALUED_FEATURE_ECHANGE);
     }
 
     /**
@@ -283,33 +266,28 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         getESubpackages().add(theReferencePackage);
 
         // Create type parameters
-        ETypeParameter eFeatureChangeEClass_A = addETypeParameter(eFeatureChangeEClass, "A");
-        ETypeParameter eFeatureChangeEClass_F = addETypeParameter(eFeatureChangeEClass, "F");
+        ETypeParameter featureEChangeEClass_A = addETypeParameter(featureEChangeEClass, "A");
+        ETypeParameter featureEChangeEClass_F = addETypeParameter(featureEChangeEClass, "F");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
-        eFeatureChangeEClass_A.getEBounds().add(g1);
+        featureEChangeEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEStructuralFeature());
-        eFeatureChangeEClass_F.getEBounds().add(g1);
+        featureEChangeEClass_F.getEBounds().add(g1);
 
         // Add supertypes to classes
-        eFeatureChangeEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
-        updateEFeatureEClass.getESuperTypes().add(theChangePackage.getEAtomicChange());
-        updateMultiValuedEFeatureEClass.getESuperTypes().add(this.getUpdateEFeature());
-        updateSingleValuedEFeatureEClass.getESuperTypes().add(this.getUpdateEFeature());
+        featureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(eFeatureChangeEClass, EFeatureChange.class, "EFeatureChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(eFeatureChangeEClass_F);
-        initEReference(getEFeatureChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(eFeatureChangeEClass_A);
-        initEReference(getEFeatureChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, EFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEClass(featureEChangeEClass, FeatureEChange.class, "FeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        g1 = createEGenericType(featureEChangeEClass_F);
+        initEReference(getFeatureEChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        g1 = createEGenericType(featureEChangeEClass_A);
+        initEReference(getFeatureEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(updateEFeatureEClass, UpdateEFeature.class, "UpdateEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(updateMultiValuedEFeatureEClass, UpdateMultiValuedEFeature.class, "UpdateMultiValuedEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        initEClass(updateSingleValuedEFeatureEClass, UpdateSingleValuedEFeature.class, "UpdateSingleValuedEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(updateSingleValuedFeatureEChangeEClass, UpdateSingleValuedFeatureEChange.class, "UpdateSingleValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     }
 
 } //FeaturePackageImpl

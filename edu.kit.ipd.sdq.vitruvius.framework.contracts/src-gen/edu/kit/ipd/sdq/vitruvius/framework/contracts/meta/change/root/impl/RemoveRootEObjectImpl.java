@@ -3,15 +3,18 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEReferenceChange;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -28,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RemoveRootEObjectImpl<T extends EObject> extends ERootChangeImpl implements RemoveRootEObject<T> {
+public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl implements RemoveRootEObject<T> {
     /**
      * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference.
      * <!-- begin-user-doc -->
@@ -38,6 +41,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
      * @ordered
      */
     protected T oldValue;
+
     /**
      * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -47,6 +51,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
      * @ordered
      */
     protected static final boolean IS_DELETE_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -218,10 +223,10 @@ public class RemoveRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveEReferenceChange.class) {
+        if (baseClass == EObjectSubtractedEChange.class) {
             switch (derivedFeatureID) {
-                case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE;
-                case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE: return ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE;
+                case RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE: return ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE;
+                case RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE: return ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE;
                 default: return -1;
             }
         }
@@ -240,10 +245,10 @@ public class RemoveRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
                 default: return -1;
             }
         }
-        if (baseClass == SubtractiveEReferenceChange.class) {
+        if (baseClass == EObjectSubtractedEChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE;
-                case ChangePackage.SUBTRACTIVE_EREFERENCE_CHANGE__IS_DELETE: return RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE;
+                case ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__OLD_VALUE: return RootPackage.REMOVE_ROOT_EOBJECT__OLD_VALUE;
+                case ChangePackage.EOBJECT_SUBTRACTED_ECHANGE__IS_DELETE: return RootPackage.REMOVE_ROOT_EOBJECT__IS_DELETE;
                 default: return -1;
             }
         }

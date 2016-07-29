@@ -3,15 +3,18 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -28,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class InsertRootEObjectImpl<T extends EObject> extends ERootChangeImpl implements InsertRootEObject<T> {
+public class InsertRootEObjectImpl<T extends EObject> extends RootEChangeImpl implements InsertRootEObject<T> {
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
      * <!-- begin-user-doc -->
@@ -38,6 +41,7 @@ public class InsertRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
      * @ordered
      */
     protected T newValue;
+
     /**
      * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -47,6 +51,7 @@ public class InsertRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
      * @ordered
      */
     protected static final boolean IS_CREATE_EDEFAULT = false;
+
     /**
      * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute.
      * <!-- begin-user-doc -->
@@ -218,10 +223,10 @@ public class InsertRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveEReferenceChange.class) {
+        if (baseClass == EObjectAddedEChange.class) {
             switch (derivedFeatureID) {
-                case RootPackage.INSERT_ROOT_EOBJECT__NEW_VALUE: return ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE;
-                case RootPackage.INSERT_ROOT_EOBJECT__IS_CREATE: return ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE;
+                case RootPackage.INSERT_ROOT_EOBJECT__NEW_VALUE: return ChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE;
+                case RootPackage.INSERT_ROOT_EOBJECT__IS_CREATE: return ChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE;
                 default: return -1;
             }
         }
@@ -240,10 +245,10 @@ public class InsertRootEObjectImpl<T extends EObject> extends ERootChangeImpl im
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveEReferenceChange.class) {
+        if (baseClass == EObjectAddedEChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__NEW_VALUE: return RootPackage.INSERT_ROOT_EOBJECT__NEW_VALUE;
-                case ChangePackage.ADDITIVE_EREFERENCE_CHANGE__IS_CREATE: return RootPackage.INSERT_ROOT_EOBJECT__IS_CREATE;
+                case ChangePackage.EOBJECT_ADDED_ECHANGE__NEW_VALUE: return RootPackage.INSERT_ROOT_EOBJECT__NEW_VALUE;
+                case ChangePackage.EOBJECT_ADDED_ECHANGE__IS_CREATE: return RootPackage.INSERT_ROOT_EOBJECT__IS_CREATE;
                 default: return -1;
             }
         }

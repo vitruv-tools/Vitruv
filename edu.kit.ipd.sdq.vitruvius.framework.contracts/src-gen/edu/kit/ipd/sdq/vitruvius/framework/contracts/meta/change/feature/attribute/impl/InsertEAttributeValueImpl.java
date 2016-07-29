@@ -2,17 +2,19 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEAttributeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AdditiveAttributeEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.UpdateAttributeEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInEListImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl.InsertInListEChangeImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -38,7 +40,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class InsertEAttributeValueImpl<A extends EObject, T extends Object> extends InsertInEListImpl implements InsertEAttributeValue<A, T> {
+public class InsertEAttributeValueImpl<A extends EObject, T extends Object> extends InsertInListEChangeImpl implements InsertEAttributeValue<A, T> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc -->
@@ -274,14 +276,12 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE;
-                case AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT: return FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
             switch (derivedFeatureID) {
                 default: return -1;
             }
@@ -291,9 +291,21 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveEAttributeChange.class) {
+        if (baseClass == FeatureEChange.class) {
             switch (derivedFeatureID) {
-                case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE: return ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE;
+                case AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
+                case AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
+            switch (derivedFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == AdditiveAttributeEChange.class) {
+            switch (derivedFeatureID) {
+                case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
                 default: return -1;
             }
         }
@@ -307,14 +319,12 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == EFeatureChange.class) {
+        if (baseClass == EChange.class) {
             switch (baseFeatureID) {
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_FEATURE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
-                case FeaturePackage.EFEATURE_CHANGE__AFFECTED_EOBJECT: return AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
                 default: return -1;
             }
         }
-        if (baseClass == UpdateEAttribute.class) {
+        if (baseClass == AtomicEChange.class) {
             switch (baseFeatureID) {
                 default: return -1;
             }
@@ -324,9 +334,21 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
                 default: return -1;
             }
         }
-        if (baseClass == AdditiveEAttributeChange.class) {
+        if (baseClass == FeatureEChange.class) {
             switch (baseFeatureID) {
-                case ChangePackage.ADDITIVE_EATTRIBUTE_CHANGE__NEW_VALUE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
+                case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT: return AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
+                default: return -1;
+            }
+        }
+        if (baseClass == UpdateAttributeEChange.class) {
+            switch (baseFeatureID) {
+                default: return -1;
+            }
+        }
+        if (baseClass == AdditiveAttributeEChange.class) {
+            switch (baseFeatureID) {
+                case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
                 default: return -1;
             }
         }

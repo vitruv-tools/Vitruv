@@ -2,8 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.*;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -71,28 +72,24 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
     protected FeatureSwitch<Adapter> modelSwitch =
         new FeatureSwitch<Adapter>() {
             @Override
-            public <A extends EObject, F extends EStructuralFeature> Adapter caseEFeatureChange(EFeatureChange<A, F> object) {
-                return createEFeatureChangeAdapter();
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseFeatureEChange(FeatureEChange<A, F> object) {
+                return createFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateEFeature(UpdateEFeature object) {
-                return createUpdateEFeatureAdapter();
+            public Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+                return createUpdateMultiValuedFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
-                return createUpdateMultiValuedEFeatureAdapter();
-            }
-            @Override
-            public Adapter caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
-                return createUpdateSingleValuedEFeatureAdapter();
+            public Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
+                return createUpdateSingleValuedFeatureEChangeAdapter();
             }
             @Override
             public Adapter caseEChange(EChange object) {
                 return createEChangeAdapter();
             }
             @Override
-            public Adapter caseEAtomicChange(EAtomicChange object) {
-                return createEAtomicChangeAdapter();
+            public Adapter caseAtomicEChange(AtomicEChange object) {
+                return createAtomicEChangeAdapter();
             }
             @Override
             public Adapter defaultCase(EObject object) {
@@ -115,58 +112,44 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange <em>EFeature Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange <em>EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
      * @generated
      */
-    public Adapter createEFeatureChangeAdapter() {
+    public Adapter createFeatureEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature <em>Update EFeature</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateEFeature
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange
      * @generated
      */
-    public Adapter createUpdateEFeatureAdapter() {
+    public Adapter createUpdateMultiValuedFeatureEChangeAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature <em>Update Multi Valued EFeature</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange <em>Update Single Valued Feature EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedEFeature
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange
      * @generated
      */
-    public Adapter createUpdateMultiValuedEFeatureAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature <em>Update Single Valued EFeature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
-     * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedEFeature
-     * @generated
-     */
-    public Adapter createUpdateSingleValuedEFeatureAdapter() {
+    public Adapter createUpdateSingleValuedFeatureEChangeAdapter() {
         return null;
     }
 
@@ -185,16 +168,16 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange <em>EAtomic Change</em>}'.
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange <em>Atomic EChange</em>}'.
      * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
      * @return the new adapter.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange
      * @generated
      */
-    public Adapter createEAtomicChangeAdapter() {
+    public Adapter createAtomicEChangeAdapter() {
         return null;
     }
 

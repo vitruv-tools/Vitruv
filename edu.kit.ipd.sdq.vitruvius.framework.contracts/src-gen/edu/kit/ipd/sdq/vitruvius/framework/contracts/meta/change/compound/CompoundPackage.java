@@ -59,23 +59,23 @@ public interface CompoundPackage extends EPackage {
     CompoundPackage eINSTANCE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl.init();
 
     /**
-     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ECompoundChangeImpl <em>ECompound Change</em>}' class.
+     * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundEChangeImpl <em>EChange</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ECompoundChangeImpl
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getECompoundChange()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundEChangeImpl
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getCompoundEChange()
      * @generated
      */
-    int ECOMPOUND_CHANGE = 0;
+    int COMPOUND_ECHANGE = 0;
 
     /**
-     * The number of structural features of the '<em>ECompound Change</em>' class.
+     * The number of structural features of the '<em>EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ECOMPOUND_CHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
+    int COMPOUND_ECHANGE_FEATURE_COUNT = ChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -84,16 +84,16 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES = ChangePackage.ECHANGE_OPERATION_COUNT + 0;
+    int COMPOUND_ECHANGE___GET_ATOMIC_CHANGES = ChangePackage.ECHANGE_OPERATION_COUNT + 0;
 
     /**
-     * The number of operations of the '<em>ECompound Change</em>' class.
+     * The number of operations of the '<em>EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ECOMPOUND_CHANGE_OPERATION_COUNT = ChangePackage.ECHANGE_OPERATION_COUNT + 1;
+    int COMPOUND_ECHANGE_OPERATION_COUNT = ChangePackage.ECHANGE_OPERATION_COUNT + 1;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.
@@ -112,7 +112,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
+    int MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Subtract What Change</b></em>' containment reference.
@@ -121,7 +121,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+    int MOVE_EOBJECT__SUBTRACT_WHAT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Add Where Change</b></em>' reference.
@@ -130,7 +130,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__ADD_WHERE_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 2;
+    int MOVE_EOBJECT__ADD_WHERE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Add What Change</b></em>' containment reference.
@@ -139,7 +139,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT__ADD_WHAT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 3;
+    int MOVE_EOBJECT__ADD_WHAT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Move EObject</em>' class.
@@ -148,7 +148,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 4;
+    int MOVE_EOBJECT_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -157,7 +157,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT___GET_ATOMIC_CHANGES = ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES;
+    int MOVE_EOBJECT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
 
     /**
      * The number of operations of the '<em>Move EObject</em>' class.
@@ -166,7 +166,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MOVE_EOBJECT_OPERATION_COUNT = ECOMPOUND_CHANGE_OPERATION_COUNT + 0;
+    int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
@@ -185,7 +185,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_IN_ELIST__REMOVE_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
+    int REPLACE_IN_ELIST__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
@@ -194,7 +194,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_IN_ELIST__INSERT_CHANGE = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+    int REPLACE_IN_ELIST__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Replace In EList</em>' class.
@@ -203,7 +203,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_IN_ELIST_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 2;
+    int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -212,7 +212,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES;
+    int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
 
     /**
      * The number of operations of the '<em>Replace In EList</em>' class.
@@ -221,8 +221,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_IN_ELIST_OPERATION_COUNT = ECOMPOUND_CHANGE_OPERATION_COUNT + 0;
-
+    int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
@@ -241,7 +240,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = ECOMPOUND_CHANGE_FEATURE_COUNT + 0;
+    int EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
@@ -250,7 +249,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = ECOMPOUND_CHANGE_FEATURE_COUNT + 1;
+    int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -259,7 +258,7 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES;
+    int EXPLICIT_UNSET_EFEATURE___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
 
     /**
      * The number of operations of the '<em>Explicit Unset EFeature</em>' class.
@@ -268,28 +267,28 @@ public interface CompoundPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = ECOMPOUND_CHANGE_OPERATION_COUNT + 0;
+    int EXPLICIT_UNSET_EFEATURE_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
 
     /**
-     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange <em>ECompound Change</em>}'.
+     * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange <em>EChange</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for class '<em>ECompound Change</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange
+     * @return the meta object for class '<em>EChange</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange
      * @generated
      */
-    EClass getECompoundChange();
+    EClass getCompoundEChange();
 
     /**
-     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+     * Returns the meta object for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange#getAtomicChanges()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange#getAtomicChanges()
      * @generated
      */
-    EOperation getECompoundChange__GetAtomicChanges();
+    EOperation getCompoundEChange__GetAtomicChanges();
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject <em>Move EObject</em>}'.
@@ -422,14 +421,14 @@ public interface CompoundPackage extends EPackage {
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ECompoundChangeImpl <em>ECompound Change</em>}' class.
+         * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundEChangeImpl <em>EChange</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.ECompoundChangeImpl
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getECompoundChange()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundEChangeImpl
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.CompoundPackageImpl#getCompoundEChange()
          * @generated
          */
-        EClass ECOMPOUND_CHANGE = eINSTANCE.getECompoundChange();
+        EClass COMPOUND_ECHANGE = eINSTANCE.getCompoundEChange();
 
         /**
          * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
@@ -437,7 +436,7 @@ public interface CompoundPackage extends EPackage {
          * <!-- end-user-doc -->
          * @generated
          */
-        EOperation ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES = eINSTANCE.getECompoundChange__GetAtomicChanges();
+        EOperation COMPOUND_ECHANGE___GET_ATOMIC_CHANGES = eINSTANCE.getCompoundEChange__GetAtomicChanges();
 
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl.MoveEObjectImpl <em>Move EObject</em>}' class.

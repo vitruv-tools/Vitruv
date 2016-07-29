@@ -2,8 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EAtomicChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.*;
 
 import org.eclipse.emf.ecore.EObject;
@@ -69,37 +70,23 @@ public class FeatureSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-            case FeaturePackage.EFEATURE_CHANGE: {
-                EFeatureChange<?, ?> eFeatureChange = (EFeatureChange<?, ?>)theEObject;
-                T result = caseEFeatureChange(eFeatureChange);
-                if (result == null) result = caseEAtomicChange(eFeatureChange);
-                if (result == null) result = caseEChange(eFeatureChange);
+            case FeaturePackage.FEATURE_ECHANGE: {
+                FeatureEChange<?, ?> featureEChange = (FeatureEChange<?, ?>)theEObject;
+                T result = caseFeatureEChange(featureEChange);
+                if (result == null) result = caseAtomicEChange(featureEChange);
+                if (result == null) result = caseEChange(featureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case FeaturePackage.UPDATE_EFEATURE: {
-                UpdateEFeature updateEFeature = (UpdateEFeature)theEObject;
-                T result = caseUpdateEFeature(updateEFeature);
-                if (result == null) result = caseEAtomicChange(updateEFeature);
-                if (result == null) result = caseEChange(updateEFeature);
+            case FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE: {
+                UpdateMultiValuedFeatureEChange updateMultiValuedFeatureEChange = (UpdateMultiValuedFeatureEChange)theEObject;
+                T result = caseUpdateMultiValuedFeatureEChange(updateMultiValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
-            case FeaturePackage.UPDATE_MULTI_VALUED_EFEATURE: {
-                UpdateMultiValuedEFeature updateMultiValuedEFeature = (UpdateMultiValuedEFeature)theEObject;
-                T result = caseUpdateMultiValuedEFeature(updateMultiValuedEFeature);
-                if (result == null) result = caseUpdateEFeature(updateMultiValuedEFeature);
-                if (result == null) result = caseEAtomicChange(updateMultiValuedEFeature);
-                if (result == null) result = caseEChange(updateMultiValuedEFeature);
-                if (result == null) result = defaultCase(theEObject);
-                return result;
-            }
-            case FeaturePackage.UPDATE_SINGLE_VALUED_EFEATURE: {
-                UpdateSingleValuedEFeature updateSingleValuedEFeature = (UpdateSingleValuedEFeature)theEObject;
-                T result = caseUpdateSingleValuedEFeature(updateSingleValuedEFeature);
-                if (result == null) result = caseUpdateEFeature(updateSingleValuedEFeature);
-                if (result == null) result = caseEAtomicChange(updateSingleValuedEFeature);
-                if (result == null) result = caseEChange(updateSingleValuedEFeature);
+            case FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE: {
+                UpdateSingleValuedFeatureEChange updateSingleValuedFeatureEChange = (UpdateSingleValuedFeatureEChange)theEObject;
+                T result = caseUpdateSingleValuedFeatureEChange(updateSingleValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -108,62 +95,47 @@ public class FeatureSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EFeature Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public <A extends EObject, F extends EStructuralFeature> T caseEFeatureChange(EFeatureChange<A, F> object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseFeatureEChange(FeatureEChange<A, F> object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update EFeature</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateEFeature(UpdateEFeature object) {
+    public T caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Multi Valued EFeature</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Update Single Valued Feature EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateMultiValuedEFeature(UpdateMultiValuedEFeature object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Update Single Valued EFeature</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseUpdateSingleValuedEFeature(UpdateSingleValuedEFeature object) {
+    public T caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
         return null;
     }
 
@@ -183,17 +155,17 @@ public class FeatureSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
      * returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
      * @param object the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EAtomic Change</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseEAtomicChange(EAtomicChange object) {
+    public T caseAtomicEChange(AtomicEChange object) {
         return null;
     }
 

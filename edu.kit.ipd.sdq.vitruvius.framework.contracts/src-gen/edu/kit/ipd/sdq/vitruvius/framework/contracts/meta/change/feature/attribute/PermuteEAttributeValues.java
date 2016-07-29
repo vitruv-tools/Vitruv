@@ -2,7 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,5 +16,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface PermuteEAttributeValues<A extends EObject> extends PermuteEList, UpdateEAttribute<A> {
+public interface PermuteEAttributeValues<A extends EObject> extends PermuteListEChange, UpdateAttributeEChange<A> {
 } // PermuteEAttributeValues

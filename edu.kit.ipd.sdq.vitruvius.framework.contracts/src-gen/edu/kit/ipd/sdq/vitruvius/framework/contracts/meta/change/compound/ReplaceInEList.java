@@ -4,9 +4,12 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInEList;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromEList;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
@@ -27,7 +30,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @model
  * @generated
  */
-public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromEList & EFeatureChange<A, F> & SubtractiveEChange<T>, I extends InsertInEList & EFeatureChange<A, F> & AdditiveEChange<T>> extends ECompoundChange {
+public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange & FeatureEChange<A, F> & AdditiveEChange<T>> extends CompoundEChange {
     /**
      * Returns the value of the '<em><b>Remove Change</b></em>' containment reference.
      * <!-- begin-user-doc -->
@@ -37,7 +40,7 @@ public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature,
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Remove Change</em>' containment reference.
-     * @see #setRemoveChange(RemoveFromEList)
+     * @see #setRemoveChange(RemoveFromListEChange)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage#getReplaceInEList_RemoveChange()
      * @model containment="true" required="true"
      * @generated
@@ -63,7 +66,7 @@ public interface ReplaceInEList<A extends EObject, F extends EStructuralFeature,
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Insert Change</em>' containment reference.
-     * @see #setInsertChange(InsertInEList)
+     * @see #setInsertChange(InsertInListEChange)
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage#getReplaceInEList_InsertChange()
      * @model containment="true" required="true"
      * @generated

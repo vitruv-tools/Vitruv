@@ -4,9 +4,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ECompoundChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.MoveEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ReplaceInEList;
@@ -28,6 +28,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReferencePackageImpl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.ChangePackageImpl;
+
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootPackageImpl;
@@ -53,7 +54,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    private EClass eCompoundChangeEClass = null;
+    private EClass compoundEChangeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -162,8 +163,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EClass getECompoundChange() {
-        return eCompoundChangeEClass;
+    public EClass getCompoundEChange() {
+        return compoundEChangeEClass;
     }
 
     /**
@@ -171,8 +172,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    public EOperation getECompoundChange__GetAtomicChanges() {
-        return eCompoundChangeEClass.getEOperations().get(0);
+    public EOperation getCompoundEChange__GetAtomicChanges() {
+        return compoundEChangeEClass.getEOperations().get(0);
     }
 
     /**
@@ -293,8 +294,8 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         isCreated = true;
 
         // Create classes and their features
-        eCompoundChangeEClass = createEClass(ECOMPOUND_CHANGE);
-        createEOperation(eCompoundChangeEClass, ECOMPOUND_CHANGE___GET_ATOMIC_CHANGES);
+        compoundEChangeEClass = createEClass(COMPOUND_ECHANGE);
+        createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___GET_ATOMIC_CHANGES);
 
         moveEObjectEClass = createEClass(MOVE_EOBJECT);
         createEReference(moveEObjectEClass, MOVE_EOBJECT__SUBTRACT_WHERE_CHANGE);
@@ -366,9 +367,9 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         replaceInEListEClass_F.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEObject());
         replaceInEListEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(theListPackage.getRemoveFromEList());
+        g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
         replaceInEListEClass_R.getEBounds().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
+        g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
         EGenericType g2 = createEGenericType(replaceInEListEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(replaceInEListEClass_F);
@@ -378,9 +379,9 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g2 = createEGenericType(replaceInEListEClass_T);
         g1.getETypeArguments().add(g2);
         replaceInEListEClass_R.getEBounds().add(g1);
-        g1 = createEGenericType(theListPackage.getInsertInEList());
+        g1 = createEGenericType(theListPackage.getInsertInListEChange());
         replaceInEListEClass_I.getEBounds().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
+        g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
         g2 = createEGenericType(replaceInEListEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(replaceInEListEClass_F);
@@ -396,7 +397,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         explicitUnsetEFeatureEClass_F.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEJavaObject());
         explicitUnsetEFeatureEClass_T.getEBounds().add(g1);
-        g1 = createEGenericType(theFeaturePackage.getEFeatureChange());
+        g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
         g2 = createEGenericType(explicitUnsetEFeatureEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(explicitUnsetEFeatureEClass_F);
@@ -408,30 +409,30 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         explicitUnsetEFeatureEClass_S.getEBounds().add(g1);
 
         // Add supertypes to classes
-        eCompoundChangeEClass.getESuperTypes().add(theChangePackage.getEChange());
-        moveEObjectEClass.getESuperTypes().add(this.getECompoundChange());
-        replaceInEListEClass.getESuperTypes().add(this.getECompoundChange());
-        explicitUnsetEFeatureEClass.getESuperTypes().add(this.getECompoundChange());
+        compoundEChangeEClass.getESuperTypes().add(theChangePackage.getEChange());
+        moveEObjectEClass.getESuperTypes().add(this.getCompoundEChange());
+        replaceInEListEClass.getESuperTypes().add(this.getCompoundEChange());
+        explicitUnsetEFeatureEClass.getESuperTypes().add(this.getCompoundEChange());
 
         // Initialize classes, features, and operations; add parameters
-        initEClass(eCompoundChangeEClass, ECompoundChange.class, "ECompoundChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEClass(compoundEChangeEClass, CompoundEChange.class, "CompoundEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEOperation(getECompoundChange__GetAtomicChanges(), theChangePackage.getEAtomicChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
+        initEOperation(getCompoundEChange__GetAtomicChanges(), theChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
         initEClass(moveEObjectEClass, MoveEObject.class, "MoveEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        g1 = createEGenericType(theReferencePackage.getUpdateEReference());
+        g1 = createEGenericType(theReferencePackage.getUpdateReferenceEChange());
         g2 = createEGenericType(moveEObjectEClass_A);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_SubtractWhereChange(), g1, null, "subtractWhereChange", null, 0, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theChangePackage.getSubtractiveEReferenceChange());
+        g1 = createEGenericType(theChangePackage.getEObjectSubtractedEChange());
         g2 = createEGenericType(moveEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_SubtractWhatChange(), g1, null, "subtractWhatChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theReferencePackage.getUpdateEReference());
+        g1 = createEGenericType(theReferencePackage.getUpdateReferenceEChange());
         g2 = createEGenericType(moveEObjectEClass_B);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_AddWhereChange(), g1, null, "addWhereChange", null, 0, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        g1 = createEGenericType(theChangePackage.getAdditiveEReferenceChange());
+        g1 = createEGenericType(theChangePackage.getEObjectAddedEChange());
         g2 = createEGenericType(moveEObjectEClass_T);
         g1.getETypeArguments().add(g2);
         initEReference(getMoveEObject_AddWhatChange(), g1, null, "addWhatChange", null, 1, 1, MoveEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

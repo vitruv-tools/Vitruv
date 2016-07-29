@@ -2,7 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEReferenceChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,5 +16,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface InsertRootEObject<T extends EObject> extends ERootChange, AdditiveEReferenceChange<T> {
+public interface InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {
 } // InsertRootEObject

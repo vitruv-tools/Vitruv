@@ -7,15 +7,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveECha
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.ExplicitUnsetEFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -32,7 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralFeature, T extends Object, S extends EFeatureChange<A, F> & SubtractiveEChange<T>> extends ECompoundChangeImpl implements ExplicitUnsetEFeature<A, F, T, S> {
+public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralFeature, T extends Object, S extends FeatureEChange<A, F> & SubtractiveEChange<T>> extends CompoundEChangeImpl implements ExplicitUnsetEFeature<A, F, T, S> {
     /**
      * The cached value of the '{@link #getSubtractiveChanges() <em>Subtractive Changes</em>}' reference list.
      * <!-- begin-user-doc -->
@@ -69,7 +70,7 @@ public class ExplicitUnsetEFeatureImpl<A extends EObject, F extends EStructuralF
      */
     public EList<S> getSubtractiveChanges() {
         if (subtractiveChanges == null) {
-            subtractiveChanges = new EObjectResolvingEList.Unsettable<S>(EFeatureChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
+            subtractiveChanges = new EObjectResolvingEList.Unsettable<S>(FeatureEChange.class, this, CompoundPackage.EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES);
         }
         return subtractiveChanges;
     }
