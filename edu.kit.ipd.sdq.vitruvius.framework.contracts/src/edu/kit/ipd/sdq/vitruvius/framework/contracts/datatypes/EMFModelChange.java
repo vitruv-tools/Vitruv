@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 
 public class EMFModelChange extends Change implements URIHaving {
     private VURI vuri;
