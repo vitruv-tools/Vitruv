@@ -14,7 +14,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		startRecording
 
 		// unset 
-		this.rootElement.eUnset(this.rootElement.getFeautreByName(MULTI_VALUE_E_ATTRIBUTE_NAME))
+		this.rootElement.eUnset(this.rootElement.getFeatureByName(MULTI_VALUE_E_ATTRIBUTE_NAME))
 
 		val subtractiveChanges = claimChange(0).assertExplicitUnset.subtractiveChanges
 		subtractiveChanges.assertRemoveEAttribute(this.rootElement, MULTI_VALUE_E_ATTRIBUTE_NAME, 42, 0)

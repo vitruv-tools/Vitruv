@@ -14,8 +14,8 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	var rs = new ResourceSetImpl
 	var protected Resource resource1
 	var protected Resource resource2
-	var protected String uri1 = "dummyURI1"
-	var protected String uri2 = "dummyURI2"
+	var protected String uri1 = "/dummyURI1"
+	var protected String uri2 = "/dummyURI2"
 	
 	@Before
 	def override beforeTest(){
@@ -25,8 +25,7 @@ class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransform
 	}
 	
 	def protected startRecordingOnResourceSet() {
-		this.changeRecorder.startObserving(rs)
-		startRecording()
+		startRecording(#[rs])
 	}
 	
 		

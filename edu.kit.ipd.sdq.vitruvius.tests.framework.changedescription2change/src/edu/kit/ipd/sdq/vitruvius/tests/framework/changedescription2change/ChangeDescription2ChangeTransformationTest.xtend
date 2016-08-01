@@ -12,6 +12,12 @@ import org.junit.Before
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changedescription2change.util.ChangeAssertHelper.*
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
+import org.eclipse.emf.common.util.EList
+import allElementTypes.NonRoot
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
+import java.util.Collection
+import org.eclipse.emf.common.notify.Notifier
+
 /** 
  * This class is the test class for the new {@link ChangeDescription2ChangeTransformation}. It
  * reuses some test cases from the test for the old metamodel that can be found in the project
@@ -37,13 +43,14 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@Before
 	def void beforeTest() {
 		this.rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
-		this.changeRecorder = new ForwardChangeRecorder(newArrayList(rootElement))
+		this.rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
+		this.changeRecorder = new ForwardChangeRecorder()
 	}
 
 	@After
 	def void afterTest() {
 		if (this.changeRecorder.isRecording) {
-			this.changeRecorder.endRec()
+			this.changeRecorder.endRecording()
 		}
 		this.changeRecorder.dispose()
 	}
@@ -60,13 +67,17 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	public def List<EChange> endRecording() {
-		val changesDescriptions = changeRecorder.endRec()
-		return new ChangeDescription2ChangeTransformation(changesDescriptions).transform()
+		val changesDescriptions = changeRecorder.endRecording()
+		return new ChangeDescription2ChangeTransformation(changesDescriptions).getChanges().filter(EMFModelChange).map[it.EChange].toList;
+	}
+	
+	public def startRecording(Collection<Notifier> additionalElements) {
+		this.changes = null
+		this.changeRecorder.beginRecording((#[rootElement] + if (additionalElements != null) additionalElements else #[]).toList)
 	}
 	
 	public def startRecording(){
-		this.changes = null
-		this.changeRecorder.beginRec()
+		startRecording(null);
 	}
 	
 	public def getRootElement(){
@@ -75,7 +86,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	protected  def createAndAddNonRootToFeature(EStructuralFeature eStructuralFeature, boolean shouldStartRecording) {
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.eSet(eStructuralFeature, nonRoot)
+		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
 		if (shouldStartRecording) {
 			startRecording
 		}
@@ -84,7 +95,23 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	protected def createAndAddNonRootToContainment(boolean shouldStartRecording) {
 		// prepare --> insert the non root in the containment - but do not test the containment
-		createAndAddNonRootToFeature(this.rootElement.getFeautreByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
-			shouldStartRecording)
+//		createAndAddNonRootToFeature(this.rootElement.getFeatureByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
+//			shouldStartRecording)
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
+		this.rootElement.singleValuedContainmentEReference = nonRoot;
+		if (shouldStartRecording) {
+			startRecording
+		}
+		return nonRoot
+	}
+	
+	protected def createAndAddNonRootToRootContainer(boolean shouldStartRecording) {
+		// prepare --> insert the non root in the containment - but do not test the containment
+		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
+		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
+		if (shouldStartRecording) {
+			startRecording
+		}
+		return nonRoot
 	}
 }

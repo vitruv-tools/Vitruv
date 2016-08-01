@@ -10,14 +10,12 @@ class ChangeDescription2ChangeTransformationTestUtil {
 
 	def public static testReplaceSingleValuedAttribute(ChangeDescription2ChangeTransformationTest test, int oldValue,
 		int newValue) {
-		// the test
+		// test
 		test.startRecording
 		test.rootElement.singleValuedEAttribute = newValue
-
-		// get the changes
 		val changes = test.getChanges()
 
-		// assert the changes
+		// assert
 		changes.get(0).assertReplaceSingleValueEAttribute(oldValue, newValue)
 	}
 
