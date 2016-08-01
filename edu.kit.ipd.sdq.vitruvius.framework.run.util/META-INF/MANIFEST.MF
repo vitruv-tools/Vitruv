@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Util
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.util
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ org.eclipse.emf.ecore,
+ org.apache.log4j,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.util
