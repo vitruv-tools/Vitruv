@@ -15,6 +15,11 @@ import org.eclipse.emf.ecore.resource.Resource
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 import static edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory
+import java.util.ArrayList
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
@@ -25,20 +30,29 @@ class ChangeDescription2ChangeUtil {
 	private new() {
 	}
 	
-	def static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EReference reference) {
+	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject,  EReference reference) {
 		return createAdditiveEChangeForReferencedObject(eObject, reference)
 	}
 	
-	def static dispatch EChange createAdditiveChangeForValue(EObject eObject,  EAttribute attribute) {
-		return createAdditiveEChangeForAttributeValue(eObject, attribute)
+	def static dispatch List<AdditiveEChange<?>> createAdditiveChangesForValue(EObject eObject,  EAttribute attribute) {
+		return #[createAdditiveEChangeForAttributeValue(eObject, attribute)]
 	}
 	
-	def static EChange createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference) {
+	def static List<AdditiveEChange<?>> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference) {
+		val result = new ArrayList<AdditiveEChange<?>>(); 
+		if (reference.isMany) {
+			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue);
+			}
+		} else {
+				result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0));
+		}
+		return result;
 		// FIXME MK ChangeBridge
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
-	def static EChange createAdditiveEChangeForAttributeValue(EObject eObject, EAttribute attribute) {
+	def static AdditiveEChange<?> createAdditiveEChangeForAttributeValue(EObject eObject, EAttribute attribute) {
 		return createAdditiveAttributeChange(eObject, attribute)
 	}
 	
@@ -94,12 +108,12 @@ class ChangeDescription2ChangeUtil {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && valueIsNonDefault(eObject, feature)
 	}
 	
-	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EStructuralFeature feature) {
-		return new BasicEList
+	def static EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
+		return getValueList(eObject, reference) as EList<EObject>
 	}
 	
-	def static dispatch EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
-		return getValueList(eObject, reference) as EList<EObject>
+	def static EList<Object> getReferenceValueList(EObject eObject, EAttribute attribute) {
+		return getValueList(eObject, attribute) as EList<Object>
 	}
 	
 	def static InsertRootEObject<?> createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, String resourceURI) {
@@ -120,7 +134,7 @@ class ChangeDescription2ChangeUtil {
 		return createRemoveRootChange(rootToRemove, isDelete, resourceURI)
 	}
 	
-	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue) {
+	def static InsertEReference<?,?> createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue) {
 		val isContainment = affectedReference.containment
 		val oldContainer = referenceValue.eContainer
 		val oldResource = referenceValue.eResource
@@ -132,5 +146,25 @@ class ChangeDescription2ChangeUtil {
 		val isContainment = affectedReference.containment
 		val isDelete = isContainment && isDelete(newContainer,newResource)
 		return createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index, isDelete)
+	}
+	
+	def static ReplaceSingleValuedEReference createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue) {
+		val isContainment = affectedReference.containment
+		val container = affectedEObject;
+		val resource = if (oldReferenceValue != null) oldReferenceValue.eResource else newReferenceValue.eResource;
+		val isCreate = isContainment && isCreate(container, resource)
+		return createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, isCreate, isCreate)
+	}
+	
+	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
+		return TypeInferringAtomicEChangeFactory.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
+	}
+	
+	def static EChange createRemoveAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object oldValue) {
+		return TypeInferringAtomicEChangeFactory.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValue)
+	}
+		
+	def static EChange createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+		return TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
 }
