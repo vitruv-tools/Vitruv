@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.refere
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.PermuteListEChange;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface PermuteEReferences<A extends EObject> extends PermuteListEChange, UpdateReferenceEChange<A> {
+public interface PermuteEReferences<A extends EObject> extends PermuteListEChange<A, EReference>, UpdateReferenceEChange<A> {
 } // PermuteEReferences

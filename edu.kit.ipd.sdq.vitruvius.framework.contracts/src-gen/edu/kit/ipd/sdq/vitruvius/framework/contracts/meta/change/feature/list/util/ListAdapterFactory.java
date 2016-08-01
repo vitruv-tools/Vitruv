@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.u
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.*;
@@ -14,6 +15,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -72,19 +74,19 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
     protected ListSwitch<Adapter> modelSwitch =
         new ListSwitch<Adapter>() {
             @Override
-            public Adapter caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
                 return createUpdateSingleListEntryEChangeAdapter();
             }
             @Override
-            public Adapter caseInsertInListEChange(InsertInListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseInsertInListEChange(InsertInListEChange<A, F> object) {
                 return createInsertInListEChangeAdapter();
             }
             @Override
-            public Adapter caseRemoveFromListEChange(RemoveFromListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
                 return createRemoveFromListEChangeAdapter();
             }
             @Override
-            public Adapter casePermuteListEChange(PermuteListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter casePermuteListEChange(PermuteListEChange<A, F> object) {
                 return createPermuteListEChangeAdapter();
             }
             @Override
@@ -96,7 +98,11 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
                 return createAtomicEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseFeatureEChange(FeatureEChange<A, F> object) {
+                return createFeatureEChangeAdapter();
+            }
+            @Override
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
                 return createUpdateMultiValuedFeatureEChangeAdapter();
             }
             @Override
@@ -200,6 +206,20 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createAtomicEChangeAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange <em>EChange</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
+     * @generated
+     */
+    public Adapter createFeatureEChangeAdapter() {
         return null;
     }
 

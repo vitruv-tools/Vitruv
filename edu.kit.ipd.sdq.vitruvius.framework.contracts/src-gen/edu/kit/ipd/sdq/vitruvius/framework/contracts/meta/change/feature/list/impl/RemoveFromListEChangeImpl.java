@@ -6,6 +6,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Li
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,7 +16,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class RemoveFromListEChangeImpl extends UpdateSingleListEntryEChangeImpl implements RemoveFromListEChange {
+public abstract class RemoveFromListEChangeImpl<A extends EObject, F extends EStructuralFeature> extends UpdateSingleListEntryEChangeImpl<A, F> implements RemoveFromListEChange<A, F> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

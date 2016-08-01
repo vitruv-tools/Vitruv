@@ -252,7 +252,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
 
     /**
      * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -261,7 +261,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
     /**
      * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -270,7 +270,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -279,7 +279,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
@@ -288,7 +288,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -328,6 +328,24 @@ public interface AttributePackage extends EPackage {
     int INSERT_EATTRIBUTE_VALUE = 4;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -337,31 +355,13 @@ public interface AttributePackage extends EPackage {
     int INSERT_EATTRIBUTE_VALUE__INDEX = ListPackage.INSERT_IN_LIST_ECHANGE__INDEX;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>New Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INSERT_EATTRIBUTE_VALUE__NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 2;
+    int INSERT_EATTRIBUTE_VALUE__NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Insert EAttribute Value</em>' class.
@@ -370,7 +370,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 3;
+    int INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -401,6 +401,24 @@ public interface AttributePackage extends EPackage {
     int REMOVE_EATTRIBUTE_VALUE = 5;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -410,31 +428,13 @@ public interface AttributePackage extends EPackage {
     int REMOVE_EATTRIBUTE_VALUE__INDEX = ListPackage.REMOVE_FROM_LIST_ECHANGE__INDEX;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
      * The feature id for the '<em><b>Old Value</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
+    int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Remove EAttribute Value</em>' class.
@@ -443,7 +443,7 @@ public interface AttributePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 3;
+    int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -474,6 +474,24 @@ public interface AttributePackage extends EPackage {
     int PERMUTE_EATTRIBUTE_VALUES = 6;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -483,31 +501,13 @@ public interface AttributePackage extends EPackage {
     int PERMUTE_EATTRIBUTE_VALUES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_EATTRIBUTE_VALUES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
      * The number of structural features of the '<em>Permute EAttribute Values</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EATTRIBUTE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 2;
+    int PERMUTE_EATTRIBUTE_VALUES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Permute EAttribute Values</em>' class.

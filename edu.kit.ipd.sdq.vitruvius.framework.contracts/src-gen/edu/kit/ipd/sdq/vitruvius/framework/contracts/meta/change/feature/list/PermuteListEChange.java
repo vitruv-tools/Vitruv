@@ -5,6 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * @model abstract="true"
  * @generated
  */
-public interface PermuteListEChange extends UpdateMultiValuedFeatureEChange {
+public interface PermuteListEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {
     /**
      * Returns the value of the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
      * The list contents are of type {@link java.lang.Integer}.

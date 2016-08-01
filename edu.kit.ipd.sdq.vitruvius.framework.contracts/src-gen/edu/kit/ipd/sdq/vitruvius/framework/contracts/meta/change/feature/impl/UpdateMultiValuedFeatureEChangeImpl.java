@@ -4,9 +4,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AtomicEChangeImpl;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public abstract class UpdateMultiValuedFeatureEChangeImpl extends AtomicEChangeImpl implements UpdateMultiValuedFeatureEChange {
+public abstract class UpdateMultiValuedFeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends FeatureEChangeImpl<A, F> implements UpdateMultiValuedFeatureEChange<A, F> {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

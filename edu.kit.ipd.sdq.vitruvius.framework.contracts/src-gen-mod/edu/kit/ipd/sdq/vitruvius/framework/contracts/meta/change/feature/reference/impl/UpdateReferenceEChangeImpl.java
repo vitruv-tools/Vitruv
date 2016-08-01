@@ -14,8 +14,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Update Reference EChange</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Update Reference
+ * EChange</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */

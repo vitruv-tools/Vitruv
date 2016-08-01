@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.refere
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange, SubtractiveReferenceEChange<A, T> {
+public interface RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference>, SubtractiveReferenceEChange<A, T> {
 } // RemoveEReference

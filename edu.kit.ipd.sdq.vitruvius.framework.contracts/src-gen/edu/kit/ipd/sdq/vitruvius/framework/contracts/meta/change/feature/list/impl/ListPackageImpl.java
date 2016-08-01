@@ -35,8 +35,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl.RootP
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -275,14 +277,58 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
         FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 
         // Create type parameters
+        ETypeParameter updateSingleListEntryEChangeEClass_A = addETypeParameter(updateSingleListEntryEChangeEClass, "A");
+        ETypeParameter updateSingleListEntryEChangeEClass_F = addETypeParameter(updateSingleListEntryEChangeEClass, "F");
+        ETypeParameter insertInListEChangeEClass_A = addETypeParameter(insertInListEChangeEClass, "A");
+        ETypeParameter insertInListEChangeEClass_F = addETypeParameter(insertInListEChangeEClass, "F");
+        ETypeParameter removeFromListEChangeEClass_A = addETypeParameter(removeFromListEChangeEClass, "A");
+        ETypeParameter removeFromListEChangeEClass_F = addETypeParameter(removeFromListEChangeEClass, "F");
+        ETypeParameter permuteListEChangeEClass_A = addETypeParameter(permuteListEChangeEClass, "A");
+        ETypeParameter permuteListEChangeEClass_F = addETypeParameter(permuteListEChangeEClass, "F");
 
         // Set bounds for type parameters
+        EGenericType g1 = createEGenericType(ecorePackage.getEObject());
+        updateSingleListEntryEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        updateSingleListEntryEChangeEClass_F.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        insertInListEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        insertInListEChangeEClass_F.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        removeFromListEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        removeFromListEChangeEClass_F.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        permuteListEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        permuteListEChangeEClass_F.getEBounds().add(g1);
 
         // Add supertypes to classes
-        updateSingleListEntryEChangeEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
-        insertInListEChangeEClass.getESuperTypes().add(this.getUpdateSingleListEntryEChange());
-        removeFromListEChangeEClass.getESuperTypes().add(this.getUpdateSingleListEntryEChange());
-        permuteListEChangeEClass.getESuperTypes().add(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
+        g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
+        EGenericType g2 = createEGenericType(updateSingleListEntryEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(updateSingleListEntryEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        updateSingleListEntryEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateSingleListEntryEChange());
+        g2 = createEGenericType(insertInListEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(insertInListEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        insertInListEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getUpdateSingleListEntryEChange());
+        g2 = createEGenericType(removeFromListEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(removeFromListEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        removeFromListEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedFeatureEChange());
+        g2 = createEGenericType(permuteListEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(permuteListEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        permuteListEChangeEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(updateSingleListEntryEChangeEClass, UpdateSingleListEntryEChange.class, "UpdateSingleListEntryEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

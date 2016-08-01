@@ -68,6 +68,24 @@ public interface ListPackage extends EPackage {
     int UPDATE_SINGLE_LIST_ENTRY_ECHANGE = 0;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_FEATURE = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -103,6 +121,24 @@ public interface ListPackage extends EPackage {
      * @generated
      */
     int INSERT_IN_LIST_ECHANGE = 1;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_LIST_ECHANGE__AFFECTED_FEATURE = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
 
     /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -142,6 +178,24 @@ public interface ListPackage extends EPackage {
     int REMOVE_FROM_LIST_ECHANGE = 2;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_LIST_ECHANGE__AFFECTED_FEATURE = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -177,6 +231,24 @@ public interface ListPackage extends EPackage {
      * @generated
      */
     int PERMUTE_LIST_ECHANGE = 3;
+
+    /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
     /**
      * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.

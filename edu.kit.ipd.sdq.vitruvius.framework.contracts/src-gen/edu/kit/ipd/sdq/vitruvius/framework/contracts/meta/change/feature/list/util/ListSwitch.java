@@ -4,6 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.u
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.*;
@@ -11,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.*;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -71,38 +73,42 @@ public class ListSwitch<T> extends Switch<T> {
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
             case ListPackage.UPDATE_SINGLE_LIST_ENTRY_ECHANGE: {
-                UpdateSingleListEntryEChange updateSingleListEntryEChange = (UpdateSingleListEntryEChange)theEObject;
+                UpdateSingleListEntryEChange<?, ?> updateSingleListEntryEChange = (UpdateSingleListEntryEChange<?, ?>)theEObject;
                 T result = caseUpdateSingleListEntryEChange(updateSingleListEntryEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(updateSingleListEntryEChange);
+                if (result == null) result = caseFeatureEChange(updateSingleListEntryEChange);
                 if (result == null) result = caseAtomicEChange(updateSingleListEntryEChange);
                 if (result == null) result = caseEChange(updateSingleListEntryEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ListPackage.INSERT_IN_LIST_ECHANGE: {
-                InsertInListEChange insertInListEChange = (InsertInListEChange)theEObject;
+                InsertInListEChange<?, ?> insertInListEChange = (InsertInListEChange<?, ?>)theEObject;
                 T result = caseInsertInListEChange(insertInListEChange);
                 if (result == null) result = caseUpdateSingleListEntryEChange(insertInListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertInListEChange);
+                if (result == null) result = caseFeatureEChange(insertInListEChange);
                 if (result == null) result = caseAtomicEChange(insertInListEChange);
                 if (result == null) result = caseEChange(insertInListEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ListPackage.REMOVE_FROM_LIST_ECHANGE: {
-                RemoveFromListEChange removeFromListEChange = (RemoveFromListEChange)theEObject;
+                RemoveFromListEChange<?, ?> removeFromListEChange = (RemoveFromListEChange<?, ?>)theEObject;
                 T result = caseRemoveFromListEChange(removeFromListEChange);
                 if (result == null) result = caseUpdateSingleListEntryEChange(removeFromListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeFromListEChange);
+                if (result == null) result = caseFeatureEChange(removeFromListEChange);
                 if (result == null) result = caseAtomicEChange(removeFromListEChange);
                 if (result == null) result = caseEChange(removeFromListEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case ListPackage.PERMUTE_LIST_ECHANGE: {
-                PermuteListEChange permuteListEChange = (PermuteListEChange)theEObject;
+                PermuteListEChange<?, ?> permuteListEChange = (PermuteListEChange<?, ?>)theEObject;
                 T result = casePermuteListEChange(permuteListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteListEChange);
+                if (result == null) result = caseFeatureEChange(permuteListEChange);
                 if (result == null) result = caseAtomicEChange(permuteListEChange);
                 if (result == null) result = caseEChange(permuteListEChange);
                 if (result == null) result = defaultCase(theEObject);
@@ -123,7 +129,7 @@ public class ListSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
         return null;
     }
 
@@ -138,7 +144,7 @@ public class ListSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseInsertInListEChange(InsertInListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseInsertInListEChange(InsertInListEChange<A, F> object) {
         return null;
     }
 
@@ -153,7 +159,7 @@ public class ListSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseRemoveFromListEChange(RemoveFromListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
         return null;
     }
 
@@ -168,7 +174,7 @@ public class ListSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T casePermuteListEChange(PermuteListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T casePermuteListEChange(PermuteListEChange<A, F> object) {
         return null;
     }
 
@@ -203,6 +209,21 @@ public class ListSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public <A extends EObject, F extends EStructuralFeature> T caseFeatureEChange(FeatureEChange<A, F> object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
      * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -213,7 +234,7 @@ public class ListSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
         return null;
     }
 

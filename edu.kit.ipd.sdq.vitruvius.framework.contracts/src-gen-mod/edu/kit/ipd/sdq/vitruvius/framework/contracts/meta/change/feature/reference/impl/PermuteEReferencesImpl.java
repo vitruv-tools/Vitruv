@@ -22,8 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Permute EReferences</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Permute
+ * EReferences</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -38,7 +38,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  *
  * @generated
  */
-public class PermuteEReferencesImpl<A extends EObject> extends PermuteListEChangeImpl implements PermuteEReferences<A> {
+public class PermuteEReferencesImpl<A extends EObject> extends PermuteListEChangeImpl<A, EReference>
+        implements PermuteEReferences<A> {
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -103,6 +104,7 @@ public class PermuteEReferencesImpl<A extends EObject> extends PermuteListEChang
      *
      * @generated
      */
+    @Override
     public EReference basicGetAffectedFeature() {
         return this.affectedFeature;
     }
@@ -147,6 +149,7 @@ public class PermuteEReferencesImpl<A extends EObject> extends PermuteListEChang
      *
      * @generated
      */
+    @Override
     public A basicGetAffectedEObject() {
         return this.affectedEObject;
     }

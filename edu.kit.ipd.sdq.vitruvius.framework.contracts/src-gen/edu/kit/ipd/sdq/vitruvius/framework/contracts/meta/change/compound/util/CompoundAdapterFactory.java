@@ -86,7 +86,7 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
                 return createMoveEObjectAdapter();
             }
             @Override
-            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange & FeatureEChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+            public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F> & FeatureEChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
                 return createReplaceInEListAdapter();
             }
             @Override

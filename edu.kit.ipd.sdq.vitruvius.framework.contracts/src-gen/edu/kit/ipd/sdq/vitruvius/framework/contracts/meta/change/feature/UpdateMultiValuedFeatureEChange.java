@@ -2,7 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,5 +15,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
  * @model abstract="true"
  * @generated
  */
-public interface UpdateMultiValuedFeatureEChange extends AtomicEChange {
+public interface UpdateMultiValuedFeatureEChange<A extends EObject, F extends EStructuralFeature> extends FeatureEChange<A, F> {
 } // UpdateMultiValuedFeatureEChange

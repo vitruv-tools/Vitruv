@@ -29,8 +29,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Replace Single Valued EReference</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Replace Single Valued
+ * EReference</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -58,11 +58,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * @generated
  */
 public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObject>
-        extends UpdateSingleValuedFeatureEChangeImpl implements ReplaceSingleValuedEReference<A, T> {
+        extends UpdateSingleValuedFeatureEChangeImpl<A, EReference> implements ReplaceSingleValuedEReference<A, T> {
     /**
      * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getOldValue()
      * @generated
      * @ordered
@@ -72,7 +72,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The default value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -82,7 +82,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The cached value of the '{@link #isIsDelete() <em>Is Delete</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsDelete()
      * @generated
      * @ordered
@@ -92,7 +92,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAffectedFeature()
      * @generated
      * @ordered
@@ -102,7 +102,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAffectedEObject()
      * @generated
      * @ordered
@@ -112,7 +112,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getNewValue()
      * @generated
      * @ordered
@@ -122,7 +122,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -132,7 +132,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
     /**
      * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -141,7 +141,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ReplaceSingleValuedEReferenceImpl() {
@@ -150,7 +150,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -160,7 +160,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -180,7 +180,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public T basicGetOldValue() {
@@ -189,7 +189,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -203,7 +203,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -213,7 +213,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -227,7 +227,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -247,16 +247,17 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EReference basicGetAffectedFeature() {
         return this.affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -271,7 +272,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -292,16 +293,17 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public A basicGetAffectedEObject() {
         return this.affectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -316,7 +318,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -336,7 +338,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public T basicGetNewValue() {
@@ -345,7 +347,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -359,7 +361,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -369,7 +371,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -393,7 +395,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -425,7 +427,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -456,7 +458,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -486,7 +488,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -510,7 +512,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -592,7 +594,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -674,7 +676,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -750,7 +752,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -764,7 +766,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

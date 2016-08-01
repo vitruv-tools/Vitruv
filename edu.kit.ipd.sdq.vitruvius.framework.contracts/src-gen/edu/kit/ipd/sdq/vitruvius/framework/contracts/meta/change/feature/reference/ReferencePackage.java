@@ -291,6 +291,24 @@ public interface ReferencePackage extends EPackage {
     int REPLACE_SINGLE_VALUED_EREFERENCE = 3;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Old Value</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -309,31 +327,13 @@ public interface ReferencePackage extends EPackage {
     int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
-
-    /**
      * The feature id for the '<em><b>New Value</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -342,7 +342,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 5;
+    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
@@ -351,7 +351,7 @@ public interface ReferencePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 6;
+    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -400,6 +400,24 @@ public interface ReferencePackage extends EPackage {
     int INSERT_EREFERENCE = 4;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EREFERENCE__AFFECTED_FEATURE = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -427,31 +445,13 @@ public interface ReferencePackage extends EPackage {
     int INSERT_EREFERENCE__IS_CREATE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EREFERENCE__AFFECTED_FEATURE = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int INSERT_EREFERENCE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 3;
-
-    /**
      * The number of structural features of the '<em>Insert EReference</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 4;
+    int INSERT_EREFERENCE_FEATURE_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get New Value</em>' operation.
@@ -491,6 +491,24 @@ public interface ReferencePackage extends EPackage {
     int REMOVE_EREFERENCE = 5;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EREFERENCE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>Index</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -518,31 +536,13 @@ public interface ReferencePackage extends EPackage {
     int REMOVE_EREFERENCE__IS_DELETE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE__AFFECTED_FEATURE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int REMOVE_EREFERENCE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 3;
-
-    /**
      * The number of structural features of the '<em>Remove EReference</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 4;
+    int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
 
     /**
      * The operation id for the '<em>Get Old Value</em>' operation.
@@ -582,6 +582,24 @@ public interface ReferencePackage extends EPackage {
     int PERMUTE_EREFERENCES = 6;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The feature id for the '<em><b>New Indices For Elements At Old Indices</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -591,31 +609,13 @@ public interface ReferencePackage extends EPackage {
     int PERMUTE_EREFERENCES__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES = ListPackage.PERMUTE_LIST_ECHANGE__NEW_INDICES_FOR_ELEMENTS_AT_OLD_INDICES;
 
     /**
-     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_EREFERENCES__AFFECTED_FEATURE = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int PERMUTE_EREFERENCES__AFFECTED_EOBJECT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
      * The number of structural features of the '<em>Permute EReferences</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 2;
+    int PERMUTE_EREFERENCES_FEATURE_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The operation id for the '<em>Is Containment</em>' operation.

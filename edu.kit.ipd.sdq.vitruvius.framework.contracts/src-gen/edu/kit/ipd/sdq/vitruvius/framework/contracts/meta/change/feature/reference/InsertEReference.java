@@ -5,6 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.refere
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,5 +17,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange, AdditiveReferenceEChange<A, T> {
+public interface InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference>, AdditiveReferenceEChange<A, T> {
 } // InsertEReference

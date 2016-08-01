@@ -13,6 +13,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -28,7 +30,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *
  * @generated
  */
-public abstract class PermuteListEChangeImpl extends UpdateMultiValuedFeatureEChangeImpl implements PermuteListEChange {
+public abstract class PermuteListEChangeImpl<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChangeImpl<A, F> implements PermuteListEChange<A, F> {
     /**
      * The cached value of the '{@link #getNewIndicesForElementsAtOldIndices() <em>New Indices For Elements At Old Indices</em>}' attribute list.
      * <!-- begin-user-doc -->

@@ -79,16 +79,18 @@ public class FeatureSwitch<T> extends Switch<T> {
                 return result;
             }
             case FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE: {
-                UpdateMultiValuedFeatureEChange updateMultiValuedFeatureEChange = (UpdateMultiValuedFeatureEChange)theEObject;
+                UpdateMultiValuedFeatureEChange<?, ?> updateMultiValuedFeatureEChange = (UpdateMultiValuedFeatureEChange<?, ?>)theEObject;
                 T result = caseUpdateMultiValuedFeatureEChange(updateMultiValuedFeatureEChange);
+                if (result == null) result = caseFeatureEChange(updateMultiValuedFeatureEChange);
                 if (result == null) result = caseAtomicEChange(updateMultiValuedFeatureEChange);
                 if (result == null) result = caseEChange(updateMultiValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE: {
-                UpdateSingleValuedFeatureEChange updateSingleValuedFeatureEChange = (UpdateSingleValuedFeatureEChange)theEObject;
+                UpdateSingleValuedFeatureEChange<?, ?> updateSingleValuedFeatureEChange = (UpdateSingleValuedFeatureEChange<?, ?>)theEObject;
                 T result = caseUpdateSingleValuedFeatureEChange(updateSingleValuedFeatureEChange);
+                if (result == null) result = caseFeatureEChange(updateSingleValuedFeatureEChange);
                 if (result == null) result = caseAtomicEChange(updateSingleValuedFeatureEChange);
                 if (result == null) result = caseEChange(updateSingleValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
@@ -124,7 +126,7 @@ public class FeatureSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
         return null;
     }
 
@@ -139,7 +141,7 @@ public class FeatureSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
         return null;
     }
 

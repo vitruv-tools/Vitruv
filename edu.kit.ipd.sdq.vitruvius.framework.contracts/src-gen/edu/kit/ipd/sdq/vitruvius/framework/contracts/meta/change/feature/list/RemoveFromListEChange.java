@@ -2,6 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -13,5 +16,5 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
  * @model abstract="true"
  * @generated
  */
-public interface RemoveFromListEChange extends UpdateSingleListEntryEChange {
+public interface RemoveFromListEChange<A extends EObject, F extends EStructuralFeature> extends UpdateSingleListEntryEChange<A, F> {
 } // RemoveFromListEChange

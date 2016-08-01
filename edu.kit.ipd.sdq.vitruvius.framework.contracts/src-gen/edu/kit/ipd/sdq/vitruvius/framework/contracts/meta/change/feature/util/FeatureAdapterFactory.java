@@ -76,11 +76,11 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
                 return createFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
                 return createUpdateMultiValuedFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
                 return createUpdateSingleValuedFeatureEChangeAdapter();
             }
             @Override

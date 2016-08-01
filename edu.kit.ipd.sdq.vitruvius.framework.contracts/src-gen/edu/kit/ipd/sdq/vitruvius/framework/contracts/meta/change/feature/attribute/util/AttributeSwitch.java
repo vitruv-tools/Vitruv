@@ -121,9 +121,9 @@ public class AttributeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
-                if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -364,7 +364,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
         return null;
     }
 
@@ -379,7 +379,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
         return null;
     }
 
@@ -394,7 +394,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
         return null;
     }
 
@@ -409,7 +409,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseInsertInListEChange(InsertInListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseInsertInListEChange(InsertInListEChange<A, F> object) {
         return null;
     }
 
@@ -424,7 +424,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 caseRemoveFromListEChange(RemoveFromListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
         return null;
     }
 
@@ -439,7 +439,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T1 casePermuteListEChange(PermuteListEChange object) {
+    public <A extends EObject, F extends EStructuralFeature> T1 casePermuteListEChange(PermuteListEChange<A, F> object) {
         return null;
     }
 

@@ -399,6 +399,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         subtractiveAttributeEChangeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theFeaturePackage.getUpdateSingleValuedFeatureEChange());
+        g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(ecorePackage.getEAttribute());
+        g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getSubtractiveAttributeEChange());
         g2 = createEGenericType(replaceSingleValuedEAttributeEClass_A);
@@ -413,6 +417,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         replaceSingleValuedEAttributeEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getInsertInListEChange());
+        g2 = createEGenericType(insertEAttributeValueEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(ecorePackage.getEAttribute());
+        g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getAdditiveAttributeEChange());
         g2 = createEGenericType(insertEAttributeValueEClass_A);
@@ -421,6 +429,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         insertEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
+        g2 = createEGenericType(removeEAttributeValueEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(ecorePackage.getEAttribute());
+        g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getSubtractiveAttributeEChange());
         g2 = createEGenericType(removeEAttributeValueEClass_A);
@@ -429,6 +441,10 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
         g1.getETypeArguments().add(g2);
         removeEAttributeValueEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(theListPackage.getPermuteListEChange());
+        g2 = createEGenericType(permuteEAttributeValuesEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(ecorePackage.getEAttribute());
+        g1.getETypeArguments().add(g2);
         permuteEAttributeValuesEClass.getEGenericSuperTypes().add(g1);
         g1 = createEGenericType(this.getUpdateAttributeEChange());
         g2 = createEGenericType(permuteEAttributeValuesEClass_A);

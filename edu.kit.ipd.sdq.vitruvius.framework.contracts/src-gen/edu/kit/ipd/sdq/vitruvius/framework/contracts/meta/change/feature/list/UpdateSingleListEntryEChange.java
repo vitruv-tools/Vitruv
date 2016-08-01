@@ -3,6 +3,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateM
  * @model abstract="true"
  * @generated
  */
-public interface UpdateSingleListEntryEChange extends UpdateMultiValuedFeatureEChange {
+public interface UpdateSingleListEntryEChange<A extends EObject, F extends EStructuralFeature> extends UpdateMultiValuedFeatureEChange<A, F> {
     /**
      * Returns the value of the '<em><b>Index</b></em>' attribute.
      * The default value is <code>"0"</code>.

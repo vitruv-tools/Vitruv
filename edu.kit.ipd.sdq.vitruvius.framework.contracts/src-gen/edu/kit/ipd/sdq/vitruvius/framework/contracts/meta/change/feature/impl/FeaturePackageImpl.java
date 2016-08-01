@@ -268,17 +268,39 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
         // Create type parameters
         ETypeParameter featureEChangeEClass_A = addETypeParameter(featureEChangeEClass, "A");
         ETypeParameter featureEChangeEClass_F = addETypeParameter(featureEChangeEClass, "F");
+        ETypeParameter updateMultiValuedFeatureEChangeEClass_A = addETypeParameter(updateMultiValuedFeatureEChangeEClass, "A");
+        ETypeParameter updateMultiValuedFeatureEChangeEClass_F = addETypeParameter(updateMultiValuedFeatureEChangeEClass, "F");
+        ETypeParameter updateSingleValuedFeatureEChangeEClass_A = addETypeParameter(updateSingleValuedFeatureEChangeEClass, "A");
+        ETypeParameter updateSingleValuedFeatureEChangeEClass_F = addETypeParameter(updateSingleValuedFeatureEChangeEClass, "F");
 
         // Set bounds for type parameters
         EGenericType g1 = createEGenericType(ecorePackage.getEObject());
         featureEChangeEClass_A.getEBounds().add(g1);
         g1 = createEGenericType(ecorePackage.getEStructuralFeature());
         featureEChangeEClass_F.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        updateMultiValuedFeatureEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        updateMultiValuedFeatureEChangeEClass_F.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEObject());
+        updateSingleValuedFeatureEChangeEClass_A.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEStructuralFeature());
+        updateSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 
         // Add supertypes to classes
         featureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
-        updateMultiValuedFeatureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
-        updateSingleValuedFeatureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
+        g1 = createEGenericType(this.getFeatureEChange());
+        EGenericType g2 = createEGenericType(updateMultiValuedFeatureEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(updateMultiValuedFeatureEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        updateMultiValuedFeatureEChangeEClass.getEGenericSuperTypes().add(g1);
+        g1 = createEGenericType(this.getFeatureEChange());
+        g2 = createEGenericType(updateSingleValuedFeatureEChangeEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(updateSingleValuedFeatureEChangeEClass_F);
+        g1.getETypeArguments().add(g2);
+        updateSingleValuedFeatureEChangeEClass.getEGenericSuperTypes().add(g1);
 
         // Initialize classes, features, and operations; add parameters
         initEClass(featureEChangeEClass, FeatureEChange.class, "FeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -368,9 +368,13 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g1 = createEGenericType(ecorePackage.getEObject());
         replaceInEListEClass_T.getEBounds().add(g1);
         g1 = createEGenericType(theListPackage.getRemoveFromListEChange());
+        EGenericType g2 = createEGenericType(replaceInEListEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(replaceInEListEClass_F);
+        g1.getETypeArguments().add(g2);
         replaceInEListEClass_R.getEBounds().add(g1);
         g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
-        EGenericType g2 = createEGenericType(replaceInEListEClass_A);
+        g2 = createEGenericType(replaceInEListEClass_A);
         g1.getETypeArguments().add(g2);
         g2 = createEGenericType(replaceInEListEClass_F);
         g1.getETypeArguments().add(g2);
@@ -380,6 +384,10 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
         g1.getETypeArguments().add(g2);
         replaceInEListEClass_R.getEBounds().add(g1);
         g1 = createEGenericType(theListPackage.getInsertInListEChange());
+        g2 = createEGenericType(replaceInEListEClass_A);
+        g1.getETypeArguments().add(g2);
+        g2 = createEGenericType(replaceInEListEClass_F);
+        g1.getETypeArguments().add(g2);
         replaceInEListEClass_I.getEBounds().add(g1);
         g1 = createEGenericType(theFeaturePackage.getFeatureEChange());
         g2 = createEGenericType(replaceInEListEClass_A);

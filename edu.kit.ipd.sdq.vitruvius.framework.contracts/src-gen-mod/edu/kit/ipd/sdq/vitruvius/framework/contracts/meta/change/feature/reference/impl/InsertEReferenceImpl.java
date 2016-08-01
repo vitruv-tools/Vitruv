@@ -48,12 +48,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  *
  * @generated
  */
-public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends InsertInListEChangeImpl
+public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends InsertInListEChangeImpl<A, EReference>
         implements InsertEReference<A, T> {
     /**
      * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getNewValue()
      * @generated
      * @ordered
@@ -63,7 +63,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
     /**
      * The default value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -73,7 +73,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
     /**
      * The cached value of the '{@link #isIsCreate() <em>Is Create</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #isIsCreate()
      * @generated
      * @ordered
@@ -83,7 +83,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
     /**
      * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAffectedFeature()
      * @generated
      * @ordered
@@ -93,7 +93,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
     /**
      * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAffectedEObject()
      * @generated
      * @ordered
@@ -102,7 +102,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected InsertEReferenceImpl() {
@@ -111,7 +111,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -121,7 +121,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -141,7 +141,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public T basicGetNewValue() {
@@ -150,7 +150,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -164,7 +164,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -174,7 +174,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -188,7 +188,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -208,16 +208,17 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EReference basicGetAffectedFeature() {
         return this.affectedFeature;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -231,7 +232,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -252,16 +253,17 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public A basicGetAffectedEObject() {
         return this.affectedEObject;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -285,7 +287,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -311,7 +313,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -336,7 +338,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -360,7 +362,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -380,7 +382,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -440,7 +442,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -500,7 +502,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -556,7 +558,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -570,7 +572,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

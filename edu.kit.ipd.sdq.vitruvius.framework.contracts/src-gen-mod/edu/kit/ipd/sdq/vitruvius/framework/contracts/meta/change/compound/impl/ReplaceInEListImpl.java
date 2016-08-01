@@ -38,12 +38,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.Re
  *
  * @generated
  */
-public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange & FeatureEChange<A, F> & AdditiveEChange<T>>
+public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F> & FeatureEChange<A, F> & AdditiveEChange<T>>
         extends CompoundEChangeImpl implements ReplaceInEList<A, F, T, R, I> {
     /**
      * The cached value of the '{@link #getRemoveChange() <em>Remove Change</em>}' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getRemoveChange()
      * @generated
      * @ordered
@@ -53,7 +53,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
     /**
      * The cached value of the '{@link #getInsertChange() <em>Insert Change</em>}' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getInsertChange()
      * @generated
      * @ordered
@@ -62,7 +62,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ReplaceInEListImpl() {
@@ -71,7 +71,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -81,7 +81,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -91,7 +91,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetRemoveChange(final R newRemoveChange, NotificationChain msgs) {
@@ -110,7 +110,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -133,7 +133,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -143,7 +143,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetInsertChange(final I newInsertChange, NotificationChain msgs) {
@@ -162,7 +162,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -185,7 +185,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -202,7 +202,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -218,7 +218,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -237,7 +237,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -255,7 +255,7 @@ public class ReplaceInEListImpl<A extends EObject, F extends EStructuralFeature,
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

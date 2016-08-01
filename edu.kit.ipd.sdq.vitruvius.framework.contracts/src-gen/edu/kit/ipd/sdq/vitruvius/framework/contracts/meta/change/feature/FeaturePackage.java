@@ -114,13 +114,31 @@ public interface FeaturePackage extends EPackage {
     int UPDATE_MULTI_VALUED_FEATURE_ECHANGE = 1;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE = FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The number of structural features of the '<em>Update Multi Valued Feature EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = ChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Update Multi Valued Feature EChange</em>' class.
@@ -129,7 +147,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = ChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+    int UPDATE_MULTI_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl.UpdateSingleValuedFeatureEChangeImpl <em>Update Single Valued Feature EChange</em>}' class.
@@ -142,13 +160,31 @@ public interface FeaturePackage extends EPackage {
     int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE = 2;
 
     /**
+     * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE = FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+    /**
+     * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+    /**
      * The number of structural features of the '<em>Update Single Valued Feature EChange</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = ChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
     /**
      * The number of operations of the '<em>Update Single Valued Feature EChange</em>' class.
@@ -157,7 +193,7 @@ public interface FeaturePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = ChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+    int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 
     /**

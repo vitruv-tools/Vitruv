@@ -141,27 +141,27 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
                 return createEObjectSubtractedEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
                 return createUpdateSingleValuedFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
                 return createUpdateMultiValuedFeatureEChangeAdapter();
             }
             @Override
-            public Adapter caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleListEntryEChange(UpdateSingleListEntryEChange<A, F> object) {
                 return createUpdateSingleListEntryEChangeAdapter();
             }
             @Override
-            public Adapter caseInsertInListEChange(InsertInListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseInsertInListEChange(InsertInListEChange<A, F> object) {
                 return createInsertInListEChangeAdapter();
             }
             @Override
-            public Adapter caseRemoveFromListEChange(RemoveFromListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
                 return createRemoveFromListEChangeAdapter();
             }
             @Override
-            public Adapter casePermuteListEChange(PermuteListEChange object) {
+            public <A extends EObject, F extends EStructuralFeature> Adapter casePermuteListEChange(PermuteListEChange<A, F> object) {
                 return createPermuteListEChangeAdapter();
             }
             @Override
