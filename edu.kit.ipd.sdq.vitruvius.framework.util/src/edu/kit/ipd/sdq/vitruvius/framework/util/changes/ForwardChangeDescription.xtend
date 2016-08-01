@@ -37,7 +37,7 @@ class ForwardChangeDescription implements ChangeDescription {
 	 * Creates a new forward change description using the given backward change description by copying and reversing it if the given map is not {@code null} and otherwise applying and reversing it.
 	 */
 	new(ChangeDescription backwardChangeDescription, Map<EObject, URI> eObjectToProxyURIMap) {
-		val cdi = backwardChangeDescription.asImpl()
+		val cdi = backwardChangeDescription?.asImpl()
 		this.changeDescription = cdi
 		this.containmentsBeforeReversion = cdi.getContainmentsBeforeReversion()
 		this.resourcesBeforeReversion = cdi.getResourcesBeforeReversion()
