@@ -121,9 +121,9 @@ public class AttributeSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
+                if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
-                if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }

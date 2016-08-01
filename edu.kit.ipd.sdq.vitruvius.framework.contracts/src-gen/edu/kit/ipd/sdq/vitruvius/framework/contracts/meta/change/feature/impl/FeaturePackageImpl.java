@@ -277,6 +277,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
         // Add supertypes to classes
         featureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
+        updateMultiValuedFeatureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
+        updateSingleValuedFeatureEChangeEClass.getESuperTypes().add(theChangePackage.getAtomicEChange());
 
         // Initialize classes, features, and operations; add parameters
         initEClass(featureEChangeEClass, FeatureEChange.class, "FeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

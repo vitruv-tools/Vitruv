@@ -2,6 +2,8 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.util;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.*;
@@ -72,6 +74,8 @@ public class ListSwitch<T> extends Switch<T> {
                 UpdateSingleListEntryEChange updateSingleListEntryEChange = (UpdateSingleListEntryEChange)theEObject;
                 T result = caseUpdateSingleListEntryEChange(updateSingleListEntryEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(updateSingleListEntryEChange);
+                if (result == null) result = caseAtomicEChange(updateSingleListEntryEChange);
+                if (result == null) result = caseEChange(updateSingleListEntryEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -80,6 +84,8 @@ public class ListSwitch<T> extends Switch<T> {
                 T result = caseInsertInListEChange(insertInListEChange);
                 if (result == null) result = caseUpdateSingleListEntryEChange(insertInListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertInListEChange);
+                if (result == null) result = caseAtomicEChange(insertInListEChange);
+                if (result == null) result = caseEChange(insertInListEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -88,6 +94,8 @@ public class ListSwitch<T> extends Switch<T> {
                 T result = caseRemoveFromListEChange(removeFromListEChange);
                 if (result == null) result = caseUpdateSingleListEntryEChange(removeFromListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeFromListEChange);
+                if (result == null) result = caseAtomicEChange(removeFromListEChange);
+                if (result == null) result = caseEChange(removeFromListEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -95,6 +103,8 @@ public class ListSwitch<T> extends Switch<T> {
                 PermuteListEChange permuteListEChange = (PermuteListEChange)theEObject;
                 T result = casePermuteListEChange(permuteListEChange);
                 if (result == null) result = caseUpdateMultiValuedFeatureEChange(permuteListEChange);
+                if (result == null) result = caseAtomicEChange(permuteListEChange);
+                if (result == null) result = caseEChange(permuteListEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
@@ -159,6 +169,36 @@ public class ListSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePermuteListEChange(PermuteListEChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEChange(EChange object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAtomicEChange(AtomicEChange object) {
         return null;
     }
 

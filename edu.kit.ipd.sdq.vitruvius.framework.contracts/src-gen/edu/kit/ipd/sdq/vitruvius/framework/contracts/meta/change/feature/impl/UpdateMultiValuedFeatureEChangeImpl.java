@@ -5,9 +5,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl.AtomicEChangeImpl;
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,7 +15,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public abstract class UpdateMultiValuedFeatureEChangeImpl extends MinimalEObjectImpl.Container implements UpdateMultiValuedFeatureEChange {
+public abstract class UpdateMultiValuedFeatureEChangeImpl extends AtomicEChangeImpl implements UpdateMultiValuedFeatureEChange {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

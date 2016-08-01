@@ -81,12 +81,16 @@ public class FeatureSwitch<T> extends Switch<T> {
             case FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE: {
                 UpdateMultiValuedFeatureEChange updateMultiValuedFeatureEChange = (UpdateMultiValuedFeatureEChange)theEObject;
                 T result = caseUpdateMultiValuedFeatureEChange(updateMultiValuedFeatureEChange);
+                if (result == null) result = caseAtomicEChange(updateMultiValuedFeatureEChange);
+                if (result == null) result = caseEChange(updateMultiValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
             case FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE: {
                 UpdateSingleValuedFeatureEChange updateSingleValuedFeatureEChange = (UpdateSingleValuedFeatureEChange)theEObject;
                 T result = caseUpdateSingleValuedFeatureEChange(updateSingleValuedFeatureEChange);
+                if (result == null) result = caseAtomicEChange(updateSingleValuedFeatureEChange);
+                if (result == null) result = caseEChange(updateSingleValuedFeatureEChange);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }

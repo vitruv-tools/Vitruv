@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.EFeatureChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues
@@ -11,7 +10,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.ERootChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory
@@ -22,6 +20,9 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AdditiveAttributeEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
 
 /**
  * Factory class for elements of change models. 
@@ -47,25 +48,26 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def private static setRootChangeFeatures(ERootChange c, String resourceURI) {
+	def private static setRootChangeFeatures(RootEChange c, String resourceURI) {
 		c.uri = resourceURI
 	}
 	
 	def static <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldObject, boolean isDelete) {
 		val c = RootFactory.eINSTANCE.createRemoveRootEObject
-		setSubtractiveEReferenceChangeFeatures(c,oldObject,isDelete)
+		edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldObject,isDelete)
 		return c
 	}
 	
-	def private  static <T extends EObject> void setSubtractiveEReferenceChangeFeatures(SubtractiveEReferenceChange<T> c, T oldEObject, boolean isDelete) {
+	def private  static <T extends EObject> void setEObjectSubtractedEChangeFeatures(EObjectSubtractedEChange<T> c, T oldEObject, boolean isDelete) {
 		c.isDelete = isDelete
+		c.oldValue = oldEObject
 	}
 	
-	def static <A extends EObject> AdditiveEAttributeChange<Object> createAdditiveAttributeChange(A affectedEObject, EAttribute affectedAttribute) {
+	def static <A extends EObject> AdditiveAttributeEChange<?, Object> createAdditiveAttributeChange(A affectedEObject, EAttribute affectedAttribute) {
 		if (affectedAttribute.many) {
 			val newValue = affectedEObject.getFeatureValues(affectedAttribute)
 			val index = 0 // FIXME MK calculate index!
-			return createInsertAttributeChange(affectedEObject, affectedAttribute, newValue, index)
+			return createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
 		} else {
 			val oldValue = affectedAttribute.defaultValue
 			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
@@ -73,7 +75,7 @@ final class TypeInferringAtomicEChangeFactory {
 		}
 	}
 
-	def static <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, T newValue, int index) {
+	def static <A extends EObject, T extends Object> InsertEAttributeValue<A,T> createInsertAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T newValue) {
 		val c = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
 		setFeatureChangeFeatures(c,affectedEObject,affectedAttribute)
 		c.newValue = newValue
@@ -81,7 +83,7 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	private def static <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(EFeatureChange<A,F> c, A affectedEObject, F affectedFeature) {
+	private def static <A extends EObject, F extends EStructuralFeature> void setFeatureChangeFeatures(FeatureEChange<A,F> c, A affectedEObject, F affectedFeature) {
 		c.affectedEObject = affectedEObject
 		c.affectedFeature = affectedFeature
 	}
@@ -94,7 +96,7 @@ final class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 	
-	def static <A extends EObject, T extends Object> RemoveEAttributeValue<A,T> createRemoveAttributeChange(A affectedEObject, EAttribute affectedAttribute, T oldValue, int index) {
+	def static <A extends EObject, T extends Object> RemoveEAttributeValue<A,T> createRemoveAttributeChange(A affectedEObject, EAttribute affectedAttribute, int index, T oldValue) {
 		val c = AttributeFactory.eINSTANCE.createRemoveEAttributeValue()
 		setFeatureChangeFeatures(c,affectedEObject,affectedAttribute)
 		c.oldValue = oldValue
@@ -121,7 +123,7 @@ final class TypeInferringAtomicEChangeFactory {
 	def static <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A,T> createReplaceSingleReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, T newValue, boolean isCreate, boolean isDelete) {
 		val c = ReferenceFactory.eINSTANCE.createReplaceSingleValuedEReference
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
-		setSubtractiveEReferenceChangeFeatures(c,oldEObject,isDelete)
+		edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject,isDelete)
 		c.newValue = newValue
 		c.isCreate = isCreate
 		return c
@@ -130,7 +132,7 @@ final class TypeInferringAtomicEChangeFactory {
 	def static <A extends EObject, T extends EObject> RemoveEReference<A,T> createRemoveReferenceChange(A affectedEObject, EReference affectedReference, T oldEObject, int index, boolean isDelete) {
 		val c = ReferenceFactory.eINSTANCE.createRemoveEReference()
 		setFeatureChangeFeatures(c,affectedEObject,affectedReference)
-		setSubtractiveEReferenceChangeFeatures(c,oldEObject,isDelete)
+		edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.setEObjectSubtractedEChangeFeatures(c,oldEObject,isDelete)
 		c.oldValue = oldEObject
 		c.index = index
 		c.isDelete = isDelete

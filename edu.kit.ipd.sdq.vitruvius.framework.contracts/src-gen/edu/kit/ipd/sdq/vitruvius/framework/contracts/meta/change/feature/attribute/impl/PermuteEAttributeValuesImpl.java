@@ -2,9 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage;
 
@@ -232,16 +229,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteListE
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == EChange.class) {
-            switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == AtomicEChange.class) {
-            switch (derivedFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == FeatureEChange.class) {
             switch (derivedFeatureID) {
                 case AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE: return FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
@@ -264,16 +251,6 @@ public class PermuteEAttributeValuesImpl<A extends EObject> extends PermuteListE
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == EChange.class) {
-            switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
-        if (baseClass == AtomicEChange.class) {
-            switch (baseFeatureID) {
-                default: return -1;
-            }
-        }
         if (baseClass == FeatureEChange.class) {
             switch (baseFeatureID) {
                 case FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE: return AttributePackage.PERMUTE_EATTRIBUTE_VALUES__AFFECTED_FEATURE;

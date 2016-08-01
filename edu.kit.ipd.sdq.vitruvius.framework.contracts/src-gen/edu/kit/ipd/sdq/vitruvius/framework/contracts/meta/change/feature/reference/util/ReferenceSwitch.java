@@ -125,11 +125,11 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
                 if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
+                if (result == null) result = caseEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
                 if (result == null) result = caseAtomicEChange(replaceSingleValuedEReference);
-                if (result == null) result = caseEChange(replaceSingleValuedEReference);
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }

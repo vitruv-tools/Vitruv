@@ -63,9 +63,10 @@
         <eGenericType eTypeParameter="#//feature/FeatureEChange/A"/>
       </eStructuralFeatures>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true"
+        eSuperTypes="#//AtomicEChange"/>
     <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleValuedFeatureEChange"
-        abstract="true"/>
+        abstract="true" eSuperTypes="#//AtomicEChange"/>
     <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"
         nsPrefix="list">
       <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleListEntryEChange" abstract="true"
