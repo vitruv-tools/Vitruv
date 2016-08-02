@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.integration.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  org.eclipse.core.resources,
  org.junit,
  org.apache.log4j,

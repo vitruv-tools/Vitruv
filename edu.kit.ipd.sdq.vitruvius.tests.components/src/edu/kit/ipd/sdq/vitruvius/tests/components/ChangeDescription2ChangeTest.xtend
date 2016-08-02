@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -60,8 +61,8 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 		super.beforeTest()
 //		vECTest.beforeTest()
         this.resourceSet = new ResourceSetImpl()
-        this.changeRecorder = new ForwardChangeRecorder(newArrayList(this.resourceSet))
-        this.changeRecorder.beginRec()
+        this.changeRecorder = new ForwardChangeRecorder()
+        this.changeRecorder.beginRecording(newArrayList(this.resourceSet))
 	}
 //	
 //	@After
@@ -77,14 +78,14 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 
 	
 	// TODO ML needs @Rule from VitruviusCasestudyTest?
-	def List<EChange> triggerChangeDescription2Change() {
-		val cd = this.changeRecorder.endRec(false)
+	def List<Change> triggerChangeDescription2Change() {
+		val cd = this.changeRecorder.endRecording(false)
 //      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
 		LOGGER.trace("monitored change description: " + cd)
-        val changes = new ChangeDescription2ChangeTransformation(cd).transform()
+        val changes = new ChangeDescription2ChangeTransformation(cd).getChanges()
         LOGGER.trace("transformed changes: " + changes)
-        cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
-        this.changeRecorder.beginRec()
+        //cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
+        this.changeRecorder.restartRecording()
         return changes
 	}
 	
@@ -117,7 +118,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 		val aURI = EMFBridge.createPlatformResourceURI(getAllElementTypesInstanceAURI())
 		val resource = EcoreResourceBridge.loadResourceAtURI(aURI, this.resourceSet)
 //		EcoreResourceBridge.saveEObjectAsOnlyContent(null, aURI, this.resourceSet)
-		this.changeRecorder.restartRec()
+		this.changeRecorder.restartRecording()
 		val rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
 		resource.contents.add(rootElement)
 //		EcoreResourceBridge.saveResource(resource)

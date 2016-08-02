@@ -10,9 +10,9 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
@@ -31,6 +31,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.Transformat
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -46,8 +48,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected VSUMImpl vsum;
     protected ChangeSynchronizerImpl changeSynchronizer;
     protected MetaRepositoryImpl metaRepository;
-    protected ChangeRecorder changeRecorder;
-    private ChangeDescription2ChangeConverter changeDescrition2ChangeConverter;
+    protected ForwardChangeRecorder changeRecorder;
     protected CorrespondenceInstance<Correspondence> correspondenceInstance;
     protected Change2CommandTransformingProviding transformingProviding;
     
@@ -85,8 +86,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         this.testUserInteractor = new TestUserInteractor();
         this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
         this.resourceSet = new ResourceSetImpl();
-        this.changeRecorder = new ChangeRecorder();
-        this.changeDescrition2ChangeConverter = new ChangeDescription2ChangeConverter();
+        this.changeRecorder = new ForwardChangeRecorder();
     }
     
     protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
@@ -110,10 +110,10 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     protected void triggerSynchronization(final VURI vuri) {
-        final ChangeDescription cd = this.changeRecorder.endRecording();
-        cd.applyAndReverse();
-        final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
-        cd.applyAndReverse();
+        final List<ForwardChangeDescription> cds = this.changeRecorder.endRecording();
+        //cd.applyAndReverse();
+        final List<Change> changes = new ChangeDescription2ChangeTransformation(cds).getChanges(vuri);
+        //cd.applyAndReverse();
         this.changeSynchronizer.synchronizeChanges(changes);
         this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
     }

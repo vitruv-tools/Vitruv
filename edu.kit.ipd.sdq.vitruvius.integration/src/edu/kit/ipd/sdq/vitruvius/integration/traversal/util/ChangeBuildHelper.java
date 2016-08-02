@@ -4,9 +4,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory;
 
 /**
  * A helper class that provides methods for creating atomic change models from EMF elements
@@ -24,8 +24,8 @@ public abstract class ChangeBuildHelper {
      */
     protected static EChange createSingleAddNonRootEObjectInListChange(final EObject source) {
 
-        final CreateNonRootEObjectInList<EObject> change = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
+        final InsertEReference<EObject, EObject> change = ReferenceFactory.eINSTANCE
+                .createInsertEReference();
         final EObject container = source.eContainer();
 
         final EReference containingReference = (EReference) source.eContainingFeature();
@@ -33,8 +33,8 @@ public abstract class ChangeBuildHelper {
         // list of all contained elements in the container
         final Object contents = container.eGet(containingReference);
 
-        change.setNewAffectedEObject(container);
-        change.setOldAffectedEObject(container);
+        change.setAffectedEObject(container);
+        change.setIsCreate(true);
 
         // find index of current element in the container
         int index = -1;
