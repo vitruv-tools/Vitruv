@@ -26,4 +26,5 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.run.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm

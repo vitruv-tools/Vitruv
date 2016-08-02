@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.codeintegration.change2command;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.codeintegration.change2command;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java,

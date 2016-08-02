@@ -1,7 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository
 
+import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.DataTypeCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
@@ -11,22 +13,21 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.members.InterfaceMethod
 import org.emftext.language.java.members.MembersFactory
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.types.TypesFactory
+import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.DataType
+import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import org.palladiosimulator.pcm.repository.OperationProvidedRole
-import com.google.common.collect.Sets
-import org.palladiosimulator.pcm.repository.BasicComponent
-import org.emftext.language.java.members.ClassMethod
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
