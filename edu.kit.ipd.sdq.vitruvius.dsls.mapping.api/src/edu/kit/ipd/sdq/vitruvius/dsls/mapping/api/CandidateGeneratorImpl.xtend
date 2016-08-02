@@ -4,10 +4,10 @@ import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.Candidate
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CandidateGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EClass
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 class CandidateGeneratorImpl implements CandidateGenerator {
 	public override Set<Candidate> createCandidates(EChange eChange, List<MappingRealization> requiredMappings,

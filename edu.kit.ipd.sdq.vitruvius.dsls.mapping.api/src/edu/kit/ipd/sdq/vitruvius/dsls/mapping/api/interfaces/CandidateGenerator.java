@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 
 public interface CandidateGenerator {
 	public Set<Candidate> createCandidates(EChange change, List<MappingRealization> requiredMappings,

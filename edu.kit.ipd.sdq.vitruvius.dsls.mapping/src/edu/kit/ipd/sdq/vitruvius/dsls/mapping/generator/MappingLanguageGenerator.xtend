@@ -17,7 +17,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseBuilderFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import java.util.Arrays
 import java.util.Collection
@@ -34,6 +33,7 @@ import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 class MappingLanguageGenerator implements IMappingLanguageGenerator {
 	public final static String PACKAGE_NAME_FIELD = "edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator.PACKAGE_NAME_FIELD"

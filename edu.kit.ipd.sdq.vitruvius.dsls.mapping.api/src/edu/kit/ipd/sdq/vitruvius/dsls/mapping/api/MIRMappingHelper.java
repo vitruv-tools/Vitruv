@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
@@ -52,12 +52,12 @@ public final class MIRMappingHelper {
 	public static Collection<EObject> getAllAffectedObjects(EChange eChange) {
 		Collection<EObject> result = new HashSet<EObject>();
 
-		if (eChange instanceof EFeatureChange<?>) {
-			EObject newAffectedEObject = ((EFeatureChange<?>) eChange).getNewAffectedEObject();
+		if (eChange instanceof FeatureEChange<?,?>) {
+			EObject newAffectedEObject = ((FeatureEChange<?,?>) eChange).getAffectedEObject();
 			result.add(newAffectedEObject);
 
-			if (eChange instanceof UpdateEReference<?>) {
-				UpdateEReference<?> updateEReference = (UpdateEReference<?>) eChange;
+			if (eChange instanceof UpdateReferenceEChange<?>) {
+				UpdateReferenceEChange<?> updateEReference = (UpdateReferenceEChange<?>) eChange;
 				EReference affectedFeature = updateEReference.getAffectedFeature();
 				Object featureValue = newAffectedEObject.eGet(affectedFeature);
 
@@ -71,8 +71,8 @@ public final class MIRMappingHelper {
 					result.add((EObject) featureValue);
 				}
 			}
-		} else if (eChange instanceof CreateRootEObject<?>) {
-			EObject newValue = ((CreateRootEObject<?>) eChange).getNewValue();
+		} else if (eChange instanceof InsertRootEObject<?>) {
+			EObject newValue = ((InsertRootEObject<?>) eChange).getNewValue();
 			result.add(newValue);
 		}
 
