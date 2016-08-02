@@ -11,6 +11,7 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEdito
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IMonitoringDecider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.IEditorStateListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
@@ -65,8 +65,6 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     /** The editor part adapter factory used to access Eclipse IEditorPart objects. */
     private final IEditorPartAdapterFactory editorPartAdapterFactory;
 
-    private final Map<VURI, BufferModel> bufferModels;
-
     private final ChangeSynchronizing summaryChangeSynchronizing;
 
     private final Map<VURI, Long> lastSynchronizationRequestTimestamps;
@@ -89,6 +87,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     private boolean reportChanges;
 
+    private final List<Change> collectedChanges;
+
     /**
      * A constructor for {@link VitruviusEMFEditorMonitorImpl} instances.
      * 
@@ -109,9 +109,9 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(internalChangeSync, factory, monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
         this.editorPartAdapterFactory = factory;
-        this.bufferModels = new HashMap<>();
         this.summaryChangeSynchronizing = changeSync;
         this.lastSynchronizationRequestTimestamps = new HashMap<>();
+        this.collectedChanges = new ArrayList<>();
     }
 
     /**
@@ -149,39 +149,14 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         }
     }
 
-    private void appendChanges(List<Change> changes, VURI sourceModelURI, Resource changesOrigin) {
-        if (!bufferModels.containsKey(sourceModelURI)) {
-            throw new IllegalStateException("No buffer model exists for " + sourceModelURI);
-        }
-        bufferModels.get(sourceModelURI).incorporateChanges(changes, changesOrigin);
-        if (isPendingSynchronizationRequest(sourceModelURI)) {
-            triggerSynchronisation(sourceModelURI);
-        }
-    }
-
     private ResourceChangeSynchronizing createInternalChangeSynchronizing() {
         return new ResourceChangeSynchronizing() {
             @Override
             public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource origin) {
                 LOGGER.trace("Adding changes for VURI " + sourceModelURI);
-                appendChanges(changes, sourceModelURI, origin);
-            }
-        };
-    }
-
-    private void onStartedMonitoring(IEditorPart editor, Resource modelResource) {
-        VURI resourceURI = VURI.getInstance(modelResource);
-        if (!bufferModels.containsKey(resourceURI)) {
-            bufferModels.put(resourceURI, new BufferModel(modelResource));
-        }
-    }
-
-    private IEditorStateListener createBufferModelManagingEditorStateListener() {
-        return new IEditorStateListener() {
-            @Override
-            public void monitoringStateChanged(IEditorPart editor, Resource modelResource, EditorStateChange stateChange) {
-                if (stateChange == EditorStateChange.MONITORING_STARTED) {
-                    onStartedMonitoring(editor, modelResource);
+                collectedChanges.addAll(changes);
+                if (isPendingSynchronizationRequest(sourceModelURI)) {
+                    triggerSynchronisation(sourceModelURI);
                 }
             }
         };
@@ -189,21 +164,13 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     @Override
     public void initialize() {
-        changeRecorderMonitor.addEditorStateListener(createBufferModelManagingEditorStateListener());
         changeRecorderMonitor.initialize();
-        // if disposed: undispose
-        for (BufferModel bm : bufferModels.values()) {
-            bm.reInitialize();
-        }
         reportChanges = true;
     }
 
     @Override
     public void dispose() {
         changeRecorderMonitor.dispose();
-        for (BufferModel bm : bufferModels.values()) {
-            bm.dispose();
-        }
     }
 
     @Override
@@ -221,11 +188,6 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
             if (changeRecorderMonitor.isMonitoringEditor(editorPart)) {
                 changeRecorderMonitor.disableMonitoring(editorPart);
             }
-        }
-
-        if (bufferModels.containsKey(uri)) {
-            BufferModel bm = bufferModels.remove(uri);
-            bm.dispose();
         }
     }
 
@@ -286,18 +248,21 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         LOGGER.trace("Setting synchronization timestamp for " + resourceFile + " to " + currentSynchroTimestamp);
     }
 
+    /*
+     * The internal change synchronizing is passed to the SynchronizingMonitoredEmfEditorImpl and
+     * gets called when a resource is saved. It adds the changes to the collected changes that are
+     * interpreted whenever triggerSynchronization is called here
+     */
     @Override
     public void triggerSynchronisation(final VURI resourceURI) {
         if (!reportChanges) {
             return;
         }
         updateSynchronizationTimestamp(resourceURI);
-        if (bufferModels.containsKey(resourceURI)) {
-            LOGGER.trace("Got a change buffer for " + resourceURI + ", continuing synchronization.");
-            List<Change> changes = bufferModels.get(resourceURI).createBufferChangeSnapshot();
-            summaryChangeSynchronizing.synchronizeChanges(changes);
-        } else {
-            LOGGER.trace("No change buffer for " + resourceURI + ", aborting synchronization.");
+        if (collectedChanges != null && !collectedChanges.isEmpty()) {
+            LOGGER.trace("Got a change for " + resourceURI + ", continuing synchronization.");
+            summaryChangeSynchronizing.synchronizeChanges(collectedChanges);
+            this.collectedChanges.clear();
         }
     }
 

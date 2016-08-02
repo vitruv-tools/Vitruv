@@ -11,6 +11,9 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.change.ChangeDescription;
@@ -21,6 +24,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEdito
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ISaveEventListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ResourceReloadListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.SaveEventListenerMgr;
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder;
 
 /**
  * <p>
@@ -51,7 +56,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * The {@link ChangeRecorder} used to record changes to the edited model.
      */
-    private ChangeRecorder changeRecorder;
+    private ForwardChangeRecorder changeRecorder;
 
     /** The monitored EMF model resource. */
     private final Resource targetResource;
@@ -96,9 +101,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                ChangeDescription cd = readOutChangesAndEndRecording();
-                LOGGER.trace("Detected a user save action, got a change description: " + cd);
-                onSavedResource(cd);
+                List<ForwardChangeDescription> cds = readOutChangesAndEndRecording();
+                LOGGER.trace("Detected a user save action, got change descriptions: " + cds);
+                onSavedResource(cds);
                 resetChangeRecorder();
             }
 
@@ -138,13 +143,14 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        changeRecorder = new ChangeRecorder(targetResource);
+        changeRecorder = new ForwardChangeRecorder();
+        changeRecorder.beginRecording(Collections.singletonList(targetResource));
     }
 
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected ChangeDescription readOutChangesAndEndRecording() {
+    protected List<ForwardChangeDescription> readOutChangesAndEndRecording() {
         return changeRecorder.endRecording();
     }
 
@@ -195,5 +201,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            last saving it (rsp. since opening it, in case it has not been saved yet). This
      *            object is provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(ChangeDescription changeDescription);
+    protected abstract void onSavedResource(List<ForwardChangeDescription> changeDescription);
 }

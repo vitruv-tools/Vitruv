@@ -11,6 +11,7 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,7 +75,10 @@ public class DefaultImplementations {
 
         @Override
         public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
-            this.lastChanges = changes;
+            this.lastChanges = new ArrayList<Change>();
+            if (changes != null) {
+                this.lastChanges.addAll(changes);
+            }
             this.lastVURI = sourceModelURI;
             this.executionCount++;
         }

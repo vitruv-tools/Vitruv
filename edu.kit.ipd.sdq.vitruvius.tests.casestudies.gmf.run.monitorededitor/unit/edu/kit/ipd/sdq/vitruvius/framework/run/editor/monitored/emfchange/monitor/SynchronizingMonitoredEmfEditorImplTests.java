@@ -28,7 +28,7 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IMonitoringDecider;
@@ -245,8 +245,8 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
                 assert changes.size() == 1;
                 EMFModelChange emfChange = (EMFModelChange) changes.get(0);
-                assert emfChange.getEChange() instanceof EFeatureChange<?>;
-                EFeatureChange<?> updateAttr = (EFeatureChange<?>) emfChange.getEChange();
+                assert emfChange.getEChange() instanceof FeatureEChange<?, ?>;
+                FeatureEChange<?, ?> updateAttr = (FeatureEChange<?, ?>) emfChange.getEChange();
 
                 assert updateAttr.getAffectedFeature().getName().equals("nsPrefix") : "Unexpected feature change on "
                         + updateAttr.getAffectedFeature().getName();

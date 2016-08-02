@@ -11,24 +11,28 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.ui.IEditorPart;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock.SaveEventKind;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.BasicTestCase;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureExecuted;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureNotExecuted;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
+import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
 
 public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -59,11 +63,13 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
     public void savesAreDetected() {
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
 
-        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPartAdapter) {
+        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
+                editorPartAdapter) {
             @Override
-            protected void onSavedResource(ChangeDescription changeDescription) {
-                assert changeDescription != null;
-                assert changeDescription.getObjectChanges().isEmpty();
+            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
+                assert changeDescriptions != null;
+                changeDescriptions
+                        .forEach((ForwardChangeDescription descr) -> assertTrue(descr.getObjectChanges().isEmpty()));
                 ensureExecuted.markExecuted();
             }
         };
@@ -82,13 +88,19 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         final EPackage rootObj = (EPackage) editorPartAdapter.getEditingDomain().getRoot(DUMMY_EOBJECT);
 
         // Set up the listener.
-        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPartAdapter) {
+        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
+                editorPartAdapter) {
             @Override
-            protected void onSavedResource(ChangeDescription changeDescription) {
-                assert changeDescription != null;
-                assert changeDescription.getObjectChanges().size() == 1;
+            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
+                assert changeDescriptions != null;
+                // assert changeDescriptions.size() == 1;
+                int counter = 0;
+                for (ForwardChangeDescription descr : changeDescriptions) {
+                    counter += descr.getObjectChanges().size();
+                }
+                assert counter == 1;
 
-                assert changeDescription.getObjectChanges().containsKey(rootObj);
+                assert changeDescriptions.get(0).getObjectChanges().containsKey(rootObj);
 
                 ensureExecuted.markExecuted();
             }
@@ -112,9 +124,10 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
 
         final EnsureNotExecuted ensureNotExecuted = new EnsureNotExecuted();
 
-        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPartAdapter) {
+        EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
+                editorPartAdapter) {
             @Override
-            protected void onSavedResource(ChangeDescription changeDescription) {
+            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
                 ensureNotExecuted.markExecuted();
             }
         };
@@ -122,7 +135,8 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);
 
-        assert !ensureNotExecuted.isIndicatingFail() : "The save listener was executed though another editor was active.";
+        assert !ensureNotExecuted
+                .isIndicatingFail() : "The save listener was executed though another editor was active.";
         listener.dispose();
     }
 }

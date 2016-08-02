@@ -25,7 +25,7 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;
@@ -187,20 +187,20 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
-        assert cs.getLastChanges().size() == 2 : "Got " + cs.getLastChanges().size() + " changes instead of 2.";
+        assert cs.getLastChanges().size() == 3 : "Got " + cs.getLastChanges().size() + " changes instead of 3.";
 
         List<Change> changes = cs.getLastChanges();
-        EFeatureChange<?> attrChange = (EFeatureChange<?>) ((EMFModelChange) changes.get(0)).getEChange();
-        EObject root = attrChange.getNewAffectedEObject();
+        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) ((EMFModelChange) changes.get(0)).getEChange();
+        EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
-        System.err.println(root);
-
-        ChangeAssert.printChangeList(changes);
+        // System.err.println(root);
+        //
+        // ChangeAssert.printChangeList(changes);
         ChangeAssert.assertContainsSingleValuedAttributeChange(changes, root.eClass().getEStructuralFeature("name"),
                 root2NewName);
-        ChangeAssert.assertContainsSingleValuedAttributeChange(changes,
-                root.eClass().getEStructuralFeature("nsPrefix"), root1NewPrefix);
+        ChangeAssert.assertContainsSingleValuedAttributeChange(changes, root.eClass().getEStructuralFeature("nsPrefix"),
+                root1NewPrefix);
 
     }
 

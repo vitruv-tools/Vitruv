@@ -13,7 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  org.eclipse.emf.edit,
  org.eclipse.ui.workbench,
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.7.0",
@@ -22,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
  org.palladiosimulator.pcm.resources;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change
+ edu.kit.ipd.sdq.vitruvius.framework.changedescription2change,
+ edu.kit.ipd.sdq.vitruvius.framework.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures,
