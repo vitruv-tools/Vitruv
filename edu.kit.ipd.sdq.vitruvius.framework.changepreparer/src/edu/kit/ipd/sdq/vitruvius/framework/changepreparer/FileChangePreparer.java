@@ -10,8 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
 
 class FileChangePreparer extends ConcreteChangePreparer {
 
@@ -62,8 +63,7 @@ class FileChangePreparer extends ConcreteChangePreparer {
                     + ". Synchronization for 'root element created' not triggerd.");
             return null;
         }
-        final CreateRootEObject<EObject> createRootEObj = edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory.eINSTANCE
-                .createCreateRootEObject();
+        final InsertRootEObject<EObject> createRootEObj = RootFactory.eINSTANCE.createInsertRootEObject();
         createRootEObj.setNewValue(rootElement);
         final EMFModelChange rootAdd = new EMFModelChange(createRootEObj, sourceModelURI);
         return rootAdd;
@@ -74,8 +74,7 @@ class FileChangePreparer extends ConcreteChangePreparer {
         final Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
             final EObject rootElement = resource.getContents().get(0);
-            final DeleteRootEObject<EObject> deleteRootObj = edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory.eINSTANCE
-                    .createDeleteRootEObject();
+            final RemoveRootEObject<EObject> deleteRootObj = RootFactory.eINSTANCE.createRemoveRootEObject();
             deleteRootObj.setOldValue(rootElement);
             final EMFModelChange rootDeleted = new EMFModelChange(deleteRootObj, sourceModelURI);
             return rootDeleted;

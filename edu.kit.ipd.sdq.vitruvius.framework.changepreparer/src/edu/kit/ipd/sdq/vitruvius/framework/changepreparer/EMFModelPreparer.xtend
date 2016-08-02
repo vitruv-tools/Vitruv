@@ -5,8 +5,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
 import java.util.concurrent.Callable
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
 
 package class EMFModelPreparer extends ConcreteChangePreparer {
 	val ModelProviding modelProviding
@@ -23,18 +23,17 @@ package class EMFModelPreparer extends ConcreteChangePreparer {
 			val emc = change as EMFModelChange
 			this.modelProviding.forceReloadModelInstanceOriginalIfExisting(emc.URI)
 			val eChange = emc.EChange
-			if (eChange instanceof EFeatureChange<?>) {
-				val featureChange = eChange as EFeatureChange<?>
-				val oldEObject = featureChange.oldAffectedEObject
-				val newEObject = featureChange.newAffectedEObject
-				if (oldEObject != null && newEObject != null) {
+			if (eChange instanceof FeatureEChange<?,?>) {
+				val featureChange = eChange as FeatureEChange<?,?>
+				val affectedEObject = featureChange.affectedEObject
+				// TODO HK What does this do? 
+				if (affectedEObject != null) {
 					val correspondenceInstances = this.correspondenceProviding.
 						getOrCreateAllCorrespondenceInstances(emc.URI)
 					for (correspondenceInstance : correspondenceInstances) {
 						EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
-
 							override call() throws Exception {
-								correspondenceInstance.updateTUID(oldEObject, newEObject)
+								//correspondenceInstance.updateTUID(oldEObject, newEObject)
 								return null
 							}
 
