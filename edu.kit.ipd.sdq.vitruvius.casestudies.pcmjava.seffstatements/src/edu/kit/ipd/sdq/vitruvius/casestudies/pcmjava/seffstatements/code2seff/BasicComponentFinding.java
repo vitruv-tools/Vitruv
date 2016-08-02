@@ -7,6 +7,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 
 public interface BasicComponentFinding {
 
-    BasicComponent findBasicComponentForMethod(Method newMethod, CorrespondenceInstance ci);
+    BasicComponent findBasicComponentForMethod(Method newMethod, CorrespondenceInstance<?> ci);
 
 }

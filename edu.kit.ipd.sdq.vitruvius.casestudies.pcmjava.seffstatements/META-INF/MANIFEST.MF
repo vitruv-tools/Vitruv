@@ -19,6 +19,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  org.eclipse.emf.ecore.change,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 
