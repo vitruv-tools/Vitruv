@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;bundle-version="1.0.0"

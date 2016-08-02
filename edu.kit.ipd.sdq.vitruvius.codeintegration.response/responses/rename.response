@@ -7,7 +7,7 @@ called rename
 response: RenameMethod
 trigger: replace value java.Method[name]
 match:
-	retrieve required element: pcm.OperationSignature as operationSignature corresponding to change.newAffectedEObject
+	retrieve required element: pcm.OperationSignature as operationSignature corresponding to change.affectedEObject
 effect: execute: {
 	operationSignature.entityName = change.newValue
 }

@@ -11,7 +11,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command

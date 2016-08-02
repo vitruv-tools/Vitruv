@@ -8,8 +8,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionTy
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import java.util.ArrayList
 import java.util.HashSet
@@ -25,9 +23,11 @@ import org.emftext.language.java.containers.CompilationUnit
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.palladiosimulator.pcm.core.entity.NamedElement
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ReplaceRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
 
 class IntegrationChange2CommandTransformer {
 	
@@ -76,16 +76,16 @@ class IntegrationChange2CommandTransformer {
 	}
 	
 	private def createNewClassOrInterfaceInIntegratedAreaCommand(EChange eChange, Blackboard blackboard) {
-        if (eChange instanceof CreateNonRootEObjectInList<?>) { 
+        if (eChange instanceof InsertEReference<?,?> && (eChange as InsertEReference<?,?>).isContainment()) { 
         	//Check if this is a creation of a class or interface on file level.
         	//In this case we need to check if any siblings in the package have been integrated
-        	val change = eChange as CreateNonRootEObjectInList<?>
-        	val classOfAffected = change.getNewAffectedEObject().eClass().getInstanceClass()
+        	val change = eChange as InsertEReference<?,?>
+        	val classOfAffected = change.getAffectedEObject().eClass().getInstanceClass()
         	val classOfCreated = change.getNewValue().eClass().getInstanceClass()
         	if (classOfAffected == typeof(CompilationUnit) && 
         			(classOfCreated.equals(typeof(Class)) || 
         			 classOfCreated.equals(typeof(Interface)))) {
-        		val cu = change.getNewAffectedEObject() as CompilationUnit
+        		val cu = change.getAffectedEObject() as CompilationUnit
         		//TODO use IntegrationCorrespondence view of InternalCorrespondenceInstance which is
         		//statically typed to Correspondence right now and needs to support views like 
         		//CorrespondenceInstance
@@ -196,11 +196,11 @@ class IntegrationChange2CommandTransformer {
             Blackboard blackboard) {
         val ci = blackboard.getCorrespondenceInstance()
         var EObject eObj = null
-        if (eChange instanceof EFeatureChange<?>) {
-            eObj = eChange.getNewAffectedEObject()
-        } else if (eChange instanceof ReplaceRootEObject<?>) {
+        if (eChange instanceof FeatureEChange<?,?>) {
+            eObj = eChange.getAffectedEObject()
+        } else if (eChange instanceof InsertRootEObject<?>) {
             eObj = eChange.getNewValue()
-        } else if (eChange instanceof DeleteRootEObject<?>) {
+        } else if (eChange instanceof RemoveRootEObject<?>) {
             eObj = eChange.getOldValue()
         }
 

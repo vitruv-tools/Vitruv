@@ -2,8 +2,8 @@ package mir.responses.responsesJavaTo5_1.rename;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.members.Method;
 
@@ -14,11 +14,11 @@ class RenameMethodResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return UpdateSingleValuedEAttribute.class;
+    return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final UpdateSingleValuedEAttribute<String> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Method, String> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Method)) {
     	return false;
@@ -32,10 +32,10 @@ class RenameMethodResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof UpdateSingleValuedEAttribute<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    UpdateSingleValuedEAttribute typedChange = (UpdateSingleValuedEAttribute)change;
+    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -44,7 +44,7 @@ class RenameMethodResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
+    ReplaceSingleValuedEAttribute<Method, String> typedChange = (ReplaceSingleValuedEAttribute<Method, String>)change;
     mir.routines.rename.RenameMethodEffect effect = new mir.routines.rename.RenameMethodEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }
