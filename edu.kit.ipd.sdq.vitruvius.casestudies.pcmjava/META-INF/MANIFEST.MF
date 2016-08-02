@@ -12,17 +12,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.common.ui,
  org.eclipse.core.resources,
  org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.casestudies.emf,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.core.expressions;bundle-version="3.4.500",
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava
