@@ -3,14 +3,14 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2
 import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.types.TypeReference;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository.DataTypeCorrespondenceHelper;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;

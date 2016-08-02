@@ -49,7 +49,8 @@ Require-Bundle: org.junit,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.util,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamopp2pcm,
