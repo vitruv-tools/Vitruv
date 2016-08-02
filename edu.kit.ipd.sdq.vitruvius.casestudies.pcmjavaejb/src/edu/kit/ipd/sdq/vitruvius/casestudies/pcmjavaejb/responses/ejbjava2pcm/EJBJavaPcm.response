@@ -1,0 +1,228 @@
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.TypeReferenceCorrespondenceHelper
+import org.emftext.language.java.commons.NamedElement
+import org.emftext.language.java.members.Field
+import org.emftext.language.java.members.InterfaceMethod
+
+import static edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.EJBJava2PcmHelper.*
+
+import static extension edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.EJBAnnotationHelper.*
+import org.emftext.language.java.members.Method
+import org.emftext.language.java.members.ClassMethod
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.EJBJava2PcmHelper
+import org.palladiosimulator.pcm.repository.Repository
+
+import "http://www.emftext.org/java" as java using simple names
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
+
+responses from metamodel java to metamodel pcm
+called ejbjava2pcm
+
+// ###################################################
+// ################ create Component from EJB class################
+ 
+response: CreatedClass
+trigger: insert in list java.CompilationUnit[classifiers]
+	check: change.newValue.isEJBClass 	
+effect:
+	execute: {
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		callCreateBasicComponent(repo, change.newValue);
+	} 
+
+response: CreateClassAnnotation
+	trigger: insert in list java.Class[annotationsAndModifiers]
+	check: change.newAffectedEObject.isEJBClass 
+effect:
+	execute: {
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance) 
+		callCreateBasicComponent(repo, change.newAffectedEObject as NamedElement)
+	} 
+	
+routine: CreateBasicComponent
+input: pcm.Repository as repo, java.NamedElement as namedElement
+effect: 
+	create element: pcm.BasicComponent as basicComponent
+	add correspondence: basicComponent, namedElement
+	execute: {
+		basicComponent.entityName = namedElement.name;
+		repo.components__Repository.add(basicComponent);		
+	}
+	
+// ###################################################
+// ################ create Interface from EJB interface################
+
+response: CreatedInterface
+trigger: insert in list java.CompilationUnit[classifiers]
+	check: change.newValue.isEJBBuisnessInterface 
+effect:
+	execute: {
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		callCreateOperationInterface(repo, change.newValue)
+	}
+
+response: CreateInterfaceAnnotation
+trigger: insert in list java.Interface[annotationsAndModifiers]
+	check: change.newAffectedEObject.isEJBBuisnessInterface
+effect:
+	execute: {
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		callCreateOperationInterface(repo, change.newAffectedEObject as NamedElement)
+	}
+
+routine: CreateOperationInterface
+input: pcm.Repository as repo, java.NamedElement as namedElement
+effect: 
+	create element: pcm.OperationInterface as operationInterface
+	add correspondence: operationInterface, namedElement
+	execute: {
+		operationInterface.entityName = namedElement.name;
+		repo.interfaces__Repository.add(operationInterface);		
+	}
+
+// ###################################################
+// ################ create OperationRequiredRole from field################
+response: CreateAnnotationForField
+trigger: insert in list java.Field[annotationsAndModifiers]
+check: change.newAffectedEObject.hasEJBAnnotation
+match:
+	retrieve required element: pcm.BasicComponent as basicComponent corresponding to (change.newAffectedEObject as Field).containingConcreteClassifier
+	retrieve required element: pcm.OperationInterface as opInterface corresponding to change.newAffectedEObject 
+effect:
+	execute: callCreateOperationRequiredRole(basicComponent, opInterface, change.newAffectedEObject as Field)
+
+response: CreateField
+trigger: insert in list java.Class[members]
+check: change.newValue.hasEJBAnnotation
+match:
+	retrieve required element: pcm.BasicComponent as basicComponent corresponding to change.newAffectedEObject
+	retrieve required element: pcm.OperationInterface as opInterface corresponding to change.newValue
+effect:
+	execute: callCreateOperationRequiredRole(basicComponent, opInterface, change.newValue as Field)
+
+
+routine: CreateOperationRequiredRole
+input: pcm.BasicComponent as basicComponent, pcm.OperationInterface as opInterface, java.Field as field
+effect: 
+	create element: pcm.OperationRequiredRole as orr
+	add correspondence: orr, field 
+	execute: {
+		orr.requiringEntity_RequiredRole = basicComponent
+		orr.requiredInterface__OperationRequiredRole = opInterface
+		orr.entityName = basicComponent.entityName + "_requires_" + orr.entityName	
+		}
+
+// ###################################################
+// ################ create OperationProvidedRole from implements################
+response: CreateImplements
+trigger: insert in list java.Class[implements]
+match:
+	retrieve required element: pcm.BasicComponent as basicComponent corresponding to change.newAffectedEObject
+	retrieve required element: pcm.OperationInterface as opInterface corresponding to getClassifier(change.newValue) 
+effect:
+	create element: pcm.OperationProvidedRole as opr
+	add correspondence: opr, change.newValue
+	execute: {
+		opr.providedInterface__OperationProvidedRole = opInterface
+		opr.providingEntity_ProvidedRole = basicComponent
+		opr.entityName = basicComponent.entityName + "_provides_" + opInterface.entityName
+	}
+
+// ###################################################
+// ################ create Signatures for interface methods################
+
+response: CreateInterfaceMethod
+trigger: insert in list java.Interface[members]
+check: change.newValue instanceof InterfaceMethod && change.newAffectedEObject.isEJBBuisnessInterface
+match:
+	retrieve required element: pcm.OperationInterface as opInterface corresponding to change.newAffectedEObject
+effect:
+	execute: callCreateOperationSignature(change.newValue as InterfaceMethod, opInterface)
+
+routine: CreateOperationSignature
+	input: java.InterfaceMethod as interfaceMethod, pcm.OperationInterface as opInterface
+effect:
+	create element: pcm.OperationSignature as opSignature
+	add correspondence: opSignature, interfaceMethod
+	execute:{
+		opSignature.entityName = interfaceMethod.name
+		opInterface.signatures__OperationInterface.add(opSignature)
+		interfaceMethod.parameters.forEach[callCreatePCMParameter(opSignature)]
+		interfaceMethod.typeReference.callCreatePCMReturnType(opSignature, interfaceMethod)
+	}
+	
+// #######################################################################
+// ################ create Parameter for  parameter################		
+response: CreateParameterInInterfaceMethod
+trigger: insert in list java.InterfaceMethod[parameters]
+match:
+	retrieve required element: pcm.OperationSignature as opSignature corresponding to change.newAffectedEObject
+effect:
+	execute: callCreatePCMParameter(change.newValue, opSignature)
+	
+routine: CreatePCMParameter
+	input: java.Parameter as jaMoPPParam,  pcm.OperationSignature as opSignature
+effect:
+	create element: pcm.Parameter as pcmParameter
+	add correspondence: pcmParameter, jaMoPPParam
+	execute:{
+		pcmParameter.entityName = jaMoPPParam.name
+		pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, 
+			correspondenceInstance, userInteracting, null, jaMoPPParam.arrayDimension)
+		opSignature.parameters__OperationSignature.add(pcmParameter)
+	}
+	
+// #######################################################################
+// ################ create ReturnType for returend type ################
+response: ReturnTypeCreated
+trigger: replace value java.InterfaceMethod[typeReference]
+match:
+	retrieve required element: pcm.OperationSignature as opSignature corresponding to change.newAffectedEObject
+effect:
+	execute: callCreatePCMReturnType(change.newValue, opSignature, change.newAffectedEObject as Method)
+	
+routine: CreatePCMReturnType 
+	input: java.TypeReference as returnType,  pcm.OperationSignature as opSignature, java.Method as javaMethod
+effect:
+	execute:{
+		val pcmDataType = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(returnType, correspondenceInstance, userInteracting, null, javaMethod.arrayDimension)
+		opSignature.returnType__OperationSignature = pcmDataType
+	}
+
+// #######################################################################
+// ################ create InnerDeclaration for data type ################
+response: CreateFieldInDatatypeClass
+trigger: insert in list java.Class[members]
+check: change.newValue instanceof Field
+match: 
+	retrieve required element: pcm.CompositeDataType as compositeDataType corresponding to change.newValue
+effect:
+	create element: pcm.InnerDeclaration as innerDec
+	add correspondence: innerDec, change.newValue
+	execute:{
+		val field = change.newValue as Field
+		innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
+					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceInstance,
+						userInteracting, null, field.arrayDimension)
+		innerDec.entityName = change.newValue.name
+	}
+	
+// #############################################################################################
+// ################ create SEFF for class method that overrides interface method################
+
+response: CreateClassMethodInEJBClass 
+trigger: insert in list java.Class[members]
+check: change.newValue instanceof ClassMethod && change.newAffectedEObject.isEJBClass &&
+	   EJBJava2PcmHelper.overridesInterfaceMethod(change.newValue as ClassMethod, change.newAffectedEObject as org.emftext.language.java.classifiers.Class)
+match:
+	retrieve required element: pcm.BasicComponent as basicComponent corresponding to change.newAffectedEObject
+effect: 
+	execute: callCreateSEFFForClassMethod(basicComponent, change.newValue as ClassMethod)
+
+routine: CreateSEFFForClassMethod
+	input: pcm.BasicComponent as basicComponent, java.ClassMethod as classMethod
+effect:
+	create element: pcm.ResourceDemandingSEFF as seff
+	add correspondence: seff, classMethod
+	execute:{
+		basicComponent.serviceEffectSpecifications__BasicComponent.add(seff)
+	}	
