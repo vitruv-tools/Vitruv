@@ -4,8 +4,8 @@ import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -15,11 +15,11 @@ class UpdateSingleValuedNonContainmentEReferenceResponse extends AbstractRespons
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return UpdateSingleValuedNonContainmentEReference.class;
+    return ReplaceSingleValuedEReference.class;
   }
   
-  private boolean checkChangeProperties(final UpdateSingleValuedNonContainmentEReference<NonRoot> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -33,10 +33,10 @@ class UpdateSingleValuedNonContainmentEReferenceResponse extends AbstractRespons
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof UpdateSingleValuedNonContainmentEReference<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    UpdateSingleValuedNonContainmentEReference typedChange = (UpdateSingleValuedNonContainmentEReference)change;
+    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,10 +45,10 @@ class UpdateSingleValuedNonContainmentEReferenceResponse extends AbstractRespons
   }
   
   public void executeResponse(final EChange change) {
-    UpdateSingleValuedNonContainmentEReference<NonRoot> typedChange = (UpdateSingleValuedNonContainmentEReference<NonRoot>)change;
+    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     final allElementTypes.NonRoot oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

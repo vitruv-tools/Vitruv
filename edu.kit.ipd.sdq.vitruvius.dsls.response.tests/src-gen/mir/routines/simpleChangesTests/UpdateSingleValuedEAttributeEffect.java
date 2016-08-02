@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -13,21 +13,21 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class UpdateSingleValuedEAttributeEffect extends AbstractEffectRealization {
-  public UpdateSingleValuedEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<Integer> change) {
+  public UpdateSingleValuedEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<Root, Integer> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<Integer> change;
+  private ReplaceSingleValuedEAttribute<Root, Integer> change;
   
-  private EObject getCorrepondenceSourceTargetElement(final UpdateSingleValuedEAttribute<Integer> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine UpdateSingleValuedEAttributeEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     Root targetElement = getCorrespondingElement(
     	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
@@ -54,7 +54,7 @@ public class UpdateSingleValuedEAttributeEffect extends AbstractEffectRealizatio
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<Integer> change, final Root targetElement) {
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Root, Integer> change, final Root targetElement) {
       Integer _newValue = change.getNewValue();
       targetElement.setSingleValuedEAttribute(_newValue);
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();

@@ -5,12 +5,12 @@ import java.util.List
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 abstract class AbstractResponseExecutor implements ResponseExecutor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);

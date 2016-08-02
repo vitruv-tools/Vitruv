@@ -5,8 +5,8 @@ import allElementTypes.Root;
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -15,17 +15,17 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change) {
+  private boolean checkTriggerPrecondition(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
     NonRootObjectContainerHelper _newValue = change.getNewValue();
     return (!Objects.equal(_newValue, null));
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateNonRootEObjectSingle.class;
+    return ReplaceSingleValuedEReference.class;
   }
   
-  private boolean checkChangeProperties(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -39,10 +39,10 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateNonRootEObjectSingle<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    CreateNonRootEObjectSingle typedChange = (CreateNonRootEObjectSingle)change;
+    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -54,7 +54,11 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectSingle<NonRootObjectContainerHelper> typedChange = (CreateNonRootEObjectSingle<NonRootObjectContainerHelper>)change;
+    ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
+    final allElementTypes.NonRootObjectContainerHelper oldValue = typedChange.getOldValue();
+    if (oldValue != null) {
+    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootObjectContainerHelperContainerMock(oldValue, typedChange.getAffectedEObject()));
+    }
     mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -16,30 +16,30 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreateNonRootEObjectInListEffect extends AbstractEffectRealization {
-  public CreateNonRootEObjectInListEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<NonRoot> change) {
+  public CreateNonRootEObjectInListEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<Root, NonRoot> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectInList<NonRoot> change;
+  private InsertEReference<Root, NonRoot> change;
   
-  private EObject getElement0(final CreateNonRootEObjectInList<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+  private EObject getElement0(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     return newNonRoot;
   }
   
-  private EObject getCorrepondenceSourceTargetElement(final CreateNonRootEObjectInList<NonRoot> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final InsertEReference<Root, NonRoot> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
-  private EObject getElement1(final CreateNonRootEObjectInList<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+  private EObject getElement1(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     NonRoot _newValue = change.getNewValue();
     return _newValue;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateNonRootEObjectInListEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     Root targetElement = getCorrespondingElement(
     	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
@@ -69,7 +69,7 @@ public class CreateNonRootEObjectInListEffect extends AbstractEffectRealization 
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
       NonRoot _newValue = change.getNewValue();
       String _id = _newValue.getId();
       newNonRoot.setId(_id);

@@ -6,7 +6,7 @@ import allElementTypes.impl.AllElementTypesFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -14,30 +14,30 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class HelperResponseForNonRootObjectContainerInitializationEffect extends AbstractEffectRealization {
-  public HelperResponseForNonRootObjectContainerInitializationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change) {
+  public HelperResponseForNonRootObjectContainerInitializationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change;
+  private ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change;
   
-  private EObject getElement0(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
+  private EObject getElement0(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
     return newNonRootContainer;
   }
   
-  private EObject getCorrepondenceSourceTargetElement(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
-  private EObject getElement1(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
+  private EObject getElement1(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
     NonRootObjectContainerHelper _newValue = change.getNewValue();
     return _newValue;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine HelperResponseForNonRootObjectContainerInitializationEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectSingle: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEReference: " + this.change);
     
     Root targetElement = getCorrespondingElement(
     	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
@@ -67,7 +67,7 @@ public class HelperResponseForNonRootObjectContainerInitializationEffect extends
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectSingle<NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
+    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
       NonRootObjectContainerHelper _newValue = change.getNewValue();
       String _id = _newValue.getId();
       newNonRootContainer.setId(_id);

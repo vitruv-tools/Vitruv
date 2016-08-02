@@ -5,7 +5,7 @@ import allElementTypes.impl.AllElementTypesFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -13,25 +13,25 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreateRootTestEffect extends AbstractEffectRealization {
-  public CreateRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateRootEObject<Root> change) {
+  public CreateRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertRootEObject<Root> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateRootEObject<Root> change;
+  private InsertRootEObject<Root> change;
   
-  private EObject getElement0(final CreateRootEObject<Root> change, final Root newRoot) {
+  private EObject getElement0(final InsertRootEObject<Root> change, final Root newRoot) {
     return newRoot;
   }
   
-  private EObject getElement1(final CreateRootEObject<Root> change, final Root newRoot) {
+  private EObject getElement1(final InsertRootEObject<Root> change, final Root newRoot) {
     Root _newValue = change.getNewValue();
     return _newValue;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateRootTestEffect with input:");
-    getLogger().debug("   CreateRootEObject: " + this.change);
+    getLogger().debug("   InsertRootEObject: " + this.change);
     
     Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
     initializeCreateElementState(newRoot);
@@ -52,7 +52,7 @@ public class CreateRootTestEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateRootEObject<Root> change, final Root newRoot) {
+    private void executeUserOperations(final InsertRootEObject<Root> change, final Root newRoot) {
       Root _newValue = change.getNewValue();
       String _id = _newValue.getId();
       newRoot.setId(_id);

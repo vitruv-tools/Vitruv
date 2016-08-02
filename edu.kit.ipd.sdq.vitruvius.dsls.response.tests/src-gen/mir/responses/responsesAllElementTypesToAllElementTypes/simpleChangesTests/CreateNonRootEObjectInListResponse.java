@@ -4,8 +4,8 @@ import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -15,11 +15,11 @@ class CreateNonRootEObjectInListResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateNonRootEObjectInList.class;
+    return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final CreateNonRootEObjectInList<NonRoot> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -33,10 +33,10 @@ class CreateNonRootEObjectInListResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateNonRootEObjectInList<?>)) {
+    if (!(change instanceof InsertEReference<?, ?>)) {
     	return false;
     }
-    CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
+    InsertEReference typedChange = (InsertEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,7 +45,7 @@ class CreateNonRootEObjectInListResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectInList<NonRoot> typedChange = (CreateNonRootEObjectInList<NonRoot>)change;
+    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.CreateNonRootEObjectInListEffect effect = new mir.routines.simpleChangesTests.CreateNonRootEObjectInListEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

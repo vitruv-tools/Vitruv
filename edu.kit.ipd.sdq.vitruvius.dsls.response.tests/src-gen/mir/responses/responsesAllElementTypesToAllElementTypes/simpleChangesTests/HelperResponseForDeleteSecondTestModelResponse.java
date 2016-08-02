@@ -4,8 +4,8 @@ import allElementTypes.Root;
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -14,7 +14,7 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final DeleteRootEObject<Root> change) {
+  private boolean checkTriggerPrecondition(final RemoveRootEObject<Root> change) {
     Root _oldValue = change.getOldValue();
     String _id = _oldValue.getId();
     boolean _equals = Objects.equal(_id, "EachTestModelSource");
@@ -22,10 +22,10 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteRootEObject.class;
+    return RemoveRootEObject.class;
   }
   
-  private boolean checkChangeProperties(final DeleteRootEObject<Root> change) {
+  private boolean checkChangeProperties(final RemoveRootEObject<Root> change) {
     EObject changedElement = change.getOldValue();
     // Check model element type
     if (!(changedElement instanceof Root)) {
@@ -36,10 +36,10 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteRootEObject<?>)) {
+    if (!(change instanceof RemoveRootEObject<?>)) {
     	return false;
     }
-    DeleteRootEObject typedChange = (DeleteRootEObject)change;
+    RemoveRootEObject typedChange = (RemoveRootEObject)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -51,7 +51,7 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
   }
   
   public void executeResponse(final EChange change) {
-    DeleteRootEObject<Root> typedChange = (DeleteRootEObject<Root>)change;
+    RemoveRootEObject<Root> typedChange = (RemoveRootEObject<Root>)change;
     mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForDeleteSecondTestModelEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

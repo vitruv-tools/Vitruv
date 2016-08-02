@@ -57,9 +57,8 @@ AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
 	'permute list' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
-/* The next two will be removed with the new Change MM */
-	'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 'replace value'
-	{SingleValuedFeatureReplace};
+	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
+	'replace value' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	{ArbitraryModelElementChange} 'any change';

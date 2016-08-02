@@ -9,7 +9,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
@@ -19,6 +18,7 @@ import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -99,7 +99,7 @@ class ResponseLanguageParameterGenerator {
 	protected def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
 		var List<String> changeTypeParameters = <String>newArrayList;
 		if (trigger instanceof ConcreteModelElementChange) {
-			changeTypeParameters = #[getGenericTypeParameterFQNOfChange(trigger)]			
+			changeTypeParameters = getGenericTypeParameterFQNsOfChange(trigger)			
 		}
 		val changeParameter = parameterContext.generateParameter(CHANGE_PARAMETER_NAME, trigger.generateEChangeInstanceClass(), changeTypeParameters);
 		if (changeParameter != null) {

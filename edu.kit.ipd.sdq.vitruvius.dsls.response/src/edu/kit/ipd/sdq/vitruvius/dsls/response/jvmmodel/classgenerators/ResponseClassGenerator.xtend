@@ -4,7 +4,6 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import org.eclipse.xtext.common.types.JvmOperation
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
@@ -19,6 +18,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootEChange
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;
@@ -107,20 +109,23 @@ class ResponseClassGenerator extends ClassGenerator {
 			'''
 			final «affectedElementClass.instanceClass.name» oldValue = «typedChangeName».getOldValue();
 			if (oldValue != null) {
-				«typedChangeName».setOldValue(new «basicResponsesPackageQualifiedName + ".mocks." + affectedElementClass.instanceClass.name + "ContainerMock"»(oldValue, «typedChangeName».getOldAffectedEObject()));
+				«typedChangeName».setOldValue(new «basicResponsesPackageQualifiedName + ".mocks." + affectedElementClass.instanceClass.name + "ContainerMock"»(oldValue, «typedChangeName».getAffectedEObject()));
 			}'''
 		}
 	}
 			
 	private def StringConcatenationClient getTypedChangeString() '''
 		«val trigger = response.trigger
-		»«change»«IF trigger instanceof ConcreteModelElementChange»<«getGenericTypeParameterOfChange(trigger)»>«ENDIF»'''
+		»«change»«IF trigger instanceof ConcreteModelElementChange»<«FOR typeParam : getGenericTypeParametersOfChange(trigger) SEPARATOR ', '»«typeParam»«ENDFOR»>«ENDIF»'''
 		
 		
 	protected def generateMethodCheckPrecondition() {
 		val methodName = PRECONDITION_METHOD_NAME;
 		val preconditionMethods = getPreconditionMethods();
-		val changeType = if (!change.equals(EChange)) {
+		// FIXME HK Use method in MM
+		val changeType = if (FeatureEChange.isAssignableFrom(change)) {
+				typeRef(change, wildcard, wildcard);
+			} else if (RootEChange.isAssignableFrom(change)) {
 				typeRef(change, wildcard);
 			} else {
 				typeRef(change);

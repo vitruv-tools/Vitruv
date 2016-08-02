@@ -3,42 +3,43 @@ package mir.routines.simpleChangesTests;
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import allElementTypes.impl.AllElementTypesFactoryImpl;
+import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
-public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectRealization {
-  public CreateNonRootEObjectSingleResponseEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectSingle<NonRoot> change) {
+public class ReplaceOrCreateNonRootEObjectSingleResponseEffect extends AbstractEffectRealization {
+  public ReplaceOrCreateNonRootEObjectSingleResponseEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEReference<Root, NonRoot> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectSingle<NonRoot> change;
+  private ReplaceSingleValuedEReference<Root, NonRoot> change;
   
-  private EObject getElement0(final CreateNonRootEObjectSingle<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+  private EObject getElement0(final ReplaceSingleValuedEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     return newNonRoot;
   }
   
-  private EObject getCorrepondenceSourceTargetElement(final CreateNonRootEObjectSingle<NonRoot> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
-  private EObject getElement1(final CreateNonRootEObjectSingle<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+  private EObject getElement1(final ReplaceSingleValuedEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     NonRoot _newValue = change.getNewValue();
     return _newValue;
   }
   
   protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateNonRootEObjectSingleResponseEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectSingle: " + this.change);
+    getLogger().debug("Called routine ReplaceOrCreateNonRootEObjectSingleResponseEffect with input:");
+    getLogger().debug("   ReplaceSingleValuedEReference: " + this.change);
     
     Root targetElement = getCorrespondingElement(
     	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
@@ -54,7 +55,7 @@ public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectReal
     
     addCorrespondenceBetween(getElement0(change, targetElement, newNonRoot), getElement1(change, targetElement, newNonRoot), "");
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleResponseEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.simpleChangesTests.ReplaceOrCreateNonRootEObjectSingleResponseEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement, newNonRoot);
     postprocessElementStates();
   }
@@ -68,13 +69,19 @@ public class CreateNonRootEObjectSingleResponseEffect extends AbstractEffectReal
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectSingle<NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
       NonRoot _newValue = change.getNewValue();
       String _id = _newValue.getId();
       newNonRoot.setId(_id);
       targetElement.setSingleValuedContainmentEReference(newNonRoot);
       SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectSingle);
+      NonRoot _oldValue = change.getOldValue();
+      boolean _notEquals = (!Objects.equal(_oldValue, null));
+      if (_notEquals) {
+        SimpleChangesTestsExecutionMonitor _instance_1 = SimpleChangesTestsExecutionMonitor.getInstance();
+        _instance_1.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectSingle);
+      }
     }
   }
 }

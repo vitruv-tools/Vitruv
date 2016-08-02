@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.RemoveEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue;
 import java.io.IOException;
 import java.util.function.Predicate;
 import mir.routines.simpleChangesTests.RoutinesFacade;
@@ -15,16 +15,16 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class RemoveEAttributeValueEffect extends AbstractEffectRealization {
-  public RemoveEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveEAttributeValue<Integer> change) {
+  public RemoveEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveEAttributeValue<Root, Integer> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private RemoveEAttributeValue<Integer> change;
+  private RemoveEAttributeValue<Root, Integer> change;
   
-  private EObject getCorrepondenceSourceTargetElement(final RemoveEAttributeValue<Integer> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final RemoveEAttributeValue<Root, Integer> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
@@ -56,9 +56,9 @@ public class RemoveEAttributeValueEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RemoveEAttributeValue<Integer> change, final Root targetElement) {
-      EObject _newAffectedEObject = change.getNewAffectedEObject();
-      final EList<Integer> sourceValueList = ((Root) _newAffectedEObject).getMultiValuedEAttribute();
+    private void executeUserOperations(final RemoveEAttributeValue<Root, Integer> change, final Root targetElement) {
+      Root _affectedEObject = change.getAffectedEObject();
+      final EList<Integer> sourceValueList = _affectedEObject.getMultiValuedEAttribute();
       EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
       final Predicate<Integer> _function = (Integer it) -> {
         int _intValue = it.intValue();

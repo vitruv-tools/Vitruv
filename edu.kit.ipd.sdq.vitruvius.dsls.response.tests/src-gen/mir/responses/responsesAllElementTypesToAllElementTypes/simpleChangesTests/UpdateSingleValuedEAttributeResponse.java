@@ -3,8 +3,8 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -14,11 +14,11 @@ class UpdateSingleValuedEAttributeResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return UpdateSingleValuedEAttribute.class;
+    return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final UpdateSingleValuedEAttribute<Integer> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -32,10 +32,10 @@ class UpdateSingleValuedEAttributeResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof UpdateSingleValuedEAttribute<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    UpdateSingleValuedEAttribute typedChange = (UpdateSingleValuedEAttribute)change;
+    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -44,7 +44,7 @@ class UpdateSingleValuedEAttributeResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    UpdateSingleValuedEAttribute<Integer> typedChange = (UpdateSingleValuedEAttribute<Integer>)change;
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
     mir.routines.simpleChangesTests.UpdateSingleValuedEAttributeEffect effect = new mir.routines.simpleChangesTests.UpdateSingleValuedEAttributeEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

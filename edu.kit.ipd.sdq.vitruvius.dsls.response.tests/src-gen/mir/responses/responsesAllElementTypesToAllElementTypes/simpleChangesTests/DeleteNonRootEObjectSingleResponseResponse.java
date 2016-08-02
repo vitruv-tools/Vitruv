@@ -2,10 +2,11 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
+import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectSingle;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -14,12 +15,18 @@ class DeleteNonRootEObjectSingleResponseResponse extends AbstractResponseRealiza
     super(userInteracting);
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteNonRootEObjectSingle.class;
+  private boolean checkTriggerPrecondition(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+    NonRoot _newValue = change.getNewValue();
+    boolean _equals = Objects.equal(_newValue, null);
+    return _equals;
   }
   
-  private boolean checkChangeProperties(final DeleteNonRootEObjectSingle<NonRoot> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  public static Class<? extends EChange> getExpectedChangeType() {
+    return ReplaceSingleValuedEReference.class;
+  }
+  
+  private boolean checkChangeProperties(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -33,11 +40,14 @@ class DeleteNonRootEObjectSingleResponseResponse extends AbstractResponseRealiza
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteNonRootEObjectSingle<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    DeleteNonRootEObjectSingle typedChange = (DeleteNonRootEObjectSingle)change;
+    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
     if (!checkChangeProperties(typedChange)) {
+    	return false;
+    }
+    if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
@@ -45,10 +55,10 @@ class DeleteNonRootEObjectSingleResponseResponse extends AbstractResponseRealiza
   }
   
   public void executeResponse(final EChange change) {
-    DeleteNonRootEObjectSingle<NonRoot> typedChange = (DeleteNonRootEObjectSingle<NonRoot>)change;
+    ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     final allElementTypes.NonRoot oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect effect = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleResponseEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

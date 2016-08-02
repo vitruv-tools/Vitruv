@@ -4,8 +4,8 @@ import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.RemoveNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -15,11 +15,11 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return RemoveNonContainmentEReference.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final RemoveNonContainmentEReference<NonRoot> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final RemoveEReference<Root, NonRoot> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -33,10 +33,10 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof RemoveNonContainmentEReference<?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    RemoveNonContainmentEReference typedChange = (RemoveNonContainmentEReference)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,10 +45,10 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
   }
   
   public void executeResponse(final EChange change) {
-    RemoveNonContainmentEReference<NonRoot> typedChange = (RemoveNonContainmentEReference<NonRoot>)change;
+    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
     final allElementTypes.NonRoot oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

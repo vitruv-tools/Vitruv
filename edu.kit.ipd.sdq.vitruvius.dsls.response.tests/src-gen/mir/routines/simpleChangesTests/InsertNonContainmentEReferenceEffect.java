@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.InsertNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -19,21 +19,21 @@ import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class InsertNonContainmentEReferenceEffect extends AbstractEffectRealization {
-  public InsertNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertNonContainmentEReference<NonRoot> change) {
+  public InsertNonContainmentEReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<Root, NonRoot> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private InsertNonContainmentEReference<NonRoot> change;
+  private InsertEReference<Root, NonRoot> change;
   
-  private EObject getCorrepondenceSourceTargetElement(final InsertNonContainmentEReference<NonRoot> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final InsertEReference<Root, NonRoot> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine InsertNonContainmentEReferenceEffect with input:");
-    getLogger().debug("   InsertNonContainmentEReference: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     Root targetElement = getCorrespondingElement(
     	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
@@ -60,7 +60,7 @@ public class InsertNonContainmentEReferenceEffect extends AbstractEffectRealizat
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertNonContainmentEReference<NonRoot> change, final Root targetElement) {
+    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement) {
       NonRootObjectContainerHelper _nonRootObjectContainerHelper = targetElement.getNonRootObjectContainerHelper();
       EList<NonRoot> _nonRootObjectsContainment = _nonRootObjectContainerHelper.getNonRootObjectsContainment();
       final Function1<NonRoot, Boolean> _function = (NonRoot it) -> {

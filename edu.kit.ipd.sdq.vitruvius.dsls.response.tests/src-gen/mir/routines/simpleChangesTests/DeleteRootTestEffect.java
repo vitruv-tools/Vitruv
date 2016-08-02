@@ -4,7 +4,7 @@ import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -12,20 +12,20 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class DeleteRootTestEffect extends AbstractEffectRealization {
-  public DeleteRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DeleteRootEObject<Root> change) {
+  public DeleteRootTestEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveRootEObject<Root> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private DeleteRootEObject<Root> change;
+  private RemoveRootEObject<Root> change;
   
-  private EObject getElement0(final DeleteRootEObject<Root> change, final Root oldModel) {
+  private EObject getElement0(final RemoveRootEObject<Root> change, final Root oldModel) {
     return oldModel;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteRootTestEffect with input:");
-    getLogger().debug("   DeleteRootEObject: " + this.change);
+    getLogger().debug("   RemoveRootEObject: " + this.change);
     
     Root oldModel = getCorrespondingElement(
     	getCorrepondenceSourceOldModel(change), // correspondence source supplier
@@ -42,7 +42,7 @@ public class DeleteRootTestEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private EObject getCorrepondenceSourceOldModel(final DeleteRootEObject<Root> change) {
+  private EObject getCorrepondenceSourceOldModel(final RemoveRootEObject<Root> change) {
     Root _oldValue = change.getOldValue();
     return _oldValue;
   }

@@ -1,6 +1,6 @@
 package mir.responses.mocks.allElementTypes;
 
-import allElementTypes.NonRoot;
+import allElementTypes.NonRootObjectContainerHelper;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -13,16 +13,20 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
 @SuppressWarnings("all")
-public class NonRootContainerMock implements NonRoot {
-  public NonRootContainerMock(final NonRoot containedObject, final EObject containerObject) {
+public class NonRootObjectContainerHelperContainerMock implements NonRootObjectContainerHelper {
+  public NonRootObjectContainerHelperContainerMock(final NonRootObjectContainerHelper containedObject, final EObject containerObject) {
     super();
     this.containedObject = containedObject;
     this.containerObject = containerObject;
   }
   
-  private NonRoot containedObject;
+  private NonRootObjectContainerHelper containedObject;
   
   private EObject containerObject;
+  
+  public EList getNonRootObjectsContainment() {
+    return containedObject.getNonRootObjectsContainment();
+  }
   
   public String getId() {
     return containedObject.getId();

@@ -3,8 +3,8 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.InsertEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -17,8 +17,8 @@ class InsertEAttributeValueResponse extends AbstractResponseRealization {
     return InsertEAttributeValue.class;
   }
   
-  private boolean checkChangeProperties(final InsertEAttributeValue<Integer> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final InsertEAttributeValue<Root, Integer> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -32,7 +32,7 @@ class InsertEAttributeValueResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertEAttributeValue<?>)) {
+    if (!(change instanceof InsertEAttributeValue<?, ?>)) {
     	return false;
     }
     InsertEAttributeValue typedChange = (InsertEAttributeValue)change;
@@ -44,7 +44,7 @@ class InsertEAttributeValueResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    InsertEAttributeValue<Integer> typedChange = (InsertEAttributeValue<Integer>)change;
+    InsertEAttributeValue<Root, Integer> typedChange = (InsertEAttributeValue<Root, Integer>)change;
     mir.routines.simpleChangesTests.InsertEAttributeValueEffect effect = new mir.routines.simpleChangesTests.InsertEAttributeValueEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

@@ -52,12 +52,12 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		Logger.rootLogger.level = Level.DEBUG;
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");
+		rootElement.nonRootObjectContainerHelper = container;
 		for (nonRootId : nonContainmentNonRootIds) {
 			val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
 			nonRoot.id = nonRootId;
 			container.nonRootObjectsContainment.add(nonRoot);
 		}
-		rootElement.nonRootObjectContainerHelper = container;
 		saveAndSynchronizeChanges(rootElement);
 	}
 	
@@ -252,6 +252,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 		unsetSingleValuedContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
+		//compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();

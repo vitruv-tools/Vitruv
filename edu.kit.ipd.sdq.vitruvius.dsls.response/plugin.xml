@@ -7,20 +7,5 @@
 			class = "edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseLanguagePackage"
 			genModel = "model/generated/ResponseLanguage.genmodel" />
 	</extension>
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated response_correspondence -->
-      <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/Response/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponsePackage"
-            genModel="model/response_correspondence.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated InputTypes -->
-      <package
-            uri="http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage/InputTypes"
-            class="edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage"
-            genModel="model/InputTypes.genmodel"/>
-   </extension>
 
 </plugin>

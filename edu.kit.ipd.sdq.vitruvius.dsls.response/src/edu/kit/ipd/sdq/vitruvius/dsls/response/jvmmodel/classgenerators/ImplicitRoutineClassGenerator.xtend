@@ -5,9 +5,9 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 class ImplicitRoutineClassGenerator extends RoutineClassGenerator {
 	protected final Class<? extends EChange> change;

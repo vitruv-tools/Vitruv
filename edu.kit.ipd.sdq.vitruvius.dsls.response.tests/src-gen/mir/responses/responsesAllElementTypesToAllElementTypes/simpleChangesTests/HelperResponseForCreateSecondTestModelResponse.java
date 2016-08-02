@@ -4,8 +4,8 @@ import allElementTypes.Root;
 import com.google.common.base.Objects;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -14,7 +14,7 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final CreateRootEObject<Root> change) {
+  private boolean checkTriggerPrecondition(final InsertRootEObject<Root> change) {
     Root _newValue = change.getNewValue();
     String _id = _newValue.getId();
     boolean _equals = Objects.equal(_id, "EachTestModelSource");
@@ -22,10 +22,10 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateRootEObject.class;
+    return InsertRootEObject.class;
   }
   
-  private boolean checkChangeProperties(final CreateRootEObject<Root> change) {
+  private boolean checkChangeProperties(final InsertRootEObject<Root> change) {
     EObject changedElement = change.getNewValue();
     // Check model element type
     if (!(changedElement instanceof Root)) {
@@ -36,10 +36,10 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateRootEObject<?>)) {
+    if (!(change instanceof InsertRootEObject<?>)) {
     	return false;
     }
-    CreateRootEObject typedChange = (CreateRootEObject)change;
+    InsertRootEObject typedChange = (InsertRootEObject)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -51,7 +51,7 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
   }
   
   public void executeResponse(final EChange change) {
-    CreateRootEObject<Root> typedChange = (CreateRootEObject<Root>)change;
+    InsertRootEObject<Root> typedChange = (InsertRootEObject<Root>)change;
     mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect effect = new mir.routines.simpleChangesTests.HelperResponseForCreateSecondTestModelEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

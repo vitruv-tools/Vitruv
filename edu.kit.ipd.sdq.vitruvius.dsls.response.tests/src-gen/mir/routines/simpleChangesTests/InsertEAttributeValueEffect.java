@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.InsertEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -14,16 +14,16 @@ import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class InsertEAttributeValueEffect extends AbstractEffectRealization {
-  public InsertEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEAttributeValue<Integer> change) {
+  public InsertEAttributeValueEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEAttributeValue<Root, Integer> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private InsertEAttributeValue<Integer> change;
+  private InsertEAttributeValue<Root, Integer> change;
   
-  private EObject getCorrepondenceSourceTargetElement(final InsertEAttributeValue<Integer> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceTargetElement(final InsertEAttributeValue<Root, Integer> change) {
+    Root _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
@@ -55,7 +55,7 @@ public class InsertEAttributeValueEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertEAttributeValue<Integer> change, final Root targetElement) {
+    private void executeUserOperations(final InsertEAttributeValue<Root, Integer> change, final Root targetElement) {
       EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
       Integer _newValue = change.getNewValue();
       _multiValuedEAttribute.add(_newValue);
