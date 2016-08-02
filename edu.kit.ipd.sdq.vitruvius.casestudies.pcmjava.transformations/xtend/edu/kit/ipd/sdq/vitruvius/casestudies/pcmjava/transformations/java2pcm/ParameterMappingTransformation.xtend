@@ -35,7 +35,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 		val pcmParameter = RepositoryFactory.eINSTANCE.createParameter
 		pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.
 			getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, blackboard.correspondenceInstance,
-				userInteracting, null)
+				userInteracting, null, jaMoPPParam.arrayDimension)
 		pcmParameter.entityName = jaMoPPParam.name
 		return pcmParameter.toList
 	}

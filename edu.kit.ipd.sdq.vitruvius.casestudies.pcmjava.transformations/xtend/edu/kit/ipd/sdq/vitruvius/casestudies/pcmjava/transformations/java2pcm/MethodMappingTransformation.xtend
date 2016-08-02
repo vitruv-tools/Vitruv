@@ -87,7 +87,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(correspondingSignature)
 				val DataType newReturnValue = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(newValue as TypeReference,
-						blackboard.correspondenceInstance, userInteracting, repo)
+						blackboard.correspondenceInstance, userInteracting, repo, (newAffectedEObject as Method).arrayDimension)
 				correspondingSignature.returnType__OperationSignature = newReturnValue
 
 				// guess this is not necessary since the id stay the same

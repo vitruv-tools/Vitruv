@@ -61,7 +61,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 				innerDeclaration.entityName = field.name
 				innerDeclaration.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, blackboard.correspondenceInstance,
-						userInteracting, null)
+						userInteracting, null, field.arrayDimension)
 				innerDeclaration.compositeDataType_InnerDeclaration = cdt
 				newCorrespondingEObjects.add(innerDeclaration)
 			}
@@ -128,7 +128,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(innerDec)
 					innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
-							userInteracting, null)
+							userInteracting, null, (newAffectedEObject as Field).arrayDimension )
 					blackboard.correspondenceInstance.updateTUID(oldTUID, innerDec)
 				}
 			}
