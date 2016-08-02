@@ -21,5 +21,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
+ org.somox.gast2seff
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
