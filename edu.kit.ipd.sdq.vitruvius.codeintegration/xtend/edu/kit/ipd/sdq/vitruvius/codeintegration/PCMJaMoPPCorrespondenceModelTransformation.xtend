@@ -36,10 +36,12 @@ import org.somox.sourcecodedecorator.InterfaceSourceCodeLink
 import org.somox.sourcecodedecorator.MethodLevelSourceCodeLink
 import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
+
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -337,15 +339,30 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		// check if the correspondence was already created, because the SCDM may contain duplicate entries
 		var identifier = cInstance.calculateTUIDFromEObject(deresolvedA).toString +
 			cInstance.calculateTUIDFromEObject(deresolvedB).toString
+		var Correspondence correspondence = null
 		if (!existingEntries.contains(identifier)) {
-			val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
-			val integratedCorrespondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList)
-			
+			val useIntegrationCorrespondence = this.decideIntegrationCorrespondenceUsage(objectA, objectB)
+			if(useIntegrationCorrespondence){
+				val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
+				correspondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList)
+			}else{ // create a standard response correspondence
+				correspondence = CorrespondenceHelper.addCorrespondence(cInstance, deresolvedA, deresolvedB, null) 
+			}
 			existingEntries.add(identifier)
 			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB)
 
-			return integratedCorrespondence
+			return correspondence 
 		}
+	}
+	
+	def decideIntegrationCorrespondenceUsage(EObject objectA, EObject objectB) {
+		val correspondenceTypeDeciders = EclipseBridge.getRegisteredExtensions(CorrespondenceTypeDeciding.ID,
+			VitruviusConstants.getExtensionPropertyName(), CorrespondenceTypeDeciding)
+		val correspondenceTypeDecider = correspondenceTypeDeciders.claimNotMany
+		if(null == correspondenceTypeDecider){
+			return true
+		}
+		return correspondenceTypeDecider.useIntegratedCorrespondence(objectA, objectB, cInstance, this.jaMoppResources)
 	}
 	
 	/**
