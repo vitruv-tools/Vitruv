@@ -16,7 +16,7 @@ import org.somox.gast2seff.visitors.MethodCallFinder
 
 class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificationStrategy {
 	
-	private  val Logger logger = Logger.getLogger(EJB2PCMFunctionClassificationStrategy.name)
+	private static val Logger logger = Logger.getLogger(EJB2PCMFunctionClassificationStrategy.name)
 	
 	private final BasicComponentFinding basicComponentFinding
 	private final CorrespondenceInstance<Correspondence> correspondenceInstance

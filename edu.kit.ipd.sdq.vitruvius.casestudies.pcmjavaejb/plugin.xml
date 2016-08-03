@@ -4,19 +4,19 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.codeintegration.correspondencetypedeciding">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.casestudies.EJBCorrepondenceTypeDecider">
+            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.EJBCorrepondenceTypeDecider">
       </provides>
    </extension>
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm.Change2CommandTransformingJavaToPcm">
+            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.Change2CommandTransformingEJBJavaToPcm">
       </provides>
    </extension>
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
    	<provides
-    	 provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Change2CommandTransformingPcmToJava">
+    	 provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.Change2CommandTransformingEJBJavaToPcm">
       </provides>
 	</extension>
 

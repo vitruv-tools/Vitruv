@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
  */
 class EJBBasicComponentFinder implements BasicComponentFinding {
 	
-	private val Logger logger = Logger.getLogger(EJBBasicComponentFinder.name)
+	private static val Logger logger = Logger.getLogger(EJBBasicComponentFinder.name)
 	
 	private val ResourceSet dummyResourceSet;
 	

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm;
 
 import java.util.List;
 

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger
 // copied from ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
 class ResourceDemandingBehaviourForClassMethodFinder4EJB implements ResourceDemandingBehaviourForClassMethodFinding {
 	
-	val private Logger logger = Logger.getLogger(ResourceDemandingBehaviourForClassMethodFinder4EJB.name)
+	val private static Logger logger = Logger.getLogger(ResourceDemandingBehaviourForClassMethodFinder4EJB.name)
 
 	private	final CorrespondenceInstance<Correspondence> correspondenceInstance
 
