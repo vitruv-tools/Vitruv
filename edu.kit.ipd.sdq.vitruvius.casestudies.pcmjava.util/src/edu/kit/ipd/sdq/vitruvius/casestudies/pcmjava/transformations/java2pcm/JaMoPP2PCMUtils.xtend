@@ -49,7 +49,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	def public static Repository getRepository(CorrespondenceInstance correspondenceInstance) {
 		val Set<Repository> repos = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (repos.nullOrEmpty) {
-			throw new RuntimeException("Could not find a repository")
+			return null
 		}
 		if (1 != repos.size) {
 			logger.warn("found more than one repository. Retruning the first")
