@@ -1,0 +1,5 @@
+package testRepository;
+@Remote
+public interface TestEJBInterface {
+
+}
