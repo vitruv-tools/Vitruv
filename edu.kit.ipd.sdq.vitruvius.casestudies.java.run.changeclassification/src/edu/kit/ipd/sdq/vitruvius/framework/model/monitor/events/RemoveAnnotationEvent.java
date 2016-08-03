@@ -1,15 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 
-public class RemoveMethodAnnotationEvent extends AnnotationEvent {
+public class RemoveAnnotationEvent extends AnnotationEvent {
 
-    public final MethodDeclaration methodAfterChange;
+    public final BodyDeclaration bodyAfterChange;
 
-    public RemoveMethodAnnotationEvent(final Annotation annotation, final MethodDeclaration methodAfterChange) {
+    public RemoveAnnotationEvent(final Annotation annotation, final BodyDeclaration bodyAfterChange) {
         super(annotation);
-        this.methodAfterChange = methodAfterChange;
+        this.bodyAfterChange = bodyAfterChange;
     }
 
     @Override

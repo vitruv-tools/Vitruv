@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
@@ -275,23 +276,35 @@ public class CompilationUnitAdapter {
         return "";
     }
 
-    public AnnotationInstance getAnnotationInstanceForMethodAnnotation(final Annotation annotation) {
-        if (null == annotation.getParent() || !(annotation.getParent() instanceof MethodDeclaration)) {
-            logger.info(
-                    "Annoation is null or parent declaration of annotation is not a method declaration. Annotation: "
-                            + annotation + " Parent: " + annotation.getParent());
-            return null;
-        }
-        final MethodDeclaration methodDeclaration = (MethodDeclaration) annotation.getParent();
-        final Parametrizable parametrizable = this.getMethodOrConstructorForMethodDeclaration(methodDeclaration);
-        final AnnotableAndModifiable annotableAndModifiable = (AnnotableAndModifiable) parametrizable;
+    public AnnotationInstance getAnnotationInstanceForMethodAnnotation(final Annotation annotation,
+            final BodyDeclaration bodyDeclaration) {
+        final AnnotableAndModifiable annotableAndModifiable = this
+                .getAnnotableAndModifiableForBodyDeclaration(bodyDeclaration);
+        final Name typeName = annotation.getTypeName();
+        final String astName = typeName.toString();
         for (final AnnotationInstance annotationInstance : annotableAndModifiable.getAnnotationInstances()) {
             final String jaMoPPAnnotationName = annotationInstance.getAnnotation().getName();
-            final Name typeName = annotation.getTypeName();
-            final String astName = typeName.toString();
             if (astName.contains(jaMoPPAnnotationName)) {
                 return annotationInstance;
             }
+        }
+        return null;
+    }
+
+    public AnnotableAndModifiable getAnnotableAndModifiableForBodyDeclaration(final BodyDeclaration bodyDeclaration) {
+        if (bodyDeclaration instanceof FieldDeclaration) {
+            final List<Field> fields = this.getFieldsForFieldDeclaration((FieldDeclaration) bodyDeclaration);
+            if (fields == null || fields.size() == 0) {
+                return null;
+            }
+            return fields.get(0);
+        }
+        if (bodyDeclaration instanceof MethodDeclaration) {
+            return (AnnotableAndModifiable) this
+                    .getMethodOrConstructorForMethodDeclaration((MethodDeclaration) bodyDeclaration);
+        }
+        if (bodyDeclaration instanceof TypeDeclaration) {
+            return this.getConcreteClassifierForTypeDeclaration((TypeDeclaration) bodyDeclaration);
         }
         return null;
     }

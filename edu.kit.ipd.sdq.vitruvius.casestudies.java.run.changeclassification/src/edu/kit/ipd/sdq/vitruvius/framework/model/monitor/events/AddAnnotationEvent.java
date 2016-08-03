@@ -1,15 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events;
 
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 
-public class AddMethodAnnotationEvent extends AnnotationEvent {
+public class AddAnnotationEvent extends AnnotationEvent {
 
-    public final MethodDeclaration methodBeforeAdd;
+    public final BodyDeclaration bodyDeclaration;
 
-    public AddMethodAnnotationEvent(final MethodDeclaration methodBeforeAdd, final Annotation annotation) {
+    public AddAnnotationEvent(final BodyDeclaration bodyDeclaration, final Annotation annotation) {
         super(annotation);
-        this.methodBeforeAdd = methodBeforeAdd;
+        this.bodyDeclaration = bodyDeclaration;
     }
 
     @Override

@@ -2,11 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events;
 
 /**
  * @author messinger
- * 
+ *
  *         Visitor for {@link ChangeClassifyingEvent}s. Contains one visit method for
  *         {@link ChangeClassifyingEventExtension} which should be implemented as a dispatch method
  *         that delegates the change to a for its type registered ChangeEventExtendedVisitor.
- * 
+ *
  */
 public interface ChangeEventVisitor {
 
@@ -58,9 +58,9 @@ public interface ChangeEventVisitor {
 
     void visit(RenameFieldEvent renameFieldEvent);
 
-    void visit(AddMethodAnnotationEvent addMethodAnnotationEvent);
+    void visit(AddAnnotationEvent addAnnotationEvent);
 
-    void visit(RemoveMethodAnnotationEvent removeMethodAnnotationEvent);
+    void visit(RemoveAnnotationEvent removeAnnotationEvent);
 
     void visit(RenamePackageEvent renamePackageEvent);
 

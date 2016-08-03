@@ -35,10 +35,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddFieldEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddImportEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddJavaDocEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddMethodAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddMethodEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddSuperClassEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddSuperInterfaceEvent;
@@ -61,10 +61,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteClassEvent
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteInterfaceEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeletePackageEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.MoveMethodEvent;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveFieldEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveImportEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveJavaDocEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveMethodAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveMethodEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveSuperClassEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveSuperInterfaceEvent;
@@ -161,7 +161,7 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getUnsavedCompilationUnitAdapter(createClassEvent.compilationUnitBeforeCreate);
         final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(type);
         final Class newClass = (Class) changedCU.getConcreteClassifierForTypeDeclaration(type);
-        final CompilationUnit beforeChange = (null == originalCU ? null : originalCU.getCompilationUnit());
+        final CompilationUnit beforeChange = null == originalCU ? null : originalCU.getCompilationUnit();
         final EChange eChange = JaMoPPChangeBuildHelper.createAddClassChange(newClass, beforeChange);
         this.util.submitEMFModelChange(eChange, createClassEvent.type);
 
@@ -602,38 +602,37 @@ public class ChangeResponder implements ChangeEventVisitor {
     }
 
     @Override
-    public void visit(final AddMethodAnnotationEvent addMethodAnnotationEvent) {
+    public void visit(final AddAnnotationEvent addAnnotationEvent) {
         logger.info("React to AddMethodAnnotationEvent");
         final CompilationUnitAdapter oldCU = this.util
-                .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.methodBeforeAdd);
-        final Parametrizable methodOrConstructor = oldCU
-                .getMethodOrConstructorForMethodDeclaration(addMethodAnnotationEvent.methodBeforeAdd);
+                .getUnsavedCompilationUnitAdapter(addAnnotationEvent.bodyDeclaration);
+        final AnnotableAndModifiable annotableAndModifiable = oldCU
+                .getAnnotableAndModifiableForBodyDeclaration(addAnnotationEvent.bodyDeclaration);
 
-        final CompilationUnitAdapter newCu = this.util
-                .getUnsavedCompilationUnitAdapter(addMethodAnnotationEvent.annotation);
-        final AnnotationInstance annotationInstance = newCu
-                .getAnnotationInstanceForMethodAnnotation(addMethodAnnotationEvent.annotation);
+        final CompilationUnitAdapter newCu = this.util.getUnsavedCompilationUnitAdapter(addAnnotationEvent.annotation);
+        final AnnotationInstance annotationInstance = newCu.getAnnotationInstanceForMethodAnnotation(
+                addAnnotationEvent.annotation, addAnnotationEvent.bodyDeclaration);
         if (null != annotationInstance) {
             final EChange eChange = JaMoPPChangeBuildHelper.createAddAnnotationOrModifierChange(annotationInstance,
-                    methodOrConstructor);
-            this.util.submitEMFModelChange(eChange, addMethodAnnotationEvent.annotation);
+                    annotableAndModifiable);
+            this.util.submitEMFModelChange(eChange, addAnnotationEvent.annotation);
         }
     }
 
     @Override
-    public void visit(final RemoveMethodAnnotationEvent removeMethodAnnotationEvent) {
+    public void visit(final RemoveAnnotationEvent removeAnnotationEvent) {
         final CompilationUnitAdapter cuWithAnnotation = this.util
-                .getUnsavedCompilationUnitAdapter(removeMethodAnnotationEvent.annotation);
-        final AnnotationInstance removedAnnotation = cuWithAnnotation
-                .getAnnotationInstanceForMethodAnnotation(removeMethodAnnotationEvent.annotation);
+                .getUnsavedCompilationUnitAdapter(removeAnnotationEvent.annotation);
+        final AnnotationInstance removedAnnotation = cuWithAnnotation.getAnnotationInstanceForMethodAnnotation(
+                removeAnnotationEvent.annotation, removeAnnotationEvent.bodyAfterChange);
         if (null != removedAnnotation) {
             final CompilationUnitAdapter cuWithoutAnnotation = this.util
-                    .getUnsavedCompilationUnitAdapter(removeMethodAnnotationEvent.methodAfterChange);
-            final Parametrizable afterChangeMethod = cuWithoutAnnotation
-                    .getMethodOrConstructorForMethodDeclaration(removeMethodAnnotationEvent.methodAfterChange);
+                    .getUnsavedCompilationUnitAdapter(removeAnnotationEvent.bodyAfterChange);
+            final AnnotableAndModifiable annotableAndModifiable = cuWithoutAnnotation
+                    .getAnnotableAndModifiableForBodyDeclaration(removeAnnotationEvent.bodyAfterChange);
             final EChange eChange = JaMoPPChangeBuildHelper.createRemoveAnnotationOrModifierChange(removedAnnotation,
-                    afterChangeMethod);
-            this.util.submitEMFModelChange(eChange, removeMethodAnnotationEvent.annotation);
+                    annotableAndModifiable);
+            this.util.submitEMFModelChange(eChange, removeAnnotationEvent.annotation);
         }
     }
 

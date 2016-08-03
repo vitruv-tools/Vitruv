@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
@@ -19,8 +20,10 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -171,6 +174,32 @@ public final class JavaModel2AST {
         return null;
     }
 
+    public static BodyDeclaration getBodyDeclaration(final IAnnotatable iAnnotatable, final CompilationUnit unit) {
+        if (iAnnotatable instanceof IField) {
+            return getFieldDeclarationByName((IField) iAnnotatable, unit);
+        }
+        if (iAnnotatable instanceof IMethod) {
+            return getMethodDeclaration((IMethod) iAnnotatable, unit);
+        }
+        if (iAnnotatable instanceof IType) {
+            return getTypeDeclaration((IType) iAnnotatable, unit);
+        }
+        return null;
+    }
+
+    public static IBinding getIBindung(final BodyDeclaration bodyDeclaration) {
+        if (bodyDeclaration instanceof MethodDeclaration) {
+            return ((MethodDeclaration) bodyDeclaration).resolveBinding();
+        }
+        if (bodyDeclaration instanceof TypeDeclaration) {
+            return ((TypeDeclaration) bodyDeclaration).resolveBinding();
+        }
+        if (bodyDeclaration instanceof FieldDeclaration) {
+            // return ((FieldDeclaration) bodyDeclaration).;
+        }
+        return null;
+    }
+
     private static MethodDeclaration getMethodDeclarationInAnonymousClass(final IMethod imethod,
             final CompilationUnit unit, final IType itype) {
         final String anonymousClassToString = itype.toString();
@@ -313,11 +342,11 @@ public final class JavaModel2AST {
         return null;
     }
 
-    public static Annotation getAnnotation(final IAnnotation iannotation, final MethodDeclaration methodDeclaration) {
-        if (null == methodDeclaration || null == methodDeclaration.modifiers()) {
+    public static Annotation getAnnotation(final IAnnotation iannotation, final BodyDeclaration bodyDeclaration) {
+        if (null == bodyDeclaration || null == bodyDeclaration.modifiers()) {
             return null;
         }
-        for (final Object modifier : methodDeclaration.modifiers()) {
+        for (final Object modifier : bodyDeclaration.modifiers()) {
             if (modifier instanceof Annotation) {
                 if (JavaModel2ASTCorrespondence.corresponds(iannotation, (Annotation) modifier)) {
                     return (Annotation) modifier;
@@ -326,4 +355,5 @@ public final class JavaModel2AST {
         }
         return null;
     }
+
 }
