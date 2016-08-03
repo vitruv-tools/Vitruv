@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 
 /**
@@ -26,7 +25,7 @@ public class RepositoryModelLoader {
      *            path to model
      * @return the EObjects contained in the PCM resource
      */
-    public static EList<EObject> loadPCMModel(String path) {
+    public static EList<EObject> loadPCMModel(final String path) {
 
         return loadPCMResource(path).getContents();
 
@@ -34,12 +33,12 @@ public class RepositoryModelLoader {
 
     /**
      * Loads a PCM resource (*.repository file) from file system
-     * 
+     *
      * @param path
      *            relative path to the corresponding resource file
      * @return the loaded resource , or null if there was none found
      */
-    public static Resource loadPCMResource(String path) {
+    public static Resource loadPCMResource(final String path) {
         return loadPCMResource(URI.createFileURI(new File(path).getAbsolutePath()));
     }
 
@@ -50,18 +49,18 @@ public class RepositoryModelLoader {
      *            the file uri
      * @return the resource, or null if there was none found
      */
-    public static Resource loadPCMResource(URI fileURI) {
+    public static Resource loadPCMResource(final URI fileURI) {
         // Load the required meta class packages => PCM Repository
         RepositoryPackage.eINSTANCE.eClass();
 
         // Obtain a new resource set
-        ResourceSet resourceSet = new ResourceSetImpl();
+        final ResourceSet resourceSet = new ResourceSetImpl();
 
         // Register XML Factory implementation using DEFAULT_EXTENSION
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 
         // Demand load the resource for this file
-        Resource resource = resourceSet.getResource(fileURI, true);
+        final Resource resource = resourceSet.getResource(fileURI, true);
 
         return resource;
     }
