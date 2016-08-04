@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -88,6 +89,11 @@ public class CompilationUnitManipulatorHelper {
         return posOfFirstBracket + 1;
     }
 
+    public static int getOffsetForAddingAnntationToClass(final IType firstType) throws JavaModelException {
+        final int posOfFirstBracket = firstType.getCompilationUnit().getSource().indexOf("public");
+        return posOfFirstBracket - 1;
+    }
+
     public static int getOffsetToInsertInMethodInCompilationUnit(final ICompilationUnit compUnit,
             final String methodName) throws Throwable {
         final IType firstType = compUnit.getAllTypes()[0];
@@ -97,7 +103,15 @@ public class CompilationUnitManipulatorHelper {
         final int inMethodOffset = sourceMethod.indexOf("{");
         final int offset = methodOffset + inMethodOffset + 1;
         return offset;
+    }
 
+    public static int getOffsetForAddingAnntationToField(final IType type, final String fieldName) throws Throwable {
+        for (final IField iField : type.getFields()) {
+            if (iField.getElementName().equals(fieldName)) {
+                return iField.getSourceRange().getOffset();
+            }
+        }
+        throw new RuntimeException("Could not find field " + fieldName + " in class " + type.getElementName());
     }
 
 }

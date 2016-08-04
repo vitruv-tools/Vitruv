@@ -174,8 +174,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
-        final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI,
-                jaMoPPVURI);
+        final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum
+                .getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
     }
 
@@ -208,10 +208,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected Repository addRepoContractsAndDatatypesPackage() throws Throwable {
         this.mainPackage = this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME });
-        this.mainPackage = this
-                .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });
-        this.mainPackage = this
-                .createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "datatypes" });
+        this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });
+        this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "datatypes" });
         final CorrespondenceInstance<Correspondence> ci = this.getCorrespondenceInstance();
         if (null == ci) {
             throw new RuntimeException("Could not get correspondence instance.");
@@ -380,13 +378,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
             final String implementingClassName) throws Throwable, CoreException, InterruptedException {
-        final Classifier jaMoPPClass = this.addClassInPackage(packageForClass, implementingClassName);
+        final Classifier jaMoPPClass = this.createClassInPackage(packageForClass, implementingClassName);
         final Set<T> eObjectsByType = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
                 this.getCorrespondenceInstance(), jaMoPPClass, classOfCorrespondingObject);
         return CollectionBridge.claimOne(eObjectsByType);
     }
 
-    protected Classifier addClassInPackage(final Package packageForClass, final String implementingClassName)
+    protected Classifier createClassInPackage(final Package packageForClass, final String implementingClassName)
             throws Throwable, CoreException, InterruptedException {
         final IPackageFragmentRoot packageRoot = this.getIJavaProject();
         final IPackageFragment packageFragment = this.getPackageFragmentToForJaMoPPPackage(packageForClass);
@@ -445,8 +443,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        final Change2CommandTransformingProviding transformingProviding = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
-                "transformingProviding", pcmJavaBuilder);
+        final Change2CommandTransformingProviding transformingProviding = JavaBridge
+                .getFieldFromClass(VitruviusEmfBuilder.class, "transformingProviding", pcmJavaBuilder);
         this.setUserInteractor(newUserInteracting, transformingProviding);
     }
 
@@ -539,16 +537,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException,
             final String interfaceName) throws Throwable, CoreException, InterruptedException {
-        final IPackageFragment packageFragment = this
-                .getPackageFragmentToForJaMoPPPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName));
-        final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
-        interfaceWizard.setPackageFragment(packageFragment, false);
-        interfaceWizard.setPackageFragmentRoot(this.getIJavaProject(), false);
-        interfaceWizard.setTypeName(interfaceName, true);
-        interfaceWizard.createType(new NullProgressMonitor());
-        final VURI vuri = this.getVURIForElementInPackage(packageFragment, interfaceName);
-        TestUtil.waitForSynchronization();
-        final Classifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
+        final Classifier jaMoPPIf = this.createInterfaceInPackage(packageName, interfaceName);
         if (throwException) {
             return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
                     this.getCorrespondenceInstance(), jaMoPPIf, OperationInterface.class));
@@ -561,6 +550,21 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
                 return (OperationInterface) correspondingEObjects.iterator().next();
             }
         }
+    }
+
+    protected Classifier createInterfaceInPackage(final String packageName, final String interfaceName)
+            throws Throwable, CoreException, InterruptedException {
+        final IPackageFragment packageFragment = this
+                .getPackageFragmentToForJaMoPPPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName));
+        final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
+        interfaceWizard.setPackageFragment(packageFragment, false);
+        interfaceWizard.setPackageFragmentRoot(this.getIJavaProject(), false);
+        interfaceWizard.setTypeName(interfaceName, true);
+        interfaceWizard.createType(new NullProgressMonitor());
+        final VURI vuri = this.getVURIForElementInPackage(packageFragment, interfaceName);
+        TestUtil.waitForSynchronization();
+        final Classifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
+        return jaMoPPIf;
     }
 
     protected OperationInterface addInterfaceInSecondPackageWithCorrespondence(final String packageName)
@@ -696,6 +700,27 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
                 .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), jaMoPPParam, Parameter.class));
     }
 
+    protected OperationSignature addReturnTypeToSignature(final String interfaceName, final String methodName,
+            final String typeName, String oldTypeName) throws Throwable {
+        if (null == oldTypeName) {
+            oldTypeName = "void";
+        }
+        final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(interfaceName,
+                this.currentTestProject);
+        final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, null);
+        final String retTypeStr = typeName;
+        final int offset = iMethod.getSourceRange().getOffset()
+                + iMethod.getSourceRange().toString().indexOf(oldTypeName);
+        final ReplaceEdit replaceEdit = new ReplaceEdit(offset + 1, oldTypeName.length() + 1, retTypeStr);
+        CompilationUnitManipulatorHelper.editCompilationUnit(icu, replaceEdit);
+        TestUtil.waitForSynchronization();
+        final ConcreteClassifier concreateClassifier = this
+                .getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
+        final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
+        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), jaMoPPMethod, OperationSignature.class));
+    }
+
     protected org.emftext.language.java.parameters.Parameter getJaMoPPParameterFromJaMoPPMethod(
             final Method jaMoPPMethod, final String parameterName) {
         for (final org.emftext.language.java.parameters.Parameter jaMoPPParam : jaMoPPMethod.getParameters()) {
@@ -814,6 +839,9 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
         TestUtil.waitForSynchronization();
         final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
+        if (correspondingType == null) {
+            return null;
+        }
         return CollectionBridge.claimOne(CorrespondenceInstanceUtil
                 .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), jaMoPPField, correspondingType));
     }
@@ -851,6 +879,37 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
         final EMFModelChange change = new EMFModelChange(createChange, vuri);
         cs.synchronizeChange(change);
+    }
+
+    // add Annotation via the framework
+    protected <T> T addAnnotationToClassifier(final AnnotableAndModifiable annotable, final String annotationName,
+            final Class<T> classOfCorrespondingObject, final String className) throws Throwable {
+        final ICompilationUnit cu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
+        final IType type = cu.getType(className);
+        final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToClass(type);
+        final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName);
+        CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
+        TestUtil.waitForSynchronization();
+        final Set<T> eObjectsByType = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), annotable, classOfCorrespondingObject);
+        return CollectionBridge.claimOne(eObjectsByType);
+    }
+
+    // add Annotation via the framework
+    protected <T> T addAnnotationToField(final String fieldName, final String annotationName,
+            final Class<T> classOfCorrespondingObject, final String className) throws Throwable {
+        final ICompilationUnit cu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(className,
+                this.currentTestProject);
+        final IType type = cu.getType(className);
+        final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToField(type, fieldName);
+        final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName + " ");
+        CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
+        TestUtil.waitForSynchronization();
+        final Field jaMoPPField = this.getJaMoPPFieldFromClass(cu, fieldName);
+        final Set<T> eObjectsByType = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceInstance(), jaMoPPField, classOfCorrespondingObject);
+        return CollectionBridge.claimOne(eObjectsByType);
     }
 
     private ChangeSynchronizing getChangeSynchronizing() throws Throwable {
