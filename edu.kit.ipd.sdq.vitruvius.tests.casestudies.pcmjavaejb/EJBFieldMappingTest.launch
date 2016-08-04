@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc:edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb/test-workspace}"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb/xtend-gen/edu/kit/ipd/sdq/vitruvius/tests/casestudies/pcmjavaejb/EJBClassMappingTest.java"/>
+<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb/xtend-gen/edu/kit/ipd/sdq/vitruvius/tests/casestudies/pcmjavaejb/EJBFieldMappingTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -24,11 +24,11 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
-<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value="testCreateMethodThatOverridesInterfaceMethod"/>
+<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_66]"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb.EJBClassMappingTest"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb.EJBFieldMappingTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
