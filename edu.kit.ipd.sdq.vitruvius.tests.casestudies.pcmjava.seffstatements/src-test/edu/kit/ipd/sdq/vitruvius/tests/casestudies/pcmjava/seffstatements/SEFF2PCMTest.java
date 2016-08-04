@@ -250,7 +250,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
             final String parameterCode, final String codeForHelper)
                     throws Throwable, CoreException, InterruptedException, JavaModelException {
         final String downloadHelperCode = "\npublic void " + methodName + "( " + parameterCode + "){\n}\n";
-        this.addClassInPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName), className);
+        this.createClassInPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName), className);
         CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className, downloadHelperCode,
                 this.currentTestProject);
         this.editMethod(codeForHelper, className, methodName, false);
