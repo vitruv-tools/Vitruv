@@ -109,24 +109,25 @@ class TypeReferenceCorrespondenceHelper {
 		long arrayDimension) {
 			var DataType pcmDataType = null
 			if (typeReference instanceof PrimitiveType) {
-				return claimPCMDataTypeForJaMoPPPrimitiveType(typeReference as PrimitiveType)
+				pcmDataType = claimPCMDataTypeForJaMoPPPrimitiveType(typeReference as PrimitiveType)
 			}
-			if (typeReference instanceof ClassifierReference) {
-				return getPCMDataTypeForClassifierReference(typeReference as ClassifierReference,
+			else if (typeReference instanceof ClassifierReference) {
+				pcmDataType  = getPCMDataTypeForClassifierReference(typeReference as ClassifierReference,
 					correspondenceInstance, userInteracting, repo)
 			}
-			if (typeReference instanceof NamespaceClassifierReference) {
-				return getPCMDataTypeForNamespaceClassifierReference(typeReference as NamespaceClassifierReference,
+			else if (typeReference instanceof NamespaceClassifierReference) {
+				pcmDataType = getPCMDataTypeForNamespaceClassifierReference(typeReference as NamespaceClassifierReference,
 					correspondenceInstance, userInteracting, repo)
 			}
-			if (arrayDimension > 0) {
+			if (arrayDimension > 0 && null != pcmDataType && null != repo) {
 				// find CollectionDatatype list for innerValue or create new one
 				val typeName = PCM2JaMoPPUtils.getNameFromPCMDataType(pcmDataType) + "List"
-				pcmDataType = repo.dataTypes__Repository.filter(CollectionDataType).findFirst[it.entityName.equals(typeName)]
-				if (null == pcmDataType) {
-					val collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
+				var collectionDataType = repo.dataTypes__Repository.filter(CollectionDataType).findFirst[it.entityName.equals(typeName)]
+				if (null == collectionDataType) {
+					collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
 					collectionDataType.innerType_CollectionDataType = pcmDataType
 					collectionDataType.entityName = typeName
+					repo.dataTypes__Repository.add(collectionDataType)
 					if (!(pcmDataType instanceof PrimitiveDataType)) {
 						// create a correspondence from the collection to the non collection DataType.
 					     // reason: as long as the inner type exists the collection resectievly an array can be used easily
