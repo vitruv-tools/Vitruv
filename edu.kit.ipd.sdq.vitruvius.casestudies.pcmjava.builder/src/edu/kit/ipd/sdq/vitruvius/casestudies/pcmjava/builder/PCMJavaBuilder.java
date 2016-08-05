@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -108,11 +107,6 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
         } catch (InterruptedException e) {
             logger.info("Could not wait for auto sync to pass. Reason: " + e);
         }
-    }
-
-    @Override
-    public void syncAborted(final EMFModelChange abortedChange) {
-        // nothing to do
     }
 
     @Override
