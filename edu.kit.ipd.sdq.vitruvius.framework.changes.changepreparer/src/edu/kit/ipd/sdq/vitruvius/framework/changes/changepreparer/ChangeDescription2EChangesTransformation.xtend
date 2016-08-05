@@ -1,9 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changedescription2change
+package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription
 import java.util.List
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.BasicEList
@@ -16,19 +15,15 @@ import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.change.ListChange
 import org.eclipse.emf.ecore.change.ResourceChange
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformationUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import java.util.Collections
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
-import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
+import org.eclipse.emf.ecore.change.ChangeDescription
 
-package class SingleChangeDescription2ChangeTransformation {
+package class ChangeDescription2EChangesTransformation {
 
 	// BEGIN LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 	// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
@@ -105,10 +100,10 @@ package class SingleChangeDescription2ChangeTransformation {
 	// --shadow-deletion bullshit-- = make the flat deletion part of the change description deep by recursively creating changes for all contained objects (and listing the additional objects to detach, but without any effects)
 	// --order-bullshit-- = order changes: first deletions, then containment, then non-containment
 	// END LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
-	var ForwardChangeDescription changeDescription
+	var ChangeDescription changeDescription
 	val List<EChange> eChanges
 
-	new(ForwardChangeDescription changeDescription) {
+	new(ChangeDescription changeDescription) {
 		this.changeDescription = changeDescription
 		this.eChanges = new BasicEList<EChange>
 	}
@@ -137,7 +132,7 @@ package class SingleChangeDescription2ChangeTransformation {
 				recursivelyAddChangesForNonDefaultValues(objectToAttach)
 //				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
 			}
-			changeDescription.applyAndReverse
+			//changeDescription.applyAndReverse
 
 			// sort changes: first deletions, then additions, then containment, then non-containment
 			// val sortedEChanges = sortChanges(eChanges)
@@ -166,7 +161,7 @@ package class SingleChangeDescription2ChangeTransformation {
 		var oldRootContainer = rootToAdd.eContainer
 		var oldRootResource = rootToAdd.eResource
 		eChanges.add(
-			ChangeDescription2ChangeUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
+			EMFModelChangeTransformationUtil.createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource,
 				resourceURI))
 	}
 
@@ -176,10 +171,10 @@ package class SingleChangeDescription2ChangeTransformation {
 		// The resource is also in the state before the change was applied (like the model elements).
 		// Therefore, we are able to obtain the removed root Element from it.
 		val rootToRemove = resourceChange.resource.contents.get(rootElementListIndex)
-		var newRootContainer = changeDescription.getNewContainer(rootToRemove)
-		var newRootResource = changeDescription.getNewResource(rootToRemove)
+		var newRootContainer = null//changeDescription.getNewContainer(rootToRemove)
+		var newRootResource = null//changeDescription.getNewResource(rootToRemove)
 		eChanges.add(
-			ChangeDescription2ChangeUtil.createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
+			EMFModelChangeTransformationUtil.createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
 				resourceURI))
 	}
 
@@ -189,7 +184,7 @@ package class SingleChangeDescription2ChangeTransformation {
 			for (feature : metaclass.EAllStructuralFeatures) {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
 					// FIXME HK uncomment
-					val recursiveChanges = ChangeDescription2ChangeUtil.createAdditiveChangesForValue(eObject, feature);
+					val recursiveChanges = EMFModelChangeTransformationUtil.createAdditiveChangesForValue(eObject, feature);
 					eChanges.addAll(recursiveChanges);
 					for (change : recursiveChanges.filter(AdditiveReferenceEChange)) {
 						if ((change as UpdateReferenceEChange<?>).affectedFeature.containment) recursivelyAddChangesForNonDefaultValues(change.newValue);
@@ -229,7 +224,7 @@ package class SingleChangeDescription2ChangeTransformation {
 		for (containmentReference : parent.eClass.EAllContainments) {
 			for (child : parent.getReferenceValueList(containmentReference)) {
 				eChanges.add(
-					ChangeDescription2ChangeUtil.
+					EMFModelChangeTransformationUtil.
 						createSubtractiveEChangeForReferencedObject(parent, child, containmentReference))
 				recursivelyAddChangesForIndirectlyDeletedObjects(child)
 			}
@@ -279,7 +274,7 @@ package class SingleChangeDescription2ChangeTransformation {
 		int index, ChangeKind changeKind, List<EObject> referenceValues) {
 		switch changeKind {
 			case ChangeKind.ADD_LITERAL: referenceValues.mapFixed [
-				ChangeDescription2ChangeUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)
+				EMFModelChangeTransformationUtil.createInsertReferenceChange(affectedEObject, affectedReference, index, it)
 			]
 			case ChangeKind.REMOVE_LITERAL: createChangeForRemoveReferenceChange(affectedEObject, affectedReference,
 				index, affectedEObject.getReferenceValueList(affectedReference))
@@ -292,10 +287,10 @@ package class SingleChangeDescription2ChangeTransformation {
 		val resultList = newArrayList()
 		// for (referenceValue : referenceValues) {
 		val referenceValue = referenceValues.get(index);
-		var newContainer = changeDescription.getNewContainer(referenceValue)
-		var newResource = changeDescription.getNewResource(referenceValue)
+		var newContainer = null//changeDescription.getNewContainer(referenceValue)
+		var newResource = null//changeDescription.getNewResource(referenceValue)
 		resultList.add(
-			ChangeDescription2ChangeUtil.createRemoveReferenceChange(affectedEObject, affectedReference, index,
+			EMFModelChangeTransformationUtil.createRemoveReferenceChange(affectedEObject, affectedReference, index,
 				referenceValue, newContainer, newResource))
 		// }
 		return resultList
@@ -346,7 +341,7 @@ package class SingleChangeDescription2ChangeTransformation {
 
 	def private void addChangeForObjectToDetach(EObject objectToDetach, EObject newContainer) {
 		if (isNotRootAndNotAlreadyProcessed(objectToDetach, newContainer)) {
-			eChanges.add(ChangeDescription2ChangeUtil.createSubtractiveEChangeForEObject(objectToDetach))
+			eChanges.add(EMFModelChangeTransformationUtil.createSubtractiveEChangeForEObject(objectToDetach))
 		}
 	}
 

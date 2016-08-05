@@ -5,7 +5,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProcessableChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.ProcessableChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange
@@ -48,7 +47,7 @@ class ChangePreparingImpl implements ChangePreparing {
 	}
 	
 	private def dispatch ProcessableChange prepareChange(EMFModelChange unpreparedChange) {
-		val change = new ChangeDescription2ChangeTransformation(unpreparedChange).getChange();
+		val change = new EMFModelChangeTransformation(unpreparedChange).getChange();
 		unpreparedChange.changeDescription.applyAndReverse();
 		return change;
 	}

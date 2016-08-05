@@ -1,10 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changedescription2change
+package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import java.util.List
-import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -25,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
  * A utility class providing extension methods for transforming change descriptions to change models.
  * 
  */
-class ChangeDescription2ChangeUtil {
+package class EMFModelChangeTransformationUtil {
 	/** Utility classes should not have a public or default constructor. */
 	private new() {
 	}
