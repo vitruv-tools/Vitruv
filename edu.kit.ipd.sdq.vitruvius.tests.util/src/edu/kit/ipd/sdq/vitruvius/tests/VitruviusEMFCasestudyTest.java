@@ -5,20 +5,19 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.change.ChangeDescription;
-import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -31,8 +30,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.Transformat
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -48,7 +45,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected VSUMImpl vsum;
     protected ChangeSynchronizerImpl changeSynchronizer;
     protected MetaRepositoryImpl metaRepository;
-    protected ForwardChangeRecorder changeRecorder;
+    protected AtomicEMFChangeRecorder changeRecorder;
     protected CorrespondenceInstance<Correspondence> correspondenceInstance;
     protected Change2CommandTransformingProviding transformingProviding;
     
@@ -79,14 +76,14 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         final CommandExecuting commandExecuter = new CommandExecutingImpl();
-        final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum, this.vsum);
+        final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum);
         this.transformingProviding = syncTransformationProviderSupplier.get();
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding, this.vsum,
                 this.metaRepository, this.vsum, this, changePreparer, commandExecuter);
         this.testUserInteractor = new TestUserInteractor();
         this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
         this.resourceSet = new ResourceSetImpl();
-        this.changeRecorder = new ForwardChangeRecorder();
+        this.changeRecorder = new AtomicEMFChangeRecorder();
     }
     
     protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
@@ -110,12 +107,10 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     protected void triggerSynchronization(final VURI vuri) {
-        final List<ForwardChangeDescription> cds = this.changeRecorder.endRecording();
-        //cd.applyAndReverse();
-        final List<Change> changes = new ChangeDescription2ChangeTransformation(cds).getChanges(vuri);
-        //cd.applyAndReverse();
-        this.changeSynchronizer.synchronizeChanges(changes);
-        this.changeRecorder.beginRecording(Collections.EMPTY_LIST);
+        final List<EMFModelChange> changes = this.changeRecorder.endRecording();
+        RecordedCompositeChange compositeChange = RecordedChangeFactory.getInstance().createRecordedCompositeChange(changes);
+        this.changeSynchronizer.synchronizeChanges(compositeChange);
+        this.changeRecorder.beginRecording(vuri, Collections.emptyList());
     }
 
     protected void triggerSynchronization(final EObject eObject) {
@@ -124,8 +119,8 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-        final FileChange fileChange = new FileChange(fileChangeKind, vuri);
-        this.changeSynchronizer.synchronizeChange(fileChange);
+        final FileChange fileChange = RecordedChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+        this.changeSynchronizer.synchronizeChanges(fileChange);
     }
 
     @Override
@@ -135,11 +130,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
     @Override
     public void syncFinished() {
-
-    }
-
-    @Override
-    public void syncAborted(final EMFModelChange abortedChange) {
 
     }
 

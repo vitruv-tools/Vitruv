@@ -24,14 +24,10 @@ import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
@@ -54,7 +50,7 @@ public abstract class VitruviusCasestudyTest {
     
     protected abstract void afterTest(Description description);
 
-    protected abstract CorrespondenceInstance getCorrespondenceInstance() throws Throwable;
+    protected abstract CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable;
     
     /**
      * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.

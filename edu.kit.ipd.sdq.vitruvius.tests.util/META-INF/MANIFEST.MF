@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: TestUtils
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.util
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
@@ -18,9 +18,9 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.ecore.change,
  org.apache.commons.codec,
  org.eclipse.emf.emfstore.common,
- edu.kit.ipd.sdq.vitruvius.framework.changedescription2change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
- edu.kit.ipd.sdq.vitruvius.framework.changepreparer,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer,
  org.eclipse.emf.transaction,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching
