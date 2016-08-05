@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 
 /**
@@ -17,14 +16,6 @@ public interface SynchronisationListener {
      * Called after the synchronisation is finished.
      */
     void syncFinished();
-
-    /**
-     * Called if the synchronisation has been aborted.
-     *
-     * @param abortedChange
-     *            The unprocessed change because of the aborted transformation.
-     */
-    void syncAborted(EMFModelChange abortedChange);
 
     /**
      * Called if the synchronisation has been aborted.

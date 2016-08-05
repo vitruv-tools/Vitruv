@@ -103,7 +103,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	
 	override calculateTUIDFromEObject(EObject eObject) {
 		val Metamodel metamodel = eObject.getMetamodelForEObject()
-		 if(null == metamodel){
+		 if(null == metamodel || !metamodel.hasTUID(eObject)){
 		 	return null 
 		 }
          return TUID::getInstance(metamodel.calculateTUIDFromEObject(eObject))
@@ -561,7 +561,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			this.tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
 		] as TUID.AfterHashCodeUpdateLambda)
-//		oldTUID.renameSegments(newTUID, before,after)
 		oldTUID.renameOrMoveLastSegment(newTUID, before,after)
 		var Metamodel metamodel = getMetamodelHavingTUID(
 			oldTUIDString)

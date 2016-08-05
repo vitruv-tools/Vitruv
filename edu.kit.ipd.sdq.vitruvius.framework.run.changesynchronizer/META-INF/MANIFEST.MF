@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Transaction Engine
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager,
@@ -13,5 +13,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.apache.log4j;bundle-version="1.2.15",
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.core.jobs,
- org.eclipse.equinox.registry
+ org.eclipse.equinox.registry,
+ edu.kit.ipd.sdq.vitruvius.framework.changes
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer
+Import-Package: org.eclipse.emf.ecore.change
