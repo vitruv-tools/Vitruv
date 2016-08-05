@@ -2,9 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.components
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
-import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest
 import java.util.List
@@ -24,8 +22,11 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformation
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -33,7 +34,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 	static val MULTICONTAINMENT_A_FILE_EXT = "multicontainment_a"
 	
 	var ResourceSet resourceSet
-	var ForwardChangeRecorder changeRecorder
+	var AtomicEMFChangeRecorder changeRecorder
 	
 //	val vECTest = new VitruviusEMFCasestudyTest() {
 //			
@@ -61,8 +62,8 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 		super.beforeTest()
 //		vECTest.beforeTest()
         this.resourceSet = new ResourceSetImpl()
-        this.changeRecorder = new ForwardChangeRecorder()
-        this.changeRecorder.beginRecording(newArrayList(this.resourceSet))
+        this.changeRecorder = new AtomicEMFChangeRecorder()
+        this.changeRecorder.beginRecording(null, newArrayList(this.resourceSet))
 	}
 //	
 //	@After
@@ -78,15 +79,15 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 
 	
 	// TODO ML needs @Rule from VitruviusCasestudyTest?
-	def List<Change> triggerChangeDescription2Change() {
-		val cd = this.changeRecorder.endRecording(false)
+	def List<VitruviusChange> triggerChangeDescription2Change() {
+		val changes = this.changeRecorder.endRecording()
 //      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
-		LOGGER.trace("monitored change description: " + cd)
-        val changes = new ChangeDescription2ChangeTransformation(cd).getChanges()
-        LOGGER.trace("transformed changes: " + changes)
+		LOGGER.trace("monitored change descriptions: " + changes)
+        val transformedChanges = changes.map[new EMFModelChangeTransformation(it).getChange()]
+        LOGGER.trace("transformed changes: " + transformedChanges)
         //cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
         this.changeRecorder.restartRecording()
-        return changes
+        return transformedChanges
 	}
 	
 //	def private void beginRecording() {
