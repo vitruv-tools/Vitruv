@@ -22,8 +22,9 @@ import org.eclipse.ui.IEditorPart;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -104,8 +105,8 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert cs.getExecutionCount() == 1;
         assert !cs.getLastChanges().isEmpty();
 
-        for (Change c : cs.getLastChanges()) {
-            EMFModelChange change = (EMFModelChange) c;
+        List<VitruviusChange> transformedChanges = transformChanges(cs.getLastChanges());
+        for (VitruviusChange change : transformedChanges) {
             assert change.getURI() == VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
         }
     }
@@ -155,7 +156,10 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
-        assert cs.getLastChanges().size() == 2 : "Got " + cs.getLastChanges().size() + " changes instead of 2.";
+        assert cs.getLastChanges().size() == 1;
+        assert cs.getLastChanges().get(0) instanceof RecordedCompositeChange;
+        int changeCount = ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert changeCount == 2 : "Got " + changeCount + " changes instead of 2.";
     }
 
     @Test
@@ -187,13 +191,18 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
-        assert cs.getLastChanges().size() == 3 : "Got " + cs.getLastChanges().size() + " changes instead of 3.";
+        assert cs.getLastChanges().size() == 1;
+        assert cs.getLastChanges().get(0) instanceof RecordedCompositeChange;
+        int changeCount = ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert changeCount == 3 : "Got " + changeCount + " changes instead of 3.";
 
-        List<Change> changes = cs.getLastChanges();
-        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) ((EMFModelChange) changes.get(0)).getEChange();
+        List<VitruviusChange> transformedChanges = transformChanges(
+                ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges());
+        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (transformedChanges.get(0).getEChanges().get(0));
         EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
+        List<Change> changes = new ArrayList<Change>(transformedChanges);
         // System.err.println(root);
         //
         // ChangeAssert.printChangeList(changes);

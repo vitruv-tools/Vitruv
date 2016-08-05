@@ -20,12 +20,13 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ISaveEventListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ResourceReloadListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.SaveEventListenerMgr;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeRecorder;
 
 /**
  * <p>
@@ -56,7 +57,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * The {@link ChangeRecorder} used to record changes to the edited model.
      */
-    private ForwardChangeRecorder changeRecorder;
+    private AtomicEMFChangeRecorder changeRecorder;
 
     /** The monitored EMF model resource. */
     private final Resource targetResource;
@@ -101,9 +102,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                List<ForwardChangeDescription> cds = readOutChangesAndEndRecording();
-                LOGGER.trace("Detected a user save action, got change descriptions: " + cds);
-                onSavedResource(cds);
+                List<EMFModelChange> changes = readOutChangesAndEndRecording();
+                LOGGER.trace("Detected a user save action, got change descriptions: " + changes);
+                onSavedResource(changes);
                 resetChangeRecorder();
             }
 
@@ -143,14 +144,14 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        changeRecorder = new ForwardChangeRecorder();
-        changeRecorder.beginRecording(Collections.singletonList(targetResource));
+        changeRecorder = new AtomicEMFChangeRecorder();
+        changeRecorder.beginRecording(VURI.getInstance(targetResource), Collections.singletonList(targetResource));
     }
 
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected List<ForwardChangeDescription> readOutChangesAndEndRecording() {
+    protected List<EMFModelChange> readOutChangesAndEndRecording() {
         return changeRecorder.endRecording();
     }
 
@@ -201,5 +202,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            last saving it (rsp. since opening it, in case it has not been saved yet). This
      *            object is provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(List<ForwardChangeDescription> changeDescription);
+    protected abstract void onSavedResource(List<EMFModelChange> changeDescription);
 }

@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changedescription2change.ChangeDescription2ChangeTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -35,7 +35,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EditorManagementListenerMgr;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEditorManagementListener;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
 
 /**
  * <p>
@@ -172,26 +171,35 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     private void setupMonitorForEditor(final IEditorPartAdapter editorPart) {
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPart) {
             @Override
-            protected void onSavedResource(final List<ForwardChangeDescription> changeDescriptions) {
+            protected void onSavedResource(final List<EMFModelChange> changeDescriptions) {
                 LOGGER.trace("Received change descriptions " + changeDescriptions);
                 if (null == changeDescriptions || changeDescriptions.isEmpty()) {
                     LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);
                     return;
                 }
-                final List<List<Change>> changes = new ArrayList<>();
+                // final List<List<Change>> changes = new ArrayList<>();
                 // The following code needs to be executed within the editor's
                 // context because even though it does not change the EMF model
                 // in the sense of equality, it does apply changes to the EMF
                 // model. This is esp. relevant for editors using transactional
                 // editing domains.
-                editorPart.executeCommand(new Runnable() {
-                    @Override
-                    public void run() {
-                        changes.add(getChangeList(changeDescriptions, editorPart.getEditedModelResource()));
-                    }
-                });
-                assert changes.size() == 1;
-                triggerSynchronization(changes.get(0), editorPart.getEditedModelResource());
+                // editorPart.executeCommand(new Runnable() {
+                // @Override
+                // public void run() {
+                // changes.add(getChangeList(changeDescriptions,
+                // editorPart.getEditedModelResource()));
+                // }
+                // });
+                // changes.add(new ArrayList<EMFModelChange>(changeDescriptions));
+                // assert changes.size() == 1;
+                // for (int i = changeDescriptions.size() - 1; i >= 0; i--) {
+                // changeDescriptions.get(i).getChangeDescription().applyAndReverse();
+                // }
+                // List<Change> transformedChanges = new ArrayList<Change>(
+                // new ChangeDescription2ChangeTransformation(changeDescriptions,
+                // true).getChanges());
+                triggerSynchronization(new ArrayList<RecordedChange>(changeDescriptions),
+                        editorPart.getEditedModelResource());
             }
         };
 
@@ -233,15 +241,19 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         editorManagementListenerMgr.dispose();
     }
 
-    private List<Change> getChangeList(List<ForwardChangeDescription> changeDescriptions, Resource resource) {
-        LOGGER.debug("Triggering synchronization for change description " + changeDescriptions + " on resource "
-                + resource.getURI());
-        ChangeDescription2ChangeTransformation converter = new ChangeDescription2ChangeTransformation(
-                changeDescriptions);
-        return converter.getChanges(VURI.getInstance(resource));
-    }
+    // private List<VitruviusChange> getChangeList(List<EMFModelChange> changeDescriptions, Resource
+    // resource) {
+    // LOGGER.debug("Triggering synchronization for change description " + changeDescriptions + " on
+    // resource "
+    // + resource.getURI());
+    // /*
+    // * ChangeDescription2ChangeTransformation converter = new
+    // * ChangeDescription2ChangeTransformation( changeDescriptions, VURI.getInstance(resource));
+    // */
+    // return converter.getChanges();
+    // }
 
-    private void triggerSynchronization(List<Change> changes, Resource resource) {
+    private void triggerSynchronization(List<RecordedChange> changes, Resource resource) {
         if (changes.isEmpty()) {
             LOGGER.debug("Not triggering synchronization for " + resource.getURI() + ": No changes detected.");
         } else {

@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 /**
@@ -118,6 +119,6 @@ public interface ISynchronizingMonitoredEmfEditor {
          * @param changesOrigin
          *            The modified model's {@link Resource}.
          */
-        void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource changesOrigin);
+        void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource changesOrigin);
     }
 }

@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock.SaveEventKind;
@@ -32,7 +33,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.u
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureNotExecuted;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
-import edu.kit.ipd.sdq.vitruvius.framework.util.changes.ForwardChangeDescription;
 
 public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -66,10 +66,10 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
+            protected void onSavedResource(List<EMFModelChange> changeDescriptions) {
                 assert changeDescriptions != null;
-                changeDescriptions
-                        .forEach((ForwardChangeDescription descr) -> assertTrue(descr.getObjectChanges().isEmpty()));
+                changeDescriptions.forEach((EMFModelChange descr) -> assertTrue(
+                        descr.getChangeDescription().getObjectChanges().isEmpty()));
                 ensureExecuted.markExecuted();
             }
         };
@@ -91,16 +91,16 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
+            protected void onSavedResource(List<EMFModelChange> changeDescriptions) {
                 assert changeDescriptions != null;
                 // assert changeDescriptions.size() == 1;
                 int counter = 0;
-                for (ForwardChangeDescription descr : changeDescriptions) {
-                    counter += descr.getObjectChanges().size();
+                for (EMFModelChange descr : changeDescriptions) {
+                    counter += descr.getChangeDescription().getObjectChanges().size();
                 }
                 assert counter == 1;
 
-                assert changeDescriptions.get(0).getObjectChanges().containsKey(rootObj);
+                assert changeDescriptions.get(0).getChangeDescription().getObjectChanges().containsKey(rootObj);
 
                 ensureExecuted.markExecuted();
             }
@@ -127,7 +127,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<ForwardChangeDescription> changeDescriptions) {
+            protected void onSavedResource(List<EMFModelChange> changeDescriptions) {
                 ensureNotExecuted.markExecuted();
             }
         };

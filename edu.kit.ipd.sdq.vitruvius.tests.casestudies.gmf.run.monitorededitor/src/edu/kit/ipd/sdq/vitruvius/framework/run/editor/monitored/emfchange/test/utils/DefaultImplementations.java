@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
@@ -29,19 +30,15 @@ public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
 
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
+        public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
         }
 
     };
 
     public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
         @Override
-        public List<List<Change>> synchronizeChanges(List<Change> changes) {
+        public List<List<Change>> synchronizeChanges(RecordedChange change) {
             return null;
-        }
-
-        @Override
-        public void synchronizeChange(Change changee) {
         }
     };
 
@@ -70,12 +67,12 @@ public class DefaultImplementations {
 
     public static class TestChangeSynchronizing implements ResourceChangeSynchronizing, ChangeSynchronizing {
         private VURI lastVURI = null;
-        private List<Change> lastChanges = null;
+        private List<RecordedChange> lastChanges = null;
         private int executionCount = 0;
 
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
-            this.lastChanges = new ArrayList<Change>();
+        public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
+            this.lastChanges = new ArrayList<RecordedChange>();
             if (changes != null) {
                 this.lastChanges.addAll(changes);
             }
@@ -91,7 +88,7 @@ public class DefaultImplementations {
             return executionCount;
         }
 
-        public List<Change> getLastChanges() {
+        public List<RecordedChange> getLastChanges() {
             return lastChanges;
         }
 
@@ -104,14 +101,10 @@ public class DefaultImplementations {
         }
 
         @Override
-        public List<List<Change>> synchronizeChanges(List<Change> changes) {
-            synchronizeChanges(changes, null, null);
+        public List<List<Change>> synchronizeChanges(RecordedChange changes) {
+            synchronizeChanges(Collections.singletonList(changes), null, null);
             return null;
         }
 
-        @Override
-        public void synchronizeChange(Change change) {
-            synchronizeChanges(Collections.singletonList(change));
-        }
     }
 }

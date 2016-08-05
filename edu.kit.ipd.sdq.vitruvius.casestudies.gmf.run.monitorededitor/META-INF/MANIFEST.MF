@@ -23,9 +23,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gmf.runtime.diagram.ui.resources.editor;bundle-version="1.7.0",
  org.eclipse.emf.common,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.changedescription2change;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ edu.kit.ipd.sdq.vitruvius.framework.changes
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange,
  edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor,
  edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools
+Import-Package: edu.kit.ipd.sdq.vitruvius.framework.util.bridges

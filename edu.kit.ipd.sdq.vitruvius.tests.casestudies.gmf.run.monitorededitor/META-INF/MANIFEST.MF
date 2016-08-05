@@ -21,8 +21,10 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
  org.palladiosimulator.pcm.resources;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.changedescription2change,
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures,

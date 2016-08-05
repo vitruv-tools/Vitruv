@@ -17,9 +17,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
@@ -117,7 +118,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
         this.vsum = new VSUMImpl(metaModelManager, null, metaRepositoryImpl);
         this.transformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
         		this.transformingProviding, this.vsum, metaRepositoryImpl, this.vsum, this, changePreparing,
@@ -260,8 +261,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final String fileExtension = iResource.getFileExtension();
         if (this.monitoredFileTypes.contains(fileExtension)) {
             final VURI vuri = VURI.getInstance(iResource);
-            final FileChange fileChange = new FileChange(fileChangeKind, vuri);
-            this.changeSynchronizing.synchronizeChange(fileChange);
+            final FileChange fileChange = RecordedChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+            this.changeSynchronizing.synchronizeChanges(fileChange);
         }
     }
 
