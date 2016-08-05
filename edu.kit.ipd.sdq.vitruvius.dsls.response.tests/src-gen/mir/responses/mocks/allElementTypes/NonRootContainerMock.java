@@ -40,20 +40,20 @@ public class NonRootContainerMock implements NonRoot {
     return containedObject.eClass();
   }
   
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public Object eGet(final EStructuralFeature arg0) {
-    return containedObject.eGet(arg0);
-  }
-  
-  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
-    return containedObject.eGet(arg0, arg1);
-  }
-  
   public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
     return containedObject.eInvoke(arg0, arg1);
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
   }
   
   public boolean eIsSet(final EStructuralFeature arg0) {
@@ -64,36 +64,32 @@ public class NonRootContainerMock implements NonRoot {
     containedObject.eSet(arg0, arg1);
   }
   
-  public Resource eResource() {
-    return containerObject.eResource();
+  public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
+    return containedObject.eGet(arg0, arg1);
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
-  }
-  
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
+  public Object eGet(final EStructuralFeature arg0) {
+    return containedObject.eGet(arg0);
   }
   
   public EList eContents() {
     return containedObject.eContents();
   }
   
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
+  }
+  
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
   }
   
   public EReference eContainmentFeature() {
     return containedObject.eContainmentFeature();
   }
   
-  public EList eAdapters() {
-    return containedObject.eAdapters();
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
   }
   
   public void eNotify(final Notification arg0) {
@@ -106,5 +102,9 @@ public class NonRootContainerMock implements NonRoot {
   
   public void eSetDeliver(final boolean arg0) {
     containedObject.eSetDeliver(arg0);
+  }
+  
+  public EList eAdapters() {
+    return containedObject.eAdapters();
   }
 }

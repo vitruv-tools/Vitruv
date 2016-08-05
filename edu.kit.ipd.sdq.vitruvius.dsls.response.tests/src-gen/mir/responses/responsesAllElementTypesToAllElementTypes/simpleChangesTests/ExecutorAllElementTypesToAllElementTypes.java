@@ -11,6 +11,7 @@ public class ExecutorAllElementTypesToAllElementTypes extends AbstractResponseEx
   
   protected void setup() {
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedEAttributeResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.UpdateSingleValuedEAttributeResponse(userInteracting));
+    this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplaceNonRootIdResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplaceNonRootIdResponse(userInteracting));
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectInListResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateNonRootEObjectInListResponse(userInteracting));
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectInListResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeleteNonRootEObjectInListResponse(userInteracting));
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplaceOrCreateNonRootEObjectSingleResponseResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplaceOrCreateNonRootEObjectSingleResponseResponse(userInteracting));

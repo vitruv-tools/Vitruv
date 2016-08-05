@@ -12,11 +12,13 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.changes
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure,

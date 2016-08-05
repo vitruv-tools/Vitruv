@@ -5,7 +5,6 @@ import org.junit.runner.Description
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
@@ -18,6 +17,7 @@ import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange.FileChangeKind
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
@@ -50,7 +50,7 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		EcoreResourceBridge.saveResource(resource);
 		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
 		//resource.eAdapters.add(changeRecorder);
-		this.changeRecorder.beginRecording(#[rootElement]);
+		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[rootElement]);
 	}
 	
 	protected def void deleteAndSychronizeModel(String modelPathInProject) {

@@ -7,10 +7,10 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import org.eclipse.emf.common.command.Command
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.ProcessableCompositeChange
 
 abstract class AbstractResponseChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseChange2CommandTransforming);
@@ -61,7 +61,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 	
-	private def dispatch List<Command> handleChange(CompositeChange change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(ProcessableCompositeChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (Change c : change.getChanges()) {
 			result.addAll(this.processChange(c, blackboard));
@@ -69,11 +69,13 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		return result
 	}
 	
-	private def dispatch List<Command> handleChange(EMFModelChange change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(VitruviusChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
-		for (executor : responseExecutors) {
-			LOGGER.debug('''Calling executor «executor» for change event «change»''');
-			result += executor.generateCommandsForEvent(change.getEChange(), blackboard.correspondenceInstance);
+		for (eChange : change.getEChanges()) {
+			for (executor : responseExecutors) {
+				LOGGER.debug('''Calling executor «executor» for change event «change»''');
+				result += executor.generateCommandsForEvent(eChange, blackboard.correspondenceInstance);	
+			}
 		}
 		return result
 	}

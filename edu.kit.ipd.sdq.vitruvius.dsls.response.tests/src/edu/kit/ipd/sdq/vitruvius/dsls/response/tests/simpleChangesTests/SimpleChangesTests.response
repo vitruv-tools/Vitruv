@@ -19,6 +19,17 @@ effect: execute: {
 }
 
 
+/*
+ * UpdateSingleValuedEAttribute
+ */
+response: ReplaceNonRootId
+trigger: replace value minimal.NonRoot[id]
+match:
+	retrieve required element: minimal.NonRoot as targetElement corresponding to change.affectedEObject
+effect: execute: {
+	targetElement.id = change.newValue;
+}
+
 ///*
 // * UnsetSingleValuedEAttribute
 // */
