@@ -13,22 +13,24 @@ import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
 
 class ForwardChangeRecorder {
-	AtomicChangeRecorder cr;
+	val List<ChangeDescription> changeDescriptions;
 	var Map<EObject, URI> eObjectToProxyURIMap
 	var Collection<Notifier> elementsToObserve
 	var copyDefault = false
 	
 	new() {
-		this.cr = new AtomicChangeRecorder()
+		this.changeDescriptions = new ArrayList<ChangeDescription>();
 		this.elementsToObserve = new ArrayList<Notifier>();
-		cr.setRecordingTransientFeatures(false)
-		cr.setResolveProxies(true)
-		cr.setEObjectToProxyURIMap(this.eObjectToProxyURIMap = new HashMap())
+		changeRecorder.setRecordingTransientFeatures(false)
+		changeRecorder.setResolveProxies(true)
+		changeRecorder.setEObjectToProxyURIMap(this.eObjectToProxyURIMap = new HashMap())
 	}
 	
 	def void beginRecording(Collection<? extends Notifier> elementsToObserve) {
+		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		cr.startRecordingChangeDescriptions(elementsToObserve)
+		this.changeDescriptions.clear();
+		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<ForwardChangeDescription> endRecording() {
@@ -36,20 +38,16 @@ class ForwardChangeRecorder {
 	}
 		
 	def List<ForwardChangeDescription> endRecording(boolean copy) {
-		val cds = cr.endRecordingAndGetChangeDescriptions()
-		if (cds == null) {
-			return null;
-		}
+		changeRecorder.endRecording()
 		if (copy) {
-			return new ArrayList(cds).reverse.map[new ForwardChangeDescription(it, this.eObjectToProxyURIMap)].reverse;
+			return new ArrayList(changeDescriptions).reverse.map[new ForwardChangeDescription(it, this.eObjectToProxyURIMap)].reverse;
 		} else {
-			//return cds.filterNull.map[new ForwardChangeDescription(it)].toList;
-			val nonNullChangeDescriptions = cds.filterNull;
+			val nonNullChangeDescriptions = changeDescriptions.filterNull;
 			val result = new ArrayList<ForwardChangeDescription>();
 			for (var i = nonNullChangeDescriptions.length-1; i>=0; i--) {
 				result.add(0, new ForwardChangeDescription(nonNullChangeDescriptions.get(i)));
 			}
-			//return new ArrayList(new ArrayList(cds).reverse.map[new ForwardChangeDescription(it)]).reverse;
+			changeDescriptions.clear();
 			return result
 		}
 	}
@@ -65,24 +63,20 @@ class ForwardChangeRecorder {
 	}
 	
 	def boolean isRecording() {
-		return cr.isRecording()
+		return changeRecorder.isRecording()
 	}
 	
 	def void dispose() {
-		cr.dispose()
-		
+		changeRecorder.dispose()
 	}
+
 	
-	private static class AtomicChangeRecorder extends ChangeRecorder {
-		private List<ChangeDescription> cds;
+	/**
+	 * A change recorder that restarts after each change notification to get atomic change descriptions.
+	 */
+	ChangeRecorder changeRecorder = new ChangeRecorder() {
 		private Collection<?> rootObjects;
-		private boolean isDisposed;
-		
-		new() {
-			super();
-			cds = new ArrayList<ChangeDescription>();
-			isDisposed = false;
-		}
+		private boolean isDisposed = false;
 		
 		override dispose() {
 			this.isDisposed = true;
@@ -92,27 +86,24 @@ class ForwardChangeRecorder {
 		override notifyChanged(Notification notification) {
 			super.notifyChanged(notification);
 			if (!isDisposed) { 
-				cds += endRecording();
+				endRecording();
 				beginRecording(rootObjects);
 			}
 		}
 		
-		public def startRecordingChangeDescriptions(Collection<?> rootObjects) {
+		override beginRecording(Collection<?> rootObjects) {
 			if (!isDisposed) { 
-				cds.clear();
 				this.rootObjects = rootObjects;
-				this.beginRecording(rootObjects);
+				super.beginRecording(rootObjects);
 			}
 		}
 		
-		public def List<ChangeDescription> endRecordingAndGetChangeDescriptions() {
+		override endRecording() {
 			if (!isDisposed) { 
-				cds += endRecording();
+				changeDescriptions += super.endRecording();
 			}
-			val result = new ArrayList<ChangeDescription>(cds);
-			cds.clear();
-			return result;
+			return changeDescription;
 		}
-		
 	}
+	
 }

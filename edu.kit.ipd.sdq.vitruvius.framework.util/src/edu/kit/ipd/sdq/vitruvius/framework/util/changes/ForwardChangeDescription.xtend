@@ -19,6 +19,10 @@ import org.eclipse.emf.ecore.resource.Resource
  * EMF's {@link ChangeDescription}, however always yields containment information before the last application of the change,
  * even if this application was a call to {@link ChangeDescription#applyAndReverse applyAndReverse} or {@link ChangeDescription#copyAndReverse copyAndReverse}!
  */
+ @Deprecated // Reactivate only if the after-change information about new container, containment etc.
+// is needed again, i.e. if changes are not recorded atomically but as transactions. There, for example.
+// root objects can have been moved into a new resource which is extractable from the extra information
+// BUT: Remove applyAndReverse call in constructor before reusing this class!
 class ForwardChangeDescription implements ChangeDescription {
 	@Delegate
 	public val ChangeDescriptionImpl changeDescription
@@ -41,11 +45,11 @@ class ForwardChangeDescription implements ChangeDescription {
 		this.changeDescription = cdi
 		this.containmentsBeforeReversion = cdi.getContainmentsBeforeReversion()
 		this.resourcesBeforeReversion = cdi.getResourcesBeforeReversion()
-		if (eObjectToProxyURIMap == null) {
-			this.applyAndReverse()
-		} else {
-			this.copyAndReverse(eObjectToProxyURIMap)
-		}
+//		if (eObjectToProxyURIMap == null) {
+//			this.applyAndReverse()
+//		} else {
+//			this.copyAndReverse(eObjectToProxyURIMap)
+//		}
 	}
 	
 	/**
