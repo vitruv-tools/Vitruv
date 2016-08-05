@@ -34,9 +34,6 @@ public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealizat
     	ClassMethod.class,
     	(ClassMethod _element) -> true, // correspondence precondition checker
     	null);
-    if (oldClassMethod == null) {
-    	return;
-    }
     initializeRetrieveElementState(oldClassMethod);
     deleteObject(getElement0(change, oldClassMethod));
     

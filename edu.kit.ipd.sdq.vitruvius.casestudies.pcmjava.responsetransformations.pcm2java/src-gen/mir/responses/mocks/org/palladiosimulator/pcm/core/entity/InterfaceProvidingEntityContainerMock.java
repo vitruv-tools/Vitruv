@@ -45,12 +45,56 @@ public class InterfaceProvidingEntityContainerMock implements InterfaceProviding
     containedObject.setId(arg0);
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
+  }
+  
+  public void cdoReload() {
+    containedObject.cdoReload();
+  }
+  
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
+  }
+  
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
+  }
+  
+  public void cdoPrefetch(final int arg0) {
+    containedObject.cdoPrefetch(arg0);
+  }
+  
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
+  }
+  
+  public boolean cdoInvalid() {
+    return containedObject.cdoInvalid();
+  }
+  
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
+  }
+  
+  public CDOLock cdoWriteOption() {
+    return containedObject.cdoWriteOption();
+  }
+  
+  public CDOResource cdoDirectResource() {
+    return containedObject.cdoDirectResource();
   }
   
   public CDOID cdoID() {
     return containedObject.cdoID();
+  }
+  
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDORevision cdoRevision() {
@@ -69,64 +113,28 @@ public class InterfaceProvidingEntityContainerMock implements InterfaceProviding
     return containedObject.cdoView();
   }
   
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
-  }
-  
-  public boolean cdoInvalid() {
-    return containedObject.cdoInvalid();
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public void cdoPrefetch(final int arg0) {
-    containedObject.cdoPrefetch(arg0);
-  }
-  
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
-  }
-  
-  public CDOLock cdoWriteOption() {
-    return containedObject.cdoWriteOption();
-  }
-  
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
-  }
-  
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
-  }
-  
-  public void cdoReload() {
-    containedObject.cdoReload();
-  }
-  
-  public CDOResource cdoDirectResource() {
-    return containedObject.cdoDirectResource();
-  }
-  
-  public EReference eContainmentFeature() {
-    return containedObject.eContainmentFeature();
-  }
-  
-  public EStructuralFeature eContainingFeature() {
-    return containedObject.eContainingFeature();
-  }
-  
   public EObject eContainer() {
     return containerObject;
   }
   
   public EClass eClass() {
     return containedObject.eClass();
+  }
+  
+  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
+    return containedObject.eInvoke(arg0, arg1);
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public Resource eResource() {
+    return containerObject.eResource();
+  }
+  
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
   }
   
   public boolean eIsSet(final EStructuralFeature arg0) {
@@ -145,55 +153,47 @@ public class InterfaceProvidingEntityContainerMock implements InterfaceProviding
     return containedObject.eGet(arg0);
   }
   
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
-    return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
   public EList eContents() {
     return containedObject.eContents();
-  }
-  
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
   }
   
   public EList eCrossReferences() {
     return containedObject.eCrossReferences();
   }
   
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
   }
   
-  public void eSetDeliver(final boolean arg0) {
-    containedObject.eSetDeliver(arg0);
+  public EReference eContainmentFeature() {
+    return containedObject.eContainmentFeature();
+  }
+  
+  public EStructuralFeature eContainingFeature() {
+    return containedObject.eContainingFeature();
+  }
+  
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
   }
   
   public boolean eDeliver() {
     return containedObject.eDeliver();
   }
   
+  public void eSetDeliver(final boolean arg0) {
+    containedObject.eSetDeliver(arg0);
+  }
+  
   public EList eAdapters() {
     return containedObject.eAdapters();
   }
   
-  public void setEntityName(final String arg0) {
-    containedObject.setEntityName(arg0);
-  }
-  
   public String getEntityName() {
     return containedObject.getEntityName();
+  }
+  
+  public void setEntityName(final String arg0) {
+    containedObject.setEntityName(arg0);
   }
 }

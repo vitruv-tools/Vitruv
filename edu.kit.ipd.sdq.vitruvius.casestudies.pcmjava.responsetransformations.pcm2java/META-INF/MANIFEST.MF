@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Pcm2java
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responsetransformations.pcm2java;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
@@ -25,4 +24,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
- edu.kit.ipd.sdq.vitruvius.dsls.response
+ edu.kit.ipd.sdq.vitruvius.dsls.response,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

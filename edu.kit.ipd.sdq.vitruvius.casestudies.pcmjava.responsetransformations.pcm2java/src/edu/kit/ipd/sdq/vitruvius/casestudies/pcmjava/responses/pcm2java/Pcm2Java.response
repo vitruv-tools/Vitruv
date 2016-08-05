@@ -917,7 +917,7 @@ effect:
 response: ChangeOperationSignatureOfSeff
 trigger: replace value pcm.ResourceDemandingSEFF[describedService__SEFF]
 match:
-	retrieve required element: java.ClassMethod as oldClassMethod corresponding to change.affectedEObject
+	retrieve optional element: java.ClassMethod as oldClassMethod corresponding to change.affectedEObject
 effect: 
 	delete element: oldClassMethod
 	//remove correspondence: oldClassMethod, change.affectedEObject
