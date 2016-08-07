@@ -433,16 +433,47 @@ public class ChangeResponder implements ChangeEventVisitor {
     private void handleParameterChanges(final Parametrizable methodAfterRemove, final Parametrizable methodBeforeAdd,
             final List<Parameter> oldParameters, final List<Parameter> newParameters, final ASTNode oldNode) {
         final CompositeChange compositeChange = new CompositeChange(new Change[] {});
+        /*
+         * for (final Parameter oldParameter : oldParameters) { final EChange eChange =
+         * JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter, methodAfterRemove);
+         * compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode)); } for (final
+         * Parameter newParameter : newParameters) { final EChange eChange =
+         * JaMoPPChangeBuildHelper.createAddParameterChange(newParameter, methodBeforeAdd);
+         * compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode)); }
+         */
+
+        // diff the parameter list to figure out which parameters are added respectievly removed
         for (final Parameter oldParameter : oldParameters) {
-            final EChange eChange = JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter,
-                    methodAfterRemove);
-            compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
+            if (!this.containsParameter(oldParameter, newParameters)) {
+                // old Parameter is no longer contained in newParameters list
+                final EChange eChange = JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter,
+                        methodAfterRemove);
+                compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
+            }
         }
         for (final Parameter newParameter : newParameters) {
-            final EChange eChange = JaMoPPChangeBuildHelper.createAddParameterChange(newParameter, methodBeforeAdd);
-            compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
+            if (!this.containsParameter(newParameter, oldParameters)) {
+                // new Parameter is not contained in oldParameters list --> new Parameter has been
+                // created
+                final EChange eChange = JaMoPPChangeBuildHelper.createAddParameterChange(newParameter, methodBeforeAdd);
+                compositeChange.addChange(this.util.wrapToEMFModelChange(eChange, oldNode));
+            }
         }
         this.monitoredEditor.submitChange(compositeChange);
+    }
+
+    private boolean containsParameter(final Parameter parameter, final List<Parameter> parameterList) {
+        for (final Parameter parameterInList : parameterList) {
+            // we consider parameters equal if they name is identical, the return type is
+            // identical, and they arrayDimension is equal
+            if (parameterInList.getName().equals(parameter.getName())
+                    // &&
+                    // parameterInList.getTypeReference().getTarget().equals(parameter.getTypeReference().getTarget())
+                    && parameterInList.getArrayDimension() == parameter.getArrayDimension()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

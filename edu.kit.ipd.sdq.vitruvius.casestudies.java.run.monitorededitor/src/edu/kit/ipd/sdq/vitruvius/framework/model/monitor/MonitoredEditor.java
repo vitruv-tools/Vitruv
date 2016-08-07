@@ -197,12 +197,12 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         if (this.astListener.lastChangeTime >= 0) {
             final TimeMeasurement time = new TimeMeasurement(this.astListener.lastChangeTime,
                     ChangeResponder.lastCallTime);
-            this.log.debug("MonitoredEditor required " + (time.total / million)
+            this.log.debug("MonitoredEditor required " + time.total / million
                     + " msec for the last *AST* change observation.");
             this.log.info(time.toString());
         } else if (this.lastRefactoringTime >= 0) {
             final TimeMeasurement time = new TimeMeasurement(this.lastRefactoringTime, ChangeResponder.lastCallTime);
-            this.log.debug("MonitoredEditor required " + (time.total / million)
+            this.log.debug("MonitoredEditor required " + time.total / million
                     + " msec for the last *refactoring* change observation.");
             this.log.info(time.toString());
         }
@@ -281,8 +281,8 @@ public class MonitoredEditor extends AbstractMonitoredEditor
     }
 
     @Override
-    public URI selectURI(String message) {
-    	return this.userInteractor.selectURI(message);
+    public URI selectURI(final String message) {
+        return this.userInteractor.selectURI(message);
     }
-    
+
 }
