@@ -12,6 +12,7 @@ import java.util.ArrayList
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementsPackage
+import org.emftext.language.java.members.Method
 
 class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 
@@ -29,8 +30,8 @@ class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 		change.changes.filter(EMFModelChange).forEach[echanges.add(it.EChange as UpdateContainmentEReference<?>)]
 
 		val firstChange = echanges.get(0)
-		if (!(firstChange.oldAffectedEObject instanceof ClassMethod) ||
-			!(firstChange.newAffectedEObject instanceof ClassMethod)) {
+		if (!(firstChange.oldAffectedEObject instanceof Method) ||
+			!(firstChange.newAffectedEObject instanceof Method)) {
 			return false
 		}
 
