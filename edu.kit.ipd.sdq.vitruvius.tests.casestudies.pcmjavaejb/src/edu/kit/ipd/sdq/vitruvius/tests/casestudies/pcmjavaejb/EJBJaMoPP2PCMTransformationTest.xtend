@@ -11,9 +11,9 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
  */
 abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationTest {
 	
-	private static val String STATELESS_ANNOTATION_NAME = "Stateless"
-	private static val String REMOTE_ANNOTATION_NAME = "Remote"
-	protected static val String EJB_FIELD_ANNOTATION_NAME = "EJB"
+	public static val String STATELESS_ANNOTATION_NAME = "Stateless"
+	public static val String REMOTE_ANNOTATION_NAME = "Remote"
+	public static val String EJB_FIELD_ANNOTATION_NAME = "EJB"
 	
 	protected static val String TEST_CLASS_NAME = "TestEJBClass"
 	protected static val String TEST_INTERFACE_NAME = "TestEJBInterface"
@@ -32,16 +32,14 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 		correspondingOpInterface
 	}
 	
-	def createPackageEJBClassAndInterface(){
+	def protected createPackageEJBClassAndInterface(){
 		createPackageAndEJBInterface()
 		return this.createEJBClass(TEST_CLASS_NAME) 
 	}
 	
-	def createPackageAndEJBInterface() {
+	def protected createPackageAndEJBInterface() {
 		super.addRepoContractsAndDatatypesPackage()
 		this.createEJBInterface(TEST_INTERFACE_NAME)
 	}
-	
-
 	
 }

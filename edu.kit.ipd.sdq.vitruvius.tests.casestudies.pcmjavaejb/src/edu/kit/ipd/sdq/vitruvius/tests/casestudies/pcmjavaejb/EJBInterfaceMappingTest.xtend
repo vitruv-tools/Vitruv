@@ -2,11 +2,15 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjavaejb
 
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils
 import org.junit.Test
-
-import static org.junit.Assert.*
 import org.palladiosimulator.pcm.repository.CollectionDataType
+import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum
+
+import static org.junit.Assert.*
+import org.eclipse.jdt.core.ICompilationUnit
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper
+import org.eclipse.jdt.core.IMethod
 
 class EJBInterfaceMappingTest extends EJBJaMoPP2PCMTransformationTest{
 	
@@ -31,14 +35,9 @@ class EJBInterfaceMappingTest extends EJBJaMoPP2PCMTransformationTest{
 	def testCreateParameterInMethodInEJBInterface(){
 		val correspondingOpSignature = createPackageEJBInterrfaceAndInterfaceMethod()
 		
-		val pcmParam = super.addParameterToSignature(TEST_INTERFACE_NAME, correspondingOpSignature.entityName, "byte[]", "data")
+		val pcmParam = super.addParameterToSignature(TEST_INTERFACE_NAME, correspondingOpSignature.entityName, "byte[]", "data", null)
 		
-		assertEquals("PCM Parameter has not the expected name ", "data", pcmParam.entityName)
-		assertTrue("PCM Parameter Type is not a collection Data type", pcmParam.dataType__Parameter instanceof CollectionDataType)
-		val CollectionDataType cdt = pcmParam.dataType__Parameter as CollectionDataType
-		assertTrue("PCM Parameter Type: InnerDatatype is not a primitive type", cdt.innerType_CollectionDataType instanceof PrimitiveDataType)
-		val primitiveDataType = cdt.innerType_CollectionDataType as PrimitiveDataType
-		assertEquals("PCM Parameter Type: InnerDatatype is from type BYTE", PrimitiveTypeEnum.BYTE, primitiveDataType.type)
+		assertPCMParam(pcmParam, "data", PrimitiveTypeEnum.BYTE)
 	}
 	
 	@Test
@@ -55,10 +54,40 @@ class EJBInterfaceMappingTest extends EJBJaMoPP2PCMTransformationTest{
 		assertEquals("OpSignature returnType : InnerDatatype is from type BYTE", PrimitiveTypeEnum.BYTE, primitiveDataType.type)
 	}
 	
+	@Test
+	def testCreateMultipleParametersInMethodInEJBInterface(){
+		val correspondingOpSignature = createPackageEJBInterrfaceAndInterfaceMethod()
+		
+		val name = "data"
+		val typeName = "byte[]"
+		val pcmParam = super.addParameterToSignature(TEST_INTERFACE_NAME, correspondingOpSignature.entityName, typeName, name, null)
+		assertPCMParam(pcmParam, name, PrimitiveTypeEnum.BYTE)
+		
+		val icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(TEST_INTERFACE_NAME,
+                this.currentTestProject);
+        val IMethod iMethod = icu.getType(TEST_INTERFACE_NAME).methods.get(0)
+        val secondParamname = "additionalData"
+        val typeStringName = "String[]"
+        val String secondParameterStr = ", " + typeStringName + " " + secondParamname ;
+		val secondPcmParam = super.insertParameterIntoSignature(correspondingOpSignature.entityName, secondParamname, icu, iMethod, secondParameterStr)
+		assertPCMParam(secondPcmParam, secondParamname, PrimitiveTypeEnum.STRING)
+		
+	}
+	
 	private def createPackageEJBInterrfaceAndInterfaceMethod() {
 		super.createPackageAndEJBInterface()
 		val correspondingOpSignature = super.addMethodToInterfaceWithCorrespondence(TEST_INTERFACE_NAME)
 		correspondingOpSignature
+	}
+	
+	private def assertPCMParam(Parameter pcmParam, String expectedName, PrimitiveTypeEnum expectedPrimiteveTypeEnum) {
+		assertEquals("PCM Parameter has not the expected name ", expectedName, pcmParam.entityName)
+		//expecting type byte[]	
+		assertTrue("PCM Parameter Type is not a collection Data type", pcmParam.dataType__Parameter instanceof CollectionDataType)
+		val CollectionDataType cdt = pcmParam.dataType__Parameter as CollectionDataType
+		assertTrue("PCM Parameter Type: InnerDatatype is not a primitive type", cdt.innerType_CollectionDataType instanceof PrimitiveDataType)
+		val primitiveDataType = cdt.innerType_CollectionDataType as PrimitiveDataType
+		assertEquals("PCM Parameter Type: wrong InnerDatatype", expectedPrimiteveTypeEnum, primitiveDataType.type)
 	}
 	
 }
