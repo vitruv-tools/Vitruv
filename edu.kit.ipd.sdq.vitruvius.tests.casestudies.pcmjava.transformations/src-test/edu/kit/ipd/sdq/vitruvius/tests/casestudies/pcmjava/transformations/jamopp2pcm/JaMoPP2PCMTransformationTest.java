@@ -682,11 +682,18 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     }
 
     protected Parameter addParameterToSignature(final String interfaceName, final String methodName,
-            final String typeName, final String parameterName) throws Throwable {
+            final String typeName, final String parameterName, final String[] parameterTypeSignatures)
+                    throws Throwable {
         final ICompilationUnit icu = CompilationUnitManipulatorHelper.findICompilationUnitWithClassName(interfaceName,
                 this.currentTestProject);
-        final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, null);
+        final IMethod iMethod = icu.getType(interfaceName).getMethod(methodName, parameterTypeSignatures);
         final String parameterStr = typeName + " " + parameterName;
+        return this.insertParameterIntoSignature(methodName, parameterName, icu, iMethod, parameterStr);
+    }
+
+    protected Parameter insertParameterIntoSignature(final String methodName, final String parameterName,
+            final ICompilationUnit icu, final IMethod iMethod, final String parameterStr)
+                    throws JavaModelException, Throwable {
         final int offset = iMethod.getSourceRange().getOffset() + iMethod.getSourceRange().getLength() - 2;
         final InsertEdit insertEdit = new InsertEdit(offset, parameterStr);
         CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
@@ -781,13 +788,16 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         return type.getField(fieldName);
     }
 
-    protected void addPackageAndImplementingClass(final String componentName)
+    protected String addPackageAndImplementingClass(final String componentName)
             throws Throwable, CoreException, InterruptedException {
         this.testUserInteractor.addNextSelections(SELECT_BASIC_COMPONENT);
         final Package mediaStorePackage = this.createPackageWithPackageInfo(PCM2JaMoPPTestUtils.REPOSITORY_NAME,
                 componentName);
         this.testUserInteractor.addNextSelections(0);
-        this.addClassInPackage(mediaStorePackage, BasicComponent.class, componentName + "Impl");
+
+        final String implementingClassName = componentName + "Impl";
+        this.addClassInPackage(mediaStorePackage, BasicComponent.class, implementingClassName);
+        return implementingClassName;
     }
 
     protected OperationProvidedRole addImplementsCorrespondingToOperationProvidedRoleToClass(final String className,

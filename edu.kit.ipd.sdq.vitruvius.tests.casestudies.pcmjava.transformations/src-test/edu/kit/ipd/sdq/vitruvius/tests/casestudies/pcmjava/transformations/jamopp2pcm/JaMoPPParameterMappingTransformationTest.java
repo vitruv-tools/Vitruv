@@ -33,7 +33,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
 
         final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
-                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME, null);
 
         this.assertParameter(opSig, parameter, "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
     }
@@ -48,7 +48,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
         final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
-                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME, null);
 
         final Parameter newParameter = this.renameParameterInSignature(opInterface.getEntityName(),
                 opSig.getEntityName(), parameter.getEntityName(),
@@ -64,7 +64,7 @@ public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransfor
         final OperationInterface opInterface = super.addInterfaceInContractsPackage();
         final OperationSignature opSig = super.addMethodToInterfaceWithCorrespondence(opInterface.getEntityName());
         final Parameter parameter = super.addParameterToSignature(opInterface.getEntityName(), opSig.getEntityName(),
-                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME);
+                "String", PCM2JaMoPPTestUtils.PARAMETER_NAME, null);
         final String expectedParamType = "int";
 
         final Parameter changedParameter = this.changeParameterType(opInterface.getEntityName(), opSig.getEntityName(),
