@@ -18,6 +18,7 @@ import org.emftext.language.java.members.ClassMethod
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
+import org.emftext.language.java.members.Method
 
 class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransformingPreprocessor {
 
@@ -52,8 +53,8 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 		val CorrespondenceInstance<Correspondence> correspondenceInstance = blackboard.getCorrespondenceInstance();
 		val EMFModelChange emfChange = compositeChange.getChanges().get(0) as EMFModelChange;
 		val EFeatureChange<?> eFeatureChange = emfChange.getEChange() as EFeatureChange<?>;
-		val ClassMethod oldMethod = eFeatureChange.getOldAffectedEObject() as ClassMethod;
-		val ClassMethod newMethod = eFeatureChange.getNewAffectedEObject() as ClassMethod;
+		val oldMethod = eFeatureChange.getOldAffectedEObject() as Method;
+		val newMethod = eFeatureChange.getNewAffectedEObject() as Method;
 		val basicComponentFinding = code2SEFFfactory.createBasicComponentFinding
 		val BasicComponent myBasicComponent = basicComponentFinding.findBasicComponentForMethod(newMethod,
 			correspondenceInstance);

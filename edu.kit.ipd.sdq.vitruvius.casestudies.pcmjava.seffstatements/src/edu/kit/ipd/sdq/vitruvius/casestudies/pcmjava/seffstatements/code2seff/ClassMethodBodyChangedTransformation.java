@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.members.ClassMethod;
+import org.emftext.language.java.members.Method;
+import org.emftext.language.java.statements.StatementListContainer;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
@@ -42,8 +44,8 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
     private final static Logger logger = Logger.getLogger(ClassMethodBodyChangedTransformation.class.getSimpleName());
 
-    private final ClassMethod oldMethod;
-    private final ClassMethod newMethod;
+    private final Method oldMethod;
+    private final Method newMethod;
     private final BasicComponentFinding basicComponentFinder;
     private final IFunctionClassificationStrategy iFunctionClassificationStrategy;
 
@@ -51,7 +53,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
 
     private final ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding;
 
-    public ClassMethodBodyChangedTransformation(final ClassMethod oldMethod, final ClassMethod newMethod,
+    public ClassMethodBodyChangedTransformation(final Method oldMethod, final Method newMethod,
             final BasicComponentFinding basicComponentFinder,
             final IFunctionClassificationStrategy iFunctionClassificationStrategy,
             final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder,
@@ -115,7 +117,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
                 || this.isMethodArchitectureRelevant(this.newMethod, ci);
     }
 
-    private boolean isMethodArchitectureRelevant(final ClassMethod method, final CorrespondenceInstance ci) {
+    private boolean isMethodArchitectureRelevant(final Method method, final CorrespondenceInstance ci) {
         if (null != method) {
             final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = CorrespondenceInstanceUtil
                     .getCorrespondingEObjectsByType(ci, method, ResourceDemandingBehaviour.class);
@@ -131,9 +133,19 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
         final MethodCallFinder methodCallFinder = new MethodCallFinder();
         final FunctionCallClassificationVisitor functionCallClassificationVisitor = new FunctionCallClassificationVisitor(
                 this.iFunctionClassificationStrategy, methodCallFinder);
-        VisitorUtils.visitJaMoPPMethod(targetResourceDemandingBehaviour, basicComponent, this.newMethod, null,
-                functionCallClassificationVisitor, this.interfaceOfExternalCallFinder,
-                this.resourceDemandingBehaviourForClassMethodFinding, methodCallFinder);
+        if (this.newMethod instanceof ClassMethod) {
+            // check whether the newMethod is a class method is done here. Could be done eariler,
+            // i.e. the class could only deal with ClassMethods, but this caused problems when
+            // changing an abstract method to a ClassMethod
+            VisitorUtils.visitJaMoPPMethod(targetResourceDemandingBehaviour, basicComponent,
+                    (StatementListContainer) this.newMethod, null, functionCallClassificationVisitor,
+                    this.interfaceOfExternalCallFinder, this.resourceDemandingBehaviourForClassMethodFinding,
+                    methodCallFinder);
+        } else {
+            logger.info("No SEFF recreated for method " + this.newMethod.getName()
+                    + " because it is not a class method. Method " + this.newMethod);
+        }
+
     }
 
     private void createNewCorrespondences(final CorrespondenceInstance ci,
