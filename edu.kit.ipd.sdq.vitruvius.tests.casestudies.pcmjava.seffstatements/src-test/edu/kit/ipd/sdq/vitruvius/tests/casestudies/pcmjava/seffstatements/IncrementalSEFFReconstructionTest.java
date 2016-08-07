@@ -34,26 +34,22 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.jamop
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
+public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationTest {
 
-    private static final String MEDIA_STORE = "MediaStore";
-    private static final String WEBGUI = "WebGUI";
-    @SuppressWarnings("unused")
-    private static final String UPLOAD = "upload";
-    private static final String DOWNLOAD = "download";
+    protected static final String MEDIA_STORE = "MediaStore";
+    protected static final String WEBGUI = "WebGUI";
+    protected static final String UPLOAD = "upload";
+    protected static final String DOWNLOAD = "download";
 
-    @SuppressWarnings("unused")
-    private Repository repository;
-    @SuppressWarnings("unused")
-    private OperationSignature httpDownloadOpSig;
-    @SuppressWarnings("unused")
-    private OperationSignature httpUploadOpSig;
-    @SuppressWarnings("unused")
-    private OperationSignature uploadOpSig;
-    private OperationSignature downloadOpSig;
-    private OperationRequiredRole webGUIRequiresIMediaStoreRole;
-    private final String MEDIA_STORE_CLASSNAME = MEDIA_STORE + "Impl";;
-    private final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
+    protected Repository repository;
+    protected OperationSignature httpDownloadOpSig;
+    protected OperationSignature httpUploadOpSig;
+    protected OperationSignature uploadOpSig;
+    protected OperationSignature downloadOpSig;
+    protected OperationRequiredRole webGUIRequiresIMediaStoreRole;
+    protected String webGUIPackageName;
+    protected static final String MEDIA_STORE_CLASSNAME = MEDIA_STORE + "Impl";;
+    protected static final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
 
     /**
      * Set up simple media store, which can be used for the tests. It consists of two components
@@ -64,6 +60,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
     protected void beforeTest(final Description description) throws Throwable {
         super.beforeTest(description);
         this.repository = this.createMediaStoreViaCode();
+        this.webGUIPackageName = WEBGUI;
     }
 
     @Test
@@ -216,7 +213,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String codeForHelper = "System.out.println(\"Test\");";
         final String webGuiHelper = "WebGUIHelper";
         final String downloadHelper = "downloadHelper";
-        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, "", codeForHelper);
+        this.createHelperClassAndMethod(this.webGUIPackageName, webGuiHelper, downloadHelper, "", codeForHelper);
         final String code = "WebGUIHelper webGuiHelper = new WebGUIHelper();\nwebGuiHelper.downloadHelper();";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
@@ -234,7 +231,8 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         final String downloadHelper = "downloadHelper";
         final String parameterCode = "testRepository.contracts.IMediaStore iMediaStore";
         final String codeForHelper = this.getExternalCallCode();
-        this.createHelperClassAndMethod(WEBGUI, webGuiHelper, downloadHelper, parameterCode, codeForHelper);
+        this.createHelperClassAndMethod(this.webGUIPackageName, webGuiHelper, downloadHelper, parameterCode,
+                codeForHelper);
         final String code = "WebGUIHelper webGuiHelper = new WebGUIHelper();\nwebGuiHelper.downloadHelper(this.iMediaStore);";
 
         final ResourceDemandingSEFF seff = this.editWebGUIDownloadMethod(code);
@@ -365,7 +363,7 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         behaviour.getSteps_Behaviour().add(SeffFactory.eINSTANCE.createStopAction());
     }
 
-    private Repository createMediaStoreViaCode() throws Throwable {
+    protected Repository createMediaStoreViaCode() throws Throwable {
         // create main package
         final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
@@ -395,21 +393,24 @@ public class SEFF2PCMTest extends JaMoPP2PCMTransformationTest {
         this.downloadOpSig = super.addMethodToInterfaceWithCorrespondence(mediaStoreInterfaceName, downloadMethodName);
 
         // create implements
-        super.addImplementsCorrespondingToOperationProvidedRoleToClass(this.WEBGUI_CLASSNAME, webGuiInterfaceName);
-        super.addImplementsCorrespondingToOperationProvidedRoleToClass(this.MEDIA_STORE_CLASSNAME,
-                mediaStoreInterfaceName);
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(WEBGUI_CLASSNAME, webGuiInterfaceName);
+        super.addImplementsCorrespondingToOperationProvidedRoleToClass(MEDIA_STORE_CLASSNAME, mediaStoreInterfaceName);
 
         // create class methods in component implementing classes in order to create SEFF
         // correspondences
-        this.addClassMethodToClassThatOverridesInterfaceMethod(this.WEBGUI_CLASSNAME, httpUploadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(this.WEBGUI_CLASSNAME, httpDownloadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(this.MEDIA_STORE_CLASSNAME, uploadMethodName);
-        this.addClassMethodToClassThatOverridesInterfaceMethod(this.MEDIA_STORE_CLASSNAME, downloadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(WEBGUI_CLASSNAME, httpUploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(WEBGUI_CLASSNAME, httpDownloadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(MEDIA_STORE_CLASSNAME, uploadMethodName);
+        this.addClassMethodToClassThatOverridesInterfaceMethod(MEDIA_STORE_CLASSNAME, downloadMethodName);
 
         // create requiredRole from webgui to IMediaStore
-        this.webGUIRequiresIMediaStoreRole = this.addFieldToClassWithName(this.WEBGUI_CLASSNAME,
-                mediaStoreInterfaceName, "i" + MEDIA_STORE, OperationRequiredRole.class);
+        this.webGUIRequiresIMediaStoreRole = this.addFieldToClassWithName(WEBGUI_CLASSNAME, mediaStoreInterfaceName,
+                "i" + MEDIA_STORE, OperationRequiredRole.class);
         return repo;
+    }
+
+    protected void setWebGUIPackageName(final String webGUIPackageName) {
+        this.webGUIPackageName = webGUIPackageName;
     }
 
 }
