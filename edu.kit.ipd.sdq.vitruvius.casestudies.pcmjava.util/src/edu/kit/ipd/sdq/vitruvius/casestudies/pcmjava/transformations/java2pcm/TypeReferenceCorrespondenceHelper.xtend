@@ -121,7 +121,7 @@ class TypeReferenceCorrespondenceHelper {
 			}
 			if (arrayDimension > 0 && null != pcmDataType && null != repo) {
 				// find CollectionDatatype list for innerValue or create new one
-				val typeName = PCM2JaMoPPUtils.getNameFromPCMDataType(pcmDataType) + "List"
+				val typeName = "List_" + PCM2JaMoPPUtils.getNameFromPCMDataType(pcmDataType)
 				var collectionDataType = repo.dataTypes__Repository.filter(CollectionDataType).findFirst[it.entityName.equals(typeName)]
 				if (null == collectionDataType) {
 					collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
@@ -133,8 +133,8 @@ class TypeReferenceCorrespondenceHelper {
 					     // reason: as long as the inner type exists the collection resectievly an array can be used easily
 						correspondenceInstance.createAndAddCorrespondence(collectionDataType, pcmDataType)
 					}
-					pcmDataType = collectionDataType
 				}
+				pcmDataType = collectionDataType
 			}
 			if (null == pcmDataType) {
 				logger.error("Could not find a PCM data type for type reference " + typeReference)

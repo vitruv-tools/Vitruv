@@ -123,7 +123,7 @@ class PCMJaMoPPUtils {
 			return true
 		}
 
-		private static def boolean hasSameTargetReference(TypeReference reference1, TypeReference reference2) {
+		public static def boolean hasSameTargetReference(TypeReference reference1, TypeReference reference2) {
 			if (reference1 == reference2 || reference1.equals(reference2)) {
 				return true
 			}
