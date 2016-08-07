@@ -18,28 +18,32 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 	override protected visitInternal(MethodBodyChangedEvent changeClassifyingEvent, ChangeSubmitter submitter) {
 		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.originalElement)
 		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.changedElement)
- 
+	 
 		val compositeChange = new CompositeChange()
 		val changeURI = VURI.getInstance(originalMethod.eResource)
 
-		for (stmt : (originalMethod as ClassMethod).statements) {
-			val change = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList
-			change.oldAffectedEObject = originalMethod
-			change.newAffectedEObject = changedMethod
-			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
-			change.oldValue = stmt
-			change.index = (originalMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(new EMFModelChange(change, changeURI))
+		if(originalMethod instanceof ClassMethod){
+			for (stmt : (originalMethod as ClassMethod).statements) {
+				val change = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList
+				change.oldAffectedEObject = originalMethod
+				change.newAffectedEObject = changedMethod
+				change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
+				change.oldValue = stmt
+				change.index = (originalMethod as ClassMethod).statements.indexOf(stmt)
+				compositeChange.addChange(new EMFModelChange(change, changeURI))
+			}
 		}
-		
-		for (stmt : (changedMethod as ClassMethod).statements) {
-			val change = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList
-			change.oldAffectedEObject = originalMethod
-			change.newAffectedEObject = changedMethod
-			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
-			change.newValue = stmt
-			change.index = (changedMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(new EMFModelChange(change, changeURI))
+
+		if(changedMethod instanceof ClassMethod){
+			for (stmt : (changedMethod as ClassMethod).statements) {
+				val change = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList
+				change.oldAffectedEObject = originalMethod
+				change.newAffectedEObject = changedMethod
+				change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
+				change.newValue = stmt
+				change.index = (changedMethod as ClassMethod).statements.indexOf(stmt)
+				compositeChange.addChange(new EMFModelChange(change, changeURI))
+			}
 		}
 		
 		submitter.submitChange(compositeChange)
