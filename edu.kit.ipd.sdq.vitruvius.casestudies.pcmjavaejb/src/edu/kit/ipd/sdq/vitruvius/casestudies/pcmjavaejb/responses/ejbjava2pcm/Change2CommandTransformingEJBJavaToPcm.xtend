@@ -7,7 +7,7 @@ import mir.responses.AbstractChange2CommandTransformingJavaTo5_1
 class Change2CommandTransformingEJBJavaToPcm extends AbstractChange2CommandTransformingJavaTo5_1 {
 	public new() {
 		super(); 
-		addPreprocessor(new Java2PcmPackagePreprocessor()); 
+		addPreprocessor(new Java2PcmPackagePreprocessor());  
 		addPreprocessor(new Java2PcmMethodBodyChangePreprocessor(new EJBJava2PCMCode2SEFFFactory));
 	}
 }

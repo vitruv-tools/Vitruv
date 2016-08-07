@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.emftext.language.java.containers.Package
  
-class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreprocessor {
+class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreprocessor { 
 	    /**
      * Special treatment for packages: we have to use the package-info file as input for the
      * transformation and make sure that the packages have resources attached

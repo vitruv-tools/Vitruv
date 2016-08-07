@@ -13,7 +13,6 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import java.util.Collections
 import org.palladiosimulator.pcm.repository.OperationInterface
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.palladiosimulator.pcm.repository.OperationSignature
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
 
@@ -23,6 +22,46 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using si
 responses from metamodel java to metamodel pcm
 called ejbjava2pcm
 
+// #################################################################################################################
+// ################ Helper Response: updates TUID of a method if a method parameter or a return type has been changed################
+response: AddMethodParameterTUID
+trigger: insert in list java.ClassMethod[parameters]
+effect:
+	execute:{
+		if(correspondenceInstance.hasCorrespondences(Collections.singletonList(change.oldAffectedEObject))){
+			correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)			
+		}
+	}
+
+/*response: RemoveMethodParameterTUID
+trigger: remove from list java.Method[parameters]
+effect:
+	execute:{
+		if(correspondenceInstance.hasCorrespondences(Collections.singletonList(change.oldAffectedEObject))){
+			correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)			
+		}
+	}
+	
+response: ReplaceMethodParameterTUID
+trigger: remove from list java.Method[parameters]
+effect:
+	execute:{
+		if(correspondenceInstance.hasCorrespondences(Collections.singletonList(change.oldAffectedEObject))){
+			correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)			
+		}
+	}
+
+response: ReplaceTypeReferenceMethodTUID
+trigger: replace value java.Method[typeReference]
+effect:
+	execute:{
+		if(correspondenceInstance.hasCorrespondences(Collections.singletonList(change.oldAffectedEObject))){
+			correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)			
+		}
+	}*/
+
+// ###################################################
+// ################ create Repository for first package################
 response: CreatedFirstPackage
 trigger: insert root java.Package
 effect:
@@ -180,7 +219,7 @@ effect:
 		interfaceMethod.parameters.forEach[callCreatePCMParameter(opSignature)]
 		interfaceMethod.typeReference.callCreatePCMReturnType(opSignature, interfaceMethod)
 	}
-	
+
 // #######################################################################
 // ################ create Parameter for  parameter################		
 response: CreateParameterInInterfaceMethod
@@ -188,18 +227,25 @@ trigger: insert in list java.InterfaceMethod[parameters]
 match:
 	retrieve required element: pcm.OperationSignature as opSignature corresponding to change.oldAffectedEObject
 effect:
-	execute: callCreatePCMParameter(change.newValue, opSignature)
+	execute: {
+		callCreatePCMParameter(change.newValue, opSignature)
+		//update TUID of affected object
+		correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)
+	}
 	
 routine: CreatePCMParameter
 	input: java.Parameter as jaMoPPParam,  pcm.OperationSignature as opSignature
 effect:
 	create element: pcm.Parameter as pcmParameter
-	add correspondence: pcmParameter, jaMoPPParam
+	//add correspondence: pcmParameter, jaMoPPParam
 	execute:{
 		pcmParameter.entityName = jaMoPPParam.name
+		pcmParameter.parameterName = jaMoPPParam.name
 		pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, 
 			correspondenceInstance, userInteracting, opSignature.interface__OperationSignature.repository__Interface, jaMoPPParam.arrayDimension)
 		opSignature.parameters__OperationSignature.add(pcmParameter)
+		//add correspondence here, because otherwise TUID calculation may be fail since type and name are null
+		correspondenceInstance.createAndAddCorrespondence(Collections.singletonList(pcmParameter), Collections.singletonList(jaMoPPParam))
 	}
 	
 // #######################################################################
@@ -222,12 +268,12 @@ effect:
 	}
 
 // #######################################################################
-// ################ create InnerDeclaration for data type ################
+// ################ create InnerDeclaration for field in datatype class################
 response: CreateFieldInDatatypeClass
 trigger: insert in list java.Class[members]
 check: change.newValue instanceof Field
 match: 
-	retrieve required element: pcm.CompositeDataType as compositeDataType corresponding to change.newValue
+	retrieve required element: pcm.CompositeDataType as compositeDataType corresponding to change.newAffectedEObject
 effect:
 	create element: pcm.InnerDeclaration as innerDec
 	add correspondence: innerDec, change.newValue
@@ -235,8 +281,9 @@ effect:
 		val field = change.newValue as Field
 		innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceInstance,
-						userInteracting, null, field.arrayDimension)
+						userInteracting, compositeDataType.repository__DataType, field.arrayDimension)
 		innerDec.entityName = change.newValue.name
+		compositeDataType.innerDeclaration_CompositeDataType.add(innerDec)
 	}
 	
 // #############################################################################################
