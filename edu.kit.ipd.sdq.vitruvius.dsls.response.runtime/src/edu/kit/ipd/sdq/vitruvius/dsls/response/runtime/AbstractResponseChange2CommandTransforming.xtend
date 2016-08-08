@@ -9,8 +9,9 @@ import org.eclipse.emf.common.command.Command
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.ProcessableCompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 
 abstract class AbstractResponseChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseChange2CommandTransforming);
@@ -61,7 +62,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 	
-	private def dispatch List<Command> handleChange(ProcessableCompositeChange change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(CompositeChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (Change c : change.getChanges()) {
 			result.addAll(this.processChange(c, blackboard));
@@ -69,7 +70,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		return result
 	}
 	
-	private def dispatch List<Command> handleChange(VitruviusChange change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(ConcreteChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (eChange : change.getEChanges()) {
 			for (executor : responseExecutors) {
