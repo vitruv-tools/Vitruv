@@ -15,12 +15,12 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformation;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
@@ -49,13 +49,13 @@ public class VitruviusEMFEditorMonitorImplTestPlugin {
         changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singletonList(resource));
         repo.setEntityName("TestNewName");
         final List<EMFModelChange> recordedChanges = changeRecorder.endRecording();
-        List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>();
-        for (EMFModelChange change : recordedChanges) {
-        	transformedChanges.add(new EMFModelChangeTransformation(change).getChange());
+        ChangePreparing changePreparer = new ChangePreparingImpl(null);
+        for (Change change : recordedChanges) {
+        	change.prepare(changePreparer);
         }
-        for (final Change change : transformedChanges) {
+        for (final Change change : recordedChanges) {
             logger.warn(change);
         }
-        assertTrue("No changes detected ", 0 < transformedChanges.size());
+        assertTrue("No changes detected ", 0 < recordedChanges.size());
     }
 }
