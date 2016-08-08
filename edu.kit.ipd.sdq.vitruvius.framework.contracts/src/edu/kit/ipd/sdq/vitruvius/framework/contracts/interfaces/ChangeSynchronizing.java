@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 
 public interface ChangeSynchronizing {
     /**
@@ -13,6 +12,6 @@ public interface ChangeSynchronizing {
      *            list of changes
      * @return TODO
      */
-    List<List<Change>> synchronizeChanges(RecordedChange change);
+    List<List<Change>> synchronizeChanges(Change change);
 
 }

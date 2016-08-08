@@ -1,5 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes
 
+import java.util.List
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
+
 /** 
  * Base interface for all kinds of changes in Vitruvius.
  * 
@@ -12,8 +16,26 @@ interface Change extends URIHaving {
 	def boolean containsConcreteChange();
 	
 	/** 
-	 * Validates the change by checking of at least one concrete change is contained and
+	 * Validates the change by checking if at least one concrete change is contained and
 	 * the URIs of all contained changes are same. 
 	 */
 	def boolean validate();
+	
+	/**
+	 * Indicates whether this or all contained changes are prepared and contain the {@link EChange}s
+	 * that describe the change.
+	 */
+	def boolean isPrepared();
+
+	/**
+	 * Calls the given {@link ChangePreparer} to generate the {@link EChange}s for this change.
+	 */
+	def void prepare(ChangePreparing  preparer);
+
+	/** 
+	 * Returns the {@link EChange}s that describe this change. Requires the change to be prepared so
+	 * that the original change information is transformed into {@link EChange}s.  
+	 */
+	def List<EChange> getEChanges();
+
 }
