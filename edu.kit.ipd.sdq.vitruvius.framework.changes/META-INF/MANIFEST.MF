@@ -13,6 +13,4 @@ Require-Bundle: com.google.guava,
  org.eclipse.emf.ecore.change,
  org.apache.log4j
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.change,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable,
  edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder

@@ -8,8 +8,8 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory
 
 class AtomicEMFChangeRecorder {
 	val List<ChangeDescription> changeDescriptions;
@@ -34,7 +34,7 @@ class AtomicEMFChangeRecorder {
 	def List<EMFModelChange> endRecording() {
 		changeRecorder.endRecording()
 		val nonNullChangeDescriptions = changeDescriptions.filterNull.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList;
-		val result = nonNullChangeDescriptions.map[RecordedChangeFactory.instance.createEMFModelChange(it, modelVURI)];
+		val result = nonNullChangeDescriptions.map[ChangeFactory.instance.createEMFModelChange(it, modelVURI)];
 		changeDescriptions.clear();
 		return result;
 	}

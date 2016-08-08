@@ -1,11 +1,11 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.impl
+package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
 
-class EMFModelChangeImpl extends RecordedConcreteChangeImpl implements EMFModelChange {
-	private ChangeDescription changeDescription;
+class EMFModelChangeImpl extends ConcreteChangeImpl implements EMFModelChange {
+	private final ChangeDescription changeDescription;
 
     public new(ChangeDescription changeDescription, VURI vuri) {
     	super(vuri);

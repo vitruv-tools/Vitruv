@@ -1,23 +1,20 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProcessableChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.ProcessableChangeFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory
-import java.util.Collections
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import java.util.List
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange
 
 class ChangePreparingImpl implements ChangePreparing {
 	private static Logger logger = Logger.getLogger(ChangePreparingImpl);
@@ -27,32 +24,19 @@ class ChangePreparingImpl implements ChangePreparing {
 		this.modelProviding = modelProviding;
 	}
 	
-	override prepareAllChanges(RecordedChange unpreparedChange) {
-		prepareChange(unpreparedChange);
+	override List<EChange> prepareChange(Change unpreparedChange) {
+		prepareTypedChange(unpreparedChange);
 	}
 	
-	private def dispatch ProcessableChange prepareChange(RecordedChange unpreparedChange) {
-		throw new UnsupportedOperationException("General recorded changes cannot be handled.")
+	private def dispatch List<EChange> prepareTypedChange(Change unpreparedChange) {
+		throw new UnsupportedOperationException("Changes of type " + unpreparedChange.class + " cannot be handled.")
 	}
 	
-	private def dispatch ProcessableChange prepareChange(RecordedCompositeChange unpreparedChange) {
-		val compositeChange = ProcessableChangeFactory.instance.createProcessableCompositeChange();
-		for (change : unpreparedChange.changes) {
-			val preparedInnerChange = prepareChange(change);
-			if (preparedInnerChange != null) {
-				compositeChange.addChange(preparedInnerChange);	
-			}
-		}
-		return compositeChange;
+	private def dispatch List<EChange> prepareTypedChange(EMFModelChange modelChange) {
+		return new ChangeDescription2EChangesTransformation(modelChange.changeDescription).transform()
 	}
 	
-	private def dispatch ProcessableChange prepareChange(EMFModelChange unpreparedChange) {
-		val change = new EMFModelChangeTransformation(unpreparedChange).getChange();
-		unpreparedChange.changeDescription.applyAndReverse();
-		return change;
-	}
-	
-	private def dispatch ProcessableChange prepareChange(FileChange fileChange) {
+	private def dispatch List<EChange> prepareTypedChange(FileChange fileChange) {
         val VURI sourceModelURI = fileChange.getURI();
         switch (fileChange.getFileChangeKind()) {
         case CREATE:
@@ -62,7 +46,7 @@ class ChangePreparingImpl implements ChangePreparing {
         }
 	}
 	
-	private def VitruviusChange prepareFileCreated(VURI sourceModelURI) {
+	private def List<EChange> prepareFileCreated(VURI sourceModelURI) {
         val ModelInstance newModelInstance = modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
         val Resource resource = newModelInstance.getResource();
         var EObject rootElement = null;
@@ -79,19 +63,17 @@ class ChangePreparingImpl implements ChangePreparing {
         }
         val InsertRootEObject<EObject> createRootEObj = RootFactory.eINSTANCE.createInsertRootEObject();
         createRootEObj.setNewValue(rootElement);
-        val VitruviusChange rootAdd = ProcessableChangeFactory.getInstance().createVitruviusChange(null, Collections.singletonList(createRootEObj), sourceModelURI);
-        return rootAdd;
+        return #[createRootEObj];
     }
 
-    private def VitruviusChange prepareFileDeleted(VURI sourceModelURI) {
+    private def List<EChange> prepareFileDeleted(VURI sourceModelURI) {
         val ModelInstance oldModelInstance = modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
         val Resource resource = oldModelInstance.getResource();
         if (0 < resource.getContents().size()) {
             val EObject rootElement = resource.getContents().get(0);
             val RemoveRootEObject<EObject> deleteRootObj = RootFactory.eINSTANCE.createRemoveRootEObject();
             deleteRootObj.setOldValue(rootElement);
-            val VitruviusChange rootDeleted = ProcessableChangeFactory.getInstance().createVitruviusChange(null, Collections.singletonList(deleteRootObj), sourceModelURI);
-            return rootDeleted;
+            return #[deleteRootObj];
         }
         logger.info("Deleted resource " + sourceModelURI + " did not contain any EObject");
         return null;
