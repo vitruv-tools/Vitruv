@@ -12,7 +12,7 @@ import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl
 
 /** 
  * This class is the test class for the new {@link changes.changepreparerTransformation}. It
@@ -68,10 +68,10 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			changeDescriptions.get(i).changeDescription.applyAndReverse();
 		}
 		return changeDescriptions.map[
-			val change = new EMFModelChangeTransformation(it).getChange();
+			val changes = new ChangePreparingImpl(null).prepareChange(it);
 			it.changeDescription.applyAndReverse();
-			return change;
-		].map[it.EChanges].flatten.toList;
+			return changes;
+		].flatten.toList;
 //		val change = new changes.changepreparerTransformation(changeDescriptions, true).getChange();
 //		val changes = if (change instanceof ProcessableCompositeChange)
 //		map[it.EChanges].flatten.toList;
