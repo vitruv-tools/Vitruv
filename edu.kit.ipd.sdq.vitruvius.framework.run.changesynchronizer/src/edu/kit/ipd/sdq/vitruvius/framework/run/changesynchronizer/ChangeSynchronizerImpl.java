@@ -16,14 +16,12 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.FeatureChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GenericCompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
@@ -73,7 +71,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     @Override
-    public synchronized List<List<Change>> synchronizeChanges(final RecordedChange change) {
+    public synchronized List<List<Change>> synchronizeChanges(final Change change) {
         if (change == null || !change.containsConcreteChange()) {
             logger.warn("The change does not contain any changes to synchronize." + change);
             return Collections.emptyList();
@@ -105,17 +103,20 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         return commandExecutionChanges;
     }
 
-    private void synchronizeSingleChange(final RecordedChange change,
+    private void synchronizeSingleChange(final Change change,
             final Set<CorrespondenceInstanceDecorator> correspondenceInstances,
             final List<List<Change>> commandExecutionChanges) {
-        if (change instanceof RecordedCompositeChange) {
-            for (RecordedChange innerChange : ((RecordedCompositeChange) change).getChanges()) {
+        if (change instanceof CompositeChange) {
+            for (Change innerChange : ((CompositeChange) change).getChanges()) {
                 synchronizeSingleChange(innerChange, correspondenceInstances, commandExecutionChanges);
             }
         } else {
             Map<EObject, TUID> tuidMap = new HashMap<>();
             getOldObjectTUIDs(change, correspondenceInstances.iterator().next(), tuidMap);
-            Change preparedChange = this.changePreparing.prepareAllChanges(change);
+            change.prepare(this.changePreparing);
+            if (change instanceof EMFModelChange) {
+                ((EMFModelChange) change).getChangeDescription().applyAndReverse();
+            }
             updateTUIDs(tuidMap, correspondenceInstances.iterator().next());
             for (CorrespondenceInstanceDecorator correspondenceInstance : correspondenceInstances) {
                 Metamodel mmA = correspondenceInstance.getMapping().getMetamodelA();
@@ -135,7 +136,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 // TODO HK: Clone the changes for each synchronization! Should even be cloned for
                 // each response that uses it,
                 // or: make them read only, i.e. give them a read-only interface!
-                blackboard.pushChanges(Collections.singletonList(preparedChange));
+                blackboard.pushChanges(Collections.singletonList(change));
                 this.blackboardHistory.push(blackboard);
                 change2CommandTransforming.transformChanges2Commands(blackboard);
                 commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard));
@@ -143,7 +144,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    private void getOldObjectTUIDs(final RecordedChange recordedChange,
+    private void getOldObjectTUIDs(final Change recordedChange,
             final CorrespondenceInstanceDecorator correspondenceInstance, final Map<EObject, TUID> tuidMap) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
@@ -157,9 +158,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                     }
                 }
             }
-        } else if (recordedChange instanceof RecordedCompositeChange) {
-            RecordedCompositeChange change = (RecordedCompositeChange) recordedChange;
-            for (RecordedChange innerChange : change.getChanges()) {
+        } else if (recordedChange instanceof CompositeChange) {
+            CompositeChange change = (CompositeChange) recordedChange;
+            for (Change innerChange : change.getChanges()) {
                 getOldObjectTUIDs(innerChange, correspondenceInstance, tuidMap);
             }
         }
@@ -172,9 +173,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    private void rollbackChange(final RecordedChange change) {
-        if (change instanceof RecordedCompositeChange) {
-            List<RecordedChange> innerChanges = ((RecordedCompositeChange) change).getChanges();
+    private void rollbackChange(final Change change) {
+        if (change instanceof CompositeChange) {
+            List<Change> innerChanges = ((CompositeChange) change).getChanges();
             for (int i = innerChanges.size() - 1; i >= 0; i--) {
                 rollbackChange(innerChanges.get(i));
             }
@@ -185,12 +186,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
     private void applyChanges(final List<Change> changes) {
         for (Change change : changes) {
-            if (change instanceof VitruviusChange) {
-                ChangeDescription descr = ((VitruviusChange) change).getOriginalChangeDescription();
+            if (change instanceof EMFModelChange) {
+                ChangeDescription descr = ((EMFModelChange) change).getChangeDescription();
                 if (descr != null)
                     descr.applyAndReverse();
-            } else if (change instanceof CompositeChange) {
-                applyChanges(((CompositeChange) change).getChanges());
+            } else if (change instanceof GenericCompositeChange) {
+                applyChanges(((GenericCompositeChange) change).getChanges());
             }
         }
     }
