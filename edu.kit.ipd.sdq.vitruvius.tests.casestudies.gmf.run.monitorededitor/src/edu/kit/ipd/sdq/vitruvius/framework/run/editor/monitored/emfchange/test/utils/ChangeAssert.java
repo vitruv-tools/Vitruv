@@ -15,7 +15,6 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
@@ -28,7 +27,7 @@ public final class ChangeAssert {
     public static void printChangeList(Collection<Change> changes) {
         System.err.println("Change-list related assertion failure, got change list:");
         for (Change c : changes) {
-            EChange change = ((VitruviusChange) c).getEChanges().get(0);
+            EChange change = c.getEChanges().get(0);
             System.err.println("\t" + change);
             if (change instanceof FeatureEChange<?, ?>) {
                 FeatureEChange<?, ?> fc = (FeatureEChange<?, ?>) change;
@@ -43,7 +42,7 @@ public final class ChangeAssert {
         assert feature != null;
 
         for (Change c : changes) {
-            EChange innerChange = ((VitruviusChange) c).getEChanges().get(0);
+            EChange innerChange = c.getEChanges().get(0);
             if (innerChange instanceof ReplaceSingleValuedEAttribute<?, ?>) {
                 ReplaceSingleValuedEAttribute<?, ?> attrChange = (ReplaceSingleValuedEAttribute<?, ?>) innerChange;
                 if (attrChange.getNewValue() != null && attrChange.getNewValue().equals(newValue)

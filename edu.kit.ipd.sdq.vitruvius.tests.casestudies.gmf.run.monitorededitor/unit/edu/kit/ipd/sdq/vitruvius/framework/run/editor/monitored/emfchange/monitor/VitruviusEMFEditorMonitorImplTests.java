@@ -22,8 +22,7 @@ import org.eclipse.ui.IEditorPart;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedCompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
@@ -105,8 +104,8 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert cs.getExecutionCount() == 1;
         assert !cs.getLastChanges().isEmpty();
 
-        List<VitruviusChange> transformedChanges = transformChanges(cs.getLastChanges());
-        for (VitruviusChange change : transformedChanges) {
+        transformChanges(cs.getLastChanges());
+        for (Change change : cs.getLastChanges()) {
             assert change.getURI() == VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
         }
     }
@@ -157,8 +156,8 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
         assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof RecordedCompositeChange;
-        int changeCount = ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert cs.getLastChanges().get(0) instanceof CompositeChange;
+        int changeCount = ((CompositeChange) cs.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 2 : "Got " + changeCount + " changes instead of 2.";
     }
 
@@ -192,17 +191,16 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
         assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof RecordedCompositeChange;
-        int changeCount = ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert cs.getLastChanges().get(0) instanceof CompositeChange;
+        int changeCount = ((CompositeChange) cs.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 3 : "Got " + changeCount + " changes instead of 3.";
 
-        List<VitruviusChange> transformedChanges = transformChanges(
-                ((RecordedCompositeChange) cs.getLastChanges().get(0)).getChanges());
-        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (transformedChanges.get(0).getEChanges().get(0));
+        transformChanges(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
+        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (cs.getLastChanges().get(0).getEChanges().get(0));
         EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
-        List<Change> changes = new ArrayList<Change>(transformedChanges);
+        List<Change> changes = new ArrayList<Change>(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
         // System.err.println(root);
         //
         // ChangeAssert.printChangeList(changes);

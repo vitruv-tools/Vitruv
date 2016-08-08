@@ -11,17 +11,15 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 
 public class BasicTestCase {
 
@@ -38,18 +36,26 @@ public class BasicTestCase {
         }
     }
 
-    protected List<VitruviusChange> transformChanges(List<RecordedChange> changes) {
-        List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>();
+    protected void transformChanges(List<Change> changes) {
         for (int i = changes.size() - 1; i >= 0; i--) {
             if (changes.get(i) instanceof EMFModelChange)
                 ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
         }
+        ChangePreparing preparer = new ChangePreparingImpl(null);
         for (Change change : changes) {
+            change.prepare(preparer);
             if (change instanceof EMFModelChange) {
-                transformedChanges.add(new EMFModelChangeTransformation((EMFModelChange) change).getChange());
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }
         }
-        return transformedChanges;
+
+        /*
+         * List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>(); for (int i =
+         * changes.size() - 1; i >= 0; i--) { if (changes.get(i) instanceof EMFModelChange)
+         * ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse(); } for (Change
+         * change : changes) { if (change instanceof EMFModelChange) { transformedChanges.add(new
+         * EMFModelChangeTransformation((EMFModelChange) change).getChange()); ((EMFModelChange)
+         * change).getChangeDescription().applyAndReverse(); } } return transformedChanges;
+         */
     }
 }

@@ -23,8 +23,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
@@ -88,7 +89,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     private boolean reportChanges;
 
-    private final List<RecordedChange> collectedChanges;
+    private final List<Change> collectedChanges;
 
     /**
      * A constructor for {@link VitruviusEMFEditorMonitorImpl} instances.
@@ -153,7 +154,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private ResourceChangeSynchronizing createInternalChangeSynchronizing() {
         return new ResourceChangeSynchronizing() {
             @Override
-            public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource origin) {
+            public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource origin) {
                 LOGGER.trace("Adding changes for VURI " + sourceModelURI);
                 collectedChanges.addAll(changes);
                 if (isPendingSynchronizationRequest(sourceModelURI)) {
@@ -262,8 +263,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         updateSynchronizationTimestamp(resourceURI);
         if (collectedChanges != null && !collectedChanges.isEmpty()) {
             LOGGER.trace("Got a change for " + resourceURI + ", continuing synchronization.");
-            RecordedChange compositeChange = RecordedChangeFactory.getInstance()
-                    .createRecordedCompositeChange(collectedChanges);
+            CompositeChange compositeChange = ChangeFactory.getInstance().createCompositeChange(collectedChanges);
             summaryChangeSynchronizing.synchronizeChanges(compositeChange);
             this.collectedChanges.clear();
         }

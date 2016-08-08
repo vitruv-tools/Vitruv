@@ -25,8 +25,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -147,7 +146,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
                 ensureExecuted.markExecuted();
                 assert sourceModelURI == resVURI;
             }
@@ -172,7 +171,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
                 ensureNotExecuted.markExecuted();
             }
         };
@@ -197,7 +196,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
                 if (sourceModelURI == resVURI) {
                     ensureNotExecuted.markExecuted();
                 } else {
@@ -239,14 +238,14 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<RecordedChange> changes, VURI sourceModelURI, Resource res) {
-                List<VitruviusChange> transformedChanges = transformChanges(changes);
+            public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
+                transformChanges(changes);
 
                 ensureExecuted.markExecuted();
                 assert sourceModelURI == resVURI;
 
                 assert changes.size() == 1;
-                VitruviusChange emfChange = transformedChanges.get(0);
+                Change emfChange = changes.get(0);
                 assert emfChange.getEChanges().get(0) instanceof FeatureEChange<?, ?>;
                 FeatureEChange<?, ?> updateAttr = (FeatureEChange<?, ?>) emfChange.getEChanges().get(0);
 
