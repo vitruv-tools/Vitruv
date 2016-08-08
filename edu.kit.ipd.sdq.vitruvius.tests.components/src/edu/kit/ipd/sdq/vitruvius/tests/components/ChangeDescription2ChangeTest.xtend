@@ -24,9 +24,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.processable.VitruviusChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl
+import java.util.ArrayList
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -79,15 +78,15 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 
 	
 	// TODO ML needs @Rule from VitruviusCasestudyTest?
-	def List<VitruviusChange> triggerChangeDescription2Change() {
+	def List<Change> triggerChangeDescription2Change() {
 		val changes = this.changeRecorder.endRecording()
 //      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
 		LOGGER.trace("monitored change descriptions: " + changes)
-        val transformedChanges = changes.map[new EMFModelChangeTransformation(it).getChange()]
-        LOGGER.trace("transformed changes: " + transformedChanges)
+        changes.forEach[it.prepare(new ChangePreparingImpl(null))]
+        LOGGER.trace("transformed changes: " + changes)
         //cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
         this.changeRecorder.restartRecording()
-        return transformedChanges
+        return new ArrayList<Change>(changes)
 	}
 	
 //	def private void beginRecording() {

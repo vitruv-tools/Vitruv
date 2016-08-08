@@ -5,12 +5,10 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.recorded.RecordedChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.RecordedChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 
 /**
@@ -44,14 +42,14 @@ public abstract class IntegrationStategy {
      *            the sync
      * @return List of changes
      */
-    public List<RecordedChange> integrateModel(final IResource resource, final ChangeSynchronizing sync) {
+    public List<Change> integrateModel(final IResource resource, final ChangeSynchronizing sync) {
         this.logger.info("Start loading Model " + resource.getName());
         model = this.loadModel(resource.getLocation().toString());
         this.logger.info("Invariant Check/Enforce for Model " + resource.getName());
         model = this.checkAndEnforceInvariants(model);
         this.logger.info("Traverse Model and create Change-Models for Vitruvius Integration/Synchronization "
                 + resource.getName());
-        final List<RecordedChange> changes = this.createChangeModels(resource, model);
+        final List<Change> changes = this.createChangeModels(resource, model);
         this.propagateChanges(changes, sync);
         this.logger.info("Finish integration for model: " + model.toString() + "@" + model.getTimeStamp());
         return changes;
@@ -65,10 +63,10 @@ public abstract class IntegrationStategy {
      * @param sync
      *            the sync
      */
-    private void propagateChanges(final List<RecordedChange> changes, final ChangeSynchronizing sync) {
+    private void propagateChanges(final List<Change> changes, final ChangeSynchronizing sync) {
 
         try {
-        	RecordedChange compositeChange = RecordedChangeFactory.getInstance().createRecordedCompositeChange(changes);
+        	Change compositeChange = ChangeFactory.getInstance().createCompositeChange(changes);
             sync.synchronizeChanges(compositeChange);
         } catch (final Exception e) {
             e.printStackTrace();
@@ -103,6 +101,6 @@ public abstract class IntegrationStategy {
      *            the valid model
      * @return the e list
      */
-    protected abstract List<RecordedChange> createChangeModels(IResource resource, Resource validModel);
+    protected abstract List<Change> createChangeModels(IResource resource, Resource validModel);
 
 }
