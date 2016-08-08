@@ -18,20 +18,24 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 public class ChangeMethodModifiersClassifier extends SingleNodeChangeClassifier {
 
     @Override
-    protected List<? extends ChangeClassifyingEvent> classifyChange(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit, CompilationUnit oldCompilationUnit) {
-        List<ChangeMethodModifiersEvent> returns = new ArrayList<ChangeMethodModifiersEvent>(1);
-        IJavaElement element = delta.getElement();
+    protected List<? extends ChangeClassifyingEvent> classifyChange(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit, final CompilationUnit oldCompilationUnit) {
+        final List<ChangeMethodModifiersEvent> returns = new ArrayList<ChangeMethodModifiersEvent>(1);
+        final IJavaElement element = delta.getElement();
         if (element.getElementType() == IJavaElement.METHOD && delta.getKind() == IJavaElementDelta.CHANGED
-                && (delta.getFlags() & IJavaElementDelta.F_MODIFIERS) != 0) {
-            IMethod imethod = (IMethod) element;
-            IType itype = (IType) imethod.getParent();
-            int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
+                && (delta.getFlags() & IJavaElementDelta.F_MODIFIERS) != 0
+                && (delta.getFlags() & IJavaElementDelta.F_ANNOTATIONS) == 0) {
+            final IMethod imethod = (IMethod) element;
+            final IType itype = (IType) imethod.getParent();
+            final int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
                     currentCompilationUnit);
-            MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element, currentCompilationUnit);
-            MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line, oldCompilationUnit);
-            if (changed != null && original != null)
+            final MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element,
+                    currentCompilationUnit);
+            final MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line,
+                    oldCompilationUnit);
+            if (changed != null && original != null) {
                 returns.add(new ChangeMethodModifiersEvent(original, changed, line));
+            }
         }
         return returns;
     }

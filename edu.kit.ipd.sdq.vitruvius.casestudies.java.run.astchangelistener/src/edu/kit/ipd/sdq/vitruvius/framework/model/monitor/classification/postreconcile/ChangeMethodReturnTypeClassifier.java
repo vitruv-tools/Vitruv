@@ -18,22 +18,25 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 public class ChangeMethodReturnTypeClassifier extends SingleNodeChangeClassifier {
 
     @Override
-    protected List<? extends ChangeClassifyingEvent> classifyChange(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit, CompilationUnit oldCompilationUnit) {
-        List<ChangeMethodReturnTypeEvent> returns = new ArrayList<ChangeMethodReturnTypeEvent>(1);
-        IJavaElement element = delta.getElement();
+    protected List<? extends ChangeClassifyingEvent> classifyChange(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit, final CompilationUnit oldCompilationUnit) {
+        final List<ChangeMethodReturnTypeEvent> returns = new ArrayList<ChangeMethodReturnTypeEvent>(1);
+        final IJavaElement element = delta.getElement();
         if (element.getElementType() == IJavaElement.METHOD && delta.getKind() == IJavaElementDelta.CHANGED
                 && (delta.getFlags() & IJavaElementDelta.F_ANNOTATIONS) == 0) {
-            IMethod imethod = (IMethod) element;
-            IType itype = (IType) imethod.getParent();
-            int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
+            final IMethod imethod = (IMethod) element;
+            final IType itype = (IType) imethod.getParent();
+            final int line = CompilationUnitUtil.getLineNumberOfMethod(imethod, itype.getElementName().toString(),
                     currentCompilationUnit);
-            MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element, currentCompilationUnit);
-            MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line, oldCompilationUnit);
+            final MethodDeclaration changed = JavaModel2AST.getMethodDeclaration((IMethod) element,
+                    currentCompilationUnit);
+            final MethodDeclaration original = CompilationUnitUtil.findMethodDeclarationOnLine(line,
+                    oldCompilationUnit);
 
-            if ((changed != null && original != null)
-                    && !(changed.getReturnType2().subtreeMatch(AST_MATCHER, original.getReturnType2())))
+            if (changed != null && original != null
+                    && !changed.getReturnType2().subtreeMatch(AST_MATCHER, original.getReturnType2())) {
                 returns.add(new ChangeMethodReturnTypeEvent(original, changed, line));
+            }
         }
         return returns;
     }

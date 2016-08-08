@@ -22,9 +22,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postchan
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.AddFieldClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.AddImportClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.AddMethodClassifier;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeAnnotationClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeFieldModifiersClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeFieldTypeClassifier;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeMethodAnnotationClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeMethodModifiersClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeMethodParameterClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.ChangeMethodReturnTypeClassifier;
@@ -85,7 +85,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         this.listening = false;
     }
 
-    public ASTChangeListener(String... projectNames) {
+    public ASTChangeListener(final String... projectNames) {
         this.monitoredProjectNames = Arrays.asList(projectNames);
         this.postReconcileClassifiers = getPostReconcileClassifiers();
         this.postChangeClassifiers = getPostChangeClassifiers();
@@ -94,7 +94,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         this.previousState = new PreviousASTState(projectNames);
         this.withholdChangeHistory = new ChangeHistory(CHANGE_HISTORY_MINUTES);
         this.editCommandListener = new EditCommandListener(this);
-        startListening();
+        this.startListening();
         JavaCore.addElementChangedListener(this);
     }
 
@@ -102,9 +102,9 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         this.editCommandListener.revokeRegistrations();
         JavaCore.removeElementChangedListener(this);
     }
-    
+
     private static ConcreteChangeClassifier[] getPostReconcileClassifiers() {
-        List<ConcreteChangeClassifier> classifiers = new ArrayList<ConcreteChangeClassifier>(Arrays.asList(
+        final List<ConcreteChangeClassifier> classifiers = new ArrayList<ConcreteChangeClassifier>(Arrays.asList(
                 new AddFieldClassifier(), new RemoveFieldClassifier(), new RenameFieldClassifier(),
                 new ChangeFieldTypeClassifier(), new ChangeFieldModifiersClassifier(), new RenameMethodClassifier(),
                 new AddMethodClassifier(), new RemoveMethodClassifier(), new ChangeMethodParameterClassifier(),
@@ -112,18 +112,18 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
                 new CreateTypeClassifier(), new RemoveTypeClassifier(), new RenameTypeClassifier(),
                 new ChangeTypeModifiersClassifier(), new ChangePackageDeclarationClassifier(),
                 new AddImportClassifier(), new RemoveImportClassifier(), new ChangeSupertypeClassifier(),
-                new ChangeMethodAnnotationClassifier(), new JavaDocClassifier()));
-        classifiers
-                .addAll(getRegisteredClassifiers("edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile"));
+                new ChangeAnnotationClassifier(), new JavaDocClassifier()));
+        classifiers.addAll(getRegisteredClassifiers(
+                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile"));
         return classifiers.toArray(new ConcreteChangeClassifier[0]);
     }
 
     private static ConcreteChangeClassifier[] getPostChangeClassifiers() {
-        List<ConcreteChangeClassifier> classifiers = new ArrayList<ConcreteChangeClassifier>(Arrays.asList(
-                new RemoveCompilationUnitClassifier(), new RenamePackageClassifier(), new CreatePackageClassifier(),
-                new DeletePackageClassifier()));
-        classifiers
-                .addAll(getRegisteredClassifiers("edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postchange"));
+        final List<ConcreteChangeClassifier> classifiers = new ArrayList<ConcreteChangeClassifier>(
+                Arrays.asList(new RemoveCompilationUnitClassifier(), new RenamePackageClassifier(),
+                        new CreatePackageClassifier(), new DeletePackageClassifier()));
+        classifiers.addAll(getRegisteredClassifiers(
+                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postchange"));
         return classifiers.toArray(new ConcreteChangeClassifier[0]);
     }
 
@@ -132,40 +132,44 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
     }
 
     @Override
-    public void elementChanged(ElementChangedEvent event) {
-        if (!this.listening)
+    public void elementChanged(final ElementChangedEvent event) {
+        if (!this.listening) {
             return; // ignore event if not listening
+        }
 
-        IJavaElementDelta delta = event.getDelta();
-        if (!isMonitoredProject(delta))
+        final IJavaElementDelta delta = event.getDelta();
+        if (!this.isMonitoredProject(delta)) {
             return; // ignore events in unmonitored projects
+        }
 
         LOG.debug(delta.toString());
         this.lastChangeTime = System.nanoTime();
         event.getSource();
 
         List<ChangeClassifyingEvent> events = null;
-        CompilationUnit currentCompilationUnit = CompilationUnitUtil.parseCompilationUnit(delta);
+        final CompilationUnit currentCompilationUnit = CompilationUnitUtil.parseCompilationUnit(delta);
         if (event.getType() == ElementChangedEvent.POST_CHANGE) {
-            events = classifyPostChange(delta, currentCompilationUnit);
+            events = this.classifyPostChange(delta, currentCompilationUnit);
         } else if (event.getType() == ElementChangedEvent.POST_RECONCILE) {
-            events = classifyPostReconcile(delta, currentCompilationUnit);
+            events = this.classifyPostReconcile(delta, currentCompilationUnit);
         }
 
         if (!events.isEmpty()) {
 
             LOG.trace("+++Classified changes:+++");
-            for (ChangeClassifyingEvent e : events)
+            for (final ChangeClassifyingEvent e : events) {
                 LOG.trace(e.toString());
+            }
         }
 
-        List<ChangeClassifyingEvent> filteredEvents = HigherOperationEventsFilter.filter(events,
+        final List<ChangeClassifyingEvent> filteredEvents = HigherOperationEventsFilter.filter(events,
                 this.withholdChangeHistory);
         if (!filteredEvents.isEmpty()) {
             LOG.trace("+++Filtered classified changes:+++");
-            for (ChangeClassifyingEvent e : filteredEvents) {
-                if (this.withholding)
+            for (final ChangeClassifyingEvent e : filteredEvents) {
+                if (this.withholding) {
                     LOG.trace("[WITHHOLD] ");
+                }
                 LOG.trace(e.toString());
             }
         }
@@ -173,7 +177,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         this.previousState.update(currentCompilationUnit);
         if (this.listening) {
             if (!this.withholding) {
-                notifyAll(filteredEvents);
+                this.notifyAll(filteredEvents);
             } else if (this.withholding) {
                 this.withholdChangeHistory.update(filteredEvents);
                 this.withholding = false;
@@ -181,58 +185,61 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         }
     }
 
-    private boolean isMonitoredProject(IJavaElementDelta delta) {
-        IJavaElement element = delta.getElement();
-        if (element == null)
+    private boolean isMonitoredProject(final IJavaElementDelta delta) {
+        final IJavaElement element = delta.getElement();
+        if (element == null) {
             return false;
+        }
         IJavaProject project = element.getJavaProject();
-        if (project == null && delta.getAffectedChildren().length == 0)
+        if (project == null && delta.getAffectedChildren().length == 0) {
             return false;
-        if (project == null)
+        }
+        if (project == null) {
             project = delta.getAffectedChildren()[0].getElement().getJavaProject();
+        }
         return this.monitoredProjectNames.contains(project.getElementName());
     }
 
-    private List<ChangeClassifyingEvent> classifyPostReconcile(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit) {
-        return classifyChange(delta, this.postReconcileClassifiers, currentCompilationUnit);
+    private List<ChangeClassifyingEvent> classifyPostReconcile(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit) {
+        return this.classifyChange(delta, this.postReconcileClassifiers, currentCompilationUnit);
     }
 
-    private List<ChangeClassifyingEvent> classifyPostChange(IJavaElementDelta delta,
-            CompilationUnit currentCompilationUnit) {
-        return classifyChange(delta, this.postChangeClassifiers, currentCompilationUnit);
+    private List<ChangeClassifyingEvent> classifyPostChange(final IJavaElementDelta delta,
+            final CompilationUnit currentCompilationUnit) {
+        return this.classifyChange(delta, this.postChangeClassifiers, currentCompilationUnit);
     }
 
-    private List<ChangeClassifyingEvent> classifyChange(IJavaElementDelta delta,
-            ConcreteChangeClassifier[] classifiers, CompilationUnit currentCompilationUnit) {
-        List<ChangeClassifyingEvent> events = new ArrayList<ChangeClassifyingEvent>();
-        for (ConcreteChangeClassifier classifier : classifiers) {
+    private List<ChangeClassifyingEvent> classifyChange(final IJavaElementDelta delta,
+            final ConcreteChangeClassifier[] classifiers, final CompilationUnit currentCompilationUnit) {
+        final List<ChangeClassifyingEvent> events = new ArrayList<ChangeClassifyingEvent>();
+        for (final ConcreteChangeClassifier classifier : classifiers) {
             events.addAll(classifier.match(delta, currentCompilationUnit, this.previousState));
         }
         return events;
     }
 
-    private void notifyAll(List<ChangeClassifyingEvent> events) {
-        for (ChangeClassifyingEvent event : events) {
-            notifyAll(event);
+    private void notifyAll(final List<ChangeClassifyingEvent> events) {
+        for (final ChangeClassifyingEvent event : events) {
+            this.notifyAll(event);
         }
     }
 
-    private void notifyAll(ChangeClassifyingEvent event) {
-        for (ChangeOperationListener listener : this.listeners) {
+    private void notifyAll(final ChangeClassifyingEvent event) {
+        for (final ChangeOperationListener listener : this.listeners) {
             listener.update(event);
         }
     }
 
-    public void addListener(ChangeOperationListener listener) {
+    public void addListener(final ChangeOperationListener listener) {
         this.listeners.add(listener);
     }
 
-    public void removeListener(ChangeOperationListener listener) {
+    public void removeListener(final ChangeOperationListener listener) {
         this.listeners.remove(listener);
     }
 
-    protected void withholdEventsOnce(boolean b) {
+    protected void withholdEventsOnce(final boolean b) {
         this.withholding = b;
     }
 
@@ -240,7 +247,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
         return this.previousState;
     }
 
-    private static List<ConcreteChangeClassifier> getRegisteredClassifiers(String extensionPointName) {
+    private static List<ConcreteChangeClassifier> getRegisteredClassifiers(final String extensionPointName) {
         return EclipseBridge.getRegisteredExtensions(extensionPointName, VitruviusConstants.getExtensionPropertyName(),
                 ConcreteChangeClassifier.class);
     }
