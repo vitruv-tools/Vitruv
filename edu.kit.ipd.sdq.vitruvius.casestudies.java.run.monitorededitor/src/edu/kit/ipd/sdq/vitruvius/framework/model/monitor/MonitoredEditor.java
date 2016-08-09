@@ -14,11 +14,11 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IStartup;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -109,14 +109,8 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this(new ChangeSynchronizing() {
 
             @Override
-            public List<List<Change>> synchronizeChanges(final List<Change> changes) {
+            public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange changes) {
                 return null;
-            }
-
-            @Override
-            public void synchronizeChange(final Change change) {
-                // TODO Auto-generated method stub
-
             }
 
         }, null, MY_MONITORED_PROJECT);
@@ -131,7 +125,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
     protected void startCollectInCompositeChange() {
         this.log.debug("Start collecting Changes in CompositeChange stash");
-        this.changeStash = new CompositeChange(new Change[] {});
+        this.changeStash = VitruviusChangeFactory.getInstance().createCompositeChange();
         this.refactoringInProgress = true;
     }
 
@@ -189,7 +183,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
     }
 
     @Override
-    public void submitChange(final Change change) {
+    public void submitChange(final VitruviusChange change) {
 
         // basic time measurement for thesis evaluation
         final long million = 1000 * 1000;
@@ -212,7 +206,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.synchronizeChangeOrAddToCompositeChange(change);
     }
 
-    private void synchronizeChangeOrAddToCompositeChange(final Change change) {
+    private void synchronizeChangeOrAddToCompositeChange(final VitruviusChange change) {
         if (this.changeStash == null) {
             this.triggerChange(change);
         }
@@ -254,7 +248,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.astListener.stopListening();
     }
 
-    protected void triggerChange(final Change change) {
+    protected void triggerChange(final VitruviusChange change) {
         if (!this.reportChanges) {
             this.log.trace("Do not report change : " + change + " because report changes is set to false.");
             return;
