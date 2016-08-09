@@ -2,13 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl
 
 import java.util.List
 import java.util.LinkedList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GenericCompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
-class GenericCompositeChangeImpl<C extends Change> implements GenericCompositeChange<C> {
+class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
     List<C> changes;
 
     new() {

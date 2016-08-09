@@ -18,7 +18,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
@@ -50,10 +50,10 @@ public class VitruviusEMFEditorMonitorImplTestPlugin {
         repo.setEntityName("TestNewName");
         final List<EMFModelChange> recordedChanges = changeRecorder.endRecording();
         ChangePreparing changePreparer = new ChangePreparingImpl(null);
-        for (Change change : recordedChanges) {
+        for (VitruviusChange change : recordedChanges) {
         	change.prepare(changePreparer);
         }
-        for (final Change change : recordedChanges) {
+        for (final VitruviusChange change : recordedChanges) {
             logger.warn(change);
         }
         assertTrue("No changes detected ", 0 < recordedChanges.size());

@@ -9,16 +9,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.CompositeChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.GeneralChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
-class ChangeFactory {
-	private static ChangeFactory instance;
+class VitruviusChangeFactory {
+	private static VitruviusChangeFactory instance;
 	
 	private new() {}
 	
-	public static def ChangeFactory getInstance() {
+	public static def VitruviusChangeFactory getInstance() {
 		if (instance == null) {
-			instance = new ChangeFactory();
+			instance = new VitruviusChangeFactory();
 		}
 		return instance;
 	}
@@ -39,7 +39,7 @@ class ChangeFactory {
 		return new CompositeChangeImpl();
 	}
 	
-	public def CompositeChange createCompositeChange(Iterable<? extends Change> innerChanges) {
+	public def CompositeChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		val compositeChange = new CompositeChangeImpl();
 		for (innerChange : innerChanges) {
 			compositeChange.addChange(innerChange);

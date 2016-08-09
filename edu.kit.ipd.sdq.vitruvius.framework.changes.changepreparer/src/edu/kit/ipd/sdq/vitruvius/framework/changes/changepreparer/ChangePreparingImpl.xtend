@@ -10,11 +10,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRoot
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 class ChangePreparingImpl implements ChangePreparing {
 	private static Logger logger = Logger.getLogger(ChangePreparingImpl);
@@ -24,11 +24,11 @@ class ChangePreparingImpl implements ChangePreparing {
 		this.modelProviding = modelProviding;
 	}
 	
-	override List<EChange> prepareChange(Change unpreparedChange) {
+	override List<EChange> prepareChange(VitruviusChange unpreparedChange) {
 		prepareTypedChange(unpreparedChange);
 	}
 	
-	private def dispatch List<EChange> prepareTypedChange(Change unpreparedChange) {
+	private def dispatch List<EChange> prepareTypedChange(VitruviusChange unpreparedChange) {
 		throw new UnsupportedOperationException("Changes of type " + unpreparedChange.class + " cannot be handled.")
 	}
 	
