@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -198,7 +198,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                 // List<Change> transformedChanges = new ArrayList<Change>(
                 // new ChangeDescription2ChangeTransformation(changeDescriptions,
                 // true).getChanges());
-                triggerSynchronization(new ArrayList<Change>(changeDescriptions), editorPart.getEditedModelResource());
+                triggerSynchronization(new ArrayList<VitruviusChange>(changeDescriptions), editorPart.getEditedModelResource());
             }
         };
 
@@ -252,7 +252,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     // return converter.getChanges();
     // }
 
-    private void triggerSynchronization(List<Change> changes, Resource resource) {
+    private void triggerSynchronization(List<VitruviusChange> changes, Resource resource) {
         if (changes.isEmpty()) {
             LOGGER.debug("Not triggering synchronization for " + resource.getURI() + ": No changes detected.");
         } else {

@@ -15,7 +15,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
@@ -24,9 +24,9 @@ public final class ChangeAssert {
     private ChangeAssert() {
     }
 
-    public static void printChangeList(Collection<Change> changes) {
+    public static void printChangeList(Collection<VitruviusChange> changes) {
         System.err.println("Change-list related assertion failure, got change list:");
-        for (Change c : changes) {
+        for (VitruviusChange c : changes) {
             EChange change = c.getEChanges().get(0);
             System.err.println("\t" + change);
             if (change instanceof FeatureEChange<?, ?>) {
@@ -37,11 +37,11 @@ public final class ChangeAssert {
         }
     }
 
-    public static void assertContainsSingleValuedAttributeChange(Collection<Change> changes, EStructuralFeature feature,
+    public static void assertContainsSingleValuedAttributeChange(Collection<VitruviusChange> changes, EStructuralFeature feature,
             Object newValue) {
         assert feature != null;
 
-        for (Change c : changes) {
+        for (VitruviusChange c : changes) {
             EChange innerChange = c.getEChanges().get(0);
             if (innerChange instanceof ReplaceSingleValuedEAttribute<?, ?>) {
                 ReplaceSingleValuedEAttribute<?, ?> attrChange = (ReplaceSingleValuedEAttribute<?, ?>) innerChange;

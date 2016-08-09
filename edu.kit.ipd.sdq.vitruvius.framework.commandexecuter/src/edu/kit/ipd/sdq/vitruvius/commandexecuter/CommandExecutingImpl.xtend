@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.commandexecuter
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -24,11 +23,12 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
 
-	override List<Change> executeCommands(Blackboard blackboard) {
+	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
 		val ModelProviding modelProviding = blackboard.getModelProviding()
 		val TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain()
 		val ArrayList<Object> affectedObjects = new ArrayList()
@@ -55,7 +55,7 @@ class CommandExecutingImpl implements CommandExecuting {
 	 * undo all commands on the blackboard
 	 */
 	override void rollbackCommands(Blackboard blackboard) {
-		val Pair<List<Change>, List<Command>> commandAndChangePairs = blackboard.getArchivedChangesAndCommandsForUndo()
+		val Pair<List<VitruviusChange>, List<Command>> commandAndChangePairs = blackboard.getArchivedChangesAndCommandsForUndo()
 		val ArrayList<Object> affectedObjects = new ArrayList()
 		for (Command command : commandAndChangePairs.getSecond()) {
 			command.undo()

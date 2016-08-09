@@ -4,7 +4,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import org.apache.log4j.Logger
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import org.eclipse.emf.common.command.Command
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
@@ -12,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInte
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 abstract class AbstractResponseChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseChange2CommandTransforming);
@@ -40,14 +40,14 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		val changes = blackboard.getAndArchiveChangesForTransformation();
 		val commands = new ArrayList<Command>();
 
-		for (Change change : changes) {
+		for (VitruviusChange change : changes) {
 			commands.addAll(this.processChange(change, blackboard));
 		}
 
 		blackboard.pushCommands(commands);
 	}
 
-	private def List<Command> processChange(Change change, Blackboard blackboard) {
+	private def List<Command> processChange(VitruviusChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
 		for (preprocessor : preprocessors) {
 			if (preprocessor.doesProcess(change)) {
@@ -58,13 +58,13 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		return result;
 	}
 	
-	private def dispatch List<Command> handleChange(Change change, Blackboard blackboard) {
+	private def dispatch List<Command> handleChange(VitruviusChange change, Blackboard blackboard) {
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 	
 	private def dispatch List<Command> handleChange(CompositeChange change, Blackboard blackboard) {
 		val result = new ArrayList<Command>();
-		for (Change c : change.getChanges()) {
+		for (VitruviusChange c : change.getChanges()) {
 			result.addAll(this.processChange(c, blackboard));
 		}
 		return result

@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 
 public class BasicTestCase {
@@ -36,13 +36,13 @@ public class BasicTestCase {
         }
     }
 
-    protected void transformChanges(List<Change> changes) {
+    protected void transformChanges(List<VitruviusChange> changes) {
         for (int i = changes.size() - 1; i >= 0; i--) {
             if (changes.get(i) instanceof EMFModelChange)
                 ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
         }
         ChangePreparing preparer = new ChangePreparingImpl(null);
-        for (Change change : changes) {
+        for (VitruviusChange change : changes) {
             change.prepare(preparer);
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();

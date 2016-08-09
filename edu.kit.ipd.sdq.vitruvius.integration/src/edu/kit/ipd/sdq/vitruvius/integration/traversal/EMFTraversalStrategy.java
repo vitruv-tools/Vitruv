@@ -6,7 +6,7 @@ import org.eclipse.emf.common.util.EList;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 
 /**
  * This class provides common methods for similar traversal strategies regarding PCM models.
@@ -26,7 +26,7 @@ public abstract class EMFTraversalStrategy {
      * @param list
      *            the list
      */
-    protected void addChange(final Change change, final EList<Change> list) {
+    protected void addChange(final VitruviusChange change, final EList<VitruviusChange> list) {
         list.add(change);
         String changeElement = "";
         if (change instanceof ConcreteChange) {
@@ -34,7 +34,7 @@ public abstract class EMFTraversalStrategy {
             this.logger.info("Element: '" + changeElement + "' added to change list");
         }
         if (change instanceof CompositeChange) {
-            for (final Change compChange : ((CompositeChange) change).getChanges()) {
+            for (final VitruviusChange compChange : ((CompositeChange) change).getChanges()) {
                 if (compChange instanceof EMFModelChange) {
                     changeElement = (((EMFModelChange) compChange).getEChanges().toString());
                     this.logger.info("Element: '" + changeElement + "' added to change list");

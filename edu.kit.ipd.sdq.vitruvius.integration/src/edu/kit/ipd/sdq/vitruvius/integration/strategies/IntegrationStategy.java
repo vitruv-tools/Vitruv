@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 
 /**
@@ -42,14 +42,14 @@ public abstract class IntegrationStategy {
      *            the sync
      * @return List of changes
      */
-    public List<Change> integrateModel(final IResource resource, final ChangeSynchronizing sync) {
+    public List<VitruviusChange> integrateModel(final IResource resource, final ChangeSynchronizing sync) {
         this.logger.info("Start loading Model " + resource.getName());
         model = this.loadModel(resource.getLocation().toString());
         this.logger.info("Invariant Check/Enforce for Model " + resource.getName());
         model = this.checkAndEnforceInvariants(model);
         this.logger.info("Traverse Model and create Change-Models for Vitruvius Integration/Synchronization "
                 + resource.getName());
-        final List<Change> changes = this.createChangeModels(resource, model);
+        final List<VitruviusChange> changes = this.createChangeModels(resource, model);
         this.propagateChanges(changes, sync);
         this.logger.info("Finish integration for model: " + model.toString() + "@" + model.getTimeStamp());
         return changes;
@@ -63,11 +63,11 @@ public abstract class IntegrationStategy {
      * @param sync
      *            the sync
      */
-    private void propagateChanges(final List<Change> changes, final ChangeSynchronizing sync) {
+    private void propagateChanges(final List<VitruviusChange> changes, final ChangeSynchronizing sync) {
 
         try {
-        	Change compositeChange = ChangeFactory.getInstance().createCompositeChange(changes);
-            sync.synchronizeChanges(compositeChange);
+        	VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+            sync.synchronizeChange(compositeChange);
         } catch (final Exception e) {
             e.printStackTrace();
         }
@@ -101,6 +101,6 @@ public abstract class IntegrationStategy {
      *            the valid model
      * @return the e list
      */
-    protected abstract List<Change> createChangeModels(IResource resource, Resource validModel);
+    protected abstract List<VitruviusChange> createChangeModels(IResource resource, Resource validModel);
 
 }

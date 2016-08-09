@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl
 import java.util.ArrayList
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -78,7 +78,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
 
 	
 	// TODO ML needs @Rule from VitruviusCasestudyTest?
-	def List<Change> triggerChangeDescription2Change() {
+	def List<VitruviusChange> triggerChangeDescription2Change() {
 		val changes = this.changeRecorder.endRecording()
 //      final List<Change> changes = this.changeDescrition2ChangeConverter.getChanges(cd, vuri);
 		LOGGER.trace("monitored change descriptions: " + changes)
@@ -86,7 +86,7 @@ class ChangeDescription2ChangeTest extends VSUMTest {
         LOGGER.trace("transformed changes: " + changes)
         //cd.applyAndReverse() // there and back again: side-effects of first applyAndReverse in endRec(false) are undone
         this.changeRecorder.restartRecording()
-        return new ArrayList<Change>(changes)
+        return new ArrayList<VitruviusChange>(changes)
 	}
 	
 //	def private void beginRecording() {

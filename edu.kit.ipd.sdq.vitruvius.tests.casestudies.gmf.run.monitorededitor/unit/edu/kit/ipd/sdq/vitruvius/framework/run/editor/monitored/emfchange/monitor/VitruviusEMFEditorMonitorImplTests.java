@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -105,7 +105,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
 
         transformChanges(cs.getLastChanges());
-        for (Change change : cs.getLastChanges()) {
+        for (VitruviusChange change : cs.getLastChanges()) {
             assert change.getURI() == VURI.getInstance(Files.EXAMPLEMODEL_ECORE.getFile());
         }
     }
@@ -200,7 +200,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
-        List<Change> changes = new ArrayList<Change>(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
+        List<VitruviusChange> changes = new ArrayList<VitruviusChange>(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
         // System.err.println(root);
         //
         // ChangeAssert.printChangeList(changes);

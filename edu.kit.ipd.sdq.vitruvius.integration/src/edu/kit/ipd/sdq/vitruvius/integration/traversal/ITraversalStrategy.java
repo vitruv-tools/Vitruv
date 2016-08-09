@@ -4,7 +4,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 
  
 /**
@@ -30,6 +30,6 @@ public interface ITraversalStrategy<T extends EObject> {
      * @throws UnsupportedOperationException
      *             : existingChanges not as expected
      */
-    EList<Change> traverse(T entity, URI vuri, EList<Change> existingChanges) throws UnsupportedOperationException;
+    EList<VitruviusChange> traverse(T entity, URI vuri, EList<VitruviusChange> existingChanges) throws UnsupportedOperationException;
 
 }

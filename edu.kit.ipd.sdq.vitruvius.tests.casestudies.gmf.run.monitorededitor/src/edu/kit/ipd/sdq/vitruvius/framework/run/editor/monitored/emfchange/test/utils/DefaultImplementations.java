@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
@@ -29,14 +29,14 @@ public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
 
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
+        public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
         }
 
     };
 
     public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
         @Override
-        public List<List<Change>> synchronizeChanges(Change change) {
+        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
             return null;
         }
     };
@@ -66,11 +66,11 @@ public class DefaultImplementations {
 
     public static class TestChangeSynchronizing implements ResourceChangeSynchronizing, ChangeSynchronizing {
         private VURI lastVURI = null;
-        private List<Change> lastChanges = null;
+        private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
 
         @Override
-        public void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource res) {
+        public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
             this.lastChanges = new ArrayList<>();
             if (changes != null) {
                 this.lastChanges.addAll(changes);
@@ -87,7 +87,7 @@ public class DefaultImplementations {
             return executionCount;
         }
 
-        public List<Change> getLastChanges() {
+        public List<VitruviusChange> getLastChanges() {
             return lastChanges;
         }
 
@@ -100,7 +100,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public List<List<Change>> synchronizeChanges(Change changes) {
+        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange changes) {
             synchronizeChanges(Collections.singletonList(changes), null, null);
             return null;
         }

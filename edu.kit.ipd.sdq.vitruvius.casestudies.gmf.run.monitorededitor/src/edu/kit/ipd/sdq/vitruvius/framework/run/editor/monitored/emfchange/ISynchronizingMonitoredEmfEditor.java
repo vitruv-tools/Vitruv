@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 /**
@@ -112,12 +112,12 @@ public interface ISynchronizingMonitoredEmfEditor {
          * Synchronizes the changes in the given EMF model.
          * 
          * @param changes
-         *            A list {@link Change} objects pertaining to the modified model.
+         *            A list {@link VitruviusChange} objects pertaining to the modified model.
          * @param sourceModelURI
          *            The modified model's {@link VURI}.
          * @param changesOrigin
          *            The modified model's {@link Resource}.
          */
-        void synchronizeChanges(List<Change> changes, VURI sourceModelURI, Resource changesOrigin);
+        void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource changesOrigin);
     }
 }
