@@ -18,5 +18,5 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
- edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration
