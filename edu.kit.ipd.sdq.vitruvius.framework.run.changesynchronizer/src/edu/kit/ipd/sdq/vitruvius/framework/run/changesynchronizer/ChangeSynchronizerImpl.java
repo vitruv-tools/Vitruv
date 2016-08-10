@@ -17,13 +17,14 @@ import org.eclipse.emf.ecore.change.FeatureChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GenericCompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
@@ -35,6 +36,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
@@ -155,6 +158,16 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                     for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
                         tuidMap.put(featureChange.getReferenceValue(),
                                 correspondenceInstance.calculateTUIDFromEObject(featureChange.getReferenceValue()));
+                    }
+                }
+            }
+        } else if (recordedChange instanceof GeneralChange) {
+            for (EChange eChange : recordedChange.getEChanges()) {
+                if (eChange instanceof JavaFeatureEChange<?, ?>) {
+                    if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
+                        tuidMap.put(((JavaFeatureEChange<?, ?>) eChange).getAffectedEObject(),
+                                correspondenceInstance.calculateTUIDFromEObject(
+                                        (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject())));
                     }
                 }
             }

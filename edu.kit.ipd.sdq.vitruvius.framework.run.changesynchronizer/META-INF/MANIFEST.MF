@@ -14,6 +14,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.core.jobs,
  org.eclipse.equinox.registry,
- edu.kit.ipd.sdq.vitruvius.framework.changes
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer
 Import-Package: org.eclipse.emf.ecore.change
