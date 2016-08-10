@@ -33,6 +33,16 @@ effect:
 		}
 	}
 
+response: AddMethodParameterTUIDInInterfaceMethod
+trigger: insert in list java.InterfaceMethod[parameters]
+effect:
+	execute:{
+		if(correspondenceInstance.hasCorrespondences(Collections.singletonList(change.oldAffectedEObject))){
+			correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)
+			callCreateParameterInInterfaceMethod(change.newAffectedEObject, change.newValue)			
+		}
+	}
+
 /*response: RemoveMethodParameterTUID
 trigger: remove from list java.Method[parameters]
 effect:
@@ -222,15 +232,16 @@ effect:
 
 // #######################################################################
 // ################ create Parameter for  parameter################		
-response: CreateParameterInInterfaceMethod
-trigger: insert in list java.InterfaceMethod[parameters]
+routine: CreateParameterInInterfaceMethod
+//trigger: insert in list java.InterfaceMethod[parameters]
+input: EObject as affectedEObject, java.Parameter as newParameter
 match:
-	retrieve required element: pcm.OperationSignature as opSignature corresponding to change.oldAffectedEObject
+	retrieve required element: pcm.OperationSignature as opSignature corresponding to affectedEObject
 effect:
 	execute: {
-		callCreatePCMParameter(change.newValue, opSignature)
+		callCreatePCMParameter(newParameter, opSignature)
 		//update TUID of affected object
-		correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)
+		//correspondenceInstance.updateTUID(change.oldAffectedEObject, change.newAffectedEObject)
 	}
 	
 routine: CreatePCMParameter
