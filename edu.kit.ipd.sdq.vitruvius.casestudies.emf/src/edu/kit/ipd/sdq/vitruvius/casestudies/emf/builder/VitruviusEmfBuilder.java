@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -261,8 +261,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final String fileExtension = iResource.getFileExtension();
         if (this.monitoredFileTypes.contains(fileExtension)) {
             final VURI vuri = VURI.getInstance(iResource);
-            final FileChange fileChange = ChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
-            this.changeSynchronizing.synchronizeChanges(fileChange);
+            final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+            this.changeSynchronizing.synchronizeChange(fileChange);
         }
     }
 
