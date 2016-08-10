@@ -12,7 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
@@ -108,8 +108,8 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
     protected void triggerSynchronization(final VURI vuri) {
         final List<EMFModelChange> changes = this.changeRecorder.endRecording();
-        CompositeChange compositeChange = ChangeFactory.getInstance().createCompositeChange(changes);
-        this.changeSynchronizer.synchronizeChanges(compositeChange);
+        CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+        this.changeSynchronizer.synchronizeChange(compositeChange);
         this.changeRecorder.beginRecording(vuri, Collections.emptyList());
     }
 
@@ -119,8 +119,8 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-        final FileChange fileChange = ChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
-        this.changeSynchronizer.synchronizeChanges(fileChange);
+        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+        this.changeSynchronizer.synchronizeChange(fileChange);
     }
 
     @Override

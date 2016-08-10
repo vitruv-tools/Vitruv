@@ -63,11 +63,11 @@ public interface Blackboard {
 
     CorrespondenceProviding getCorrespondenceProviding();
 
-    void pushChanges(List<Change> changes);
+    void pushChanges(List<VitruviusChange> changes);
 
-    List<Change> popChangesForPreparation();
+    List<VitruviusChange> popChangesForPreparation();
 
-    List<Change> getAndArchiveChangesForTransformation();
+    List<VitruviusChange> getAndArchiveChangesForTransformation();
 
     void pushCommands(List<Command> commands);
 
@@ -77,7 +77,7 @@ public interface Blackboard {
 
     CheckResult getCheckResult();
 
-    Pair<List<Change>, List<Command>> getArchivedChangesAndCommandsForUndo();
+    Pair<List<VitruviusChange>, List<Command>> getArchivedChangesAndCommandsForUndo();
 
     void unarchiveChangesAndCommandsForRedo();
 

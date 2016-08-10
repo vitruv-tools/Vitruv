@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
  * 
  * @author Heiko Klare
  */
-interface Change extends URIHaving {
+interface VitruviusChange extends URIHaving {
 	/** 
 	 * Returns whether the change contains any concrete change or consists only of composite ones.
 	 */

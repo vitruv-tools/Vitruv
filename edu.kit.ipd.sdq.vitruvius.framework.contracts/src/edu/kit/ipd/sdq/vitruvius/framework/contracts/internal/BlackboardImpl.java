@@ -8,7 +8,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
@@ -21,9 +21,9 @@ public class BlackboardImpl implements Blackboard {
     private BlackboardState state;
     private final CorrespondenceInstanceDecorator correspondenceInstance;
     private final ModelProviding modelProviding;
-    private List<Change> changes;
+    private List<VitruviusChange> changes;
     private List<Command> commands;
-    private List<Change> archivedChanges;
+    private List<VitruviusChange> archivedChanges;
     private List<Command> archivedCommands;
     private CheckResult checkResult;
     private CorrespondenceProviding correspondenceProviding;
@@ -59,13 +59,13 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public void pushChanges(final List<Change> changes) {
+    public void pushChanges(final List<VitruviusChange> changes) {
         checkTransitionFromTo(BlackboardState.WAITING4CHANGES, BlackboardState.WAITING4TRANSFORMATION, "push changes");
         this.changes = changes;
     }
 
     @Override
-    public List<Change> popChangesForPreparation() {
+    public List<VitruviusChange> popChangesForPreparation() {
         checkTransitionFromTo(BlackboardState.WAITING4TRANSFORMATION, BlackboardState.WAITING4CHANGES,
                 "pop changes for preparation");
         // no need to set changes to null as transition checking ensures setting before getting
@@ -73,7 +73,7 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public List<Change> getAndArchiveChangesForTransformation() {
+    public List<VitruviusChange> getAndArchiveChangesForTransformation() {
         checkTransitionFromTo(BlackboardState.WAITING4TRANSFORMATION, BlackboardState.WAITING4COMMANDS,
                 "get changes for transformation");
         this.archivedChanges = this.changes;
@@ -108,12 +108,12 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public Pair<List<Change>, List<Command>> getArchivedChangesAndCommandsForUndo() {
+    public Pair<List<VitruviusChange>, List<Command>> getArchivedChangesAndCommandsForUndo() {
         checkTransitionFromTo(BlackboardState.WAITING4UNDO, BlackboardState.WAITING4REDO,
                 "get archived changes and commands for undo");
         // no need to clear check result and archives as transition checking ensures setting before
         // getting
-        return new Pair<List<Change>, List<Command>>(this.archivedChanges, this.archivedCommands);
+        return new Pair<List<VitruviusChange>, List<Command>>(this.archivedChanges, this.archivedCommands);
     }
 
     @Override
