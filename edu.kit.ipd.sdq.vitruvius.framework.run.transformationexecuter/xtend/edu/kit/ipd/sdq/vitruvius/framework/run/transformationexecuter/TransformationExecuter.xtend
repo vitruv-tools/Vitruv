@@ -19,6 +19,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.c
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaInsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaRemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
 
 public class TransformationExecuter {
 
@@ -93,7 +99,12 @@ public class TransformationExecuter {
 //			replaceRoot(replaceRootEObject.oldValue, replaceRootEObject.newValue, removedEObjects, createdObjects)
 //	}
 
-	def private dispatch TransformationResult executeTransformation(JavaInsertEReference<?,?> insertEReference) {
+	def private dispatch TransformationResult executeTransformation(InsertEReference<?,?> insertEReference) {
+		val oldAffectedEObject = if (insertEReference instanceof JavaInsertEReference<?,?>) {
+			insertEReference.oldAffectedEObject
+		} else {
+			insertEReference.affectedEObject;
+		}
 		if (insertEReference.isContainment) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(insertEReference.newValue.class)
 
@@ -102,36 +113,41 @@ public class TransformationExecuter {
 			createEObject(insertEReference.newValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			insertEReference.affectedEObject.class).createNonRootEObjectInList(
-			insertEReference.affectedEObject, insertEReference.oldAffectedEObject,
+			insertEReference.affectedEObject, oldAffectedEObject,
 			insertEReference.affectedFeature, insertEReference.newValue,
 			insertEReference.index, createdEObjects)
 		} else {
 			mappingTransformations.claimForMappedClassOrImplementingInterface(
-			insertEReference.oldAffectedEObject.class).
-			insertNonContaimentEReference(insertEReference.oldAffectedEObject,
+			insertEReference.class).
+			insertNonContaimentEReference(oldAffectedEObject,
 				insertEReference.affectedFeature, insertEReference.newValue,
 				insertEReference.index)
 		}
 	}
 
-	def private dispatch TransformationResult executeTransformation(JavaRemoveEReference<?,?> removeEReference) {
+	def private dispatch TransformationResult executeTransformation(RemoveEReference<?,?> removeEReference) {
+		val oldAffectedEObject = if (removeEReference instanceof JavaRemoveEReference<?,?>) {
+			removeEReference.oldAffectedEObject
+		} else {
+			removeEReference.affectedEObject;
+		}
 		if (removeEReference.isContainment) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(removeEReference.oldValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			removeEReference.oldAffectedEObject.class)
+			oldAffectedEObject.class)
 
 		val EObject[] eObjectsToDelete = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(removeEReference.oldValue.class).
 			removeEObject(removeEReference.oldValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			removeEReference.oldAffectedEObject.class).deleteNonRootEObjectInList(
-			removeEReference.affectedEObject, removeEReference.oldAffectedEObject,
+			oldAffectedEObject.class).deleteNonRootEObjectInList(
+			removeEReference.affectedEObject, oldAffectedEObject,
 			removeEReference.affectedFeature, removeEReference.oldValue,
 			removeEReference.index, eObjectsToDelete)
 		} else {
 			mappingTransformations.claimForMappedClassOrImplementingInterface(
-			removeEReference.oldAffectedEObject.class).
-			removeNonContainmentEReference(removeEReference.oldAffectedEObject,
+			oldAffectedEObject.class).
+			removeNonContainmentEReference(oldAffectedEObject,
 				removeEReference.affectedFeature, removeEReference.oldValue,
 				removeEReference.index)
 		}
@@ -157,46 +173,51 @@ public class TransformationExecuter {
 //			replaceNonRootEObjectInList.index, eObjectsToDelete, createdEObjects)
 //	}
 
-	def private dispatch TransformationResult executeTransformation(JavaReplaceSingleValuedEReference<?,?> replaceSingleValuedEReference) {
+	def private dispatch TransformationResult executeTransformation(ReplaceSingleValuedEReference<?,?> replaceSingleValuedEReference) {
+		val oldAffectedEObject = if (replaceSingleValuedEReference instanceof JavaReplaceSingleValuedEReference<?,?>) {
+			replaceSingleValuedEReference.oldAffectedEObject
+		} else {
+			replaceSingleValuedEReference.affectedEObject;
+		}
 		if (replaceSingleValuedEReference.isContainment) {
 		if (replaceSingleValuedEReference.oldValue == null && replaceSingleValuedEReference.newValue != null) {
 		mappingTransformations.claimForMappedClassOrImplementingInterface(replaceSingleValuedEReference.newValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class)
+			oldAffectedEObject.class)
 
 		val EObject[] createdEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceSingleValuedEReference.newValue.class).
 			createEObject(replaceSingleValuedEReference.newValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
 			replaceSingleValuedEReference.affectedEObject.class).createNonRootEObjectSingle(
-			replaceSingleValuedEReference.oldAffectedEObject, replaceSingleValuedEReference.affectedFeature,
+			oldAffectedEObject, replaceSingleValuedEReference.affectedFeature,
 			replaceSingleValuedEReference.newValue, createdEObjects)
 		} else if (replaceSingleValuedEReference.oldValue != null && replaceSingleValuedEReference.newValue == null) {
 			mappingTransformations.claimForMappedClassOrImplementingInterface(replaceSingleValuedEReference.oldValue.class)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class)
+			oldAffectedEObject.class)
 
 		val EObject[] eObjectsToDelete = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(replaceSingleValuedEReference.oldValue.class).
 			removeEObject(replaceSingleValuedEReference.oldValue)
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class).deleteNonRootEObjectSingle(
-			replaceSingleValuedEReference.oldAffectedEObject, replaceSingleValuedEReference.affectedFeature,
+			oldAffectedEObject.class).deleteNonRootEObjectSingle(
+			oldAffectedEObject, replaceSingleValuedEReference.affectedFeature,
 			replaceSingleValuedEReference.oldValue, eObjectsToDelete)
 		} else {
 			mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class)
+			oldAffectedEObject.class)
 
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class).replaceNonRootEObjectSingle(
-			replaceSingleValuedEReference.affectedEObject, replaceSingleValuedEReference.oldAffectedEObject,
+			oldAffectedEObject.class).replaceNonRootEObjectSingle(
+			replaceSingleValuedEReference.affectedEObject, oldAffectedEObject,
 			replaceSingleValuedEReference.affectedFeature, replaceSingleValuedEReference.oldValue,
 			replaceSingleValuedEReference.newValue)
 		}
 		} else {
 			mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEReference.oldAffectedEObject.class).
-			updateSingleValuedNonContainmentEReference(replaceSingleValuedEReference.oldAffectedEObject,
+			oldAffectedEObject.class).
+			updateSingleValuedNonContainmentEReference(oldAffectedEObject,
 				replaceSingleValuedEReference.affectedFeature,
 				replaceSingleValuedEReference.oldValue, replaceSingleValuedEReference.newValue)
 		}
@@ -230,22 +251,37 @@ public class TransformationExecuter {
 //	}
 
 	def private dispatch TransformationResult executeTransformation(
-		JavaReplaceSingleValuedEAttribute<?,?> replaceSingleValuedEAttribute) {
+		ReplaceSingleValuedEAttribute<?,?> replaceSingleValuedEAttribute) {
+		val oldAffectedEObject = if (replaceSingleValuedEAttribute instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
+			replaceSingleValuedEAttribute.oldAffectedEObject
+		} else {
+			replaceSingleValuedEAttribute.affectedEObject;
+		}
 		mappingTransformations.claimForMappedClassOrImplementingInterface(
-			replaceSingleValuedEAttribute.oldAffectedEObject.class).updateSingleValuedEAttribute(
-			replaceSingleValuedEAttribute.oldAffectedEObject, replaceSingleValuedEAttribute.affectedFeature,
+			oldAffectedEObject.class).updateSingleValuedEAttribute(
+			oldAffectedEObject, replaceSingleValuedEAttribute.affectedFeature,
 			replaceSingleValuedEAttribute.oldValue, replaceSingleValuedEAttribute.newValue)
 	}
 
-	def private dispatch TransformationResult executeTransformation(JavaInsertEAttributeValue<?,?> insertEAttributeValue) {
-		mappingTransformations.claimForMappedClassOrImplementingInterface(insertEAttributeValue.oldAffectedEObject.class).
-			insertEAttributeValue(insertEAttributeValue.oldAffectedEObject, insertEAttributeValue.affectedFeature,
+	def private dispatch TransformationResult executeTransformation(InsertEAttributeValue<?,?> insertEAttributeValue) {
+		val oldAffectedEObject = if (insertEAttributeValue instanceof JavaInsertEAttributeValue<?,?>) {
+			insertEAttributeValue.oldAffectedEObject
+		} else {
+			insertEAttributeValue.affectedEObject;
+		}
+		mappingTransformations.claimForMappedClassOrImplementingInterface(oldAffectedEObject.class).
+			insertEAttributeValue(oldAffectedEObject, insertEAttributeValue.affectedFeature,
 				insertEAttributeValue.newValue, insertEAttributeValue.index)
 	}
 
-	def private dispatch TransformationResult executeTransformation(JavaRemoveEAttributeValue<?,?> removeEAttributeValue) {
-		mappingTransformations.claimForMappedClassOrImplementingInterface(removeEAttributeValue.oldAffectedEObject.class).
-			removeEAttributeValue(removeEAttributeValue.oldAffectedEObject, removeEAttributeValue.affectedFeature,
+	def private dispatch TransformationResult executeTransformation(RemoveEAttributeValue<?,?> removeEAttributeValue) {
+		val oldAffectedEObject = if (removeEAttributeValue instanceof JavaRemoveEAttributeValue<?,?>) {
+			removeEAttributeValue.oldAffectedEObject
+		} else {
+			removeEAttributeValue.affectedEObject;
+		}
+		mappingTransformations.claimForMappedClassOrImplementingInterface(oldAffectedEObject.class).
+			removeEAttributeValue(oldAffectedEObject, removeEAttributeValue.affectedFeature,
 				removeEAttributeValue.oldValue, removeEAttributeValue.index)
 	}
 
