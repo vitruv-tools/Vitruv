@@ -165,9 +165,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             for (EChange eChange : recordedChange.getEChanges()) {
                 if (eChange instanceof JavaFeatureEChange<?, ?>) {
                     if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
-                        tuidMap.put(((JavaFeatureEChange<?, ?>) eChange).getAffectedEObject(),
-                                correspondenceInstance.calculateTUIDFromEObject(
-                                        (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject())));
+                        JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
+                        TUID tuid = correspondenceInstance
+                                .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
+                        if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
+                            tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
+                        }
                     }
                 }
             }
@@ -181,9 +184,25 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
     private void updateTUIDs(final Map<EObject, TUID> tuidMap,
             final CorrespondenceInstanceDecorator correspondenceInstance) {
-        for (EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
-            correspondenceInstance.updateTUID(tuidMap.get(object), object);
-        }
+        // TODO HK There is something wrong with transactions if we have to start a transaction to
+        // update the TUID here.
+        // Possibilities:
+        // 1. There should not be an active transaction when this method is called
+        // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
+        // resources
+        // TODO HK Reactivate update
+        // for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
+        // final TUID newTUID = correspondenceInstance.calculateTUIDFromEObject(object);
+        // if (newTUID != null) {
+        // EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        // @Override
+        // public Void call() throws Exception {
+        // correspondenceInstance.updateTUID(tuidMap.get(object), newTUID);
+        // return null;
+        // }
+        // }, this.modelProviding);
+        // }
+        // }
     }
 
     private void rollbackChange(final VitruviusChange change) {
