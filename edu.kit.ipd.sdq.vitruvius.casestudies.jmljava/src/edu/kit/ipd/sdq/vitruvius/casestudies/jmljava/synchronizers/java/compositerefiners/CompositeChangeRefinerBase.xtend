@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.contain
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 
 abstract class CompositeChangeRefinerBase implements CompositeChangeRefiner {
 	

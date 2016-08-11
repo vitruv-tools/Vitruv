@@ -2,16 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composi
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom.JavaMethodBodyChangedTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.UpdateContainmentEReference
 import java.util.ArrayList
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementsPackage
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 import org.emftext.language.java.members.Method
 
 class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
