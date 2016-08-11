@@ -40,7 +40,6 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 	}
 	
 	def match(TransactionalChange change) {
-		System.err.println("Match transaction")
 		val Iterable<JavaFeatureEChange> eChanges = change.EChanges.filter(UpdateReferenceEChange).filter[isContainment].filter(JavaFeatureEChange);
 		if (eChanges.size != change.EChanges.size) {
 			return false
@@ -78,12 +77,10 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 		if (!addChanges.forall[newValue instanceof Statement]) {
 			return false
 		}
-	System.err.println("Matched transaction")
 		return true
 	}
 
 	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
-		System.err.println("Process modification")
 		val compositeChange = change as TransactionalChange;
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
 			new Callable<TransformationResult>() {
