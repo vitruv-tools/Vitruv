@@ -62,7 +62,7 @@ public class TransformationExecuter {
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
 			val EObject newAffectedEObject = eFeatureChange.affectedEObject
 			if (null != oldAffectedEObject && null != newAffectedEObject) {
-				CorrespondenceUtils.updateCorrespondence(blackboard.correspondenceInstance, oldAffectedEObject, newAffectedEObject)
+				blackboard.correspondenceInstance.updateTUID(oldAffectedEObject, newAffectedEObject)
 			}
 		}
 	}
