@@ -3,11 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.Loggable
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.ResponseCorrespondenceHelper
 
 abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;
@@ -37,18 +37,18 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 
 	protected def void removeCorrespondences() {
 		for (oldCorrespondingElement: oldCorrespondingElements) {
-			CorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceInstance, 
+			ResponseCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceInstance, 
 				element, null, oldCorrespondingElement, null
 			);
 		}
 		if (delete) {
-			CorrespondenceHelper.removeCorrespondencesOfObject(correspondenceInstance, element, null);
+			ResponseCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceInstance, element, null);
 		}
 	}	
 	
 	protected def void addCorrespondences() {
 		for (newCorrespondingElement: newCorrespondingElements) {
-			CorrespondenceHelper.addCorrespondence(correspondenceInstance, 
+			ResponseCorrespondenceHelper.addCorrespondence(correspondenceInstance, 
 				element, newCorrespondingElement.key, newCorrespondingElement.value
 			);
 		}

@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import org.eclipse.emf.ecore.EObject
 import java.io.IOException
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
@@ -14,6 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.ResponseElementStatesHandlerImpl
 import java.util.function.Function
 import org.eclipse.xtend.lib.annotations.Delegate
+import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.ResponseCorrespondenceHelper
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
 	private extension val ResponseExecutionState executionState;
@@ -34,7 +34,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	protected def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Class<T> elementClass, 
 		Function<T, Boolean> correspondencePreconditionMethod, String tag
 	) {
-		val retrievedElements = CorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, correspondenceInstance);
+		val retrievedElements = ResponseCorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, correspondenceInstance);
 		if (retrievedElements.size > 1) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource, elementClass, executionState.userInteracting);
 		}

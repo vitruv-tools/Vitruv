@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceIns
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory
 import java.util.List
 
-final class CorrespondenceHelper {
+final class ResponseCorrespondenceHelper {
 	private new() {}
 
 	private static def getResponseView(CorrespondenceInstance<Correspondence> correspondenceInstance) {
