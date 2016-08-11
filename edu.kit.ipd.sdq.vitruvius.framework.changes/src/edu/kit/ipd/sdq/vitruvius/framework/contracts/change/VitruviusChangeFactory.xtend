@@ -10,6 +10,7 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.GeneralChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.TransactionalChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
@@ -37,6 +38,10 @@ class VitruviusChangeFactory {
 	
 	public def CompositeChange createCompositeChange() {
 		return new CompositeChangeImpl();
+	}
+	
+	public def TransactionalChange createTransactionalChange() {
+		return new TransactionalChangeImpl();
 	}
 	
 	public def CompositeChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
