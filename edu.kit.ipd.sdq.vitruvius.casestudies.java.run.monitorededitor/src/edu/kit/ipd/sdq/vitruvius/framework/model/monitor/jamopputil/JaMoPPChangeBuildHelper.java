@@ -22,16 +22,17 @@ import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.TypeReference;
 import org.emftext.language.java.types.TypedElement;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ReplaceNonRootEObjectSingle;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.DeleteRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaRemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaReplaceSingleValuedEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
 
 // TODO are those EChanges correct?
 public class JaMoPPChangeBuildHelper {
@@ -40,10 +41,10 @@ public class JaMoPPChangeBuildHelper {
 
     private static <T extends NamedElement> EChange createRenameChange(final T originalEObject,
             final T renamedEObject) {
-        final UpdateSingleValuedEAttribute<String> updateEAttribute = AttributeFactory.eINSTANCE
-                .createUpdateSingleValuedEAttribute();
+        final JavaReplaceSingleValuedEAttribute<EObject, String> updateEAttribute = AttributeFactory.eINSTANCE
+                .createJavaReplaceSingleValuedEAttribute();
         updateEAttribute.setOldAffectedEObject(originalEObject);
-        updateEAttribute.setNewAffectedEObject(renamedEObject);
+        updateEAttribute.setAffectedEObject(renamedEObject);
         final EClass eClass = originalEObject.eClass();
         final EAttribute nameAttribute = (EAttribute) eClass.getEStructuralFeature(NAME_ATTRIBUTE);
         updateEAttribute.setAffectedFeature(nameAttribute);
@@ -93,10 +94,10 @@ public class JaMoPPChangeBuildHelper {
     }
 
     private static EChange createChangeTypeChange(final TypedElement original, final TypedElement changed) {
-        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE
-                .createReplaceNonRootEObjectSingle();
+        final JavaReplaceSingleValuedEReference<EObject, TypeReference> updateEReference = ReferenceFactory.eINSTANCE
+                .createJavaReplaceSingleValuedEReference();
         updateEReference.setOldAffectedEObject(original);
-        updateEReference.setNewAffectedEObject(changed);
+        updateEReference.setAffectedEObject(changed);
         final EReference typeReference = original.getTypeReference().eContainmentFeature();
         updateEReference.setAffectedFeature(typeReference);
         updateEReference.setOldValue(original.getTypeReference());
@@ -105,10 +106,10 @@ public class JaMoPPChangeBuildHelper {
     }
 
     private static EChange createChangeSuperClassChange(final Class changedClass, final TypeReference superClass) {
-        final ReplaceNonRootEObjectSingle<TypeReference> updateEReference = ContainmentFactory.eINSTANCE
-                .createReplaceNonRootEObjectSingle();
+        final JavaReplaceSingleValuedEReference<EObject, TypeReference> updateEReference = ReferenceFactory.eINSTANCE
+                .createJavaReplaceSingleValuedEReference();
         updateEReference.setOldAffectedEObject(changedClass);
-        updateEReference.setNewAffectedEObject(superClass.eContainer());
+        updateEReference.setAffectedEObject(superClass.eContainer());
         final EReference superClassReference = superClass.eContainmentFeature();
         updateEReference.setAffectedFeature(superClassReference);
         updateEReference.setOldValue((TypeReference) changedClass.eGet(superClassReference));
@@ -194,13 +195,14 @@ public class JaMoPPChangeBuildHelper {
 
     private static <T extends EObject> EChange createAddNonRootEObjectInListChange(final T createdEObject,
             final EObject containerBeforeAdd) {
-        final CreateNonRootEObjectInList<T> createChange = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
-        createChange.setNewAffectedEObject(createdEObject.eContainer());
+        final JavaInsertEReference<EObject, T> createChange = ReferenceFactory.eINSTANCE
+                .createJavaInsertEReference();
+        createChange.setIsCreate(true);
+        createChange.setAffectedEObject(createdEObject.eContainer());
         createChange.setOldAffectedEObject(containerBeforeAdd);
         final EReference containingReference = (EReference) createdEObject.eContainingFeature();
         @SuppressWarnings("unchecked")
-        final int index = ((EList<EObject>) createChange.getNewAffectedEObject().eGet(containingReference))
+        final int index = ((EList<EObject>) createChange.getAffectedEObject().eGet(containingReference))
                 .indexOf(createdEObject);
         createChange.setAffectedFeature(containingReference);
         createChange.setIndex(index);
@@ -210,10 +212,11 @@ public class JaMoPPChangeBuildHelper {
 
     private static <T extends EObject> EChange createDeleteNonRootEObjectInListChange(final T deletedEObject,
             final EObject containerAfterDelete) {
-        final DeleteNonRootEObjectInList<T> deleteChange = ContainmentFactory.eINSTANCE
-                .createDeleteNonRootEObjectInList();
+        final JavaRemoveEReference<EObject, T> deleteChange = ReferenceFactory.eINSTANCE
+                .createJavaRemoveEReference();
+        deleteChange.setIsDelete(true);
         deleteChange.setOldAffectedEObject(deletedEObject.eContainer());
-        deleteChange.setNewAffectedEObject(containerAfterDelete);
+        deleteChange.setAffectedEObject(containerAfterDelete);
         final EReference containingReference = (EReference) deletedEObject.eContainingFeature();
         @SuppressWarnings("unchecked")
         final int index = ((EList<EObject>) deleteChange.getOldAffectedEObject().eGet(containingReference))
@@ -227,7 +230,7 @@ public class JaMoPPChangeBuildHelper {
     public static EChange createCreatePackageChange(final String packageName) {
         final Package pkg = ContainersFactory.eINSTANCE.createPackage();
         pkg.setName(packageName);
-        final CreateRootEObject<Package> createPackage = ObjectFactory.eINSTANCE.createCreateRootEObject();
+        final InsertRootEObject<Package> createPackage = RootFactory.eINSTANCE.createInsertRootEObject();
         createPackage.setNewValue(pkg);
         return createPackage;
     }
@@ -235,7 +238,7 @@ public class JaMoPPChangeBuildHelper {
     public static EChange createDeletePackageChange(final String packageName) {
         final Package pkg = ContainersFactory.eINSTANCE.createPackage();
         pkg.setName(packageName);
-        final DeleteRootEObject<Package> deletePackage = ObjectFactory.eINSTANCE.createDeleteRootEObject();
+        final RemoveRootEObject<Package> deletePackage = RootFactory.eINSTANCE.createRemoveRootEObject();
         deletePackage.setOldValue(pkg);
         return deletePackage;
     }

@@ -18,12 +18,14 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener;bundle-version="1.0.0",
  org.eclipse.ui.console;bundle-version="3.5.200",
  org.eclipse.swt;bundle-version="3.102.1",
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  org.eclipse.emf.common,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- org.eclipse.ltk.core.refactoring
+ org.eclipse.ltk.core.refactoring,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor,
