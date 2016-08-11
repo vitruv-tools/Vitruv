@@ -8,8 +8,8 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Java2PcmMethodBodyChangePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMethodMappingTransformation;
@@ -41,6 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.sy
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
@@ -100,9 +101,9 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
 
     @Override
     protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
-        if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof CompositeChange) {
-            final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
-            final JavaMethodBodyChangedChangeRefiner refiner = new JavaMethodBodyChangedChangeRefiner(null);
+        if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof TransactionalChange) {
+            final TransactionalChange compositeChange = (TransactionalChange) changesForTransformation.get(0);
+            final Java2PcmMethodBodyChangePreprocessor refiner = new Java2PcmMethodBodyChangePreprocessor(new POJOJava2PCMCode2SEFFFactory());
             return refiner.match(compositeChange);
         }
         return false;
@@ -111,7 +112,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     @Override
     protected VitruviusTransformationRecordingCommand executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
             final Blackboard blackboard) {
-        final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
+        final TransactionalChange compositeChange = (TransactionalChange) changesForTransformation.get(0);
         final VitruviusTransformationRecordingCommand vitruviusCommand = EMFCommandBridge
                 .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
 
@@ -126,7 +127,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     private TransformationResult executeClassMethodBodyChangeRefiner(final Blackboard blackboard,
-            final CompositeChange compositeChange) {
+            final TransactionalChange compositeChange) {
         final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
         final GeneralChange emfChange = (GeneralChange) compositeChange.getChanges().get(0);
         final JavaFeatureEChange<?,?> eFeatureChange = (JavaFeatureEChange<?,?>) emfChange.getEChanges().get(0);
@@ -144,6 +145,6 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
         final ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
                 oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder,
                 resourceDemandingBehaviourForClassMethodFinding);
-        return methodBodyChanged.execute(blackboard, this.userInteracting, null);
+        return methodBodyChanged.execute(blackboard, this.userInteracting);
     }
 }

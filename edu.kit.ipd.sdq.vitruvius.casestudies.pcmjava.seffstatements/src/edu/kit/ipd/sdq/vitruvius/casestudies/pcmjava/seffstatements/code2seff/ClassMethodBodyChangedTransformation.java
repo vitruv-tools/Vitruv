@@ -21,8 +21,6 @@ import org.somox.gast2seff.visitors.MethodCallFinder;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 import org.somox.gast2seff.visitors.VisitorUtils;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CustomTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
@@ -40,7 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
  * @author langhamm
  *
  */
-public class ClassMethodBodyChangedTransformation implements CustomTransformation {
+public class ClassMethodBodyChangedTransformation {
 
     private final static Logger logger = Logger.getLogger(ClassMethodBodyChangedTransformation.class.getSimpleName());
 
@@ -76,9 +74,7 @@ public class ClassMethodBodyChangedTransformation implements CustomTransformatio
      * correspondences for the new method (and its inner methods)
      *
      */
-    @Override
-    public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting,
-            final SynchronisationAbortedListener abortListener) {
+    public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting) {
         if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceInstance())) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");

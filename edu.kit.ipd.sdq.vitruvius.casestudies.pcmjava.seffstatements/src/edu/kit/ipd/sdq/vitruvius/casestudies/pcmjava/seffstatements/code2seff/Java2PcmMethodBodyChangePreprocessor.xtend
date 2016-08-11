@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.JavaMethodBodyChangedChangeRefiner
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
@@ -18,6 +17,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
+import org.emftext.language.java.statements.StatementsPackage
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+import org.emftext.language.java.statements.Statement
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange
 
 class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransformingPreprocessor {
 
@@ -28,11 +33,52 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 	}
 
 	override doesProcess(VitruviusChange change) {
-		if (change instanceof CompositeChange) {
-			val JavaMethodBodyChangedChangeRefiner refiner = new JavaMethodBodyChangedChangeRefiner(null);
-			return refiner.match(change);
+		if (change instanceof TransactionalChange) {
+			return match(change);
 		}
 		return false;
+	}
+	
+	def match(TransactionalChange change) {
+		val Iterable<JavaFeatureEChange> eChanges = change.EChanges.filter(UpdateReferenceEChange).filter[isContainment].filter(JavaFeatureEChange);
+		if (eChanges.size != change.EChanges.size) {
+			return false
+		}
+
+		val firstChange = eChanges.get(0);
+		if (!(firstChange.oldAffectedEObject instanceof Method) ||
+			!(firstChange.affectedEObject instanceof Method)) {
+			return false
+		}
+
+		if (!eChanges.forall[affectedFeature == StatementsPackage.eINSTANCE.statementListContainer_Statements]) {
+			return false
+		}
+
+		if (!eChanges.forall[affectedEObject == firstChange.affectedEObject]) {
+			return false
+		}
+
+		if (!eChanges.forall[oldAffectedEObject == firstChange.oldAffectedEObject]) {
+			return false
+		}
+
+		val deleteChanges = eChanges.filter(RemoveEReference)  // filter(DeleteNonRootEObjectInList)
+		val addChanges = eChanges.filter(InsertEReference) // filter(CreateNonRootEObjectInList)
+
+		if (addChanges.size + deleteChanges.size != change.EChanges.size) {
+			return false
+		}
+
+		if (!deleteChanges.forall[oldValue instanceof Statement]) {
+			return false
+		}
+
+		if (!addChanges.forall[newValue instanceof Statement]) {
+			return false
+		}
+
+		return true
 	}
 
 	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
@@ -67,7 +113,7 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 		val ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
 			oldMethod, newMethod, basicComponentFinding, classification, interfaceOfExternalCallFinder,
 			resourceDemandingBehaviourForClassMethodFinding);
-			return methodBodyChanged.execute(blackboard, userInteracting, null);
+			return methodBodyChanged.execute(blackboard, userInteracting);
 		}
 	}
 		
