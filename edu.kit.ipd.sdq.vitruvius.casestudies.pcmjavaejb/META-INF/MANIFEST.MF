@@ -8,7 +8,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  com.google.guava,
  org.eclipse.core.resources,
  org.apache.log4j,
@@ -23,5 +23,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
- org.somox.gast2seff
+ org.somox.gast2seff,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
