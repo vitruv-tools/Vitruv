@@ -1,0 +1,20 @@
+<plugin>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile">
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeclassifiers.MethodParameterNameChangedClassifier">
+      </provides>
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeclassifiers.MethodBodyChangedClassifier">
+      </provides>
+   </extension>
+   <extension
+         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors">
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder.MethodParameterNameChangedVisitor">
+      </provides>
+      <provides
+            provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder.MethodBodyChangedVisitor">
+      </provides>
+   </extension>
+</plugin>
