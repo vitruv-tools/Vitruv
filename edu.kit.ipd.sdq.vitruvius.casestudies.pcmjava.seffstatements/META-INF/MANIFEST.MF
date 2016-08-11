@@ -8,7 +8,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java;bundle-version="1.0.0",
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.15",
@@ -20,6 +20,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.emf.ecore.change,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 

@@ -38,15 +38,16 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.sy
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.ProvidedDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.RequiredDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system.SystemMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
 
 public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
 
@@ -98,7 +99,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     @Override
-    protected boolean hasChangeRefinerForChanges(final List<Change> changesForTransformation) {
+    protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
         if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof CompositeChange) {
             final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
             final JavaMethodBodyChangedChangeRefiner refiner = new JavaMethodBodyChangedChangeRefiner(null);
@@ -108,7 +109,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     }
 
     @Override
-    protected VitruviusTransformationRecordingCommand executeChangeRefiner(final List<Change> changesForTransformation,
+    protected VitruviusTransformationRecordingCommand executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
             final Blackboard blackboard) {
         final CompositeChange compositeChange = (CompositeChange) changesForTransformation.get(0);
         final VitruviusTransformationRecordingCommand vitruviusCommand = EMFCommandBridge
@@ -127,10 +128,10 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     private TransformationResult executeClassMethodBodyChangeRefiner(final Blackboard blackboard,
             final CompositeChange compositeChange) {
         final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
-        final EMFModelChange emfChange = (EMFModelChange) compositeChange.getChanges().get(0);
-        final EFeatureChange<?> eFeatureChange = (EFeatureChange<?>) emfChange.getEChange();
+        final GeneralChange emfChange = (GeneralChange) compositeChange.getChanges().get(0);
+        final JavaFeatureEChange<?,?> eFeatureChange = (JavaFeatureEChange<?,?>) emfChange.getEChanges().get(0);
         final ClassMethod oldMethod = (ClassMethod) eFeatureChange.getOldAffectedEObject();
-        final ClassMethod newMethod = (ClassMethod) eFeatureChange.getNewAffectedEObject();
+        final ClassMethod newMethod = (ClassMethod) eFeatureChange.getAffectedEObject();
         final BasicComponentForPackageMappingFinder basicComponentFinder = new BasicComponentForPackageMappingFinder();
         final BasicComponent myBasicComponent = basicComponentFinder.findBasicComponentForMethod(newMethod,
                 correspondenceInstance);

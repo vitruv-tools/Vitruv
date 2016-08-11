@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -15,11 +16,12 @@ import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.SystemFactory;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 
@@ -91,16 +93,17 @@ public class PCM2JaMoPPTestUtils {
         return modelInstance;
     }
 
-    public static EMFModelChange createCreateChange(final EObject changedEObject, final EObject newAffectedEObject,
+    public static GeneralChange createCreateChange(final EObject changedEObject, final EObject newAffectedEObject,
             final EObject oldAffectedEObject, final String featureName) {
-        final CreateNonRootEObjectInList<EObject> createChange = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
+        final JavaInsertEReference<EObject, EObject> createChange = ReferenceFactory.eINSTANCE
+                .createJavaInsertEReference();
+        createChange.setIsCreate(true);
         createChange.setNewValue(changedEObject);
-        createChange.setNewAffectedEObject(newAffectedEObject);
+        createChange.setAffectedEObject(newAffectedEObject);
         createChange.setOldAffectedEObject(oldAffectedEObject);
         createChange.setAffectedFeature(getEReferenceByName(newAffectedEObject, featureName));
         createChange.setNewValue(changedEObject);
-        final EMFModelChange emfModelChange = new EMFModelChange(createChange,
+        final GeneralChange emfModelChange = VitruviusChangeFactory.getInstance().createGeneralChange(Collections.singletonList(createChange),
                 VURI.getInstance(oldAffectedEObject.eResource()));
         return emfModelChange;
     }

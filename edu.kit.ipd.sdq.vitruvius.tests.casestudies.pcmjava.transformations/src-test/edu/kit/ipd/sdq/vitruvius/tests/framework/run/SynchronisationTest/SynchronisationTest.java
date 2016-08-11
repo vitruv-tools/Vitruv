@@ -31,16 +31,18 @@ import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -83,7 +85,7 @@ public class SynchronisationTest {
         this.vsum = TestUtil.createVSUM(metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformationProvider = new Change2CommandTransformingProvidingImpl();
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum, this.vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum,
                 metaRepository, this.vsum, null, changePreparing, commandExecuting);
 
@@ -251,9 +253,7 @@ public class SynchronisationTest {
      * repository model
      */
     private void createAndSyncFileChange(final VURI vuri) {
-        final FileChange fileChange = new FileChange(FileChangeKind.CREATE, vuri);
-        final List<Change> changes = new ArrayList<Change>(1);
-        changes.add(fileChange);
-        this.changeSynchronizer.synchronizeChanges(changes);
+        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(FileChangeKind.CREATE, vuri);
+        this.changeSynchronizer.synchronizeChange(fileChange);
     }
 }

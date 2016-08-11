@@ -16,8 +16,11 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -37,21 +40,20 @@ public class VitruviusEMFEditorMonitorImplTestPlugin {
 
     @Test
     public void testChangeDescription2Change() throws Throwable {
-        final ChangeRecorder changeRecorder = new ChangeRecorder();
+        final AtomicEMFChangeRecorder changeRecorder = new AtomicEMFChangeRecorder();
         final ResourceSet rs = new ResourceSetImpl();
         final VURI vuri = VURI.getInstance(TestUtil.PROJECT_URI + "/modelTest/repo.repository");
         final Resource resource = rs.createResource(vuri.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
         repo.setEntityName("name");
         EcoreResourceBridge.saveEObjectAsOnlyContent(repo, resource);
-        resource.eAdapters().add(changeRecorder);
-        changeRecorder.beginRecording(Collections.EMPTY_LIST);
+        changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singletonList(resource));
         repo.setEntityName("TestNewName");
-        final ChangeDescription changeDescription = changeRecorder.endRecording();
-        final ChangeDescription2ChangeConverter cs2cc = new ChangeDescription2ChangeConverter();
-        final List<Change> changes = cs2cc.getChanges(changeDescription);
-        for (final Change change : changes) {
-            logger.warn(change);
+        final List<EMFModelChange> changes = changeRecorder.endRecording();
+        final ChangePreparing changePreparer = new ChangePreparingImpl(null);
+        for (EMFModelChange change : changes) {
+        	change.prepare(changePreparer);
+        	logger.warn(change);
         }
         assertTrue("No changes detected ", 0 < changes.size());
     }

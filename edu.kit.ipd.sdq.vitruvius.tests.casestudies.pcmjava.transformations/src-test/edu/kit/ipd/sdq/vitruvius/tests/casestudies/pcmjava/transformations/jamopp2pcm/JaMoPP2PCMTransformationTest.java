@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -96,16 +97,18 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
@@ -870,24 +873,25 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
      */
     protected void addAnnotationToMember(final AnnotableAndModifiable annotableAndModifiable,
             final String annotationName) throws Throwable {
-        final CreateNonRootEObjectInList<EObject> createChange = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
+    	final JavaInsertEReference<EObject, EObject> createChange = ReferenceFactory.eINSTANCE
+                .createJavaInsertEReference();
+    	createChange.setIsCreate(true);
         createChange.setOldAffectedEObject(annotableAndModifiable);
         final AnnotationInstance newAnnotation = AnnotationsFactory.eINSTANCE.createAnnotationInstance();
         final Classifier classifier = this.createClassifierFromName(annotationName);
         newAnnotation.setAnnotation(classifier);
         annotableAndModifiable.getAnnotationsAndModifiers().add(newAnnotation);
-        createChange.setNewAffectedEObject(EcoreUtil.copy(annotableAndModifiable));
+        createChange.setAffectedEObject(EcoreUtil.copy(annotableAndModifiable));
         final EReference containingReference = (EReference) newAnnotation.eContainingFeature();
         @SuppressWarnings("unchecked")
-        final int index = ((EList<EObject>) createChange.getNewAffectedEObject().eGet(containingReference))
+        final int index = ((EList<EObject>) createChange.getAffectedEObject().eGet(containingReference))
                 .indexOf(newAnnotation);
         createChange.setAffectedFeature(containingReference);
         createChange.setIndex(index);
         createChange.setNewValue(newAnnotation);
         final ChangeSynchronizing cs = this.getChangeSynchronizing();
         final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
-        final EMFModelChange change = new EMFModelChange(createChange, vuri);
+        final GeneralChange change = VitruviusChangeFactory.getInstance().createGeneralChange(Collections.singletonList(createChange), vuri);
         cs.synchronizeChange(change);
     }
 
@@ -940,18 +944,13 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final ChangeSynchronizing dummyChangeSynchronizing = new ChangeSynchronizing() {
 
             @Override
-            public List<List<edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change>> synchronizeChanges(
-                    final List<edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change> changes) {
+            public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
                 final StringBuilder changeMessage = new StringBuilder();
-                changes.forEach(change -> changeMessage.append(change).append(", "));
+                change.getEChanges().forEach(eChange -> changeMessage.append(eChange).append(", "));
                 logger.info("Detected (but ignored) changes: " + changeMessage);
                 return null;
             }
 
-            @Override
-            public void synchronizeChange(final edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change change) {
-                logger.info("Detected (but ignored) change: " + change);
-            }
         };
         JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "changeSynchronizing", pcmJavaBuilder,
                 dummyChangeSynchronizing);

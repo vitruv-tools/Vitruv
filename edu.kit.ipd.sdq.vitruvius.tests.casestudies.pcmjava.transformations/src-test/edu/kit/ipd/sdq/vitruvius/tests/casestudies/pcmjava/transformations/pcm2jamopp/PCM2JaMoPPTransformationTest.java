@@ -59,7 +59,7 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -215,7 +215,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
             throws IOException {
         final Repository repo = PCM2JaMoPPTestUtils.createRepository(resourceSet, repositoryName,
                 this.currentTestProjectName);
-        this.changeRecorder.beginRecording(Collections.singletonList(repo));
+        this.changeRecorder.beginRecording(VURI.getInstance(repo.eResource()), Collections.singletonList(repo));
         this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
         return repo;
     }
@@ -351,7 +351,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     protected System createAndSyncSystem(final String name) throws Throwable {
         final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, name, this.currentTestProjectName);
-        this.changeRecorder.beginRecording(Collections.singletonList(system));
+        this.changeRecorder.beginRecording(VURI.getInstance(system.eResource()), Collections.singletonList(system));
         this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
         return system;
     }
