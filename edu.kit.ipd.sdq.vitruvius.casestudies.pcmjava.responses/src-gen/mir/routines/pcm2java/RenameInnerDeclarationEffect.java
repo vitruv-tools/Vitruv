@@ -3,7 +3,7 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -14,19 +14,20 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.parameters.Parameter;
+import org.palladiosimulator.pcm.repository.InnerDeclaration;
 
 @SuppressWarnings("all")
 public class RenameInnerDeclarationEffect extends AbstractEffectRealization {
-  public RenameInnerDeclarationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
+  public RenameInnerDeclarationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<String> change;
+  private ReplaceSingleValuedEAttribute<InnerDeclaration, String> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameInnerDeclarationEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     Field compositeTypeField = getCorrespondingElement(
     	getCorrepondenceSourceCompositeTypeField(change), // correspondence source supplier
@@ -62,27 +63,27 @@ public class RenameInnerDeclarationEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private String getRetrieveTag0(final UpdateSingleValuedEAttribute<String> change) {
+  private String getRetrieveTag0(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
     return "getter";
   }
   
-  private String getRetrieveTag1(final UpdateSingleValuedEAttribute<String> change) {
+  private String getRetrieveTag1(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
     return "setter";
   }
   
-  private EObject getCorrepondenceSourceCompositeTypeField(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceCompositeTypeField(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
+    InnerDeclaration _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
-  private EObject getCorrepondenceSourceCompositeTypeGetterMethod(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceCompositeTypeGetterMethod(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
+    InnerDeclaration _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
-  private EObject getCorrepondenceSourceCompositeTypeSetterMethod(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceCompositeTypeSetterMethod(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
+    InnerDeclaration _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -94,7 +95,7 @@ public class RenameInnerDeclarationEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final Field compositeTypeField, final ClassMethod compositeTypeGetterMethod, final ClassMethod compositeTypeSetterMethod) {
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change, final Field compositeTypeField, final ClassMethod compositeTypeGetterMethod, final ClassMethod compositeTypeSetterMethod) {
       final String newName = change.getNewValue();
       compositeTypeField.setName(newName);
       String _firstUpper = StringExtensions.toFirstUpper(newName);

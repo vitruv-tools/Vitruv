@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
@@ -28,19 +28,20 @@ import org.emftext.language.java.types.PrimitiveType;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.DataType;
+import org.palladiosimulator.pcm.repository.Repository;
 
 @SuppressWarnings("all")
 public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
-  public CreatedCollectionDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<DataType> change) {
+  public CreatedCollectionDataTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<Repository, DataType> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectInList<DataType> change;
+  private InsertEReference<Repository, DataType> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedCollectionDataTypeEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     org.emftext.language.java.classifiers.Class innerTypeClass = getCorrespondingElement(
     	getCorrepondenceSourceInnerTypeClass(change), // correspondence source supplier
@@ -64,21 +65,21 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private EObject getCorrepondenceSourceInnerTypeClass(final CreateNonRootEObjectInList<DataType> change) {
+  private EObject getCorrepondenceSourceInnerTypeClass(final InsertEReference<Repository, DataType> change) {
     DataType _newValue = change.getNewValue();
     DataType _innerType_CollectionDataType = ((CollectionDataType) _newValue).getInnerType_CollectionDataType();
     return _innerType_CollectionDataType;
   }
   
-  private boolean getCorrespondingModelElementsPreconditionDatatypesPackage(final CreateNonRootEObjectInList<DataType> change, final org.emftext.language.java.containers.Package datatypesPackage) {
+  private boolean getCorrespondingModelElementsPreconditionDatatypesPackage(final InsertEReference<Repository, DataType> change, final org.emftext.language.java.containers.Package datatypesPackage) {
     String _name = datatypesPackage.getName();
     boolean _equals = Objects.equal(_name, "datatypes");
     return _equals;
   }
   
-  private EObject getCorrepondenceSourceDatatypesPackage(final CreateNonRootEObjectInList<DataType> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceDatatypesPackage(final InsertEReference<Repository, DataType> change) {
+    Repository _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -90,7 +91,7 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<DataType> change, final org.emftext.language.java.classifiers.Class innerTypeClass, final org.emftext.language.java.containers.Package datatypesPackage) {
+    private void executeUserOperations(final InsertEReference<Repository, DataType> change, final org.emftext.language.java.classifiers.Class innerTypeClass, final org.emftext.language.java.containers.Package datatypesPackage) {
       DataType _newValue = change.getNewValue();
       final CollectionDataType dataType = ((CollectionDataType) _newValue);
       DataType _innerType_CollectionDataType = dataType.getInnerType_CollectionDataType();

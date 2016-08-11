@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
@@ -15,17 +15,17 @@ class CreatedRequiredRoleResponse extends AbstractResponseRealization {
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final CreateNonRootEObjectInList<RequiredRole> change) {
+  private boolean checkTriggerPrecondition(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
     RequiredRole _newValue = change.getNewValue();
     return (_newValue instanceof OperationRequiredRole);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateNonRootEObjectInList.class;
+    return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final CreateNonRootEObjectInList<RequiredRole> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof InterfaceRequiringEntity)) {
     	return false;
@@ -39,10 +39,10 @@ class CreatedRequiredRoleResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateNonRootEObjectInList<?>)) {
+    if (!(change instanceof InsertEReference<?, ?>)) {
     	return false;
     }
-    CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
+    InsertEReference typedChange = (InsertEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -54,7 +54,7 @@ class CreatedRequiredRoleResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectInList<RequiredRole> typedChange = (CreateNonRootEObjectInList<RequiredRole>)change;
+    InsertEReference<InterfaceRequiringEntity, RequiredRole> typedChange = (InsertEReference<InterfaceRequiringEntity, RequiredRole>)change;
     mir.routines.pcm2java.CreatedRequiredRoleEffect effect = new mir.routines.pcm2java.CreatedRequiredRoleEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

@@ -3,35 +3,36 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.InterfaceMethod;
+import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 
 @SuppressWarnings("all")
 public class DeletedOperationSignatureEffect extends AbstractEffectRealization {
-  public DeletedOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DeleteNonRootEObjectInList<OperationSignature> change) {
+  public DeletedOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveEReference<OperationInterface, OperationSignature> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private DeleteNonRootEObjectInList<OperationSignature> change;
+  private RemoveEReference<OperationInterface, OperationSignature> change;
   
-  private EObject getElement0(final DeleteNonRootEObjectInList<OperationSignature> change, final InterfaceMethod interfaceMethod) {
+  private EObject getElement0(final RemoveEReference<OperationInterface, OperationSignature> change, final InterfaceMethod interfaceMethod) {
     return interfaceMethod;
   }
   
-  private EObject getCorrepondenceSourceInterfaceMethod(final DeleteNonRootEObjectInList<OperationSignature> change) {
+  private EObject getCorrepondenceSourceInterfaceMethod(final RemoveEReference<OperationInterface, OperationSignature> change) {
     OperationSignature _oldValue = change.getOldValue();
     return _oldValue;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeletedOperationSignatureEffect with input:");
-    getLogger().debug("   DeleteNonRootEObjectInList: " + this.change);
+    getLogger().debug("   RemoveEReference: " + this.change);
     
     InterfaceMethod interfaceMethod = getCorrespondingElement(
     	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier

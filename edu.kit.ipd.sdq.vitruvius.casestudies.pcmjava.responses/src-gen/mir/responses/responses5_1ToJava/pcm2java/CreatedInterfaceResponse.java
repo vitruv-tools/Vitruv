@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.Interface;
 import org.palladiosimulator.pcm.repository.Repository;
@@ -15,11 +15,11 @@ class CreatedInterfaceResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateNonRootEObjectInList.class;
+    return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final CreateNonRootEObjectInList<Interface> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final InsertEReference<Repository, Interface> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Repository)) {
     	return false;
@@ -33,10 +33,10 @@ class CreatedInterfaceResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateNonRootEObjectInList<?>)) {
+    if (!(change instanceof InsertEReference<?, ?>)) {
     	return false;
     }
-    CreateNonRootEObjectInList typedChange = (CreateNonRootEObjectInList)change;
+    InsertEReference typedChange = (InsertEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,7 +45,7 @@ class CreatedInterfaceResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateNonRootEObjectInList<Interface> typedChange = (CreateNonRootEObjectInList<Interface>)change;
+    InsertEReference<Repository, Interface> typedChange = (InsertEReference<Repository, Interface>)change;
     mir.routines.pcm2java.CreatedInterfaceEffect effect = new mir.routines.pcm2java.CreatedInterfaceEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

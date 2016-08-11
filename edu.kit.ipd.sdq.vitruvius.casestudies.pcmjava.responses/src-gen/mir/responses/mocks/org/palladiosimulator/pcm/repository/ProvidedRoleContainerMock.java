@@ -50,16 +50,20 @@ public class ProvidedRoleContainerMock implements ProvidedRole {
     containedObject.setId(arg0);
   }
   
-  public CDOResource cdoDirectResource() {
-    return containedObject.cdoDirectResource();
+  public CDOLockState cdoLockState() {
+    return containedObject.cdoLockState();
   }
   
   public CDOID cdoID() {
     return containedObject.cdoID();
   }
   
-  public CDOLockState cdoLockState() {
-    return containedObject.cdoLockState();
+  public CDOState cdoState() {
+    return containedObject.cdoState();
+  }
+  
+  public CDOView cdoView() {
+    return containedObject.cdoView();
   }
   
   public CDORevision cdoRevision(final boolean arg0) {
@@ -70,52 +74,48 @@ public class ProvidedRoleContainerMock implements ProvidedRole {
     return containedObject.cdoRevision();
   }
   
-  public CDOView cdoView() {
-    return containedObject.cdoView();
-  }
-  
-  public CDOState cdoState() {
-    return containedObject.cdoState();
-  }
-  
-  public CDOLock cdoReadLock() {
-    return containedObject.cdoReadLock();
-  }
-  
-  public CDOResource cdoResource() {
-    return containedObject.cdoResource();
-  }
-  
-  public boolean cdoConflict() {
-    return containedObject.cdoConflict();
+  public CDOResource cdoDirectResource() {
+    return containedObject.cdoDirectResource();
   }
   
   public void cdoPrefetch(final int arg0) {
     containedObject.cdoPrefetch(arg0);
   }
   
+  public CDOLock cdoWriteLock() {
+    return containedObject.cdoWriteLock();
+  }
+  
   public boolean cdoInvalid() {
     return containedObject.cdoInvalid();
-  }
-  
-  public CDOPermission cdoPermission() {
-    return containedObject.cdoPermission();
-  }
-  
-  public CDOObjectHistory cdoHistory() {
-    return containedObject.cdoHistory();
   }
   
   public void cdoReload() {
     containedObject.cdoReload();
   }
   
-  public CDOLock cdoWriteLock() {
-    return containedObject.cdoWriteLock();
+  public CDOLock cdoReadLock() {
+    return containedObject.cdoReadLock();
+  }
+  
+  public boolean cdoConflict() {
+    return containedObject.cdoConflict();
+  }
+  
+  public CDOObjectHistory cdoHistory() {
+    return containedObject.cdoHistory();
   }
   
   public CDOLock cdoWriteOption() {
     return containedObject.cdoWriteOption();
+  }
+  
+  public CDOResource cdoResource() {
+    return containedObject.cdoResource();
+  }
+  
+  public CDOPermission cdoPermission() {
+    return containedObject.cdoPermission();
   }
   
   public EStructuralFeature eContainingFeature() {
@@ -126,32 +126,16 @@ public class ProvidedRoleContainerMock implements ProvidedRole {
     return containedObject.eContainmentFeature();
   }
   
-  public TreeIterator eAllContents() {
-    return containedObject.eAllContents();
+  public boolean eIsProxy() {
+    return containedObject.eIsProxy();
   }
   
-  public EList eContents() {
-    return containedObject.eContents();
-  }
-  
-  public EList eCrossReferences() {
-    return containedObject.eCrossReferences();
-  }
-  
-  public void eUnset(final EStructuralFeature arg0) {
-    containedObject.eUnset(arg0);
-  }
-  
-  public EObject eContainer() {
-    return containerObject;
+  public Resource eResource() {
+    return containerObject.eResource();
   }
   
   public Object eInvoke(final EOperation arg0, final EList arg1) throws InvocationTargetException {
     return containedObject.eInvoke(arg0, arg1);
-  }
-  
-  public boolean eIsSet(final EStructuralFeature arg0) {
-    return containedObject.eIsSet(arg0);
   }
   
   public Object eGet(final EStructuralFeature arg0, final boolean arg1) {
@@ -162,24 +146,40 @@ public class ProvidedRoleContainerMock implements ProvidedRole {
     return containedObject.eGet(arg0);
   }
   
-  public boolean eIsProxy() {
-    return containedObject.eIsProxy();
-  }
-  
-  public Resource eResource() {
-    return containerObject.eResource();
-  }
-  
   public void eSet(final EStructuralFeature arg0, final Object arg1) {
     containedObject.eSet(arg0, arg1);
+  }
+  
+  public boolean eIsSet(final EStructuralFeature arg0) {
+    return containedObject.eIsSet(arg0);
+  }
+  
+  public void eUnset(final EStructuralFeature arg0) {
+    containedObject.eUnset(arg0);
+  }
+  
+  public EList eContents() {
+    return containedObject.eContents();
+  }
+  
+  public TreeIterator eAllContents() {
+    return containedObject.eAllContents();
+  }
+  
+  public EList eCrossReferences() {
+    return containedObject.eCrossReferences();
   }
   
   public EClass eClass() {
     return containedObject.eClass();
   }
   
-  public EList eAdapters() {
-    return containedObject.eAdapters();
+  public EObject eContainer() {
+    return containerObject;
+  }
+  
+  public void eNotify(final Notification arg0) {
+    containedObject.eNotify(arg0);
   }
   
   public boolean eDeliver() {
@@ -190,8 +190,8 @@ public class ProvidedRoleContainerMock implements ProvidedRole {
     containedObject.eSetDeliver(arg0);
   }
   
-  public void eNotify(final Notification arg0) {
-    containedObject.eNotify(arg0);
+  public EList eAdapters() {
+    return containedObject.eAdapters();
   }
   
   public String getEntityName() {

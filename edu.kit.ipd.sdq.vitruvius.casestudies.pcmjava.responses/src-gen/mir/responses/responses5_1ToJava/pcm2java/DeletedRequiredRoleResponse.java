@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
@@ -15,17 +15,17 @@ class DeletedRequiredRoleResponse extends AbstractResponseRealization {
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final DeleteNonRootEObjectInList<RequiredRole> change) {
+  private boolean checkTriggerPrecondition(final RemoveEReference<InterfaceRequiringEntity, RequiredRole> change) {
     RequiredRole _oldValue = change.getOldValue();
     return (_oldValue instanceof OperationRequiredRole);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteNonRootEObjectInList.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final DeleteNonRootEObjectInList<RequiredRole> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final RemoveEReference<InterfaceRequiringEntity, RequiredRole> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof InterfaceRequiringEntity)) {
     	return false;
@@ -39,10 +39,10 @@ class DeletedRequiredRoleResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteNonRootEObjectInList<?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -54,10 +54,10 @@ class DeletedRequiredRoleResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    DeleteNonRootEObjectInList<RequiredRole> typedChange = (DeleteNonRootEObjectInList<RequiredRole>)change;
+    RemoveEReference<InterfaceRequiringEntity, RequiredRole> typedChange = (RemoveEReference<InterfaceRequiringEntity, RequiredRole>)change;
     final org.palladiosimulator.pcm.repository.RequiredRole oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RequiredRoleContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RequiredRoleContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.pcm2java.DeletedRequiredRoleEffect effect = new mir.routines.pcm2java.DeletedRequiredRoleEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

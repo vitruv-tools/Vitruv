@@ -1,18 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.emftext.language.java.containers.Package
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreprocessor {
 	    /**
@@ -22,23 +22,23 @@ class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreproces
      * @param change
      *            the change that may contain the newly created package
      */
-    private def void handlePackageInEChange(EMFModelChange change) {
-        if (change.getEChange() instanceof CreateRootEObject<?>) {
-            val CreateRootEObject<?> createRoot = change.getEChange() as CreateRootEObject<?>;
-            attachPackageToResource(createRoot.getNewValue(), change.getURI());
-        } else if (change.getEChange() instanceof UpdateSingleValuedEAttribute<?>) {
-            val UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute = change
-                    .getEChange() as UpdateSingleValuedEAttribute<?>;
-            prepareRenamePackageInfos(updateSingleValuedEAttribute, change.getURI());
-        } // TODO: package deletion
+    private def void handlePackageInEChange(GeneralChange change) {
+    	if (change.EChanges.size == 1) {
+    		val eChange = change.EChanges.get(0);
+        	if (eChange instanceof InsertRootEObject<?>) {
+	            attachPackageToResource(eChange.getNewValue(), change.getURI());
+        	} else if (eChange instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
+	            prepareRenamePackageInfos(eChange, change.getURI());
+        	} // TODO: package deletion
+        }
     }
 
-    private def void prepareRenamePackageInfos(UpdateSingleValuedEAttribute<?> updateSingleValuedEAttribute,
+    private def void prepareRenamePackageInfos(JavaReplaceSingleValuedEAttribute<?,?> updateSingleValuedEAttribute,
             VURI vuri) {
         if (updateSingleValuedEAttribute.getOldAffectedEObject() instanceof Package
-                && updateSingleValuedEAttribute.getNewAffectedEObject() instanceof Package) {
+                && updateSingleValuedEAttribute.getAffectedEObject() instanceof Package) {
             val Package oldPackage = updateSingleValuedEAttribute.getOldAffectedEObject() as Package;
-            val Package newPackage = updateSingleValuedEAttribute.getNewAffectedEObject() as Package;
+            val Package newPackage = updateSingleValuedEAttribute.getAffectedEObject() as Package;
             this.attachPackageToResource(oldPackage, vuri);
             var String newVURIKey = vuri.toString();
             val String oldPackagePath = oldPackage.getName().replace(".", "/");
@@ -60,15 +60,15 @@ class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreproces
         }
     }
 				
-	override processChange(Change change, UserInteracting userInteracting, Blackboard blackboard) {
-		if (change instanceof EMFModelChange) {
+	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
+		if (change instanceof GeneralChange) {
 			handlePackageInEChange(change);
 		}
 		return #[];
 	}
 	
-	override doesProcess(Change change) {
-		return change instanceof EMFModelChange;
+	override doesProcess(VitruviusChange change) {
+		return change instanceof GeneralChange;
 	}
 				
 }

@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 
@@ -14,11 +14,11 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return UpdateSingleValuedEAttribute.class;
+    return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final UpdateSingleValuedEAttribute<String> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<CollectionDataType, String> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof CollectionDataType)) {
     	return false;
@@ -32,10 +32,10 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof UpdateSingleValuedEAttribute<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    UpdateSingleValuedEAttribute typedChange = (UpdateSingleValuedEAttribute)change;
+    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -44,7 +44,7 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    UpdateSingleValuedEAttribute<String> typedChange = (UpdateSingleValuedEAttribute<String>)change;
+    ReplaceSingleValuedEAttribute<CollectionDataType, String> typedChange = (ReplaceSingleValuedEAttribute<CollectionDataType, String>)change;
     mir.routines.pcm2java.RenamedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RenamedCollectionDataTypeEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

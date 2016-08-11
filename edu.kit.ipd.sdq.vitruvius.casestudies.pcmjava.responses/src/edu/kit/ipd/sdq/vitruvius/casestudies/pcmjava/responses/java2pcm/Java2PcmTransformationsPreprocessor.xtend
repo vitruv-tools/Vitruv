@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
@@ -22,10 +20,15 @@ import java.util.concurrent.Callable
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import org.eclipse.emf.common.command.Command
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange
 
 class Java2PcmTransformationsPreprocessor implements Change2CommandTransformingPreprocessor {
-	override processChange(Change change, UserInteracting userInteracting, Blackboard blackboard) {
-		val eChange = (change as EMFModelChange).EChange;
+	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
+		if ((change as GeneralChange).EChanges.size > 1) {
+			throw new IllegalStateException("There must be only one EChange in Java model changes");
+		}
+		val eChange = (change as GeneralChange).EChanges.get(0);
 		val transformationExecuter = new TransformationExecuter();
 		transformationExecuter.addMapping(new RepositoryMappingTransformation());
 		// JaMoPP2PCM
@@ -50,8 +53,8 @@ class Java2PcmTransformationsPreprocessor implements Change2CommandTransformingP
 		return #[command];
 	}
 	
-	override doesProcess(Change change) {
-		return change instanceof EMFModelChange;
+	override doesProcess(VitruviusChange change) {
+		return change instanceof GeneralChange;
 	}
 
 }

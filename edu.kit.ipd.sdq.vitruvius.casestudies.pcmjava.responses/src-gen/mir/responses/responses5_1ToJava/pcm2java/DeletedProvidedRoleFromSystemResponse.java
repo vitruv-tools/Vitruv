@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
 
@@ -14,11 +14,11 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteNonRootEObjectInList.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final DeleteNonRootEObjectInList<ProvidedRole> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof org.palladiosimulator.pcm.system.System)) {
     	return false;
@@ -32,10 +32,10 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteNonRootEObjectInList<?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -44,10 +44,10 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   }
   
   public void executeResponse(final EChange change) {
-    DeleteNonRootEObjectInList<ProvidedRole> typedChange = (DeleteNonRootEObjectInList<ProvidedRole>)change;
+    RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole>)change;
     final org.palladiosimulator.pcm.repository.ProvidedRole oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ProvidedRoleContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ProvidedRoleContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.pcm2java.DeletedProvidedRoleFromSystemEffect effect = new mir.routines.pcm2java.DeletedProvidedRoleFromSystemEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

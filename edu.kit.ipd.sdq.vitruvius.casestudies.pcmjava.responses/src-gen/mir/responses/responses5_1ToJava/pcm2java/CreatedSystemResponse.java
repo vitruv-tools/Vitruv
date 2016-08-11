@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
@@ -13,10 +13,10 @@ class CreatedSystemResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateRootEObject.class;
+    return InsertRootEObject.class;
   }
   
-  private boolean checkChangeProperties(final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {
+  private boolean checkChangeProperties(final InsertRootEObject<org.palladiosimulator.pcm.system.System> change) {
     EObject changedElement = change.getNewValue();
     // Check model element type
     if (!(changedElement instanceof org.palladiosimulator.pcm.system.System)) {
@@ -27,10 +27,10 @@ class CreatedSystemResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateRootEObject<?>)) {
+    if (!(change instanceof InsertRootEObject<?>)) {
     	return false;
     }
-    CreateRootEObject typedChange = (CreateRootEObject)change;
+    InsertRootEObject typedChange = (InsertRootEObject)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -39,7 +39,7 @@ class CreatedSystemResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    CreateRootEObject<org.palladiosimulator.pcm.system.System> typedChange = (CreateRootEObject<org.palladiosimulator.pcm.system.System>)change;
+    InsertRootEObject<org.palladiosimulator.pcm.system.System> typedChange = (InsertRootEObject<org.palladiosimulator.pcm.system.System>)change;
     mir.routines.pcm2java.CreatedSystemEffect effect = new mir.routines.pcm2java.CreatedSystemEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

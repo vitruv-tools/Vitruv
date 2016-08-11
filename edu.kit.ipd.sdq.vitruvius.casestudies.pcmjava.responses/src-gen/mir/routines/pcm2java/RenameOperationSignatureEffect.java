@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.function.Consumer;
@@ -29,21 +29,21 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 
 @SuppressWarnings("all")
 public class RenameOperationSignatureEffect extends AbstractEffectRealization {
-  public RenameOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
+  public RenameOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<OperationSignature, String> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<String> change;
+  private ReplaceSingleValuedEAttribute<OperationSignature, String> change;
   
-  private EObject getCorrepondenceSourceInterfaceMethod(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceInterfaceMethod(final ReplaceSingleValuedEAttribute<OperationSignature, String> change) {
+    OperationSignature _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameOperationSignatureEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     InterfaceMethod interfaceMethod = getCorrespondingElement(
     	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
@@ -70,9 +70,9 @@ public class RenameOperationSignatureEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final InterfaceMethod interfaceMethod) {
-      EObject _newAffectedEObject = change.getNewAffectedEObject();
-      final OperationSignature operationSignature = ((OperationSignature) _newAffectedEObject);
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<OperationSignature, String> change, final InterfaceMethod interfaceMethod) {
+      OperationSignature _affectedEObject = change.getAffectedEObject();
+      final OperationSignature operationSignature = ((OperationSignature) _affectedEObject);
       final OperationInterface operationInterface = operationSignature.getInterface__OperationSignature();
       String _newValue = change.getNewValue();
       interfaceMethod.setName(_newValue);

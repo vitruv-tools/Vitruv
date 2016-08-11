@@ -3,23 +3,23 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class CreatedSystemEffect extends AbstractEffectRealization {
-  public CreatedSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {
+  public CreatedSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertRootEObject<org.palladiosimulator.pcm.system.System> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateRootEObject<org.palladiosimulator.pcm.system.System> change;
+  private InsertRootEObject<org.palladiosimulator.pcm.system.System> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedSystemEffect with input:");
-    getLogger().debug("   CreateRootEObject: " + this.change);
+    getLogger().debug("   InsertRootEObject: " + this.change);
     
     
     preprocessElementStates();
@@ -37,7 +37,7 @@ public class CreatedSystemEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateRootEObject<org.palladiosimulator.pcm.system.System> change) {
+    private void executeUserOperations(final InsertRootEObject<org.palladiosimulator.pcm.system.System> change) {
       final org.palladiosimulator.pcm.system.System system = change.getNewValue();
       String _entityName = system.getEntityName();
       this.effectFacade.callCreateJavaPackage(system, null, _entityName, "root_system");

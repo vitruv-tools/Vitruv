@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
@@ -15,11 +15,11 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return UpdateSingleValuedNonContainmentEReference.class;
+    return ReplaceSingleValuedEReference.class;
   }
   
-  private boolean checkChangeProperties(final UpdateSingleValuedNonContainmentEReference<Signature> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof ResourceDemandingSEFF)) {
     	return false;
@@ -33,10 +33,10 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof UpdateSingleValuedNonContainmentEReference<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEReference<?, ?>)) {
     	return false;
     }
-    UpdateSingleValuedNonContainmentEReference typedChange = (UpdateSingleValuedNonContainmentEReference)change;
+    ReplaceSingleValuedEReference typedChange = (ReplaceSingleValuedEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,10 +45,10 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
   }
   
   public void executeResponse(final EChange change) {
-    UpdateSingleValuedNonContainmentEReference<Signature> typedChange = (UpdateSingleValuedNonContainmentEReference<Signature>)change;
+    ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> typedChange = (ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature>)change;
     final org.palladiosimulator.pcm.repository.Signature oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.SignatureContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.SignatureContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect effect = new mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Pcm2Java
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -22,16 +22,16 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 @SuppressWarnings("all")
 public class RenamedRepositoryEffect extends AbstractEffectRealization {
-  public RenamedRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
+  public RenamedRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<Repository, String> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<String> change;
+  private ReplaceSingleValuedEAttribute<Repository, String> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenamedRepositoryEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     org.emftext.language.java.containers.Package rootPackage = getCorrespondingElement(
     	getCorrepondenceSourceRootPackage(change), // correspondence source supplier
@@ -49,13 +49,13 @@ public class RenamedRepositoryEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private String getRetrieveTag0(final UpdateSingleValuedEAttribute<String> change) {
+  private String getRetrieveTag0(final ReplaceSingleValuedEAttribute<Repository, String> change) {
     return "repository_root";
   }
   
-  private EObject getCorrepondenceSourceRootPackage(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceRootPackage(final ReplaceSingleValuedEAttribute<Repository, String> change) {
+    Repository _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -67,9 +67,9 @@ public class RenamedRepositoryEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final org.emftext.language.java.containers.Package rootPackage) {
-      EObject _newAffectedEObject = change.getNewAffectedEObject();
-      final Repository repository = ((Repository) _newAffectedEObject);
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Repository, String> change, final org.emftext.language.java.containers.Package rootPackage) {
+      Repository _affectedEObject = change.getAffectedEObject();
+      final Repository repository = ((Repository) _affectedEObject);
       String _newValue = change.getNewValue();
       rootPackage.setName(_newValue);
       this.effectFacade.callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
@@ -94,9 +94,9 @@ public class RenamedRepositoryEffect extends AbstractEffectRealization {
       for (final CollectionDataType dataType_1 : _filter_3) {
         this.effectFacade.callRenameCollectionDataType(dataType_1);
       }
-      EObject _newAffectedEObject_1 = change.getNewAffectedEObject();
+      Repository _affectedEObject_1 = change.getAffectedEObject();
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
-      this.persistProjectRelative(_newAffectedEObject_1, rootPackage, _buildJavaFilePath);
+      this.persistProjectRelative(_affectedEObject_1, rootPackage, _buildJavaFilePath);
     }
   }
 }

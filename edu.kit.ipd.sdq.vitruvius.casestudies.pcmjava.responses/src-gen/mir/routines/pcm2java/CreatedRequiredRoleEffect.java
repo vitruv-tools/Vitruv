@@ -3,25 +3,26 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 
 @SuppressWarnings("all")
 public class CreatedRequiredRoleEffect extends AbstractEffectRealization {
-  public CreatedRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<RequiredRole> change) {
+  public CreatedRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectInList<RequiredRole> change;
+  private InsertEReference<InterfaceRequiringEntity, RequiredRole> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedRequiredRoleEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     
     preprocessElementStates();
@@ -39,7 +40,7 @@ public class CreatedRequiredRoleEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<RequiredRole> change) {
+    private void executeUserOperations(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
       RequiredRole _newValue = change.getNewValue();
       this.effectFacade.callAddRequiredRole(((OperationRequiredRole) _newValue));
     }

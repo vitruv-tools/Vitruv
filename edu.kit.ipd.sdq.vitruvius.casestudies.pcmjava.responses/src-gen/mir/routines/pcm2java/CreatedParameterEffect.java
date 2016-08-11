@@ -3,7 +3,7 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -13,34 +13,35 @@ import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.parameters.OrdinaryParameter;
 import org.emftext.language.java.parameters.impl.ParametersFactoryImpl;
 import org.palladiosimulator.pcm.repository.DataType;
+import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Parameter;
 
 @SuppressWarnings("all")
 public class CreatedParameterEffect extends AbstractEffectRealization {
-  public CreatedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<Parameter> change) {
+  public CreatedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<OperationSignature, Parameter> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectInList<Parameter> change;
+  private InsertEReference<OperationSignature, Parameter> change;
   
-  private EObject getElement0(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
+  private EObject getElement0(final InsertEReference<OperationSignature, Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
     return javaParameter;
   }
   
-  private EObject getElement1(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
+  private EObject getElement1(final InsertEReference<OperationSignature, Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
     Parameter _newValue = change.getNewValue();
     return _newValue;
   }
   
-  private EObject getCorrepondenceSourceInterfaceMethod(final CreateNonRootEObjectInList<Parameter> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceInterfaceMethod(final InsertEReference<OperationSignature, Parameter> change) {
+    OperationSignature _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedParameterEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     InterfaceMethod interfaceMethod = getCorrespondingElement(
     	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
@@ -70,7 +71,7 @@ public class CreatedParameterEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
+    private void executeUserOperations(final InsertEReference<OperationSignature, Parameter> change, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
       Parameter _newValue = change.getNewValue();
       String _parameterName = _newValue.getParameterName();
       javaParameter.setName(_parameterName);

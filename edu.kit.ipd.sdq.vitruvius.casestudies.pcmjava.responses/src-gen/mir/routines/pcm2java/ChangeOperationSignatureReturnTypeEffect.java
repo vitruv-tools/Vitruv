@@ -3,7 +3,7 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.UpdateSingleValuedNonContainmentEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -14,21 +14,21 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 
 @SuppressWarnings("all")
 public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectRealization {
-  public ChangeOperationSignatureReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedNonContainmentEReference<DataType> change) {
+  public ChangeOperationSignatureReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEReference<OperationSignature, DataType> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedNonContainmentEReference<DataType> change;
+  private ReplaceSingleValuedEReference<OperationSignature, DataType> change;
   
-  private EObject getCorrepondenceSourceInterfaceMethod(final UpdateSingleValuedNonContainmentEReference<DataType> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceInterfaceMethod(final ReplaceSingleValuedEReference<OperationSignature, DataType> change) {
+    OperationSignature _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeOperationSignatureReturnTypeEffect with input:");
-    getLogger().debug("   UpdateSingleValuedNonContainmentEReference: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEReference: " + this.change);
     
     InterfaceMethod interfaceMethod = getCorrespondingElement(
     	getCorrepondenceSourceInterfaceMethod(change), // correspondence source supplier
@@ -55,9 +55,9 @@ public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectReal
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedNonContainmentEReference<DataType> change, final InterfaceMethod interfaceMethod) {
-      EObject _newAffectedEObject = change.getNewAffectedEObject();
-      DataType _returnType__OperationSignature = ((OperationSignature) _newAffectedEObject).getReturnType__OperationSignature();
+    private void executeUserOperations(final ReplaceSingleValuedEReference<OperationSignature, DataType> change, final InterfaceMethod interfaceMethod) {
+      OperationSignature _affectedEObject = change.getAffectedEObject();
+      DataType _returnType__OperationSignature = ((OperationSignature) _affectedEObject).getReturnType__OperationSignature();
       this.effectFacade.callChangeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
     }
   }

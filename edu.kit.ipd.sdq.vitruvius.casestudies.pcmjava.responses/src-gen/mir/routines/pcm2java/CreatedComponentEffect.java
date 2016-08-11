@@ -3,7 +3,7 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -13,16 +13,16 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 @SuppressWarnings("all")
 public class CreatedComponentEffect extends AbstractEffectRealization {
-  public CreatedComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CreateNonRootEObjectInList<RepositoryComponent> change) {
+  public CreatedComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InsertEReference<Repository, RepositoryComponent> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private CreateNonRootEObjectInList<RepositoryComponent> change;
+  private InsertEReference<Repository, RepositoryComponent> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatedComponentEffect with input:");
-    getLogger().debug("   CreateNonRootEObjectInList: " + this.change);
+    getLogger().debug("   InsertEReference: " + this.change);
     
     org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
     	getCorrepondenceSourceRepositoryPackage(change), // correspondence source supplier
@@ -40,11 +40,11 @@ public class CreatedComponentEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private String getRetrieveTag0(final CreateNonRootEObjectInList<RepositoryComponent> change) {
+  private String getRetrieveTag0(final InsertEReference<Repository, RepositoryComponent> change) {
     return "repository_root";
   }
   
-  private EObject getCorrepondenceSourceRepositoryPackage(final CreateNonRootEObjectInList<RepositoryComponent> change) {
+  private EObject getCorrepondenceSourceRepositoryPackage(final InsertEReference<Repository, RepositoryComponent> change) {
     RepositoryComponent _newValue = change.getNewValue();
     Repository _repository__RepositoryComponent = _newValue.getRepository__RepositoryComponent();
     return _repository__RepositoryComponent;
@@ -59,7 +59,7 @@ public class CreatedComponentEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final CreateNonRootEObjectInList<RepositoryComponent> change, final org.emftext.language.java.containers.Package repositoryPackage) {
+    private void executeUserOperations(final InsertEReference<Repository, RepositoryComponent> change, final org.emftext.language.java.containers.Package repositoryPackage) {
       final RepositoryComponent component = change.getNewValue();
       String _entityName = component.getEntityName();
       this.effectFacade.callCreateJavaPackage(component, repositoryPackage, _entityName, null);

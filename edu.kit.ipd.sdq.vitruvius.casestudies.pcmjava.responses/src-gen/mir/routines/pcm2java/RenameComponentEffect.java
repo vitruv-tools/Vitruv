@@ -3,25 +3,24 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 @SuppressWarnings("all")
 public class RenameComponentEffect extends AbstractEffectRealization {
-  public RenameComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
+  public RenameComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<RepositoryComponent, String> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<String> change;
+  private ReplaceSingleValuedEAttribute<RepositoryComponent, String> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameComponentEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     
     preprocessElementStates();
@@ -39,9 +38,9 @@ public class RenameComponentEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change) {
-      EObject _newAffectedEObject = change.getNewAffectedEObject();
-      final RepositoryComponent component = ((RepositoryComponent) _newAffectedEObject);
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<RepositoryComponent, String> change) {
+      RepositoryComponent _affectedEObject = change.getAffectedEObject();
+      final RepositoryComponent component = ((RepositoryComponent) _affectedEObject);
       this.effectFacade.callRenameComponentPackageAndClass(component);
     }
   }

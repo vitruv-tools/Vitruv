@@ -3,24 +3,25 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 @SuppressWarnings("all")
 public class DeletedProvidedRoleFromComponentEffect extends AbstractEffectRealization {
-  public DeletedProvidedRoleFromComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DeleteNonRootEObjectInList<ProvidedRole> change) {
+  public DeletedProvidedRoleFromComponentEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RemoveEReference<RepositoryComponent, ProvidedRole> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private DeleteNonRootEObjectInList<ProvidedRole> change;
+  private RemoveEReference<RepositoryComponent, ProvidedRole> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeletedProvidedRoleFromComponentEffect with input:");
-    getLogger().debug("   DeleteNonRootEObjectInList: " + this.change);
+    getLogger().debug("   RemoveEReference: " + this.change);
     
     
     preprocessElementStates();
@@ -38,7 +39,7 @@ public class DeletedProvidedRoleFromComponentEffect extends AbstractEffectRealiz
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final DeleteNonRootEObjectInList<ProvidedRole> change) {
+    private void executeUserOperations(final RemoveEReference<RepositoryComponent, ProvidedRole> change) {
       ProvidedRole _oldValue = change.getOldValue();
       this.effectFacade.callRemoveProvidedRole(_oldValue);
     }

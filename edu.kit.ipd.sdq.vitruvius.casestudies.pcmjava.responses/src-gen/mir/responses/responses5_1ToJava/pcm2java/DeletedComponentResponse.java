@@ -2,8 +2,8 @@ package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
@@ -15,11 +15,11 @@ class DeletedComponentResponse extends AbstractResponseRealization {
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteNonRootEObjectInList.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final DeleteNonRootEObjectInList<RepositoryComponent> change) {
-    EObject changedElement = change.getOldAffectedEObject();
+  private boolean checkChangeProperties(final RemoveEReference<Repository, RepositoryComponent> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Repository)) {
     	return false;
@@ -33,10 +33,10 @@ class DeletedComponentResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteNonRootEObjectInList<?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    DeleteNonRootEObjectInList typedChange = (DeleteNonRootEObjectInList)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,10 +45,10 @@ class DeletedComponentResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    DeleteNonRootEObjectInList<RepositoryComponent> typedChange = (DeleteNonRootEObjectInList<RepositoryComponent>)change;
+    RemoveEReference<Repository, RepositoryComponent> typedChange = (RemoveEReference<Repository, RepositoryComponent>)change;
     final org.palladiosimulator.pcm.repository.RepositoryComponent oldValue = typedChange.getOldValue();
     if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RepositoryComponentContainerMock(oldValue, typedChange.getOldAffectedEObject()));
+    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RepositoryComponentContainerMock(oldValue, typedChange.getAffectedEObject()));
     }
     mir.routines.pcm2java.DeletedComponentEffect effect = new mir.routines.pcm2java.DeletedComponentEffect(this.executionState, this, typedChange);
     effect.applyRoutine();

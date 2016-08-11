@@ -3,16 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: PCMJavaResponses
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses;singleton:=true
 Bundle-Version: 1.0.0
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.framework.meta.change,
  com.google.guava,
  org.eclipse.core.resources,
  org.apache.log4j,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
-  org.emftext.language.java;bundle-version="1.4.0",
+ org.emftext.language.java;bundle-version="1.4.0",
  org.emftext.language.java.resource;bundle-version="1.4.0",
  org.emftext.language.java.resource.java;bundle-version="1.4.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.9.1",
@@ -26,11 +27,13 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
  org.somox.gast2seff,
- edu.kit.ipd.sdq.vitruvius.dsls.response
+ edu.kit.ipd.sdq.vitruvius.dsls.response,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm

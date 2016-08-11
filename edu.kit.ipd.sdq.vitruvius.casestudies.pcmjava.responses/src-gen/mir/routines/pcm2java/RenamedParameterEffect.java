@@ -3,25 +3,26 @@ package mir.routines.pcm2java;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.UpdateSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.parameters.OrdinaryParameter;
+import org.palladiosimulator.pcm.repository.Parameter;
 
 @SuppressWarnings("all")
 public class RenamedParameterEffect extends AbstractEffectRealization {
-  public RenamedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final UpdateSingleValuedEAttribute<String> change) {
+  public RenamedParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<Parameter, String> change) {
     super(responseExecutionState, calledBy);
     				this.change = change;
   }
   
-  private UpdateSingleValuedEAttribute<String> change;
+  private ReplaceSingleValuedEAttribute<Parameter, String> change;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenamedParameterEffect with input:");
-    getLogger().debug("   UpdateSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
     
     OrdinaryParameter javaParameter = getCorrespondingElement(
     	getCorrepondenceSourceJavaParameter(change), // correspondence source supplier
@@ -39,9 +40,9 @@ public class RenamedParameterEffect extends AbstractEffectRealization {
     postprocessElementStates();
   }
   
-  private EObject getCorrepondenceSourceJavaParameter(final UpdateSingleValuedEAttribute<String> change) {
-    EObject _newAffectedEObject = change.getNewAffectedEObject();
-    return _newAffectedEObject;
+  private EObject getCorrepondenceSourceJavaParameter(final ReplaceSingleValuedEAttribute<Parameter, String> change) {
+    Parameter _affectedEObject = change.getAffectedEObject();
+    return _affectedEObject;
   }
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
@@ -53,7 +54,7 @@ public class RenamedParameterEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final UpdateSingleValuedEAttribute<String> change, final OrdinaryParameter javaParameter) {
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Parameter, String> change, final OrdinaryParameter javaParameter) {
       String _newValue = change.getNewValue();
       javaParameter.setName(_newValue);
     }
