@@ -41,7 +41,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.CorrespondenceHelper
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -346,7 +345,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 				val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
 				correspondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList)
 			}else{ // create a standard response correspondence
-				correspondence = CorrespondenceHelper.addCorrespondence(cInstance, deresolvedA, deresolvedB, null) 
+				correspondence = cInstance.createAndAddCorrespondence(deresolvedA, deresolvedB)
 			}
 			existingEntries.add(identifier)
 			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB)
