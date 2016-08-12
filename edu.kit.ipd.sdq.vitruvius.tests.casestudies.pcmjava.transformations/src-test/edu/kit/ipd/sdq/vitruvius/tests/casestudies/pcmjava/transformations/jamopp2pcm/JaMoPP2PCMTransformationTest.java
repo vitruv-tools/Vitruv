@@ -815,7 +815,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         offset = offset + firstBracket - 1;
         final InsertEdit insertEdit = new InsertEdit(offset, newSource);
         CompilationUnitManipulatorHelper.editCompilationUnit(classCompilationUnit, insertEdit);
-        TestUtil.waitForSynchronization();
+        TestUtil.waitForSynchronization(3*TestUtil.WAITING_TIME_FOR_SYNCHRONIZATION);
         final org.emftext.language.java.classifiers.Class jaMoPPClass = (org.emftext.language.java.classifiers.Class) this
                 .getJaMoPPClassifierForVURI(VURI.getInstance(classCompilationUnit.getResource()));
         final EList<TypeReference> classImplements = jaMoPPClass.getImplements();
