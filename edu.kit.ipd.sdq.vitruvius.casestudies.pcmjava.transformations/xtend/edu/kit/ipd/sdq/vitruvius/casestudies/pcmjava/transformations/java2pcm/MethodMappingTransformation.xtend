@@ -106,8 +106,10 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val transformationResult = new TransformationResult
 		if (!newCorrespondingEObjects.nullOrEmpty) {
-			val operationSignatues = blackboard.correspondenceInstance.
-				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
+			var operationSignatues = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
+			if(operationSignatues.nullOrEmpty){
+				operationSignatues = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(newAffectedEObject, OperationSignature)
+			}
 			val pcmParameters = newCorrespondingEObjects.filter(typeof(Parameter))
 			if (!operationSignatues.nullOrEmpty) {
 				for (opSig : operationSignatues) {
@@ -139,7 +141,9 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		if(affectedReference.name != PCMJaMoPPNamespace.JaMoPP.JAMOPP_STATEMENTS_REFERENCE){
+			val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(oldAffectedEObject)
 			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
+			blackboard.correspondenceInstance.updateTUID(oldTUID, oldAffectedEObject)
 		}
 		return new TransformationResult
 	}
