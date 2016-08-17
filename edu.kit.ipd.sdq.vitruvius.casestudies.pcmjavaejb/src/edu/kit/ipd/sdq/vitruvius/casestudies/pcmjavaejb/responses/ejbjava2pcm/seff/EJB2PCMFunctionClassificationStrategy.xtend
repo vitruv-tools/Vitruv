@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
@@ -13,6 +12,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy
 import org.somox.gast2seff.visitors.MethodCallFinder
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
 class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificationStrategy {
 	

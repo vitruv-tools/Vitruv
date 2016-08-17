@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.emftext.language.java.classifiers.Class
@@ -9,6 +8,7 @@ import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.Repository
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
 class EJBJava2PcmHelper {
 	private new(){}
