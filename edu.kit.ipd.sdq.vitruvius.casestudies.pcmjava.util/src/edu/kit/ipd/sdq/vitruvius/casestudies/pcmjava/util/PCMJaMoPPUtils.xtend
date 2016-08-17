@@ -1,8 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
@@ -32,6 +31,7 @@ import org.palladiosimulator.pcm.system.System
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)

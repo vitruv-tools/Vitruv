@@ -1,8 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
@@ -43,6 +42,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPP
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -303,8 +303,8 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		}
 		val resource = eObject.eResource
 		val resourceSet = resource.resourceSet
-		val uri = resource.URI
-		val uriConverter = resourceSet.URIConverter
+		val uri = resource.getURI
+		val uriConverter = resourceSet.getURIConverter
 		val normalizedURI = uriConverter.normalize(uri)
 		resource.URI = normalizedURI
 		return true
