@@ -33,9 +33,6 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.repository,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.system,
  org.modelrefactoring.jamopp.test.valueprovider
 Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,
  .,

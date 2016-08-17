@@ -9,7 +9,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  org.eclipse.xtend.lib,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
- edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter

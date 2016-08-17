@@ -27,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRoot
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.DefaultEObjectMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 

@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import java.util.ArrayList
@@ -22,6 +21,8 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.palladiosimulator.pcm.seff.SeffFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
 class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation {
 

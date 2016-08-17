@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.DefaultEObjectMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.types.ClassifierReference
@@ -12,6 +11,8 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
 class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransformation {
 

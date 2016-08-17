@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
@@ -20,6 +19,9 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 

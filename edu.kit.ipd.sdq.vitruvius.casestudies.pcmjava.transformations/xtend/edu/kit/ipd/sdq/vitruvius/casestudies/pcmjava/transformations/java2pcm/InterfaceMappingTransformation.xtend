@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
@@ -16,6 +14,9 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
@@ -39,7 +40,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	override createEObject(EObject eObject) {
 		val Interface jaMoPPInterface = eObject as Interface
 		try {
-			val Package jaMoPPPackage = PCM2JaMoPPUtils::
+			val Package jaMoPPPackage = PCM2JaMoPPUtils.
 				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, blackboard.correspondenceInstance)
 			var boolean createInterface = false
 			if (null != jaMoPPPackage && jaMoPPPackage.name.equals("contracts")) {
