@@ -16,6 +16,7 @@ Require-Bundle: com.google.guava,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations
