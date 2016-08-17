@@ -9,16 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.FeatureChange;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GenericCompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
@@ -38,6 +37,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
@@ -182,7 +182,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    private void updateTUIDs(final Map<EObject, TUID> tuidMap,
+    protected void updateTUIDs(final Map<EObject, TUID> tuidMap,
             final CorrespondenceInstanceDecorator correspondenceInstance) {
         // TODO HK There is something wrong with transactions if we have to start a transaction to
         // update the TUID here.
@@ -190,19 +190,18 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         // 1. There should not be an active transaction when this method is called
         // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
         // resources
-        // TODO HK Reactivate update
-        // for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
-        // final TUID newTUID = correspondenceInstance.calculateTUIDFromEObject(object);
-        // if (newTUID != null) {
-        // EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
-        // @Override
-        // public Void call() throws Exception {
-        // correspondenceInstance.updateTUID(tuidMap.get(object), newTUID);
-        // return null;
-        // }
-        // }, this.modelProviding);
-        // }
-        // }
+        for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
+            final TUID newTUID = correspondenceInstance.calculateTUIDFromEObject(object);
+            if (newTUID != null) {
+                EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        correspondenceInstance.updateTUID(tuidMap.get(object), newTUID);
+                        return null;
+                    }
+                }, this.modelProviding);
+            }
+        }
     }
 
     private void rollbackChange(final VitruviusChange change) {
@@ -213,18 +212,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             }
         } else if (change instanceof EMFModelChange) {
             ((EMFModelChange) change).getChangeDescription().applyAndReverse();
-        }
-    }
-
-    private void applyChanges(final List<VitruviusChange> changes) {
-        for (VitruviusChange change : changes) {
-            if (change instanceof EMFModelChange) {
-                ChangeDescription descr = ((EMFModelChange) change).getChangeDescription();
-                if (descr != null)
-                    descr.applyAndReverse();
-            } else if (change instanceof GenericCompositeChange) {
-                applyChanges(((GenericCompositeChange) change).getChanges());
-            }
         }
     }
 
