@@ -1,25 +1,26 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java;
 
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.eclipse.emf.common.command.Command;
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm.POJOJava2PcmMethodBodyChangePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Java2PcmMethodBodyChangePreprocessor;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.PCMJaMoPPChange2CommandTransformerBase;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMethodMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.CompilationUnitMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.FieldMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.InterfaceMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.MethodMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ModifierMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.PackageMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.TypeReferenceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.ClassMethodMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.CompilationUnitMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.FieldMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.InterfaceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.MethodMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.ModifierMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.PackageMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.TypeReferenceMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java.OperationProvidedRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java.OperationRequiredRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java.repository.BasicComponentMappingTransformation;
@@ -86,8 +87,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
         this.transformationExecuter.addMapping(new ClassMappingTransformation());
         this.transformationExecuter.addMapping(new InterfaceMappingTransformation());
         this.transformationExecuter.addMapping(new MethodMappingTransformation());
-        this.transformationExecuter.addMapping(
-                new edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ParameterMappingTransformation());
+        this.transformationExecuter.addMapping(new ParameterMappingTransformation());
         this.transformationExecuter.addMapping(new ModifierMappingTransformation());
         this.transformationExecuter.addMapping(new FieldMappingTransformation());
         this.transformationExecuter.addMapping(new ClassMethodMappingTransformation());
@@ -101,50 +101,16 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
 
     @Override
     protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
-        if (1 == changesForTransformation.size() && changesForTransformation.get(0) instanceof TransactionalChange) {
-            final TransactionalChange compositeChange = (TransactionalChange) changesForTransformation.get(0);
-            final Java2PcmMethodBodyChangePreprocessor refiner = new Java2PcmMethodBodyChangePreprocessor(new POJOJava2PCMCode2SEFFFactory());
-            return refiner.match(compositeChange);
+        if (changesForTransformation.size() == 1) {
+        	return new POJOJava2PcmMethodBodyChangePreprocessor().doesProcess(changesForTransformation.get(0));
         }
         return false;
     }
 
     @Override
-    protected VitruviusTransformationRecordingCommand executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
+    protected Command executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
             final Blackboard blackboard) {
-        final TransactionalChange compositeChange = (TransactionalChange) changesForTransformation.get(0);
-        final VitruviusTransformationRecordingCommand vitruviusCommand = EMFCommandBridge
-                .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
-
-                    @Override
-                    public TransformationResult call() {
-                        return PCMJaMoPPPOJOChange2CommandTransformer.this
-                                .executeClassMethodBodyChangeRefiner(blackboard, compositeChange);
-
-                    }
-                });
-        return vitruviusCommand;
+    	return new POJOJava2PcmMethodBodyChangePreprocessor().processChange(changesForTransformation.get(0), null, blackboard).iterator().next();
     }
 
-    private TransformationResult executeClassMethodBodyChangeRefiner(final Blackboard blackboard,
-            final TransactionalChange compositeChange) {
-        final CorrespondenceInstance correspondenceInstance = blackboard.getCorrespondenceInstance();
-        final GeneralChange emfChange = (GeneralChange) compositeChange.getChanges().get(0);
-        final JavaFeatureEChange<?,?> eFeatureChange = (JavaFeatureEChange<?,?>) emfChange.getEChanges().get(0);
-        final ClassMethod oldMethod = (ClassMethod) eFeatureChange.getOldAffectedEObject();
-        final ClassMethod newMethod = (ClassMethod) eFeatureChange.getAffectedEObject();
-        final BasicComponentForPackageMappingFinder basicComponentFinder = new BasicComponentForPackageMappingFinder();
-        final BasicComponent myBasicComponent = basicComponentFinder.findBasicComponentForMethod(newMethod,
-                correspondenceInstance);
-        final FunctionClassificationStrategyForPackageMapping classification = new FunctionClassificationStrategyForPackageMapping(
-                basicComponentFinder, correspondenceInstance, myBasicComponent);
-        final InterfaceOfExternalCallFinding interfaceOfExternalCallFinder = new InterfaceOfExternalCallFinderForPackageMapping(
-                correspondenceInstance, myBasicComponent);
-        final ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding = new ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(
-                correspondenceInstance);
-        final ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
-                oldMethod, newMethod, basicComponentFinder, classification, interfaceOfExternalCallFinder,
-                resourceDemandingBehaviourForClassMethodFinding);
-        return methodBodyChanged.execute(blackboard, this.userInteracting);
-    }
 }

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,7 +181,7 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return false;
     }
 
-    protected abstract VitruviusTransformationRecordingCommand executeChangeRefiner(
+    protected abstract Command executeChangeRefiner(
             final List<VitruviusChange> changesForTransformation, final Blackboard blackboard);
 
     @Override
