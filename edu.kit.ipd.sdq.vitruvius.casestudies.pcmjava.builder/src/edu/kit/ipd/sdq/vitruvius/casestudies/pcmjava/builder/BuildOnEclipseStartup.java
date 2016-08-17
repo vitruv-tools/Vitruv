@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;
 import org.eclipse.ui.IStartup;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.util.BuildProjects;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 
 /**
  * {@link BuildOnEclipseStartup} issues an incremental build of all open projects just after Eclipse
@@ -13,6 +12,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
 public class BuildOnEclipseStartup implements IStartup {
     @Override
     public void earlyStartup() {
-        BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJaMoPPNamespace.BUILDER_ID);
+        BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
     }
 }

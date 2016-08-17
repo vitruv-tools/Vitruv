@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
@@ -22,6 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 
 public class PCMJavaBuilder extends VitruviusEmfBuilder implements SynchronisationListener {
+    // ID of PCMJavaBuilder
+    public static final String BUILDER_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id";
 
     private static Logger logger = Logger.getLogger(PCMJavaBuilder.class.getSimpleName());
 
@@ -32,7 +34,7 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
         logger.trace("PCMJavaBuilder is ALIVE");
         final MetaRepositoryImpl metarepository = PCMJavaUtils.createPCMJavaMetarepository();
         Set<String> monitoredFileTypes = new HashSet<String>(
-                Arrays.asList(PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION
+                Arrays.asList(PCMNamespace.REPOSITORY_FILE_EXTENSION
                         // since java files already monitored by the java monitor we do not have to monitor
                         // them here
                         /* , PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION */));

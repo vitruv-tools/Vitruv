@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
@@ -74,6 +73,8 @@ import org.emftext.language.java.modifiers.Public
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -93,8 +94,8 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def static addEntityName2NameCorrespondence(Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap) {
-		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PCMJaMoPPNamespace.PCM::PCM_ATTRIBUTE_ENTITY_NAME,
-			PCMJaMoPPNamespace.JaMoPP::JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
+		addPCM2JaMoPPCorrespondenceToFeatureCorrespondenceMap(PCMNamespace.PCM_ATTRIBUTE_ENTITY_NAME,
+			JaMoPPNamespace.JAMOPP_ATTRIBUTE_NAME, featureCorrespondenceMap)
 	}
 
 	def static updateNameAttribute(
@@ -199,7 +200,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				javaRoot.namespaces.add(newValue.toString)
 				newName = newName + "Impl"
 			}
-			newName = newName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION
+			newName = newName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
 			handleClassifierNameChange((javaRoot as CompilationUnit).classifiers.get(0), newValue,
 				blackboard.correspondenceInstance, changeNamespanceIfCompilationUnit, oldClassifierTUID)
 		}

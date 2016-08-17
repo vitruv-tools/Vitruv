@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
@@ -32,6 +31,7 @@ import org.palladiosimulator.pcm.system.System
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -134,13 +134,13 @@ class PCMJaMoPPUtils {
 
 		def dispatch static addRootChangeToTransformationResult(Repository repo, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION,
+			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMNamespace.REPOSITORY_FILE_EXTENSION,
 				transformationResult)
 		}
 
 		def dispatch static addRootChangeToTransformationResult(System system, Blackboard blackboard,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION,
+			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMNamespace.SYSTEM_FILE_EXTENSION,
 				transformationResult)
 		}
 
