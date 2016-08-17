@@ -14,5 +14,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.tests.util,
  org.palladiosimulator.pcm,
  org.eclipse.emf.ecore.xmi,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.framework.contracts
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util

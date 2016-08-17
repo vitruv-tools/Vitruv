@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava

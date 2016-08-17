@@ -13,7 +13,8 @@ import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -49,10 +50,10 @@ public final class JaMoPPPCMTestUtil {
 
         // register JaMoPP package and factory globally
         EPackage.Registry.INSTANCE.put(JavaPackage.eNS_URI, JavaPackage.eINSTANCE);
-        m.put(PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION, new JavaResourceFactory());
+        m.put(JaMoPPNamespace.JAVA_FILE_EXTENSION, new JavaResourceFactory());
         // register PCM
         EPackage.Registry.INSTANCE.put(PcmPackage.eNS_URI, PcmPackage.eINSTANCE);
-        m.put(PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION, new PcmResourceFactoryImpl());
+        m.put(PCMNamespace.REPOSITORY_FILE_EXTENSION, new PcmResourceFactoryImpl());
         // register correspondence model for xmi files
         EPackage.Registry.INSTANCE.put(CorrespondencePackage.eNS_URI, CorrespondencePackage.eINSTANCE);
         m.put("xmi", new XMIResourceFactoryImpl());
