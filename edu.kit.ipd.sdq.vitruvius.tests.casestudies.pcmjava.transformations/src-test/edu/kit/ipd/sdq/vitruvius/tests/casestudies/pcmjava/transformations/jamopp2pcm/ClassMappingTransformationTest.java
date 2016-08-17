@@ -11,7 +11,7 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest {

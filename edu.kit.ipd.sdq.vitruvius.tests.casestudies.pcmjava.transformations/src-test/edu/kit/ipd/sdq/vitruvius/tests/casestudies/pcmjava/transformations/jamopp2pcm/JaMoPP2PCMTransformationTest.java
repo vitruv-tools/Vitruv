@@ -91,11 +91,12 @@ import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.util.BuildProjects;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java2pcm.ClassMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
@@ -146,7 +147,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
         pcmJavaBuilder.addBuilderToProject(this.currentTestProject);
         // build the project
-        BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJaMoPPNamespace.BUILDER_ID);
+        BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
         this.resourceSet = new ResourceSetImpl();
         // set new user interactor
         this.setUserInteractor(this.testUserInteractor);
@@ -175,8 +176,8 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     @Override
     protected CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable {
         final VSUMImpl vsum = this.getVSUM();
-        final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
-        final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+        final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum
                 .getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
@@ -197,7 +198,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         final ProjectDescription description = ((ProjectInfo) info).getDescription();
         final boolean makeCopy = false;
         for (final ICommand command : description.getBuildSpec(makeCopy)) {
-            if (command.getBuilderName().equals(PCMJaMoPPNamespace.BUILDER_ID)) {
+            if (command.getBuilderName().equals(PCMJavaBuilder.BUILDER_ID)) {
                 final BuildCommand buildCommand = (BuildCommand) command;
                 final IncrementalProjectBuilder ipb = buildCommand
                         .getBuilder(this.currentTestProject.getActiveBuildConfig());
@@ -405,7 +406,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     private VURI getVURIForElementInPackage(final IPackageFragment packageFragment, final String elementName) {
         String vuriKey = packageFragment.getResource().getFullPath().toString() + "/" + elementName + "."
-                + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
+                + JaMoPPNamespace.JAVA_FILE_EXTENSION;
         if (vuriKey.startsWith("/")) {
             vuriKey = vuriKey.substring(1, vuriKey.length());
         }

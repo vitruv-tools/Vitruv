@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.SystemFactory;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
@@ -48,7 +48,7 @@ public class PCM2JaMoPPTestUtils {
     public static Repository createRepository(final ResourceSet resourceSet, final String repositoryName,
             final String projectName) throws IOException {
         final VURI repoVURI = VURI.getInstance(
-                projectName + "/model/" + repositoryName + "." + PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
+                projectName + "/model/" + repositoryName + "." + PCMNamespace.REPOSITORY_FILE_EXTENSION);
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final Repository repo = RepositoryFactory.eINSTANCE.createRepository();
         repo.setEntityName(repositoryName);
@@ -121,7 +121,7 @@ public class PCM2JaMoPPTestUtils {
     public static System createSystem(final ResourceSet resourceSet, final String systemName, final String projectName)
             throws Throwable {
         final VURI repoVURI = VURI
-                .getInstance(projectName + "/model/" + systemName + "." + PCMJaMoPPNamespace.PCM.SYSTEM_FILE_EXTENSION);
+                .getInstance(projectName + "/model/" + systemName + "." + PCMNamespace.SYSTEM_FILE_EXTENSION);
         final Resource resource = resourceSet.createResource(repoVURI.getEMFUri());
         final System system = SystemFactory.eINSTANCE.createSystem();
         system.setEntityName(systemName);

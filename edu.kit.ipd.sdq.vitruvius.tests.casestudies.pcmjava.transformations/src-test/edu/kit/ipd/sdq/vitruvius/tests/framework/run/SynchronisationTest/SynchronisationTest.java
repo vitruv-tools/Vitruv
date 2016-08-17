@@ -28,7 +28,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
@@ -91,7 +91,7 @@ public class SynchronisationTest {
 
         final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
-                PCMJaMoPPNamespace.PCM.REPOSITORY_FILE_EXTENSION);
+                PCMNamespace.REPOSITORY_FILE_EXTENSION);
         final IVitruviusAccessor vitruvAccessor = new IVitruviusAccessor() {
             @Override
             public boolean isModelMonitored(final VURI modelUri) {

@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
@@ -67,8 +67,8 @@ public class CompilationUnitManipulatorHelper {
     }
 
     public static String ensureJavaFileExtension(String entityName) {
-        if (!entityName.endsWith("." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION)) {
-            entityName = entityName + "." + PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION;
+        if (!entityName.endsWith("." + JaMoPPNamespace.JAVA_FILE_EXTENSION)) {
+            entityName = entityName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION;
         }
         return entityName;
     }
