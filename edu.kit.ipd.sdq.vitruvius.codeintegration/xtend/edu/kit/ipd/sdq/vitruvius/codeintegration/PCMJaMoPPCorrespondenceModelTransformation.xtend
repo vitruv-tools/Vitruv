@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -41,6 +40,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -75,8 +76,8 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	new(String scdmPath, String pcmPath, List<IPath> jamoppPaths, VSUMImpl vsum, IPath projectBase) {
 
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
-		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
-		var mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
+		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
+		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		// FIXME do that without a cast
 		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB)
 

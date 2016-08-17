@@ -17,5 +17,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.codeintegration
+ edu.kit.ipd.sdq.vitruvius.codeintegration,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.tests

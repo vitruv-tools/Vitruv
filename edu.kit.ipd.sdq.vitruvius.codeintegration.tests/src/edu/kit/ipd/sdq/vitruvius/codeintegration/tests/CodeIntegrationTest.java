@@ -43,7 +43,8 @@ import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler;
@@ -174,7 +175,7 @@ public class CodeIntegrationTest {
         pcmJavaBuilder.addBuilderToProject(this.testProject);
         // build the project
         progress = new DoneFlagProgressMonitor();
-        this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, PCMJaMoPPNamespace.BUILDER_ID,
+        this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, PCMJavaBuilder.BUILDER_ID,
                 new HashMap<String, String>(), progress);
         while (!progress.isDone()) {
             Thread.sleep(100);
@@ -228,8 +229,8 @@ public class CodeIntegrationTest {
 
     protected CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable {
         final VSUMImpl vsum = this.getVSUM();
-        final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
-        final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+        final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
+        final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum
                 .getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
@@ -250,7 +251,7 @@ public class CodeIntegrationTest {
         final ProjectDescription description = ((ProjectInfo) info).getDescription();
         final boolean makeCopy = false;
         for (final ICommand command : description.getBuildSpec(makeCopy)) {
-            if (command.getBuilderName().equals(PCMJaMoPPNamespace.BUILDER_ID)) {
+            if (command.getBuilderName().equals(PCMJavaBuilder.BUILDER_ID)) {
                 final BuildCommand buildCommand = (BuildCommand) command;
                 final IncrementalProjectBuilder ipb = buildCommand.getBuilder(this.testProject.getActiveBuildConfig());
                 final PCMJavaBuilder pcmJavaBuilder = (PCMJavaBuilder) ipb;
