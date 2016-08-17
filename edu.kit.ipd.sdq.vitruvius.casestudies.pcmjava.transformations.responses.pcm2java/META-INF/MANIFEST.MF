@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pcm2java
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responsetransformations.pcm2java;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.pcm2java;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
