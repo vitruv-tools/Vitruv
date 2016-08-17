@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.DataTypeCorrespondenceHelper;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class DataTypeCorrespondenceHelperTest extends PCM2JaMoPPTransformationTest {
