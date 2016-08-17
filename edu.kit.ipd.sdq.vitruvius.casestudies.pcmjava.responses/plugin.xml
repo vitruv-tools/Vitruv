@@ -4,13 +4,13 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm.Change2CommandTransformingJavaToPcm">
+            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.java2pcm.Change2CommandTransformingJavaToPcm">
       </provides>
    </extension>
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
    	<provides
-    	 provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java.Change2CommandTransformingPcmToJava">
+    	 provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.pcm2java.Change2CommandTransformingPcmToJava">
       </provides>
 	</extension>
 </plugin>

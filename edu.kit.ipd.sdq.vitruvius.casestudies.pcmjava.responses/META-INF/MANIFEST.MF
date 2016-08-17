@@ -1,10 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCMJavaResponses
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses;singleton:=true
 Bundle-Version: 1.0.0
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.java2pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
@@ -34,5 +32,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.java2pcm;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.pcm2java;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
