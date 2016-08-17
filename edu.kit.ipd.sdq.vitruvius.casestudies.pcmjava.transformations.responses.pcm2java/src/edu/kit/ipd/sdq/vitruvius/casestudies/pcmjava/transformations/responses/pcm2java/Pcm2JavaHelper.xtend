@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.pcm2java
 
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.containers.CompilationUnit
@@ -559,3 +559,4 @@ class Pcm2JavaHelper {
 		return namespaceClassifierReference
 	}
 }
+	

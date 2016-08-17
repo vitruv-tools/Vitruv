@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.responses.pcm2java
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.pcm2java
 
 import mir.responses.AbstractChange2CommandTransforming5_1ToJava
 
