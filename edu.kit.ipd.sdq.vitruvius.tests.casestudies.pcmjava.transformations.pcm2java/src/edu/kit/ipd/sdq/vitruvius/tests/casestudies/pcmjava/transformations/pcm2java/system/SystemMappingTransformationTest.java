@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.system;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java.system;
 
 import static org.junit.Assert.fail;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
 
 public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTest {
