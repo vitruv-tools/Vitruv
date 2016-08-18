@@ -20,5 +20,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider
 
