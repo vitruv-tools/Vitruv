@@ -1,17 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
-import org.emftext.language.java.members.ClassMethod;
-import org.palladiosimulator.pcm.repository.BasicComponent;
-import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
-import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm.POJOJava2PcmMethodBodyChangePreprocessor;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.ClassMethodBodyChangedTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Java2PcmMethodBodyChangePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMethodMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.CompilationUnitMappingTransformation;
@@ -39,17 +31,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.ProvidedDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.RequiredDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.SystemMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements.Java2PcmPackageMappingMethodBodyChangePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 
 public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
 
@@ -102,7 +86,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     @Override
     protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
         if (changesForTransformation.size() == 1) {
-        	return new POJOJava2PcmMethodBodyChangePreprocessor().doesProcess(changesForTransformation.get(0));
+        	return new Java2PcmPackageMappingMethodBodyChangePreprocessor().doesProcess(changesForTransformation.get(0));
         }
         return false;
     }
@@ -110,7 +94,7 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
     @Override
     protected Command executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
             final Blackboard blackboard) {
-    	return new POJOJava2PcmMethodBodyChangePreprocessor().processChange(changesForTransformation.get(0), null, blackboard).iterator().next();
+    	return new Java2PcmPackageMappingMethodBodyChangePreprocessor().processChange(changesForTransformation.get(0), null, blackboard).iterator().next();
     }
 
 }

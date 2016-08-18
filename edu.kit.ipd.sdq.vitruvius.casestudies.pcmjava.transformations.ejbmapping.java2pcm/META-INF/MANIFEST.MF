@@ -28,5 +28,5 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming

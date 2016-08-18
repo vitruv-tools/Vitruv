@@ -8,7 +8,7 @@ import org.eclipse.emf.common.command.Command;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm.Java2PcmPackagePreprocessor;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util.Java2PcmPackagePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandResult;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandTransformer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;

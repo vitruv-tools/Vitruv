@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Java2PcmMethodBodyChangePreprocessor
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff.EJBJava2PCMCode2SEFFFactory
 import mir.responses.AbstractChange2CommandTransformingJavaTo5_1
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm.Java2PcmPackagePreprocessor
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util.Java2PcmPackagePreprocessor
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.TUIDUpdatePreprocessor
 
 class Change2CommandTransformingEJBJavaToPCM extends AbstractChange2CommandTransformingJavaTo5_1 {
