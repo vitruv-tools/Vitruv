@@ -5,14 +5,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.emftext.language.java.containers.Package;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm.Java2PcmPackagePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandResult;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandTransformer;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
@@ -23,8 +19,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
@@ -103,7 +97,11 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
 
     private VitruviusTransformationRecordingCommand transformChange2Command(final ConcreteChange emfModelChange,
             final Blackboard blackboard) {
-        this.handlePackageInEChange(emfModelChange);
+    	Java2PcmPackagePreprocessor packagePreprocessor = new Java2PcmPackagePreprocessor();
+    	if (packagePreprocessor.doesProcess(emfModelChange)) {
+    		packagePreprocessor.processChange(emfModelChange, null, blackboard);
+    	}
+        //this.handlePackageInEChange(emfModelChange);
         this.transformationExecuter.setBlackboard(blackboard);
 
         final VitruviusTransformationRecordingCommand command = EMFCommandBridge
@@ -131,51 +129,6 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
             }
         }
         return commands;
-    }
-
-    /**
-     * Special treatment for packages: we have to use the package-info file as input for the
-     * transformation and make sure that the packages have resources attached
-     *
-     * @param change
-     *            the change that may contain the newly created package
-     */
-    private void handlePackageInEChange(final ConcreteChange change) {
-        if (change.getEChanges().get(0) instanceof InsertRootEObject<?>) {
-            final InsertRootEObject<?> createRoot = (InsertRootEObject<?>) change.getEChanges().get(0);
-            this.attachPackageToResource(createRoot.getNewValue(), change.getURI());
-        } else if (change.getEChanges().get(0) instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
-            final JavaReplaceSingleValuedEAttribute<?,?> updateSingleValuedEAttribute = (JavaReplaceSingleValuedEAttribute<?,?>) change
-                    .getEChanges().get(0);
-            this.prepareRenamePackageInfos(updateSingleValuedEAttribute, change.getURI());
-        } // TODO: package deletion
-    }
-
-    private void prepareRenamePackageInfos(final JavaReplaceSingleValuedEAttribute<?,?> updateSingleValuedEAttribute,
-            final VURI vuri) {
-        if (updateSingleValuedEAttribute.getOldAffectedEObject() instanceof Package
-                && updateSingleValuedEAttribute.getAffectedEObject() instanceof Package) {
-            final Package oldPackage = (Package) updateSingleValuedEAttribute.getOldAffectedEObject();
-            final Package newPackage = (Package) updateSingleValuedEAttribute.getAffectedEObject();
-            this.attachPackageToResource(oldPackage, vuri);
-            String newVURIKey = vuri.toString();
-            final String oldPackagePath = oldPackage.getName().replace(".", "/");
-            final String newPackagePath = newPackage.getName().replace(".", "/");
-            newVURIKey = newVURIKey.replace(oldPackagePath, newPackagePath);
-            final VURI newVURI = VURI.getInstance(newVURIKey);
-            this.attachPackageToResource(newPackage, newVURI);
-        }
-    }
-
-    private void attachPackageToResource(final EObject eObject, final VURI vuri) {
-        if (eObject instanceof Package) {
-            final Package newPackage = (Package) eObject;
-            // attach the package to a resource in order to enable the calculation of
-            // a TUID in the transformations
-            final ResourceSet resourceSet = new ResourceSetImpl();
-            final Resource resource = resourceSet.createResource(vuri.getEMFUri());
-            resource.getContents().add(newPackage);
-        }
     }
 
     protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
