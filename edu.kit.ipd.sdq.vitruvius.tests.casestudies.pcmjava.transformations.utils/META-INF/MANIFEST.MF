@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM-Java Tests Utils
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.core.resources,
