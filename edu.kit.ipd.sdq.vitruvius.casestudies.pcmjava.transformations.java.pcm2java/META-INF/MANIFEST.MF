@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Java Pcm2Java Transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -19,6 +19,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.run.util
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java.system,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.pcm2java.repository
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.repository,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java

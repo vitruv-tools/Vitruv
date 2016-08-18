@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Java2PCM Response Transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.java2pcm
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm
 Bundle-Version: 1.0.0
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses.java2pcm
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
  edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm
