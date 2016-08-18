@@ -20,8 +20,8 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransformationTest {
