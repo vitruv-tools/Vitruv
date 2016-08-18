@@ -47,4 +47,4 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
-Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java

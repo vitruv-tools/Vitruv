@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
