@@ -10,7 +10,6 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponseFile
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.MockClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ExecutorClassGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 import edu.kit.ipd.sdq.vitruvius.dsls.response.jvmmodel.classgenerators.ImplicitRoutineClassGenerator
@@ -41,10 +40,6 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		val effectClass = new ImplicitRoutineClassGenerator(response.routine, typesBuilderExtensionProvider).generateClass();
 		acceptor.accept(effectClass);
 		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
-		val mockType = new MockClassGenerator(response.trigger, typesBuilderExtensionProvider).generateClass();
-		if (mockType != null) {
-			acceptor.accept(mockType);
-		}
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	

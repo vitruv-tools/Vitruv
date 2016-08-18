@@ -14,7 +14,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHe
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.AtomicFeatureChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
-import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization
@@ -92,26 +91,9 @@ class ResponseClassGenerator extends ClassGenerator {
 			val typedChangeString = typedChangeString;
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
-				«getMockOldValueCodeIfNecessary(response.trigger, typedChangeName)»
 				«routineClassNameGenerator.qualifiedName» effect = new «routineClassNameGenerator.qualifiedName»(this.executionState, this, «typedChangeName»);
 				effect.applyRoutine();'''
 		];
-	}
-	
-	/* TODO HK (Change MM): Fix this after the new change MM is implemented:
-		 * Delete objects (except root one) are removed from the model and now contained in the ChangeDescription,
-		 * so correspondences cannot be resolved
-		 */
-	private def dispatch StringConcatenationClient getMockOldValueCodeIfNecessary(Trigger trigger, String typedChangeName) ''''''
-	private def dispatch StringConcatenationClient getMockOldValueCodeIfNecessary(AtomicFeatureChange trigger, String typedChangeName) {
-		val affectedElementClass = trigger.changedFeature.feature.EType
-		if (change.methods.exists[it.name == "setOldValue"] && EObject.isAssignableFrom(affectedElementClass.instanceClass)) {
-			'''
-			final «affectedElementClass.instanceClass.name» oldValue = «typedChangeName».getOldValue();
-			if (oldValue != null) {
-				«typedChangeName».setOldValue(new «basicResponsesPackageQualifiedName + ".mocks." + affectedElementClass.instanceClass.name + "ContainerMock"»(oldValue, «typedChangeName».getAffectedEObject()));
-			}'''
-		}
 	}
 			
 	private def StringConcatenationClient getTypedChangeString() '''
