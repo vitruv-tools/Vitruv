@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -139,6 +140,14 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
     protected Package mainPackage;
     protected Package secondPackage;
 
+    public JaMoPP2PCMTransformationTest() {
+    	super();
+    }
+    
+    public JaMoPP2PCMTransformationTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+    	super(change2CommandTransformingProvidingSupplier);
+    }
+    
     @Override
     protected void beforeTest(final Description description) throws Throwable {
         super.beforeTest(description);
