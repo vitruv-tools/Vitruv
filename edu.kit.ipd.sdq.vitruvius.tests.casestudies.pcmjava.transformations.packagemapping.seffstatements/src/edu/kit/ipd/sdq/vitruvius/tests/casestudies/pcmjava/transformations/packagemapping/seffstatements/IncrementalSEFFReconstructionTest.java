@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.seffstatements;
 
 import static org.junit.Assert.fail;
 

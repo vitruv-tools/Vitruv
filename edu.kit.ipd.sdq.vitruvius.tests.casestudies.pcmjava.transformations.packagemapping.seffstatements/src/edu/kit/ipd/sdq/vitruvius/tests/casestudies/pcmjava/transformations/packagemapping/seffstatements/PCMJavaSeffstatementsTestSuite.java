@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.seffstatements;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
