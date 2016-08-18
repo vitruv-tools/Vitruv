@@ -18,6 +18,16 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 	protected static val String TEST_INTERFACE_NAME = "TestEJBInterface"
 	protected static val String TEST_FIELD_NAME = "testEJBfield"
 	
+//	static class EJBTransformingProviding extends AbstractChange2CommandTransformingProviding {
+//		new() {
+//			addChange2CommandTransforming(new Change2CommandTransformingEJBJavaToPCM());
+//		}
+//	}
+//	
+//	new() {
+//		super([ | new EJBTransformingProviding() ]);
+//	}
+	
 	def protected createEJBClass(String className) {
 		val ConcreteClassifier classifier = super.createClassInPackage(this.mainPackage, className) as ConcreteClassifier 
 		val BasicComponent correspondingBasicComponent = this.addAnnotationToClassifier(classifier, STATELESS_ANNOTATION_NAME, BasicComponent, className)

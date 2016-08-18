@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements.IncrementalSEFFReconstructionTest
 import org.emftext.language.java.classifiers.ConcreteClassifier
@@ -8,6 +8,8 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils
 import org.junit.runner.Description
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBClassMappingTest
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBJaMoPP2PCMTransformationTest
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
