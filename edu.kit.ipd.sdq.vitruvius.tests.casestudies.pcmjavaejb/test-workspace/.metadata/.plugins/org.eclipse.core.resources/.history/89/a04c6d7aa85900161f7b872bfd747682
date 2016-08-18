@@ -1,5 +1,0 @@
-package testRepository;
-@Stateless
-public class TestEJBClass {
-
-}

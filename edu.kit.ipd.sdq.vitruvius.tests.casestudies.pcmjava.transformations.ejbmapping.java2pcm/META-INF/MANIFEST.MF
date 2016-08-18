@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PCM Java EJB tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.junit,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava,
+ org.emftext.language.java,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.tests.util,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ org.eclipse.core.runtime,
+ org.palladiosimulator.pcm,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
+
