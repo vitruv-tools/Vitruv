@@ -10,6 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
         FieldMappingTransformationTest.class, InterfaceMappingTransformationTest.class,
         JaMoPPParameterMappingTransformationTest.class, MethodMappingTransformationTest.class,
         PackageMappingTransformationTest.class, TypeReferenceMappingTransformationTest.class })
-public class JaMoPP2PCMTestSuite {
+public class Java2PCMTestSuite {
 
 }

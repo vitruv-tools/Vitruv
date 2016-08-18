@@ -30,3 +30,4 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
  org.eclipse.xtext.xbase.lib
+Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm
