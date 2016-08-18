@@ -4,3 +4,16 @@ Bundle-Name: PCM-Java Package-Mapping Seffstatements
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.eclipse.emf.ecore,
+ org.emftext.language.java,
+ org.palladiosimulator.pcm,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
+
