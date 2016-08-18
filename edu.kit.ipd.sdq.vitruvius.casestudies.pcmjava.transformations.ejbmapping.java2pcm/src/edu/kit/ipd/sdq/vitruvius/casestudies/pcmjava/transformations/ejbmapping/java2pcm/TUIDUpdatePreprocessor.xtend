@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange

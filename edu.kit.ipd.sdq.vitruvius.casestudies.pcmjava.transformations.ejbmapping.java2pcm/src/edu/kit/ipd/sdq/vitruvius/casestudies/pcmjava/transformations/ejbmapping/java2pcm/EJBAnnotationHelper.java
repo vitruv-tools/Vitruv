@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm;
 
 import java.util.Arrays;
 import java.util.HashSet;

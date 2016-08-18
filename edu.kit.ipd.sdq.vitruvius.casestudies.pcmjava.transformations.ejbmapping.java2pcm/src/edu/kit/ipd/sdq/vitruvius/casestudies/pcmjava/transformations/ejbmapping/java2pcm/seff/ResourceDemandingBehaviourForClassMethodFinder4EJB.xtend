@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavaejb.responses.ejbjava2pcm.seff
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import org.emftext.language.java.members.ClassMethod
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
