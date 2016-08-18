@@ -5,3 +5,16 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transfo
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.text,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
+ edu.kit.ipd.sdq.vitruvius.tests.util,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
+ org.palladiosimulator.pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
+ 
