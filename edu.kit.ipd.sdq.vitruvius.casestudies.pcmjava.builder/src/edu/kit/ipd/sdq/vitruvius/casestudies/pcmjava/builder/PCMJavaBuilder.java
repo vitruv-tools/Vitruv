@@ -7,9 +7,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceDescription;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -100,34 +97,34 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
 
     }
 
-    private void waitForPreviosOperationToFinish() {
-        try {
-            Object lock = new Object();
-            synchronized (lock) {
-                lock.wait(2000);
-            }
-        } catch (InterruptedException e) {
-            logger.info("Could not wait for auto sync to pass. Reason: " + e);
-        }
-    }
+//    private void waitForPreviosOperationToFinish() {
+//        try {
+//            Object lock = new Object();
+//            synchronized (lock) {
+//                lock.wait(2000);
+//            }
+//        } catch (InterruptedException e) {
+//            logger.info("Could not wait for auto sync to pass. Reason: " + e);
+//        }
+//    }
 
     @Override
     public void syncAborted(final TransformationAbortCause cause) {
         // nothing to do
     }
 
-    private boolean enableAutoBuild(final boolean enable) {
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IWorkspaceDescription desc = workspace.getDescription();
-        boolean isAutoBuilding = desc.isAutoBuilding();
-        if (isAutoBuilding != enable) {
-            desc.setAutoBuilding(enable);
-            try {
-                workspace.setDescription(desc);
-            } catch (CoreException e) {
-                logger.info("Could not activate/deactivate auto build. Reason: " + e);
-            }
-        }
-        return isAutoBuilding;
-    }
+//    private boolean enableAutoBuild(final boolean enable) {
+//        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+//        IWorkspaceDescription desc = workspace.getDescription();
+//        boolean isAutoBuilding = desc.isAutoBuilding();
+//        if (isAutoBuilding != enable) {
+//            desc.setAutoBuilding(enable);
+//            try {
+//                workspace.setDescription(desc);
+//            } catch (CoreException e) {
+//                logger.info("Could not activate/deactivate auto build. Reason: " + e);
+//            }
+//        }
+//        return isAutoBuilding;
+//    }
 }
