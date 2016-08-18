@@ -3,10 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: PCM Java EJB
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
+ edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  com.google.guava,
@@ -28,4 +29,4 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.preprocessors.java2pcm
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming
