@@ -1,15 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.modelrefinement.inspectit2pcm;
 
 import com.google.common.base.Objects;
-import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
-import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
@@ -17,15 +15,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.AbstractHandler;
@@ -35,7 +27,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -43,14 +34,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Method;
@@ -59,10 +44,6 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.somox.analyzer.SimpleAnalysisResult;
 import org.somox.analyzer.simplemodelanalyzer.jobs.SoMoXBlackboard;
-import org.somox.ejbmox.inspectit2pcm.II2PCMConfiguration;
-import org.somox.ejbmox.inspectit2pcm.II2PCMJob;
-import org.somox.ejbmox.inspectit2pcm.launch.II2PCMConfigurationBuilder;
-import org.somox.ejbmox.inspectit2pcm.launch.InspectIT2PCMConfigurationAttributes;
 import org.somox.sourcecodedecorator.InterfaceSourceCodeLink;
 import org.somox.sourcecodedecorator.SEFF2MethodMapping;
 import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository;
@@ -82,86 +63,37 @@ public class InspectIt2PCMHandler extends AbstractHandler {
   
   @Override
   public Object execute(final ExecutionEvent event) throws ExecutionException {
-    final ISelection selection = HandlerUtil.getActiveMenuSelection(event);
-    final IStructuredSelection structuredSelection = ((IStructuredSelection) selection);
-    final Object firstElement = structuredSelection.getFirstElement();
-    final IJavaProject javaProject = ((IJavaProject) firstElement);
-    final IProject project = javaProject.getProject();
-    final II2PCMJob ii2PCMJob = new II2PCMJob();
-    final II2PCMConfiguration ii2PCMConfiguration = this.createIIC2PCMConfiguration(project);
-    ii2PCMJob.setJobConfiguration(ii2PCMConfiguration);
-    final VSUMImpl vsumImpl = this.getVSUM();
-    final SoMoXBlackboard blackboard = this.createSoMoXBlackboard(project, vsumImpl);
-    ii2PCMJob.setBlackboard(blackboard);
-    try {
-      EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
-        @Override
-        public Void call() throws Exception {
-          NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
-          ii2PCMJob.execute(_nullProgressMonitor);
-          return null;
-        }
-      }, vsumImpl);
-    } catch (final Throwable _t) {
-      if (_t instanceof JobFailedException) {
-        final JobFailedException e = (JobFailedException)_t;
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("Could not execute II2PCM Job. Reason: ");
-        String _string = e.toString();
-        _builder.append(_string, "");
-        throw new RuntimeException(_builder.toString(), e);
-      } else if (_t instanceof UserCanceledException) {
-        final UserCanceledException e_1 = (UserCanceledException)_t;
-        StringConcatenation _builder_1 = new StringConcatenation();
-        _builder_1.append("Could not execute II2PCM Job. Reason: ");
-        String _string_1 = e_1.toString();
-        _builder_1.append(_string_1, "");
-        throw new RuntimeException(_builder_1.toString(), e_1);
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
-    return null;
+    throw new Error("Unresolved compilation problems:"
+      + "\nII2PCMJob cannot be resolved to a type."
+      + "\nII2PCMConfiguration cannot be resolved to a type."
+      + "\nII2PCMJob cannot be resolved."
+      + "\nThe method createIIC2PCMConfiguration(IProject) from the type InspectIt2PCMHandler refers to the missing type II2PCMConfiguration"
+      + "\nsetJobConfiguration cannot be resolved"
+      + "\nsetBlackboard cannot be resolved"
+      + "\nexecute cannot be resolved");
   }
   
-  private II2PCMConfiguration createIIC2PCMConfiguration(final IProject project) {
-    final II2PCMConfigurationBuilder newConfigBuilder = new II2PCMConfigurationBuilder();
-    final Map<String, Object> attributes = new HashMap<String, Object>();
-    String cmrURL = II2PCMConfiguration.CMR_REST_API_DEFAULT;
-    Integer warmUpMeasurements = II2PCMConfiguration.WARMUP_MEASUREMENTS_DEFAULT;
-    Boolean ensureInternalActionsBeforeStopActions = Boolean.valueOf(false);
-    final Properties properties = new Properties();
-    try {
-      final String configFileName = this.findConfigFileOSString(project);
-      boolean _isNullOrEmpty = StringExtensions.isNullOrEmpty(configFileName);
-      boolean _not = (!_isNullOrEmpty);
-      if (_not) {
-        FileInputStream _fileInputStream = new FileInputStream(configFileName);
-        properties.load(_fileInputStream);
-        String _property = properties.getProperty(InspectIT2PCMConfigurationAttributes.CMR_REST_API_URL, cmrURL);
-        cmrURL = _property;
-        String _string = warmUpMeasurements.toString();
-        String _property_1 = properties.getProperty(InspectIT2PCMConfigurationAttributes.WARMUP_MEASUREMENTS, _string);
-        Integer _valueOf = Integer.valueOf(_property_1);
-        warmUpMeasurements = _valueOf;
-        String _string_1 = ensureInternalActionsBeforeStopActions.toString();
-        String _property_2 = properties.getProperty(
-          InspectIT2PCMConfigurationAttributes.ENSURE_INTERNAL_ACTIONS_BEFORE_STOP_ACTION, _string_1);
-        Boolean _valueOf_1 = Boolean.valueOf(_property_2);
-        ensureInternalActionsBeforeStopActions = _valueOf_1;
-      }
-    } catch (final Throwable _t) {
-      if (_t instanceof IOException) {
-        final IOException e = (IOException)_t;
-        InspectIt2PCMHandler.logger.info("Could not load config file. Using default configurations instead ", e);
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
-    attributes.put(InspectIT2PCMConfigurationAttributes.CMR_REST_API_URL, cmrURL);
-    attributes.put(InspectIT2PCMConfigurationAttributes.WARMUP_MEASUREMENTS, warmUpMeasurements);
-    attributes.put(InspectIT2PCMConfigurationAttributes.ENSURE_INTERNAL_ACTIONS_BEFORE_STOP_ACTION, ensureInternalActionsBeforeStopActions);
-    return newConfigBuilder.buildConfiguration(attributes);
+  private /* II2PCMConfiguration */Object createIIC2PCMConfiguration(final IProject project) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nII2PCMConfigurationBuilder cannot be resolved to a type."
+      + "\nII2PCMConfigurationBuilder cannot be resolved."
+      + "\nThe method or field II2PCMConfiguration is undefined"
+      + "\nThe method or field II2PCMConfiguration is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nThe method or field InspectIT2PCMConfigurationAttributes is undefined"
+      + "\nCMR_REST_API_DEFAULT cannot be resolved"
+      + "\nWARMUP_MEASUREMENTS_DEFAULT cannot be resolved"
+      + "\nCMR_REST_API_URL cannot be resolved"
+      + "\nWARMUP_MEASUREMENTS cannot be resolved"
+      + "\nENSURE_INTERNAL_ACTIONS_BEFORE_STOP_ACTION cannot be resolved"
+      + "\nCMR_REST_API_URL cannot be resolved"
+      + "\nWARMUP_MEASUREMENTS cannot be resolved"
+      + "\nENSURE_INTERNAL_ACTIONS_BEFORE_STOP_ACTION cannot be resolved"
+      + "\nbuildConfiguration cannot be resolved");
   }
   
   private SoMoXBlackboard createSoMoXBlackboard(final IProject project, final VSUMImpl vsum) {
@@ -196,22 +128,9 @@ public class InspectIt2PCMHandler extends AbstractHandler {
           int _lastIndexOf_1 = name.lastIndexOf(".");
           int _length = name.length();
           final String actualFieEnding = name.substring(_lastIndexOf_1, _length);
-          boolean _or = false;
-          if ((null == fileName)) {
-            _or = true;
-          } else {
-            boolean _equalsIgnoreCase = fileName.equalsIgnoreCase(actualFileName);
-            _or = _equalsIgnoreCase;
-          }
-          final boolean nameEquals = _or;
+          final boolean nameEquals = ((null == fileName) || fileName.equalsIgnoreCase(actualFileName));
           final boolean endingEquals = ("." + fileEnding).endsWith(actualFieEnding);
-          boolean _and = false;
-          if (!nameEquals) {
-            _and = false;
-          } else {
-            _and = endingEquals;
-          }
-          if (_and) {
+          if ((nameEquals && endingEquals)) {
             iResources.add(resource);
           }
         }
@@ -300,8 +219,8 @@ public class InspectIt2PCMHandler extends AbstractHandler {
   }
   
   private CorrespondenceInstance<Correspondence> getCorrespondenceInstance(final VSUMImpl vsum) {
-    final VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE);
-    final VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+    final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
+    final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
     final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum.getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
     return corresponcenceInstance;
   }
@@ -309,7 +228,7 @@ public class InspectIt2PCMHandler extends AbstractHandler {
   private VSUMImpl getVSUM() {
     final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
     final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-    VURI _instance = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+    VURI _instance = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
     Metamodel _metamodel = metaRepository.getMetamodel(_instance);
     vsum.getOrCreateAllCorrespondenceInstancesForMM(_metamodel);
     return vsum;

@@ -21,4 +21,6 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
- org.emftext.language.java
+ org.emftext.language.java,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util

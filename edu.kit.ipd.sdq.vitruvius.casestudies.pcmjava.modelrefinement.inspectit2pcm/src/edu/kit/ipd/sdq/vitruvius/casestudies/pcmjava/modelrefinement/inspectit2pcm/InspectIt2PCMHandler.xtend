@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.modelrefinement.inspectit2
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -55,6 +54,8 @@ import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository
 import org.somox.sourcecodedecorator.SourcecodedecoratorFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 
 /** 
  * Handler to enrich the coevolved PCM models with resource demands. Is based on the II2PCMJob from
@@ -233,8 +234,8 @@ class InspectIt2PCMHandler extends AbstractHandler {
 	}
 
 	def private CorrespondenceInstance<Correspondence> getCorrespondenceInstance(VSUMImpl vsum) {
-		val VURI jaMoPPVURI = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
-		val VURI pcmVURI = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
+		val VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
+		val VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		val CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum.
 			getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI)
 		return corresponcenceInstance
@@ -244,7 +245,7 @@ class InspectIt2PCMHandler extends AbstractHandler {
 		val MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository()
 		val VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository)
 		vsum.getOrCreateAllCorrespondenceInstancesForMM(
-			metaRepository.getMetamodel(VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)))
+			metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)))
 		return vsum
 	}
 }
