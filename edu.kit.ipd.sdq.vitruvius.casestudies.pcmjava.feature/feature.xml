@@ -28,14 +28,7 @@
          unpack="false"/>
 
    <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjavapojo.transformations"
+         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.responses"
          download-size="0"
          install-size="0"
          version="0.0.0"
