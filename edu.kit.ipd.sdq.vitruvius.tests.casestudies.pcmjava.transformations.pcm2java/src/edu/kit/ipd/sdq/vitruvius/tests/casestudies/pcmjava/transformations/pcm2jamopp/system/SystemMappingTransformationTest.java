@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
+import org.junit.Assert;
 import org.junit.Test;
 import org.palladiosimulator.pcm.system.System;
 
@@ -35,7 +36,7 @@ public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTes
     public void testRemoveSystem() throws Throwable {
         final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, PCM2JaMoPPTestUtils.SYSTEM_NAME,
                 this.currentTestProjectName);
-
+        Assert.assertNotNull(system);
         fail("Not yet implemented");
     }
 

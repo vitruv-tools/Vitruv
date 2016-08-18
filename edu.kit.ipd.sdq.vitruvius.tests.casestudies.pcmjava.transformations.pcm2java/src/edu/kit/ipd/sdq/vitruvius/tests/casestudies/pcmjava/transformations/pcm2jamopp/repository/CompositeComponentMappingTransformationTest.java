@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
+import org.junit.Assert;
 import org.junit.Test;
 
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -69,7 +70,7 @@ public class CompositeComponentMappingTransformationTest extends PCM2JaMoPPTrans
         final CompositeComponent compositeComponent = this.createAndSyncRepoAndCompositeComponent();
         final OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(
                 compositeComponent.getRepository__RepositoryComponent(), PCM2JaMoPPTestUtils.INTERFACE_NAME);
-
+        Assert.assertNotNull(opInterface);
     }
 
     private CompositeComponent createAndSyncRepoAndCompositeComponent() throws IOException {

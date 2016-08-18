@@ -3,13 +3,14 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2
 import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.types.TypeReference;
 import org.junit.Test;
-
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.PCM2JaMoPPTestUtils;
@@ -69,7 +70,7 @@ public class OperationSignatureMappingTransformationTest extends PCM2JaMoPPTrans
     private InterfaceMethod assertOperationSignatureCorrespondence(final OperationSignature opSig) throws Throwable {
         final InterfaceMethod intMethod = (InterfaceMethod) this.assertSingleCorrespondence(opSig,
                 InterfaceMethod.class, opSig.getEntityName());
-        final TypeReference tr = edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pcm2java.DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataTypeReference(
+        final TypeReference tr = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataTypeReference(
                 opSig.getReturnType__OperationSignature(), this.getCorrespondenceInstance());
         this.assertEqualsTypeReference(intMethod.getTypeReference(), tr);
 
