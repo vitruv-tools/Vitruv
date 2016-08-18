@@ -3,9 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test Seff Statement
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.emftext.language.java,
  org.eclipse.equinox.registry,
@@ -16,5 +15,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.tests.util,
  edu.kit.ipd.sdq.vitruvius.codeintegration.tests,
  org.eclipse.core.resources,
- org.somox.analyzer.simplemodelanalyzer.ui
+ org.somox.analyzer.simplemodelanalyzer.ui,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements
