@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements.IncrementalSEFFReconstructionTest
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.seffstatements.IncrementalSEFFReconstructionTest
 import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
