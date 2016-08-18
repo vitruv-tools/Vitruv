@@ -151,6 +151,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             final CorrespondenceInstanceDecorator correspondenceInstance, final Map<EObject, TUID> tuidMap) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
+            List<EObject> objects = new ArrayList<EObject>();
+            objects.addAll(change.getChangeDescription().getObjectChanges().keySet());
+            objects.addAll(change.getChangeDescription().getObjectsToDetach());
             for (EObject object : change.getChangeDescription().getObjectChanges().keySet()) {
                 TUID tuid = correspondenceInstance.calculateTUIDFromEObject(object);
                 if (tuid != null) {
@@ -159,6 +162,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                         tuidMap.put(featureChange.getReferenceValue(),
                                 correspondenceInstance.calculateTUIDFromEObject(featureChange.getReferenceValue()));
                     }
+                }
+            }
+            for (EObject object : change.getChangeDescription().getObjectsToDetach()) {
+                TUID tuid = correspondenceInstance.calculateTUIDFromEObject(object);
+                if (tuid != null) {
+                    tuidMap.put(object, tuid);
                 }
             }
         } else if (recordedChange instanceof GeneralChange) {
