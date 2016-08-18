@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test for Transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
@@ -53,7 +53,8 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.java2pcm,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
-Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements
 

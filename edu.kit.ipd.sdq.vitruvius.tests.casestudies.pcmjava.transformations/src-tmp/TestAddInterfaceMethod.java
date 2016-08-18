@@ -1,9 +1,0 @@
-
-
-
-interface TestAddInterfaceMethod {
-	void testMethod();
-}
-
-
-
