@@ -7,8 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver.JaMoPPTUIDCalculatorAndResolverTestSuite;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements.PCMJavaSeffstatementsTestSuite;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.PCMJavaTransformationsTestSuite;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2java.PCM2JavaTestSuite;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.Java2PCMTestSuite;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JavaTestSuite;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm.Java2PCMTestSuite;
 import edu.kit.ipd.sdq.vitruvius.tests.framework.run.SynchronisationTest.SynchronizationTestSuite;
 
 @RunWith(Suite.class)
