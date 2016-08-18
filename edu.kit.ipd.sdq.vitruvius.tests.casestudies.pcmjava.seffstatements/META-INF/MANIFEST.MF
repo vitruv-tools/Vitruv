@@ -17,5 +17,5 @@ Require-Bundle: org.junit,
  org.eclipse.core.resources,
  org.somox.analyzer.simplemodelanalyzer.ui,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements

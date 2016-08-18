@@ -24,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTest;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.utils.CompilationUnitManipulatorHelper;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 
 public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
 
