@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java;
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.java.PCMJaMoPPPOJOChange2CommandTransformer">
+            provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.PCMJaMoPPPOJOChange2CommandTransformer">
       </provides>
    </extension>
 </plugin>
