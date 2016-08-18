@@ -46,10 +46,6 @@ class DeletedComponentResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<Repository, RepositoryComponent> typedChange = (RemoveEReference<Repository, RepositoryComponent>)change;
-    final org.palladiosimulator.pcm.repository.RepositoryComponent oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RepositoryComponentContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedComponentEffect effect = new mir.routines.pcm2java.DeletedComponentEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

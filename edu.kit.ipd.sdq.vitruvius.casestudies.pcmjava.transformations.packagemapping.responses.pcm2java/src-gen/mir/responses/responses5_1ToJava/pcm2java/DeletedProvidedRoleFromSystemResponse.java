@@ -45,10 +45,6 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   
   public void executeResponse(final EChange change) {
     RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole>)change;
-    final org.palladiosimulator.pcm.repository.ProvidedRole oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ProvidedRoleContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedProvidedRoleFromSystemEffect effect = new mir.routines.pcm2java.DeletedProvidedRoleFromSystemEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

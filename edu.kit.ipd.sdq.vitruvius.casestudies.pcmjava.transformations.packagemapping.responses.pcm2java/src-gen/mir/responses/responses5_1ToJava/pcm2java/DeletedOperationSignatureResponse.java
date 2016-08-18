@@ -46,10 +46,6 @@ class DeletedOperationSignatureResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<OperationInterface, OperationSignature> typedChange = (RemoveEReference<OperationInterface, OperationSignature>)change;
-    final org.palladiosimulator.pcm.repository.OperationSignature oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.OperationSignatureContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedOperationSignatureEffect effect = new mir.routines.pcm2java.DeletedOperationSignatureEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

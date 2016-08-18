@@ -46,10 +46,6 @@ class DeletedDemandingInternalBehaviorResponse extends AbstractResponseRealizati
   
   public void executeResponse(final EChange change) {
     RemoveEReference<BasicComponent, ResourceDemandingInternalBehaviour> typedChange = (RemoveEReference<BasicComponent, ResourceDemandingInternalBehaviour>)change;
-    final org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviourContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedDemandingInternalBehaviorEffect effect = new mir.routines.pcm2java.DeletedDemandingInternalBehaviorEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

@@ -46,10 +46,6 @@ class DeletedSeffResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<BasicComponent, ServiceEffectSpecification> typedChange = (RemoveEReference<BasicComponent, ServiceEffectSpecification>)change;
-    final org.palladiosimulator.pcm.seff.ServiceEffectSpecification oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.seff.ServiceEffectSpecificationContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedSeffEffect effect = new mir.routines.pcm2java.DeletedSeffEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

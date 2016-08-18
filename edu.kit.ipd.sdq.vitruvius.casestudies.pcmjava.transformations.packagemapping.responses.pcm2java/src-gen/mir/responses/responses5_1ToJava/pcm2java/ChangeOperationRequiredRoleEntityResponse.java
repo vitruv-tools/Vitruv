@@ -46,10 +46,6 @@ class ChangeOperationRequiredRoleEntityResponse extends AbstractResponseRealizat
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<OperationRequiredRole, InterfaceRequiringEntity> typedChange = (ReplaceSingleValuedEReference<OperationRequiredRole, InterfaceRequiringEntity>)change;
-    final org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntityContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect effect = new mir.routines.pcm2java.ChangeOperationRequiredRoleEntityEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

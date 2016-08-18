@@ -55,10 +55,6 @@ class DeletedCollectionDataTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<Repository, DataType> typedChange = (RemoveEReference<Repository, DataType>)change;
-    final org.palladiosimulator.pcm.repository.DataType oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedCollectionDataTypeEffect effect = new mir.routines.pcm2java.DeletedCollectionDataTypeEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

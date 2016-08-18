@@ -46,10 +46,6 @@ class ChangeOperationSignatureReturnTypeResponse extends AbstractResponseRealiza
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<OperationSignature, DataType> typedChange = (ReplaceSingleValuedEReference<OperationSignature, DataType>)change;
-    final org.palladiosimulator.pcm.repository.DataType oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.ChangeOperationSignatureReturnTypeEffect effect = new mir.routines.pcm2java.ChangeOperationSignatureReturnTypeEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

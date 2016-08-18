@@ -46,10 +46,6 @@ class ChangedParameterTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Parameter, DataType> typedChange = (ReplaceSingleValuedEReference<Parameter, DataType>)change;
-    final org.palladiosimulator.pcm.repository.DataType oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.DataTypeContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.ChangedParameterTypeEffect effect = new mir.routines.pcm2java.ChangedParameterTypeEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

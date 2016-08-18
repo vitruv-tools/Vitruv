@@ -46,10 +46,6 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> typedChange = (ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature>)change;
-    final org.palladiosimulator.pcm.repository.Signature oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.SignatureContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect effect = new mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

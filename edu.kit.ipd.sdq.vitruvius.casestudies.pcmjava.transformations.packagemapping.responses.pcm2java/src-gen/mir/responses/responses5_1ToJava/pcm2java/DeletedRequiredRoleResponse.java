@@ -55,10 +55,6 @@ class DeletedRequiredRoleResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<InterfaceRequiringEntity, RequiredRole> typedChange = (RemoveEReference<InterfaceRequiringEntity, RequiredRole>)change;
-    final org.palladiosimulator.pcm.repository.RequiredRole oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.RequiredRoleContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedRequiredRoleEffect effect = new mir.routines.pcm2java.DeletedRequiredRoleEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

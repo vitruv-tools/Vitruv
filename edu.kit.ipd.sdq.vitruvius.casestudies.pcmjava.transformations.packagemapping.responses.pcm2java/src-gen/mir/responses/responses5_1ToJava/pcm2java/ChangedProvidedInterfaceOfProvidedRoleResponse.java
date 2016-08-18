@@ -46,10 +46,6 @@ class ChangedProvidedInterfaceOfProvidedRoleResponse extends AbstractResponseRea
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<OperationProvidedRole, OperationInterface> typedChange = (ReplaceSingleValuedEReference<OperationProvidedRole, OperationInterface>)change;
-    final org.palladiosimulator.pcm.repository.OperationInterface oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.OperationInterfaceContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.ChangedProvidedInterfaceOfProvidedRoleEffect effect = new mir.routines.pcm2java.ChangedProvidedInterfaceOfProvidedRoleEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

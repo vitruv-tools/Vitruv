@@ -46,10 +46,6 @@ class DeletedParameterResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<OperationSignature, Parameter> typedChange = (RemoveEReference<OperationSignature, Parameter>)change;
-    final org.palladiosimulator.pcm.repository.Parameter oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.org.palladiosimulator.pcm.repository.ParameterContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.pcm2java.DeletedParameterEffect effect = new mir.routines.pcm2java.DeletedParameterEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }
