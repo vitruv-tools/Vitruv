@@ -46,10 +46,6 @@ class RemoveNonContainmentEReferenceResponse extends AbstractResponseRealization
   
   public void executeResponse(final EChange change) {
     RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
-    final allElementTypes.NonRoot oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.RemoveNonContainmentEReferenceEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }

@@ -46,10 +46,6 @@ class UpdateSingleValuedNonContainmentEReferenceResponse extends AbstractRespons
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
-    final allElementTypes.NonRoot oldValue = typedChange.getOldValue();
-    if (oldValue != null) {
-    	typedChange.setOldValue(new mir.responses.mocks.allElementTypes.NonRootContainerMock(oldValue, typedChange.getAffectedEObject()));
-    }
     mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect effect = new mir.routines.simpleChangesTests.UpdateSingleValuedNonContainmentEReferenceEffect(this.executionState, this, typedChange);
     effect.applyRoutine();
   }
