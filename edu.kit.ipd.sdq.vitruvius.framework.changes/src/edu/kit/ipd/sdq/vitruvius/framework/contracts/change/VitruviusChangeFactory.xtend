@@ -28,6 +28,10 @@ class VitruviusChangeFactory {
 		return new EMFModelChangeImpl(changeDescription, vuri);
 	}
 	
+	public def GeneralChange createGeneralChange(EChange change, VURI vuri) {
+		return new GeneralChangeImpl(#[change], vuri);
+	}
+	
 	public def GeneralChange createGeneralChange(List<EChange> changes, VURI vuri) {
 		return new GeneralChangeImpl(changes, vuri);
 	}
