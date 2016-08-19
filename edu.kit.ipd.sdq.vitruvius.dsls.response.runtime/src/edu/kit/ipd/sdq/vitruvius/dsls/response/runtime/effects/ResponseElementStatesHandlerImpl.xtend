@@ -4,14 +4,13 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseElementStatesHand
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	private final Map<EObject, AbstractResponseElementState> elementStates;
-	private final CorrespondenceInstance<Correspondence> correspondenceInstance;
+	private final CorrespondenceModel correspondenceInstance;
 	
-	public new(CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public new(CorrespondenceModel correspondenceInstance) {
 		this.correspondenceInstance = correspondenceInstance;
 		this.elementStates = new HashMap<EObject, AbstractResponseElementState>();
 	}

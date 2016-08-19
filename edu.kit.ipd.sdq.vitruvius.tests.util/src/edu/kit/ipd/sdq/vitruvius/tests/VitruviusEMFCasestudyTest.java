@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -46,7 +46,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected ChangeSynchronizerImpl changeSynchronizer;
     protected MetaRepositoryImpl metaRepository;
     protected AtomicEMFChangeRecorder changeRecorder;
-    protected CorrespondenceInstance<Correspondence> correspondenceInstance;
+    protected CorrespondenceModel correspondenceInstance;
     protected Change2CommandTransformingProviding transformingProviding;
     
     /**
@@ -98,7 +98,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     @Override
-    protected CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable {
+    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
         final Metamodel firstMM = this.metaRepository.getAllMetamodels()[0];
         final Mapping mapping = this.metaRepository.getAllMappings(firstMM).iterator().next();
         final VURI mm1VURI = mapping.getMetamodelA().getURI();

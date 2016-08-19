@@ -8,9 +8,8 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class AbstractResponseExecutor implements ResponseExecutor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
@@ -29,7 +28,7 @@ abstract class AbstractResponseExecutor implements ResponseExecutor {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceModel correspondenceInstance) {
 		val result = new ArrayList<Command>();
 		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
 		LOGGER.debug("Call relevant responses");

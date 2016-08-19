@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -18,6 +17,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {
@@ -25,7 +25,7 @@ class MappingExecutionState {
 	private final UserInteracting userInteracting
 	
 	private static final Logger LOGGER = Logger.getLogger(MappingExecutionState)
-	private Map<EObject, Map<CorrespondenceInstance, List<TUID>>> oldTUIDMap = newHashMap
+	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
 	
 	private final List<EObject> createdEObjects = newArrayList
 	private final List<EObject> changedEObjects = newArrayList
@@ -41,7 +41,7 @@ class MappingExecutionState {
 		super()
 		this.transformationResult = transformationResult
 		this.userInteracting = userInteracting
-		this.mci = bb.correspondenceInstance as MappedCorrespondenceInstance;
+		this.mci = bb.correspondenceModel as MappedCorrespondenceInstance;
 		this.bb = bb;
 	}
 	

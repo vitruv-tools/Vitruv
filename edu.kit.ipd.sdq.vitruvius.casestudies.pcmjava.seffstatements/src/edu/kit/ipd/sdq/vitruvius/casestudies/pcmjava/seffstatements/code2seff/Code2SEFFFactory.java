@@ -5,7 +5,7 @@ import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 
 public interface Code2SEFFFactory {
@@ -13,12 +13,12 @@ public interface Code2SEFFFactory {
     BasicComponentFinding createBasicComponentFinding();
 
     InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-            CorrespondenceInstance<Correspondence> correspondenceInstance, BasicComponent basicComponent);
+    		CorrespondenceModel correspondenceInstance, BasicComponent basicComponent);
 
     ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-            CorrespondenceInstance<Correspondence> correspondenceInstance);
+    		CorrespondenceModel correspondenceInstance);
 
     AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
-            BasicComponentFinding basicComponentFinding, CorrespondenceInstance<Correspondence> correspondenceInstance,
+            BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
             BasicComponent basicComponent);
 }

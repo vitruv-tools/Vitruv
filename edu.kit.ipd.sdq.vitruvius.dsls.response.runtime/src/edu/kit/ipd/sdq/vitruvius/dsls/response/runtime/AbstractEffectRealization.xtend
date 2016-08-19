@@ -8,12 +8,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects.ResponseElementStatesHandlerImpl
 import java.util.function.Function
 import org.eclipse.xtend.lib.annotations.Delegate
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.ResponseCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class AbstractEffectRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
 	private extension val ResponseExecutionState executionState;
@@ -56,7 +55,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	public static class UserExecution {
 		protected final UserInteracting userInteracting;
 		protected final TransformationResult transformationResult;
-		protected final CorrespondenceInstance<Correspondence> correspondenceInstance;
+		protected final CorrespondenceModel correspondenceInstance;
 	
 		new(ResponseExecutionState executionState) {
 			this.userInteracting = executionState.userInteracting;

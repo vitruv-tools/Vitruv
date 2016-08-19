@@ -57,7 +57,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  *
  */
 public interface Blackboard {
-    CorrespondenceInstanceDecorator getCorrespondenceInstance();
+    CorrespondenceModel getCorrespondenceModel();
 
     ModelProviding getModelProviding();
 

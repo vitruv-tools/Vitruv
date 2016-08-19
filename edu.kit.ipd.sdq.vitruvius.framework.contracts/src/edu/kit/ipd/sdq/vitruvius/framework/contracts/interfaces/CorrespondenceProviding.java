@@ -2,14 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
 
 import java.util.Set;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 public interface CorrespondenceProviding extends CorrespondenceCopyProviding {
-    CorrespondenceInstance getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI);
+    CorrespondenceModel getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI);
 
-    void saveCorrespondenceInstanceAndDecorators(final CorrespondenceInstanceDecorator correspondenceInstance);
+    void saveCorrespondenceInstanceAndDecorators(final CorrespondenceModel correspondenceInstance);
 
-    Set<CorrespondenceInstanceDecorator> getOrCreateAllCorrespondenceInstances(final VURI mmVURI);
+    Set<CorrespondenceModel> getOrCreateAllCorrespondenceInstances(final VURI mmVURI);
 }

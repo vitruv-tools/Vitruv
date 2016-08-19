@@ -1,12 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.GenericCorrespondenceModel
 
 class CorrespondenceInstanceUtil {
 	private new() {
@@ -22,7 +23,7 @@ class CorrespondenceInstanceUtil {
 	 *         no correspondences.
 	 */
 	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
-	def public static Set<EObject> getCorrespondingEObjects(CorrespondenceInstance<?> ci, EObject eObject) {
+	def public static Set<EObject> getCorrespondingEObjects(GenericCorrespondenceModel<?> ci, EObject eObject) {
 		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
 		val eObjects = Sets.newHashSet
 		correspondingEObjects.forEach(list|eObjects.addAll(list))
@@ -38,7 +39,7 @@ class CorrespondenceInstanceUtil {
 	 * @param b
 	 * @return
 	 */
-	def public static Correspondence claimUniqueCorrespondence(CorrespondenceInstance<Correspondence> ci,
+	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModel ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimOne
 	}
@@ -51,12 +52,12 @@ class CorrespondenceInstanceUtil {
 	 *            the object for which correspondences are to be returned
 	 * @return the correspondences for the specified object
 	 */
-	def public static Set<Correspondence> claimCorrespondences(CorrespondenceInstance<Correspondence> ci,
+	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModel ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
 	}
 
-	def public static Correspondence createAndAddCorrespondence(CorrespondenceInstance<?> ci, EObject a, EObject b) {
+	def public static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
 		return ci.createAndAddCorrespondence(a.toList, b.toList)
 	}
 
@@ -72,7 +73,7 @@ class CorrespondenceInstanceUtil {
 	 * @return the corresponding object of the specified type for the specified object if there is
 	 *         exactly one corresponding object of this type
 	 */
-	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(CorrespondenceInstance<U> ci,
+	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(GenericCorrespondenceModel<U> ci,
 		EObject eObject, Class<T> type) {
 		// return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
 		val Set<T> retSet = Sets.newHashSet
@@ -88,7 +89,7 @@ class CorrespondenceInstanceUtil {
 	 * @return a set containing all eObjects of the given type that have a correspondence
 	 */
 	def public static <T, U extends Correspondence> Set<T> getAllEObjectsOfTypeInCorrespondences(
-		CorrespondenceInstance<U> ci, Class<T> type) {
+		GenericCorrespondenceModel<U> ci, Class<T> type) {
 		val tuidSet = ci.allCorrespondencesWithoutDependencies.map[(it.ATUIDs + it.BTUIDs)].flatten.toSet
 		val eObjectSet = Sets.newHashSet
 		tuidSet.forEach[try {eObjectSet.add(ci.resolveEObjectFromTUID(it))} catch (RuntimeException e) { }]
@@ -96,7 +97,7 @@ class CorrespondenceInstanceUtil {
 	// return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
 
-	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(CorrespondenceInstance<T> ci,
+	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
 		Set<EObject> aS, Set<EObject> bS) {
 		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
 		val atuids = aS.mapFixed[ci.calculateTUIDFromEObject(it)]

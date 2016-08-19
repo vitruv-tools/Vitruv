@@ -5,8 +5,7 @@ import org.eclipse.core.resources.IFile
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 public final class PersistenceHelper {
 	private new() {}
@@ -30,7 +29,7 @@ public final class PersistenceHelper {
 		return URI.createPlatformResourceURI(srcFolderPath, true);
 	}
 
-	private static def URI appendPathToURI(URI baseURI, String relativePath, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	private static def URI appendPathToURI(URI baseURI, String relativePath, CorrespondenceModel correspondenceInstance) {
 		val newModelFileSegments = relativePath.split("/");
 		if (!newModelFileSegments.last.contains(".")) {
 			// No file extension was specified, add the first one that is valid for the metamodel
@@ -41,12 +40,12 @@ public final class PersistenceHelper {
 		return baseURI.appendSegments(newModelFileSegments);
 	}
 
-	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, CorrespondenceModel correspondenceInstance) {
 		val baseURI = getURIOfElementResourceFolder(source);
 		return baseURI.appendPathToURI(relativePath, correspondenceInstance);
 	}
 
-	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, CorrespondenceModel correspondenceInstance) {
 		val baseURI = getURIOfElementProject(source);
 		return baseURI.appendPathToURI(relativePath, correspondenceInstance);
 	}

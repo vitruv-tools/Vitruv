@@ -9,7 +9,6 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
@@ -75,7 +74,7 @@ abstract class AbstractResponseChange2CommandTransforming implements Change2Comm
 		for (eChange : change.getEChanges()) {
 			for (executor : responseExecutors) {
 				LOGGER.debug('''Calling executor «executor» for change event «change»''');
-				result += executor.generateCommandsForEvent(eChange, blackboard.correspondenceInstance);	
+				result += executor.generateCommandsForEvent(eChange, blackboard.correspondenceModel);	
 			}
 		}
 		return result

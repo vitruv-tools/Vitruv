@@ -2,13 +2,12 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class RetrieveResponseElementState extends AbstractResponseElementState {
 	private final TUID oldTUID;
 		
-	new(EObject element, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	new(EObject element, CorrespondenceModel correspondenceInstance) {
 		super(element, correspondenceInstance);
 		this.oldTUID = correspondenceInstance.calculateTUIDFromEObject(element);
 	}

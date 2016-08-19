@@ -4,22 +4,22 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import org.apache.log4j.Logger
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class TUIDUpdateHelper {
 	private static final Logger LOGGER = Logger.getLogger(TUIDUpdateHelper)
-	private Map<EObject, Map<CorrespondenceInstance, List<TUID>>> oldTUIDMap = newHashMap
+	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
 	
-	public def addObjectToUpdate(CorrespondenceInstance ci, EObject eObject) {
+	public def addObjectToUpdate(CorrespondenceModel ci, EObject eObject) {
 		oldTUIDMap
 			.getOrPut(eObject, [newHashMap])
 			.getOrPut(ci, [newArrayList])
 			.add(ci.calculateTUIDFromEObject(eObject))
 	}
 	
-	public def updateObject(CorrespondenceInstance ci, EObject eObject) {
+	public def updateObject(CorrespondenceModel ci, EObject eObject) {
 		if (!oldTUIDMap.containsKey(eObject)) {
 			LOGGER.info("EObject " + eObject.toString() + " not in old tuid map")
 		} else {

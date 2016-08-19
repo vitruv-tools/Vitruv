@@ -3,20 +3,19 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.Loggable
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.ResponseCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;
 	private final List<Pair<EObject, String>> newCorrespondingElements;
 	private final List<EObject> oldCorrespondingElements;
-	protected final CorrespondenceInstance<Correspondence> correspondenceInstance;
+	protected final CorrespondenceModel correspondenceInstance;
 	protected boolean delete;
 	
-	public new(EObject element, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public new(EObject element, CorrespondenceModel correspondenceInstance) {
 		this.element = element;
 		this.correspondenceInstance = correspondenceInstance;
 		this.newCorrespondingElements = newArrayList;

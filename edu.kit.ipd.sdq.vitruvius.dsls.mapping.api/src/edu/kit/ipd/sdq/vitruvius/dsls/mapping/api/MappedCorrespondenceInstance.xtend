@@ -1,8 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.AbstractDelegatingCorrespondenceInstanceDecorator
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import java.util.Collection
 import java.util.HashMap
 import java.util.HashSet
@@ -13,39 +10,28 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.MappingHelper
 import java.util.function.Supplier
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import org.eclipse.xtend.lib.annotations.Delegate
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 
-class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInstanceDecorator<HashMap<Correspondence, Collection<String>>> {
+class MappedCorrespondenceInstance implements CorrespondenceModel {
+	@Delegate
+	val InternalCorrespondenceModel correspondenceModel;
+
 	HashMap<Correspondence, Collection<String>> correspondence2MappingMap
 
+	// TODO DW This class has to be instantiated somewhere. It was registered as an extension before,
+	// but now it can only work as a utility class, so the map has to be extracted manually (or better the
+	// correspondence elements have to be extended to MappingCorrespondence elements containing a list
+	// of mappings they belong to
 	@SuppressWarnings("unchecked")
-	new(CorrespondenceInstanceDecorator correspondenceInstance) {
-		// this seems to be the only way to provide the correct instance of the
-		// map class to the ADCID
-		super(correspondenceInstance,
-			new HashMap<Correspondence, MappingRealization>().
-				getClass() as Class<HashMap<Correspondence, Collection<String>>>)
+	new(InternalCorrespondenceModel correspondenceInstance) {
+		this.correspondenceModel = correspondenceInstance;
 		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<String>>()
 	}
 
-	override protected String getDecoratorFileExtPrefix() {
-		return MappingHelper::getCorrespondenceDecoratorFileExtPrefix()
-	}
-
-	override protected HashMap<Correspondence, Collection<String>> getDecoratorObject() {
-		return this.correspondence2MappingMap
-	}
-
-	override protected void initializeFromDecoratorObject(
-		HashMap<Correspondence, Collection<String>> object) {
-		this.correspondence2MappingMap = object
-	}
-
-	override protected void initializeWithoutDecoratorObject() {
-		// empty
-	}
-
 	def deleteNonExistantCorrespondencesFromMap() {
-		val allContents = resource.allContents.toSet
+		val allContents = correspondenceModel.resource.allContents.toSet
 		val nonExistantCorrespondences = correspondence2MappingMap.keySet.filter[ it | !allContents.contains(it) ].toSet
 		
 		if (!nonExistantCorrespondences.empty) {
@@ -72,13 +58,13 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 
 	def Correspondence getMappedCorrespondence(List<EObject> eObjects, MappingRealization mapping) {
 		deleteNonExistantCorrespondencesFromMap
-		return getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping.mappingID)].
+		return correspondenceModel.getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping.mappingID)].
 			head
 	}
 	
 	def Correspondence getMappedCorrespondence(List<EObject> eObjects, List<Correspondence> correspondences, MappingRealization mapping) {
 		deleteNonExistantCorrespondencesFromMap
-		return getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping.mappingID) && correspondences.equals(it.dependsOn)].
+		return correspondenceModel.getCorrespondences(eObjects).filter(Correspondence).filter[mappingsForCorrespondence.contains(mapping.mappingID) && correspondences.equals(it.dependsOn)].
 			head
 	}
 
@@ -122,7 +108,7 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	 * <code>eObject</code>, <code>null</code> otherwise.
 	 */
 	def List<EObject> getMappingTarget(List<EObject> eObjects, MappingRealization mapping) {
-		return correspondenceInstance.getCorrespondences(eObjects)
+		return correspondenceModel.getCorrespondences(eObjects)
 			.filter(Correspondence)
 			.filter[mappingsForCorrespondence.contains(mapping.mappingID)]
 			.head?.getOpposite(eObjects)
@@ -154,11 +140,11 @@ class MappedCorrespondenceInstance extends AbstractDelegatingCorrespondenceInsta
 	}
 	
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, Supplier<Correspondence> correspondenceCreator) {
-		correspondenceInstance.createAndAddCorrespondence(eObjects1, eObjects2, correspondenceCreator);
+		correspondenceModel.createAndAddCorrespondence(eObjects1, eObjects2, correspondenceCreator);
 	}
 	
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType, Supplier<U> correspondenceCreator) {
-		correspondenceInstance.getEditableView(correspondenceType, correspondenceCreator);
+		correspondenceModel.getEditableView(correspondenceType, correspondenceCreator);
 	}
 	
 }

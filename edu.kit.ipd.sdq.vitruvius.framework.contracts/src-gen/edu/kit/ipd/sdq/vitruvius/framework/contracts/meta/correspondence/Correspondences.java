@@ -2,8 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -18,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceInstance <em>Correspondence Instance</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceModel <em>Correspondence Model</em>}</li>
  * </ul>
  *
  * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondences()
@@ -45,29 +44,29 @@ public interface Correspondences extends EObject {
     EList<Correspondence> getCorrespondences();
 
     /**
-     * Returns the value of the '<em><b>Correspondence Instance</b></em>' attribute.
+     * Returns the value of the '<em><b>Correspondence Model</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Correspondence Instance</em>' attribute isn't clear,
+     * If the meaning of the '<em>Correspondence Model</em>' attribute isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Correspondence Instance</em>' attribute.
-     * @see #setCorrespondenceInstance(CorrespondenceInstance)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondences_CorrespondenceInstance()
-     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceInstance" required="true" transient="true"
+     * @return the value of the '<em>Correspondence Model</em>' attribute.
+     * @see #setCorrespondenceModel(CorrespondenceModel)
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondences_CorrespondenceModel()
+     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceModel" required="true" transient="true"
      * @generated
      */
-    CorrespondenceInstance getCorrespondenceInstance();
+    CorrespondenceModel getCorrespondenceModel();
 
     /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceInstance <em>Correspondence Instance</em>}' attribute.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceModel <em>Correspondence Model</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Correspondence Instance</em>' attribute.
-     * @see #getCorrespondenceInstance()
+     * @param value the new value of the '<em>Correspondence Model</em>' attribute.
+     * @see #getCorrespondenceModel()
      * @generated
      */
-    void setCorrespondenceInstance(CorrespondenceInstance value);
+    void setCorrespondenceModel(CorrespondenceModel value);
 
 } // Correspondences

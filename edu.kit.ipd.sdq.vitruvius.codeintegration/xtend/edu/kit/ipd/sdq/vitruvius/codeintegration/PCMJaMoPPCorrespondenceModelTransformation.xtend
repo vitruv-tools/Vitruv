@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
@@ -42,6 +41,7 @@ import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -64,7 +64,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	private List<Resource> jaMoppResources
 	private Repository pcmRepo
 	@Accessors(PUBLIC_GETTER)
-	private CorrespondenceInstance<Correspondence> cInstance
+	private CorrespondenceModel cInstance
 
 	private ModelProviding modelProviding
 

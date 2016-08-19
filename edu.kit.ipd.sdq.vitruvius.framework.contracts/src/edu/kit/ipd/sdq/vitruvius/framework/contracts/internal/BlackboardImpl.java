@@ -8,10 +8,10 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -19,7 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 public class BlackboardImpl implements Blackboard {
 
     private BlackboardState state;
-    private final CorrespondenceInstanceDecorator correspondenceInstance;
+    private final CorrespondenceModel correspondenceModel;
     private final ModelProviding modelProviding;
     private List<VitruviusChange> changes;
     private List<Command> commands;
@@ -29,10 +29,10 @@ public class BlackboardImpl implements Blackboard {
     private CorrespondenceProviding correspondenceProviding;
     private Map<EObject, TUID> tuidMap;
 
-    public BlackboardImpl(final CorrespondenceInstanceDecorator correspondenceInstance,
-            final ModelProviding modelProviding, final CorrespondenceProviding correspondenceProviding) {
+    public BlackboardImpl(final CorrespondenceModel correspondenceInstance, final ModelProviding modelProviding,
+            final CorrespondenceProviding correspondenceProviding) {
         this.state = BlackboardState.WAITING4CHANGES;
-        this.correspondenceInstance = correspondenceInstance;
+        this.correspondenceModel = correspondenceInstance;
         this.modelProviding = modelProviding;
         this.correspondenceProviding = correspondenceProviding;
         this.tuidMap = new HashMap<EObject, TUID>();
@@ -49,8 +49,8 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public CorrespondenceInstanceDecorator getCorrespondenceInstance() {
-        return this.correspondenceInstance;
+    public CorrespondenceModel getCorrespondenceModel() {
+        return this.correspondenceModel;
     }
 
     @Override

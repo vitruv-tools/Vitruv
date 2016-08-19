@@ -19,7 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * @author kramerm
  *
  */
-public interface CorrespondenceInstance<T extends Correspondence> {
+public interface GenericCorrespondenceModel<T extends Correspondence> {
 
     public Mapping getMapping();
 
@@ -186,6 +186,8 @@ public interface CorrespondenceInstance<T extends Correspondence> {
 
     Set<T> getAllCorrespondencesWithoutDependencies();
 
+    public List<T> getAllCorrespondences();
+
     /**
      * Returns the TUIDs for a correspondence that belong to the side that has a metamodel whose
      * namespace URIs include the given <code>metamodelNamespaceUri</code>
@@ -207,7 +209,7 @@ public interface CorrespondenceInstance<T extends Correspondence> {
      * @return the restricted view on the {@link CorrespondenceInstance}
      * @author Heiko Klare
      */
-    public <U extends Correspondence> CorrespondenceInstance<U> getView(Class<U> correspondenceType);
+    public <U extends Correspondence> GenericCorrespondenceModel<U> getView(Class<U> correspondenceType);
 
     /**
      * Creates a editable view on the {@link CorrespondenceInstance} restricted to the specified
@@ -219,7 +221,7 @@ public interface CorrespondenceInstance<T extends Correspondence> {
      * @param correspondenceCreator
      * @return the restricted editable view on the {@link CorrespondenceInstance}
      */
-    public <U extends Correspondence> CorrespondenceInstance<U> getEditableView(Class<U> correspondenceType,
+    public <U extends Correspondence> GenericCorrespondenceModel<U> getEditableView(Class<U> correspondenceType,
             Supplier<U> correspondenceCreator);
 
 }

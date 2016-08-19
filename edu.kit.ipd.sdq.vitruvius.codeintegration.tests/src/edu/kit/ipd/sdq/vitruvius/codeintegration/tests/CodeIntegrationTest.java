@@ -48,7 +48,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
@@ -186,7 +186,7 @@ public class CodeIntegrationTest {
     }
 
     protected void assertStandardCodeIntegrationTest() throws Throwable {
-        final CorrespondenceInstance<Correspondence> ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceInstance();
         // TODO check if correspondences are correct
         final Set<Correspondence> correspondences = ci.getAllCorrespondencesWithoutDependencies();
         Assert.assertNotNull(correspondences);
@@ -227,11 +227,11 @@ public class CodeIntegrationTest {
         }
     }
 
-    protected CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable {
+    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
         final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-        final CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum
+        final CorrespondenceModel corresponcenceInstance = vsum
                 .getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
     }

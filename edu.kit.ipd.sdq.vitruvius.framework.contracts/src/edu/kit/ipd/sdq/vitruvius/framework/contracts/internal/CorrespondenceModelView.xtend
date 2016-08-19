@@ -1,43 +1,42 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import java.util.function.Supplier 
- 
-class CorrespondenceInstanceView<T extends Correspondence> implements CorrespondenceInstance<T> {
-	private final CorrespondenceInstance<Correspondence> correspondenceInstanceDelegate;
+import java.util.function.Supplier import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.GenericCorrespondenceModel
+
+class CorrespondenceModelView<T extends Correspondence> implements GenericCorrespondenceModel<T> {
+	private final GenericCorrespondenceModel<Correspondence> correspondenceModelDelegate;
 	private final Class<T> correspondenceType;
 	private final Supplier<T> correspondenceCreator
 
-	public new(Class<T> correspondenceType, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceInstance) {
 		this(correspondenceType, correspondenceInstance, null)
 	}
 
-	public new(Class<T> correspondenceType, CorrespondenceInstance<Correspondence> correspondenceInstance,
+	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceInstance,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
-		this.correspondenceInstanceDelegate = correspondenceInstance;
+		this.correspondenceModelDelegate = correspondenceInstance;
 		this.correspondenceCreator = correspondenceCreator
 	}
 
 	override addCorrespondence(T correspondence) {
-		correspondenceInstanceDelegate.addCorrespondence(correspondence);
+		correspondenceModelDelegate.addCorrespondence(correspondence);
 	}
 
 	override calculateTUIDFromEObject(EObject eObject) {
-		correspondenceInstanceDelegate.calculateTUIDFromEObject(eObject);
+		correspondenceModelDelegate.calculateTUIDFromEObject(eObject);
 	}
 
 	override calculateTUIDFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		correspondenceInstanceDelegate.calculateTUIDFromEObject(eObject, virtualRootObject, prefix);
+		correspondenceModelDelegate.calculateTUIDFromEObject(eObject, virtualRootObject, prefix);
 	}
 
 	override calculateTUIDsFromEObjects(List<EObject> eObjects) {
-		correspondenceInstanceDelegate.calculateTUIDsFromEObjects(eObjects);
+		correspondenceModelDelegate.calculateTUIDsFromEObjects(eObjects);
 	}
 
 	// Re-implement this method, because we cannot claim a unique generic correspondence and restrict it to the given type afterwards 
@@ -53,41 +52,45 @@ class CorrespondenceInstanceView<T extends Correspondence> implements Correspond
 	}
 
 	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		correspondenceInstanceDelegate.createAndAddManualCorrespondence(eObjects1, eObjects2);
+		correspondenceModelDelegate.createAndAddManualCorrespondence(eObjects1, eObjects2);
 	}
 
+	override getAllCorrespondences() {
+		correspondenceModelDelegate.getAllCorrespondences().filter(correspondenceType).toList;
+	}
+	
 	override getAllCorrespondencesWithoutDependencies() {
-		correspondenceInstanceDelegate.getAllCorrespondencesWithoutDependencies().filter(correspondenceType).toSet();
+		correspondenceModelDelegate.getAllCorrespondencesWithoutDependencies().filter(correspondenceType).toSet();
 	}
 
 	override getCorrespondences(List<EObject> eObjects) {
-		correspondenceInstanceDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
+		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
 	}
 
 	override getCorrespondencesForTUIDs(List<TUID> tuids) {
-		correspondenceInstanceDelegate.getCorrespondencesForTUIDs(tuids).filter(correspondenceType).toSet();
+		correspondenceModelDelegate.getCorrespondencesForTUIDs(tuids).filter(correspondenceType).toSet();
 	}
 
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
-		correspondenceInstanceDelegate.getCorrespondencesThatInvolveAtLeast(eObjects).filter(correspondenceType).
+		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeast(eObjects).filter(correspondenceType).
 			toSet();
 	}
 
 	override getCorrespondencesThatInvolveAtLeastTUIDs(Set<TUID> tuids) {
-		correspondenceInstanceDelegate.getCorrespondencesThatInvolveAtLeastTUIDs(tuids).filter(correspondenceType).
+		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeastTUIDs(tuids).filter(correspondenceType).
 			toSet();
 	}
 
 	override getMapping() {
-		correspondenceInstanceDelegate.getMapping();
+		correspondenceModelDelegate.getMapping();
 	}
 
 	override getTUIDsForMetamodel(T correspondence, String metamodelNamespaceUri) {
-		correspondenceInstanceDelegate.getTUIDsForMetamodel(correspondence, metamodelNamespaceUri);
+		correspondenceModelDelegate.getTUIDsForMetamodel(correspondence, metamodelNamespaceUri);
 	}
 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		correspondenceInstanceDelegate.getView(correspondenceType);
+		correspondenceModelDelegate.getView(correspondenceType);
 	}
 
 	override hasCorrespondences(List<EObject> eObjects) {
@@ -96,75 +99,75 @@ class CorrespondenceInstanceView<T extends Correspondence> implements Correspond
 	}
 
 	override hasCorrespondences() {
-		correspondenceInstanceDelegate.hasCorrespondences();
+		correspondenceModelDelegate.hasCorrespondences();
 	}
 
 	override removeCorrespondencesAndDependendCorrespondences(T correspondence) {
-		correspondenceInstanceDelegate.removeCorrespondencesAndDependendCorrespondences(correspondence).filter(
+		correspondenceModelDelegate.removeCorrespondencesAndDependendCorrespondences(correspondence).filter(
 			correspondenceType).toSet();
 	}
 
 	override removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
-		correspondenceInstanceDelegate.removeCorrespondencesThatInvolveAtLeastAndDependend(eObjects);
+		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependend(eObjects);
 	}
 
 	override removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(Set<TUID> tuids) {
-		correspondenceInstanceDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(tuids);
+		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(tuids);
 	}
 
 	override resolveEObjectFromRootAndFullTUID(EObject root, String tuidString) {
-		correspondenceInstanceDelegate.resolveEObjectFromRootAndFullTUID(root, tuidString);
+		correspondenceModelDelegate.resolveEObjectFromRootAndFullTUID(root, tuidString);
 	}
 
 	override resolveEObjectFromTUID(TUID tuid) {
-		correspondenceInstanceDelegate.resolveEObjectFromTUID(tuid);
+		correspondenceModelDelegate.resolveEObjectFromTUID(tuid);
 	}
 
 	override resolveEObjectsFromTUIDs(List<TUID> tuids) {
-		correspondenceInstanceDelegate.resolveEObjectsFromTUIDs(tuids);
+		correspondenceModelDelegate.resolveEObjectsFromTUIDs(tuids);
 	}
 
 	override resolveEObjectsSetsFromTUIDsSets(Set<List<TUID>> tuidLists) {
-		correspondenceInstanceDelegate.resolveEObjectsSetsFromTUIDsSets(tuidLists);
+		correspondenceModelDelegate.resolveEObjectsSetsFromTUIDsSets(tuidLists);
 	}
 
 	override updateTUID(EObject oldEObject, EObject newEObject) {
-		correspondenceInstanceDelegate.updateTUID(oldEObject, newEObject);
+		correspondenceModelDelegate.updateTUID(oldEObject, newEObject);
 	}
 
 	override updateTUID(TUID oldTUID, EObject newEObject) {
-		correspondenceInstanceDelegate.updateTUID(oldTUID, newEObject);
+		correspondenceModelDelegate.updateTUID(oldTUID, newEObject);
 	}
 
 	override updateTUID(TUID oldTUID, TUID newTUID) {
-		correspondenceInstanceDelegate.updateTUID(oldTUID, newTUID);
+		correspondenceModelDelegate.updateTUID(oldTUID, newTUID);
 	}
 
 	// TODO re-design the CorrespondenceInstance to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
-		correspondenceInstanceDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
 	}
 
 	override getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
-		correspondenceInstanceDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
 	}
 
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
 		if (null == this.correspondenceCreator) {
 			throw new RuntimeException("The current view is not able to create new correspondences")
 		}
-		correspondenceInstanceDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator as Supplier<Correspondence>)
+		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator as Supplier<Correspondence>)
 	}
 
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
 		Supplier<Correspondence> correspondenceCreator) {
-		correspondenceInstanceDelegate.createAndAddCorrespondence(eObjects1, eObjects2,
+		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2,
 			correspondenceCreator)
 	}
 	
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
 		Supplier<U> correspondenceCreator) {
-		correspondenceInstanceDelegate.getEditableView(correspondenceType, correspondenceCreator)
+		correspondenceModelDelegate.getEditableView(correspondenceType, correspondenceCreator)
 	}
 
 }

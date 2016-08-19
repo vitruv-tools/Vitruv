@@ -22,7 +22,7 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 import org.somox.gast2seff.visitors.VisitorUtils;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -75,27 +75,27 @@ public class ClassMethodBodyChangedTransformation {
      *
      */
     public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting) {
-        if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceInstance())) {
+        if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceModel())) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");
             return new TransformationResult();
         }
         // 1)
-        this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceInstance());
+        this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceModel());
 
         // 2)
         final ResourceDemandingBehaviour resourceDemandingBehaviour = this
-                .findRdBehaviorToInsertElements(blackboard.getCorrespondenceInstance());
+                .findRdBehaviorToInsertElements(blackboard.getCorrespondenceModel());
         final BasicComponent basicComponent = this.basicComponentFinder.findBasicComponentForMethod(this.newMethod,
-                blackboard.getCorrespondenceInstance());
+                blackboard.getCorrespondenceModel());
         this.executeSoMoXForMethod(basicComponent, resourceDemandingBehaviour);
 
         // 3)
         this.connectCreatedResourceDemandingBehaviour(resourceDemandingBehaviour,
-                blackboard.getCorrespondenceInstance());
+                blackboard.getCorrespondenceModel());
 
         // 4)
-        this.createNewCorrespondences(blackboard.getCorrespondenceInstance(), resourceDemandingBehaviour,
+        this.createNewCorrespondences(blackboard.getCorrespondenceModel(), resourceDemandingBehaviour,
                 basicComponent);
 
         return new TransformationResult();
@@ -108,12 +108,12 @@ public class ClassMethodBodyChangedTransformation {
      * @param ci
      * @return
      */
-    private boolean isArchitectureRelevantChange(final CorrespondenceInstance ci) {
+    private boolean isArchitectureRelevantChange(final CorrespondenceModel ci) {
         return this.isMethodArchitectureRelevant(this.oldMethod, ci)
                 || this.isMethodArchitectureRelevant(this.newMethod, ci);
     }
 
-    private boolean isMethodArchitectureRelevant(final Method method, final CorrespondenceInstance ci) {
+    private boolean isMethodArchitectureRelevant(final Method method, final CorrespondenceModel ci) {
         if (null != method) {
             final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = CorrespondenceInstanceUtil
                     .getCorrespondingEObjectsByType(ci, method, ResourceDemandingBehaviour.class);
@@ -144,7 +144,7 @@ public class ClassMethodBodyChangedTransformation {
 
     }
 
-    private void createNewCorrespondences(final CorrespondenceInstance ci,
+    private void createNewCorrespondences(final CorrespondenceModel ci,
             final ResourceDemandingBehaviour newResourceDemandingBehaviourElements,
             final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newResourceDemandingBehaviourElements.getSteps_Behaviour()) {
@@ -153,7 +153,7 @@ public class ClassMethodBodyChangedTransformation {
     }
 
     private void connectCreatedResourceDemandingBehaviour(final ResourceDemandingBehaviour rdBehavior,
-            final CorrespondenceInstance ci) {
+            final CorrespondenceModel ci) {
         final EList<AbstractAction> steps = rdBehavior.getSteps_Behaviour();
         final boolean addStartAction = 0 == steps.size() || !(steps.get(0) instanceof StartAction);
         final boolean addStopAction = 0 == steps.size() || !(steps.get(steps.size() - 1) instanceof StopAction);
@@ -168,7 +168,7 @@ public class ClassMethodBodyChangedTransformation {
         VisitorUtils.connectActions(rdBehavior);
     }
 
-    private void removeCorrespondingAbstractActions(final CorrespondenceInstance ci) {
+    private void removeCorrespondingAbstractActions(final CorrespondenceModel ci) {
         final Set<AbstractAction> correspondingAbstractActions = CorrespondenceInstanceUtil
                 .getCorrespondingEObjectsByType(ci, this.oldMethod, AbstractAction.class);
         if (null == correspondingAbstractActions) {
@@ -218,7 +218,7 @@ public class ClassMethodBodyChangedTransformation {
         return resourceDemandingBehaviour;
     }
 
-    private ResourceDemandingBehaviour findRdBehaviorToInsertElements(final CorrespondenceInstance ci) {
+    private ResourceDemandingBehaviour findRdBehaviorToInsertElements(final CorrespondenceModel ci) {
         final Set<ResourceDemandingBehaviour> correspondingResourceDemandingBehaviours = CorrespondenceInstanceUtil
                 .getCorrespondingEObjectsByType(ci, this.oldMethod, ResourceDemandingBehaviour.class);
         if (null == correspondingResourceDemandingBehaviours || correspondingResourceDemandingBehaviours.isEmpty()) {

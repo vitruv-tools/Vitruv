@@ -68,7 +68,7 @@ class IntegrationChange2CommandTransformer {
 	
 	def createResponseCommands(EChange change, Blackboard blackboard) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
-		val commands = executor.generateCommandsForEvent(change, blackboard.correspondenceInstance)
+		val commands = executor.generateCommandsForEvent(change, blackboard.correspondenceModel)
 		if (commands != null && commands.size > 0) {
 			return commands
 		}
@@ -89,7 +89,7 @@ class IntegrationChange2CommandTransformer {
         		//TODO use IntegrationCorrespondence view of InternalCorrespondenceInstance which is
         		//statically typed to Correspondence right now and needs to support views like 
         		//CorrespondenceInstance
-                val ci = blackboard.getCorrespondenceInstance()
+                val ci = blackboard.correspondenceModel
                 val newCompilationUnitTuid = ci.calculateTUIDFromEObject(cu)
                 val packagePartOfNewTuid = getPackagePart(newCompilationUnitTuid)
     			for (Correspondence corr : ci.getAllCorrespondences()) {
@@ -194,7 +194,7 @@ class IntegrationChange2CommandTransformer {
      */
     private def getCorrespondingEObjectsIfIntegrated(EChange eChange,
             Blackboard blackboard) {
-        val ci = blackboard.getCorrespondenceInstance()
+        val ci = blackboard.correspondenceModel
         var EObject eObj = null
         if (eChange instanceof FeatureEChange<?,?>) {
             eObj = eChange.getAffectedEObject()

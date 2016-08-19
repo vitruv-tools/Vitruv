@@ -76,13 +76,13 @@ public interface CorrespondencePackage extends EPackage {
     int CORRESPONDENCES__CORRESPONDENCES = 0;
 
     /**
-     * The feature id for the '<em><b>Correspondence Instance</b></em>' attribute.
+     * The feature id for the '<em><b>Correspondence Model</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int CORRESPONDENCES__CORRESPONDENCE_INSTANCE = 1;
+    int CORRESPONDENCES__CORRESPONDENCE_MODEL = 1;
 
     /**
      * The number of structural features of the '<em>Correspondences</em>' class.
@@ -222,14 +222,14 @@ public interface CorrespondencePackage extends EPackage {
     int MANUAL_CORRESPONDENCE_FEATURE_COUNT = CORRESPONDENCE_FEATURE_COUNT + 0;
 
     /**
-     * The meta object id for the '<em>Instance</em>' data type.
+     * The meta object id for the '<em>Model</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceInstance()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
      * @generated
      */
-    int CORRESPONDENCE_INSTANCE = 3;
+    int CORRESPONDENCE_MODEL = 3;
 
     /**
      * The meta object id for the '<em>TUID</em>' data type.
@@ -264,15 +264,15 @@ public interface CorrespondencePackage extends EPackage {
     EReference getCorrespondences_Correspondences();
 
     /**
-     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceInstance <em>Correspondence Instance</em>}'.
+     * Returns the meta object for the attribute '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceModel <em>Correspondence Model</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Correspondence Instance</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceInstance()
+     * @return the meta object for the attribute '<em>Correspondence Model</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondenceModel()
      * @see #getCorrespondences()
      * @generated
      */
-    EAttribute getCorrespondences_CorrespondenceInstance();
+    EAttribute getCorrespondences_CorrespondenceModel();
 
     /**
      * Returns the meta object for class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence <em>Correspondence</em>}'.
@@ -350,15 +350,15 @@ public interface CorrespondencePackage extends EPackage {
     EClass getManualCorrespondence();
 
     /**
-     * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance <em>Instance</em>}'.
+     * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel <em>Model</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for data type '<em>Instance</em>'.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-     * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance" serializeable="false"
+     * @return the meta object for data type '<em>Model</em>'.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+     * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel" serializeable="false"
      * @generated
      */
-    EDataType getCorrespondenceInstance();
+    EDataType getCorrespondenceModel();
 
     /**
      * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID <em>TUID</em>}'.
@@ -412,12 +412,12 @@ public interface CorrespondencePackage extends EPackage {
         EReference CORRESPONDENCES__CORRESPONDENCES = eINSTANCE.getCorrespondences_Correspondences();
 
         /**
-         * The meta object literal for the '<em><b>Correspondence Instance</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Correspondence Model</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute CORRESPONDENCES__CORRESPONDENCE_INSTANCE = eINSTANCE.getCorrespondences_CorrespondenceInstance();
+        EAttribute CORRESPONDENCES__CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondences_CorrespondenceModel();
 
         /**
          * The meta object literal for the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl <em>Correspondence</em>}' class.
@@ -480,14 +480,14 @@ public interface CorrespondencePackage extends EPackage {
         EClass MANUAL_CORRESPONDENCE = eINSTANCE.getManualCorrespondence();
 
         /**
-         * The meta object literal for the '<em>Instance</em>' data type.
+         * The meta object literal for the '<em>Model</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceInstance()
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+         * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
          * @generated
          */
-        EDataType CORRESPONDENCE_INSTANCE = eINSTANCE.getCorrespondenceInstance();
+        EDataType CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondenceModel();
 
         /**
          * The meta object literal for the '<em>TUID</em>' data type.

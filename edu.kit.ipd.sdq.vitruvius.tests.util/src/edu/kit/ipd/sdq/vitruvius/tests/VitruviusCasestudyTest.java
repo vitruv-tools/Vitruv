@@ -25,7 +25,7 @@ import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
@@ -53,7 +53,7 @@ public abstract class VitruviusCasestudyTest {
     
     protected abstract void afterTest(Description description);
 
-    protected abstract CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable;
+    protected abstract CorrespondenceModel getCorrespondenceInstance() throws Throwable;
     
     protected static class SingleTransformerChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
 		public SingleTransformerChange2CommandTransformingProviding(Change2CommandTransforming transformer) {

@@ -5,8 +5,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Correspondences">
     <eStructuralFeatures xsi:type="ecore:EReference" name="correspondences" upperBound="-1"
         eType="#//Correspondence" containment="true" eOpposite="#//Correspondence/parent"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="correspondenceInstance"
-        lowerBound="1" eType="#//CorrespondenceInstance" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="correspondenceModel" lowerBound="1"
+        eType="#//CorrespondenceModel" transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
     <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
@@ -28,7 +28,7 @@
         eType="#//TUID"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceInstance" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance"
+  <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel"
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID"/>
 </ecore:EPackage>

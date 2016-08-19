@@ -2,10 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.concurrent.Callable
 import org.eclipse.emf.common.command.Command
@@ -14,7 +12,6 @@ import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import org.emftext.language.java.members.Method
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
@@ -23,6 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransformingPreprocessor {
 
@@ -94,7 +92,7 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 
 	private def TransformationResult executeClassMethodBodyChangeRefiner(Blackboard blackboard,
 		UserInteracting userInteracting, TransactionalChange compositeChange) {
-		val CorrespondenceInstance<Correspondence> correspondenceInstance = blackboard.getCorrespondenceInstance();
+		val CorrespondenceModel correspondenceInstance = blackboard.getCorrespondenceModel();
 		val ConcreteChange emfChange = compositeChange.getChanges().get(0) as ConcreteChange;
 		val JavaFeatureEChange<?,?> eFeatureChange = emfChange.getEChanges().get(0) as JavaFeatureEChange<?,?>;
 		val oldMethod = eFeatureChange.getOldAffectedEObject() as Method;

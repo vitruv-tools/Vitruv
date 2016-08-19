@@ -47,7 +47,7 @@ class CommandExecutingImpl implements CommandExecuting {
 		this.executeTransformationResults(transformationResults, blackboard)
 		this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
 		modelProviding.detachTransactionalEditingDomain() // FIXME
-		blackboard.correspondenceProviding.saveCorrespondenceInstanceAndDecorators(blackboard.correspondenceInstance)
+		blackboard.correspondenceProviding.saveCorrespondenceInstanceAndDecorators(blackboard.correspondenceModel)
 		return Collections::emptyList()
 	}
 
@@ -78,7 +78,7 @@ class CommandExecutingImpl implements CommandExecuting {
 				blackboard.getModelProviding().deleteModelInstanceOriginal(vuriToDelete)
 			}
 			for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
-				val TUID oldTUID = blackboard.getCorrespondenceInstance().calculateTUIDsFromEObjects(
+				val TUID oldTUID = blackboard.getCorrespondenceModel().calculateTUIDsFromEObjects(
 					createdEObjectVURIPair.getFirst().toList).claimOne
 				blackboard.getModelProviding().
 					saveModelInstanceOriginalWithEObjectAsOnlyContent(createdEObjectVURIPair.getSecond(),

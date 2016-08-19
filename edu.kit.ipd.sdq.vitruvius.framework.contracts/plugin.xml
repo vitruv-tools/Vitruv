@@ -18,7 +18,6 @@
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening" name="SynchronizationListening" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.synchronizationlistening.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing" name="ChangePreparing" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing.exsd"/>
    <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting" name="CommandExecuting" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondenceinstancedecorating" name="CorrespondenceInstanceDecorating" schema="schema/edu.kit.ipd.sdq.vitruvius.framework.contracts.correspondenceinstancedecorating.exsd"/>
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated correspondence -->
       <package

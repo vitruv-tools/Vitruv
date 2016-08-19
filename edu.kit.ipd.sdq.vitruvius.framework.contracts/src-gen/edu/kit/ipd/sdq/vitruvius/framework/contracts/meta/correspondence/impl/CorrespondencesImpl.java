@@ -2,47 +2,43 @@
  */
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
+
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Correspondences</b></em>'.
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Correspondences</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencesImpl#getCorrespondences <em>Correspondences</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencesImpl#getCorrespondenceInstance <em>Correspondence Instance</em>}</li>
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencesImpl#getCorrespondences
+ * <em>Correspondences</em>}</li>
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondencesImpl#getCorrespondenceModel
+ * <em>Correspondence Model</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CorrespondencesImpl extends EObjectImpl implements Correspondences {
     /**
-     * The cached value of the '{@link #getCorrespondences() <em>Correspondences</em>}' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getCorrespondences() <em>Correspondences</em>}' containment
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @see #getCorrespondences()
      * @generated
      * @ordered
@@ -50,28 +46,28 @@ public class CorrespondencesImpl extends EObjectImpl implements Correspondences 
     protected EList<Correspondence> correspondences;
 
     /**
-     * The default value of the '{@link #getCorrespondenceInstance() <em>Correspondence Instance</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getCorrespondenceInstance()
+     * The default value of the '{@link #getCorrespondenceModel() <em>Correspondence Model</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @see #getCorrespondenceModel()
      * @generated
      * @ordered
      */
-    protected static final CorrespondenceInstance CORRESPONDENCE_INSTANCE_EDEFAULT = null;
+    protected static final CorrespondenceModel CORRESPONDENCE_MODEL_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getCorrespondenceInstance() <em>Correspondence Instance</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getCorrespondenceInstance()
+     * The cached value of the '{@link #getCorrespondenceModel() <em>Correspondence Model</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @see #getCorrespondenceModel()
      * @generated
      * @ordered
      */
-    protected CorrespondenceInstance correspondenceInstance = CORRESPONDENCE_INSTANCE_EDEFAULT;
+    protected CorrespondenceModel correspondenceModel = CORRESPONDENCE_MODEL_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected CorrespondencesImpl() {
@@ -79,8 +75,8 @@ public class CorrespondencesImpl extends EObjectImpl implements Correspondences 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -89,151 +85,162 @@ public class CorrespondencesImpl extends EObjectImpl implements Correspondences 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
+    @Override
     public EList<Correspondence> getCorrespondences() {
-        if (correspondences == null) {
-            correspondences = new EObjectContainmentWithInverseEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES, CorrespondencePackage.CORRESPONDENCE__PARENT);
+        if (this.correspondences == null) {
+            this.correspondences = new EObjectContainmentWithInverseEList<Correspondence>(Correspondence.class, this,
+                    CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES,
+                    CorrespondencePackage.CORRESPONDENCE__PARENT);
         }
-        return correspondences;
+        return this.correspondences;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-    public CorrespondenceInstance getCorrespondenceInstance() {
-        return correspondenceInstance;
+    @Override
+    public CorrespondenceModel getCorrespondenceModel() {
+        return this.correspondenceModel;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-    public void setCorrespondenceInstance(CorrespondenceInstance newCorrespondenceInstance) {
-        CorrespondenceInstance oldCorrespondenceInstance = correspondenceInstance;
-        correspondenceInstance = newCorrespondenceInstance;
+    @Override
+    public void setCorrespondenceModel(final CorrespondenceModel newCorrespondenceModel) {
+        CorrespondenceModel oldCorrespondenceModel = this.correspondenceModel;
+        this.correspondenceModel = newCorrespondenceModel;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_INSTANCE, oldCorrespondenceInstance, correspondenceInstance));
+            eNotify(new ENotificationImpl(this, Notification.SET,
+                    CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL, oldCorrespondenceModel,
+                    this.correspondenceModel));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
     @Override
-    public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getCorrespondences()).basicAdd(otherEnd, msgs);
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            return ((InternalEList<InternalEObject>) (InternalEList<?>) getCorrespondences()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                return ((InternalEList<?>)getCorrespondences()).basicRemove(otherEnd, msgs);
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            return ((InternalEList<?>) getCorrespondences()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                return getCorrespondences();
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_INSTANCE:
-                return getCorrespondenceInstance();
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            return getCorrespondences();
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
+            return getCorrespondenceModel();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                getCorrespondences().clear();
-                getCorrespondences().addAll((Collection<? extends Correspondence>)newValue);
-                return;
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_INSTANCE:
-                setCorrespondenceInstance((CorrespondenceInstance)newValue);
-                return;
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            getCorrespondences().clear();
+            getCorrespondences().addAll((Collection<? extends Correspondence>) newValue);
+            return;
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
+            setCorrespondenceModel((CorrespondenceModel) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                getCorrespondences().clear();
-                return;
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_INSTANCE:
-                setCorrespondenceInstance(CORRESPONDENCE_INSTANCE_EDEFAULT);
-                return;
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            getCorrespondences().clear();
+            return;
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
+            setCorrespondenceModel(CORRESPONDENCE_MODEL_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
-                return correspondences != null && !correspondences.isEmpty();
-            case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_INSTANCE:
-                return CORRESPONDENCE_INSTANCE_EDEFAULT == null ? correspondenceInstance != null : !CORRESPONDENCE_INSTANCE_EDEFAULT.equals(correspondenceInstance);
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
+            return this.correspondences != null && !this.correspondences.isEmpty();
+        case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
+            return CORRESPONDENCE_MODEL_EDEFAULT == null ? this.correspondenceModel != null
+                    : !CORRESPONDENCE_MODEL_EDEFAULT.equals(this.correspondenceModel);
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (correspondenceInstance: ");
-        result.append(correspondenceInstance);
+        result.append(" (correspondenceModel: ");
+        result.append(this.correspondenceModel);
         result.append(')');
         return result.toString();
     }
 
-} //CorrespondencesImpl
+} // CorrespondencesImpl

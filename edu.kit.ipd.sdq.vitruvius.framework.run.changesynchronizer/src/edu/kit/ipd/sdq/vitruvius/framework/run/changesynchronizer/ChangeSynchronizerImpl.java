@@ -19,7 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -91,7 +91,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
         // FIXME HK: This is all strange: the sourceModelVURI is taken from the first change,
         // although they can be from different ones. Why not make it for each change independently?
-        Set<CorrespondenceInstanceDecorator> correspondenceInstances = this.correspondenceProviding
+        Set<CorrespondenceModel> correspondenceInstances = this.correspondenceProviding
                 .getOrCreateAllCorrespondenceInstances(sourceModelVURI);
 
         rollbackChange(change);
@@ -107,7 +107,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     private void synchronizeSingleChange(final VitruviusChange change,
-            final Set<CorrespondenceInstanceDecorator> correspondenceInstances,
+            final Set<CorrespondenceModel> correspondenceInstances,
             final List<List<VitruviusChange>> commandExecutionChanges) {
         if (change instanceof CompositeChange) {
             for (VitruviusChange innerChange : ((CompositeChange) change).getChanges()) {
@@ -121,7 +121,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }
             updateTUIDs(tuidMap, correspondenceInstances.iterator().next());
-            for (CorrespondenceInstanceDecorator correspondenceInstance : correspondenceInstances) {
+            for (CorrespondenceModel correspondenceInstance : correspondenceInstances) {
                 Metamodel mmA = correspondenceInstance.getMapping().getMetamodelA();
                 Metamodel mmB = correspondenceInstance.getMapping().getMetamodelB();
                 // assume mmaA is source metamodel
@@ -148,7 +148,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     private void getOldObjectTUIDs(final VitruviusChange recordedChange,
-            final CorrespondenceInstanceDecorator correspondenceInstance, final Map<EObject, TUID> tuidMap) {
+            final CorrespondenceModel correspondenceInstance, final Map<EObject, TUID> tuidMap) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
             List<EObject> objects = new ArrayList<EObject>();
@@ -191,8 +191,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    protected void updateTUIDs(final Map<EObject, TUID> tuidMap,
-            final CorrespondenceInstanceDecorator correspondenceInstance) {
+    protected void updateTUIDs(final Map<EObject, TUID> tuidMap, final CorrespondenceModel correspondenceInstance) {
         // TODO HK There is something wrong with transactions if we have to start a transaction to
         // update the TUID here.
         // Possibilities:

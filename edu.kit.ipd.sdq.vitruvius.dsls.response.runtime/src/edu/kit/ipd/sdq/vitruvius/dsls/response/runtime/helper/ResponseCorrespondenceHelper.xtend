@@ -5,21 +5,20 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory
 import java.util.List
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 final class ResponseCorrespondenceHelper {
 	private new() {}
 
-	private static def getResponseView(CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	private static def getResponseView(CorrespondenceModel correspondenceInstance) {
 		return correspondenceInstance.getEditableView(ResponseCorrespondence, [
 			ResponseFactory.eINSTANCE.createResponseCorrespondence()
 		]);
 	}
 
-	private static def getTUID(CorrespondenceInstance<Correspondence> correspondenceInstance, EObject object,
+	private static def getTUID(CorrespondenceModel correspondenceInstance, EObject object,
 		EObject parent) {
 		if (parent == null) {
 			return correspondenceInstance.calculateTUIDFromEObject(object);
@@ -30,7 +29,7 @@ final class ResponseCorrespondenceHelper {
 		}
 	}
 
-	public static def removeCorrespondencesBetweenElements(CorrespondenceInstance<Correspondence> correspondenceInstance,
+	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceInstance,
 		EObject source, EObject sourceParent, EObject target, EObject targetParent) {
 		val correspondenceInstanceView = correspondenceInstance.responseView;
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
@@ -44,7 +43,7 @@ final class ResponseCorrespondenceHelper {
 		}
 	}
 	
-	public static def removeCorrespondencesOfObject(CorrespondenceInstance<Correspondence> correspondenceInstance,
+	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceInstance,
 		EObject source, EObject sourceParent) {
 		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
 		val correspondenceInstanceView = correspondenceInstance.responseView;
@@ -55,7 +54,7 @@ final class ResponseCorrespondenceHelper {
 	}
 
 	public static def ResponseCorrespondence addCorrespondence(
-		CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject target, String tag) {
+		CorrespondenceModel correspondenceInstance, EObject source, EObject target, String tag) {
 		val correspondence = correspondenceInstance.responseView.
 			createAndAddCorrespondence(#[source], #[target]) as ResponseCorrespondence;
 		correspondence.tag = tag ?: "";
@@ -63,7 +62,7 @@ final class ResponseCorrespondenceHelper {
 	}
 
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
-		CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, String expectedTag,
+		CorrespondenceModel correspondenceInstance, EObject source, String expectedTag,
 		Class<T> type) {
 			val tuid = correspondenceInstance.getTUID(source, null);
 			return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).filter [
@@ -72,7 +71,7 @@ final class ResponseCorrespondenceHelper {
 		}
 
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
-		CorrespondenceInstance<Correspondence> correspondenceInstance, EObject source, EObject sourceParent,
+		CorrespondenceModel correspondenceInstance, EObject source, EObject sourceParent,
 		Class<T> type) {
 		val tuid = correspondenceInstance.getTUID(source, sourceParent);
 		return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).map [
@@ -91,7 +90,7 @@ final class ResponseCorrespondenceHelper {
 	}
 
 	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
-		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceInstance) {
 		val nonNullPreconditionMethod = if(preconditionMethod != null) preconditionMethod else [T input|true];
 		val targetElements = new ArrayList<T>();
 		try {

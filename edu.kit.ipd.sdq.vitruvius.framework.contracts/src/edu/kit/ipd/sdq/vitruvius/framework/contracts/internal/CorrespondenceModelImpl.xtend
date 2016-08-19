@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
@@ -40,8 +38,8 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
-class CorrespondenceInstanceImpl extends ModelInstance implements CorrespondenceInstanceDecorator {
-	static final Logger logger = Logger::getLogger(typeof(CorrespondenceInstanceImpl).getSimpleName())
+class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
+	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
 	final Mapping mapping
 	final ModelProviding modelProviding
 	final Correspondences correspondences
@@ -224,9 +222,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondingTUIDLists
 	}
 	
-
-	// TODO MK rename to reflect the fact that this method saves the correspondence model
-	override Map<String, Object> getFileExtPrefix2ObjectMapForSave() {
+	override void saveModel() {
 		try {
 			EcoreResourceBridge::saveResource(getResource(), this.saveCorrespondenceOptions)
 		} catch (IOException e) {
@@ -234,21 +230,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				'''Could not save correspondence instance '«»«this»' using the resource '«»«getResource()»' and the options '«»«this.saveCorrespondenceOptions»': «e»'''.
 					toString)
 		}
-		// we do not need to save anything else in a correspondence instance because the
-		// involved mapping is fix and everything else can be recomputed from the model
-		return new HashMap<String, Object>() // do _not_ return an immutable empty map as decorators will add entries
-	}
-
-	override Set<String> getFileExtPrefixesForObjectsToLoad() {
-		return new HashSet<String>() // do _not_ return an immutable empty map as decorators will add entries
-	}
-
-	override <T extends CorrespondenceInstanceDecorator> T getFirstCorrespondenceInstanceDecoratorOfTypeInChain(
-		Class<T> type) {
-		if (type.isInstance(this)) {
-			return type.cast(this)
-		} 
-		return null
 	}
 
 	override Mapping getMapping() {
@@ -288,10 +269,6 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 		return correspondences != null && correspondences.size() > 0
 	}
 
-	override void initialize(Map<String, Object> fileExtPrefix2ObjectMap) {
-		// nothing to initialize, everything was done based on the correspondence model
-	}
-
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
 			correspondencesResource.load(this.saveCorrespondenceOptions)
@@ -314,7 +291,7 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 				'''The unique root object '«»«correspondences»' of the correspondence model '«»«getURI()»' is not correctly typed!'''.
 					toString)
 		}
-		correspondences.setCorrespondenceInstance(this)
+		correspondences.setCorrespondenceModel(this)
 		return correspondences as Correspondences
 	}
 
@@ -613,11 +590,11 @@ class CorrespondenceInstanceImpl extends ModelInstance implements Correspondence
 	 }
 	 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		return new CorrespondenceInstanceView(correspondenceType, this);
+		return new CorrespondenceModelView(correspondenceType, this);
 	}
 	
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType, Supplier<U> correspondenceCreator) {
-		return new CorrespondenceInstanceView(correspondenceType, this, correspondenceCreator);
+		return new CorrespondenceModelView(correspondenceType, this, correspondenceCreator);
 	}
 	
 }		

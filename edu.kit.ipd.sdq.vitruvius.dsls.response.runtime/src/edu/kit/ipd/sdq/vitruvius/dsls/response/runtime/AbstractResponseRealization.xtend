@@ -4,9 +4,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class AbstractResponseRealization extends CallHierarchyHaving implements IResponseRealization {
 	protected val UserInteracting userInteracting;
@@ -16,7 +15,7 @@ abstract class AbstractResponseRealization extends CallHierarchyHaving implement
 		this.userInteracting = userInteracting;
 	}
 	
-	override applyEvent(EChange change, CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	override applyEvent(EChange change, CorrespondenceModel correspondenceInstance) {
 		getLogger().debug("Called response " + this.getClass().getSimpleName() + " with event: " + change);
     	
     	this.executionState = new ResponseExecutionState(userInteracting, correspondenceInstance, new TransformationResult());
