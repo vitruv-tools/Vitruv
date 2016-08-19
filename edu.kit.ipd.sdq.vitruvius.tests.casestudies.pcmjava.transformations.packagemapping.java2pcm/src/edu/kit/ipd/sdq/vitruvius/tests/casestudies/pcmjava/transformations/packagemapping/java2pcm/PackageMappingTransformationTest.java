@@ -19,7 +19,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class PackageMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+public class PackageMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
     /**
      * first package is created --> should be mapped to a repository

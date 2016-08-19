@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm;
+package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -97,7 +97,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
@@ -112,6 +111,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.c
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
@@ -119,8 +119,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
@@ -157,12 +155,27 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
         pcmJavaBuilder.addBuilderToProject(this.currentTestProject);
         // build the project
         BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
+        injectChange2CommandTransformingProviding();
+        		
         this.resourceSet = new ResourceSetImpl();
         // set new user interactor
         this.setUserInteractor(this.testUserInteractor);
         // deactivate the EMF Monitor
         this.deactivateEMFMonitor();
     }
+
+	private void injectChange2CommandTransformingProviding() throws Throwable {
+		/* FIXME HK
+         * This is really hacky: We "inject" the specified Change2CommandTransformingProviding into the
+         * PCMJavaBuilder and its ChangeSynchronizer to use the one we expect instead of the one loaded
+         * via extension points. If this does not work any more, check for changed field names.
+         */
+        PCMJavaBuilder builder = getPCMJavaBuilderFromProject();
+        Change2CommandTransformingProviding transformingProviding = syncTransformationProviderSupplier.get();
+        JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "transformingProviding", builder, transformingProviding);
+        ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "changeSynchronizing", builder);
+        JavaBridge.setFieldInClass(ChangeSynchronizerImpl.class, "change2CommandTransformingProviding", changeSynchronizing, transformingProviding);
+	}
 
     @Override
     protected void afterTest(final org.junit.runner.Description description) {
@@ -775,12 +788,6 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
     protected Package getDatatypesPackage() throws Throwable {
         return this.getPackageWithNameFromCorrespondenceInstance("datatypes");
-    }
-
-    protected CompositeDataType addClassThatCorrespondsToCompositeDatatype() throws Throwable {
-        this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_COMPOSITE_DATA_TYPE);
-        final CompositeDataType cdt = this.addClassInPackage(this.getDatatypesPackage(), CompositeDataType.class);
-        return cdt;
     }
 
     protected IMethod findIMethodByName(final String typeName, final String methodName, final ICompilationUnit icu)

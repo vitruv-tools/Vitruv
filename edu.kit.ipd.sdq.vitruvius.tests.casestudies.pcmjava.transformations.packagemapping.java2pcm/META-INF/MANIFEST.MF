@@ -29,5 +29,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm

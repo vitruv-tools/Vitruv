@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class MethodMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+public class MethodMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
     @Test
     public void testAddMethod() throws Throwable {

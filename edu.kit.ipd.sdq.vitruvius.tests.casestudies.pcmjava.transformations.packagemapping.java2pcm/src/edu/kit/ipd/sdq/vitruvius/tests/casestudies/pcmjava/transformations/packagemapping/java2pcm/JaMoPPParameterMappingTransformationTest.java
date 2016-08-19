@@ -24,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
-public class JaMoPPParameterMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+public class JaMoPPParameterMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
     @Test
     public void testAddParameter() throws Throwable {

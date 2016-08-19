@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 
-public class InterfaceMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+public class InterfaceMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
     /**
      * interface in contracts package --> should automatically be mapped to operation interface

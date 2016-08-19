@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 
-public class ClassMappingTransformationTest extends JaMoPP2PCMTransformationTest {
+public class ClassMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
     /**
      * Class that in mapped package and same name as component + impl--> should be the new

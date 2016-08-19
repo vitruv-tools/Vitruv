@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm.JaMoPP2PCMTransformationTest
 import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest
 
 /**
  * class that contains special methods for EJB testing
@@ -20,15 +20,15 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 	protected static val String TEST_INTERFACE_NAME = "TestEJBInterface"
 	protected static val String TEST_FIELD_NAME = "testEJBfield"
 	
-//	static class EJBTransformingProviding extends AbstractChange2CommandTransformingProviding {
-//		new() {
-//			addChange2CommandTransforming(new Change2CommandTransformingEJBJavaToPCM());
-//		}
-//	}
-//	
-//	new() {
-//		super([ | new EJBTransformingProviding() ]);
-//	}
+	static class EJBTransformingProviding extends AbstractChange2CommandTransformingProviding {
+		new() {
+			addChange2CommandTransforming(new Change2CommandTransformingEJBJavaToPCM());
+		}
+	}
+	
+	new() {
+		super([ | new EJBTransformingProviding() ]);
+	}
 	
 	def protected createEJBClass(String className) {
 		val ConcreteClassifier classifier = super.createClassInPackage(this.mainPackage, className) as ConcreteClassifier 
