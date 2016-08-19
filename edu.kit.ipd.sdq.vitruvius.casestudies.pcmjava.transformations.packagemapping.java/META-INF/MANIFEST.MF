@@ -39,7 +39,4 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java
-Bundle-ClassPath: libs/reflections-0.9.9-RC1.jar,
- .,
- libs/javassist.jar
 
