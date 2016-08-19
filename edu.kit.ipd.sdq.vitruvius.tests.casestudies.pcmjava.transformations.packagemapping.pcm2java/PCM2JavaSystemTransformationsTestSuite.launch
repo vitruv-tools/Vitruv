@@ -12,7 +12,7 @@
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="includeOptional" value="true"/>
-<stringAttribute key="location" value="${workspace_loc}/../test-workspace_pcm_java"/>
+<stringAttribute key="location" value="${workspace_loc}/../test-workspace_pcm-java"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java/src/edu/kit/ipd/sdq/vitruvius/tests/casestudies/pcmjava/transformations/packagemapping/pcm2java/system/PCM2JavaSystemTestSuite.java"/>
 </listAttribute>
