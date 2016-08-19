@@ -12,7 +12,7 @@ import org.somox.gast2seff.visitors.MethodCallFinder;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 /**
@@ -27,11 +27,11 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
             .getLogger(FunctionClassificationStrategyForPackageMapping.class.getSimpleName());
 
     private final BasicComponentFinding basicComponentFinding;
-    private final CorrespondenceInstance correspondenceInstance;
+    private final CorrespondenceModel correspondenceInstance;
     private final BasicComponent myBasicComponent;
 
     public FunctionClassificationStrategyForPackageMapping(final BasicComponentFinding basicComponentFinding,
-            final CorrespondenceInstance ci, final BasicComponent myBasicComponent) {
+            final CorrespondenceModel ci, final BasicComponent myBasicComponent) {
         super(new MethodCallFinder());
         this.basicComponentFinding = basicComponentFinding;
         this.correspondenceInstance = ci;

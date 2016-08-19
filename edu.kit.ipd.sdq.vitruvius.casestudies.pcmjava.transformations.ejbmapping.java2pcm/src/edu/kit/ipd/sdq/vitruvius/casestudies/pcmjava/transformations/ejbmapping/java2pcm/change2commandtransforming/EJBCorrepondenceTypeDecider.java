@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.CorrespondenceTypeDeciding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 
 /**
  * This class decides whether an integrated correspondence should be created during the integration
@@ -21,7 +21,7 @@ public class EJBCorrepondenceTypeDecider implements CorrespondenceTypeDeciding {
 
     @Override
     public boolean useIntegratedCorrespondence(final EObject objectA, final EObject objectB,
-            final CorrespondenceInstance<?> cInstance, final List<Resource> jaMoppResources) {
+            final CorrespondenceModel cInstance, final List<Resource> jaMoppResources) {
         return false;
     }
 }

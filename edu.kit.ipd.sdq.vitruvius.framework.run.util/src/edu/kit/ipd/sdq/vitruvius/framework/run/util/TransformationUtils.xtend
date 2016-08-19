@@ -40,14 +40,14 @@ class TransformationUtils {
 		Blackboard blackboard, Set<Class<?>> rootObjects) {
 		var Set<Correspondence> correspondences = null
 		if (null != exRootObject) {
-			val rootTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(exRootObject)
+			val rootTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(exRootObject)
 			val String prefix = rootTUID.toString
 			EcoreUtil.remove(object)
-			val tuid = blackboard.correspondenceInstance.calculateTUIDFromEObject(object, exRootObject, prefix)
-			correspondences = blackboard.correspondenceInstance.
+			val tuid = blackboard.correspondenceModel.calculateTUIDFromEObject(object, exRootObject, prefix)
+			correspondences = blackboard.correspondenceModel.
 				removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(tuid.toSet)
 		} else {
-			correspondences = blackboard.correspondenceInstance.
+			correspondences = blackboard.correspondenceModel.
 				removeCorrespondencesThatInvolveAtLeastAndDependend(object.toSet)
 		}
 		if (correspondences.nullOrEmpty) {
@@ -65,7 +65,7 @@ class TransformationUtils {
 		TransformationResult transformationResult, Set<Class<?>> rootObjectClasses) {
 		for (tuid : tuids) {
 			try {
-				val eObject = blackboard.correspondenceInstance.resolveEObjectFromTUID(tuid)
+				val eObject = blackboard.correspondenceModel.resolveEObjectFromTUID(tuid)
 				if (null != eObject) {
 					EcoreUtil.delete(eObject)
 				}

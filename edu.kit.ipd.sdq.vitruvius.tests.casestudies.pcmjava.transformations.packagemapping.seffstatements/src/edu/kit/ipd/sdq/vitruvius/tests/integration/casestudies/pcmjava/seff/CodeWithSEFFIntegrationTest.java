@@ -21,8 +21,7 @@ import org.palladiosimulator.pcm.seff.StartAction;
 import org.palladiosimulator.pcm.seff.StopAction;
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTest;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 
@@ -49,7 +48,7 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
 
     @Override
     protected void assertStandardCodeIntegrationTest() throws Throwable {
-        final CorrespondenceInstance ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceInstance();
         // check that we have created correspondences to method for all AbstractActions
         final Repository repo = this.getRepository(ci);
         final Iterable<EObject> iterable = () -> repo.eAllContents();
@@ -82,7 +81,7 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
         Thread.sleep(2500);
 
         // assert that we got one new InternalCallAction and the remainder stayed the same
-        final CorrespondenceInstance<Correspondence> ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceInstance();
         final Repository repo = this.getRepository(ci);
         final BasicComponent bc = (BasicComponent) repo.getComponents__Repository().stream()
                 .filter(comp -> comp.getEntityName().contains("CalculatorTool")).findAny().get();
@@ -107,12 +106,12 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
 
     }
 
-    private Repository getRepository(final CorrespondenceInstance<Correspondence> ci) {
+    private Repository getRepository(final CorrespondenceModel ci) {
         return CorrespondenceInstanceUtil.getAllEObjectsOfTypeInCorrespondences(ci, Repository.class).iterator().next();
     }
 
     private void assertCorrespondenceToMethod(final AbstractAction abstractAction,
-            final CorrespondenceInstance<Correspondence> ci) {
+            final CorrespondenceModel ci) {
         final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjects(ci,
                 abstractAction);
         if (abstractAction instanceof StartAction || abstractAction instanceof StopAction) {

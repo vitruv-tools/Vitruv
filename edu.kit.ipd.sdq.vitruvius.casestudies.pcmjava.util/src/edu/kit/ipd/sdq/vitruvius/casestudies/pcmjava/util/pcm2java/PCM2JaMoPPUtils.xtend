@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -75,6 +74,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -103,7 +103,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		Object newValue,
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance,
+		CorrespondenceModel correspondenceInstance,
 		boolean saveFilesOfChangedEObjects
 	) {
 		val Set<java.lang.Class<? extends EObject>> jaMoPPRootClasses = Sets.newHashSet(JavaRoot)
@@ -164,7 +164,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleClassifierNameChange(Classifier classifier, Object newValue,
-		CorrespondenceInstance correspondenceInstance, boolean appendImpl, TUID oldClassifierTUID) {
+		CorrespondenceModel correspondenceInstance, boolean appendImpl, TUID oldClassifierTUID) {
 		classifier.name = newValue.toString
 		if (classifier instanceof Class) {
 			if (appendImpl) {
@@ -181,10 +181,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
 		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit,
 		TransformationResult transformationResult, EObject affectedEObject) {
-		val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(javaRoot)
+		val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(javaRoot)
 		var TUID oldClassifierTUID = null
 		if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty) {
-			oldClassifierTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(
+			oldClassifierTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(
 				(javaRoot as CompilationUnit).classifiers.get(0))
 		}
 		var VURI vuriToDelete = null
@@ -202,7 +202,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			}
 			newName = newName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
 			handleClassifierNameChange((javaRoot as CompilationUnit).classifiers.get(0), newValue,
-				blackboard.correspondenceInstance, changeNamespanceIfCompilationUnit, oldClassifierTUID)
+				blackboard.correspondenceModel, changeNamespanceIfCompilationUnit, oldClassifierTUID)
 		}
 		javaRoot.name = newName;
 		PCMJaMoPPUtils.handleRootChanges(javaRoot, blackboard, PCMJaMoPPUtils.getSourceModelVURI(affectedEObject),
@@ -330,7 +330,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def static Package getContainingPackageFromCorrespondenceInstance(Classifier classifier,
-		CorrespondenceInstance correspondenceInstance) {
+		CorrespondenceModel correspondenceInstance) {
 		var namespace = classifier.containingCompilationUnit.namespacesAsString
 		if (namespace.endsWith("$") || namespace.endsWith(".")) {
 			namespace = namespace.substring(0, namespace.length - 1)
@@ -348,7 +348,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return null;
 	}
 
-	def public static Package findCorrespondingPackageByName(String name, CorrespondenceInstance correspondenceInstance,
+	def public static Package findCorrespondingPackageByName(String name, CorrespondenceModel correspondenceInstance,
 		Repository repo) {
 		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repo, Package)
 		if (null == packages) {
@@ -443,7 +443,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return "void"
 	}
 
-	def static askUserForPackage(CorrespondenceInstance correspondenceInstance, Repository repository,
+	def static askUserForPackage(CorrespondenceModel correspondenceInstance, Repository repository,
 		UserInteracting userInteractiong, String message) {
 		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repository, Package)
 		val List<String> options = new ArrayList<String>
@@ -502,7 +502,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			return transformationResult
 		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -631,11 +631,11 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			return
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(namedElement, newCorrespondingEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(namedElement, newCorrespondingEObject)
 		}
 	}
 
-	def static getDatatypePackage(CorrespondenceInstance correspondenceInstance, Repository repo, String dataTypeName,
+	def static getDatatypePackage(CorrespondenceModel correspondenceInstance, Repository repo, String dataTypeName,
 		UserInteracting userInteracting) {
 		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance, repo)
 		if (null == datatypePackage) {

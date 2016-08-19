@@ -51,7 +51,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	override createEObject(EObject eObject) {
 		val field = eObject as Field
 
-		val fieldContainingClassifierCorrespondences = blackboard.correspondenceInstance.getCorrespondingEObjects(
+		val fieldContainingClassifierCorrespondences = blackboard.correspondenceModel.getCorrespondingEObjects(
 			field.containingConcreteClassifier)
 		val Set<EObject> newCorrespondingEObjects = new HashSet
 		val compositeDataTypes = fieldContainingClassifierCorrespondences.filter(typeof(CompositeDataType))
@@ -62,7 +62,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 				val InnerDeclaration innerDeclaration = RepositoryFactory.eINSTANCE.createInnerDeclaration
 				innerDeclaration.entityName = field.name
 				innerDeclaration.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
-					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, blackboard.correspondenceInstance,
+					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, blackboard.correspondenceModel,
 						userInteracting, null, field.arrayDimension)
 				innerDeclaration.compositeDataType_InnerDeclaration = cdt
 				newCorrespondingEObjects.add(innerDeclaration)
@@ -79,7 +79,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			null != JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)) {
 			// new field is in a ComposedProvidingRequiringEntity
 			val classifierOfField = JaMoPP2PCMUtils.getTargetClassifierFromTypeReference(field.typeReference)
-			val correspondingComponents = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(classifierOfField,
+			val correspondingComponents = blackboard.correspondenceModel.getCorrespondingEObjectsByType(classifierOfField,
 				RepositoryComponent)
 			if (!correspondingComponents.nullOrEmpty) {
 
@@ -124,19 +124,19 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 			val newTypeReference = newValue as TypeReference
 
 			// udpate InnerDeclaration
-			val innerDecs = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject, InnerDeclaration)
+			val innerDecs = blackboard.correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject, InnerDeclaration)
 			if (!innerDecs.nullOrEmpty) {
 				for (innerDec : innerDecs) {
-					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(innerDec)
+					val oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(innerDec)
 					innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
-						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceInstance,
+						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, blackboard.correspondenceModel,
 							userInteracting, null, (newAffectedEObject as Field).arrayDimension )
-					blackboard.correspondenceInstance.updateTUID(oldTUID, innerDec)
+					blackboard.correspondenceModel.updateTUID(oldTUID, innerDec)
 				}
 			}
 
 			// Remove all OperationRequiredRole for the field
-			val operationRequiredRoles = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject,
+			val operationRequiredRoles = blackboard.correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject,
 				OperationRequiredRole)
 			for (operationRequiredRole : operationRequiredRoles) {
 				PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(operationRequiredRole, null, blackboard)
@@ -150,7 +150,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					val newCorrespondingEObjects = newField.checkAndAddOperationRequiredRolesCorrepondencesToField()
 					if (!newCorrespondingEObjects.nullOrEmpty) {
 						for (newCorrspondingEObject : newCorrespondingEObjects) {
-							blackboard.correspondenceInstance.createAndAddCorrespondence(newCorrspondingEObject, newAffectedEObject)
+							blackboard.correspondenceModel.createAndAddCorrespondence(newCorrspondingEObject, newAffectedEObject)
 						}
 					}
 				}
@@ -160,7 +160,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	def private EObject[] checkAndAddOperationRequiredRolesCorrepondencesToField(Field field) {
-		return JaMoPP2PCMUtils.checkAndAddOperationRequiredRole(field, blackboard.correspondenceInstance, userInteracting)
+		return JaMoPP2PCMUtils.checkAndAddOperationRequiredRole(field, blackboard.correspondenceModel, userInteracting)
 	}
 
 }

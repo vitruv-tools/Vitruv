@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Classifier
 import org.emftext.language.java.classifiers.Interface
@@ -9,6 +7,7 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class EJBJava2PcmHelper {
 	private new(){}
@@ -33,7 +32,7 @@ class EJBJava2PcmHelper {
 		return null
 	} 
 	
-	public static def Repository findRepository(CorrespondenceInstance<Correspondence> correspondenceInstance){ 
+	public static def Repository findRepository(CorrespondenceModel correspondenceInstance){ 
 		return JaMoPP2PCMUtils.getRepository(correspondenceInstance)
 	}
 	

@@ -8,7 +8,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
@@ -17,10 +17,10 @@ public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
     private static final Logger logger = Logger
             .getLogger(ResourceDemandingBehaviourForClassMethodFinderForPackageMapping.class.getSimpleName());
 
-    private final CorrespondenceInstance correspondenceInstance;
+    private final CorrespondenceModel correspondenceInstance;
 
     public ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(
-            final CorrespondenceInstance correspondenceInstance) {
+            final CorrespondenceModel correspondenceInstance) {
         this.correspondenceInstance = correspondenceInstance;
     }
 

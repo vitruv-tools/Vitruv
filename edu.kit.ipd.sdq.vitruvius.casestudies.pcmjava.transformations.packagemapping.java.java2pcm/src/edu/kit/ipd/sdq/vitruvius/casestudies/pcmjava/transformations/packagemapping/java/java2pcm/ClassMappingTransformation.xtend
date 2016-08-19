@@ -82,7 +82,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		// ii) + iv)
 		val jaMoPPPackage = PCM2JaMoPPUtils.getContainingPackageFromCorrespondenceInstance(jaMoPPClass,
-			blackboard.correspondenceInstance)
+			blackboard.correspondenceModel)
 		var InterfaceProvidingRequiringEntity pcmComponentOrSystem = null
 		if (null != jaMoPPPackage) {
 			if (jaMoPPPackage.name.equals("datatypes")) {
@@ -93,7 +93,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 
 			// get corresponding component or system (ask for InterfaceProvidingRequiringEntity cause components 
 			// and systems are both InterfaceProvidingRequiringEntitys) 
-			val pcmComponentOrSystems = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(jaMoPPPackage,
+			val pcmComponentOrSystems = blackboard.correspondenceModel.getCorrespondingEObjectsByType(jaMoPPPackage,
 				InterfaceProvidingRequiringEntity)
 			if (!pcmComponentOrSystems.nullOrEmpty) {
 				pcmComponentOrSystem = pcmComponentOrSystems.get(0)
@@ -142,7 +142,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * if yes, no correspondence class ill be created
 	 */
 	def boolean alreadyHasClassCorrespondence(InterfaceProvidingRequiringEntity pcmComponentOrSystem) {
-		var correspondencesForPCMCompOrSystem = blackboard.correspondenceInstance.
+		var correspondencesForPCMCompOrSystem = blackboard.correspondenceModel.
 			getCorrespondingEObjects(pcmComponentOrSystem)
 		val hasClassCorrespondence = correspondencesForPCMCompOrSystem.filter [ correspondence |
 			correspondence instanceof Class
@@ -172,7 +172,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override removeEObject(EObject eObject) {
 		val jaMoPPClass = eObject as Class
-		val correspondences = blackboard.correspondenceInstance.getCorrespondences(jaMoPPClass.toList);
+		val correspondences = blackboard.correspondenceModel.getCorrespondences(jaMoPPClass.toList);
 		var eObjectsToDelete = new ArrayList<EObject>()
 		if (null != correspondences && 0 < correspondences.size) {
 			val classifiersInSamePackage = jaMoPPClass.containingCompilationUnit.classifiersInSamePackage
@@ -187,7 +187,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondences.forEach[correspondingObj|EcoreUtil.remove(correspondingObj)]
 				eObjectsToDelete.addAll(correspondences)
 			}
-			blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jaMoPPClass.toSet)
+			blackboard.correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(jaMoPPClass.toSet)
 		}
 		return null
 	}
@@ -198,7 +198,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		val transformationResult = new TransformationResult
-		val components = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(oldAffectedEObject,
+		val components = blackboard.correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject,
 			RepositoryComponent)
 		var EObject eObjectToSave = null
 		val affectedClass = newAffectedEObject as ConcreteClassifier
@@ -215,7 +215,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 					eObjectToSave = newAffectedEObject
 				}
 				case 1: {
-					blackboard.correspondenceInstance.
+					blackboard.correspondenceModel.
 						removeCorrespondencesThatInvolveAtLeastAndDependend(component.toSet)
 					EcoreUtil.remove(component)
 				}
@@ -254,14 +254,14 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 						"has been created in the datatypes pacakage. Please decide which kind of data type should be created."
 					switch (super.modalTextUserinteracting(msg, #["Create CompositeDataType", "CreateCollectionDataType", "Do not create a data type (not recommended)"])) {
 						case SELECT_CREATE_COMPOSITE_DATA_TYPE: {
-							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
+							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
 							val compositeDataType = RepositoryFactory.eINSTANCE.createCompositeDataType
 							compositeDataType.entityName = jaMoPPClass.name
 							compositeDataType.setRepository__DataType(repo)
 							return compositeDataType.toList
 						}
 						case SELECT_CREATE_COLLECTION_DATA_TYPE: {
-							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
+							val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
 							val collectionDataType = RepositoryFactory.eINSTANCE.createCollectionDataType
 							collectionDataType.entityName = jaMoPPClass.name
 							collectionDataType.setRepository__DataType(repo)
@@ -295,7 +295,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 						"Do not create a Component or System correspondence for the class")
 						switch (selection) {
 							case SELECT_CREATE_BASIC_COMPONENT: {
-								val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
+								val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
 								val basicComponent = RepositoryFactory.eINSTANCE.createBasicComponent
 								basicComponent.entityName = jaMoPPClass.name
 								basicComponent.repository__RepositoryComponent = repo
@@ -307,7 +307,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 								return pcmSystem
 							}
 							case SELECT_CREATE_COMPOSITE_COMPONENT: {
-								val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
+								val repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
 								val compositeComponent = RepositoryFactory.eINSTANCE.createCompositeComponent
 								compositeComponent.entityName = jaMoPPClass.name
 								compositeComponent.repository__RepositoryComponent = repo

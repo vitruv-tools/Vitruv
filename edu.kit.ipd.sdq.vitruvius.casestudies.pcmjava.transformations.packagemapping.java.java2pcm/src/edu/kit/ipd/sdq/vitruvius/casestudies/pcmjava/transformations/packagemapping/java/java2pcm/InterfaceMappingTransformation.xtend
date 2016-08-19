@@ -41,7 +41,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		val Interface jaMoPPInterface = eObject as Interface
 		try {
 			val Package jaMoPPPackage = PCM2JaMoPPUtils.
-				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, blackboard.correspondenceInstance)
+				getContainingPackageFromCorrespondenceInstance(jaMoPPInterface, blackboard.correspondenceModel)
 			var boolean createInterface = false
 			if (null != jaMoPPPackage && jaMoPPPackage.name.equals("contracts")) {
 
@@ -57,7 +57,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 			if (createInterface) {
 				var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 				opInterface.setEntityName(jaMoPPInterface.name)
-				val Repository repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceInstance)
+				val Repository repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
 				opInterface.setRepository__Interface(repo)
 				return opInterface.toList
 			}

@@ -36,16 +36,16 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val requiredDelegationConnector = eObject as RequiredDelegationConnector
 		val assemblyContext = requiredDelegationConnector.assemblyContext_RequiredDelegationConnector
 		try {
-			val field = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
-			val parameters = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(
+			val field = blackboard.correspondenceModel.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
+			val parameters = blackboard.correspondenceModel.getCorrespondingEObjectsByType(
 				requiredDelegationConnector.innerRequiredRole_RequiredDelegationConnector, Parameter)
 			if (parameters.nullOrEmpty) {
 				return null
 			}
-			val constructorCallForField = blackboard.correspondenceInstance.
+			val constructorCallForField = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(assemblyContext, NewConstructorCall).claimOne
 			var parametersToUse = emptyList
-			val correspondingConstructors = blackboard.correspondenceInstance.
+			val correspondingConstructors = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(assemblyContext, Constructor)
 			if (null != correspondingConstructors) {
 				parametersToUse = correspondingConstructors.get(0).parameters

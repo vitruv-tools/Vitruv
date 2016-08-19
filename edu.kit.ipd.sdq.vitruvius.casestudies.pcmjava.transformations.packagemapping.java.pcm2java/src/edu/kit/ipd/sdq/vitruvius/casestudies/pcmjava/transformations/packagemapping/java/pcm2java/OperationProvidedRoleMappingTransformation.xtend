@@ -44,9 +44,9 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 			logger.warn("Basic component is null. Can not synchronize creation of opeation provided role: " + opr)
 			return null
 		}
-		val jaMoPPClass = blackboard.correspondenceInstance.
+		val jaMoPPClass = blackboard.correspondenceModel.
 			getCorrespondingEObjectsByType(providingEntity, Class).claimOne
-		val jaMoPPInterface = blackboard.correspondenceInstance.
+		val jaMoPPInterface = blackboard.correspondenceModel.
 			getCorrespondingEObjectsByType(opInterface, Interface).claimOne
 		val namespaceClassifierRef = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPInterface)
 		jaMoPPClass.implements.add(namespaceClassifierRef)
@@ -72,16 +72,16 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		if (null != oldValue) {
 			val EObject[] oldEObjects = removeEObject(affectedEObject)
 			for (oldEObject : oldEObjects) {
-				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
+				blackboard.correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
 				EcoreUtil.remove(oldEObject)
 			}
  	 	}
  	 	// if the new value already has a correspondence we do not need to create newEObjects
-		if (!this.blackboard.correspondenceInstance.hasCorrespondences(newValue.toList)) {
+		if (!this.blackboard.correspondenceModel.hasCorrespondences(newValue.toList)) {
 			val EObject[] newEObjects = createEObject(affectedEObject)
 			if (null != newEObjects) {
 				for (newEObject : newEObjects) {
-					blackboard.correspondenceInstance.createAndAddCorrespondence(newEObject.toList, affectedEObject.toList)
+					blackboard.correspondenceModel.createAndAddCorrespondence(newEObject.toList, affectedEObject.toList)
 				}
 			}
 			return new TransformationResult

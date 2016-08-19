@@ -4,20 +4,19 @@ import org.emftext.language.java.members.ClassMethod
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 // copied from ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
 class ResourceDemandingBehaviourForClassMethodFinder4EJB implements ResourceDemandingBehaviourForClassMethodFinding {
 	
 	val private static Logger logger = Logger.getLogger(ResourceDemandingBehaviourForClassMethodFinder4EJB.name)
 
-	private	final CorrespondenceInstance<Correspondence> correspondenceInstance
+	private	final CorrespondenceModel correspondenceInstance
 
-	new(CorrespondenceInstance<Correspondence> correspondenceInstance) {
+	new(CorrespondenceModel correspondenceInstance) {
 		this.correspondenceInstance = correspondenceInstance
 	}
 

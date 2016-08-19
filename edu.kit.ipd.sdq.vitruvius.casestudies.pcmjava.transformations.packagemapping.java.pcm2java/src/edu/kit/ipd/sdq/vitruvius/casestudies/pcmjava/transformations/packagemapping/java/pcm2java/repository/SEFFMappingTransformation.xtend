@@ -62,7 +62,7 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		val affectedSEFF = affectedEObject as ResourceDemandingSEFF
 		val newEObjects = affectedSEFF.checkSEFFAndCreateCorrespondences
 		for (newCorrespondingEObject : newEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(affectedSEFF, newCorrespondingEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(affectedSEFF, newCorrespondingEObject)
 		}
 		transformationResult
 	}
@@ -80,11 +80,11 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 		if (!sigIsOpSig) {
 			return null
 		}
-		val correspondingClasses = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(basicComponent,
+		val correspondingClasses = blackboard.correspondenceModel.getCorrespondingEObjectsByType(basicComponent,
 			ConcreteClassifier)
 		if (!correspondingClasses.isNullOrEmpty) {
 			// create method
-			val correspondingMethods = blackboard.correspondenceInstance.
+			val correspondingMethods = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(signature, Method)
 			if (correspondingMethods.nullOrEmpty) {
 				logger.info("No corresponding method for seffs operation signature " + signature + " found")

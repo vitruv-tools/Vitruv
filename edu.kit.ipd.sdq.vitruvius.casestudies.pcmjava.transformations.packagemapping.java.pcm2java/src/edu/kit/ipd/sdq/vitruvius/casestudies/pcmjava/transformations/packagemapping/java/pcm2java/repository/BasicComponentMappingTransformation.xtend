@@ -29,7 +29,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val BasicComponent basicComponent = eObject as BasicComponent
 
 		var Package rootPackage = PCM2JaMoPPUtils.findCorrespondingPackageByName(
-			basicComponent.repository__RepositoryComponent.entityName, blackboard.correspondenceInstance,
+			basicComponent.repository__RepositoryComponent.entityName, blackboard.correspondenceModel,
 			basicComponent.repository__RepositoryComponent)
 
 		//create all necessary elements
@@ -44,7 +44,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			return transformationResult
 		}
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue.toList, jaMoPPElement.toList)
+			blackboard.correspondenceModel.createAndAddCorrespondence(newValue.toList, jaMoPPElement.toList)
 		}
 		transformationResult
 	}

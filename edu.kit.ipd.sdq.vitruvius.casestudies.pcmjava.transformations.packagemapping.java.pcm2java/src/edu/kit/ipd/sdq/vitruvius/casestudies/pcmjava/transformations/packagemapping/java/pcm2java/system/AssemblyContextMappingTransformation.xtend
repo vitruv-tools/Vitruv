@@ -70,7 +70,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		}
 		if (affectedReference.name.equals(PCMNamespace.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
-			val typedElementCorrespondences = blackboard.correspondenceInstance.
+			val typedElementCorrespondences = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, Field)
 			if (typedElementCorrespondences.nullOrEmpty) {
 				val assemblyContext = affectedEObject as AssemblyContext
@@ -84,14 +84,14 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 						newEObjects, blackboard)
 
 			} else {
-				val jaMoPPClass = blackboard.correspondenceInstance.
+				val jaMoPPClass = blackboard.correspondenceModel.
 					getCorrespondingEObjectsByType(newValue as RepositoryComponent, Class).claimOne
 
 				//update existing correspondence
 				for (typedElement : typedElementCorrespondences) {
-					val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(typedElement)
+					val oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
-					blackboard.correspondenceInstance.updateTUID(oldTUID, typedElement)
+					blackboard.correspondenceModel.updateTUID(oldTUID, typedElement)
 				}
 			}
 		}
@@ -107,8 +107,8 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		var Class jaMoPPClass = null
 		var Class jaMoPPCompositeClass = null
 		try {
-			jaMoPPClass = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(component, Class).claimOne
-			jaMoPPCompositeClass = blackboard.correspondenceInstance.
+			jaMoPPClass = blackboard.correspondenceModel.getCorrespondingEObjectsByType(component, Class).claimOne
+			jaMoPPCompositeClass = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(assemblyContext.parentStructure__AssemblyContext, Class).claimOne
 
 		} catch (RuntimeException e) {

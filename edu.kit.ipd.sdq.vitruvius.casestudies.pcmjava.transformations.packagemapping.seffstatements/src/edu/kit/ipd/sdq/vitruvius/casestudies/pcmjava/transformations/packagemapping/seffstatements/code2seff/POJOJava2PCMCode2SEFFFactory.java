@@ -7,7 +7,7 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Code2SEFFFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 
 public class POJOJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
@@ -19,20 +19,20 @@ public class POJOJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 
     @Override
     public InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-            final CorrespondenceInstance<Correspondence> correspondenceInstance, final BasicComponent basicComponent) {
+            final CorrespondenceModel correspondenceInstance, final BasicComponent basicComponent) {
         return new InterfaceOfExternalCallFinderForPackageMapping(correspondenceInstance, basicComponent);
     }
 
     @Override
     public ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-            final CorrespondenceInstance<Correspondence> correspondenceInstance) {
+            final CorrespondenceModel correspondenceInstance) {
         return new ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(correspondenceInstance);
     }
 
     @Override
     public AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
             final BasicComponentFinding basicComponentFinding,
-            final CorrespondenceInstance<Correspondence> correspondenceInstance, final BasicComponent basicComponent) {
+            final CorrespondenceModel correspondenceInstance, final BasicComponent basicComponent) {
         return new FunctionClassificationStrategyForPackageMapping(basicComponentFinding, correspondenceInstance,
                 basicComponent);
     }

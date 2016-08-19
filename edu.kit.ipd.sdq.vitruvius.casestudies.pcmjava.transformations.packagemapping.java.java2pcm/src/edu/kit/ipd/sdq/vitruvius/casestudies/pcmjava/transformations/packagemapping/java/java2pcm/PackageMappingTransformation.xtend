@@ -42,7 +42,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	def boolean checkCorrespondenceRepository() {
-		val repositorys = blackboard.correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Repository)
+		val repositorys = blackboard.correspondenceModel.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (null == repositorys || 0 == repositorys.size) {
 			correspondenceRepositoryAlreadyExists = false
 		} else {
@@ -75,7 +75,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
 		//if the package already has already a correspondence 
 		//(which can happen when the package was created by the PCM2JaMoPP transformation) nothing has do be done 
-		if (!blackboard.correspondenceInstance.getCorrespondences(jaMoPPPackage.toList).nullOrEmpty) {
+		if (!blackboard.correspondenceModel.getCorrespondences(jaMoPPPackage.toList).nullOrEmpty) {
 			return null
 		}
 		var packageName = jaMoPPPackage.name

@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -44,6 +43,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -51,7 +51,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 	private static Logger logger = Logger.getLogger(JaMoPP2PCMUtils.simpleName)
 
-	def public static Repository getRepository(CorrespondenceInstance correspondenceInstance) {
+	def public static Repository getRepository(CorrespondenceModel correspondenceInstance) {
 		val Set<Repository> repos = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (repos.nullOrEmpty) {
 			return null
@@ -83,7 +83,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		Object newValue,
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance,
+		CorrespondenceModel correspondenceInstance,
 		boolean saveFilesOfChangedEObjects
 	) {
 		val Set<Class<? extends EObject>> pcmRootClasses = Sets.newHashSet(Repository, System)
@@ -100,7 +100,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 						"will not be renamed")
 
 			} else {
-				val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(pcmRoot)
+				val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(pcmRoot)
 	
 				// change name		
 				pcmRoot.entityName = newValue.toString;
@@ -117,7 +117,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap, Blackboard blackboard, 
 		TransformationResult transformationResult) {
 		val correspondingEObjects = PCMJaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceModel)
 		if (correspondingEObjects.nullOrEmpty) {
 			return
 		}
@@ -129,7 +129,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			saveFilesOfChangedEObjects = false
 		}
 		JaMoPP2PCMUtils.updateNameAttribute(correspondingEObjects, newValue, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance, saveFilesOfChangedEObjects)
+			featureCorrespondenceMap, blackboard.correspondenceModel, saveFilesOfChangedEObjects)
 		if (!rootPCMEObjects.nullOrEmpty) {
 			JaMoPP2PCMUtils.updateNameAttributeForPCMRootObjects(rootPCMEObjects, affectedAttribute, newValue,
 				blackboard, transformationResult)
@@ -149,7 +149,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			} else {
 				// do nothing. save will be done later
 			}
-			blackboard.correspondenceInstance.createAndAddCorrespondence(pcmElement, newEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(pcmElement, newEObject)
 		}
 	}
 	
@@ -181,7 +181,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	 * @param classifier the classifier
 	 */
 	def static RepositoryComponent getComponentOfConcreteClassifier(ConcreteClassifier classifier,
-		CorrespondenceInstance ci, UserInteracting userInteracting) {
+		CorrespondenceModel ci, UserInteracting userInteracting) {
 	
 		// a)
 		var correspondingComponents = ci.getCorrespondingEObjectsByType(classifier, RepositoryComponent)
@@ -219,7 +219,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	}
 	
 	def public static EObject[] checkAndAddOperationRequiredRole(TypedElement typedElement,
-		CorrespondenceInstance correspondenceInstance, UserInteracting userInteracting) {
+		CorrespondenceModel correspondenceInstance, UserInteracting userInteracting) {
 		val Type type = getTargetClassifierFromImplementsReferenceAndNormalizeURI(typedElement.typeReference)
 		if (null == type) {
 			return null

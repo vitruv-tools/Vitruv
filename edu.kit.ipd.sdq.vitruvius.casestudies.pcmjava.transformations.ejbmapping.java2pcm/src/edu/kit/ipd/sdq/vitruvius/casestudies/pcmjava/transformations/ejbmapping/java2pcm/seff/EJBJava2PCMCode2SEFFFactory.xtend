@@ -6,8 +6,7 @@ import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Code2SEFFFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class EJBJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 	override BasicComponentFinding createBasicComponentFinding() {
@@ -15,17 +14,17 @@ class EJBJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 	}
 
 	override InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-		CorrespondenceInstance<Correspondence> correspondenceInstance, BasicComponent basicComponent) {
+		CorrespondenceModel correspondenceInstance, BasicComponent basicComponent) {
 		return new InterfaceOfExternalCallFinder4EJB(correspondenceInstance, basicComponent)
 	}
 
 	override ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-		CorrespondenceInstance<Correspondence> correspondenceInstance) {
+		CorrespondenceModel correspondenceInstance) {
 		return new ResourceDemandingBehaviourForClassMethodFinder4EJB(correspondenceInstance)
 	}
 
 	override AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
-		BasicComponentFinding basicComponentFinding, CorrespondenceInstance<Correspondence> correspondenceInstance,
+		BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
 		BasicComponent basicComponent) {
 		return new EJB2PCMFunctionClassificationStrategy(basicComponentFinding, correspondenceInstance,
 			basicComponent)

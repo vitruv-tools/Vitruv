@@ -26,7 +26,7 @@ class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObj
 	override createEObject(EObject eObject) {
 		val resourceDemandingInternalBehaviour = eObject as ResourceDemandingInternalBehaviour 
 		val basicComponent = resourceDemandingInternalBehaviour.basicComponent_ResourceDemandingInternalBehaviour
-		val classesForMethod = this.blackboard.correspondenceInstance.
+		val classesForMethod = this.blackboard.correspondenceModel.
 			getCorrespondingEObjectsByType(basicComponent, Class)
 		if (!classesForMethod.nullOrEmpty) {
 			val classForMethod = classesForMethod.get(0)
@@ -35,7 +35,7 @@ class ResourceDemandingInternalBehaviorMappingTransformation extends DefaultEObj
 			val classMethod = PCM2JaMoPPUtils.createClassMethod(methodName, TypesFactory.eINSTANCE.createVoid, null,
 				null, false)
 			classForMethod.members.add(classMethod)
-			blackboard.correspondenceInstance.createAndAddCorrespondence(resourceDemandingInternalBehaviour, classMethod)
+			blackboard.correspondenceModel.createAndAddCorrespondence(resourceDemandingInternalBehaviour, classMethod)
 		}
 		logger.warn(
 			"could not create a corresponding ClassMethod for the current ResourceDemandingInternalBehaviour" +

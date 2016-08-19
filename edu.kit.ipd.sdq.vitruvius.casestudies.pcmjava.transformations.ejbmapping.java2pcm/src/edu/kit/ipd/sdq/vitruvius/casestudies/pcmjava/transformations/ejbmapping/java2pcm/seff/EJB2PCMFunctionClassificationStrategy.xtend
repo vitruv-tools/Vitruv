@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
 import java.util.Set
 import org.apache.log4j.Logger
@@ -13,16 +11,17 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy
 import org.somox.gast2seff.visitors.MethodCallFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificationStrategy {
 	
 	private static val Logger logger = Logger.getLogger(EJB2PCMFunctionClassificationStrategy.name)
 	
 	private final BasicComponentFinding basicComponentFinding
-	private final CorrespondenceInstance<Correspondence> correspondenceInstance
+	private final CorrespondenceModel correspondenceInstance
 	private final BasicComponent basicComponent
 
-	new(BasicComponentFinding basicComponentFinding, CorrespondenceInstance<Correspondence> correspondenceInstance,
+	new(BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
 		BasicComponent basicComponent) {
 		super(new MethodCallFinder())
 		this.basicComponentFinding = basicComponentFinding

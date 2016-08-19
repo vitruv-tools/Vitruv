@@ -5,7 +5,6 @@ import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.palladiosimulator.pcm.repository.DataType
 import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import org.apache.log4j.Logger
@@ -18,7 +17,7 @@ import org.emftext.language.java.types.TypesFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
-
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 /**
  * Mapping transformation for primitive data types
@@ -61,7 +60,7 @@ class DataTypeCorrespondenceHelper {
 	}
 
 	public static def TypeReference claimUniqueCorrespondingJaMoPPDataTypeReference(DataType dataType,
-		CorrespondenceInstance ci) {
+		CorrespondenceModel ci) {
 		if (null == dataType) {
 			return TypesFactory.eINSTANCE.createVoid
 		}
@@ -77,22 +76,22 @@ class DataTypeCorrespondenceHelper {
 		return TypesFactory.eINSTANCE.createClassifierReference
 	}
 
-	public static def Type claimUniqueCorrespondingJaMoPPDataType(DataType dataType, CorrespondenceInstance ci) {
+	public static def Type claimUniqueCorrespondingJaMoPPDataType(DataType dataType, CorrespondenceModel ci) {
 		if (null == dataType) {
 			return TypesFactory.eINSTANCE.createVoid
 		}
 		return claimUniqueCorrespondingType(dataType, ci)
 	}
 
-	private static def dispatch Type claimUniqueCorrespondingType(CollectionDataType cdt, CorrespondenceInstance ci) {
+	private static def dispatch Type claimUniqueCorrespondingType(CollectionDataType cdt, CorrespondenceModel ci) {
 		return ci.getCorrespondingEObjectsByType(cdt, ConcreteClassifier).claimOne
 	}
 
-	private static def dispatch Type claimUniqueCorrespondingType(PrimitiveDataType pdt, CorrespondenceInstance ci) {
+	private static def dispatch Type claimUniqueCorrespondingType(PrimitiveDataType pdt, CorrespondenceModel ci) {
 		return claimJaMoPPTypeForPrimitiveDataType(pdt)
 	}
 
-	private static def dispatch Type claimUniqueCorrespondingType(CompositeDataType cdt, CorrespondenceInstance ci) {
+	private static def dispatch Type claimUniqueCorrespondingType(CompositeDataType cdt, CorrespondenceModel ci) {
 		return ci.getCorrespondingEObjectsByType(cdt, ConcreteClassifier).claimOne
 	}
 }

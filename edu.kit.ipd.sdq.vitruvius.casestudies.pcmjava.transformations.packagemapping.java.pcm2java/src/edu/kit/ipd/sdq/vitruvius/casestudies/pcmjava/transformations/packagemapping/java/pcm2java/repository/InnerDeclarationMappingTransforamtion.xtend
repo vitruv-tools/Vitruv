@@ -57,7 +57,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		val InnerDeclaration innerDec = eObject as InnerDeclaration
 		val DataType innerType = innerDec.datatype_InnerDeclaration
 		val TypeReference typeRef = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataTypeReference(innerType, blackboard.correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(innerType, blackboard.correspondenceModel)
 		val members = addFieldGetterAndSetterToClassifier(typeRef, innerDec.entityName)
 		PCM2JaMoPPUtils.sortMembers(members)
 		return members
@@ -159,7 +159,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 			return transformationResult  
 		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -170,10 +170,10 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		}
 		val field = fields.get(0)
 		PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(field), newValue, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance, true)
+			featureCorrespondenceMap, blackboard.correspondenceModel, true)
 		val methods = affectedEObjects.filter(typeof(ClassMethod))
 		for (method : methods) {
-			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(method)
+			val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(method)
 			if (isGetter(method)) {
 				method.name = "get" + newValue.toString.toFirstUpper
 
@@ -188,7 +188,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 				//TODO: change assignemnt
 				}
 			}
-			blackboard.correspondenceInstance.updateTUID(oldTUID, method)
+			blackboard.correspondenceModel.updateTUID(oldTUID, method)
 		}
 		transformationResult
 	}
@@ -200,7 +200,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		EObject oldValue, EObject newValue) {
 		val transformationResult = new TransformationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -209,7 +209,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		}
 		val newDataType = newValue as DataType
 		val newJaMoPPType = DataTypeCorrespondenceHelper.
-			claimUniqueCorrespondingJaMoPPDataTypeReference(newDataType, blackboard.correspondenceInstance)
+			claimUniqueCorrespondingJaMoPPDataTypeReference(newDataType, blackboard.correspondenceModel)
 
 		//Change field Type
 		val fields = affectedEObjects.filter(typeof(Field))
@@ -219,14 +219,14 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 		}
 		val field = fields.get(0)
 
-		val oldFieldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(field)
+		val oldFieldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(field)
 		field.typeReference = EcoreUtil.copy(newJaMoPPType)
-		blackboard.correspondenceInstance.updateTUID(oldFieldTUID, field)
+		blackboard.correspondenceModel.updateTUID(oldFieldTUID, field)
 		
 		//Change method type/parameter
 		val methods = affectedEObjects.filter(typeof(Method))
 		for (method : methods) {
-			val TUID oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(method)
+			val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(method)
 			if (isGetter(method)) {
 				method.typeReference = EcoreUtil.copy(newJaMoPPType)
 			} else if (isSetter(method)) {
@@ -235,7 +235,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 					parameter.typeReference = EcoreUtil.copy(newJaMoPPType)
 				}
 			}
-			blackboard.correspondenceInstance.updateTUID(oldTUID, method)
+			blackboard.correspondenceModel.updateTUID(oldTUID, method)
 		}
 		transformationResult
 	}

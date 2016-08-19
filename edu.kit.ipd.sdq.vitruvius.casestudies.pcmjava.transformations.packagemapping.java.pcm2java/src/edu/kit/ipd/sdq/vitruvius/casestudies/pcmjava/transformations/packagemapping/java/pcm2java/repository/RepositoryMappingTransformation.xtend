@@ -67,7 +67,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		]
 		for (correspondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newRootEObject, correspondingEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return transformationResult
 	}
@@ -106,7 +106,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		]
 
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, jaMoPPElement)
+			blackboard.correspondenceModel.createAndAddCorrespondence(newValue, jaMoPPElement)
 		}
 		return transformationResult
 	}

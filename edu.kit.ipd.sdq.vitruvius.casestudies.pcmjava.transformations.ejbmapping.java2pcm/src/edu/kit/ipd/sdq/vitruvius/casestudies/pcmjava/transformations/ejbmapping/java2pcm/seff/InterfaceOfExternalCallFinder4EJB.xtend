@@ -3,8 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping
 import org.emftext.language.java.members.Method
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import org.palladiosimulator.pcm.repository.RequiredRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.OperationInterface
@@ -13,15 +11,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Corresponden
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import java.util.Set
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class InterfaceOfExternalCallFinder4EJB implements InterfaceOfExternalCallFinding {
 	
 	private static val Logger logger = Logger.getLogger(InterfaceOfExternalCallFinder4EJB.name)
 	
-	private final CorrespondenceInstance<Correspondence> correspondenceInstance
+	private final CorrespondenceModel correspondenceInstance
 	private final BasicComponent basicComponent
 
-	new(CorrespondenceInstance<Correspondence> correspondenceInstance, BasicComponent basicComponent) {
+	new(CorrespondenceModel correspondenceInstance, BasicComponent basicComponent) {
 		this.correspondenceInstance = correspondenceInstance
 		this.basicComponent = basicComponent
 	}

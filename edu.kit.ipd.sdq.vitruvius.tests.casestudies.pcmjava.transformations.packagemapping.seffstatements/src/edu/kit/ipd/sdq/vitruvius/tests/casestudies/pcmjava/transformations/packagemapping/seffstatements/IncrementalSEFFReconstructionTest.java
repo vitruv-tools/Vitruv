@@ -28,7 +28,7 @@ import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;
@@ -315,7 +315,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         final InsertEdit insertEdit = new InsertEdit(offset, code);
         CompilationUnitManipulatorHelper.editCompilationUnit(iCu, insertEdit);
         TestUtil.waitForSynchronization(3 * 1000);
-        final CorrespondenceInstance ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceInstance();
         final Method method = super.findJaMoPPMethodInICU(iCu, methodName);
         final Set<ResourceDemandingSEFF> seffs = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(ci, method,
                 ResourceDemandingSEFF.class);

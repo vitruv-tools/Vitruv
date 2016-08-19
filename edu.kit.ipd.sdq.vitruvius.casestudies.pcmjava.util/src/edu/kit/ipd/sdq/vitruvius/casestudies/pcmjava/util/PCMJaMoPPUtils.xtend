@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -32,6 +31,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCMJaMoPPUtils.simpleName)
@@ -47,7 +47,7 @@ class PCMJaMoPPUtils {
 	 */
 	def static checkKeyAndCorrespondingObjects(EObject eObject, EStructuralFeature affectedEFeature,
 		Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceInstance correspondenceInstance) {
+		CorrespondenceModel correspondenceInstance) {
 			if (!featureCorrespondenceMap.containsKey(affectedEFeature)) {
 				logger.debug("no feature correspondence found for affectedEeature: " + affectedEFeature)
 				return null
@@ -62,7 +62,7 @@ class PCMJaMoPPUtils {
 		def static updateNameAttribute(Set<EObject> correspondingEObjects, Object newValue,
 			EStructuralFeature affectedFeature,
 			ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-			CorrespondenceInstance correspondenceInstance, boolean saveFilesOfChangedEObjects,
+			CorrespondenceModel correspondenceInstance, boolean saveFilesOfChangedEObjects,
 			Set<Class<? extends EObject>> classesOfRootObjects) {
 			val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 
@@ -203,7 +203,7 @@ class PCMJaMoPPUtils {
 			EcoreUtil.remove(eObject)
 			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI,
 				transformationResult)
-			blackboard.correspondenceInstance.updateTUID(oldTUID, eObject)
+			blackboard.correspondenceModel.updateTUID(oldTUID, eObject)
 			transformationResult.addVURIToDeleteIfNotNull(vuriToDelete)
 		}
 

@@ -34,7 +34,7 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		]
 		for (correspondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newRootEObject, correspondingEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return transformationResult
 	}

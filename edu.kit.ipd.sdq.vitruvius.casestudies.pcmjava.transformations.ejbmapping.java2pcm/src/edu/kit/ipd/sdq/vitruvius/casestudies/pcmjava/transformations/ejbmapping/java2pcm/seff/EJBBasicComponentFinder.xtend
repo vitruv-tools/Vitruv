@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import java.util.List
 import org.apache.log4j.Logger
@@ -15,6 +14,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import org.eclipse.emf.ecore.resource.ResourceSet
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 /**
  * Finds the corresponding basic component for a given method.
@@ -33,7 +33,7 @@ class EJBBasicComponentFinder implements BasicComponentFinding {
 		dummyResourceSet = new ResourceSetImpl
 	}
 	
-	override BasicComponent findBasicComponentForMethod(Method newMethod, CorrespondenceInstance ci) {
+	override BasicComponent findBasicComponentForMethod(Method newMethod, CorrespondenceModel ci) {
 		val classifier = newMethod.containingConcreteClassifier
 		val basicComponents = ci.getCorrespondingEObjectsByType(classifier, BasicComponent)
 		if(!basicComponents.nullOrEmpty){
@@ -76,7 +76,7 @@ class EJBBasicComponentFinder implements BasicComponentFinding {
      * @return
      */
     private def BasicComponent findCorrespondingBasicComponentForPackage(Package jaMoPPPackage,
-            CorrespondenceInstance ci) {
+            CorrespondenceModel ci) {
         if (0 == jaMoPPPackage.getNamespaces().size()) {
             return null;
         }

@@ -54,7 +54,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		compUnit.classifiers.add(classifier)
 		classifier.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
 
-		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(blackboard.correspondenceInstance,
+		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(blackboard.correspondenceModel,
 			cdt.repository__DataType, cdt.entityName, userInteracting)
 		compUnit.name = cdt.entityName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
 		if (null != datatypePackage) {
@@ -76,7 +76,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		Object newValue) {
 		val transformationResult = new TransformationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceInstance)
+			featureCorrespondenceMap, blackboard.correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -99,13 +99,13 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 			return transformationResult
 		}
 		val compositeDataType = newAffectedEObject as CompositeDataType
-		val jaMoPPDataType = blackboard.correspondenceInstance.
+		val jaMoPPDataType = blackboard.correspondenceModel.
 			getCorrespondingEObjectsByType(compositeDataType, Class).claimOne
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
 			}
-			blackboard.correspondenceInstance.createAndAddCorrespondence(newValue, newCorrespondingEObject)
+			blackboard.correspondenceModel.createAndAddCorrespondence(newValue, newCorrespondingEObject)
 			if (newCorrespondingEObject instanceof JavaRoot) {
 				PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
 					PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)

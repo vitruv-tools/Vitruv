@@ -36,13 +36,13 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 			if(null == interfaceClassifier){
 				return null
 			}
-			val correspondingInterfaces = blackboard.correspondenceInstance.getCorrespondingEObjectsByType(interfaceClassifier,
+			val correspondingInterfaces = blackboard.correspondenceModel.getCorrespondingEObjectsByType(interfaceClassifier,
 				OperationInterface)
 			if (correspondingInterfaces.nullOrEmpty) {
 				return null
 			}
 			val operationInterface = correspondingInterfaces.get(0)
-			val correspondingBasicComponents = blackboard.correspondenceInstance.
+			val correspondingBasicComponents = blackboard.correspondenceModel.
 				getCorrespondingEObjectsByType(jaMoPPClass, BasicComponent)
 			if (correspondingBasicComponents.nullOrEmpty) {
 				return null

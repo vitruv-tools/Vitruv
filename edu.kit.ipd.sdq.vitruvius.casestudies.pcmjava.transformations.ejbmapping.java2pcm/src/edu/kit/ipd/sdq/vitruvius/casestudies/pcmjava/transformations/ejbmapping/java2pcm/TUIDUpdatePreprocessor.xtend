@@ -21,7 +21,7 @@ class TUIDUpdatePreprocessor implements Change2CommandTransformingPreprocessor {
 				val newAffectedEObject = typedChange.affectedEObject
 				if (null != oldAffectedEObject && null != newAffectedEObject) {
 					EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(
-						[| blackboard.correspondenceInstance.updateTUID(oldAffectedEObject, newAffectedEObject); return null;], 
+						[| blackboard.correspondenceModel.updateTUID(oldAffectedEObject, newAffectedEObject); return null;], 
 						blackboard.modelProviding);
 				}
 			}

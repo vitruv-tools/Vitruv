@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 
 /**
@@ -26,10 +26,10 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
     private static final Logger logger = Logger
             .getLogger(InterfaceOfExternalCallFinderForPackageMapping.class.getSimpleName());
 
-    private final CorrespondenceInstance correspondenceInstance;
+    private final CorrespondenceModel correspondenceInstance;
     private final BasicComponent myBasicComponent;
 
-    public InterfaceOfExternalCallFinderForPackageMapping(final CorrespondenceInstance correspondenceInstance,
+    public InterfaceOfExternalCallFinderForPackageMapping(final CorrespondenceModel correspondenceInstance,
             final BasicComponent myBasicComponent) {
         this.correspondenceInstance = correspondenceInstance;
         this.myBasicComponent = myBasicComponent;
