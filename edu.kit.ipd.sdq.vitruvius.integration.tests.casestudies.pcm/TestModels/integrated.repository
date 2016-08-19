@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_HZJnoJSbEd-mVsWhjZHqXg" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_HZJnoJSbEd-mVsWhjZHqXg" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_-3VggNCgEduC9O_qbthgAg" entityName="TradingSystem_19Inventory_19Data_19Enterprise">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_d1Mf0NChEduC9O_qbthgAg" entityName="EnterpriseQueryIf" providedInterface__OperationProvidedRole="_Eldg8NChEduC9O_qbthgAg"/>
   </components__Repository>
@@ -42,27 +42,27 @@
     <signatures__OperationInterface id="_2NQKw1cvEeGI_ZRmqWdpYA" entityName="getAllProductsWithOptionalStockItem"/>
     <signatures__OperationInterface id="_2NQKwVcvEeGI_ZRmqWdpYA" entityName="getAllProducts"/>
     <signatures__OperationInterface id="_2NQKxVcvEeGI_ZRmqWdpYA" entityName="orderProducts">
-      <parameters__OperationSignature entityName="complexOrder">
+      <parameters__OperationSignature parameterName="complexOrder">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_L9RhFtIXEduF4-1MMpjBkg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NQKyFcvEeGI_ZRmqWdpYA" entityName="getOrder">
-      <parameters__OperationSignature entityName="orderId">
+      <parameters__OperationSignature parameterName="orderId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NQKylcvEeGI_ZRmqWdpYA" entityName="rollInReceivedOrder">
-      <parameters__OperationSignature entityName="complexOrderTO">
+      <parameters__OperationSignature parameterName="complexOrderTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_L9RhFtIXEduF4-1MMpjBkg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NQx01cvEeGI_ZRmqWdpYA" entityName="markProductsUnavailableInStock">
-      <parameters__OperationSignature entityName="requiredProductsAndAmount">
+      <parameters__OperationSignature parameterName="requiredProductsAndAmount">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_ZxgtBtIXEduF4-1MMpjBkg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NQx0FcvEeGI_ZRmqWdpYA" entityName="changePrice">
-      <parameters__OperationSignature entityName="stockItemTO">
+      <parameters__OperationSignature parameterName="stockItemTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_UfQJNtIXEduF4-1MMpjBkg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
@@ -70,21 +70,21 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_Eldg8NChEduC9O_qbthgAg" entityName="EnterpriseQueryIf">
     <signatures__OperationInterface id="_2NL5UlcvEeGI_ZRmqWdpYA" entityName="getMeanTimeToDelivery">
-      <parameters__OperationSignature entityName="supplier">
+      <parameters__OperationSignature parameterName="supplier">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_HzcZdtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="enterprise">
+      <parameters__OperationSignature parameterName="enterprise">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_43Fu5tFcEducE6dFyopUlg"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NLSRFcvEeGI_ZRmqWdpYA" entityName="queryEnterpriseById">
-      <parameters__OperationSignature entityName="enterpriseId">
+      <parameters__OperationSignature parameterName="enterpriseId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
@@ -94,83 +94,83 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_HSKXwNChEduC9O_qbthgAg" entityName="StoreQueryIf">
     <signatures__OperationInterface id="_2NL5WlcvEeGI_ZRmqWdpYA" entityName="queryStoreById">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NMgYlcvEeGI_ZRmqWdpYA" entityName="queryProducts">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NMgZVcvEeGI_ZRmqWdpYA" entityName="queryLowStockItems">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NNHclcvEeGI_ZRmqWdpYA" entityName="queryLowStockItemsWithRespectToIncomingProducts">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NNHdVcvEeGI_ZRmqWdpYA" entityName="queryAllStockItems">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NNHeFcvEeGI_ZRmqWdpYA" entityName="queryOrderById">
-      <parameters__OperationSignature entityName="orderId">
+      <parameters__OperationSignature parameterName="orderId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NNuglcvEeGI_ZRmqWdpYA" entityName="queryStockItem">
-      <parameters__OperationSignature entityName="stockId">
+      <parameters__OperationSignature parameterName="stockId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NNuhVcvEeGI_ZRmqWdpYA" entityName="queryStockItemById">
-      <parameters__OperationSignature entityName="stockId">
+      <parameters__OperationSignature parameterName="stockId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NOVklcvEeGI_ZRmqWdpYA" entityName="queryProductById">
-      <parameters__OperationSignature entityName="productId">
+      <parameters__OperationSignature parameterName="productId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NOVlVcvEeGI_ZRmqWdpYA" entityName="getStockItems">
-      <parameters__OperationSignature entityName="storeId">
+      <parameters__OperationSignature parameterName="storeId">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="productIds"/>
-      <parameters__OperationSignature entityName="pctx">
+      <parameters__OperationSignature parameterName="productIds"/>
+      <parameters__OperationSignature parameterName="pctx">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
@@ -178,40 +178,40 @@
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_RQoSZNCpEduC9O_qbthgAg" entityName="SaleRegisteredEvent"/>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_WoD42tCjEduC9O_qbthgAg" entityName="CashDeskConnectorIf">
     <signatures__OperationInterface id="_2NKrM1cvEeGI_ZRmqWdpYA" entityName="bookSale">
-      <parameters__OperationSignature entityName="saleTO">
+      <parameters__OperationSignature parameterName="saleTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_J-s5ptFpEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NLSQVcvEeGI_ZRmqWdpYA" entityName="getProductWithStockItem">
-      <parameters__OperationSignature entityName="productBarCode">
+      <parameters__OperationSignature parameterName="productBarCode">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_dbS8pNCiEduC9O_qbthgAg" entityName="ProductDispatcherIf">
     <signatures__OperationInterface id="_2NO8o1cvEeGI_ZRmqWdpYA" entityName="orderProductsAvailableAtOtherStores">
-      <parameters__OperationSignature entityName="enterpriseTO">
+      <parameters__OperationSignature parameterName="enterpriseTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="callingStore">
+      <parameters__OperationSignature parameterName="callingStore">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_27zmltFfEducE6dFyopUlg"/>
       </parameters__OperationSignature>
-      <parameters__OperationSignature entityName="productAmounts"/>
+      <parameters__OperationSignature parameterName="productAmounts"/>
     </signatures__OperationInterface>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_vebx9NCiEduC9O_qbthgAg" entityName="ReportingIf">
     <signatures__OperationInterface id="_2NO8qVcvEeGI_ZRmqWdpYA" entityName="getStockReport">
-      <parameters__OperationSignature entityName="storeTO">
+      <parameters__OperationSignature parameterName="storeTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_27zmltFfEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NPjslcvEeGI_ZRmqWdpYA" entityName="getStockReport">
-      <parameters__OperationSignature entityName="enterpriseTO">
+      <parameters__OperationSignature parameterName="enterpriseTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_2NPjtVcvEeGI_ZRmqWdpYA" entityName="getMeanTimeToDeliveryReport">
-      <parameters__OperationSignature entityName="enterpriseTO">
+      <parameters__OperationSignature parameterName="enterpriseTO">
         <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_2fHo4MvgEeSVNvtm5K7dbQ" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_2fHo4MvgEeSVNvtm5K7dbQ" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_Zo7rQMvhEeSVNvtm5K7dbQ" entityName="AuctionHouse">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_bYe9UMvhEeSVNvtm5K7dbQ" entityName="Provided_Sales_AuctionHouse" providedInterface__OperationProvidedRole="_2_GJcMvgEeSVNvtm5K7dbQ"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_cF9HUMvhEeSVNvtm5K7dbQ" entityName="Required_Legal_AuctionHouse" requiredInterface__OperationRequiredRole="_N4dG0MvhEeSVNvtm5K7dbQ"/>

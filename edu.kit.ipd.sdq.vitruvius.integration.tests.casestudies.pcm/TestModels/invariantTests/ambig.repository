@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_A2p1AGjnEeS1sM1coty-Sw" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_A2p1AGjnEeS1sM1coty-Sw" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_JMllMGjnEeS1sM1coty-Sw" entityName="TargetComponent">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_N4kzMGjnEeS1sM1coty-Sw" entityName="Provided_InterfaceA_TargetComponent" providedInterface__OperationProvidedRole="_HOFRIGjnEeS1sM1coty-Sw"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_OPh6oGjnEeS1sM1coty-Sw" entityName="Provided_InterfaceB_TargetComponent" providedInterface__OperationProvidedRole="_IkgRgGjnEeS1sM1coty-Sw"/>

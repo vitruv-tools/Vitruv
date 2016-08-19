@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_DglB8GLDEeSjK4HN2is3bg" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_DglB8GLDEeSjK4HN2is3bg" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_FPYtIGLDEeSjK4HN2is3bg" entityName="HelloWorld">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_F-AtsGLDEeSjK4HN2is3bg" entityName="Provided_HelloWorld_HelloWorld" providedInterface__OperationProvidedRole="_EDUioGLDEeSjK4HN2is3bg"/>
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_HxlkIGLDEeSjK4HN2is3bg" entityName="Provided_Google_HelloWorld" providedInterface__OperationProvidedRole="_GLvAoGLDEeSjK4HN2is3bg"/>

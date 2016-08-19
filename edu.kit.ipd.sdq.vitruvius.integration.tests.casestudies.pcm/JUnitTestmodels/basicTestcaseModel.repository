@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" id="_R0wh0GQ6EeSiO4MX-GG07A" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_R0wh0GQ6EeSiO4MX-GG07A" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_bkn5YGQ6EeSiO4MX-GG07A" entityName="BasicComponent">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_hWo7UGQ6EeSiO4MX-GG07A" entityName="Provided_Interface_BasicComponent" providedInterface__OperationProvidedRole="_U-0qEGQ6EeSiO4MX-GG07A"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_f6_csGQ6EeSiO4MX-GG07A" entityName="Required_Interface_BasicComponent" requiredInterface__OperationRequiredRole="_U-0qEGQ6EeSiO4MX-GG07A"/>
@@ -13,7 +13,7 @@
   </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_U-0qEGQ6EeSiO4MX-GG07A" entityName="Interface" parentInterfaces__Interface="_LgAw0GQ7EeSiO4MX-GG07A">
     <signatures__OperationInterface id="_xX5_gGQ6EeSiO4MX-GG07A" entityName="Signature">
-      <parameters__OperationSignature entityName="IntParam">
+      <parameters__OperationSignature parameterName="IntParam">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
