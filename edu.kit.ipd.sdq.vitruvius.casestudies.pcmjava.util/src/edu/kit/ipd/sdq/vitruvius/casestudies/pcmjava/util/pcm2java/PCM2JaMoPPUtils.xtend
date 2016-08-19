@@ -69,7 +69,6 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace

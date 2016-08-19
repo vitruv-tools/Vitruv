@@ -8,7 +8,6 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Code2SEFFFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 
 public class POJOJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 

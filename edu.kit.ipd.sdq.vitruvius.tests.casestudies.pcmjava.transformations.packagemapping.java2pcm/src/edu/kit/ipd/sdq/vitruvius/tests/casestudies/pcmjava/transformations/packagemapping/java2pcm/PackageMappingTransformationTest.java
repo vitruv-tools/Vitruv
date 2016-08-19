@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.containers.Package;
+import org.junit.Assert;
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
@@ -84,7 +85,7 @@ public class PackageMappingTransformationTest extends Java2PCMPackageMappingTran
         final Repository repo = super.addRepoContractsAndDatatypesPackage();
 
         super.addSecondPackageCorrespondsWithoutCorrespondences();
-
+        Assert.assertNotNull(repo);
         // TODO:what to check?
     }
 

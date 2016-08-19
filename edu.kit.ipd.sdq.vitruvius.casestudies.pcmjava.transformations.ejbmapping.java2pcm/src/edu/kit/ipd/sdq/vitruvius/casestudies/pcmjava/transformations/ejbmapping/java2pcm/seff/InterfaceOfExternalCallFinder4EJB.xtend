@@ -5,7 +5,6 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.palladiosimulator.pcm.repository.RequiredRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
-import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.OperationSignature
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF

@@ -290,11 +290,11 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
 
     private String getExternalCallToOtherComponentClassCode() throws Throwable {
         final ICompilationUnit icu = CompilationUnitManipulatorHelper
-                .findICompilationUnitWithClassName(this.WEBGUI_CLASSNAME, this.currentTestProject);
-        super.importCompilationUnitWithName(this.MEDIA_STORE_CLASSNAME, icu);
-        String code = this.MEDIA_STORE_CLASSNAME + " " + this.MEDIA_STORE_CLASSNAME.toLowerCase() + " = " + "new "
-                + this.MEDIA_STORE_CLASSNAME + "();";
-        code += this.MEDIA_STORE_CLASSNAME.toLowerCase() + "." + DOWNLOAD + "();";
+                .findICompilationUnitWithClassName(WEBGUI_CLASSNAME, this.currentTestProject);
+        super.importCompilationUnitWithName(MEDIA_STORE_CLASSNAME, icu);
+        String code = MEDIA_STORE_CLASSNAME + " " + MEDIA_STORE_CLASSNAME.toLowerCase() + " = " + "new "
+                + MEDIA_STORE_CLASSNAME + "();";
+        code += MEDIA_STORE_CLASSNAME.toLowerCase() + "." + DOWNLOAD + "();";
         return code;
     }
 

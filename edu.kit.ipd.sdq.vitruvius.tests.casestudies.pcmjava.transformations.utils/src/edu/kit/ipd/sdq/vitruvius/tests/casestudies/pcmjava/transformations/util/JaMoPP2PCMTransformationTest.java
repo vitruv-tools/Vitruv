@@ -108,7 +108,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;

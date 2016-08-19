@@ -162,7 +162,8 @@ public class JaMoPPTUIDCalculatorAndResolverTest {
                 foundExpressionStatements.size());
     }
 
-    private <T> List<T> findUsageOfClass(final Class<T> type) {
+    @SuppressWarnings("unchecked")
+	private <T> List<T> findUsageOfClass(final Class<T> type) {
         final List<T> expressionStatements = new ArrayList<T>();
         final TreeIterator<Object> eObjects = EcoreUtil.getAllContents(this.jaMoPPCompilationUnit, false);
         while (eObjects.hasNext()) {

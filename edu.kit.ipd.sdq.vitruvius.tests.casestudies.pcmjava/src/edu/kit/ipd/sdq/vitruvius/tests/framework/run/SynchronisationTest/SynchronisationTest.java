@@ -4,9 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -32,7 +30,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
@@ -42,7 +39,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
