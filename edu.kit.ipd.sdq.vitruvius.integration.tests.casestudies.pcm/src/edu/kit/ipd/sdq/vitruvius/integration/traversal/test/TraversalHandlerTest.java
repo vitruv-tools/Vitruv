@@ -13,9 +13,10 @@ import org.palladiosimulator.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
@@ -36,7 +37,7 @@ public class TraversalHandlerTest {
     private VSUMImpl vsum;
     private ChangeSynchronizing changeSynchronizing;
 
-    private CorrespondenceInstance correspondenceInstance;
+    private CorrespondenceModel correspondenceInstance;
     protected ResourceSet resourceSet;
 
     /**
@@ -59,7 +60,7 @@ public class TraversalHandlerTest {
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum, vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
                 metaRepository, this.vsum, null, changePreparing, commandExecuting);
@@ -80,7 +81,7 @@ public class TraversalHandlerTest {
         // traverse model and get ordered list of changes
         final Repository repo = (Repository) r.getContents().get(0);
         final ITraversalStrategy<Repository> traversal = new RepositoryTraversalStrategy();
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
 
         try {
             changes = traversal.traverse(repo, URI.createPlatformResourceURI(path, true), null);
@@ -88,8 +89,8 @@ public class TraversalHandlerTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        this.changeSynchronizing.synchronizeChanges(changes);
+        VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+        this.changeSynchronizing.synchronizeChange(compositeChange);
 
     }
 

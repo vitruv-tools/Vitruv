@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.integration.pcmintegrationtest;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -22,7 +23,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;
@@ -109,7 +110,7 @@ public class ModelIntegrationComparatorTest {
             changeSynchronizing = IntegrationUtil.createVitruviusCore(PCMJavaUtils.createPCMJavaMetarepository());
         }
 
-        EList<Change> changes = null;
+        List<VitruviusChange> changes = null;
 
         try {
             changes = integrator.integrateModel(resource, changeSynchronizing);

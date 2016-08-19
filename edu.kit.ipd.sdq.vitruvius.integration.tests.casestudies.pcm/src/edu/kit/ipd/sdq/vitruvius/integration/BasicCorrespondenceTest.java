@@ -12,12 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.palladiosimulator.pcm.repository.Repository;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.integration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.PCM2JaMoPPTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /*
@@ -56,7 +56,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
             + "internal_architecture_model.repository";
 
     /** The Constant pcmMMUri. */
-    private static final VURI pcmMMUri = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE);
+    private static final VURI pcmMMUri = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
 
     /** The transformation. */
     private PCMJaMoPPCorrespondenceModelTransformation transformation;
@@ -111,8 +111,8 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
      * PCM2JaMoPPTransformationTest#getCorrespondenceInstance()
      */
     @Override
-    protected CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
-        final CorrespondenceInstance correspondenceInstance2 = this.transformation.getCorrespondenceInstance();
+    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
+        final CorrespondenceModel correspondenceInstance2 = this.transformation.getCorrespondenceInstance();
         return correspondenceInstance2;
     }
 

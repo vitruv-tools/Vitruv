@@ -17,10 +17,10 @@ import org.palladiosimulator.pcm.repository.ProvidedRole;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite.CompositeTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
@@ -90,7 +90,7 @@ public class CompositeComponentsTraversalTest {
         final Repository repo = (Repository) testmodel.getContents().get(0);
         final ITraversalStrategy<Repository> repoTraversal = new RepositoryTraversalStrategy();
         final ITraversalStrategy<Repository> compTraversal = new CompositeTraversalStrategy();
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
         final URI uri = URI.createPlatformResourceURI(path, true);
 
         try {
@@ -103,7 +103,7 @@ public class CompositeComponentsTraversalTest {
 
         // Don't validate earlier changes. This is covered by BasicRepositoryTraversalTest
 
-        EMFModelChange basicChange = null;
+        ConcreteChange basicChange = null;
         CompositeChange compChange = null;
 
         AssemblyContext assemblyContext = null;
@@ -112,70 +112,70 @@ public class CompositeComponentsTraversalTest {
         Connector connector = null;
 
         // AssemblyContexts (2x)
-        basicChange = (EMFModelChange) changes.get(17);
-        assemblyContext = (AssemblyContext) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange())
+        basicChange = (ConcreteChange) changes.get(17);
+        assemblyContext = (AssemblyContext) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0))
                 .getNewValue();
         assertEquals("_231GoKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
-        basicChange = (EMFModelChange) changes.get(18);
-        assemblyContext = (AssemblyContext) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange())
+        basicChange = (ConcreteChange) changes.get(18);
+        assemblyContext = (AssemblyContext) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0))
                 .getNewValue();
         assertEquals("_45e1UKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
         // CompositeChange: Inner provided role + delegation
         compChange = (CompositeChange) changes.get(19);
-        basicChange = (EMFModelChange) compChange.getChanges().get(0);
-        provRole = (ProvidedRole) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(0);
+        provRole = (ProvidedRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_Ipz9v6SPEeSog9_tMitgaA", provRole.getId());
 
-        basicChange = (EMFModelChange) compChange.getChanges().get(1);
-        connector = (Connector) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(1);
+        connector = (Connector) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_PqX2ZKSPEeSog9_tMitgaA", connector.getId());
 
         // CompositeChange: Inner required role + delegation
         compChange = (CompositeChange) changes.get(20);
-        basicChange = (EMFModelChange) compChange.getChanges().get(0);
-        reqRole = (RequiredRole) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(0);
+        reqRole = (RequiredRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_2ibk06SSEeSVEJcCUfjH2Q", reqRole.getId());
 
-        basicChange = (EMFModelChange) compChange.getChanges().get(1);
-        connector = (Connector) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(1);
+        connector = (Connector) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_8Loo9aSSEeSVEJcCUfjH2Q", connector.getId());
 
         // Assembly Connector
-        basicChange = (EMFModelChange) changes.get(21);
-        connector = (Connector) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) changes.get(21);
+        connector = (Connector) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_UNsW9qSXEeSVEJcCUfjH2Q", connector.getId());
 
         // AssemblyContexts (2x)
-        basicChange = (EMFModelChange) changes.get(22);
-        assemblyContext = (AssemblyContext) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange())
+        basicChange = (ConcreteChange) changes.get(22);
+        assemblyContext = (AssemblyContext) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0))
                 .getNewValue();
         assertEquals("_pcimMKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
-        basicChange = (EMFModelChange) changes.get(23);
-        assemblyContext = (AssemblyContext) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange())
+        basicChange = (ConcreteChange) changes.get(23);
+        assemblyContext = (AssemblyContext) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0))
                 .getNewValue();
         assertEquals("_snqeYKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
         // CompositeChange: Inner provided role + delegation
         compChange = (CompositeChange) changes.get(24);
-        basicChange = (EMFModelChange) compChange.getChanges().get(0);
-        provRole = (ProvidedRole) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(0);
+        provRole = (ProvidedRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_EBE7P6STEeSVEJcCUfjH2Q", provRole.getId());
 
-        basicChange = (EMFModelChange) compChange.getChanges().get(1);
-        connector = (Connector) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(1);
+        connector = (Connector) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_IP0zlKSTEeSVEJcCUfjH2Q", connector.getId());
 
         // CompositeChange: Inner required role + delegation
         compChange = (CompositeChange) changes.get(25);
-        basicChange = (EMFModelChange) compChange.getChanges().get(0);
-        reqRole = (RequiredRole) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(0);
+        reqRole = (RequiredRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_CJpqI6SUEeSVEJcCUfjH2Q", reqRole.getId());
 
-        basicChange = (EMFModelChange) compChange.getChanges().get(1);
-        connector = (Connector) ((CreateNonRootEObjectInList<EObject>) basicChange.getEChange()).getNewValue();
+        basicChange = (ConcreteChange) compChange.getChanges().get(1);
+        connector = (Connector) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_dr1zxaSUEeSVEJcCUfjH2Q", connector.getId());
 
         return;

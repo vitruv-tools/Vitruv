@@ -1,10 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.integration.pcmintegrationtest
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject
 import org.eclipse.emf.common.util.BasicEList
 import org.eclipse.emf.common.util.EList
 import org.palladiosimulator.pcm.core.composition.AssemblyConnector
@@ -27,10 +22,17 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.Parameter
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import java.util.List
+import org.eclipse.emf.ecore.EObject
 
 class PCMModelBuilder { 
 	
-	private EList<Change> changes
+	private List<VitruviusChange> changes
 	private EList<CompositeDataType> compositeDataTypes = new BasicEList<CompositeDataType>
 	private EList<CollectionDataType> collectionDataTypes = new BasicEList<CollectionDataType>
 	private EList<ComposedProvidingRequiringEntity> composedEntities = new BasicEList<ComposedProvidingRequiringEntity>
@@ -38,11 +40,11 @@ class PCMModelBuilder {
 	
 	int i
 	
-	new(EList<Change> changes) {
+	new(List<VitruviusChange> changes) {
 		this.changes = changes
 		repo = RepositoryFactory.eINSTANCE.createRepository
-		val repoChange = changes.get(0) as EMFModelChange
-		val rootChange = repoChange.getEChange as CreateRootEObject
+		val repoChange = changes.get(0) as ConcreteChange
+		val rootChange = repoChange.getEChanges.get(0) as InsertRootEObject<EObject>
 		val oldRepo = rootChange.newValue as Repository
 		repo.entityName = oldRepo.entityName
 		repo.id = oldRepo.id
@@ -61,11 +63,11 @@ class PCMModelBuilder {
 		
 	}
 	
-	def createModelElement(Change change) {
+	def createModelElement(VitruviusChange change) {
 		
 		switch change {
 			CompositeChange: change.changes.forEach[createModelElement]
-			EMFModelChange: change.createModelElementFromChange
+			ConcreteChange: change.createModelElementFromChange
 		}
 		
 	}
@@ -80,9 +82,9 @@ class PCMModelBuilder {
 		return data.id
 	}
 	
-	def createModelElementFromChange(EMFModelChange change) {
+	def createModelElementFromChange(ConcreteChange change) {
 		
-		val innerChange = change.getEChange as CreateNonRootEObjectInList
+		val innerChange = change.getEChanges.get(0) as InsertEReference<EObject, EObject>
 		val newValue = innerChange.newValue
 		switch newValue {
 			CompositeDataType : newValue.createCompositeDataType

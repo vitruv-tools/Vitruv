@@ -38,7 +38,7 @@ public class OperationSignatureCorrespondenceTest extends BasicCorrespondenceTes
         assertNotNull("PCM Repository doesn't contain any OperationSignatures!", signature);
 
         // Start change recorder and rename signature
-        this.changeRecorder.beginRecording(Collections.singletonList(pcmRepo));
+        this.changeRecorder.beginRecording(VURI.getInstance(pcmRepo.eResource()), Collections.singletonList(pcmRepo));
         signature.setEntityName("SignatureRenamed");
 
         // Save and execute synchronization

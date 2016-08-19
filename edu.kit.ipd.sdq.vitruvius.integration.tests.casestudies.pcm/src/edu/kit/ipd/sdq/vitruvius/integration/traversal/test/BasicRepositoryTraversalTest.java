@@ -28,11 +28,11 @@ import org.palladiosimulator.pcm.repository.ProvidesComponentType;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.Signature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
@@ -102,7 +102,7 @@ public class BasicRepositoryTraversalTest {
         // traverse model and get a list of changes
         final Repository repo = (Repository) testmodel.getContents().get(0);
         final ITraversalStrategy<Repository> traversal = new RepositoryTraversalStrategy();
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
 
         try {
             changes = traversal.traverse(repo, URI.createPlatformResourceURI(path, true), null);
@@ -119,37 +119,37 @@ public class BasicRepositoryTraversalTest {
         final EList<Interface> interfaces = repo.getInterfaces__Repository();
 
         // first element of change list must be the root
-        final EMFModelChange repository = (EMFModelChange) changes.get(0);
-        final CreateRootEObject<EObject> repoChange = (CreateRootEObject<EObject>) repository.getEChange();
+        final ConcreteChange repository = (ConcreteChange) changes.get(0);
+        final InsertRootEObject<EObject> repoChange = (InsertRootEObject<EObject>) repository.getEChanges().get(0);
         String id = ((Repository) repoChange.getNewValue()).getId();
         assertTrue(repo.getId().equals(id));
 
         // 2: Composite DataType
-        final EMFModelChange compositeDataType = (EMFModelChange) changes.get(1);
-        final CreateNonRootEObjectInList<EObject> compositeDataChange = (CreateNonRootEObjectInList<EObject>) compositeDataType
-                .getEChange();
+        final ConcreteChange compositeDataType = (ConcreteChange) changes.get(1);
+        final InsertEReference<EObject, EObject> compositeDataChange = (InsertEReference<EObject, EObject>) compositeDataType
+                .getEChanges().get(0);
         id = ((CompositeDataType) compositeDataChange.getNewValue()).getId();
         assertTrue(compType.getId().equals(id));
 
         // 3: Collection DataType
-        final EMFModelChange collectionDataType = (EMFModelChange) changes.get(2);
-        final CreateNonRootEObjectInList<EObject> collectionDataTypeChange = (CreateNonRootEObjectInList<EObject>) collectionDataType
-                .getEChange();
+        final ConcreteChange collectionDataType = (ConcreteChange) changes.get(2);
+        final InsertEReference<EObject, EObject> collectionDataTypeChange = (InsertEReference<EObject, EObject>) collectionDataType
+                .getEChanges().get(0);
         id = ((CollectionDataType) collectionDataTypeChange.getNewValue()).getId();
         assertTrue(collType.getId().equals(id));
 
         // 4: BasicComponent
-        final EMFModelChange basicComponent = (EMFModelChange) changes.get(3);
-        final CreateNonRootEObjectInList<EObject> basicComponentChange = (CreateNonRootEObjectInList<EObject>) basicComponent
-                .getEChange();
+        final ConcreteChange basicComponent = (ConcreteChange) changes.get(3);
+        final InsertEReference<EObject, EObject> basicComponentChange = (InsertEReference<EObject, EObject>) basicComponent
+                .getEChanges().get(0);
         id = ((BasicComponent) basicComponentChange.getNewValue()).getId();
         assertTrue(basicComp.getId().equals(id));
 
         // 5: Interfaces (4x)
-        final List<Change> interfaceChanges = changes.subList(4, 7);
+        final List<VitruviusChange> interfaceChanges = changes.subList(4, 7);
         for (int i = 0; i < interfaceChanges.size(); i++) {
-            final CreateNonRootEObjectInList<EObject> InterfaceChange = (CreateNonRootEObjectInList<EObject>) ((EMFModelChange) interfaceChanges
-                    .get(0)).getEChange();
+            final InsertEReference<EObject, EObject> InterfaceChange = (InsertEReference<EObject, EObject>) ((ConcreteChange) interfaceChanges
+                    .get(0)).getEChanges().get(0);
             final Interface inter = (Interface) InterfaceChange.getNewValue();
             // first must be top interface
             if (i == 0) {
@@ -161,15 +161,15 @@ public class BasicRepositoryTraversalTest {
 
         // 6: ProvidesComponent + Roles
         final CompositeChange providesComponentChange = (CompositeChange) changes.get(8);
-        List<Change> atomicChanges = providesComponentChange.getChanges();
+        List<VitruviusChange> atomicChanges = providesComponentChange.getChanges();
         // At least 2 atomic changes must be aggregated (component +
         // providesRoles)
         assertTrue(atomicChanges.size() >= 2);
         // first must be the component, second the role
-        final ProvidesComponentType provComponent = (ProvidesComponentType) ((CreateNonRootEObjectInList<EObject>) ((EMFModelChange) atomicChanges
-                .get(0)).getEChange()).getNewValue();
-        final OperationProvidedRole provRole = (OperationProvidedRole) ((CreateNonRootEObjectInList<EObject>) ((EMFModelChange) atomicChanges
-                .get(1)).getEChange()).getNewValue();
+        final ProvidesComponentType provComponent = (ProvidesComponentType) ((InsertEReference<EObject, EObject>) ((ConcreteChange) atomicChanges
+                .get(0)).getEChanges().get(0)).getNewValue();
+        final OperationProvidedRole provRole = (OperationProvidedRole) ((InsertEReference<EObject, EObject>) ((ConcreteChange) atomicChanges
+                .get(1)).getEChanges().get(0)).getNewValue();
         assertEquals("_mIhV8GQ6EeSiO4MX-GG07A", provComponent.getId());
         assertEquals("_sqDJQGQ6EeSiO4MX-GG07A", provRole.getId());
 
@@ -180,34 +180,34 @@ public class BasicRepositoryTraversalTest {
         // providesRoles / requiredRoles)
         assertTrue(atomicChanges.size() >= 2);
         // first must be the completeComponent
-        final CompleteComponentType compComp = (CompleteComponentType) ((CreateNonRootEObjectInList<EObject>) ((EMFModelChange) atomicChanges
-                .get(0)).getEChange()).getNewValue();
+        final CompleteComponentType compComp = (CompleteComponentType) ((InsertEReference<EObject, EObject>) ((ConcreteChange) atomicChanges
+                .get(0)).getEChanges().get(0)).getNewValue();
         assertEquals("_tyXcMGQ6EeSiO4MX-GG07A", compComp.getId());
 
         // 8: remaining roles of the basic component (2x)
-        final EMFModelChange basicRole1Change = (EMFModelChange) changes.get(10);
-        final EMFModelChange basicRole2Change = (EMFModelChange) changes.get(11);
-        final OperationProvidedRole basicRole1 = (OperationProvidedRole) ((CreateNonRootEObjectInList<EObject>) basicRole1Change
-                .getEChange()).getNewValue();
-        final OperationRequiredRole basicRole2 = (OperationRequiredRole) ((CreateNonRootEObjectInList<EObject>) basicRole2Change
-                .getEChange()).getNewValue();
+        final ConcreteChange basicRole1Change = (ConcreteChange) changes.get(10);
+        final ConcreteChange basicRole2Change = (ConcreteChange) changes.get(11);
+        final OperationProvidedRole basicRole1 = (OperationProvidedRole) ((InsertEReference<EObject, EObject>) basicRole1Change
+                .getEChanges().get(0)).getNewValue();
+        final OperationRequiredRole basicRole2 = (OperationRequiredRole) ((InsertEReference<EObject, EObject>) basicRole2Change
+                .getEChanges().get(0)).getNewValue();
         assertEquals("_hWo7UGQ6EeSiO4MX-GG07A", basicRole1.getId());
         assertEquals("_f6_csGQ6EeSiO4MX-GG07A", basicRole2.getId());
 
         // 9: Signature + Parameter
-        final EMFModelChange signatureChange = (EMFModelChange) changes.get(12);
-        final EMFModelChange parameterChange = (EMFModelChange) changes.get(13);
-        final Signature signature = (Signature) ((CreateNonRootEObjectInList<EObject>) signatureChange.getEChange())
+        final ConcreteChange signatureChange = (ConcreteChange) changes.get(12);
+        final ConcreteChange parameterChange = (ConcreteChange) changes.get(13);
+        final Signature signature = (Signature) ((InsertEReference<EObject, EObject>) signatureChange.getEChanges().get(0))
                 .getNewValue();
-        final Parameter parameter = (Parameter) ((CreateNonRootEObjectInList<EObject>) parameterChange.getEChange())
+        final Parameter parameter = (Parameter) ((InsertEReference<EObject, EObject>) parameterChange.getEChanges().get(0))
                 .getNewValue();
         assertEquals("_xX5_gGQ6EeSiO4MX-GG07A", signature.getId());
         assertEquals("IntParam", parameter.getParameterName());
 
         // 10: InnerDeclaration
-        final EMFModelChange innerDecChange = (EMFModelChange) changes.get(14);
-        final InnerDeclaration innerDeclaration = (InnerDeclaration) ((CreateNonRootEObjectInList<EObject>) innerDecChange
-                .getEChange()).getNewValue();
+        final ConcreteChange innerDecChange = (ConcreteChange) changes.get(14);
+        final InnerDeclaration innerDeclaration = (InnerDeclaration) ((InsertEReference<EObject, EObject>) innerDecChange
+                .getEChanges().get(0)).getNewValue();
         assertEquals("InnerType", innerDeclaration.getEntityName());
 
     }

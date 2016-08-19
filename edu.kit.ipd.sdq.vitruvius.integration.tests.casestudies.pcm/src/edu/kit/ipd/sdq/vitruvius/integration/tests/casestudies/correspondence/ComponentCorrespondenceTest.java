@@ -11,7 +11,6 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.integration.BasicCorrespondenceTest;
 
@@ -30,7 +29,7 @@ public class ComponentCorrespondenceTest extends BasicCorrespondenceTest {
     public void testRenameBasicComponent() throws Throwable {
 
         // Get a component and rename it
-        this.changeRecorder.beginRecording(Collections.singletonList(this.pcmRepo));
+        this.changeRecorder.beginRecording(VURI.getInstance(pcmRepo.eResource()), Collections.singletonList(this.pcmRepo));
         final BasicComponent basicComponent = (BasicComponent) EcoreUtil.getObjectByType(this.pcmRepo.eContents(),
                 RepositoryPackage.eINSTANCE.getBasicComponent());
         basicComponent.setEntityName("ComponentRenamed");
