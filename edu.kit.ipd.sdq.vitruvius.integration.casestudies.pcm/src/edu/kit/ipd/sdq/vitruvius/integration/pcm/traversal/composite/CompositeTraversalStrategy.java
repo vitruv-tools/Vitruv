@@ -9,8 +9,8 @@ import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 /**
@@ -32,7 +32,7 @@ public class CompositeTraversalStrategy extends ComposedEntitiesTraversalStrateg
      * .ecore.EObject, org.eclipse.emf.common.util.URI, org.eclipse.emf.common.util.EList)
      */
     @Override
-    public EList<Change> traverse(final Repository entity, final URI uri, final EList<Change> existingChanges)
+    public EList<VitruviusChange> traverse(final Repository entity, final URI uri, final EList<VitruviusChange> existingChanges)
             throws UnsupportedOperationException {
 
         final Repository repository = entity;

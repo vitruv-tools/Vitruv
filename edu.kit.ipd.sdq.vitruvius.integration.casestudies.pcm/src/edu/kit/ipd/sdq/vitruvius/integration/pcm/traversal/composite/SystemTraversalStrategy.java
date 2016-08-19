@@ -5,10 +5,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.util.PCMChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
@@ -28,7 +28,7 @@ public class SystemTraversalStrategy extends ComposedEntitiesTraversalStrategy i
      * .ecore.EObject, org.eclipse.emf.common.util.URI, org.eclipse.emf.common.util.EList)
      */
     @Override
-    public EList<Change> traverse(final System entity, final URI uri, final EList<Change> existingChanges)
+    public EList<VitruviusChange> traverse(final System entity, final URI uri, final EList<VitruviusChange> existingChanges)
             throws UnsupportedOperationException {
 
         final System system = entity;
@@ -38,7 +38,7 @@ public class SystemTraversalStrategy extends ComposedEntitiesTraversalStrategy i
         if (this.changeList != null) {
             throw new UnsupportedOperationException("A system cannot be built upon existing changes");
         }
-        this.changeList = new BasicEList<Change>();
+        this.changeList = new BasicEList<VitruviusChange>();
 
         this.traverseSystem(system);
 
@@ -56,7 +56,7 @@ public class SystemTraversalStrategy extends ComposedEntitiesTraversalStrategy i
     private void traverseSystem(final System system) {
 
         final EChange systemChange = PCMChangeBuildHelper.createChangeFromSystem(system);
-        this.addChange(new EMFModelChange(systemChange, this.vuri), this.changeList);
+        this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(systemChange, this.vuri), this.changeList);
 
     }
 

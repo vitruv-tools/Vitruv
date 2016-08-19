@@ -22,11 +22,11 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.util.PCMChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.EMFTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
@@ -41,7 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements ITraversalStrategy<Repository> {
 
-    private final EList<Change> changeList = new UniqueEList<Change>();
+    private final EList<VitruviusChange> changeList = new UniqueEList<VitruviusChange>();
     private VURI vuri;
 
     /*
@@ -52,7 +52,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
      * .ecore.EObject, org.eclipse.emf.common.util.URI, org.eclipse.emf.common.util.EList)
      */
     @Override
-    public EList<Change> traverse(final Repository entity, final URI uri, final EList<Change> existingChanges)
+    public EList<VitruviusChange> traverse(final Repository entity, final URI uri, final EList<VitruviusChange> existingChanges)
             throws UnsupportedOperationException {
 
         if (existingChanges != null) {
@@ -91,8 +91,8 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
      */
     private void traverseInterfaces(final EList<Interface> interfaces) {
         if (interfaces.size() > 0) {
-            final EList<Change> interfaceChanges = this.traverseInterfaceHierarchy(interfaces, this.vuri);
-            for (final Change change : interfaceChanges) {
+            final EList<VitruviusChange> interfaceChanges = this.traverseInterfaceHierarchy(interfaces, this.vuri);
+            for (final VitruviusChange change : interfaceChanges) {
                 this.addChange(change, this.changeList);
             }
         }
@@ -113,7 +113,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
 
                 if (!innerTypes.isEmpty()) {
                     for (final InnerDeclaration innerDeclaration : innerTypes) {
-                        this.addChange(new EMFModelChange(
+                        this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(
                                 PCMChangeBuildHelper.createChangeFromInnerDeclaration(innerDeclaration), this.vuri),
                                 this.changeList);
                     }
@@ -143,7 +143,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
                     // clear parameters: Transformation only supports adding of empty signatures
                     // signature.getParameters__OperationSignature().clear();
                     this.addChange(
-                            new EMFModelChange(PCMChangeBuildHelper.createChangeFromSignature(signature), this.vuri),
+                    		VitruviusChangeFactory.getInstance().createGeneralChange(PCMChangeBuildHelper.createChangeFromSignature(signature), this.vuri),
                             this.changeList);
                     /*
                      * for (int i = 0; i < parameters.size(); i++) { addChange( new EMFModelChange(
@@ -151,7 +151,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
                      * i), vuri), changeList); }
                      */
                     for (final Parameter parameter : signature.getParameters__OperationSignature()) {
-                        this.addChange(new EMFModelChange(PCMChangeBuildHelper.createChangeFromParameter(parameter),
+                        this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(PCMChangeBuildHelper.createChangeFromParameter(parameter),
                                 this.vuri), this.changeList);
                     }
                 }
@@ -169,11 +169,11 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
         for (final RepositoryComponent component : components) {
             if (component instanceof BasicComponent) {
                 for (final ProvidedRole role : component.getProvidedRoles_InterfaceProvidingEntity()) {
-                    this.addChange(new EMFModelChange(PCMChangeBuildHelper.createChangeFromRole(role), this.vuri),
+                    this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(PCMChangeBuildHelper.createChangeFromRole(role), this.vuri),
                             this.changeList);
                 }
                 for (final RequiredRole role : component.getRequiredRoles_InterfaceRequiringEntity()) {
-                    this.addChange(new EMFModelChange(PCMChangeBuildHelper.createChangeFromRole(role), this.vuri),
+                    this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(PCMChangeBuildHelper.createChangeFromRole(role), this.vuri),
                             this.changeList);
                 }
             }
@@ -190,12 +190,12 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
         for (final RepositoryComponent component : components) {
             if (component instanceof CompleteComponentType) {
 
-                final CompositeChange compositeChange = new CompositeChange();
+                final CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange();
 
                 final EList<EChange> completeCompositeChanges = PCMChangeBuildHelper
                         .createChangeFromCompleteComponent((CompleteComponentType) component);
                 for (final EChange change : completeCompositeChanges) {
-                    compositeChange.addChange(new EMFModelChange(change, this.vuri));
+                    compositeChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(change, this.vuri));
                 }
 
                 this.addChange(compositeChange, this.changeList);
@@ -213,12 +213,12 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
         for (final RepositoryComponent component : components) {
             if (component instanceof ProvidesComponentType) {
 
-                final CompositeChange compositeChange = new CompositeChange();
+            	final CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange();
 
                 final EList<EChange> providedComponentChanges = PCMChangeBuildHelper
                         .createChangeFromProvidesComponent((ProvidesComponentType) component);
                 for (final EChange change : providedComponentChanges) {
-                    compositeChange.addChange(new EMFModelChange(change, this.vuri));
+                    compositeChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(change, this.vuri));
                 }
 
                 this.addChange(compositeChange, this.changeList);
@@ -247,7 +247,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
                 return;
             }
 
-            this.addChange(new EMFModelChange(componentChange, this.vuri), this.changeList);
+            this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(componentChange, this.vuri), this.changeList);
         }
     }
 
@@ -261,7 +261,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
         for (final DataType dataType : dataTypes) {
             if (dataType instanceof CollectionDataType) {
                 final EChange dataTypeChange = PCMChangeBuildHelper.createChangeFromDataType(dataType);
-                this.addChange(new EMFModelChange(dataTypeChange, this.vuri), this.changeList);
+                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(dataTypeChange, this.vuri), this.changeList);
             }
         }
     }
@@ -281,7 +281,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
                         .getParentType_CompositeDataType();
                 if (parents.isEmpty()) {
                     final EChange dataTypeChange = PCMChangeBuildHelper.createChangeFromDataType(dataType);
-                    this.addChange(new EMFModelChange(dataTypeChange, this.vuri), this.changeList);
+                    this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(dataTypeChange, this.vuri), this.changeList);
                 } else {
                     // TODO: traverse parents
                 }
@@ -298,7 +298,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
     private void traversePrimitiveDataTypes(final EList<DataType> dataTypes) {
         for (final DataType dataType : dataTypes) {
             if (dataType instanceof PrimitiveDataType) {
-                this.addChange(new EMFModelChange(PCMChangeBuildHelper.createChangeFromDataType(dataType), this.vuri),
+                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(PCMChangeBuildHelper.createChangeFromDataType(dataType), this.vuri),
                         this.changeList);
             }
         }
@@ -312,7 +312,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
      */
     private void traverseRepository(final Repository repository) {
         final EChange repositoryChange = PCMChangeBuildHelper.createChangeFromRepository(repository);
-        this.addChange(new EMFModelChange(repositoryChange, this.vuri), this.changeList);
+        this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(repositoryChange, this.vuri), this.changeList);
     }
 
     /**
@@ -325,10 +325,10 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
      *            the vuri
      * @return List of changes
      */
-    private EList<Change> traverseInterfaceHierarchy(final EList<Interface> interfaces, final VURI vuri) {
+    private EList<VitruviusChange> traverseInterfaceHierarchy(final EList<Interface> interfaces, final VURI vuri) {
 
         final EList<Interface> traversedInterfaces = new BasicEList<Interface>();
-        final EList<Change> changes = new BasicEList<Change>();
+        final EList<VitruviusChange> changes = new BasicEList<VitruviusChange>();
         EChange interfaceChange = null;
 
         // traverse interfaces. complexity is O(n�) but should be neglectable
@@ -340,7 +340,7 @@ public class RepositoryTraversalStrategy extends EMFTraversalStrategy implements
                 if (traversedInterfaces.containsAll(inter.getParentInterfaces__Interface())
                         && !traversedInterfaces.contains(inter)) {
                     interfaceChange = PCMChangeBuildHelper.createChangeFromInterface(inter);
-                    changes.add(new EMFModelChange(interfaceChange, vuri));
+                    changes.add(VitruviusChangeFactory.getInstance().createGeneralChange(interfaceChange, vuri));
                     traversedInterfaces.add(inter);
                 }
             }

@@ -24,11 +24,11 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.CreateRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.object.ObjectFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.ChangeBuildHelper;
 
 /**
@@ -78,7 +78,7 @@ public class PCMChangeBuildHelper extends ChangeBuildHelper {
      */
     public static EChange createChangeFromRootEntity(final Entity source) {
 
-        final CreateRootEObject<EObject> change = ObjectFactory.eINSTANCE.createCreateRootEObject();
+        final InsertRootEObject<EObject> change = RootFactory.eINSTANCE.createInsertRootEObject();
         change.setNewValue(source);
         return change;
     }
@@ -181,8 +181,9 @@ public class PCMChangeBuildHelper extends ChangeBuildHelper {
     public static EList<EChange> createChangeFromProvidesComponent(final ProvidesComponentType component) {
         final EList<EChange> compositeChanges = new BasicEList<EChange>();
 
-        final CreateNonRootEObjectInList<EObject> componentChange = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
+        final InsertEReference<EObject,EObject> componentChange = ReferenceFactory.eINSTANCE
+                .createInsertEReference();
+        componentChange.setIsCreate(true);
         componentChange.setNewValue(component);
 
         compositeChanges.add(componentChange);
@@ -204,8 +205,9 @@ public class PCMChangeBuildHelper extends ChangeBuildHelper {
     public static EList<EChange> createChangeFromCompleteComponent(final CompleteComponentType component) {
         final EList<EChange> compositeChanges = new BasicEList<EChange>();
 
-        final CreateNonRootEObjectInList<EObject> componentChange = ContainmentFactory.eINSTANCE
-                .createCreateNonRootEObjectInList();
+        final InsertEReference<EObject,EObject> componentChange = ReferenceFactory.eINSTANCE
+                .createInsertEReference();
+        componentChange.setIsCreate(true);
         componentChange.setNewValue(component);
 
         compositeChanges.add(componentChange);

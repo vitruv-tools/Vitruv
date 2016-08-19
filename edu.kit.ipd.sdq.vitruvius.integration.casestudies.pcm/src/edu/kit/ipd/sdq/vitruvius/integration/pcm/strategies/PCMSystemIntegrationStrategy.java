@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
@@ -97,7 +97,7 @@ public class PCMSystemIntegrationStrategy extends PCMIntegrationStrategy {
      * .eclipse.core.resources.IResource, org.eclipse.emf.ecore.resource.Resource)
      */
     @Override
-    protected EList<Change> createChangeModels(final IResource resource, final Resource validModel) {
+    protected EList<VitruviusChange> createChangeModels(final IResource resource, final Resource validModel) {
 
         // create correct URI for valid model
         final IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -109,7 +109,7 @@ public class PCMSystemIntegrationStrategy extends PCMIntegrationStrategy {
         final URI modelUri = URI.createPlatformResourceURI(platRelativeModelLoc, true);
 
         // traverse model and get ordered list of changes
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
 
         final IMModelImplExtractor extractor = new PCMSystemExtractor();
         final System system = (System) extractor.getImpl(validModel);

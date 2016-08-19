@@ -12,12 +12,13 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.list.InsertInEList;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.util.PCMChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.EMFTraversalStrategy;
 
@@ -35,7 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.integration.traversal.EMFTraversalStrategy;
  */
 public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStrategy {
 
-    protected EList<Change> changeList;
+    protected EList<VitruviusChange> changeList;
     private final EList<ComposedProvidingRequiringEntity> traversedEntities = new BasicEList<ComposedProvidingRequiringEntity>();
     protected VURI vuri;
 
@@ -87,7 +88,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
         for (final AssemblyContext context : entity.getAssemblyContexts__ComposedStructure()) {
             final EChange assemblyContextChange = PCMChangeBuildHelper.createChangeFromAssemblyContext(context);
-            this.addChange(new EMFModelChange(assemblyContextChange, this.vuri), this.changeList);
+            this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(assemblyContextChange, this.vuri), this.changeList);
         }
 
     }
@@ -107,7 +108,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
         // last element a role?
         if (roleDelegationChanges.size() > 0) {
             @SuppressWarnings("unchecked")
-            final InsertInEList<EObject> lastChange = (InsertInEList<EObject>) roleDelegationChanges
+            final InsertEReference<?,?> lastChange = (InsertEReference<?,?>) roleDelegationChanges
                     .get(roleDelegationChanges.size() - 1);
             if (lastChange.getNewValue() instanceof Role) {
                 throw new IllegalArgumentException("The role " + ((Role) lastChange.getNewValue()).getEntityName()
@@ -121,15 +122,15 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
             // set the role and the first delegation connector as composite change
             @SuppressWarnings("unchecked")
-            final InsertInEList<EObject> change = (InsertInEList<EObject>) roleDelegationChanges.get(i);
+            final InsertEReference<EObject, ?> change = (InsertEReference<EObject, ?>) roleDelegationChanges.get(i);
             if (change.getNewValue() instanceof Role) {
-                compChange = new CompositeChange();
-                compChange.addChange(new EMFModelChange(roleDelegationChanges.get(i), this.vuri));
-                compChange.addChange(new EMFModelChange(roleDelegationChanges.get(i + 1), this.vuri));
+                compChange = VitruviusChangeFactory.getInstance().createCompositeChange();
+                compChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i), this.vuri));
+                compChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i + 1), this.vuri));
                 this.addChange(compChange, this.changeList);
                 i++;
             } else {
-                this.addChange(new EMFModelChange(roleDelegationChanges.get(i), this.vuri), this.changeList);
+                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i), this.vuri), this.changeList);
             }
 
         }
@@ -148,7 +149,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
             if (connector instanceof AssemblyConnector) {
                 final EChange assemblyConnectorChange = PCMChangeBuildHelper.createChangeFromConnector(connector);
-                this.addChange(new EMFModelChange(assemblyConnectorChange, this.vuri), this.changeList);
+                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(assemblyConnectorChange, this.vuri), this.changeList);
             }
 
         }

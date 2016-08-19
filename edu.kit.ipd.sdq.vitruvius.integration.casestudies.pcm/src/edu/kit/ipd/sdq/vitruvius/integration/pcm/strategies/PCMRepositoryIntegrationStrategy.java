@@ -9,7 +9,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.repository.Repository;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
@@ -104,13 +104,13 @@ public class PCMRepositoryIntegrationStrategy extends PCMIntegrationStrategy {
      * .eclipse.core.resources.IResource, org.eclipse.emf.ecore.resource.Resource)
      */
     @Override
-    protected EList<Change> createChangeModels(final IResource originalResource, final Resource validModel) {
+    protected EList<VitruviusChange> createChangeModels(final IResource originalResource, final Resource validModel) {
 
         // create correct URI for valid model
         final URI modelUri = ResourceHelper.createPlatformUriForResource(validModel);
 
         // traverse model and get ordered list of changes
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
 
         final IMModelImplExtractor<Repository> extractor = new PCMRepositoryExtractor();
         final Repository repository = extractor.getImpl(validModel);

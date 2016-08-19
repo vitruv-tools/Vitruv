@@ -9,8 +9,9 @@ import org.palladiosimulator.pcm.repository.Repository;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -45,7 +46,7 @@ public class TraversalTestcase {
         // traverse model and get ordered list of changes
         final Repository repo = (Repository) r.getContents().get(0);
         final ITraversalStrategy<Repository> traversal = new RepositoryTraversalStrategy();
-        EList<Change> changes = null;
+        EList<VitruviusChange> changes = null;
 
         try {
             changes = traversal.traverse(repo, URI.createPlatformResourceURI(path, true), null);
@@ -59,15 +60,16 @@ public class TraversalTestcase {
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
 
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum, vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
 
         final ChangeSynchronizerImpl changeSynchronizing = new ChangeSynchronizerImpl(vsum,
                 change2CommandTransformingProviding, vsum, metaRepository, vsum, null, changePreparing,
                 commandExecuting);
-
+        
+        final VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         // propagate changes
-        changeSynchronizing.synchronizeChanges(changes);
+        changeSynchronizing.synchronizeChange(compositeChange);
 
         logger.info("Integration done");
 
