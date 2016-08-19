@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -29,7 +28,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
@@ -39,9 +37,8 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  *
  */
 public abstract class VitruviusCasestudyTest {
-	private static Logger logger = Logger.getLogger(VitruviusCasestudyTest.class);
-	
-    protected ResourceSet resourceSet;
+
+	protected ResourceSet resourceSet;
 
     protected TestUserInteractor testUserInteractor;
 
