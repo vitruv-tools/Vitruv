@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -22,6 +23,7 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
@@ -37,7 +39,8 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  *
  */
 public abstract class VitruviusCasestudyTest {
-
+	private static Logger logger = Logger.getLogger(VitruviusCasestudyTest.class);
+	
     protected ResourceSet resourceSet;
 
     protected TestUserInteractor testUserInteractor;
@@ -51,6 +54,12 @@ public abstract class VitruviusCasestudyTest {
     protected abstract void afterTest(Description description);
 
     protected abstract CorrespondenceInstance<Correspondence> getCorrespondenceInstance() throws Throwable;
+    
+    protected static class SingleTransformerChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
+		public SingleTransformerChange2CommandTransformingProviding(Change2CommandTransforming transformer) {
+			this.addChange2CommandTransforming(transformer);
+		}
+	}
     
     /**
      * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
