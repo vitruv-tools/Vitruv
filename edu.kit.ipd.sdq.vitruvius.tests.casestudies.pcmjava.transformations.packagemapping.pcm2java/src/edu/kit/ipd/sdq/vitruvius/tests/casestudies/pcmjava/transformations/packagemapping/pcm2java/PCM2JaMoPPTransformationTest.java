@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -59,8 +61,11 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
@@ -77,7 +82,34 @@ import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
  *
  */
 public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
-
+	private static Logger logger = Logger.getLogger(PCM2JaMoPPTransformationTest.class);
+	
+	public PCM2JaMoPPTransformationTest() {
+		super(() -> createChange2CommandTransformingProvidingFromVMArgument());
+	}
+	
+    /**
+	 * Create a Change2CommandTransformingProviding, if possible from the command line argument "transfomerClass",
+	 * otherwise the default one.
+     * @return 
+	 */
+    protected static Change2CommandTransformingProviding createChange2CommandTransformingProvidingFromVMArgument() {
+    	logger.setLevel(Level.DEBUG);
+    	Change2CommandTransformingProviding result;
+		try {
+			String transformerClass = java.lang.System.getProperty("transformerClass");
+			java.lang.Class<?> clazz = java.lang.Class.forName(transformerClass);
+			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
+			Change2CommandTransforming transformer = (Change2CommandTransforming) ctor.newInstance();
+			logger.debug("Transformer class used for test: " + transformerClass);
+			result = new SingleTransformerChange2CommandTransformingProviding(transformer);
+		} catch (Exception e) {
+			logger.debug("Transformer class used for test: DEFAULT");
+			result = new Change2CommandTransformingProvidingImpl();
+		}
+		return result;
+    }
+	
     @SuppressWarnings("unchecked")
     protected void assertDataTypeCorrespondence(final DataType dataType) throws Throwable {
         if (dataType instanceof CollectionDataType) {
