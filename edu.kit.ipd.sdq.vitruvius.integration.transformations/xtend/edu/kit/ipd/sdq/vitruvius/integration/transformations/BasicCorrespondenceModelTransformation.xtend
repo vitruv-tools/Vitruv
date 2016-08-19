@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import java.util.HashSet
@@ -12,6 +11,7 @@ import org.eclipse.emf.ecore.EObject
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 /**
  * Class that provides general methods for creating correspondences between two metamodels. 
@@ -28,7 +28,7 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 	/**
 	 * Returns the current used {@link CorrespondenceInstance}
 	 */
-	public abstract def CorrespondenceInstance getCorrespondenceInstance()
+	public abstract def CorrespondenceModel getCorrespondenceInstance()
 
 	protected def Correspondence addCorrespondence(EObject pcmObject, EObject jamoppObject) {
 		return addCorrespondence(pcmObject, jamoppObject, null);

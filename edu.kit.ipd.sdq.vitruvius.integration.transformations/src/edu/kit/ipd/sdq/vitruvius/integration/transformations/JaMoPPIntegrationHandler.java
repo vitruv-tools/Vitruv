@@ -8,7 +8,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -58,7 +58,7 @@ public class JaMoPPIntegrationHandler extends IntegrationHandler<IJavaProject> {
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
         vsum.getOrCreateAllCorrespondenceInstancesForMM(
-                metaRepository.getMetamodel(VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)));
+                metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
 
         final ICreateCorrespondenceModel transformation = new PCMJaMoPPCorrespondenceModelTransformation(
                 scdmPath.toString(), pcmPath.toString(), srcPath.toString(), vsum);

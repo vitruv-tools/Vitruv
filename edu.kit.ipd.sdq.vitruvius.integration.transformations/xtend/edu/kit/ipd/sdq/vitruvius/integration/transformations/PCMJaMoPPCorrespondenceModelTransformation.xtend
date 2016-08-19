@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
 import edu.kit.ipd.sdq.vitruvius.integration.util.JaMoPPResourceHelper
@@ -27,6 +25,9 @@ import org.somox.sourcecodedecorator.DataTypeSourceCodeLink
 import org.somox.sourcecodedecorator.InterfaceSourceCodeLink
 import org.somox.sourcecodedecorator.MethodLevelSourceCodeLink
 import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -45,7 +46,7 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 	private ResourceSet jaMoppResourceSet
 	private Repository pcmRepo
 	
-	private CorrespondenceInstance cInstance
+	private CorrespondenceModel cInstance
 
 	private Set<Package> packages
 	private Package rootPackage
@@ -53,8 +54,8 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 	new(String scdmPath, String pcmPath, String jamoppPath, VSUMImpl vsum) {
 		
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
-		var mmUriA = VURI.getInstance(PCMJaMoPPNamespace.PCM.PCM_METAMODEL_NAMESPACE)
-		var mmURiB = VURI.getInstance(PCMJaMoPPNamespace.JaMoPP.JAMOPP_METAMODEL_NAMESPACE)
+		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
+		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
 		
 		this.scdmPath = scdmPath;

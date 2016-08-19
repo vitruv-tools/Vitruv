@@ -33,10 +33,9 @@ public class JaMoPPResourceHelper {
     public static ResourceSet loadJaMoPPResourceSet(final String path) throws IOException {
 
         final JaMoPPSoftwareModelExtractor jamoppreader = new JaMoPPSoftwareModelExtractor();
-        final List<String> list = new ArrayList<String>();
-        list.add(path);
-
-        return jamoppreader.extractSoftwareModel(list, null);
+        final List<File> list = new ArrayList<File>();
+        list.add(new File(path));
+        return jamoppreader.extractSoftwareModelFromFolders(list, null, null, false);
     }
 
     /**
