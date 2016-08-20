@@ -3,9 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.modelrefinement.inspectit2
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
@@ -56,6 +54,7 @@ import org.somox.sourcecodedecorator.SourcecodedecoratorFactory
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 /** 
  * Handler to enrich the coevolved PCM models with resource demands. Is based on the II2PCMJob from
@@ -195,12 +194,12 @@ class InspectIt2PCMHandler extends AbstractHandler {
 	def private SourceCodeDecoratorRepository createSourceCodeDecoratorModelFromVitruvCorrespondenceModel(Repository repo, VSUMImpl vsum) {
 		val SourceCodeDecoratorRepository sourceCodeDecoratorModel = SourcecodedecoratorFactory.eINSTANCE.
 			createSourceCodeDecoratorRepository()
-		val CorrespondenceInstance<Correspondence> correspondenceInstance = this.getCorrespondenceInstance(vsum)
-		val methods = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Method)
+		val CorrespondenceModel correspondenceModel = this.getCorrespondenceModel(vsum)
+		val methods = correspondenceModel.getAllEObjectsOfTypeInCorrespondences(Method)
 		for (Method method : methods) {
 			if (method instanceof ClassMethod) {
 				val classMethod = method as ClassMethod
-				val correspondingSEFFs = correspondenceInstance.getCorrespondingEObjectsByType(classMethod, ServiceEffectSpecification)
+				val correspondingSEFFs = correspondenceModel.getCorrespondingEObjectsByType(classMethod, ServiceEffectSpecification)
 				if (!correspondingSEFFs.nullOrEmpty) {
 					// --> create SEFF 2 Methodmapping
 					correspondingSEFFs.forEach [
@@ -212,9 +211,9 @@ class InspectIt2PCMHandler extends AbstractHandler {
 				}
 			}
 		}
-		val concreteClassifiers = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(ConcreteClassifier)
+		val concreteClassifiers = correspondenceModel.getAllEObjectsOfTypeInCorrespondences(ConcreteClassifier)
 		for(concreteClassifier : concreteClassifiers){
-			val correspondingOpIfs = correspondenceInstance.getCorrespondingEObjectsByType(concreteClassifier, OperationInterface)
+			val correspondingOpIfs = correspondenceModel.getCorrespondingEObjectsByType(concreteClassifier, OperationInterface)
 			if(!correspondingOpIfs.nullOrEmpty){
 				correspondingOpIfs.forEach[
 					val interfaceLink = SourcecodedecoratorFactory.eINSTANCE.createInterfaceSourceCodeLink
@@ -233,12 +232,12 @@ class InspectIt2PCMHandler extends AbstractHandler {
 		return sourceCodeDecoratorModel
 	}
 
-	def private CorrespondenceInstance<Correspondence> getCorrespondenceInstance(VSUMImpl vsum) {
+	def private CorrespondenceModel getCorrespondenceModel(VSUMImpl vsum) {
 		val VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		val VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
-		val CorrespondenceInstance<Correspondence> corresponcenceInstance = vsum.
+		val CorrespondenceModel correspondenceModel = vsum.
 			getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI)
-		return corresponcenceInstance
+		return correspondenceModel
 	}
 	
 	def private getVSUM(){
