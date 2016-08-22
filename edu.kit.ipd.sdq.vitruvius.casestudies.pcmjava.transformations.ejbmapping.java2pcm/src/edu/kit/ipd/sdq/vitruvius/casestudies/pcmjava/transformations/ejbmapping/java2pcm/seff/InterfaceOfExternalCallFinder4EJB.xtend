@@ -6,7 +6,7 @@ import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.palladiosimulator.pcm.repository.RequiredRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.OperationSignature
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import java.util.Set
 import org.apache.log4j.Logger
@@ -16,11 +16,11 @@ class InterfaceOfExternalCallFinder4EJB implements InterfaceOfExternalCallFindin
 	
 	private static val Logger logger = Logger.getLogger(InterfaceOfExternalCallFinder4EJB.name)
 	
-	private final CorrespondenceModel correspondenceInstance
+	private final CorrespondenceModel correspondenceModel
 	private final BasicComponent basicComponent
 
-	new(CorrespondenceModel correspondenceInstance, BasicComponent basicComponent) {
-		this.correspondenceInstance = correspondenceInstance
+	new(CorrespondenceModel correspondenceModel, BasicComponent basicComponent) {
+		this.correspondenceModel = correspondenceModel
 		this.basicComponent = basicComponent
 	}
 
@@ -54,13 +54,13 @@ class InterfaceOfExternalCallFinder4EJB implements InterfaceOfExternalCallFindin
      * @return
      */
     private def OperationSignature queryInterfaceOperation( Method invokedMethod) {
-        val Set<OperationSignature> correspondingOpSigs = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod, OperationSignature);
+        val Set<OperationSignature> correspondingOpSigs = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, invokedMethod, OperationSignature);
         if (null != correspondingOpSigs && 0 < correspondingOpSigs.size()) {
             return correspondingOpSigs.iterator().next();
         }
-        val Set<ResourceDemandingSEFF> correspondingRDSEFFs = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod,
+        val Set<ResourceDemandingSEFF> correspondingRDSEFFs = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, invokedMethod,
                         ResourceDemandingSEFF);
         if (null != correspondingRDSEFFs && 0 < correspondingRDSEFFs.size()) {
             for (ResourceDemandingSEFF seff : correspondingRDSEFFs) {

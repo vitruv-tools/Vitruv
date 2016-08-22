@@ -35,7 +35,7 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
@@ -48,8 +48,8 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 	private static Logger logger = Logger.getLogger(JaMoPP2PCMUtils.simpleName)
 
-	def public static Repository getRepository(CorrespondenceModel correspondenceInstance) {
-		val Set<Repository> repos = correspondenceInstance.getAllEObjectsOfTypeInCorrespondences(Repository)
+	def public static Repository getRepository(CorrespondenceModel correspondenceModel) {
+		val Set<Repository> repos = correspondenceModel.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (repos.nullOrEmpty) {
 			return null
 		}
@@ -80,12 +80,12 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 		Object newValue,
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceModel correspondenceInstance,
+		CorrespondenceModel correspondenceModel,
 		boolean saveFilesOfChangedEObjects
 	) {
 		val Set<Class<? extends EObject>> pcmRootClasses = Sets.newHashSet(Repository, System)
 		updateNameAttribute(correspondingEObjects, newValue, affectedFeature, featureCorrespondenceMap,
-			correspondenceInstance, saveFilesOfChangedEObjects, pcmRootClasses)
+			correspondenceModel, saveFilesOfChangedEObjects, pcmRootClasses)
 	}
 
 	def static void updateNameAttributeForPCMRootObjects(Iterable<NamedElement> pcmRootElements,
@@ -216,13 +216,13 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	}
 	
 	def public static EObject[] checkAndAddOperationRequiredRole(TypedElement typedElement,
-		CorrespondenceModel correspondenceInstance, UserInteracting userInteracting) {
+		CorrespondenceModel correspondenceModel, UserInteracting userInteracting) {
 		val Type type = getTargetClassifierFromImplementsReferenceAndNormalizeURI(typedElement.typeReference)
 		if (null == type) {
 			return null
 		}
 		val Set<EObject> newCorrespondingEObjects = new HashSet
-		val fieldTypeCorrespondences = correspondenceInstance.getCorrespondingEObjects(type)
+		val fieldTypeCorrespondences = correspondenceModel.getCorrespondingEObjects(type)
 		val correspondingInterfaces = fieldTypeCorrespondences.filter(typeof(OperationInterface))
 		var RepositoryComponent repoComponent = null
 		if (!correspondingInterfaces.nullOrEmpty) {
@@ -230,7 +230,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	
 				// ii)a)
 				repoComponent = JaMoPP2PCMUtils.getComponentOfConcreteClassifier(
-					typedElement.containingConcreteClassifier, correspondenceInstance, userInteracting)
+					typedElement.containingConcreteClassifier, correspondenceModel, userInteracting)
 				if (null == repoComponent) {
 					return null
 				}
@@ -252,7 +252,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 				if (!correspondingComponents.nullOrEmpty) {
 					if (null == repoComponent) {
 						repoComponent = JaMoPP2PCMUtils.getComponentOfConcreteClassifier(
-							typedElement.containingConcreteClassifier, correspondenceInstance, userInteracting)
+							typedElement.containingConcreteClassifier, correspondenceModel, userInteracting)
 					}
 					if (null == repoComponent) {
 						return null

@@ -69,7 +69,7 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Public
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
@@ -102,12 +102,12 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		Object newValue,
 		EStructuralFeature affectedFeature,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceModel correspondenceInstance,
+		CorrespondenceModel correspondenceModel,
 		boolean saveFilesOfChangedEObjects
 	) {
 		val Set<java.lang.Class<? extends EObject>> jaMoPPRootClasses = Sets.newHashSet(JavaRoot)
 		updateNameAttribute(correspondingEObjects, newValue, affectedFeature, featureCorrespondenceMap,
-			correspondenceInstance, saveFilesOfChangedEObjects, jaMoPPRootClasses)
+			correspondenceModel, saveFilesOfChangedEObjects, jaMoPPRootClasses)
 	}
 
 	def dispatch static createAndReturnNamespaceClassifierReferenceForSimpleDataType(EObject eObject) {
@@ -163,7 +163,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleClassifierNameChange(Classifier classifier, Object newValue,
-		CorrespondenceModel correspondenceInstance, boolean appendImpl, TUID oldClassifierTUID) {
+		CorrespondenceModel correspondenceModel, boolean appendImpl, TUID oldClassifierTUID) {
 		classifier.name = newValue.toString
 		if (classifier instanceof Class) {
 			if (appendImpl) {
@@ -174,7 +174,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				c.name = classifier.name
 			}
 		}
-		correspondenceInstance.updateTUID(oldClassifierTUID, classifier)
+		correspondenceModel.updateTUID(oldClassifierTUID, classifier)
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
@@ -328,14 +328,14 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return constructor
 	}
 
-	def static Package getContainingPackageFromCorrespondenceInstance(Classifier classifier,
-		CorrespondenceModel correspondenceInstance) {
+	def static Package getContainingPackageFromCorrespondenceModel(Classifier classifier,
+		CorrespondenceModel correspondenceModel) {
 		var namespace = classifier.containingCompilationUnit.namespacesAsString
 		if (namespace.endsWith("$") || namespace.endsWith(".")) {
 			namespace = namespace.substring(0, namespace.length - 1)
 		}
 		val finalNamespace = namespace
-		var Set<Package> packagesWithCorrespondences = correspondenceInstance.
+		var Set<Package> packagesWithCorrespondences = correspondenceModel.
 			getAllEObjectsOfTypeInCorrespondences(Package)
 		val packagesWithNamespace = packagesWithCorrespondences.filter [ pack |
 			finalNamespace.equals(pack.namespacesAsString + pack.name)
@@ -347,9 +347,9 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return null;
 	}
 
-	def public static Package findCorrespondingPackageByName(String name, CorrespondenceModel correspondenceInstance,
+	def public static Package findCorrespondingPackageByName(String name, CorrespondenceModel correspondenceModel,
 		Repository repo) {
-		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repo, Package)
+		val packages = correspondenceModel.getCorrespondingEObjectsByType(repo, Package)
 		if (null == packages) {
 			return null
 		}
@@ -442,9 +442,9 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return "void"
 	}
 
-	def static askUserForPackage(CorrespondenceModel correspondenceInstance, Repository repository,
+	def static askUserForPackage(CorrespondenceModel correspondenceModel, Repository repository,
 		UserInteracting userInteractiong, String message) {
-		val packages = correspondenceInstance.getCorrespondingEObjectsByType(repository, Package)
+		val packages = correspondenceModel.getCorrespondingEObjectsByType(repository, Package)
 		val List<String> options = new ArrayList<String>
 		for (pack : packages) {
 			options.add(pack.name)
@@ -634,14 +634,14 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		}
 	}
 
-	def static getDatatypePackage(CorrespondenceModel correspondenceInstance, Repository repo, String dataTypeName,
+	def static getDatatypePackage(CorrespondenceModel correspondenceModel, Repository repo, String dataTypeName,
 		UserInteracting userInteracting) {
-		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceInstance, repo)
+		var datatypePackage = PCM2JaMoPPUtils.findCorrespondingPackageByName("datatypes", correspondenceModel, repo)
 		if (null == datatypePackage) {
 			logger.info("datatype package not found")
 			val String message = "Datatype " + dataTypeName +
 				" created. Please specify to which package the datatype should be added"
-			datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceInstance, repo, userInteracting, message)
+			datatypePackage = PCM2JaMoPPUtils.askUserForPackage(correspondenceModel, repo, userInteracting, message)
 		} else {
 			logger.info("found datatype package")
 		}

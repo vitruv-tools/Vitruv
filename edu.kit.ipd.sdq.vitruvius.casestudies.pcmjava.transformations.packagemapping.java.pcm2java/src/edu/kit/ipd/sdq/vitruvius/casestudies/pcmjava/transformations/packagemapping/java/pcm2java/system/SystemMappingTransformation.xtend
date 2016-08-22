@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import org.emftext.language.java.containers.JavaRoot
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 
 class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {

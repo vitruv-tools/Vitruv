@@ -13,7 +13,7 @@ import org.somox.gast2seff.visitors.MethodCallFinder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 
 /**
  * FunctionClassificationStrategy for the simple package mapping Strategy.
@@ -27,14 +27,14 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
             .getLogger(FunctionClassificationStrategyForPackageMapping.class.getSimpleName());
 
     private final BasicComponentFinding basicComponentFinding;
-    private final CorrespondenceModel correspondenceInstance;
+    private final CorrespondenceModel correspondenceModel;
     private final BasicComponent myBasicComponent;
 
     public FunctionClassificationStrategyForPackageMapping(final BasicComponentFinding basicComponentFinding,
             final CorrespondenceModel ci, final BasicComponent myBasicComponent) {
         super(new MethodCallFinder());
         this.basicComponentFinding = basicComponentFinding;
-        this.correspondenceInstance = ci;
+        this.correspondenceModel = ci;
         this.myBasicComponent = myBasicComponent;
     }
 
@@ -49,14 +49,14 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
                     + ". Method call is not considered as as external call");
             return false;
         }
-        final Set<OperationSignature> correspondingSignatures = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, method, OperationSignature.class);
+        final Set<OperationSignature> correspondingSignatures = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, method, OperationSignature.class);
         if (null != correspondingSignatures && !correspondingSignatures.isEmpty()) {
             return true;
         }
         if (method instanceof ClassMethod) {
             final BasicComponent basicComponent = this.basicComponentFinding.findBasicComponentForMethod(method,
-                    this.correspondenceInstance);
+                    this.correspondenceModel);
             if (null == basicComponent || basicComponent.getId().equals(this.myBasicComponent.getId())) {
                 return false;
             }
@@ -72,7 +72,7 @@ public class FunctionClassificationStrategyForPackageMapping extends AbstractFun
     @Override
     protected boolean isLibraryCall(final Method method) {
         final BasicComponent basicComponentOfMethod = this.basicComponentFinding.findBasicComponentForMethod(method,
-                this.correspondenceInstance);
+                this.correspondenceModel);
         if (null == basicComponentOfMethod) {
             return true;
         }

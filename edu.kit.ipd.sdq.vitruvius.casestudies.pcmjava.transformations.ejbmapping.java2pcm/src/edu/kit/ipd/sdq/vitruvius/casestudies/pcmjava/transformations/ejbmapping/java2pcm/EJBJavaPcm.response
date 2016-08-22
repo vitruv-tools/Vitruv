@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import java.util.Collections
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.OperationSignature
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
@@ -258,7 +258,7 @@ match:
 effect: 
 	execute: {
 		val method = getOoverridenInterfaceMethod(change.newValue as ClassMethod, change.affectedEObject as org.emftext.language.java.classifiers.Class)
-		val correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(correspondenceModel, method, OperationSignature)
+		val correspondingEObjects = CorrespondenceModelUtil.getCorrespondingEObjectsByType(correspondenceModel, method, OperationSignature)
 		var OperationSignature opSignature = null
 		if(!correspondingEObjects.nullOrEmpty){
 			opSignature = correspondingEObjects.get(0)			

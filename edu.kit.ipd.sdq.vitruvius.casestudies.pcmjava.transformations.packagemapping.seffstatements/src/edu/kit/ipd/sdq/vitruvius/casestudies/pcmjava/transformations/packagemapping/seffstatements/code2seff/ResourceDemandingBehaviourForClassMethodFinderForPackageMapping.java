@@ -9,7 +9,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 
 public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
         implements ResourceDemandingBehaviourForClassMethodFinding {
@@ -17,11 +17,11 @@ public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
     private static final Logger logger = Logger
             .getLogger(ResourceDemandingBehaviourForClassMethodFinderForPackageMapping.class.getSimpleName());
 
-    private final CorrespondenceModel correspondenceInstance;
+    private final CorrespondenceModel correspondenceModel;
 
     public ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(
-            final CorrespondenceModel correspondenceInstance) {
-        this.correspondenceInstance = correspondenceInstance;
+            final CorrespondenceModel correspondenceModel) {
+        this.correspondenceModel = correspondenceModel;
     }
 
     @Override
@@ -30,8 +30,8 @@ public class ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
     }
 
     private <T> T getFirstCorrespondingEObjectIfAny(final ClassMethod classMethod, final Class<T> correspondingClass) {
-        final Set<T> correspondingObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, classMethod, correspondingClass);
+        final Set<T> correspondingObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, classMethod, correspondingClass);
         if (correspondingObjects == null || correspondingObjects.isEmpty()) {
             return null;
         }

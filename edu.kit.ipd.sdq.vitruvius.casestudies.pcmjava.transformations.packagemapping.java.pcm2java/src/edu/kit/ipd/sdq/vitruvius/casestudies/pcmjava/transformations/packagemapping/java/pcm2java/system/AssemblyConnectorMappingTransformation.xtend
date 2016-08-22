@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext
 import org.palladiosimulator.pcm.core.entity.NamedElement
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 class AssemblyConnectorMappingTransformation extends EmptyEObjectMappingTransformation {

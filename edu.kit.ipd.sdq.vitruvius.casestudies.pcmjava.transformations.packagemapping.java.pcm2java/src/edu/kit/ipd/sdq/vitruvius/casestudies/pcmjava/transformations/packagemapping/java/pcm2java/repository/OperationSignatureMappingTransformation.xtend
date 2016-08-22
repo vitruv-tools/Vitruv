@@ -21,7 +21,7 @@ import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace

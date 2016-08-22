@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 

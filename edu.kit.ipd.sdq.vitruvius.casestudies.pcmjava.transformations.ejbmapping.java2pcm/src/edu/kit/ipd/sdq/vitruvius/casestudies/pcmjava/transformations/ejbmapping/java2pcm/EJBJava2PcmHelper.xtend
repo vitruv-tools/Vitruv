@@ -32,8 +32,8 @@ class EJBJava2PcmHelper {
 		return null
 	} 
 	
-	public static def Repository findRepository(CorrespondenceModel correspondenceInstance){ 
-		return JaMoPP2PCMUtils.getRepository(correspondenceInstance)
+	public static def Repository findRepository(CorrespondenceModel correspondenceModel){ 
+		return JaMoPP2PCMUtils.getRepository(correspondenceModel)
 	}
 	
 }

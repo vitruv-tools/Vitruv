@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 
 /**
  * Class realizes a InterfaceOfExternalCallFinding for the simple package mapping
@@ -26,12 +26,12 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
     private static final Logger logger = Logger
             .getLogger(InterfaceOfExternalCallFinderForPackageMapping.class.getSimpleName());
 
-    private final CorrespondenceModel correspondenceInstance;
+    private final CorrespondenceModel correspondenceModel;
     private final BasicComponent myBasicComponent;
 
-    public InterfaceOfExternalCallFinderForPackageMapping(final CorrespondenceModel correspondenceInstance,
+    public InterfaceOfExternalCallFinderForPackageMapping(final CorrespondenceModel correspondenceModel,
             final BasicComponent myBasicComponent) {
-        this.correspondenceInstance = correspondenceInstance;
+        this.correspondenceModel = correspondenceModel;
         this.myBasicComponent = myBasicComponent;
 
     }
@@ -75,13 +75,13 @@ public class InterfaceOfExternalCallFinderForPackageMapping implements Interface
      * @return
      */
     private OperationSignature queryInterfaceOperation(final Method invokedMethod) {
-        final Set<OperationSignature> correspondingOpSigs = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod, OperationSignature.class);
+        final Set<OperationSignature> correspondingOpSigs = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, invokedMethod, OperationSignature.class);
         if (null != correspondingOpSigs && 0 < correspondingOpSigs.size()) {
             return correspondingOpSigs.iterator().next();
         }
-        final Set<ResourceDemandingSEFF> correspondingRDSEFFs = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, invokedMethod,
+        final Set<ResourceDemandingSEFF> correspondingRDSEFFs = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, invokedMethod,
                         ResourceDemandingSEFF.class);
         if (null != correspondingRDSEFFs && 0 < correspondingRDSEFFs.size()) {
             for (final ResourceDemandingSEFF seff : correspondingRDSEFFs) {

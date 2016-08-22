@@ -14,19 +14,19 @@ class EJBJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 	}
 
 	override InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-		CorrespondenceModel correspondenceInstance, BasicComponent basicComponent) {
-		return new InterfaceOfExternalCallFinder4EJB(correspondenceInstance, basicComponent)
+		CorrespondenceModel correspondenceModel, BasicComponent basicComponent) {
+		return new InterfaceOfExternalCallFinder4EJB(correspondenceModel, basicComponent)
 	}
 
 	override ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-		CorrespondenceModel correspondenceInstance) {
-		return new ResourceDemandingBehaviourForClassMethodFinder4EJB(correspondenceInstance)
+		CorrespondenceModel correspondenceModel) {
+		return new ResourceDemandingBehaviourForClassMethodFinder4EJB(correspondenceModel)
 	}
 
 	override AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
-		BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
+		BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceModel,
 		BasicComponent basicComponent) {
-		return new EJB2PCMFunctionClassificationStrategy(basicComponentFinding, correspondenceInstance,
+		return new EJB2PCMFunctionClassificationStrategy(basicComponentFinding, correspondenceModel,
 			basicComponent)
 	}
 }

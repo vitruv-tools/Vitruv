@@ -5,7 +5,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import java.util.Set
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
@@ -14,10 +14,10 @@ class ResourceDemandingBehaviourForClassMethodFinder4EJB implements ResourceDema
 	
 	val private static Logger logger = Logger.getLogger(ResourceDemandingBehaviourForClassMethodFinder4EJB.name)
 
-	private	final CorrespondenceModel correspondenceInstance
+	private	final CorrespondenceModel correspondenceModel
 
-	new(CorrespondenceModel correspondenceInstance) {
-		this.correspondenceInstance = correspondenceInstance
+	new(CorrespondenceModel correspondenceModel) {
+		this.correspondenceModel = correspondenceModel
 	}
 
 	override ResourceDemandingSEFF getCorrespondingRDSEFForClassMethod(ClassMethod classMethod) {
@@ -30,8 +30,8 @@ class ResourceDemandingBehaviourForClassMethodFinder4EJB implements ResourceDema
 	}
 	
 	def private <T> T getFirstCorrespondingEObjectIfAny(ClassMethod classMethod, Class<T> correspondingClass) {
-        val Set<T> correspondingObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, classMethod, correspondingClass);
+        val Set<T> correspondingObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, classMethod, correspondingClass);
         if (correspondingObjects == null || correspondingObjects.isEmpty()) {
             return null;
         }

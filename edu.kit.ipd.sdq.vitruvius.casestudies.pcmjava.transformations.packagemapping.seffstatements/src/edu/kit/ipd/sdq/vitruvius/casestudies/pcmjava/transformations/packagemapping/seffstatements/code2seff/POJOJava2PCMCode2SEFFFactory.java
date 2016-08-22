@@ -18,21 +18,21 @@ public class POJOJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 
     @Override
     public InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-            final CorrespondenceModel correspondenceInstance, final BasicComponent basicComponent) {
-        return new InterfaceOfExternalCallFinderForPackageMapping(correspondenceInstance, basicComponent);
+            final CorrespondenceModel correspondenceModel, final BasicComponent basicComponent) {
+        return new InterfaceOfExternalCallFinderForPackageMapping(correspondenceModel, basicComponent);
     }
 
     @Override
     public ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-            final CorrespondenceModel correspondenceInstance) {
-        return new ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(correspondenceInstance);
+            final CorrespondenceModel correspondenceModel) {
+        return new ResourceDemandingBehaviourForClassMethodFinderForPackageMapping(correspondenceModel);
     }
 
     @Override
     public AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
             final BasicComponentFinding basicComponentFinding,
-            final CorrespondenceModel correspondenceInstance, final BasicComponent basicComponent) {
-        return new FunctionClassificationStrategyForPackageMapping(basicComponentFinding, correspondenceInstance,
+            final CorrespondenceModel correspondenceModel, final BasicComponent basicComponent) {
+        return new FunctionClassificationStrategyForPackageMapping(basicComponentFinding, correspondenceModel,
                 basicComponent);
     }
 

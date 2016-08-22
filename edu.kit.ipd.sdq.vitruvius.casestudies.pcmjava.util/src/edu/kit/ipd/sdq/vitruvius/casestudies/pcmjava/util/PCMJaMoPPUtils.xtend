@@ -27,7 +27,7 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType
 import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
@@ -47,12 +47,12 @@ class PCMJaMoPPUtils {
 	 */
 	def static checkKeyAndCorrespondingObjects(EObject eObject, EStructuralFeature affectedEFeature,
 		Map<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		CorrespondenceModel correspondenceInstance) {
+		CorrespondenceModel correspondenceModel) {
 			if (!featureCorrespondenceMap.containsKey(affectedEFeature)) {
 				logger.debug("no feature correspondence found for affectedEeature: " + affectedEFeature)
 				return null
 			}
-			var correspondingEObjects = correspondenceInstance.getCorrespondingEObjects(eObject)
+			var correspondingEObjects = correspondenceModel.getCorrespondingEObjects(eObject)
 			if (correspondingEObjects.nullOrEmpty) {
 				logger.info("No corresponding objects found for " + eObject)
 			}
@@ -62,7 +62,7 @@ class PCMJaMoPPUtils {
 		def static updateNameAttribute(Set<EObject> correspondingEObjects, Object newValue,
 			EStructuralFeature affectedFeature,
 			ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-			CorrespondenceModel correspondenceInstance, boolean saveFilesOfChangedEObjects,
+			CorrespondenceModel correspondenceModel, boolean saveFilesOfChangedEObjects,
 			Set<Class<? extends EObject>> classesOfRootObjects) {
 			val EStructuralFeature eStructuralFeature = featureCorrespondenceMap.claimValueForKey(affectedFeature)
 
@@ -77,9 +77,9 @@ class PCMJaMoPPUtils {
 				if (null == correspondingObject) {
 					logger.error("corresponding object is null")
 				} else {
-					val TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(correspondingObject)
+					val TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(correspondingObject)
 					correspondingObject.eSet(eStructuralFeature, newValue)
-					correspondenceInstance.updateTUID(oldTUID, correspondingObject)
+					correspondenceModel.updateTUID(oldTUID, correspondingObject)
 					if (saveFilesOfChangedEObjects) {
 						// nothing to do here?
 					}

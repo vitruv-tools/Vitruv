@@ -10,9 +10,9 @@ import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Method
 import org.palladiosimulator.pcm.repository.BasicComponent
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import org.eclipse.emf.ecore.resource.ResourceSet
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
@@ -80,7 +80,7 @@ class EJBBasicComponentFinder implements BasicComponentFinding {
         if (0 == jaMoPPPackage.getNamespaces().size()) {
             return null;
         }
-        val correspondingComponents = CorrespondenceInstanceUtil
+        val correspondingComponents = CorrespondenceModelUtil
                 .getCorrespondingEObjectsByType(ci, jaMoPPPackage, BasicComponent);
         if (null == correspondingComponents || correspondingComponents.isEmpty()) {
 

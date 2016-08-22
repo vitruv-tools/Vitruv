@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import java.util.Set
 import org.apache.log4j.Logger
 import org.emftext.language.java.members.ClassMethod
@@ -18,14 +18,14 @@ class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificati
 	private static val Logger logger = Logger.getLogger(EJB2PCMFunctionClassificationStrategy.name)
 	
 	private final BasicComponentFinding basicComponentFinding
-	private final CorrespondenceModel correspondenceInstance
+	private final CorrespondenceModel correspondenceModel
 	private final BasicComponent basicComponent
 
-	new(BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
+	new(BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceModel,
 		BasicComponent basicComponent) {
 		super(new MethodCallFinder())
 		this.basicComponentFinding = basicComponentFinding
-		this.correspondenceInstance = correspondenceInstance
+		this.correspondenceModel = correspondenceModel
 		this.basicComponent = basicComponent
 	}
 
@@ -41,14 +41,14 @@ class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificati
                     + ". Method call is not considered as as external call");
             return false;
         }
-        val Set<OperationSignature> correspondingSignatures = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.correspondenceInstance, method, OperationSignature);
+        val Set<OperationSignature> correspondingSignatures = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.correspondenceModel, method, OperationSignature);
         if (null != correspondingSignatures && !correspondingSignatures.isEmpty()) {
             return true;
         }
         if (method instanceof ClassMethod) {
             val BasicComponent basicComponent = this.basicComponentFinding.findBasicComponentForMethod(method,
-                    this.correspondenceInstance);
+                    this.correspondenceModel);
             if (null == basicComponent || basicComponent.getId().equals(this.basicComponent.getId())) {
                 return false;
             }
@@ -60,7 +60,7 @@ class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificati
 	//copied from  FunctionClassificationStrategyForPackageMapping
 	override protected boolean isLibraryCall(Method method) {
 		 val basicComponentOfMethod = this.basicComponentFinding.findBasicComponentForMethod(method,
-                this.correspondenceInstance);
+                this.correspondenceModel);
         if (null == basicComponentOfMethod) {
             return true;
         }
