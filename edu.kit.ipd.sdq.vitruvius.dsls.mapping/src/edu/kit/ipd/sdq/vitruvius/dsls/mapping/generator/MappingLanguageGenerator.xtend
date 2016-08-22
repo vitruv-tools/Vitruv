@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.CandidateGeneratorImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.Candidate
@@ -226,7 +226,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						«ENDFOR»
 						
 						private static «typeRef(mapping.correspondenceWrapperClassName)» createMappedCorrespondenceWrapper(
-								«typeRef(MappedCorrespondenceInstance)» mci,
+								«typeRef(MappedCorrespondenceModel)» mci,
 								«FOR req : allRequires SEPARATOR "," AFTER ","»
 								«typeRef(req.mapping.correspondenceWrapperClassName)» «req.name.toFirstLower»
 								«ENDFOR»
@@ -259,7 +259,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 					
 						«FOR imp : imports SEPARATOR "\n"»
 						public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
-							«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
+							«typeRef(MappedCorrespondenceModel)» mci = state.getMci();
 
 							System.out.println("«mapping.name.toFirstUpper». EChange, «imp.toFirstUpperName»: " + eChange.toString());
 							
@@ -378,7 +378,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						}
 						
 						private static «typeRef(mapping.correspondenceWrapperClassName)» createMappedCorrespondenceWrapper(
-								«typeRef(MappedCorrespondenceInstance)» mci,
+								«typeRef(MappedCorrespondenceModel)» mci,
 								«FOR req : allRequires SEPARATOR "," AFTER ","»
 								«typeRef(req.mapping.correspondenceWrapperClassName)» «req.name.toFirstLower»
 								«ENDFOR»
@@ -406,7 +406,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						);
 					
 						public static «mapping.correspondenceWrapperClassName» getOrCreate(«typeRef(MappingExecutionState)» state) {
-							final «typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
+							final «typeRef(MappedCorrespondenceModel)» mci = state.getMci();
 							«mapping.correspondenceWrapperClassName» currentCorrespondence = null;
 							
 							final «typeRef(Optional)»<«typeRef(Correspondence)»> «mapping.correspondenceWrapperClassName.toVarName» =
@@ -439,7 +439,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						«expandTemplate(ih, #[mapping, 'mappingClassBody'])»
 						
 						public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
-							«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
+							«typeRef(MappedCorrespondenceModel)» mci = state.getMci();
 
 							System.out.println("«mapping.name.toFirstUpper». EChange, «imp.toFirstUpperName»: " + eChange.toString());
 							

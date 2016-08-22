@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
@@ -35,7 +35,7 @@ public class MatchUpdate<W extends ElementProvider, CW> {
 		intialize();
 	}
 
-	public MatchUpdate(MappingRealization mapping, MappedCorrespondenceInstance mci, Set<Candidate> candidates,
+	public MatchUpdate(MappingRealization mapping, MappedCorrespondenceModel mci, Set<Candidate> candidates,
 			Function<Candidate, W> matchWrapper, Predicate<W> checkFunction,
 			Function<Correspondence, CW> correspondenceWrapper) {
 
@@ -49,7 +49,7 @@ public class MatchUpdate<W extends ElementProvider, CW> {
 		rebasedCandidates = new HashSet<>();
 	}
 
-	public void populate(MappingRealization mapping, MappedCorrespondenceInstance mci, Set<Candidate> candidates,
+	public void populate(MappingRealization mapping, MappedCorrespondenceModel mci, Set<Candidate> candidates,
 			Function<Candidate, W> matchWrapper, Predicate<W> checkFunction,
 			Function<Correspondence, CW> correspondenceWrapper) {
 

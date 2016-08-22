@@ -14,7 +14,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 import org.eclipse.xtend.lib.annotations.Delegate
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 
-class MappedCorrespondenceInstance implements CorrespondenceModel {
+class MappedCorrespondenceModel implements CorrespondenceModel {
 	@Delegate
 	val InternalCorrespondenceModel correspondenceModel;
 
@@ -25,8 +25,8 @@ class MappedCorrespondenceInstance implements CorrespondenceModel {
 	// correspondence elements have to be extended to MappingCorrespondence elements containing a list
 	// of mappings they belong to
 	@SuppressWarnings("unchecked")
-	new(InternalCorrespondenceModel correspondenceInstance) {
-		this.correspondenceModel = correspondenceInstance;
+	new(InternalCorrespondenceModel correspondenceModel) {
+		this.correspondenceModel = correspondenceModel;
 		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<String>>()
 	}
 
@@ -72,7 +72,7 @@ class MappedCorrespondenceInstance implements CorrespondenceModel {
 	 * Returns the MappingRealization that created a correspondence, or
 	 * <code>null</code>, if no mapping is coupled to the correspondence. To get
 	 * all MappingRealizations for an EObject, first get all correspondences
-	 * from the {@link CorrespondenceInstance}, then use this method.
+	 * from the {@link CorrespondenceModel}, then use this method.
 	 */
 	def Collection<String> getMappingsForCorrespondence(Correspondence correspondence) {
 		deleteNonExistantCorrespondencesFromMap
@@ -102,7 +102,7 @@ class MappedCorrespondenceInstance implements CorrespondenceModel {
 	 * Checks if the given mapping maps <code>eObject</code> and returns the
 	 * target.
 	 * @param eObjectthe {@link EObject} to check
-	 * @param correspondenceInstance
+	 * @param correspondenceModel
 	 * @param mapping
 	 * @return The target of the mapping if this mapping maps
 	 * <code>eObject</code>, <code>null</code> otherwise.
@@ -131,7 +131,7 @@ class MappedCorrespondenceInstance implements CorrespondenceModel {
 	/** 
 	 * Checks if the given mapping maps <code>eObject</code>.
 	 * @param eObject the {@link EObject} to check
-	 * @param correspondenceInstance
+	 * @param correspondenceModel
 	 * @param mapping
 	 * @return <code>true</code> if this mapping maps <code>eObject</code>
 	 */

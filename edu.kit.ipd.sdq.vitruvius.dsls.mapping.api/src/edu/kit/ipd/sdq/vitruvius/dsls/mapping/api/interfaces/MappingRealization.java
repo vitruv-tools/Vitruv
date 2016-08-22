@@ -14,7 +14,7 @@ public interface MappingRealization {
 	/**
 	 * Applies the mapping.
 	 * @param eChange
-	 * @param correspondenceInstance
+	 * @param correspondenceModel
 	 */
 	@Deprecated
 	public default void applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {

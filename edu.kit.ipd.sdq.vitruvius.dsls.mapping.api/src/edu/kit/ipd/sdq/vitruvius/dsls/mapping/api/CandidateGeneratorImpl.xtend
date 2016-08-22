@@ -11,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 
 class CandidateGeneratorImpl implements CandidateGenerator {
 	public override Set<Candidate> createCandidates(EChange eChange, List<MappingRealization> requiredMappings,
-		List<EClass> elementTypes, MappingRealization mapping, MappedCorrespondenceInstance mci) {
+		List<EClass> elementTypes, MappingRealization mapping, MappedCorrespondenceModel mci) {
 
 		val requiredMappingsInstances = requiredMappings.map[mci.getCorrespondencesForMapping(it)].toList
 

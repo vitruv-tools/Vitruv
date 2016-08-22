@@ -36,7 +36,7 @@
 //import static edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.MappingLanguageTestUtil.*
 //
 //import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 //
 //class MappingLanguageTestEnvironment implements SynchronisationListener {
 //	private final static Logger LOGGER = Logger.getLogger(MappingLanguageTestEnvironment)
@@ -112,7 +112,7 @@
 //	}
 //	
 //	// FROM VitruviusEMFCaseStudyTest
-//	public def CorrespondenceInstance getCorrespondenceInstance() throws Throwable {
+//	public def CorrespondenceModel getCorrespondenceModel() throws Throwable {
 //		if (c2cts.size > 1) {
 //			throw new IllegalStateException("cannot determine correspondence instance for multiple registered " + Change2CommandTransforming.name + " instances.")
 //		}
@@ -120,7 +120,7 @@
 //		return c2cts.map [ c2ct |
 //			val mms = c2ct.transformableMetamodels
 //			mms.map [ mm |
-//				vsum.getCorrespondenceInstanceOriginal(mm.first, mm.second)
+//				vsum.getCorrespondenceModelOriginal(mm.first, mm.second)
 //			]
 //		].flatten.claimIdenticalElements
 //    }
@@ -153,8 +153,8 @@
 //	@SuppressWarnings("unchecked")
 //	public def <T extends EObject> T reloadByTUID(T eObject) {
 //		try {
-//			val tuid = getCorrespondenceInstance().calculateTUIDFromEObject(eObject);
-//			return getCorrespondenceInstance().resolveEObjectFromTUID(tuid) as T;
+//			val tuid = getCorrespondenceModel().calculateTUIDFromEObject(eObject);
+//			return getCorrespondenceModel().resolveEObjectFromTUID(tuid) as T;
 //		} catch (Throwable e) {
 //			LOGGER.error(e);
 //		}

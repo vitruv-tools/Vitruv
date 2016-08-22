@@ -32,7 +32,7 @@ class MappingExecutionState {
 	private final List<EObject> deletedEObjects = newArrayList
 	private final List<Correspondence> createdCorrespondences = newArrayList
 	
-	private final MappedCorrespondenceInstance mci;
+	private final MappedCorrespondenceModel mci;
 	private final Blackboard bb
 	
 	private final List<Resource> resourcesToSave = newArrayList
@@ -41,7 +41,7 @@ class MappingExecutionState {
 		super()
 		this.transformationResult = transformationResult
 		this.userInteracting = userInteracting
-		this.mci = bb.correspondenceModel as MappedCorrespondenceInstance;
+		this.mci = bb.correspondenceModel as MappedCorrespondenceModel;
 		this.bb = bb;
 	}
 	

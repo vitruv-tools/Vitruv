@@ -5,7 +5,7 @@
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.CandidateGeneratorImpl
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.EclipseDialogMIRUserInteracting
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
-//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+//import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingUtil
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorrespondenceWrapper
@@ -435,7 +435,7 @@
 //					«ENDFOR»
 //					
 //					private «typeRef(mapping.correspondenceWrapperClassName)» createMappedCorrespondenceWrapper(
-//							«typeRef(MappedCorrespondenceInstance)» mci,
+//							«typeRef(MappedCorrespondenceModel)» mci,
 //							«FOR req : allRequires SEPARATOR "," AFTER ","»
 //							«typeRef(req.mapping.correspondenceWrapperClassName)» «req.name.toFirstLower»
 //							«ENDFOR»
@@ -468,7 +468,7 @@
 //					
 //					«FOR imp : imports SEPARATOR "\n"»
 //					public void applyEChangeFor«imp.toFirstUpperName»(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «typeRef(MappingExecutionState)» state) {
-//						«typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
+//						«typeRef(MappedCorrespondenceModel)» mci = state.getMci();
 //
 //						System.out.println("«mapping.name.toFirstUpper». EChange, «imp.toFirstUpperName»: " + eChange.toString());
 //						
@@ -561,7 +561,7 @@
 //					}
 //					
 //					private static «typeRef(mapping.correspondenceWrapperClassName)» createMappedCorrespondenceWrapper(
-//							«typeRef(MappedCorrespondenceInstance)» mci,
+//							«typeRef(MappedCorrespondenceModel)» mci,
 //							«typeRef(List)»<«typeRef(EObject)»> as,
 //							«typeRef(List)»<«typeRef(EObject)»> bs,
 //							«typeRef(MappingExecutionState)» state) {
@@ -584,7 +584,7 @@
 //					
 //
 //					public static «mapping.correspondenceWrapperClassName» getOrCreate(«typeRef(MappingExecutionState)» state) {
-//						final «typeRef(MappedCorrespondenceInstance)» mci = state.getMci();
+//						final «typeRef(MappedCorrespondenceModel)» mci = state.getMci();
 //						«mapping.correspondenceWrapperClassName» result = null;
 //						
 //						final «typeRef(Optional)»<«typeRef(Correspondence)»> «mapping.correspondenceWrapperClassName.toVarName» =
@@ -616,9 +616,9 @@
 //					
 //					@Override
 //					public «typeRef(TransformationResult)» applyEChange(«typeRef(EChange)» eChange, «typeRef(Blackboard)» blackboard, «MappingExecutionState» state) {
-//						final «typeRef(MappedCorrespondenceInstance)» mci =
-//							«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceInstance(),
-//								«typeRef(MappedCorrespondenceInstance)».class);
+//						final «typeRef(MappedCorrespondenceModel)» mci =
+//							«typeRef(JavaHelper)».requireType(blackboard.getCorrespondenceModel(),
+//								«typeRef(MappedCorrespondenceModel)».class);
 //						final «typeRef(MappingExecutionState)» state = new «typeRef(MappingExecutionState)»(mci, blackboard);
 //						
 //						getOrCreate(state);
