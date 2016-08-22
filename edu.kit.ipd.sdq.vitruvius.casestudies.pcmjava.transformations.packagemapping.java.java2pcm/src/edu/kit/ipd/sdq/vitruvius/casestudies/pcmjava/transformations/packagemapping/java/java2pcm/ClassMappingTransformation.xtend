@@ -22,7 +22,7 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.SystemFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
@@ -81,7 +81,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 			return null;
 		}
 		// ii) + iv)
-		val jaMoPPPackage = PCM2JaMoPPUtils.getContainingPackageFromCorrespondenceInstance(jaMoPPClass,
+		val jaMoPPPackage = PCM2JaMoPPUtils.getContainingPackageFromCorrespondenceModel(jaMoPPClass,
 			blackboard.correspondenceModel)
 		var InterfaceProvidingRequiringEntity pcmComponentOrSystem = null
 		if (null != jaMoPPPackage) {

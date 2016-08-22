@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.System
 import org.palladiosimulator.pcm.system.SystemFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 
@@ -31,7 +31,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	/**
-	 * override setCorrespondenceInstance:
+	 * override setCorrespondenceModel:
 	 * Check whether there already exists a repository in the correspondences.
 	 * If yes set correspondenceRepositoryAlreadyExists to true otherwise to false.
 	 * If a repository exists we do not have to create a new one in addEObject
