@@ -15,10 +15,10 @@ abstract class AbstractResponseRealization extends CallHierarchyHaving implement
 		this.userInteracting = userInteracting;
 	}
 	
-	override applyEvent(EChange change, CorrespondenceModel correspondenceInstance) {
+	override applyEvent(EChange change, CorrespondenceModel correspondenceModel) {
 		getLogger().debug("Called response " + this.getClass().getSimpleName() + " with event: " + change);
     	
-    	this.executionState = new ResponseExecutionState(userInteracting, correspondenceInstance, new TransformationResult());
+    	this.executionState = new ResponseExecutionState(userInteracting, correspondenceModel, new TransformationResult());
     	
     	if (checkPrecondition(change)) {	
 			executeResponse(change);

@@ -5,8 +5,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 
 class CreateResponseElementState extends AbstractResponseElementState {
 	
-	new(EObject element, CorrespondenceModel correspondenceInstance) {
-		super(element, correspondenceInstance)
+	new(EObject element, CorrespondenceModel correspondenceModel) {
+		super(element, correspondenceModel)
 	}
 	
 	override updateTUID() {

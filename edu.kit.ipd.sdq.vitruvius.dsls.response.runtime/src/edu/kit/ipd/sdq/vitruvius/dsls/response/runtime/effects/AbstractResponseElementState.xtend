@@ -12,12 +12,12 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 	protected final EObject element;
 	private final List<Pair<EObject, String>> newCorrespondingElements;
 	private final List<EObject> oldCorrespondingElements;
-	protected final CorrespondenceModel correspondenceInstance;
+	protected final CorrespondenceModel correspondenceModel;
 	protected boolean delete;
 	
-	public new(EObject element, CorrespondenceModel correspondenceInstance) {
+	public new(EObject element, CorrespondenceModel correspondenceModel) {
 		this.element = element;
-		this.correspondenceInstance = correspondenceInstance;
+		this.correspondenceModel = correspondenceModel;
 		this.newCorrespondingElements = newArrayList;
 		this.oldCorrespondingElements = newArrayList;
 		this.delete = false;
@@ -36,18 +36,18 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 
 	protected def void removeCorrespondences() {
 		for (oldCorrespondingElement: oldCorrespondingElements) {
-			ResponseCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceInstance, 
+			ResponseCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceModel, 
 				element, null, oldCorrespondingElement, null
 			);
 		}
 		if (delete) {
-			ResponseCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceInstance, element, null);
+			ResponseCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element, null);
 		}
 	}	
 	
 	protected def void addCorrespondences() {
 		for (newCorrespondingElement: newCorrespondingElements) {
-			ResponseCorrespondenceHelper.addCorrespondence(correspondenceInstance, 
+			ResponseCorrespondenceHelper.addCorrespondence(correspondenceModel, 
 				element, newCorrespondingElement.key, newCorrespondingElement.value
 			);
 		}

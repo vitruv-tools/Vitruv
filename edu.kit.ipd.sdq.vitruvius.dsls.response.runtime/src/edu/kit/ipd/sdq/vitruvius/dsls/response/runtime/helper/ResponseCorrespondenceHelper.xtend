@@ -12,69 +12,69 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 final class ResponseCorrespondenceHelper {
 	private new() {}
 
-	private static def getResponseView(CorrespondenceModel correspondenceInstance) {
-		return correspondenceInstance.getEditableView(ResponseCorrespondence, [
+	private static def getResponseView(CorrespondenceModel correspondenceModel) {
+		return correspondenceModel.getEditableView(ResponseCorrespondence, [
 			ResponseFactory.eINSTANCE.createResponseCorrespondence()
 		]);
 	}
 
-	private static def getTUID(CorrespondenceModel correspondenceInstance, EObject object,
+	private static def getTUID(CorrespondenceModel correspondenceModel, EObject object,
 		EObject parent) {
 		if (parent == null) {
-			return correspondenceInstance.calculateTUIDFromEObject(object);
+			return correspondenceModel.calculateTUIDFromEObject(object);
 		} else {
-			val rootTUID = correspondenceInstance.calculateTUIDFromEObject(parent);
+			val rootTUID = correspondenceModel.calculateTUIDFromEObject(parent);
 			val String prefix = rootTUID.toString;
-			return correspondenceInstance.calculateTUIDFromEObject(object, object.eContainer(), prefix);
+			return correspondenceModel.calculateTUIDFromEObject(object, object.eContainer(), prefix);
 		}
 	}
 
-	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceInstance,
+	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
 		EObject source, EObject sourceParent, EObject target, EObject targetParent) {
-		val correspondenceInstanceView = correspondenceInstance.responseView;
-		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
-		val targetTUID = correspondenceInstance.getTUID(target, targetParent);
-		val correspondences = correspondenceInstanceView.getCorrespondencesForTUIDs(#[sourceTUID]);
+		val correspondenceModelView = correspondenceModel.responseView;
+		val sourceTUID = correspondenceModel.getTUID(source, sourceParent);
+		val targetTUID = correspondenceModel.getTUID(target, targetParent);
+		val correspondences = correspondenceModelView.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences.toList) {
 			if ((correspondence.ATUIDs.contains(sourceTUID) && correspondence.BTUIDs.contains(targetTUID)) ||
 				(correspondence.BTUIDs.contains(sourceTUID) && correspondence.ATUIDs.contains(targetTUID))) {
-				correspondenceInstanceView.removeCorrespondencesAndDependendCorrespondences(correspondence);
+				correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 			}
 		}
 	}
 	
-	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceInstance,
+	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
 		EObject source, EObject sourceParent) {
-		val sourceTUID = correspondenceInstance.getTUID(source, sourceParent);
-		val correspondenceInstanceView = correspondenceInstance.responseView;
-		val correspondences = correspondenceInstanceView.getCorrespondencesForTUIDs(#[sourceTUID]);
+		val sourceTUID = correspondenceModel.getTUID(source, sourceParent);
+		val correspondenceModelView = correspondenceModel.responseView;
+		val correspondences = correspondenceModelView.getCorrespondencesForTUIDs(#[sourceTUID]);
 		for (correspondence : correspondences.toList) {
-			correspondenceInstanceView.removeCorrespondencesAndDependendCorrespondences(correspondence);
+			correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 		}
 	}
 
 	public static def ResponseCorrespondence addCorrespondence(
-		CorrespondenceModel correspondenceInstance, EObject source, EObject target, String tag) {
-		val correspondence = correspondenceInstance.responseView.
+		CorrespondenceModel correspondenceModel, EObject source, EObject target, String tag) {
+		val correspondence = correspondenceModel.responseView.
 			createAndAddCorrespondence(#[source], #[target]) as ResponseCorrespondence;
 		correspondence.tag = tag ?: "";
 		return correspondence;
 	}
 
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
-		CorrespondenceModel correspondenceInstance, EObject source, String expectedTag,
+		CorrespondenceModel correspondenceModel, EObject source, String expectedTag,
 		Class<T> type) {
-			val tuid = correspondenceInstance.getTUID(source, null);
-			return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).filter [
+			val tuid = correspondenceModel.getTUID(source, null);
+			return correspondenceModel.responseView.getCorrespondencesForTUIDs(#[tuid]).filter [
 				expectedTag.nullOrEmpty || tag == expectedTag
 			].map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
 		}
 
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
-		CorrespondenceModel correspondenceInstance, EObject source, EObject sourceParent,
+		CorrespondenceModel correspondenceModel, EObject source, EObject sourceParent,
 		Class<T> type) {
-		val tuid = correspondenceInstance.getTUID(source, sourceParent);
-		return correspondenceInstance.responseView.getCorrespondencesForTUIDs(#[tuid]).map [
+		val tuid = correspondenceModel.getTUID(source, sourceParent);
+		return correspondenceModel.responseView.getCorrespondencesForTUIDs(#[tuid]).map [
 			it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)
 		].flatten;
 	}
@@ -90,11 +90,11 @@ final class ResponseCorrespondenceHelper {
 	}
 
 	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
-		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceInstance) {
+		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceModel) {
 		val nonNullPreconditionMethod = if(preconditionMethod != null) preconditionMethod else [T input|true];
 		val targetElements = new ArrayList<T>();
 		try {
-			val correspondingObjects = getCorrespondingObjectsOfType(correspondenceInstance,
+			val correspondingObjects = getCorrespondingObjectsOfType(correspondenceModel,
 				sourceElement, expectedTag, affectedElementClass);
 			targetElements += correspondingObjects.filterNull.filter(nonNullPreconditionMethod);
 		} catch (RuntimeException ex) {

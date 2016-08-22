@@ -8,16 +8,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 
 class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	private final Map<EObject, AbstractResponseElementState> elementStates;
-	private final CorrespondenceModel correspondenceInstance;
+	private final CorrespondenceModel correspondenceModel;
 	
-	public new(CorrespondenceModel correspondenceInstance) {
-		this.correspondenceInstance = correspondenceInstance;
+	public new(CorrespondenceModel correspondenceModel) {
+		this.correspondenceModel = correspondenceModel;
 		this.elementStates = new HashMap<EObject, AbstractResponseElementState>();
 	}
 	
 	override void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
 		if (!elementStates.containsKey(firstElement)) {
-			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceInstance));
+			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceModel));
 		}
 		this.elementStates.get(firstElement).addCorrespondingElement(secondElement, tag);
 	}
@@ -28,17 +28,17 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	
 	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement) {
 		if (!elementStates.containsKey(firstElement)) {
-			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceInstance));
+			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceModel));
 		}
 		this.elementStates.get(firstElement).removeCorrespondingElement(secondElement);
 	}
 	
 	override initializeCreateElementState(EObject element) {
-		this.elementStates.put(element, new CreateResponseElementState(element, correspondenceInstance));
+		this.elementStates.put(element, new CreateResponseElementState(element, correspondenceModel));
 	}
 	
 	override initializeRetrieveElementState(EObject element) {
-		this.elementStates.put(element, new RetrieveResponseElementState(element, correspondenceInstance));
+		this.elementStates.put(element, new RetrieveResponseElementState(element, correspondenceModel));
 	}
 	
 	override preprocessElementStates() {

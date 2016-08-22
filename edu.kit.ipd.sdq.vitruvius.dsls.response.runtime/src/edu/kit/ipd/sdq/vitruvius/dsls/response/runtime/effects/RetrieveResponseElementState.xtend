@@ -7,14 +7,14 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 class RetrieveResponseElementState extends AbstractResponseElementState {
 	private final TUID oldTUID;
 		
-	new(EObject element, CorrespondenceModel correspondenceInstance) {
-		super(element, correspondenceInstance);
-		this.oldTUID = correspondenceInstance.calculateTUIDFromEObject(element);
+	new(EObject element, CorrespondenceModel correspondenceModel) {
+		super(element, correspondenceModel);
+		this.oldTUID = correspondenceModel.calculateTUIDFromEObject(element);
 	}
 	
 	public override void updateTUID() {
 		if (element != null && !delete) {
-			correspondenceInstance.updateTUID(oldTUID, element);
+			correspondenceModel.updateTUID(oldTUID, element);
 		}
 	}
 	

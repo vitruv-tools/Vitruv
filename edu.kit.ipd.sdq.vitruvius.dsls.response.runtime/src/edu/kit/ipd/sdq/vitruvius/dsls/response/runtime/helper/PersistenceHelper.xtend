@@ -29,25 +29,25 @@ public final class PersistenceHelper {
 		return URI.createPlatformResourceURI(srcFolderPath, true);
 	}
 
-	private static def URI appendPathToURI(URI baseURI, String relativePath, CorrespondenceModel correspondenceInstance) {
+	private static def URI appendPathToURI(URI baseURI, String relativePath, CorrespondenceModel correspondenceModel) {
 		val newModelFileSegments = relativePath.split("/");
 		if (!newModelFileSegments.last.contains(".")) {
 			// No file extension was specified, add the first one that is valid for the metamodel
-			val fileExtension = correspondenceInstance.getMapping().getMetamodelB().
+			val fileExtension = correspondenceModel.getMapping().getMetamodelB().
 				getFileExtensions().get(0);
 			newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last + "." + fileExtension);
 		}
 		return baseURI.appendSegments(newModelFileSegments);
 	}
 
-	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, CorrespondenceModel correspondenceInstance) {
+	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath, CorrespondenceModel correspondenceModel) {
 		val baseURI = getURIOfElementResourceFolder(source);
-		return baseURI.appendPathToURI(relativePath, correspondenceInstance);
+		return baseURI.appendPathToURI(relativePath, correspondenceModel);
 	}
 
-	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, CorrespondenceModel correspondenceInstance) {
+	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath, CorrespondenceModel correspondenceModel) {
 		val baseURI = getURIOfElementProject(source);
-		return baseURI.appendPathToURI(relativePath, correspondenceInstance);
+		return baseURI.appendPathToURI(relativePath, correspondenceModel);
 	}
 
 }

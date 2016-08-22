@@ -6,12 +6,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 
 class ResponseExecutionState {
 	private val UserInteracting userInteracting;
-	private val CorrespondenceModel correspondenceInstance;
+	private val CorrespondenceModel correspondenceModel;
 	private val TransformationResult transformationResult;
 	
-	public new(UserInteracting userInteracting, CorrespondenceModel correspondenceInstance, TransformationResult transformationResult) {
+	public new(UserInteracting userInteracting, CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
 		this.userInteracting = userInteracting;
-		this.correspondenceInstance = correspondenceInstance;
+		this.correspondenceModel = correspondenceModel;
 		this.transformationResult = transformationResult;
 	}
 	
@@ -19,8 +19,8 @@ class ResponseExecutionState {
 		return this.userInteracting;
 	}
 	
-	public def CorrespondenceModel getCorrespondenceInstance() {
-		return this.correspondenceInstance;
+	public def CorrespondenceModel getCorrespondenceModel() {
+		return this.correspondenceModel;
 	}
 	
 	public def TransformationResult getTransformationResult() {

@@ -28,14 +28,14 @@ abstract class AbstractResponseExecutor implements ResponseExecutor {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceModel correspondenceInstance) {
+	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceModel correspondenceModel) {
 		val result = new ArrayList<Command>();
 		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
 		LOGGER.debug("Call relevant responses");
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
 			result.add(EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, correspondenceInstance)]) as Command);
+					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, correspondenceModel)]) as Command);
 		}
 		return result;
 	}

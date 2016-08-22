@@ -77,7 +77,7 @@ class ResponseClassGenerator extends ClassGenerator {
 	 * 
 	 * <p>Method parameters are:
 	 * <li>1. change: the change event ({@link EChange})
-	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceInstance} 
+	 * <li>2. blackboard: the {@link Blackboard} containing the {@link CorrespondenceModel} 
 	 * 
 	 */
 	protected def generateMethodExecuteResponse() {

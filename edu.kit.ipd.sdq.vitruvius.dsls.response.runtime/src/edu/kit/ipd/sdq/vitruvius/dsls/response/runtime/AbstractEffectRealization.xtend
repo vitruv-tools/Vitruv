@@ -23,7 +23,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	public new(ResponseExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.executionState = executionState;
-		this._responseElementStatesHandler = new ResponseElementStatesHandlerImpl(correspondenceInstance);
+		this._responseElementStatesHandler = new ResponseElementStatesHandlerImpl(correspondenceModel);
 	}
 	
 	protected def ResponseExecutionState getExecutionState() {
@@ -33,7 +33,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	protected def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Class<T> elementClass, 
 		Function<T, Boolean> correspondencePreconditionMethod, String tag
 	) {
-		val retrievedElements = ResponseCorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, correspondenceInstance);
+		val retrievedElements = ResponseCorrespondenceHelper.getCorrespondingModelElements(correspondenceSource, elementClass, tag, correspondencePreconditionMethod, correspondenceModel);
 		if (retrievedElements.size > 1) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource, elementClass, executionState.userInteracting);
 		}
@@ -55,12 +55,12 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	public static class UserExecution {
 		protected final UserInteracting userInteracting;
 		protected final TransformationResult transformationResult;
-		protected final CorrespondenceModel correspondenceInstance;
+		protected final CorrespondenceModel correspondenceModel;
 	
 		new(ResponseExecutionState executionState) {
 			this.userInteracting = executionState.userInteracting;
 			this.transformationResult = executionState.transformationResult;
-			this.correspondenceInstance = executionState.correspondenceInstance;
+			this.correspondenceModel = executionState.correspondenceModel;
 		}
 		
 		protected def persistProjectRelative(EObject alreadyPersistedObject, EObject element, String persistencePath) {
@@ -70,7 +70,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 			val oldVURI = if (element.eResource() != null) {
 				VURI.getInstance(element.eResource());
 			}
-			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceInstance);
+			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceModel);
 			EcoreUtil.remove(element);
 			transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
 			transformationResult.addVURIToDeleteIfNotNull(oldVURI);
