@@ -92,21 +92,21 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 
 	private def TransformationResult executeClassMethodBodyChangeRefiner(Blackboard blackboard,
 		UserInteracting userInteracting, TransactionalChange compositeChange) {
-		val CorrespondenceModel correspondenceInstance = blackboard.getCorrespondenceModel();
+		val CorrespondenceModel correspondenceModel = blackboard.getCorrespondenceModel();
 		val ConcreteChange emfChange = compositeChange.getChanges().get(0) as ConcreteChange;
 		val JavaFeatureEChange<?,?> eFeatureChange = emfChange.getEChanges().get(0) as JavaFeatureEChange<?,?>;
 		val oldMethod = eFeatureChange.getOldAffectedEObject() as Method;
 		val newMethod = eFeatureChange.getAffectedEObject() as Method;
 		val basicComponentFinding = code2SEFFfactory.createBasicComponentFinding
 		val BasicComponent myBasicComponent = basicComponentFinding.findBasicComponentForMethod(newMethod,
-			correspondenceInstance);
+			correspondenceModel);
 		val classification = code2SEFFfactory.createAbstractFunctionClassificationStrategy(basicComponentFinding,
-			correspondenceInstance, myBasicComponent);
+			correspondenceModel, myBasicComponent);
 		val InterfaceOfExternalCallFinding interfaceOfExternalCallFinder = code2SEFFfactory.
-			createInterfaceOfExternalCallFinding(correspondenceInstance,
+			createInterfaceOfExternalCallFinding(correspondenceModel,
 				myBasicComponent);
 		val ResourceDemandingBehaviourForClassMethodFinding resourceDemandingBehaviourForClassMethodFinding = code2SEFFfactory.
-			createResourceDemandingBehaviourForClassMethodFinding(correspondenceInstance);
+			createResourceDemandingBehaviourForClassMethodFinding(correspondenceModel);
 		val ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
 			oldMethod, newMethod, basicComponentFinding, classification, interfaceOfExternalCallFinder,
 			resourceDemandingBehaviourForClassMethodFinding);

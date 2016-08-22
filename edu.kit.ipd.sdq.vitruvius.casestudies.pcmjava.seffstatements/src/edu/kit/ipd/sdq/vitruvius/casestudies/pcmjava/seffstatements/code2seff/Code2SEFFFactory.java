@@ -12,12 +12,12 @@ public interface Code2SEFFFactory {
     BasicComponentFinding createBasicComponentFinding();
 
     InterfaceOfExternalCallFinding createInterfaceOfExternalCallFinding(
-    		CorrespondenceModel correspondenceInstance, BasicComponent basicComponent);
+    		CorrespondenceModel correspondenceModel, BasicComponent basicComponent);
 
     ResourceDemandingBehaviourForClassMethodFinding createResourceDemandingBehaviourForClassMethodFinding(
-    		CorrespondenceModel correspondenceInstance);
+    		CorrespondenceModel correspondenceModel);
 
     AbstractFunctionClassificationStrategy createAbstractFunctionClassificationStrategy(
-            BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceInstance,
+            BasicComponentFinding basicComponentFinding, CorrespondenceModel correspondenceModel,
             BasicComponent basicComponent);
 }

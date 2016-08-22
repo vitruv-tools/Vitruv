@@ -26,7 +26,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 
 /**
@@ -69,7 +69,7 @@ public class ClassMethodBodyChangedTransformation {
      * SEFF/ResourceDemandingInternalBehaviour consistent with the method we 1) remove all
      * AbstractActions corresponding to the Method from the SEFF/ResourceDemandingInternalBehaviour
      * (which are currently all AbstractActions in the SEFF/ResourceDemandingInternalBehaviour) and
-     * from the correspondenceInstance 2) run the SoMoX SEFF extractor for this method, 3) reconnect
+     * from the correspondenceModel 2) run the SoMoX SEFF extractor for this method, 3) reconnect
      * the newly extracted SEFF elements with the old elements 4) create new AbstractAction 2 Method
      * correspondences for the new method (and its inner methods)
      *
@@ -115,7 +115,7 @@ public class ClassMethodBodyChangedTransformation {
 
     private boolean isMethodArchitectureRelevant(final Method method, final CorrespondenceModel ci) {
         if (null != method) {
-            final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = CorrespondenceInstanceUtil
+            final Set<ResourceDemandingBehaviour> correspondingEObjectsByType = CorrespondenceModelUtil
                     .getCorrespondingEObjectsByType(ci, method, ResourceDemandingBehaviour.class);
             if (null != correspondingEObjectsByType && !correspondingEObjectsByType.isEmpty()) {
                 return true;
@@ -148,7 +148,7 @@ public class ClassMethodBodyChangedTransformation {
             final ResourceDemandingBehaviour newResourceDemandingBehaviourElements,
             final BasicComponent basicComponent) {
         for (final AbstractAction abstractAction : newResourceDemandingBehaviourElements.getSteps_Behaviour()) {
-            CorrespondenceInstanceUtil.createAndAddCorrespondence(ci, abstractAction, this.newMethod);
+            CorrespondenceModelUtil.createAndAddCorrespondence(ci, abstractAction, this.newMethod);
         }
     }
 
@@ -169,7 +169,7 @@ public class ClassMethodBodyChangedTransformation {
     }
 
     private void removeCorrespondingAbstractActions(final CorrespondenceModel ci) {
-        final Set<AbstractAction> correspondingAbstractActions = CorrespondenceInstanceUtil
+        final Set<AbstractAction> correspondingAbstractActions = CorrespondenceModelUtil
                 .getCorrespondingEObjectsByType(ci, this.oldMethod, AbstractAction.class);
         if (null == correspondingAbstractActions) {
             return;
@@ -219,7 +219,7 @@ public class ClassMethodBodyChangedTransformation {
     }
 
     private ResourceDemandingBehaviour findRdBehaviorToInsertElements(final CorrespondenceModel ci) {
-        final Set<ResourceDemandingBehaviour> correspondingResourceDemandingBehaviours = CorrespondenceInstanceUtil
+        final Set<ResourceDemandingBehaviour> correspondingResourceDemandingBehaviours = CorrespondenceModelUtil
                 .getCorrespondingEObjectsByType(ci, this.oldMethod, ResourceDemandingBehaviour.class);
         if (null == correspondingResourceDemandingBehaviours || correspondingResourceDemandingBehaviours.isEmpty()) {
             logger.warn("No ResourceDemandingBehaviours found for method " + this.oldMethod
