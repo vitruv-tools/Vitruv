@@ -86,9 +86,9 @@ class IntegrationChange2CommandTransformer {
         			(classOfCreated.equals(typeof(Class)) || 
         			 classOfCreated.equals(typeof(Interface)))) {
         		val cu = change.getAffectedEObject() as CompilationUnit
-        		//TODO use IntegrationCorrespondence view of InternalCorrespondenceInstance which is
+        		//TODO use IntegrationCorrespondence view of InternalCorrespondenceModel which is
         		//statically typed to Correspondence right now and needs to support views like 
-        		//CorrespondenceInstance
+        		//CorrespondenceModel
                 val ci = blackboard.correspondenceModel
                 val newCompilationUnitTuid = ci.calculateTUIDFromEObject(cu)
                 val packagePartOfNewTuid = getPackagePart(newCompilationUnitTuid)

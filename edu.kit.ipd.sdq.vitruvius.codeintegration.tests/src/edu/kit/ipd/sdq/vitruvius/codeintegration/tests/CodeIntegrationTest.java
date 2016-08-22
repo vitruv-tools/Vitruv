@@ -186,7 +186,7 @@ public class CodeIntegrationTest {
     }
 
     protected void assertStandardCodeIntegrationTest() throws Throwable {
-        final CorrespondenceModel ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceModel();
         // TODO check if correspondences are correct
         final Set<Correspondence> correspondences = ci.getAllCorrespondencesWithoutDependencies();
         Assert.assertNotNull(correspondences);
@@ -227,12 +227,12 @@ public class CodeIntegrationTest {
         }
     }
 
-    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
+    protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
         final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceModel corresponcenceInstance = vsum
-                .getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI);
+                .getCorrespondenceModelOriginal(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
     }
 

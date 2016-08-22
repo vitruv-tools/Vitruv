@@ -35,7 +35,7 @@ import org.somox.sourcecodedecorator.MethodLevelSourceCodeLink
 import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
@@ -79,7 +79,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		// FIXME do that without a cast
-		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB)
+		this.cInstance = vsum.getCorrespondenceModelOriginal(mmUriA, mmURiB)
 
 		this.scdmPath = scdmPath
 		this.pcmPath = pcmPath
@@ -326,7 +326,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 
 	/**
 	 * Creates an {@link EObjectCorrespondence} between the given EObjects
-	 * and adds it to the {@link CorrespondenceInstance}
+	 * and adds it to the {@link CorrespondenceModel}
 	 */
 	public def Correspondence addCorrespondence(EObject objectA, EObject objectB, Correspondence parent) {
 		if (objectA == null || objectB == null)

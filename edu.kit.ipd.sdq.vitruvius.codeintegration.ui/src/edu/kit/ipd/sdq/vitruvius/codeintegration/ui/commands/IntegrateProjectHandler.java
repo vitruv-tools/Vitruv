@@ -74,7 +74,7 @@ public class IntegrateProjectHandler extends AbstractHandler {
 
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
-        vsum.getOrCreateAllCorrespondenceInstancesForMM(
+        vsum.getOrCreateAllCorrespondenceModelsForMM(
                 metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
 
         final PCMJaMoPPCorrespondenceModelTransformation transformation = new PCMJaMoPPCorrespondenceModelTransformation(
