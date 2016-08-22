@@ -70,7 +70,6 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
     private final ASTChangeListener astListener;
     private final RefactoringChangeListener refactoringListener;
-    // private CorrespondenceInstance correspondenceInstance;
     private final ChangeResponder changeResponder;
     private final RefactoringStatusListener refactoringStatusListener = new RefactoringStatusListener() {
         // switch off AST Listening while a refactoring is being performed
@@ -141,8 +140,8 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.refactoringListener = RefactoringChangeListener.getInstance(this.monitoredProjectNames);
         this.refactoringListener.addListener(this.refactoringStatusListener);
         this.refactoringListener.addListener(this);
-        // dummy CorrespondenceInstance
-        // this.buildCorrespondenceInstance();
+        // dummy CorrespondenceModel
+        // this.buildCorrespondenceModel();
         this.changeResponder = new ChangeResponder(this);
         this.userInteractor = new UserInteractor();
         this.reportChanges = true;
