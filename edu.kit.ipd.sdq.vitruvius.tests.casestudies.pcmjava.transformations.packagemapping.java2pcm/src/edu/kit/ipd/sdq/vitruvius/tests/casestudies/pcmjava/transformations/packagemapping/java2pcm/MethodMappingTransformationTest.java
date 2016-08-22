@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -86,8 +86,8 @@ public class MethodMappingTransformationTest extends Java2PCMPackageMappingTrans
             public Void call() {
                 Method jaMoPPMethod;
                 try {
-                    jaMoPPMethod = CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
-                            MethodMappingTransformationTest.this.getCorrespondenceInstance(), opSig, Method.class));
+                    jaMoPPMethod = CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
+                            MethodMappingTransformationTest.this.getCorrespondenceModel(), opSig, Method.class));
                 } catch (final Throwable e) {
                     throw new RuntimeException(e);
                 }

@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -67,12 +67,12 @@ public class RepositoryMappingTransformaitonTest extends PCM2JaMoPPTransformatio
     }
     
     private void assertRepositoryCorrespondences(final Repository repo) throws Throwable {
-        if (null == this.getCorrespondenceInstance()) {
+        if (null == this.getCorrespondenceModel()) {
             fail("correspondence instance is still null - no transformation was executed.");
             return;
         }
-        final Set<Package> jaMoPPPackages = CorrespondenceInstanceUtil
-                .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), repo, Package.class);
+        final Set<Package> jaMoPPPackages = CorrespondenceModelUtil
+                .getCorrespondingEObjectsByType(this.getCorrespondenceModel(), repo, Package.class);
         boolean foundRepositoryPackage = false;
         boolean foundDatatypesPackage = false;
         boolean foundContractsPackage = false;

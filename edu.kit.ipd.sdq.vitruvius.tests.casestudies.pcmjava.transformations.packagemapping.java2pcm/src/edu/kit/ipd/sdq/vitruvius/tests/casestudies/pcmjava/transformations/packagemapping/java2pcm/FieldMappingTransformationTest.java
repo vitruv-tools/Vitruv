@@ -21,7 +21,7 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -135,8 +135,8 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
             public Void call() throws Exception {
                 Set<EObject> correspondingEObjects;
                 try {
-                    correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjects(
-                            FieldMappingTransformationTest.this.getCorrespondenceInstance(), operationRequiredRole);
+                    correspondingEObjects = CorrespondenceModelUtil.getCorrespondingEObjects(
+                            FieldMappingTransformationTest.this.getCorrespondenceModel(), operationRequiredRole);
 
                     boolean fieldFound = false;
                     for (final EObject correspondingEObject : correspondingEObjects) {
@@ -177,8 +177,8 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, newFieldName);
-        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
-                this.getCorrespondenceInstance(), newJaMoPPField, InnerDeclaration.class));
+        return CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceModel(), newJaMoPPField, InnerDeclaration.class));
     }
 
     private InnerDeclaration changeFieldTypeInClass(final String className, final String fieldName,
@@ -196,8 +196,8 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
         TestUtil.waitForSynchronization();
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
-        return CollectionBridge.claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(
-                this.getCorrespondenceInstance(), newJaMoPPField, InnerDeclaration.class));
+        return CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
+                this.getCorrespondenceModel(), newJaMoPPField, InnerDeclaration.class));
     }
 
     private void assertInnerDeclaration(final InnerDeclaration innerDeclaration, final String fieldType,

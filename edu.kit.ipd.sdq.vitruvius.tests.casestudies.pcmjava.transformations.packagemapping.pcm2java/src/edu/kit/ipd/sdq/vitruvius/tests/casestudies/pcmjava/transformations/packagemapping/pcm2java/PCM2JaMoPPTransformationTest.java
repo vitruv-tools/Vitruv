@@ -66,7 +66,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChang
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
@@ -134,13 +134,13 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
             final org.palladiosimulator.pcm.core.entity.NamedElement pcmNamedElement, final int expectedSize,
             final java.lang.Class<? extends EObject>[] expectedClasses, final String[] expectedNames) throws Throwable {
         final Set<EObject> correspondences = (Set<EObject>) CollectionBridge.claimNotEmpty(
-                CorrespondenceInstanceUtil.getCorrespondingEObjects(this.getCorrespondenceInstance(), pcmNamedElement));
+                CorrespondenceModelUtil.getCorrespondingEObjects(this.getCorrespondenceModel(), pcmNamedElement));
         assertEquals("correspondences.size should be " + expectedSize, expectedSize, correspondences.size());
         final Set<NamedElement> jaMoPPElements = new HashSet<NamedElement>();
         for (int i = 0; i < expectedClasses.length; i++) {
             final java.lang.Class<? extends EObject> expectedClass = expectedClasses[i];
-            final EObject correspondingEObject = CollectionBridge.claimOne(CorrespondenceInstanceUtil
-                    .getCorrespondingEObjectsByType(this.getCorrespondenceInstance(), pcmNamedElement, expectedClass));
+            final EObject correspondingEObject = CollectionBridge.claimOne(CorrespondenceModelUtil
+                    .getCorrespondingEObjectsByType(this.getCorrespondenceModel(), pcmNamedElement, expectedClass));
             if (!expectedClass.isInstance(correspondingEObject)) {
                 fail("Corresponding EObject " + correspondingEObject + " is not an instance of " + expectedClass);
             }
@@ -162,7 +162,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected void assertEmptyCorrespondence(final EObject eObject) throws Throwable {
         try {
             final Set<EObject> correspondences = (Set<EObject>) CollectionBridge.claimNotEmpty(
-                    CorrespondenceInstanceUtil.getCorrespondingEObjects(this.getCorrespondenceInstance(), eObject));
+                    CorrespondenceModelUtil.getCorrespondingEObjects(this.getCorrespondenceModel(), eObject));
             fail("correspondences.size should be " + 0 + " but is " + correspondences.size());
         } catch (final RuntimeException re) {
             // expected Runtime expception:
@@ -416,8 +416,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertOperationProvidedRole(final OperationProvidedRole operationProvidedRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), operationProvidedRole);
+        final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), operationProvidedRole);
         int namespaceClassifierReferenceFound = 0;
         int importFound = 0;
         for (final EObject eObject : correspondingEObjects) {
@@ -443,8 +443,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), operationRequiredRole);
+        final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), operationRequiredRole);
         int importFounds = 0;
         int constructorParameterFound = 0;
         int fieldsFound = 0;
@@ -495,8 +495,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertAssemblyContext(final AssemblyContext assemblyContext) throws Throwable {
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), assemblyContext);
+        final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), assemblyContext);
         boolean fieldFound = false;
         boolean importFound = false;
         boolean newConstructorCallFound = false;
@@ -594,8 +594,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
      * @throws Throwable
      */
     protected void assertInnerDeclaration(final InnerDeclaration innerDec) throws Throwable {
-        final Set<EObject> correspondingObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), innerDec);
+        final Set<EObject> correspondingObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), innerDec);
         int fieldsFound = 0;
         int methodsFound = 0;
         String fieldName = null;

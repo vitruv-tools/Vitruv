@@ -29,7 +29,7 @@ import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -248,7 +248,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
             final String parameterCode, final String codeForHelper)
                     throws Throwable, CoreException, InterruptedException, JavaModelException {
         final String downloadHelperCode = "\npublic void " + methodName + "( " + parameterCode + "){\n}\n";
-        this.createClassInPackage(this.getPackageWithNameFromCorrespondenceInstance(packageName), className);
+        this.createClassInPackage(this.getPackageWithNameFromCorrespondenceModel(packageName), className);
         CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className, downloadHelperCode,
                 this.currentTestProject);
         this.editMethod(codeForHelper, className, methodName, false);
@@ -315,9 +315,9 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         final InsertEdit insertEdit = new InsertEdit(offset, code);
         CompilationUnitManipulatorHelper.editCompilationUnit(iCu, insertEdit);
         TestUtil.waitForSynchronization(3 * 1000);
-        final CorrespondenceModel ci = this.getCorrespondenceInstance();
+        final CorrespondenceModel ci = this.getCorrespondenceModel();
         final Method method = super.findJaMoPPMethodInICU(iCu, methodName);
-        final Set<ResourceDemandingSEFF> seffs = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(ci, method,
+        final Set<ResourceDemandingSEFF> seffs = CorrespondenceModelUtil.getCorrespondingEObjectsByType(ci, method,
                 ResourceDemandingSEFF.class);
         if (null == seffs || 0 == seffs.size()) {
             if (shouldHaveCorrespndingSEFFAfterEdit) {

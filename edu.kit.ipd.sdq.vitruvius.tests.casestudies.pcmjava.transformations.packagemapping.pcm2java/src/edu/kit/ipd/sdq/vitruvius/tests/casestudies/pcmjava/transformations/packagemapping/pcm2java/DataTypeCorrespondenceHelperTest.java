@@ -27,7 +27,7 @@ public class DataTypeCorrespondenceHelperTest extends PCM2JaMoPPTransformationTe
         final CompositeDataType cdt = this.createAndSyncCompositeDataType(repo);
 
         final TypeReference type = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataTypeReference(cdt,
-                super.getCorrespondenceInstance());
+                super.getCorrespondenceModel());
         final NamespaceClassifierReference ncr = (NamespaceClassifierReference) type;
         final Classifier classifier = (Classifier) ncr.getTarget();
         assertEquals("Name of composite data type does not equals name of classifier", cdt.getEntityName() + "Impl",
@@ -41,7 +41,7 @@ public class DataTypeCorrespondenceHelperTest extends PCM2JaMoPPTransformationTe
         final PrimitiveDataType pdtInt = RepositoryFactory.eINSTANCE.createPrimitiveDataType();
         pdtInt.setType(PrimitiveTypeEnum.INT);
         final TypeReference type = DataTypeCorrespondenceHelper.claimUniqueCorrespondingJaMoPPDataTypeReference(pdtInt,
-                super.getCorrespondenceInstance());
+                super.getCorrespondenceModel());
         if (!(type instanceof Int)) {
             fail("found type is not instance of Int");
         }

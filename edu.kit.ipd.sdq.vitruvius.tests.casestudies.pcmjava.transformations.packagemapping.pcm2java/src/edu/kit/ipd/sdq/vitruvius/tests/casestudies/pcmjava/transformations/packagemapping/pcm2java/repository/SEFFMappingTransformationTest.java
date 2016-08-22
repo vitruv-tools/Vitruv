@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 
@@ -52,8 +52,8 @@ public class SEFFMappingTransformationTest extends PCM2JaMoPPTransformationTest 
 
     private void assertSEFFCorrespondenceToMethod(final ResourceDemandingSEFF rdSEFF, final String expectedName)
             throws Throwable {
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), rdSEFF);
+        final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), rdSEFF);
         assertEquals("Expected exactly one corresponding EObject for rdSEFF " + rdSEFF, 1,
                 correspondingEObjects.size());
         final EObject correspondingEObject = correspondingEObjects.iterator().next();

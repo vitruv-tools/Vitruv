@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -37,7 +37,7 @@ public class ClassMethodMappingTransformationTest extends Java2PCMPackageMapping
 
         // assert the correspondingSEFF
         final ClassMethod jaMoPPMethod = CollectionBridge
-                .claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.getCorrespondenceInstance(),
+                .claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(this.getCorrespondenceModel(),
                         correspondingSeff, ClassMethod.class));
         assertEquals(jaMoPPMethod.getName(), PCM2JaMoPPTestUtils.OPERATION_SIGNATURE_1_NAME);
     }

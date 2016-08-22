@@ -16,7 +16,7 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 
@@ -121,12 +121,12 @@ public class PCMParameterMappingTransformationTest extends PCM2JaMoPPTransformat
     }
     
     private void assertCorrectSignatureMappingWithParameters(final OperationSignature signature, int expectedParameterCount) throws Throwable {
-    	Set<InterfaceMethod> ims = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(getCorrespondenceInstance(), signature, InterfaceMethod.class);
+    	Set<InterfaceMethod> ims = CorrespondenceModelUtil.getCorrespondingEObjectsByType(getCorrespondenceModel(), signature, InterfaceMethod.class);
     	 assertEquals(1, ims.size());
          InterfaceMethod im = ims.iterator().next();
          assertEquals(expectedParameterCount, im.getParameters().size());
          for (Parameter curParam : signature.getParameters__OperationSignature()) {
-        	 Set<OrdinaryParameter> javaParams = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(getCorrespondenceInstance(), curParam, OrdinaryParameter.class);
+        	 Set<OrdinaryParameter> javaParams = CorrespondenceModelUtil.getCorrespondingEObjectsByType(getCorrespondenceModel(), curParam, OrdinaryParameter.class);
         	 assertEquals(1, javaParams.size());
         	 OrdinaryParameter javaParam = javaParams.iterator().next();
         	 assertEquals(im.getParameters().get(signature.getParameters__OperationSignature().indexOf(curParam)), javaParam);

@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
@@ -39,10 +39,10 @@ public class PackageMappingTransformationTest extends Java2PCMPackageMappingTran
     @Test
     public void testAddFirstPackageWithoutFile() throws Throwable {
         super.createPackage(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME });
-        final CorrespondenceModel ci = this.getCorrespondenceInstance();
-        assertTrue("CorrespondenceInstance == null", null != ci);
+        final CorrespondenceModel ci = this.getCorrespondenceModel();
+        assertTrue("CorrespondenceModel == null", null != ci);
         assertTrue("No repository found in correspondence instance.",
-                0 < CorrespondenceInstanceUtil.getAllEObjectsOfTypeInCorrespondences(ci, Repository.class).size());
+                0 < CorrespondenceModelUtil.getAllEObjectsOfTypeInCorrespondences(ci, Repository.class).size());
     }
 
     /**
@@ -101,8 +101,8 @@ public class PackageMappingTransformationTest extends Java2PCMPackageMappingTran
         // EcoreResourceBridge.saveEObjectAsOnlyContent(secondPackage, );
         TestUtil.waitForSynchronization();
 
-        final Set<EObject> correspondingEObjects = CorrespondenceInstanceUtil
-                .getCorrespondingEObjects(this.getCorrespondenceInstance(), renamedPackage);
+        final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
+                .getCorrespondingEObjects(this.getCorrespondenceModel(), renamedPackage);
         final EObject correspondingEObject = CollectionBridge.claimOne(correspondingEObjects);
         assertTrue("The corresponding EObject for the package has to be a BasicComponent",
                 correspondingEObject instanceof BasicComponent);

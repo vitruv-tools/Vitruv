@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -102,7 +102,7 @@ public class OperationProvidedRoleMappingTransformationTest extends PCM2JaMoPPTr
 
         this.assertOperationProvidedRole(operationProvidedRole);
         final CompilationUnit jaMoPPCu = CollectionBridge
-                .claimOne(CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.getCorrespondenceInstance(),
+                .claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(this.getCorrespondenceModel(),
                         basicComponent, CompilationUnit.class));
         assertEquals("Unexpected size of imports", 1, jaMoPPCu.getImports().size());
         final Class jaMoPPClass = (Class) jaMoPPCu.getClassifiers().get(0);
