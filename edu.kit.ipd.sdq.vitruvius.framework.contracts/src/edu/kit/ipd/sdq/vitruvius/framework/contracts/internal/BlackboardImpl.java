@@ -29,10 +29,10 @@ public class BlackboardImpl implements Blackboard {
     private CorrespondenceProviding correspondenceProviding;
     private Map<EObject, TUID> tuidMap;
 
-    public BlackboardImpl(final CorrespondenceModel correspondenceInstance, final ModelProviding modelProviding,
+    public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelProviding modelProviding,
             final CorrespondenceProviding correspondenceProviding) {
         this.state = BlackboardState.WAITING4CHANGES;
-        this.correspondenceModel = correspondenceInstance;
+        this.correspondenceModel = correspondenceModel;
         this.modelProviding = modelProviding;
         this.correspondenceProviding = correspondenceProviding;
         this.tuidMap = new HashMap<EObject, TUID>();

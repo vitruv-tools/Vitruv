@@ -39,7 +39,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
  *
  * }
  *
- * Ready --> Ready : getCorrespondenceInstance, getModelProviding
+ * Ready --> Ready : getCorrespondenceModel, getModelProviding
  *
  * @enduml
  */

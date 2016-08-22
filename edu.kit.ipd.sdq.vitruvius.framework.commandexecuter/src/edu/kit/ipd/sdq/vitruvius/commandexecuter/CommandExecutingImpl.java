@@ -84,7 +84,7 @@
 //                blackboard.getModelProviding().deleteModelInstanceOriginal(vuriToDelete);
 //            }
 //            for (final Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
-//                final TUID oldTUID = blackboard.getCorrespondenceInstance()
+//                final TUID oldTUID = blackboard.getCorrespondenceModel()
 //                        .calculateTUIDsFromEObjects(createdEObjectVURIPair.getFirst());
 //                blackboard.getModelProviding().saveModelInstanceOriginalWithEObjectAsOnlyContent(
 //                        createdEObjectVURIPair.getSecond(), createdEObjectVURIPair.getFirst(), oldTUID);

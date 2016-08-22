@@ -6,9 +6,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 public interface CorrespondenceProviding extends CorrespondenceCopyProviding {
-    CorrespondenceModel getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI);
+    CorrespondenceModel getCorrespondenceModelOriginal(final VURI mmAVURI, final VURI mmBVURI);
 
-    void saveCorrespondenceInstanceAndDecorators(final CorrespondenceModel correspondenceInstance);
+    void saveCorrespondenceModelAndDecorators(final CorrespondenceModel correspondenceModel);
 
-    Set<CorrespondenceModel> getOrCreateAllCorrespondenceInstances(final VURI mmVURI);
+    Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI mmVURI);
 }

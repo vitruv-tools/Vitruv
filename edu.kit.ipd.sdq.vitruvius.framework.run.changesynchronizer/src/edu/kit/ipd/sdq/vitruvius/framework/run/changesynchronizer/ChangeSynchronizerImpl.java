@@ -91,12 +91,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
         // FIXME HK: This is all strange: the sourceModelVURI is taken from the first change,
         // although they can be from different ones. Why not make it for each change independently?
-        Set<CorrespondenceModel> correspondenceInstances = this.correspondenceProviding
-                .getOrCreateAllCorrespondenceInstances(sourceModelVURI);
+        Set<CorrespondenceModel> correspondenceModels = this.correspondenceProviding
+                .getOrCreateAllCorrespondenceModels(sourceModelVURI);
 
         rollbackChange(change);
         List<List<VitruviusChange>> commandExecutionChanges = new ArrayList<List<VitruviusChange>>();
-        synchronizeSingleChange(change, correspondenceInstances, commandExecutionChanges);
+        synchronizeSingleChange(change, correspondenceModels, commandExecutionChanges);
 
         // TODO: check invariants and execute undo if necessary
 
@@ -107,23 +107,23 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     private void synchronizeSingleChange(final VitruviusChange change,
-            final Set<CorrespondenceModel> correspondenceInstances,
+            final Set<CorrespondenceModel> correspondenceModels,
             final List<List<VitruviusChange>> commandExecutionChanges) {
         if (change instanceof CompositeChange) {
             for (VitruviusChange innerChange : ((CompositeChange) change).getChanges()) {
-                synchronizeSingleChange(innerChange, correspondenceInstances, commandExecutionChanges);
+                synchronizeSingleChange(innerChange, correspondenceModels, commandExecutionChanges);
             }
         } else {
             Map<EObject, TUID> tuidMap = new HashMap<>();
-            getOldObjectTUIDs(change, correspondenceInstances.iterator().next(), tuidMap);
+            getOldObjectTUIDs(change, correspondenceModels.iterator().next(), tuidMap);
             change.prepare(this.changePreparing);
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }
-            updateTUIDs(tuidMap, correspondenceInstances.iterator().next());
-            for (CorrespondenceModel correspondenceInstance : correspondenceInstances) {
-                Metamodel mmA = correspondenceInstance.getMapping().getMetamodelA();
-                Metamodel mmB = correspondenceInstance.getMapping().getMetamodelB();
+            updateTUIDs(tuidMap, correspondenceModels.iterator().next());
+            for (CorrespondenceModel correspondenceModel : correspondenceModels) {
+                Metamodel mmA = correspondenceModel.getMapping().getMetamodelA();
+                Metamodel mmB = correspondenceModel.getMapping().getMetamodelB();
                 // assume mmaA is source metamodel
                 VURI sourceMMURI = mmA.getURI();
                 VURI targetMMURI = mmB.getURI();
@@ -134,7 +134,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 }
                 Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding
                         .getChange2CommandTransforming(sourceMMURI, targetMMURI);
-                Blackboard blackboard = new BlackboardImpl(correspondenceInstance, this.modelProviding,
+                Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding,
                         this.correspondenceProviding);
                 // TODO HK: Clone the changes for each synchronization! Should even be cloned for
                 // each response that uses it,
@@ -148,24 +148,24 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     private void getOldObjectTUIDs(final VitruviusChange recordedChange,
-            final CorrespondenceModel correspondenceInstance, final Map<EObject, TUID> tuidMap) {
+            final CorrespondenceModel correspondenceModel, final Map<EObject, TUID> tuidMap) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
             List<EObject> objects = new ArrayList<EObject>();
             objects.addAll(change.getChangeDescription().getObjectChanges().keySet());
             objects.addAll(change.getChangeDescription().getObjectsToDetach());
             for (EObject object : change.getChangeDescription().getObjectChanges().keySet()) {
-                TUID tuid = correspondenceInstance.calculateTUIDFromEObject(object);
+                TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
                 if (tuid != null) {
                     tuidMap.put(object, tuid);
                     for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
                         tuidMap.put(featureChange.getReferenceValue(),
-                                correspondenceInstance.calculateTUIDFromEObject(featureChange.getReferenceValue()));
+                                correspondenceModel.calculateTUIDFromEObject(featureChange.getReferenceValue()));
                     }
                 }
             }
             for (EObject object : change.getChangeDescription().getObjectsToDetach()) {
-                TUID tuid = correspondenceInstance.calculateTUIDFromEObject(object);
+                TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
                 if (tuid != null) {
                     tuidMap.put(object, tuid);
                 }
@@ -175,7 +175,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 if (eChange instanceof JavaFeatureEChange<?, ?>) {
                     if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
                         JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-                        TUID tuid = correspondenceInstance
+                        TUID tuid = correspondenceModel
                                 .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
                         if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
                             tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
@@ -186,12 +186,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         } else if (recordedChange instanceof CompositeChange) {
             CompositeChange change = (CompositeChange) recordedChange;
             for (VitruviusChange innerChange : change.getChanges()) {
-                getOldObjectTUIDs(innerChange, correspondenceInstance, tuidMap);
+                getOldObjectTUIDs(innerChange, correspondenceModel, tuidMap);
             }
         }
     }
 
-    protected void updateTUIDs(final Map<EObject, TUID> tuidMap, final CorrespondenceModel correspondenceInstance) {
+    protected void updateTUIDs(final Map<EObject, TUID> tuidMap, final CorrespondenceModel correspondenceModel) {
         // TODO HK There is something wrong with transactions if we have to start a transaction to
         // update the TUID here.
         // Possibilities:
@@ -199,12 +199,12 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
         // resources
         for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
-            final TUID newTUID = correspondenceInstance.calculateTUIDFromEObject(object);
+            final TUID newTUID = correspondenceModel.calculateTUIDFromEObject(object);
             if (newTUID != null) {
                 EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
-                        correspondenceInstance.updateTUID(tuidMap.get(object), newTUID);
+                        correspondenceModel.updateTUID(tuidMap.get(object), newTUID);
                         return null;
                     }
                 }, this.modelProviding);

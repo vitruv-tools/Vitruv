@@ -4,5 +4,5 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceMod
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
 public interface CorrespondenceCopyProviding {
-    CorrespondenceModel getCorrespondenceInstanceCopy(VURI model1URI, VURI model2URI);
+    CorrespondenceModel getCorrespondenceModelCopy(VURI model1URI, VURI model2URI);
 }

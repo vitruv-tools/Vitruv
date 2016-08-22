@@ -372,7 +372,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see CorrespondenceInstance#
+	 * @see CorrespondenceModel#
 	 * resetChangedAfterLastSave()
 	 */
 	override void resetChangedAfterLastSave() {
@@ -480,7 +480,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var String oldTUIDString = oldTUID.toString()
 		/**
 		 * Removes the current entries in the
-		 * {@link CorrespondenceInstanceImpl#tuid2CorrespondencesMap} map for the given oldTUID
+		 * {@link CorrespondenceModelImpl#tuid2CorrespondencesMap} map for the given oldTUID
 		 * before the hash code of it is updated and returns a pair containing the oldTUID and
 		 * the removed correspondence model elements of the map.
 		 *

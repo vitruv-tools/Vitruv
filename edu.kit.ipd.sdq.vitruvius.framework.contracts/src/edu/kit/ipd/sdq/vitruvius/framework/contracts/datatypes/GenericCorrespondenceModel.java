@@ -200,26 +200,26 @@ public interface GenericCorrespondenceModel<T extends Correspondence> {
     public List<TUID> getTUIDsForMetamodel(T correspondence, String metamodelNamespaceUri);
 
     /**
-     * Returns a view on the {@link CorrespondenceInstance} restricted to the specified kind of
+     * Returns a view on the {@link CorrespondenceModel} restricted to the specified kind of
      * {@link Correspondence}. The functions of the view will only act on the given implementation
      * of {@link Correspondence}s.
      *
      * @param correspondenceType
      *            the type of {@link Correspondence}s to be handled by the view
-     * @return the restricted view on the {@link CorrespondenceInstance}
+     * @return the restricted view on the {@link CorrespondenceModel}
      * @author Heiko Klare
      */
     public <U extends Correspondence> GenericCorrespondenceModel<U> getView(Class<U> correspondenceType);
 
     /**
-     * Creates a editable view on the {@link CorrespondenceInstance} restricted to the specified
+     * Creates a editable view on the {@link CorrespondenceModel} restricted to the specified
      * kind of {@link Correspondence}. To enable the creation of new Correspondences a Supplier
      * method has to be provided to the writable view.
      *
      * @param correspondenceType
      *            the type of {@link Correspondence}s to be handled by the view
      * @param correspondenceCreator
-     * @return the restricted editable view on the {@link CorrespondenceInstance}
+     * @return the restricted editable view on the {@link CorrespondenceModel}
      */
     public <U extends Correspondence> GenericCorrespondenceModel<U> getEditableView(Class<U> correspondenceType,
             Supplier<U> correspondenceCreator);

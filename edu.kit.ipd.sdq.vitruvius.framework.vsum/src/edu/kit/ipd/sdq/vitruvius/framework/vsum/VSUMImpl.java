@@ -47,7 +47,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
-    private final Map<Mapping, InternalCorrespondenceModel> mapping2CorrespondenceInstanceMap;
+    private final Map<Mapping, InternalCorrespondenceModel> mapping2CorrespondenceModelMap;
 
     private ClassLoader classLoader;
 
@@ -65,7 +65,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.mapping2CorrespondenceInstanceMap = new HashMap<Mapping, InternalCorrespondenceModel>();
+        this.mapping2CorrespondenceModelMap = new HashMap<Mapping, InternalCorrespondenceModel>();
 
         this.classLoader = classLoader;
 
@@ -199,24 +199,24 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
             final Pair<EObject, TUID> tuidToUpdateNewRootEObjectPair) {
         VURI metamodeURI = modelInstanceToSave.getMetamodeURI();
         Metamodel metamodel = this.metamodelManaging.getMetamodel(metamodeURI);
-        Set<InternalCorrespondenceModel> allCorrespondenceInstances = getOrCreateAllInternalCorrespondenceInstancesForMM(
+        Set<InternalCorrespondenceModel> allCorrespondenceModels = getOrCreateAllInternalCorrespondenceModelsForMM(
                 metamodel);
-        for (InternalCorrespondenceModel correspondenceInstance : allCorrespondenceInstances) {
+        for (InternalCorrespondenceModel correspondenceModel : allCorrespondenceModels) {
             if (null != tuidToUpdateNewRootEObjectPair && tuidToUpdateNewRootEObjectPair.getSecond() != null) {
-                correspondenceInstance.updateTUID(tuidToUpdateNewRootEObjectPair.getSecond(),
+                correspondenceModel.updateTUID(tuidToUpdateNewRootEObjectPair.getSecond(),
                         tuidToUpdateNewRootEObjectPair.getFirst());
             }
-            if (correspondenceInstance.changedAfterLastSave()) {
-                saveCorrespondenceInstanceAndDecorators(correspondenceInstance);
-                correspondenceInstance.resetChangedAfterLastSave();
+            if (correspondenceModel.changedAfterLastSave()) {
+                saveCorrespondenceModelAndDecorators(correspondenceModel);
+                correspondenceModel.resetChangedAfterLastSave();
             }
         }
     }
 
     @Override
-    public void saveCorrespondenceInstanceAndDecorators(final CorrespondenceModel correspondenceInstance) {
+    public void saveCorrespondenceModelAndDecorators(final CorrespondenceModel correspondenceModel) {
         // FIXME HK This is really bad
-        ((InternalCorrespondenceModel) correspondenceInstance).saveModel();
+        ((InternalCorrespondenceModel) correspondenceModel).saveModel();
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
@@ -231,7 +231,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
         ModelInstance modelInstance = loadModelInstance(modelURI, metamodel);
-        getOrCreateAllCorrespondenceInstancesForMM(metamodel);
+        getOrCreateAllCorrespondenceModelsForMM(metamodel);
         return modelInstance;
     }
 
@@ -247,61 +247,61 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         return this.mappingManaging.getAllMappings(metamodel);
     }
 
-    public Set<CorrespondenceModel> getOrCreateAllCorrespondenceInstancesForMM(final Metamodel metamodel) {
-        return new HashSet<CorrespondenceModel>(getOrCreateAllInternalCorrespondenceInstancesForMM(metamodel));
+    public Set<CorrespondenceModel> getOrCreateAllCorrespondenceModelsForMM(final Metamodel metamodel) {
+        return new HashSet<CorrespondenceModel>(getOrCreateAllInternalCorrespondenceModelsForMM(metamodel));
     }
 
-    private Set<InternalCorrespondenceModel> getOrCreateAllInternalCorrespondenceInstancesForMM(
+    private Set<InternalCorrespondenceModel> getOrCreateAllInternalCorrespondenceModelsForMM(
             final Metamodel metamodel) {
         Collection<Mapping> mappings = getAllMappings(metamodel);
-        Set<InternalCorrespondenceModel> correspondenceInstances = new HashSet<InternalCorrespondenceModel>(
+        Set<InternalCorrespondenceModel> correspondenceModels = new HashSet<InternalCorrespondenceModel>(
                 null == mappings ? 0 : mappings.size());
         if (null == mappings) {
             logger.warn("mappings == null. No correspondence instace for MM: " + metamodel + " created."
                     + "Empty correspondence list will be returned");
-            return correspondenceInstances;
+            return correspondenceModels;
         }
         for (Mapping mapping : mappings) {
-            InternalCorrespondenceModel correspondenceInstance = this.mapping2CorrespondenceInstanceMap.get(mapping);
-            if (correspondenceInstance == null) {
-                correspondenceInstance = createAndRegisterCorrespondenceInstance(mapping);
+            InternalCorrespondenceModel correspondenceModel = this.mapping2CorrespondenceModelMap.get(mapping);
+            if (correspondenceModel == null) {
+                correspondenceModel = createAndRegisterCorrespondenceModel(mapping);
             }
-            correspondenceInstances.add(correspondenceInstance);
+            correspondenceModels.add(correspondenceModel);
         }
-        return correspondenceInstances;
+        return correspondenceModels;
     }
 
-    private InternalCorrespondenceModel createAndRegisterCorrespondenceInstance(final Mapping mapping) {
-        InternalCorrespondenceModel correspondenceInstance;
+    private InternalCorrespondenceModel createAndRegisterCorrespondenceModel(final Mapping mapping) {
+        InternalCorrespondenceModel correspondenceModel;
         VURI[] mmURIs = mapping.getMetamodelURIs();
         VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mmURIs);
-        correspondenceInstance = createCorrespondenceInstance(mapping, correspondencesVURI);
-        // if (correspondenceInstance instanceof InternalCorrespondenceModel) {
-        // loadAndInitializeCorrespondenceInstanceDecorators(correspondenceInstance);
+        correspondenceModel = createCorrespondenceModel(mapping, correspondencesVURI);
+        // if (correspondenceModel instanceof InternalCorrespondenceModel) {
+        // loadAndInitializeCorrespondenceModelDecorators(correspondenceModel);
         // }
-        this.mapping2CorrespondenceInstanceMap.put(mapping, correspondenceInstance);
-        return correspondenceInstance;
+        this.mapping2CorrespondenceModelMap.put(mapping, correspondenceModel);
+        return correspondenceModel;
     }
 
-    private InternalCorrespondenceModel createCorrespondenceInstance(final Mapping mapping,
+    private InternalCorrespondenceModel createCorrespondenceModel(final Mapping mapping,
             final VURI correspondencesVURI) {
         Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-        return InternalContractsBuilder.createCorrespondenceInstance(mapping, this, correspondencesVURI,
+        return InternalContractsBuilder.createCorrespondenceModel(mapping, this, correspondencesVURI,
                 correspondencesResource);
     }
 
-    // private void loadAndInitializeCorrespondenceInstanceDecorators(
-    // final InternalCorrespondenceModel correspondenceInstance) {
+    // private void loadAndInitializeCorrespondenceModelDecorators(
+    // final InternalCorrespondenceModel correspondenceModel) {
     // Set<String> fileExtPrefixesForObjects =
-    // correspondenceInstance.getFileExtPrefixesForObjectsToLoad();
+    // correspondenceModel.getFileExtPrefixesForObjectsToLoad();
     // Map<String, Object> fileExtPrefix2ObjectMap = new HashMap<String, Object>();
     // for (String fileExtPrefix : fileExtPrefixesForObjects) {
-    // String fileName = getFileNameForCorrespondenceInstanceDecorator(correspondenceInstance,
+    // String fileName = getFileNameForCorrespondenceModelDecorator(correspondenceModel,
     // fileExtPrefix);
     // Object loadedObject = FileSystemHelper.loadObjectFromFile(fileName, this.classLoader);
     // fileExtPrefix2ObjectMap.put(fileExtPrefix, loadedObject);
     // }
-    // correspondenceInstance.initialize(fileExtPrefix2ObjectMap);
+    // correspondenceModel.initialize(fileExtPrefix2ObjectMap);
     // }
 
     // @Override
@@ -311,16 +311,16 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     /**
-     * Returns the correspondenceInstance for the mapping from the metamodel at the first VURI to
+     * Returns the correspondenceModel for the mapping from the metamodel at the first VURI to
      * the metamodel at the second VURI or the other way round
      *
-     * @return the found correspondenceInstance or null if there is none
+     * @return the found correspondenceModel or null if there is none
      */
     @Override
-    public CorrespondenceModel getCorrespondenceInstanceOriginal(final VURI mmAVURI, final VURI mmBVURI) {
+    public CorrespondenceModel getCorrespondenceModelOriginal(final VURI mmAVURI, final VURI mmBVURI) {
         Mapping mapping = this.mappingManaging.getMapping(mmAVURI, mmBVURI);
-        if (this.mapping2CorrespondenceInstanceMap.containsKey(mapping)) {
-            return this.mapping2CorrespondenceInstanceMap.get(mapping);
+        if (this.mapping2CorrespondenceModelMap.containsKey(mapping)) {
+            return this.mapping2CorrespondenceModelMap.get(mapping);
         }
         logger.warn("no mapping found for the metamodel at: " + mmAVURI + " and the metamodel at: " + mmBVURI);
         return null;
@@ -328,22 +328,22 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     /**
      * Returns all correspondences instances for a given VURI. null will be returned. We are not
-     * creating new CorrespondenceInstance here, cause we can not guess the linked model. The method
-     * {@link getCorrespondenceInstanceOriginal} must be called before to create the appropriate
+     * creating new CorrespondenceModel here, cause we can not guess the linked model. The method
+     * {@link getCorrespondenceModelOriginal} must be called before to create the appropriate
      * correspondence instance
      *
      * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.datatypes.
-     *      CorrespondenceInstance
-     * @return set that contains all CorrespondenceInstances for the VURI or null if there is non
+     *      CorrespondenceModel
+     * @return set that contains all CorrespondenceModels for the VURI or null if there is non
      */
     @Override
-    public Set<CorrespondenceModel> getOrCreateAllCorrespondenceInstances(final VURI model1uri) {
+    public Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI model1uri) {
         Metamodel metamodelForUri = this.metamodelManaging.getMetamodel(model1uri.getFileExtension());
-        return getOrCreateAllCorrespondenceInstancesForMM(metamodelForUri);
+        return getOrCreateAllCorrespondenceModelsForMM(metamodelForUri);
     }
 
     @Override
-    public CorrespondenceModel getCorrespondenceInstanceCopy(final VURI model1uri, final VURI model2uri) {
+    public CorrespondenceModel getCorrespondenceModelCopy(final VURI model1uri, final VURI model2uri) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -388,7 +388,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     private void loadAndMapCorrepondenceInstances() {
         Metamodel[] metamodels = this.metamodelManaging.getAllMetamodels();
         for (Metamodel metamodel : metamodels) {
-            getOrCreateAllCorrespondenceInstancesForMM(metamodel);
+            getOrCreateAllCorrespondenceModelsForMM(metamodel);
         }
     }
 

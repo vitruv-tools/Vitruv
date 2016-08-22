@@ -9,7 +9,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.GenericCorrespondenceModel
 
-class CorrespondenceInstanceUtil {
+class CorrespondenceModelUtil {
 	private new() {
 	}
 

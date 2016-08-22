@@ -12,14 +12,14 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	private final Class<T> correspondenceType;
 	private final Supplier<T> correspondenceCreator
 
-	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceInstance) {
-		this(correspondenceType, correspondenceInstance, null)
+	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceModel) {
+		this(correspondenceType, correspondenceModel, null)
 	}
 
-	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceInstance,
+	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
-		this.correspondenceModelDelegate = correspondenceInstance;
+		this.correspondenceModelDelegate = correspondenceModel;
 		this.correspondenceCreator = correspondenceCreator
 	}
 
@@ -143,7 +143,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.updateTUID(oldTUID, newTUID);
 	}
 
-	// TODO re-design the CorrespondenceInstance to avoid a functionality depending on the correpondenceType
+	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
 	}

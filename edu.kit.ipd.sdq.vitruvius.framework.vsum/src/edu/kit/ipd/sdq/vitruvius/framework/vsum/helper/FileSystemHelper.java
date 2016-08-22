@@ -34,10 +34,10 @@ public class FileSystemHelper {
         return VURI.getInstance(correspondenceFile);
     }
 
-    public static void saveCorrespondenceInstanceMMURIs(final VURI[] mmURIs) {
-        IFile correspondenceInstanceIFile = getCorrespondenceIFile(mmURIs);
+    public static void saveCorrespondenceModelMMURIs(final VURI[] mmURIs) {
+        IFile correspondenceModelIFile = getCorrespondenceIFile(mmURIs);
         Set<VURI> mmURIsSet = new HashSet<VURI>(Arrays.asList(mmURIs));
-        saveVURISetToFile(mmURIsSet, correspondenceInstanceIFile.getLocation().toOSString());
+        saveVURISetToFile(mmURIsSet, correspondenceModelIFile.getLocation().toOSString());
     }
 
     public static IFile getCorrespondenceIFile(final VURI[] mmURIs) {

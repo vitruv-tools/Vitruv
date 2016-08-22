@@ -6,10 +6,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 
 public class ContractsBuilder {
-    public static CorrespondenceModel createCorrespondenceInstance(final Mapping mapping,
+    public static CorrespondenceModel createCorrespondenceModel(final Mapping mapping,
             final ModelProviding modelProviding, final VURI correspondencesVURI,
             final Resource correspondencesResource) {
-        return InternalContractsBuilder.createCorrespondenceInstance(mapping, modelProviding, correspondencesVURI,
+        return InternalContractsBuilder.createCorrespondenceModel(mapping, modelProviding, correspondencesVURI,
                 correspondencesResource);
     };
 }

@@ -10,11 +10,11 @@
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta"
       disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
-    <genDataTypes ecoreDataType="correspondence.ecore#//CorrespondenceInstance"/>
+    <genDataTypes ecoreDataType="correspondence.ecore#//CorrespondenceModel"/>
     <genDataTypes ecoreDataType="correspondence.ecore#//TUID"/>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/correspondenceInstance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/correspondenceModel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="correspondence.ecore#//Correspondence">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/parent"/>
