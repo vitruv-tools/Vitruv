@@ -24,9 +24,9 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 import pcm_mockup.PInterface
@@ -46,19 +46,19 @@ class CorrespondenceTest extends VSUMTest {
 	def private void testAll(VSUMImpl vsum) {
 		var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
 		var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
-		var CorrespondenceModel correspondenceInstance = testCorrespondenceInstanceCreation(vsum)
-		assertFalse(correspondenceInstance.hasCorrespondences())
-		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance)
+		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+		assertFalse(correspondenceModel.hasCorrespondences())
+		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		testAllClaimersAndGettersForEObjectCorrespondences(repo, pkg, correspondenceInstance, repo2pkg)
-		var PInterface repoInterface = testHasCorrespondences(repo, pkg, correspondenceInstance)
-		testSimpleRemove(pkg, correspondenceInstance, repo2pkg, repoInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		testRecursiveRemove(repo, pkg, correspondenceInstance, repo2pkg) // now the correspondence instance should be empty
+		testAllClaimersAndGettersForEObjectCorrespondences(repo, pkg, correspondenceModel, repo2pkg)
+		var PInterface repoInterface = testHasCorrespondences(repo, pkg, correspondenceModel)
+		testSimpleRemove(pkg, correspondenceModel, repo2pkg, repoInterface) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		testRecursiveRemove(repo, pkg, correspondenceModel, repo2pkg) // now the correspondence instance should be empty
 		// recreate the same correspondence as before
-		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceInstance) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceInstance, repo2pkg)
-		correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(pkg.toSet) // now the correspondence instance should be empty
-		testCorrespondencePersistence(vsum, repo, pkg, correspondenceInstance)
+		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		testCreateRepo2PkgCorrespondenceAndUpdateTUID(repo, pkg, correspondenceModel, repo2pkg)
+		correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(pkg.toSet) // now the correspondence instance should be empty
+		testCorrespondencePersistence(vsum, repo, pkg, correspondenceModel)
 	}
 
 	@Test def void testCorrespondenceUpdate() {
@@ -67,17 +67,17 @@ class CorrespondenceTest extends VSUMTest {
 			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
 			// create correspondence
-			var CorrespondenceModel correspondenceInstance = testCorrespondenceInstanceCreation(vsum)
-			correspondenceInstance.createAndAddCorrespondence(repo, pkg)
+			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+			correspondenceModel.createAndAddCorrespondence(repo, pkg)
 			LOGGER.
-				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceInstance.calculateTUIDFromEObject(pkg)»'.''')
-			removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceInstance)
+				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTUIDFromEObject(pkg)»'.''')
+			removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
 			LOGGER.
-				trace('''After removing the pkg from the resource it has the tuid '«»«correspondenceInstance.calculateTUIDFromEObject(pkg)»'.''')
-			saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance)
+				trace('''After removing the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTUIDFromEObject(pkg)»'.''')
+			saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
 			LOGGER.
-				trace('''After adding the pkg to the new resource it has the tuid '«»«correspondenceInstance.calculateTUIDFromEObject(pkg)»'.''')
-			assertRepositoryCorrespondences(repo, correspondenceInstance)
+				trace('''After adding the pkg to the new resource it has the tuid '«»«correspondenceModel.calculateTUIDFromEObject(pkg)»'.''')
+			assertRepositoryCorrespondences(repo, correspondenceModel)
 			return null
 		], vsum)
 	}
@@ -88,21 +88,21 @@ class CorrespondenceTest extends VSUMTest {
 			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
 			// create correspondence
-			var CorrespondenceModel correspondenceInstance = testCorrespondenceInstanceCreation(vsum)
-			correspondenceInstance.createAndAddCorrespondence(repo, pkg) // execute the test
+			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+			correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
 			LOGGER.
-				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceInstance.calculateTUIDFromEObject(pkg)»'.''')
-			moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceInstance)
-			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceInstance)
-			assertRepositoryCorrespondences(repo, correspondenceInstance)
+				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTUIDFromEObject(pkg)»'.''')
+			moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
+			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
+			assertRepositoryCorrespondences(repo, correspondenceModel)
 			return null
 		], vsum)
 	}
 
 	def private void assertRepositoryCorrespondences(Repository repo,
-		CorrespondenceModel correspondenceInstance) {
+		CorrespondenceModel correspondenceModel) {
 		// get the correspondence of repo
-		var Set<Correspondence> correspondences = correspondenceInstance.getCorrespondences(repo.toList)
+		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList)
 		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
 		for (Correspondence correspondence : correspondences) {
 			assertTrue("Correspondence is not from the type EObjectCorrespondence",
@@ -110,8 +110,8 @@ class CorrespondenceTest extends VSUMTest {
 			var Correspondence eoc = correspondence
 			LOGGER.
 				info('''EObject with TUID: «eoc.ATUIDs» corresponds to EObject with TUID: «eoc.BTUIDs»''')
-			var EObject a = correspondenceInstance.resolveEObjectFromTUID(eoc.ATUIDs.claimOne)
-			var EObject b = correspondenceInstance.resolveEObjectFromTUID(eoc.BTUIDs.claimOne)
+			var EObject a = correspondenceModel.resolveEObjectFromTUID(eoc.ATUIDs.claimOne)
+			var EObject b = correspondenceModel.resolveEObjectFromTUID(eoc.BTUIDs.claimOne)
 			assertNotNull("Left Object is null", a)
 			assertNotNull("Right Object is null", b)
 			LOGGER.info('''A: «a» corresponds to B: «b»''')
@@ -120,16 +120,16 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	def private void moveUMLPackageTo(UPackage pkg, String string, VSUMImpl vsum,
-		CorrespondenceModel correspondenceInstance) {
-		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceInstance)
+		CorrespondenceModel correspondenceModel) {
+		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
 	}
 
 	def private void saveUPackageInNewFileAndUpdateCorrespondence(VSUMImpl vsum, UPackage pkg,
-		CorrespondenceModel correspondenceInstance) {
-		var TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg)
+		CorrespondenceModel correspondenceModel) {
+		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		var VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
 		vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(newVURI, pkg, oldTUID)
-		correspondenceInstance.updateTUID(oldTUID, pkg)
+		correspondenceModel.updateTUID(oldTUID, pkg)
 	}
 
 	def private String getNewUMLInstanceURI() {
@@ -141,10 +141,10 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg,
-		CorrespondenceModel correspondenceInstance) {
-		var TUID oldTUID = correspondenceInstance.calculateTUIDFromEObject(pkg)
+		CorrespondenceModel correspondenceModel) {
+		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		EcoreUtil.remove(pkg)
-		correspondenceInstance.updateTUID(oldTUID, pkg)
+		correspondenceModel.updateTUID(oldTUID, pkg)
 	}
 
 	def private void testCorrespondencePersistence(VSUMImpl vsum, Repository repo, UPackage pkg,
@@ -153,7 +153,7 @@ class CorrespondenceTest extends VSUMTest {
 		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		assertNotNull("Correspondence instance is null", corresp)
-		if (corresp instanceof MappedCorrespondenceInstance) {
+		if (corresp instanceof MappedCorrespondenceModel) {
 			var MappingRealization mapping = new MappingRealization() {
 				static final long serialVersionUID = 1L
 
@@ -165,16 +165,16 @@ class CorrespondenceTest extends VSUMTest {
 					
 				}
 			}
-			(corresp as MappedCorrespondenceInstance).registerMappingForCorrespondence(repo2pkg, mapping)
+			(corresp as MappedCorrespondenceModel).registerMappingForCorrespondence(repo2pkg, mapping)
 		}
-		// save instances in order to trigger saving for CorrespondenceInstance(s)
+		// save instances in order to trigger saving for CorrespondenceModel(s)
 		var VURI pcmVURI = VURI.getInstance(getPCMInstanceUri())
 		vsum.saveExistingModelInstanceOriginal(pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
 		var VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation()
 		var Repository repo2 = testLoadObject(vsum2, getPCMInstanceUri(), Repository)
 		var UPackage pkg2 = testLoadObject(vsum2, getUMLInstanceURI(), UPackage)
-		var CorrespondenceModel corresp2 = testCorrespondenceInstanceCreation(vsum2)
+		var CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
 		// do not create correspondences they have to be restored from disk
 		assertTrue(corresp2.hasCorrespondences()) // obtain
 		var Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(repo2.toList, pkg2.toList)
@@ -189,10 +189,10 @@ class CorrespondenceTest extends VSUMTest {
 		return obj
 	}
 
-	def private CorrespondenceModel testCorrespondenceInstanceCreation(VSUMImpl vsum) {
+	def private CorrespondenceModel testCorrespondenceModelCreation(VSUMImpl vsum) {
 		var VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI)
 		var VURI umlMMVURI = VURI.getInstance(UML_MM_URI)
-		var CorrespondenceModel corresp = vsum.getCorrespondenceInstanceOriginal(pcmMMVURI, umlMMVURI)
+		var CorrespondenceModel corresp = vsum.getCorrespondenceModelOriginal(pcmMMVURI, umlMMVURI)
 		assertNotNull(corresp)
 		return corresp
 	}

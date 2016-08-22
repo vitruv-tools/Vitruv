@@ -50,7 +50,7 @@ public abstract class VitruviusCasestudyTest {
     
     protected abstract void afterTest(Description description);
 
-    protected abstract CorrespondenceModel getCorrespondenceInstance() throws Throwable;
+    protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
     protected static class SingleTransformerChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
 		public SingleTransformerChange2CommandTransformingProviding(Change2CommandTransforming transformer) {

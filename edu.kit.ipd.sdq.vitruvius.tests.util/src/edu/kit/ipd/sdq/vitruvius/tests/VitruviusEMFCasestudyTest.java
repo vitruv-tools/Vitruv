@@ -45,7 +45,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     protected ChangeSynchronizerImpl changeSynchronizer;
     protected MetaRepositoryImpl metaRepository;
     protected AtomicEMFChangeRecorder changeRecorder;
-    protected CorrespondenceModel correspondenceInstance;
+    protected CorrespondenceModel correspondenceModel;
     protected Change2CommandTransformingProviding transformingProviding;
     
     /**
@@ -93,16 +93,16 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
     @Override
     protected void afterTest(final org.junit.runner.Description description) {
-        this.correspondenceInstance = null;
+        this.correspondenceModel = null;
     }
 
     @Override
-    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
+    protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
         final Metamodel firstMM = this.metaRepository.getAllMetamodels()[0];
         final Mapping mapping = this.metaRepository.getAllMappings(firstMM).iterator().next();
         final VURI mm1VURI = mapping.getMetamodelA().getURI();
         final VURI mm2VURI = mapping.getMetamodelB().getURI();
-        return this.vsum.getCorrespondenceInstanceOriginal(mm1VURI, mm2VURI);
+        return this.vsum.getCorrespondenceModelOriginal(mm1VURI, mm2VURI);
     }
 
     protected void triggerSynchronization(final VURI vuri) {
