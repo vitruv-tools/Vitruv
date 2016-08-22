@@ -28,11 +28,11 @@ response: CreatedFirstPackage
 trigger: insert root java.Package
 effect:
 	execute:{
-		if(null == EJBJava2PcmHelper.findRepository(correspondenceInstance)){
+		if(null == EJBJava2PcmHelper.findRepository(correspondenceModel)){
 			val Repository repository = RepositoryFactory.eINSTANCE.createRepository
 			repository.setEntityName(change.newValue.name)
 			persistProjectRelative(change.newValue, repository, "model/" + repository.entityName + ".repository")
-			correspondenceInstance.createAndAddCorrespondence(Collections.singletonList(repository), Collections.singletonList(change.newValue))
+			correspondenceModel.createAndAddCorrespondence(Collections.singletonList(repository), Collections.singletonList(change.newValue))
 		}		
 	}
 
@@ -44,7 +44,7 @@ trigger: insert in list java.CompilationUnit[classifiers]
 	check: change.newValue.isEJBClass 	
 effect:
 	execute: {
-		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
 		callCreateBasicComponent(repo, change.newValue);
 	} 
 
@@ -53,7 +53,7 @@ response: CreateClassAnnotation
 	check: change.affectedEObject.isEJBClass 
 effect:
 	execute: {
-		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance) 
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel) 
 		callCreateBasicComponent(repo, change.affectedEObject as NamedElement)
 	} 
 	
@@ -75,7 +75,7 @@ trigger: insert in list java.CompilationUnit[classifiers]
 	check: change.newValue.isEJBBuisnessInterface 
 effect:
 	execute: {
-		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
 		callCreateOperationInterface(repo, change.newValue)
 	}
 
@@ -84,7 +84,7 @@ trigger: insert in list java.Interface[annotationsAndModifiers]
 	check: change.affectedEObject.isEJBBuisnessInterface
 effect:
 	execute: {
-		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceInstance)
+		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
 		callCreateOperationInterface(repo, change.affectedEObject as NamedElement)
 	}
 
@@ -155,7 +155,7 @@ effect:
 			opr.providedInterface__OperationProvidedRole = opInterface
 			opr.providingEntity_ProvidedRole = basicComponent
 			opr.entityName = basicComponent.entityName + "_provides_" + opInterface.entityName
-			correspondenceInstance.createAndAddCorrespondence(Collections.singletonList(opr), Collections.singletonList(change.newValue))
+			correspondenceModel.createAndAddCorrespondence(Collections.singletonList(opr), Collections.singletonList(change.newValue))
 		}
 	}
 
@@ -202,10 +202,10 @@ effect:
 		pcmParameter.entityName = jaMoPPParam.name
 		pcmParameter.parameterName = jaMoPPParam.name
 		pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, 
-			correspondenceInstance, userInteracting, opSignature.interface__OperationSignature.repository__Interface, jaMoPPParam.arrayDimension)
+			correspondenceModel, userInteracting, opSignature.interface__OperationSignature.repository__Interface, jaMoPPParam.arrayDimension)
 		opSignature.parameters__OperationSignature.add(pcmParameter)
 		//add correspondence here, because otherwise TUID calculation may be fail since type and name are null
-		correspondenceInstance.createAndAddCorrespondence(Collections.singletonList(pcmParameter), Collections.singletonList(jaMoPPParam))
+		correspondenceModel.createAndAddCorrespondence(Collections.singletonList(pcmParameter), Collections.singletonList(jaMoPPParam))
 	}
 	
 // #######################################################################
@@ -221,7 +221,7 @@ routine: CreatePCMReturnType
 	input: java.TypeReference as returnType,  pcm.OperationSignature as opSignature, java.Method as javaMethod
 effect:
 	execute:{
-		val pcmDataType = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(returnType, correspondenceInstance, userInteracting, 
+		val pcmDataType = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(returnType, correspondenceModel, userInteracting, 
 				opSignature.interface__OperationSignature.repository__Interface, javaMethod.arrayDimension
 		)
 		opSignature.returnType__OperationSignature = pcmDataType
@@ -240,7 +240,7 @@ effect:
 	execute:{
 		val field = change.newValue as Field
 		innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
-					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceInstance,
+					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceModel,
 						userInteracting, compositeDataType.repository__DataType, field.arrayDimension)
 		innerDec.entityName = change.newValue.name
 		compositeDataType.innerDeclaration_CompositeDataType.add(innerDec)
@@ -258,7 +258,7 @@ match:
 effect: 
 	execute: {
 		val method = getOoverridenInterfaceMethod(change.newValue as ClassMethod, change.affectedEObject as org.emftext.language.java.classifiers.Class)
-		val correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(correspondenceInstance, method, OperationSignature)
+		val correspondingEObjects = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(correspondenceModel, method, OperationSignature)
 		var OperationSignature opSignature = null
 		if(!correspondingEObjects.nullOrEmpty){
 			opSignature = correspondingEObjects.get(0)			
