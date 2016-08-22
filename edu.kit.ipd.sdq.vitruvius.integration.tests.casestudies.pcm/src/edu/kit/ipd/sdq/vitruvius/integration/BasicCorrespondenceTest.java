@@ -86,7 +86,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
         mockupProject.copy(copyPath, true, null);
 
         // Initialize vsum
-        this.vsum.getOrCreateAllCorrespondenceInstancesForMM(this.metaRepository.getMetamodel(pcmMMUri));
+        this.vsum.getOrCreateAllCorrespondenceModelsForMM(this.metaRepository.getMetamodel(pcmMMUri));
 
         // Create and execute the transformation
         this.transformation = new PCMJaMoPPCorrespondenceModelTransformation(projectPath + SCDM_PATH,
@@ -108,12 +108,12 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
      * (non-Javadoc)
      *
      * @see edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.
-     * PCM2JaMoPPTransformationTest#getCorrespondenceInstance()
+     * PCM2JaMoPPTransformationTest#getCorrespondenceModel()
      */
     @Override
-    protected CorrespondenceModel getCorrespondenceInstance() throws Throwable {
-        final CorrespondenceModel correspondenceInstance2 = this.transformation.getCorrespondenceInstance();
-        return correspondenceInstance2;
+    protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
+        final CorrespondenceModel correspondenceModel2 = this.transformation.getCorrespondenceModel();
+        return correspondenceModel2;
     }
 
     @After
@@ -121,7 +121,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
 
         // Clear vsum
         this.vsum = null;
-        this.correspondenceInstance = null;
+        this.correspondenceModel = null;
 
         // Delete modified project
         final IWorkspaceRoot root = this.workspace.getRoot();

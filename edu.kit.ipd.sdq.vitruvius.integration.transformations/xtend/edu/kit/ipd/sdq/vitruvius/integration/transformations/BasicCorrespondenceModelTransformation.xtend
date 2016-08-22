@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
@@ -26,9 +26,9 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 	protected Logger logger = Logger.getRootLogger
 	
 	/**
-	 * Returns the current used {@link CorrespondenceInstance}
+	 * Returns the current used {@link CorrespondenceModel}
 	 */
-	public abstract def CorrespondenceModel getCorrespondenceInstance()
+	public abstract def CorrespondenceModel getCorrespondenceModel()
 
 	protected def Correspondence addCorrespondence(EObject pcmObject, EObject jamoppObject) {
 		return addCorrespondence(pcmObject, jamoppObject, null);
@@ -36,7 +36,7 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 
 	/**
 	 * Creates an {@link EObjectCorrespondence} between the given EObjects
-	 * and adds it to the {@link CorrespondenceInstance}
+	 * and adds it to the {@link CorrespondenceModel}
 	 */
 	protected def Correspondence addCorrespondence(EObject objectA, EObject objectB, Correspondence parent) {
 		if (objectA == null || objectB == null)
@@ -47,10 +47,10 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 		var deresolvedB = deresolveIfNesessary(objectB)
 
 		// check if the correspondence was already created, because the SCDM may contain duplicate entries
-		var identifier = getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedA).toString +
-			getCorrespondenceInstance.calculateTUIDFromEObject(deresolvedB).toString
+		var identifier = getCorrespondenceModel.calculateTUIDFromEObject(deresolvedA).toString +
+			getCorrespondenceModel.calculateTUIDFromEObject(deresolvedB).toString
 		if (!existingEntries.contains(identifier)) {
-			var correspondence = getCorrespondenceInstance.createAndAddCorrespondence(deresolvedA, deresolvedB);
+			var correspondence = getCorrespondenceModel.createAndAddCorrespondence(deresolvedA, deresolvedB);
 			existingEntries.add(identifier);
 			logger.info("Created Correspondence for element: " + objectA + " and Element: " + objectB);
 			return correspondence;
@@ -80,7 +80,7 @@ abstract class BasicCorrespondenceModelTransformation implements ICreateCorrespo
 	protected def Correspondence getUniqueSameTypeCorrespondence(EObject objectA, EObject objectB) {
 		var deresolvedA = deresolveIfNesessary(objectA)
 		var deresolvedB = deresolveIfNesessary(objectB)
-		return getCorrespondenceInstance.claimUniqueCorrespondence(deresolvedA.toList, deresolvedB.toList)
+		return getCorrespondenceModel.claimUniqueCorrespondence(deresolvedA.toList, deresolvedB.toList)
 	}
 
 }

@@ -56,7 +56,7 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
-		this.cInstance = vsum.getCorrespondenceInstanceOriginal(mmUriA, mmURiB);
+		this.cInstance = vsum.getCorrespondenceModelOriginal(mmUriA, mmURiB);
 		
 		this.scdmPath = scdmPath;
 		this.pcmPath = pcmPath;
@@ -65,7 +65,7 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 		logger.level = Level.ALL
 	}
 	
-	override getCorrespondenceInstance() {
+	override getCorrespondenceModel() {
 		return cInstance;
 	}
 

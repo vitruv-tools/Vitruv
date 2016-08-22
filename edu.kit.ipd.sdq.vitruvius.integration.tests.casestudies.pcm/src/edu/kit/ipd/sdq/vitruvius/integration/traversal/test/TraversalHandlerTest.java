@@ -37,7 +37,7 @@ public class TraversalHandlerTest {
     private VSUMImpl vsum;
     private ChangeSynchronizing changeSynchronizing;
 
-    private CorrespondenceModel correspondenceInstance;
+    private CorrespondenceModel correspondenceModel;
     protected ResourceSet resourceSet;
 
     /**

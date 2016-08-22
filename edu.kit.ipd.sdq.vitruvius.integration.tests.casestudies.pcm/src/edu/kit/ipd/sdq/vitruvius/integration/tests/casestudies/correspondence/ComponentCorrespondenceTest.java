@@ -42,7 +42,7 @@ public class ComponentCorrespondenceTest extends BasicCorrespondenceTest {
 
     /**
      * Checks if the corresponding jamopp elements (Comp.Unit, Class and package-info) of the given
-     * pcm component can be retrieved from the {@link CorrespondenceInstance}.
+     * pcm component can be retrieved from the {@link CorrespondenceModel}.
      *
      * @param basicComponent
      *            the basic component
