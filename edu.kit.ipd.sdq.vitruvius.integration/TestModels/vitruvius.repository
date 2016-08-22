@@ -189,7 +189,7 @@
     <signatures__OperationInterface id="_pvU2AHx2EeOSj_S3DgbyHA" entityName="getProjectInput" returnType__OperationSignature="_Z-aiAXx2EeOSj_S3DgbyHA"/>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_XKWnEIHpEeODW91Frt3ceg" entityName="CorrespondenceProviding" parentInterfaces__Interface="_s6gBUNX2EeOYN43yqJ5nEw">
-    <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceInstance" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg">
+    <signatures__OperationInterface id="_YVzGgIHpEeODW91Frt3ceg" entityName="getCorrespondenceModel" returnType__OperationSignature="_bWVfUoHpEeODW91Frt3ceg">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model1URI"/>
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model2URI"/>
     </signatures__OperationInterface>
@@ -201,7 +201,7 @@
     <signatures__OperationInterface id="_K8C-0NX2EeOYN43yqJ5nEw" entityName="getResponses" returnType__OperationSignature="_Fma9_dX2EeOYN43yqJ5nEw"/>
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_s6gBUNX2EeOYN43yqJ5nEw" entityName="CorrespondenceCopyProviding">
-    <signatures__OperationInterface id="_vWgJsNX2EeOYN43yqJ5nEw" entityName="getCorrespondenceInstanceCopy" returnType__OperationSignature="_AlHlTWDcEeOVS519yHwWgw">
+    <signatures__OperationInterface id="_vWgJsNX2EeOYN43yqJ5nEw" entityName="getCorrespondenceModelCopy" returnType__OperationSignature="_AlHlTWDcEeOVS519yHwWgw">
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model1"/>
       <parameters__OperationSignature dataType__Parameter="_IeAiPWDeEeOVS519yHwWgw" parameterName="model2"/>
     </signatures__OperationInterface>
@@ -219,7 +219,7 @@
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_GrMysWDcEeOVS519yHwWgw" entityName="ViewType"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Z-aiAXx2EeOSj_S3DgbyHA" entityName="ProjectInput"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_dwu9HXx2EeOSj_S3DgbyHA" entityName="ProjectOutput"/>
-  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_bWVfUoHpEeODW91Frt3ceg" entityName="CorrespondenceInstance"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_bWVfUoHpEeODW91Frt3ceg" entityName="CorrespondenceModel"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_DEArndX2EeOYN43yqJ5nEw" entityName="Invariants"/>
   <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_Fma9_dX2EeOYN43yqJ5nEw" entityName="Responses"/>
 </repository:Repository>
