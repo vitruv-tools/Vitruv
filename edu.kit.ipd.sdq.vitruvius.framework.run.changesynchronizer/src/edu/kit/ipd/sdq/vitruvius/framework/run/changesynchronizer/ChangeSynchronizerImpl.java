@@ -7,13 +7,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.FeatureChange;
+
+import com.google.common.collect.EvictingQueue;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
@@ -41,6 +43,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBrid
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
+    private static final int BLACKBOARD_HITORY_SIZE = 2;
+
     private static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.class.getSimpleName());
 
     private final ModelProviding modelProviding;
@@ -52,7 +56,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private final CommandExecuting commandExecuting;
 
     private Set<SynchronisationListener> synchronisationListeners;
-    private Stack<Blackboard> blackboardHistory;
+    private Queue<Blackboard> blackboardHistory;
 
     public ChangeSynchronizerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
@@ -70,7 +74,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         this.invariantProviding = invariantProviding;
         this.validating = validating;
         this.commandExecuting = commandExecuting;
-        this.blackboardHistory = new Stack<Blackboard>();
+        this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE);
     }
 
     @Override
@@ -140,7 +144,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 // each response that uses it,
                 // or: make them read only, i.e. give them a read-only interface!
                 blackboard.pushChanges(Collections.singletonList(change));
-                this.blackboardHistory.push(blackboard);
+                this.blackboardHistory.add(blackboard);
                 change2CommandTransforming.transformChanges2Commands(blackboard);
                 commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard));
             }
