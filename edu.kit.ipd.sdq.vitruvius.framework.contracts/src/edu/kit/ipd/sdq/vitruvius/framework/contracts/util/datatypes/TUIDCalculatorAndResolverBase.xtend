@@ -112,6 +112,7 @@ abstract class TUIDCalculatorAndResolverBase implements TUIDCalculatorAndResolve
 
 	def private void removeCacheEntryForKey(int key) {
 		var EObject value = this.cachedResourcelessRoots.remove(key)
+		this.cachedRoot2KeyMap.remove(value)
 		LOGGER.debug('''Removed the value '«»«value»'for the key '«»«key»' from the tuid cache.''')
 	}
 
