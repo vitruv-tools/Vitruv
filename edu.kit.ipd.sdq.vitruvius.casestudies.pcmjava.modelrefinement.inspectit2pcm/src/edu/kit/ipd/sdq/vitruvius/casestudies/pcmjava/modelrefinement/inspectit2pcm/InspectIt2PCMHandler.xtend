@@ -51,7 +51,7 @@ import org.somox.ejbmox.inspectit2pcm.launch.InspectIT2PCMConfigurationAttribute
 import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository
 import org.somox.sourcecodedecorator.SourcecodedecoratorFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
@@ -236,14 +236,14 @@ class InspectIt2PCMHandler extends AbstractHandler {
 		val VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		val VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		val CorrespondenceModel correspondenceModel = vsum.
-			getCorrespondenceInstanceOriginal(pcmVURI, jaMoPPVURI)
+			getCorrespondenceModelOriginal(pcmVURI, jaMoPPVURI)
 		return correspondenceModel
 	}
 	
 	def private getVSUM(){
 		val MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository()
 		val VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository)
-		vsum.getOrCreateAllCorrespondenceInstancesForMM(
+		vsum.getOrCreateAllCorrespondenceModelsForMM(
 			metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)))
 		return vsum
 	}
