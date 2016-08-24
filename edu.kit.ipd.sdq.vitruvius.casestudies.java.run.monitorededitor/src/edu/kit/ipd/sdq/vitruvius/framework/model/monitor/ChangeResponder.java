@@ -20,6 +20,7 @@ import org.emftext.language.java.annotations.AnnotationInstance;
 import org.emftext.language.java.classifiers.Class;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.classifiers.Interface;
+import org.emftext.language.java.commons.NamedElement;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.imports.Import;
 import org.emftext.language.java.members.Field;
@@ -29,6 +30,8 @@ import org.emftext.language.java.modifiers.AnnotableAndModifiable;
 import org.emftext.language.java.modifiers.Modifier;
 import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.parameters.Parametrizable;
+import org.emftext.language.java.types.PrimitiveType;
+import org.emftext.language.java.types.Type;
 import org.emftext.language.java.types.TypeReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
@@ -463,19 +466,65 @@ public class ChangeResponder implements ChangeEventVisitor {
         this.monitoredEditor.submitChange(compositeChange);
     }
 
-    private boolean containsParameter(final Parameter parameter, final List<Parameter> parameterList) {
-        for (final Parameter parameterInList : parameterList) {
-            // we consider parameters equal if they name is identical, the return type is
-            // identical, and they arrayDimension is equal
-            if (parameterInList.getName().equals(parameter.getName())
-                    // &&
-                    // parameterInList.getTypeReference().getTarget().equals(parameter.getTypeReference().getTarget())
-                    && parameterInList.getArrayDimension() == parameter.getArrayDimension()) {
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean containsParameter(final Parameter parameter, final List<Parameter> parameterList) {
+		for (final Parameter parameterInList : parameterList) {
+			// we consider parameters equal if they name is identical, the
+			// return type is
+			// identical, and they arrayDimension is equal
+			if (parameterInList.getName().equals(parameter.getName())
+					&& targetInTypeReferenceEquals(parameter.getTypeReference(), parameterInList.getTypeReference())
+					&& parameterInList.getArrayDimension() == parameter.getArrayDimension()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean targetInTypeReferenceEquals(final TypeReference typeRef1, final TypeReference typeRef2) {
+		if (typeRef1.getTarget() == null && typeRef2.getTarget() == null) {
+			return true;
+		}
+		if (typeRef1.getTarget() == null) {
+			return false;
+		}
+		if (typeRef2.getTarget() == null) {
+			return false;
+		}
+		if (!typeEquals(typeRef1.getTarget(), typeRef2.getTarget())) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	* compares two types and returns if they are equal
+	*
+	* @param type1
+	* @param type2
+	* @return
+	*/
+	private static boolean typeEquals(final Type type1, final Type type2) {
+		if (type1 == type2) {
+			return true;
+		}
+
+		final boolean sameType = type1.getClass().equals(type2.getClass());
+		if (!sameType) {
+			// both types have to be from the same type e.g. ConcreteClassifier
+			return false;
+		}
+		if (type1 instanceof PrimitiveType && type2 instanceof PrimitiveType) {
+			// both have the same type and they are primitive types-->same type
+			return true;
+		}
+		if (type1 instanceof NamedElement && type2 instanceof NamedElement) {
+			final NamedElement ne1 = (NamedElement) type1;
+			final NamedElement ne2 = (NamedElement) type2;
+			return ne1.getName().equals(ne2.getName());
+		}
+		return false;
+	}
+
 
     @Override
     public void visit(final ChangeMethodModifiersEvent changeMethodModifierEvent) {
