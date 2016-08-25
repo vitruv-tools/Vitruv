@@ -1,7 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
@@ -11,7 +9,6 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import org.emftext.language.java.members.Method
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
@@ -21,22 +18,34 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import org.emftext.language.java.statements.Statement
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory
 
-class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransformingPreprocessor {
+class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 
 	private val Code2SEFFFactory code2SEFFfactory
 
-	new(Code2SEFFFactory code2SEFFfactory) {
+	new(UserInteracting userInteracting, Code2SEFFFactory code2SEFFfactory) {
+		super(userInteracting);
 		this.code2SEFFfactory = code2SEFFfactory
 	}
 
-	override doesProcess(VitruviusChange change) {
-		if (change instanceof TransactionalChange) {
-			return match(change);
+	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
+		if (change instanceof TransactionalChange && match(change as TransactionalChange)) {
+			val compositeChange = change as TransactionalChange;
+			val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
+			new Callable<TransformationResult>() {
+				public override TransformationResult call() {
+					return Java2PcmMethodBodyChangePreprocessor.this
+						.executeClassMethodBodyChangeRefiner(correspondenceModel, userInteracting, compositeChange);
+				}
+			}) as Command;
+			return new ChangeProcessorResult(change, #[command]);//VitruviusChangeFactory.instance.createEmptyChange(change.URI), #[command]);
 		}
-		return false;
+		return new ChangeProcessorResult(change, #[]);
 	}
-	
+		
 	def match(TransactionalChange change) {
 		val Iterable<JavaFeatureEChange> eChanges = change.EChanges.filter(UpdateReferenceEChange).filter[isContainment].filter(JavaFeatureEChange);
 		if (eChanges.size != change.EChanges.size) {
@@ -78,21 +87,8 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 		return true
 	}
 
-	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
-		val compositeChange = change as TransactionalChange;
-		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
-			new Callable<TransformationResult>() {
-				public override TransformationResult call() {
-					return Java2PcmMethodBodyChangePreprocessor.this
-					.executeClassMethodBodyChangeRefiner(blackboard, userInteracting, compositeChange);
-				}
-			}) as Command;
-		return #[command];
-	}
-
-	private def TransformationResult executeClassMethodBodyChangeRefiner(Blackboard blackboard,
+	private def TransformationResult executeClassMethodBodyChangeRefiner(CorrespondenceModel correspondenceModel,
 		UserInteracting userInteracting, TransactionalChange compositeChange) {
-		val CorrespondenceModel correspondenceModel = blackboard.getCorrespondenceModel();
 		val ConcreteChange emfChange = compositeChange.getChanges().get(0) as ConcreteChange;
 		val JavaFeatureEChange<?,?> eFeatureChange = emfChange.getEChanges().get(0) as JavaFeatureEChange<?,?>;
 		val oldMethod = eFeatureChange.getOldAffectedEObject() as Method;
@@ -110,7 +106,9 @@ class Java2PcmMethodBodyChangePreprocessor implements Change2CommandTransforming
 		val ClassMethodBodyChangedTransformation methodBodyChanged = new ClassMethodBodyChangedTransformation(
 			oldMethod, newMethod, basicComponentFinding, classification, interfaceOfExternalCallFinder,
 			resourceDemandingBehaviourForClassMethodFinding);
-			return methodBodyChanged.execute(blackboard, userInteracting);
+			return methodBodyChanged.execute(correspondenceModel, userInteracting);
 		}
+		
+		
 	}
 		

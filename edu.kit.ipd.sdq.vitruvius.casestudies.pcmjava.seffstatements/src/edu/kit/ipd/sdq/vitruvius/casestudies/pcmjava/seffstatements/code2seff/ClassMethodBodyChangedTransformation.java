@@ -74,28 +74,28 @@ public class ClassMethodBodyChangedTransformation {
      * correspondences for the new method (and its inner methods)
      *
      */
-    public TransformationResult execute(final Blackboard blackboard, final UserInteracting userInteracting) {
-        if (!this.isArchitectureRelevantChange(blackboard.getCorrespondenceModel())) {
+    public TransformationResult execute(final CorrespondenceModel correspondenceModel, final UserInteracting userInteracting) {
+        if (!this.isArchitectureRelevantChange(correspondenceModel)) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");
             return new TransformationResult();
         }
         // 1)
-        this.removeCorrespondingAbstractActions(blackboard.getCorrespondenceModel());
+        this.removeCorrespondingAbstractActions(correspondenceModel);
 
         // 2)
         final ResourceDemandingBehaviour resourceDemandingBehaviour = this
-                .findRdBehaviorToInsertElements(blackboard.getCorrespondenceModel());
+                .findRdBehaviorToInsertElements(correspondenceModel);
         final BasicComponent basicComponent = this.basicComponentFinder.findBasicComponentForMethod(this.newMethod,
-                blackboard.getCorrespondenceModel());
+        		correspondenceModel);
         this.executeSoMoXForMethod(basicComponent, resourceDemandingBehaviour);
 
         // 3)
         this.connectCreatedResourceDemandingBehaviour(resourceDemandingBehaviour,
-                blackboard.getCorrespondenceModel());
+        		correspondenceModel);
 
         // 4)
-        this.createNewCorrespondences(blackboard.getCorrespondenceModel(), resourceDemandingBehaviour,
+        this.createNewCorrespondences(correspondenceModel, resourceDemandingBehaviour,
                 basicComponent);
 
         return new TransformationResult();
