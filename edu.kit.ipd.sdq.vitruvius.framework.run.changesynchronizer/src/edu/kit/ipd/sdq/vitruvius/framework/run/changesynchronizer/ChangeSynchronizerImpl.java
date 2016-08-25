@@ -37,8 +37,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
@@ -151,8 +149,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    private void getOldObjectTUIDs(final VitruviusChange recordedChange,
-            final CorrespondenceModel correspondenceModel, final Map<EObject, TUID> tuidMap) {
+    private void getOldObjectTUIDs(final VitruviusChange recordedChange, final CorrespondenceModel correspondenceModel,
+            final Map<EObject, TUID> tuidMap) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
             List<EObject> objects = new ArrayList<EObject>();
@@ -175,18 +173,18 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 }
             }
         } else if (recordedChange instanceof GeneralChange) {
-            for (EChange eChange : recordedChange.getEChanges()) {
-                if (eChange instanceof JavaFeatureEChange<?, ?>) {
-                    if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
-                        JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-                        TUID tuid = correspondenceModel
-                                .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
-                        if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
-                            tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
-                        }
-                    }
-                }
-            }
+            // for (EChange eChange : recordedChange.getEChanges()) {
+            // if (eChange instanceof JavaFeatureEChange<?, ?>) {
+            // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
+            // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
+            // TUID tuid = correspondenceModel
+            // .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
+            // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
+            // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
+            // }
+            // }
+            // }
+            // }
         } else if (recordedChange instanceof CompositeChange) {
             CompositeChange change = (CompositeChange) recordedChange;
             for (VitruviusChange innerChange : change.getChanges()) {
