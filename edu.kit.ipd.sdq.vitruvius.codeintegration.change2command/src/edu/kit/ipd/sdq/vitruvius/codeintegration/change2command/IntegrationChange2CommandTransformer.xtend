@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
@@ -28,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRoot
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class IntegrationChange2CommandTransformer {
 	
@@ -37,17 +37,17 @@ class IntegrationChange2CommandTransformer {
 		this.userInteracting = userInteracting
 	}
 	
-	def compute(EChange change, Blackboard blackboard) {
-		val commands = createCommandsList(change, blackboard)
+	def compute(EChange change, CorrespondenceModel correspondenceModel) {
+		val commands = createCommandsList(change, correspondenceModel)
 		return new IntegrationChange2CommandResult(commands)
 	}
 	
-	private def createCommandsList(EChange change, Blackboard blackboard) {
+	private def createCommandsList(EChange change, CorrespondenceModel correspondenceModel) {
 		// Since all correspondences are considered (not only IntegrationCorrespondences),
 		// only return response commands, if one of the other 2 checks are successful
-		val responseCommands = createResponseCommands(change, blackboard)
+		val responseCommands = createResponseCommands(change, correspondenceModel)
 		val newClassOrInterfaceInIntegratedAreaCommand = createNewClassOrInterfaceInIntegratedAreaCommand(
-			change, blackboard)
+			change, correspondenceModel)
     	if (newClassOrInterfaceInIntegratedAreaCommand != null) {
     		if (responseCommands != null) {
 				return responseCommands
@@ -55,7 +55,7 @@ class IntegrationChange2CommandTransformer {
     		val commands = newClassOrInterfaceInIntegratedAreaCommand.toList as List<? extends Command>
     		return commands
     	}
-    	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, blackboard)
+    	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, correspondenceModel)
     	if (defaultIntegrationChangeCommand != null) {
     		if (responseCommands != null) {
 				return responseCommands
@@ -66,16 +66,16 @@ class IntegrationChange2CommandTransformer {
     	return new ArrayList()
 	}
 	
-	def createResponseCommands(EChange change, Blackboard blackboard) {
+	def createResponseCommands(EChange change, CorrespondenceModel correspondenceModel) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
-		val commands = executor.generateCommandsForEvent(change, blackboard.correspondenceModel)
+		val commands = executor.transformChange(change, correspondenceModel)
 		if (commands != null && commands.size > 0) {
 			return commands
 		}
 		return null
 	}
 	
-	private def createNewClassOrInterfaceInIntegratedAreaCommand(EChange eChange, Blackboard blackboard) {
+	private def createNewClassOrInterfaceInIntegratedAreaCommand(EChange eChange, CorrespondenceModel correspondenceModel) {
         if (eChange instanceof InsertEReference<?,?> && (eChange as InsertEReference<?,?>).isContainment()) { 
         	//Check if this is a creation of a class or interface on file level.
         	//In this case we need to check if any siblings in the package have been integrated
@@ -89,7 +89,7 @@ class IntegrationChange2CommandTransformer {
         		//TODO use IntegrationCorrespondence view of InternalCorrespondenceModel which is
         		//statically typed to Correspondence right now and needs to support views like 
         		//CorrespondenceModel
-                val ci = blackboard.correspondenceModel
+                val ci = correspondenceModel
                 val newCompilationUnitTuid = ci.calculateTUIDFromEObject(cu)
                 val packagePartOfNewTuid = getPackagePart(newCompilationUnitTuid)
     			for (Correspondence corr : ci.getAllCorrespondences()) {
@@ -132,8 +132,8 @@ class IntegrationChange2CommandTransformer {
 		userInteracting.showMessage(UserInteractionType.MODAL, buffer.toString())
 	}
 	
-	private def getDefaultIntegrationChangeCommand(EChange eChange, Blackboard blackboard) {
-        val correspondingIntegratedEObjects = getCorrespondingEObjectsIfIntegrated(eChange, blackboard)
+	private def getDefaultIntegrationChangeCommand(EChange eChange, CorrespondenceModel correspondenceModel) {
+        val correspondingIntegratedEObjects = getCorrespondingEObjectsIfIntegrated(eChange, correspondenceModel)
         if (correspondingIntegratedEObjects != null) {
 	    	val buffer = new StringBuffer()
 	    	buffer.append("Elements in change were integrated into Vitruvius.\n")
@@ -193,8 +193,8 @@ class IntegrationChange2CommandTransformer {
      * @return set of corresponding EObjects if integrated, else null
      */
     private def getCorrespondingEObjectsIfIntegrated(EChange eChange,
-            Blackboard blackboard) {
-        val ci = blackboard.correspondenceModel
+            CorrespondenceModel correspondenceModel) {
+        val ci = correspondenceModel
         var EObject eObj = null
         if (eChange instanceof FeatureEChange<?,?>) {
             eObj = eChange.getAffectedEObject()
