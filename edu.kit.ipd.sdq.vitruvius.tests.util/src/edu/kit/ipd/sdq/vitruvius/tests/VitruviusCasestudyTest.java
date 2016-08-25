@@ -73,13 +73,17 @@ public abstract class VitruviusCasestudyTest {
     }
     
     protected void beforeTest(final Description description) throws Throwable {
-        // ensure that MockupProject is existing
-        this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + description.getMethodName();
+        createTestProject(description);
+    }
+
+    // ensure that MockupProject is existing
+	protected void createTestProject(final Description description) throws CoreException {
+		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + description.getMethodName();
         this.currentTestProject = TestUtil.getProjectByName(this.currentTestProjectName);
         if (!this.currentTestProject.exists()) {
             this.createProject(this.currentTestProject);
         }
-    }
+	}
 
     @BeforeClass
     public static void setUpAllTests() {
