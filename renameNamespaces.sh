@@ -40,7 +40,7 @@ function migrate_project() {
   done
 
   # Replace references in files
-  FILES=$(find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin");
+  FILES=$(find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin" -not -name "*.jar");
   for file in $FILES; do
     echo "Update file $file";
     sed -i "s/edu.kit.ipd.sdq.vitruvius/tools.vitruvius/g" $file;
