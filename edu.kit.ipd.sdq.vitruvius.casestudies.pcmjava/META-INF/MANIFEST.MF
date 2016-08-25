@@ -5,7 +5,6 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;singleton:=tr
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.Activator
 Require-Bundle: org.eclipse.core.runtime,
- edu.kit.ipd.sdq.vitruvius.framework.projects,
  org.eclipse.ui,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,

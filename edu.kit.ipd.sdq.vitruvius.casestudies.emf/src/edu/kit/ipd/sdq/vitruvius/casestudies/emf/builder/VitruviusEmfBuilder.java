@@ -28,7 +28,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.design.metamodelmanager.MetamodelManagerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
@@ -115,8 +114,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     }
 
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
-        final MetamodelManagerImpl metaModelManager = new MetamodelManagerImpl(metaRepositoryImpl);
-        this.vsum = new VSUMImpl(metaModelManager, null, metaRepositoryImpl);
+        this.vsum = new VSUMImpl(metaRepositoryImpl, null, metaRepositoryImpl);
         this.transformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
