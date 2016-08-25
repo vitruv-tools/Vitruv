@@ -45,9 +45,9 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	override createEObject(EObject eObject) {
 		val OperationRequiredRole operationRequiredRole = eObject as OperationRequiredRole
 		val interfaceRequiringEntity = operationRequiredRole.requiringEntity_RequiredRole
-		val jaMoPPClass = blackboard.correspondenceModel.getCorrespondingEObjectsByType(interfaceRequiringEntity, Class).claimOne
+		val jaMoPPClass = correspondenceModel.getCorrespondingEObjectsByType(interfaceRequiringEntity, Class).claimOne
 		val opInterface = operationRequiredRole.requiredInterface__OperationRequiredRole
-		val jaMoPPInterface = blackboard.correspondenceModel.getCorrespondingEObjectsByType(opInterface, Interface).claimOne
+		val jaMoPPInterface = correspondenceModel.getCorrespondingEObjectsByType(opInterface, Interface).claimOne
 		val List<EObject> newEObjects = new ArrayList
 
 		if (null == jaMoPPInterface) {
@@ -104,7 +104,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		
 		val EObject[] oldEObjects = removeEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
-			blackboard.correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
+			correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
 			if (null != oldEObject.eContainer) {
 				return new TransformationResult
 			}
@@ -113,7 +113,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val EObject[] newEObjects = createEObject(affectedEObject)
 		if (null != newEObjects) {
 			for (newEObject : newEObjects) {
-				blackboard.correspondenceModel.createAndAddCorrespondence(newEObject, affectedEObject)
+				correspondenceModel.createAndAddCorrespondence(newEObject, affectedEObject)
 			}
 		}
 		return new TransformationResult
@@ -125,16 +125,16 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel)
+			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return new TransformationResult 
 		}
 		val affectedField = affectedEObjects.filter(typeof(Field))
 		PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedField), newValue, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel, true)
+			featureCorrespondenceMap, correspondenceModel, true)
 		val affectedParam = affectedEObjects.filter(typeof(Parameter))
 			PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedParam), newValue, affectedAttribute,
-				featureCorrespondenceMap, blackboard.correspondenceModel, true)
+				featureCorrespondenceMap, correspondenceModel, true)
 		return new TransformationResult
 	}
 }

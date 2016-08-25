@@ -6,60 +6,29 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.command.Command;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements.Java2PcmPackageMappingMethodBodyChangePreprocessor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util.Java2PcmPackagePreprocessor;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandResult;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.IntegrationChange2CommandTransformer;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChange2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessor;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.DefaultEObjectMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
-public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2CommandTransforming {
-
-    // private static final Logger logger =
-    // Logger.getLogger(PCMJaMoPPChange2CommandTransformerBase.class.getSimpleName());
+public abstract class PCMJaMoPPChange2CommandTransformerBase extends AbstractChange2CommandTransforming {
 
     protected final TransformationExecuter transformationExecuter;
 
-    private final List<Pair<VURI, VURI>> pairList;
-
-    protected UserInteracting userInteracting;
-    
-    private IntegrationChange2CommandTransformer integrationTransformer;
-
-    public PCMJaMoPPChange2CommandTransformerBase() {
+    public PCMJaMoPPChange2CommandTransformerBase(TransformationMetamodelPair metamodelPair) {
+    	super(metamodelPair);
         this.transformationExecuter = new TransformationExecuter();
-        this.initializeTransformationExecuter();
-        final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-        final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
-        final Pair<VURI, VURI> pcm2JaMoPP = new Pair<VURI, VURI>(pcmVURI, jaMoPPVURI);
-        final Pair<VURI, VURI> jamopp2PCM = new Pair<VURI, VURI>(jaMoPPVURI, pcmVURI);
-        this.pairList = new ArrayList<Pair<VURI, VURI>>();
-        this.pairList.add(jamopp2PCM);
-        this.pairList.add(pcm2JaMoPP);
-    }
-
-    protected void initializeTransformationExecuter() {
-        this.userInteracting = new UserInteractor();
-        this.integrationTransformer = new IntegrationChange2CommandTransformer(this.userInteracting);
-        
-        // Mapping for EObjects in order to avoid runtime exceptions
-        this.transformationExecuter.addMapping(new DefaultEObjectMappingTransformation());
-
-        // set userInteractor
-        this.transformationExecuter.setUserInteracting(this.userInteracting);
     }
 
     /**
@@ -69,40 +38,34 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
     public void transformChanges2Commands(final Blackboard blackboard) {
         final List<VitruviusChange> changesForTransformation = blackboard.getAndArchiveChangesForTransformation();
         final List<Command> commands = new ArrayList<Command>();
-        if (this.hasChangeRefinerForChanges(changesForTransformation)) {
-            commands.add(this.executeChangeRefiner(changesForTransformation, blackboard));
-        } else {
-            for (final VitruviusChange change : changesForTransformation) {
-                if (change instanceof ConcreteChange) {
-                	ConcreteChange emfModelChange = (ConcreteChange) change;
-                	// Special behavior for changes to integrated elements
-                	IntegrationChange2CommandResult integrationTransformResult = integrationTransformer.compute(emfModelChange.getEChanges().get(0), blackboard);
-                	if (integrationTransformResult.isIntegrationChange()) {
-                		commands.addAll(integrationTransformResult.getCommands());
-                	} else {
-                		commands.add(this.transformChange2Command(emfModelChange, blackboard));
-                	}
-                } else if (change instanceof CompositeChange) {
-                    commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
-                }
+        for (final VitruviusChange change : changesForTransformation) {
+        	if (change instanceof ConcreteChange) {
+        		ConcreteChange emfModelChange = (ConcreteChange) change;
+               	List<Command> generatedCommands = new Java2PcmPackageMappingMethodBodyChangePreprocessor(getUserInteracting()).transformChange(emfModelChange, blackboard.getCorrespondenceModel()).getGeneratedCommands();
+               	commands.addAll(generatedCommands);
+                // Special behavior for changes to integrated elements
+               	ChangeProcessorResult integrationResult = new CodeIntegrationChangeProcessor(getUserInteracting()).transformChange(emfModelChange, blackboard.getCorrespondenceModel());
+//              IntegrationChange2CommandResult integrationTransformResult = integrationTransformer.compute(emfModelChange.getEChanges().get(0), blackboard.getCorrespondenceModel());
+//              if (integrationTransformResult.isIntegrationChange()) {
+//              	commands.addAll(integrationTransformResult.getCommands());
+//              } else {
+//              	commands.add(this.transformChange2Command(emfModelChange, blackboard));
+//              }
+               	commands.addAll(integrationResult.getGeneratedCommands());
+               	commands.add(this.transformChange2Command(integrationResult.getResultingChange(), blackboard));
+            } else if (change instanceof CompositeChange) {
+            	commands.addAll(this.transformCompositeChange((CompositeChange) change, blackboard));
             }
         }
         blackboard.pushCommands(commands);
     }
 
-    @Override
-    public List<Pair<VURI, VURI>> getTransformableMetamodels() {
-        return this.pairList;
-    }
-
     private VitruviusTransformationRecordingCommand transformChange2Command(final ConcreteChange emfModelChange,
             final Blackboard blackboard) {
-    	Java2PcmPackagePreprocessor packagePreprocessor = new Java2PcmPackagePreprocessor();
-    	if (packagePreprocessor.doesProcess(emfModelChange)) {
-    		packagePreprocessor.processChange(emfModelChange, null, blackboard);
-    	}
+    	ChangeProcessor packagePreprocessor = new Java2PcmPackagePreprocessor(getUserInteracting());
+   		packagePreprocessor.transformChange(emfModelChange, blackboard.getCorrespondenceModel());
         //this.handlePackageInEChange(emfModelChange);
-        this.transformationExecuter.setBlackboard(blackboard);
+        this.transformationExecuter.setCorrespondenceModel(blackboard.getCorrespondenceModel());
 
         final VitruviusTransformationRecordingCommand command = EMFCommandBridge
                 .createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
@@ -131,16 +94,12 @@ public abstract class PCMJaMoPPChange2CommandTransformerBase implements Change2C
         return commands;
     }
 
-    protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
-        return false;
-    }
-
-    protected abstract Command executeChangeRefiner(
-            final List<VitruviusChange> changesForTransformation, final Blackboard blackboard);
-
     @Override
-    public void setUserInteracting(final UserInteracting userInteracting) {
-        this.userInteracting = userInteracting;
-        this.transformationExecuter.setUserInteracting(userInteracting);
+    protected void setup() {
+    	// Mapping for EObjects in order to avoid runtime exceptions
+        this.transformationExecuter.addMapping(new DefaultEObjectMappingTransformation());
+        // set userInteractor
+        this.transformationExecuter.setUserInteracting(getUserInteracting());
     }
+    
 }

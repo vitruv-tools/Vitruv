@@ -41,7 +41,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	override createEObject(EObject eObject) {
 		val interfaceMethod = eObject as Method
 		val interfaceClassifier = interfaceMethod.containingConcreteClassifier
-		val operationInterfaces = blackboard.correspondenceModel.getCorrespondingEObjectsByType(interfaceClassifier,
+		val operationInterfaces = correspondenceModel.getCorrespondingEObjectsByType(interfaceClassifier,
 			OperationInterface)
 		if (!operationInterfaces.nullOrEmpty) {
 			for (opInterface : operationInterfaces) {
@@ -58,7 +58,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override removeEObject(EObject eObject) {
-		val correspondingObjects = blackboard.correspondenceModel.getCorrespondingEObjects(eObject)
+		val correspondingObjects = correspondenceModel.getCorrespondingEObjects(eObject)
 		return correspondingObjects
 	}
 
@@ -66,7 +66,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		Object newValue) {
 		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard, transformationResult)
+			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult
 	}
 
@@ -79,21 +79,21 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		if (oldAffectedEObject instanceof Method &&
 			affectedReference.name.equals(JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
-			val correspondingPCMSignatures = blackboard.correspondenceModel.
+			val correspondingPCMSignatures = correspondenceModel.
 				getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
 			if (correspondingPCMSignatures.nullOrEmpty) {
 				return transformationResult
 			}
 			for (correspondingSignature : correspondingPCMSignatures) {
 				val Repository repo = correspondingSignature.interface__OperationSignature.repository__Interface
-				val oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(correspondingSignature)
+				val oldTUID = correspondenceModel.calculateTUIDFromEObject(correspondingSignature)
 				val DataType newReturnValue = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(newValue as TypeReference,
-						blackboard.correspondenceModel, userInteracting, repo, (newAffectedEObject as Method).arrayDimension)
+						correspondenceModel, userInteracting, repo, (newAffectedEObject as Method).arrayDimension)
 				correspondingSignature.returnType__OperationSignature = newReturnValue
 
 				// guess this is not necessary since the id stay the same
-				blackboard.correspondenceModel.updateTUID(oldTUID, correspondingSignature)
+				correspondenceModel.updateTUID(oldTUID, correspondingSignature)
 			}
 		}
 		transformationResult
@@ -108,9 +108,9 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		val transformationResult = new TransformationResult
 		if (!newCorrespondingEObjects.nullOrEmpty) {
-			var operationSignatues = blackboard.correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
+			var operationSignatues = correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
 			if(operationSignatues.nullOrEmpty){
-				operationSignatues = blackboard.correspondenceModel.getCorrespondingEObjectsByType(newAffectedEObject, OperationSignature)
+				operationSignatues = correspondenceModel.getCorrespondingEObjectsByType(newAffectedEObject, OperationSignature)
 			}
 			val pcmParameters = newCorrespondingEObjects.filter(typeof(Parameter))
 			if (!operationSignatues.nullOrEmpty) {
@@ -126,12 +126,12 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 			}
 		}
 
-		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, blackboard, transformationResult)
+		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, correspondenceModel, transformationResult)
 		if (newValue instanceof TypedElement) {
 			val newCorrespondingOperationProvidedRoles = JaMoPP2PCMUtils.
-				checkAndAddOperationRequiredRole(newValue as TypedElement, blackboard.correspondenceModel,
+				checkAndAddOperationRequiredRole(newValue as TypedElement, correspondenceModel,
 					userInteracting)
-			JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingOperationProvidedRoles, blackboard, transformationResult)
+			JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingOperationProvidedRoles, correspondenceModel, transformationResult)
 		}
 		return transformationResult
 	}
@@ -143,9 +143,9 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		if(affectedReference.name != JaMoPPNamespace.JAMOPP_STATEMENTS_REFERENCE){
-			val oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(oldAffectedEObject)
-			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
-			blackboard.correspondenceModel.updateTUID(oldTUID, oldAffectedEObject)
+			val oldTUID = correspondenceModel.calculateTUIDFromEObject(oldAffectedEObject)
+			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
+			correspondenceModel.updateTUID(oldTUID, oldAffectedEObject)
 		}
 		return new TransformationResult
 	}

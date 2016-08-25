@@ -54,7 +54,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		compUnit.classifiers.add(classifier)
 		classifier.annotationsAndModifiers.add(ModifiersFactory.eINSTANCE.createPublic)
 
-		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(blackboard.correspondenceModel,
+		var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceModel,
 			cdt.repository__DataType, cdt.entityName, userInteracting)
 		compUnit.name = cdt.entityName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
 		if (null != datatypePackage) {
@@ -76,14 +76,14 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 		Object newValue) {
 		val transformationResult = new TransformationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel)
+			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, false,
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, correspondenceModel, false,
 				transformationResult, eObject)
 		}
 		transformationResult
@@ -99,15 +99,15 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 			return transformationResult
 		}
 		val compositeDataType = newAffectedEObject as CompositeDataType
-		val jaMoPPDataType = blackboard.correspondenceModel.
+		val jaMoPPDataType = correspondenceModel.
 			getCorrespondingEObjectsByType(compositeDataType, Class).claimOne
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
 			if (newCorrespondingEObject instanceof Member) {
 				jaMoPPDataType.members.add(newCorrespondingEObject)
 			}
-			blackboard.correspondenceModel.createAndAddCorrespondence(newValue, newCorrespondingEObject)
+			correspondenceModel.createAndAddCorrespondence(newValue, newCorrespondingEObject)
 			if (newCorrespondingEObject instanceof JavaRoot) {
-				PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
+				PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, correspondenceModel,
 					PCM2JaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 			}
 		}

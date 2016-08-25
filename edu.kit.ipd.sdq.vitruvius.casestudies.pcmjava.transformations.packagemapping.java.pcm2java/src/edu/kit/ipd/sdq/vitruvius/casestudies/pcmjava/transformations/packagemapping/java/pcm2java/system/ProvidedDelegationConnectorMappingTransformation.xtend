@@ -48,12 +48,12 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		val operationInterface = providedDelegationRole.innerProvidedRole_ProvidedDelegationConnector.
 			providedInterface__OperationProvidedRole
 		try {
-			val field = blackboard.correspondenceModel.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
+			val field = correspondenceModel.getCorrespondingEObjectsByType(assemblyContext, Field).claimOne
 			val Set<EObject> newEObjects = newHashSet()
 			for (opSig : operationInterface.signatures__OperationInterface) {
 
 				// get corresponding (interface) method and find or create a similar class method in the current class
-				val correspondingMethods = blackboard.correspondenceModel.
+				val correspondingMethods = correspondenceModel.
 					getCorrespondingEObjectsByType(opSig, Method)
 				for (correspondingMethod : correspondingMethods) {
 					val methodInClassifier = findOrCreateMethodDeclarationInClassifier(correspondingMethod,

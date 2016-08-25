@@ -55,17 +55,17 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 				if (!systems.nullOrEmpty) {
 					for (system : systems) {
 						if (null == system.eResource) {
-							PCMJaMoPPUtils.addRootChangeToTransformationResult(system, blackboard, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
+							PCMJaMoPPUtils.addRootChangeToTransformationResult(system, correspondenceModel, PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 						} else {
 							//do nothing, cause save is done later
 						}
-						blackboard.correspondenceModel.createAndAddCorrespondence(system, newValue)
+						correspondenceModel.createAndAddCorrespondence(system, newValue)
 					}
 				}
 			}
 			JaMoPP2PCMUtils.
 				createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-					blackboard, transformationResult)
+					correspondenceModel, transformationResult)
 		}
 		transformationResult
 	}
@@ -75,7 +75,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 	
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
+		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, correspondenceModel)
 		return new TransformationResult 
 	}
 

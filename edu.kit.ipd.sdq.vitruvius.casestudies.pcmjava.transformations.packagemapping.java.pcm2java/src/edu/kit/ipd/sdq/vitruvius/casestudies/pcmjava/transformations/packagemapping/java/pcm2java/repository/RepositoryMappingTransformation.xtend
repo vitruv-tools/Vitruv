@@ -63,11 +63,11 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 			return transformationResult
 		}
 		newCorrespondingEObjects.forEach [ newCorrespondingEObject |
-			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, blackboard,
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(newCorrespondingEObject, correspondenceModel,
 				PCMJaMoPPUtils.getSourceModelVURI(newRootEObject), transformationResult)
 		]
 		for (correspondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceModel.createAndAddCorrespondence(newRootEObject, correspondingEObject)
+			correspondenceModel.createAndAddCorrespondence(newRootEObject, correspondingEObject)
 		}
 		return transformationResult
 	}
@@ -78,19 +78,19 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
 		val transformationResult = new TransformationResult
-		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldRootEObject, null, blackboard)
+		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldRootEObject, null, correspondenceModel)
 		return transformationResult 
 	}
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		return PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, blackboard)
+		return PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, correspondenceModel)
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, correspondenceModel)
 	}
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
@@ -101,12 +101,12 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 		}
 		val javaRoots = newCorrespondingEObjects.filter(typeof(JavaRoot))
 		javaRoots.forEach [ javaRoot |
-			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, blackboard,
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(javaRoot, correspondenceModel,
 				PCMJaMoPPUtils.getSourceModelVURI(newAffectedEObject), transformationResult)
 		]
 
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceModel.createAndAddCorrespondence(newValue, jaMoPPElement)
+			correspondenceModel.createAndAddCorrespondence(newValue, jaMoPPElement)
 		}
 		return transformationResult
 	}

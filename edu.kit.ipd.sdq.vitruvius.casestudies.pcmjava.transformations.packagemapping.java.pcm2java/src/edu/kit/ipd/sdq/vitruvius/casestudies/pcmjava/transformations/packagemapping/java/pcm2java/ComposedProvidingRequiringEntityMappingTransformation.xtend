@@ -43,7 +43,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, correspondenceModel)
 	}
 
 	/**
@@ -57,7 +57,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 			newValue instanceof NamedElement) {
 			PCM2JaMoPPUtils.
 				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
-					newValue as NamedElement, newCorrespondingEObjects, blackboard)
+					newValue as NamedElement, newCorrespondingEObjects, correspondenceModel)
 		} 
 		return new TransformationResult
 	}

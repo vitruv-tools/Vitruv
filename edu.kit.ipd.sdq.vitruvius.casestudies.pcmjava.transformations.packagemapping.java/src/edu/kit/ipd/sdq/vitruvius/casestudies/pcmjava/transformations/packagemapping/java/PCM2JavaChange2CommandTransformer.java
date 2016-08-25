@@ -1,18 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java;
 
-import java.util.List;
-
-import org.eclipse.emf.common.command.Command;
-
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ClassMethodMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.CompilationUnitMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.FieldMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.InterfaceMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.MethodMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.ModifierMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.PackageMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.TypeReferenceMappingTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.OperationProvidedRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.OperationRequiredRoleMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.repository.BasicComponentMappingTransformation;
@@ -31,18 +20,18 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.ProvidedDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.RequiredDelegationConnectorMappingTransformation;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system.SystemMappingTransformation;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements.Java2PcmPackageMappingMethodBodyChangePreprocessor;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
-public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
+public class PCM2JavaChange2CommandTransformer extends PCMJaMoPPChange2CommandTransformerBase {
 
-    public PCMJaMoPPPOJOChange2CommandTransformer() {
+    public PCM2JavaChange2CommandTransformer() {
+        super(new TransformationMetamodelPair(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE), 
+        		VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)));
     }
 
     @Override
-    protected void initializeTransformationExecuter() {
-        // PCM2JaMoPP
+    protected void setup() {
         // Repository
         this.transformationExecuter.addMapping(new RepositoryMappingTransformation());
         this.transformationExecuter.addMapping(new BasicComponentMappingTransformation());
@@ -65,36 +54,8 @@ public class PCMJaMoPPPOJOChange2CommandTransformer extends PCMJaMoPPChange2Comm
         this.transformationExecuter.addMapping(new OperationProvidedRoleMappingTransformation());
         this.transformationExecuter.addMapping(new OperationRequiredRoleMappingTransformation());
 
-        // JaMoPP2PCM
-        this.transformationExecuter.addMapping(new PackageMappingTransformation());
-        this.transformationExecuter.addMapping(new CompilationUnitMappingTransformation());
-        this.transformationExecuter.addMapping(new ClassMappingTransformation());
-        this.transformationExecuter.addMapping(new InterfaceMappingTransformation());
-        this.transformationExecuter.addMapping(new MethodMappingTransformation());
-        this.transformationExecuter.addMapping(new ParameterMappingTransformation());
-        this.transformationExecuter.addMapping(new ModifierMappingTransformation());
-        this.transformationExecuter.addMapping(new FieldMappingTransformation());
-        this.transformationExecuter.addMapping(new ClassMethodMappingTransformation());
-        this.transformationExecuter.addMapping(new TypeReferenceMappingTransformation());
-
-        // execute initializetransformationExecuter as last statement: it sets the user interactor
-        // for
-        // all mappings
-        super.initializeTransformationExecuter();
-    }
-
-    @Override
-    protected boolean hasChangeRefinerForChanges(final List<VitruviusChange> changesForTransformation) {
-        if (changesForTransformation.size() == 1) {
-        	return new Java2PcmPackageMappingMethodBodyChangePreprocessor().doesProcess(changesForTransformation.get(0));
-        }
-        return false;
-    }
-
-    @Override
-    protected Command executeChangeRefiner(final List<VitruviusChange> changesForTransformation,
-            final Blackboard blackboard) {
-    	return new Java2PcmPackageMappingMethodBodyChangePreprocessor().processChange(changesForTransformation.get(0), null, blackboard).iterator().next();
+        // call super setup as last statement: it sets the default mapping and user interactor for all mappings
+        super.setup();
     }
 
 }

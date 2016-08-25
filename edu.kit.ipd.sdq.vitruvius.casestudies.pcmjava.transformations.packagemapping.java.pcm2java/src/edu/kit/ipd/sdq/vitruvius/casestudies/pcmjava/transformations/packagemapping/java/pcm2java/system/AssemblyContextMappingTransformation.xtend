@@ -54,7 +54,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, correspondenceModel)
 	}
 
 	/**
@@ -70,7 +70,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		}
 		if (affectedReference.name.equals(PCMNamespace.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
-			val typedElementCorrespondences = blackboard.correspondenceModel.
+			val typedElementCorrespondences = correspondenceModel.
 				getCorrespondingEObjectsByType(affectedEObject as AssemblyContext, Field)
 			if (typedElementCorrespondences.nullOrEmpty) {
 				val assemblyContext = affectedEObject as AssemblyContext
@@ -81,17 +81,17 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 				val composedProvidingRequiringEntity = assemblyContext.parentStructure__AssemblyContext
 				PCM2JaMoPPUtils.
 					handleAssemblyContextAddedAsNonRootEObjectInList(composedProvidingRequiringEntity, assemblyContext,
-						newEObjects, blackboard)
+						newEObjects, correspondenceModel)
 
 			} else {
-				val jaMoPPClass = blackboard.correspondenceModel.
+				val jaMoPPClass = correspondenceModel.
 					getCorrespondingEObjectsByType(newValue as RepositoryComponent, Class).claimOne
 
 				//update existing correspondence
 				for (typedElement : typedElementCorrespondences) {
-					val oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(typedElement)
+					val oldTUID = correspondenceModel.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
-					blackboard.correspondenceModel.updateTUID(oldTUID, typedElement)
+					correspondenceModel.updateTUID(oldTUID, typedElement)
 				}
 			}
 		}
@@ -107,8 +107,8 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		var Class jaMoPPClass = null
 		var Class jaMoPPCompositeClass = null
 		try {
-			jaMoPPClass = blackboard.correspondenceModel.getCorrespondingEObjectsByType(component, Class).claimOne
-			jaMoPPCompositeClass = blackboard.correspondenceModel.
+			jaMoPPClass = correspondenceModel.getCorrespondingEObjectsByType(component, Class).claimOne
+			jaMoPPCompositeClass = correspondenceModel.
 				getCorrespondingEObjectsByType(assemblyContext.parentStructure__AssemblyContext, Class).claimOne
 
 		} catch (RuntimeException e) {

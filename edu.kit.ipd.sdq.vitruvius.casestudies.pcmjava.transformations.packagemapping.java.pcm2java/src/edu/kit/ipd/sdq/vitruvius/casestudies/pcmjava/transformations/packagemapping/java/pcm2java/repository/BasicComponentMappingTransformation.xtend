@@ -29,7 +29,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 		val BasicComponent basicComponent = eObject as BasicComponent
 
 		var Package rootPackage = PCM2JaMoPPUtils.findCorrespondingPackageByName(
-			basicComponent.repository__RepositoryComponent.entityName, blackboard.correspondenceModel,
+			basicComponent.repository__RepositoryComponent.entityName, correspondenceModel,
 			basicComponent.repository__RepositoryComponent)
 
 		//create all necessary elements
@@ -44,7 +44,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			return transformationResult
 		}
 		for (jaMoPPElement : newCorrespondingEObjects) {
-			blackboard.correspondenceModel.createAndAddCorrespondence(newValue.toList, jaMoPPElement.toList)
+			correspondenceModel.createAndAddCorrespondence(newValue.toList, jaMoPPElement.toList)
 		}
 		transformationResult
 	}
@@ -55,7 +55,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
+		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
 	}
 
 	/**
@@ -68,7 +68,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		return PCM2JaMoPPUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard)
+			featureCorrespondenceMap, correspondenceModel)
 	}
 
 	override setCorrespondenceForFeatures() {

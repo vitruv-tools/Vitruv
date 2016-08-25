@@ -51,7 +51,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		correspondingCompilationUnit.classifiers.add(correspondingInterface)
 
 		// add compilation unit to contracts package, which correspondent to the repository
-		val packages = blackboard.correspondenceModel.getCorrespondingEObjectsByType(
+		val packages = correspondenceModel.getCorrespondingEObjectsByType(
 			operationInterface.repository__Interface, Package)
 		logger.info("found " + packages + " packages ")
 		if (!packages.nullOrEmpty) {
@@ -101,13 +101,13 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 			throw new RuntimeException(
 				"unexpeceted value in newMethods parameter " + newMethods.size + " (expected 1):" + newMethods)
 		}
-		val Interface jaMoPPIf = blackboard.correspondenceModel.getCorrespondingEObjectsByType(newAffectedEObject,
+		val Interface jaMoPPIf = correspondenceModel.getCorrespondingEObjectsByType(newAffectedEObject,
 			Interface).get(0)
 
 		for (eObject : newMethods) {
 			val InterfaceMethod newMethod = eObject as InterfaceMethod;
 			jaMoPPIf.members.add(newMethod)
-			blackboard.correspondenceModel.createAndAddCorrespondence(newValue, newMethod)
+			correspondenceModel.createAndAddCorrespondence(newValue, newMethod)
 
 		// the code jaMoPPIf.methods.add(index, newMethod); does not work, because adding a method 
 		// to interface methods does not cause an update of the resource.
@@ -122,19 +122,19 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldMethods) {
-		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
+		PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
 	}
 
 	override removeEObject(EObject eObject) {
 		val OperationInterface operationInterface = eObject as OperationInterface
-		val correspondingObjects = blackboard.correspondenceModel.getCorrespondingEObjects(operationInterface)
+		val correspondingObjects = correspondenceModel.getCorrespondingEObjects(operationInterface)
 		if (!correspondingObjects.nullOrEmpty) {
 			for (correspondingObject : correspondingObjects) {
 
 				// TODO: check wheather the CompilationUnit is deleted
 				EcoreUtil.remove(correspondingObject)
 			}
-			blackboard.correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(operationInterface.toSet)
+			correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(operationInterface.toSet)
 		}
 		return null
 	}
@@ -144,12 +144,12 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		val transformationResult = new TransformationResult
 		var Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(eObject, affectedAttribute, featureCorrespondenceMap,
-				blackboard.correspondenceModel);
+				correspondenceModel);
 		if (correspondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}
 		val cu = correspondingEObjects.filter(typeof(CompilationUnit)).get(0)
-		PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, false,
+		PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, correspondenceModel, false,
 			transformationResult, eObject)
 		return transformationResult
 

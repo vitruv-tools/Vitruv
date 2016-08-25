@@ -15,7 +15,7 @@ class CompositeComponentMappingTransformation extends ComposedProvidingRequiring
 		if(eObject instanceof CompositeComponent){
 			val compositeComponent = eObject as CompositeComponent
 			val repository = compositeComponent.repository__RepositoryComponent
-			return PCM2JaMoPPUtils.findCorrespondingPackageByName(repository.entityName, blackboard.correspondenceModel, repository)
+			return PCM2JaMoPPUtils.findCorrespondingPackageByName(repository.entityName, correspondenceModel, repository)
 		}
 		return null
 	}

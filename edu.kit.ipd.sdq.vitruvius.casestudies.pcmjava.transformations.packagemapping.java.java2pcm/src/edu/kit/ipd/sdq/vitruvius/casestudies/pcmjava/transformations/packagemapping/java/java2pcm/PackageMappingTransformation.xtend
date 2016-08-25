@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
@@ -18,6 +17,7 @@ import org.palladiosimulator.pcm.system.SystemFactory
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -36,13 +36,13 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	 * If yes set correspondenceRepositoryAlreadyExists to true otherwise to false.
 	 * If a repository exists we do not have to create a new one in addEObject
 	 */
-	override void setBlackboard(Blackboard blackboard) {
-		super.setBlackboard(blackboard)
+	override void setCorrespondenceModel(CorrespondenceModel correspondenceModel) {
+		super.setCorrespondenceModel(correspondenceModel)
 		checkCorrespondenceRepository()
 	}
 
 	def boolean checkCorrespondenceRepository() {
-		val repositorys = blackboard.correspondenceModel.getAllEObjectsOfTypeInCorrespondences(Repository)
+		val repositorys = correspondenceModel.getAllEObjectsOfTypeInCorrespondences(Repository)
 		if (null == repositorys || 0 == repositorys.size) {
 			correspondenceRepositoryAlreadyExists = false
 		} else {
@@ -75,7 +75,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
 		//if the package already has already a correspondence 
 		//(which can happen when the package was created by the PCM2JaMoPP transformation) nothing has do be done 
-		if (!blackboard.correspondenceModel.getCorrespondences(jaMoPPPackage.toList).nullOrEmpty) {
+		if (!correspondenceModel.getCorrespondences(jaMoPPPackage.toList).nullOrEmpty) {
 			return null
 		}
 		var packageName = jaMoPPPackage.name
@@ -138,7 +138,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
-				blackboard, transformationResult)
+				correspondenceModel, transformationResult)
 		return transformationResult
 	}
 
@@ -183,7 +183,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		}
 		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue,
-			featureCorrespondenceMap, blackboard, transformationResult)
+			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult
 	}
 

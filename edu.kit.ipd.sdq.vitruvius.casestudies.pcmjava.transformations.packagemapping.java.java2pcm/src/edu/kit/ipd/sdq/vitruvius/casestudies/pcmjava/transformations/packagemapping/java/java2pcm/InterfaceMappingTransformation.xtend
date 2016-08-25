@@ -41,7 +41,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		val Interface jaMoPPInterface = eObject as Interface
 		try {
 			val Package jaMoPPPackage = PCM2JaMoPPUtils.
-				getContainingPackageFromCorrespondenceModel(jaMoPPInterface, blackboard.correspondenceModel)
+				getContainingPackageFromCorrespondenceModel(jaMoPPInterface, correspondenceModel)
 			var boolean createInterface = false
 			if (null != jaMoPPPackage && jaMoPPPackage.name.equals("contracts")) {
 
@@ -57,7 +57,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 			if (createInterface) {
 				var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 				opInterface.setEntityName(jaMoPPInterface.name)
-				val Repository repo = JaMoPP2PCMUtils.getRepository(blackboard.correspondenceModel)
+				val Repository repo = JaMoPP2PCMUtils.getRepository(correspondenceModel)
 				opInterface.setRepository__Interface(repo)
 				return opInterface.toList
 			}
@@ -77,7 +77,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
-				blackboard, transformationResult)
+				correspondenceModel, transformationResult)
 		return transformationResult
 	}
 
@@ -96,14 +96,14 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject oldValue,
 		int index, EObject[] oldCorrespondingEObjectsToDelete) {
-			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, blackboard)
+			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
 	}
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
 		val transformationResult = new TransformationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
-			featureCorrespondenceMap, blackboard, transformationResult)
+			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult
 	}
 
