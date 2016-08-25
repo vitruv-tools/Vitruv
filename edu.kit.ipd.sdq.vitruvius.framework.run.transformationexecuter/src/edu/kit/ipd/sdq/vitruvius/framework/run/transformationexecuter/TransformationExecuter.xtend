@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
@@ -25,22 +24,23 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.referen
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 public class TransformationExecuter {
 
 	val private static final Logger logger = Logger.getLogger(TransformationExecuter.simpleName)
 
 	val protected ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
-	var protected Blackboard blackboard
+	var protected CorrespondenceModel correspondenceModel
 
 	new() {
 		mappingTransformations = new ClaimableHashMap<Class<?>, EObjectMappingTransformation>()
 	}
 
-	def void setBlackboard(Blackboard blackboard) {
-		this.blackboard = blackboard
+	def void setCorrespondenceModel(CorrespondenceModel correspondenceModel) {
+		this.correspondenceModel = correspondenceModel
 		for (mappingTransformation : mappingTransformations.values) {
-			mappingTransformation.setBlackboard(blackboard)
+			mappingTransformation.setCorrespondenceModel(correspondenceModel)
 		}
 	}
 
@@ -62,7 +62,7 @@ public class TransformationExecuter {
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
 			val EObject newAffectedEObject = eFeatureChange.affectedEObject
 			if (null != oldAffectedEObject && null != newAffectedEObject) {
-				blackboard.correspondenceModel.updateTUID(oldAffectedEObject, newAffectedEObject)
+				correspondenceModel.updateTUID(oldAffectedEObject, newAffectedEObject)
 			}
 		}
 	}
@@ -343,8 +343,8 @@ public class TransformationExecuter {
 //	}
 
 	def public addMapping(EObjectMappingTransformation transformation) {
-		if (null != blackboard) {
-			transformation.setBlackboard(blackboard)
+		if (null != correspondenceModel) {
+			transformation.setCorrespondenceModel(correspondenceModel)
 		}
 		mappingTransformations.putClaimingNullOrSameMapped(transformation.classOfMappedEObject, transformation)
 	}
