@@ -19,5 +19,10 @@ Require-Bundle: org.junit,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util
-Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.tests
+ edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
+Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.tests,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util

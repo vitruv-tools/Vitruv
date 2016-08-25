@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.tests;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,41 +26,30 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.ui.dialogs.IOverwriteQuery;
-import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
-import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.osgi.framework.Bundle;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
+import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util.CodeIntegrationUtils;
 
 @SuppressWarnings("restriction")
 public class CodeIntegrationTest {
 
     private static final Logger logger = Logger.getLogger(CodeIntegrationTest.class.getSimpleName());
-
-    private static final String TEST_BUNDLE_NAME = "edu.kit.ipd.sdq.vitruvius.codeintegration.tests";
-    private static final String TEST_PROJECT_NAME = "eu.fpetersen.cbs.pc";
-    private static final String SOURCE_CODE_PATH = "example_code/eu.fpetersen.cbs.pc";
 
     private static final String META_PROJECT_NAME = "vitruvius.meta";
     private IProject testProject;
@@ -72,7 +59,7 @@ public class CodeIntegrationTest {
     public void beforeTest() throws InvocationTargetException, InterruptedException, IOException, URISyntaxException {
         this.workspace = ResourcesPlugin.getWorkspace();
 
-        this.importTestProjectFromBundleData();
+        CodeIntegrationUtils.importTestProjectFromBundleData(this.workspace, getTestProjectName(), getTestBundleName(), getTestSourceAndModelFolder());
 
         final IProject project = this.workspace.getRoot().getProject(this.getTestProjectName());
         assert project != null;
@@ -80,48 +67,21 @@ public class CodeIntegrationTest {
     }
 
     protected String getTestProjectName() {
-        return TEST_PROJECT_NAME;
+        return CodeIntegrationTestCBSNamespace.TEST_PROJECT_NAME;
     }
 
     protected String getTestBundleName() {
-        return TEST_BUNDLE_NAME;
+        return CodeIntegrationTestCBSNamespace.TEST_BUNDLE_NAME;
     }
 
     protected String getTestSourceAndModelFolder() {
-        return SOURCE_CODE_PATH;
+        return CodeIntegrationTestCBSNamespace.SOURCE_CODE_PATH;
     }
 
     protected IProject getTestProject() {
         return this.testProject;
     }
 
-    private void importTestProjectFromBundleData()
-            throws IOException, URISyntaxException, InvocationTargetException, InterruptedException {
-        final IOverwriteQuery overwriteQuery = new IOverwriteQuery() {
-            @Override
-            public String queryOverwrite(final String file) {
-                return ALL;
-            }
-        };
-        final IPath workspacePath = this.workspace.getRoot().getFullPath().append("/" + this.getTestProjectName());
-
-        final Bundle bundle = Platform.getBundle(this.getTestBundleName());
-        final URL projectBluePrintBundleURL = bundle.getEntry(this.getTestSourceAndModelFolder());
-        final URL fileURL = FileLocator.resolve(projectBluePrintBundleURL);
-        final File file = new File(fileURL.toURI());
-
-        final String baseDir = file.getAbsolutePath();// location of files to import
-        final ImportOperation importOperation = new ImportOperation(workspacePath, new File(baseDir),
-                FileSystemStructureProvider.INSTANCE, overwriteQuery);
-        importOperation.setCreateContainerStructure(false);
-        final DoneFlagProgressMonitor progress = new DoneFlagProgressMonitor();
-        importOperation.run(progress);
-
-        // Wait for the project to be imported
-        while (!progress.isDone()) {
-            Thread.sleep(100);
-        }
-    }
 
     @After
     public void afterTest() throws CoreException, InterruptedException {
@@ -148,8 +108,7 @@ public class CodeIntegrationTest {
 
     @Test
     public void testStandardCodeIntegration() throws Throwable {
-        final IntegrateProjectHandler integrateProjectHander = new IntegrateProjectHandler();
-        integrateProjectHander.integrateProject(this.testProject);
+        CodeIntegrationUtils.integratProject(getTestProject());
 
         final IWorkspace workspace = ResourcesPlugin.getWorkspace();
         final IProject metaProject = workspace.getRoot().getProject(META_PROJECT_NAME);
