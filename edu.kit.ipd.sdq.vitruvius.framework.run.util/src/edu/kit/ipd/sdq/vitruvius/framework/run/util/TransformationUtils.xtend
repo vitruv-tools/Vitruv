@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.run.util
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -14,11 +13,11 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class TransformationUtils {
 
 	val private static Logger logger = Logger.getLogger(TransformationUtils)
-
 	private new() {
 	}
 
@@ -30,24 +29,24 @@ class TransformationUtils {
 		return eObject.eClass.EAllReferences.filter[reference|reference.name.equals(referenceName)].iterator.next
 	}
 
-	def public static deleteNonRootEObjectInList(EObject affectedEObject, EObject oldEObject, Blackboard blackboard, Set<Class<?>> rootObjects) {
+	def public static deleteNonRootEObjectInList(EObject affectedEObject, EObject oldEObject, CorrespondenceModel correspondenceModel, Set<Class<?>> rootObjects) {
 		val transformationResult = new TransformationResult
-		removeCorrespondenceAndAllObjects(oldEObject, affectedEObject, blackboard, rootObjects)
+		removeCorrespondenceAndAllObjects(oldEObject, affectedEObject, correspondenceModel, rootObjects)
 		return transformationResult
 	}
 
 	def static TransformationResult removeCorrespondenceAndAllObjects(EObject object, EObject exRootObject,
-		Blackboard blackboard, Set<Class<?>> rootObjects) {
+		CorrespondenceModel correspondenceModel, Set<Class<?>> rootObjects) {
 		var Set<Correspondence> correspondences = null
 		if (null != exRootObject) {
-			val rootTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(exRootObject)
+			val rootTUID = correspondenceModel.calculateTUIDFromEObject(exRootObject)
 			val String prefix = rootTUID.toString
 			EcoreUtil.remove(object)
-			val tuid = blackboard.correspondenceModel.calculateTUIDFromEObject(object, exRootObject, prefix)
-			correspondences = blackboard.correspondenceModel.
+			val tuid = correspondenceModel.calculateTUIDFromEObject(object, exRootObject, prefix)
+			correspondences = correspondenceModel.
 				removeCorrespondencesThatInvolveAtLeastAndDependendForTUIDs(tuid.toSet)
 		} else {
-			correspondences = blackboard.correspondenceModel.
+			correspondences = correspondenceModel.
 				removeCorrespondencesThatInvolveAtLeastAndDependend(object.toSet)
 		}
 		if (correspondences.nullOrEmpty) {
@@ -55,17 +54,17 @@ class TransformationUtils {
 		}
 		val transformationResult = new TransformationResult
 		for (correspondence : correspondences) {
-			resolveAndRemoveEObject(correspondence.ATUIDs, blackboard, transformationResult, rootObjects)
-			resolveAndRemoveEObject(correspondence.BTUIDs, blackboard, transformationResult, rootObjects)
+			resolveAndRemoveEObject(correspondence.ATUIDs, correspondenceModel, transformationResult, rootObjects)
+			resolveAndRemoveEObject(correspondence.BTUIDs, correspondenceModel, transformationResult, rootObjects)
 		}
 		return transformationResult
 	}
 
-	def private static resolveAndRemoveEObject(Iterable<TUID> tuids, Blackboard blackboard,
+	def private static resolveAndRemoveEObject(Iterable<TUID> tuids, CorrespondenceModel correspondenceModel,
 		TransformationResult transformationResult, Set<Class<?>> rootObjectClasses) {
 		for (tuid : tuids) {
 			try {
-				val eObject = blackboard.correspondenceModel.resolveEObjectFromTUID(tuid)
+				val eObject = correspondenceModel.resolveEObjectFromTUID(tuid)
 				if (null != eObject) {
 					EcoreUtil.delete(eObject)
 				}
