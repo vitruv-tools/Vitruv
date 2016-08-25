@@ -11,6 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.GeneralChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.TransactionalChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.EmptyChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
@@ -46,6 +47,10 @@ class VitruviusChangeFactory {
 	
 	public def TransactionalChange createTransactionalChange() {
 		return new TransactionalChangeImpl();
+	}
+	
+	public def ConcreteChange createEmptyChange(VURI vuri) {
+		return new EmptyChangeImpl(vuri);
 	}
 	
 	public def CompositeChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
