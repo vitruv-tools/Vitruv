@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
 import java.io.IOException;
+import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -60,7 +61,7 @@ public class HelperResponseForNonRootObjectContainerContentsInitializationEffect
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
-    private mir.routines.simpleChangesTests.RoutinesFacade effectFacade;
+    private RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
