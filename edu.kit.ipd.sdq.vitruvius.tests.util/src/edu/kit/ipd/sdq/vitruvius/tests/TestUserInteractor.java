@@ -1,6 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -31,6 +33,8 @@ public class TestUserInteractor implements UserInteracting {
     private final int maxWaittime;
     private final int waitTimeRange;
 
+	private Collection<String> messageLog;
+
     public TestUserInteractor(final int minWaittime, final int maxWaittime) {
         if (minWaittime > maxWaittime) {
             throw new RuntimeException(
@@ -43,6 +47,7 @@ public class TestUserInteractor implements UserInteracting {
         this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>();
         this.concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>();
         this.random = new Random();
+        this.messageLog = new ArrayList<String>();
     }
 
     public TestUserInteractor() {
@@ -67,6 +72,7 @@ public class TestUserInteractor implements UserInteracting {
     @Override
     public void showMessage(final UserInteractionType type, final String message) {
         logger.info("showMessage: " + message + " Type: " + type);
+        this.messageLog.add(message);
     }
 
     @Override
@@ -148,6 +154,10 @@ public class TestUserInteractor implements UserInteracting {
 	
 	public boolean isResourceQueueEmpty() {
 		return this.concurrentURILinkedQueue.isEmpty();
+	}
+	
+	public Collection<String> getMessageLog(){
+		return this.messageLog;
 	}
 	
 }
