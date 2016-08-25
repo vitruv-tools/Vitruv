@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -132,8 +133,8 @@ public final class TestUtil {
      * @param destinationPathAsString
      *            destinationPath in test workspace
      */
-    public static void moveSrcFilesFromMockupProjectToPath(final String destinationPathAsString) {
-        moveFilesFromMockupProjectTo("src", destinationPathAsString);
+    public static void moveSrcFilesFromMockupProjectToPath(final String sourcePathAsString, final String destinationPathAsString) {
+        moveFilesFromMockupProjectTo("src", sourcePathAsString, destinationPathAsString);
     }
 
     /**
@@ -141,8 +142,8 @@ public final class TestUtil {
      *
      * @param destPathWithTimestamp
      */
-    public static void moveModelFilesFromProjectToPath(final String destPathWithTimestamp) {
-        moveFilesFromMockupProjectTo("model", "model" + destPathWithTimestamp);
+    public static void moveModelFilesFromProjectToPath(final String sourcePath, final String destPathWithTimestamp) {
+        moveFilesFromMockupProjectTo("model", sourcePath, "model" + destPathWithTimestamp);
     }
 
     /**
@@ -153,9 +154,9 @@ public final class TestUtil {
      *            destination path in test workspace
      */
     public static void moveSrcFilesFromMockupProjectToPathWithTimestamp(
-            final String destinationPathAsStringWithoutTimestamp) {
-        final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimestamp);
-        moveSrcFilesFromMockupProjectToPath(destPathWithTimestamp);
+            final String mockupProjectName) {
+        final String destPathWithTimestamp = getStringWithTimestamp(mockupProjectName);
+        moveSrcFilesFromMockupProjectToPath(mockupProjectName, destPathWithTimestamp);
     }
 
     public static String getStringWithTimestamp(final String destinationPathAsStringWithoutTimestamp) {
@@ -167,7 +168,7 @@ public final class TestUtil {
     public static void moveModelFilesFromMockupProjectToPathWithTimestamp(
             final String destinationPathAsStringWithoutTimeStamp) {
         final String destPathWithTimestamp = getStringWithTimestamp(destinationPathAsStringWithoutTimeStamp);
-        moveModelFilesFromProjectToPath(destPathWithTimestamp);
+        moveModelFilesFromProjectToPath(destinationPathAsStringWithoutTimeStamp, destPathWithTimestamp);
     }
 
     /**
@@ -176,8 +177,8 @@ public final class TestUtil {
      * @param srcPath
      * @param destinationPath
      */
-    public static void moveFilesFromMockupProjectTo(final String srcPath, final String destinationPath) {
-        moveFilesFromTo("MockupProject", srcPath, destinationPath);
+    public static void moveFilesFromMockupProjectTo(final String srcFolder, final String sourcePath, final String destinationPath) {
+        moveFilesFromTo(sourcePath, srcFolder, destinationPath);
     }
 
     /**
@@ -205,7 +206,24 @@ public final class TestUtil {
         try {
             member.move(destinationIPath, true, new NullProgressMonitor());
         } catch (final CoreException e) {
-            logger.warn("Could not move src folder do destination folder " + destinationIPath + ": " + e.getMessage());
+            logger.warn("Could not move src folder to destination folder " + destinationIPath + ": " + e.getMessage());
+        }
+    }
+    
+    public static void moveProjectToProjectWithTimeStamp(final String projectName) {
+    	final String destPathWithTimestamp = getStringWithTimestamp(projectName);
+        renameProject(projectName, destPathWithTimestamp);
+    }
+    
+    private static void renameProject(final String sourceProjectName, final String destinationProjectName) {
+    	final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        final IProject project = root.getProject(sourceProjectName);
+    	try {
+        	IProjectDescription descr = project.getDescription();
+            descr.setName(destinationProjectName);
+        	project.move(descr, true, new NullProgressMonitor());
+        } catch (final CoreException e) {
+            logger.warn("Could not rename project " + sourceProjectName + " to " + destinationProjectName + ": " + e.getMessage());
         }
     }
 
@@ -233,6 +251,7 @@ public final class TestUtil {
                 "/" + VSUMConstants.VSUM_PROJECT_NAME + "_" + addtionalName + "_" + timestamp);
         try {
             project.open(new NullProgressMonitor());
+            //project.delete(true, new NullProgressMonitor());
             project.move(destinationPath, true, new NullProgressMonitor());
         } catch (final CoreException e) {
             logger.warn("Could not move " + VSUMConstants.VSUM_PROJECT_NAME + "project to folder. " + destinationPath

@@ -97,8 +97,7 @@ public abstract class VitruviusCasestudyTest {
             VitruviusCasestudyTest.this.afterTest(description);
             VitruviusCasestudyTest.this.resourceSet = null;
             final String previousMethodName = description.getMethodName();
-            TestUtil.moveSrcFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
-            TestUtil.moveModelFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
+            //TestUtil.moveProjectToProjectWithTimeStamp(currentTestProjectName);
             TestUtil.moveVSUMProjectToOwnFolderWithTimepstamp(previousMethodName);
         };
 
