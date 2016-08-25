@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -89,7 +88,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	}
 
 	def static void updateNameAttributeForPCMRootObjects(Iterable<NamedElement> pcmRootElements,
-		EStructuralFeature affectedFeature, Object newValue, Blackboard blackboard,
+		EStructuralFeature affectedFeature, Object newValue, CorrespondenceModel correspondenceModel,
 		TransformationResult transformationResult) {
 			for (pcmRoot : pcmRootElements) {
 				if (!(pcmRoot instanceof Repository) && !(pcmRoot instanceof System)) {
@@ -97,13 +96,13 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 						"will not be renamed")
 
 			} else {
-				val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(pcmRoot)
+				val TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pcmRoot)
 	
 				// change name		
 				pcmRoot.entityName = newValue.toString;
 	
 				val VURI oldVURI = VURI.getInstance(pcmRoot.eResource.getURI)
-				PCMJaMoPPUtils.handleRootChanges(pcmRoot, blackboard, oldVURI, transformationResult, oldVURI, oldTUID)
+				PCMJaMoPPUtils.handleRootChanges(pcmRoot, correspondenceModel, oldVURI, transformationResult, oldVURI, oldTUID)
 				transformationResult.addVURIToDeleteIfNotNull(oldVURI)
 			}
 		}
@@ -111,10 +110,10 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	
 	def static void updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue,
-		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap, Blackboard blackboard, 
+		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap, CorrespondenceModel correspondenceModel, 
 		TransformationResult transformationResult) {
 		val correspondingEObjects = PCMJaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel)
+			featureCorrespondenceMap, correspondenceModel)
 		if (correspondingEObjects.nullOrEmpty) {
 			return
 		}
@@ -126,27 +125,27 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 			saveFilesOfChangedEObjects = false
 		}
 		JaMoPP2PCMUtils.updateNameAttribute(correspondingEObjects, newValue, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel, saveFilesOfChangedEObjects)
+			featureCorrespondenceMap, correspondenceModel, saveFilesOfChangedEObjects)
 		if (!rootPCMEObjects.nullOrEmpty) {
 			JaMoPP2PCMUtils.updateNameAttributeForPCMRootObjects(rootPCMEObjects, affectedAttribute, newValue,
-				blackboard, transformationResult)
+				correspondenceModel, transformationResult)
 		}
 		return
 	}
 	
 	def static createNewCorrespondingEObjects(EObject newEObject, EObject[] newCorrespondingEObjects,
-		Blackboard blackboard, TransformationResult transformationResult) {
+		CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return
 		}
 		for (pcmElement : newCorrespondingEObjects) {
 			if (pcmElement instanceof Repository || pcmElement instanceof System) {
-				PCMJaMoPPUtils.addRootChangeToTransformationResult(pcmElement, blackboard,
+				PCMJaMoPPUtils.addRootChangeToTransformationResult(pcmElement, correspondenceModel,
 					PCMJaMoPPUtils.getSourceModelVURI(newEObject), transformationResult)
 			} else {
 				// do nothing. save will be done later
 			}
-			blackboard.correspondenceModel.createAndAddCorrespondence(pcmElement, newEObject)
+			correspondenceModel.createAndAddCorrespondence(pcmElement, newEObject)
 		}
 	}
 	

@@ -104,7 +104,7 @@ public class JaMoPPParameterMappingTransformationTest extends Java2PCMPackageMap
         final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
         final InsertEdit insertEdit = new InsertEdit(offset, newTypeName + " ");
         CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization();
+        TestUtil.waitForSynchronization(10000);
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, paramName);
         return CollectionBridge.claimOne(CorrespondenceModelUtil

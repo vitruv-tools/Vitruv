@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -178,12 +177,12 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
-		Object newValue, Blackboard blackboard, boolean changeNamespanceIfCompilationUnit,
+		Object newValue, CorrespondenceModel correspondenceModel, boolean changeNamespanceIfCompilationUnit,
 		TransformationResult transformationResult, EObject affectedEObject) {
-		val TUID oldTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(javaRoot)
+		val TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(javaRoot)
 		var TUID oldClassifierTUID = null
 		if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty) {
-			oldClassifierTUID = blackboard.correspondenceModel.calculateTUIDFromEObject(
+			oldClassifierTUID = correspondenceModel.calculateTUIDFromEObject(
 				(javaRoot as CompilationUnit).classifiers.get(0))
 		}
 		var VURI vuriToDelete = null
@@ -201,10 +200,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			}
 			newName = newName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION
 			handleClassifierNameChange((javaRoot as CompilationUnit).classifiers.get(0), newValue,
-				blackboard.correspondenceModel, changeNamespanceIfCompilationUnit, oldClassifierTUID)
+				correspondenceModel, changeNamespanceIfCompilationUnit, oldClassifierTUID)
 		}
 		javaRoot.name = newName;
-		PCMJaMoPPUtils.handleRootChanges(javaRoot, blackboard, PCMJaMoPPUtils.getSourceModelVURI(affectedEObject),
+		PCMJaMoPPUtils.handleRootChanges(javaRoot, correspondenceModel, PCMJaMoPPUtils.getSourceModelVURI(affectedEObject),
 			transformationResult, vuriToDelete, oldTUID)
 //			if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty ){
 //				
@@ -495,13 +494,13 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def static TransformationResult updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue, ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
-		Blackboard blackboard) {
+		CorrespondenceModel correspondenceModel) {
 		val transformationResult = new TransformationResult
 		if (oldValue == newValue) {
 			return transformationResult
 		}
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
-			featureCorrespondenceMap, blackboard.correspondenceModel)
+			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -512,13 +511,13 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 			val jaMoPPPackage = jaMoPPPackages.filter [ pack |
 				!pack.name.equals("contracts") && !pack.name.equals("datatypes")
 			].get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, blackboard, true,
+			PCM2JaMoPPUtils.handleJavaRootNameChange(jaMoPPPackage, affectedAttribute, newValue, correspondenceModel, true,
 				transformationResult, eObject)
 		}
 		val cus = affectedEObjects.filter(typeof(CompilationUnit))
 		if (!cus.nullOrEmpty) {
 			val CompilationUnit cu = cus.get(0)
-			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, blackboard, true,
+			PCM2JaMoPPUtils.handleJavaRootNameChange(cu, affectedAttribute, newValue, correspondenceModel, true,
 				transformationResult, eObject)
 		}
 		return transformationResult
@@ -625,12 +624,12 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	}
 
 	def static void handleAssemblyContextAddedAsNonRootEObjectInList(ComposedStructure composedEntity,
-		NamedElement namedElement, EObject[] newCorrespondingEObjects, Blackboard blackboard) {
+		NamedElement namedElement, EObject[] newCorrespondingEObjects, CorrespondenceModel correspondenceModel) {
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return
 		}
 		for (newCorrespondingEObject : newCorrespondingEObjects) {
-			blackboard.correspondenceModel.createAndAddCorrespondence(namedElement, newCorrespondingEObject)
+			correspondenceModel.createAndAddCorrespondence(namedElement, newCorrespondingEObject)
 		}
 	}
 

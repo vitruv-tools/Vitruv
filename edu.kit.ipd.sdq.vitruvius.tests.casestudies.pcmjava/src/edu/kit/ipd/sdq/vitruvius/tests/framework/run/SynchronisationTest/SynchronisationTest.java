@@ -135,7 +135,7 @@ public class SynchronisationTest {
     public TestWatcher watchmen = new TestWatcher() {
         @Override
         protected void finished(final org.junit.runner.Description description) {
-            final String previousMethodName = description.getMethodName();
+        	String previousMethodName = description.getMethodName();
             TestUtil.moveSrcFilesFromMockupProjectToPathWithTimestamp(previousMethodName);
             TestUtil.moveVSUMProjectToOwnFolderWithTimepstamp(previousMethodName);
         };

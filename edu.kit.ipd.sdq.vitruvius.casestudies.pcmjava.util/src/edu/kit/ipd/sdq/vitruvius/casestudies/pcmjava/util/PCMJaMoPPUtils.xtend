@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
@@ -132,19 +131,19 @@ class PCMJaMoPPUtils {
 			return target1 == target2 || target1.equals(target2)
 		}
 
-		def dispatch static addRootChangeToTransformationResult(Repository repo, Blackboard blackboard,
+		def dispatch static addRootChangeToTransformationResult(Repository repo, CorrespondenceModel correspondenceModel,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(repo, sourceModelVURI, blackboard, PCMNamespace.REPOSITORY_FILE_EXTENSION,
+			handlePCMRootEObject(repo, sourceModelVURI, correspondenceModel, PCMNamespace.REPOSITORY_FILE_EXTENSION,
 				transformationResult)
 		}
 
-		def dispatch static addRootChangeToTransformationResult(System system, Blackboard blackboard,
+		def dispatch static addRootChangeToTransformationResult(System system, CorrespondenceModel correspondenceModel,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
-			handlePCMRootEObject(system, sourceModelVURI, blackboard, PCMNamespace.SYSTEM_FILE_EXTENSION,
+			handlePCMRootEObject(system, sourceModelVURI, correspondenceModel, PCMNamespace.SYSTEM_FILE_EXTENSION,
 				transformationResult)
 		}
 
-		def dispatch static addRootChangeToTransformationResult(JavaRoot newJavaRoot, Blackboard blackboard,
+		def dispatch static addRootChangeToTransformationResult(JavaRoot newJavaRoot, CorrespondenceModel correspondenceModel,
 			VURI sourceModelVURI, TransformationResult transformationResult) {
 			// TODO: use configured src-folder path instead of hardcoded "src"
 			val String srcFolderPath = getFolderPathInProjectOfResource(sourceModelVURI, "src");
@@ -167,7 +166,7 @@ class PCMJaMoPPUtils {
 		}
 
 		def private static void handlePCMRootEObject(NamedElement namedElement, VURI sourceModelVURI,
-			Blackboard blackboard, String fileExt, TransformationResult transformationResult) {
+			CorrespondenceModel correspondenceModel, String fileExt, TransformationResult transformationResult) {
 			var String folderName = getFolderPathInProjectOfResource(sourceModelVURI, "model");
 			val String fileName = namedElement.getEntityName() + "." + fileExt;
 			if (!folderName.endsWith("/")) {
@@ -177,33 +176,33 @@ class PCMJaMoPPUtils {
 			transformationResult.addRootEObjectToSave(namedElement, vuri)
 		}
 
-		def dispatch static handleRootChanges(Iterable<EObject> eObjects, Blackboard blackboard, VURI sourceModelVURI,
+		def dispatch static handleRootChanges(Iterable<EObject> eObjects, CorrespondenceModel correspondenceModel, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
 			eObjects.forEach [ eObject |
-				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete,
+				handleSingleRootChange(eObject, correspondenceModel, sourceModelVURI, transformationResult, vuriToDelete,
 					oldTUID)
 			]
 		}
 
-		def dispatch static handleRootChanges(EObject[] eObjects, Blackboard blackboard, VURI sourceModelVURI,
+		def dispatch static handleRootChanges(EObject[] eObjects, CorrespondenceModel correspondenceModel, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
 			eObjects.forEach [ eObject |
-				handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete,
+				handleSingleRootChange(eObject, correspondenceModel, sourceModelVURI, transformationResult, vuriToDelete,
 					oldTUID)
 			]
 		}
 
-		def dispatch static handleRootChanges(EObject eObject, Blackboard blackboard, VURI sourceModelVURI,
+		def dispatch static handleRootChanges(EObject eObject, CorrespondenceModel correspondenceModel, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
-			handleSingleRootChange(eObject, blackboard, sourceModelVURI, transformationResult, vuriToDelete, oldTUID)
+			handleSingleRootChange(eObject, correspondenceModel, sourceModelVURI, transformationResult, vuriToDelete, oldTUID)
 		}
 
-		def static handleSingleRootChange(EObject eObject, Blackboard blackboard, VURI sourceModelVURI,
+		def static handleSingleRootChange(EObject eObject, CorrespondenceModel correspondenceModel, VURI sourceModelVURI,
 			TransformationResult transformationResult, VURI vuriToDelete, TUID oldTUID) {
 			EcoreUtil.remove(eObject)
-			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, blackboard, sourceModelVURI,
+			PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, correspondenceModel, sourceModelVURI,
 				transformationResult)
-			blackboard.correspondenceModel.updateTUID(oldTUID, eObject)
+			correspondenceModel.updateTUID(oldTUID, eObject)
 			transformationResult.addVURIToDeleteIfNotNull(vuriToDelete)
 		}
 
@@ -230,15 +229,15 @@ class PCMJaMoPPUtils {
 		}
 
 		def public static deleteNonRootEObjectInList(EObject affectedEObject, EObject oldEObject,
-			Blackboard blackboard) {
+			CorrespondenceModel correspondenceModel) {
 			val transformationResult = new TransformationResult
-			TransformationUtils.removeCorrespondenceAndAllObjects(oldEObject, affectedEObject, blackboard,
+			TransformationUtils.removeCorrespondenceAndAllObjects(oldEObject, affectedEObject, correspondenceModel,
 				pcmJavaRootObjects)
 			return transformationResult
 		}
 
 		def static TransformationResult removeCorrespondenceAndAllObjects(EObject object, EObject exRootObject,
-			Blackboard blackboard) {
-			TransformationUtils.removeCorrespondenceAndAllObjects(object, exRootObject, blackboard, pcmJavaRootObjects)
+			CorrespondenceModel correspondenceModel) {
+			TransformationUtils.removeCorrespondenceAndAllObjects(object, exRootObject, correspondenceModel, pcmJavaRootObjects)
 		}
 	}

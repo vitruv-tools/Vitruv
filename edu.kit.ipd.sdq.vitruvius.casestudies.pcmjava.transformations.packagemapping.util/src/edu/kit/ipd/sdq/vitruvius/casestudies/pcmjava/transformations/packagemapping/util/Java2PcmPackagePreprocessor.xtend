@@ -6,23 +6,31 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.emftext.language.java.containers.Package
 import org.eclipse.emf.ecore.resource.Resource
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.Change2CommandTransformingPreprocessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
+import java.util.ArrayList
+import org.eclipse.emf.common.command.Command
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
-class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreprocessor {
-	    /**
+class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
+    
+	new(UserInteracting userInteracting) {
+		super(userInteracting);
+	}
+
+	/**
      * Special treatment for packages: we have to use the package-info file as input for the
      * transformation and make sure that the packages have resources attached
      *
      * @param change
      *            the change that may contain the newly created package
-     */
-    private def void handlePackageInEChange(GeneralChange change) {
+     */	
+	private def void handlePackageInEChange(ConcreteChange change) {
     	if (change.getEChanges.size == 1) {
     		val eChange = change.getEChanges.get(0);
         	if (eChange instanceof InsertRootEObject<?>) {
@@ -60,15 +68,13 @@ class Java2PcmPackagePreprocessor implements Change2CommandTransformingPreproces
         }
     }
 				
-	override processChange(VitruviusChange change, UserInteracting userInteracting, Blackboard blackboard) {
+	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
+		val result = new ChangeProcessorResult(change, #[]);
 		if (change instanceof GeneralChange) {
-			handlePackageInEChange(change);
+			handlePackageInEChange(change);	
 		}
-		return #[];
-	}
-	
-	override doesProcess(VitruviusChange change) {
-		return change instanceof GeneralChange;
+		
+		return result;
 	}
 				
 }
