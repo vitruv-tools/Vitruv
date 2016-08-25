@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import java.io.IOException;
-import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 
@@ -49,7 +48,7 @@ public class DeleteRootTestEffect extends AbstractEffectRealization {
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
-    private RoutinesFacade effectFacade;
+    private mir.routines.simpleChangesTests.RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);

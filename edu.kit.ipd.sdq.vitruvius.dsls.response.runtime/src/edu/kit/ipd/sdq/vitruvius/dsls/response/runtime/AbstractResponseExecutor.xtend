@@ -10,8 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.EChangeProcessor
 
-abstract class AbstractResponseExecutor implements ResponseExecutor {
+abstract class AbstractResponseExecutor extends EChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;
@@ -19,6 +20,7 @@ abstract class AbstractResponseExecutor implements ResponseExecutor {
 	protected UserInteracting userInteracting;
 	
 	new (UserInteracting userInteracting) {
+		super(userInteracting);
 		this.changeToResponseMap = new Change2ResponseMap();
 		this.userInteracting = userInteracting;
 		this.setup();
@@ -28,7 +30,7 @@ abstract class AbstractResponseExecutor implements ResponseExecutor {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public override List<Command> generateCommandsForEvent(EChange event, CorrespondenceModel correspondenceModel) {
+	public override List<Command> transformChange(EChange event, CorrespondenceModel correspondenceModel) {
 		val result = new ArrayList<Command>();
 		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
 		LOGGER.debug("Call relevant responses");

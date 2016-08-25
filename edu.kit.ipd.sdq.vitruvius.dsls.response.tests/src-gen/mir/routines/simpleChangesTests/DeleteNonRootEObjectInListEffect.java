@@ -8,7 +8,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHa
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
 import java.io.IOException;
-import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -54,7 +53,7 @@ public class DeleteNonRootEObjectInListEffect extends AbstractEffectRealization 
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     @Extension
-    private RoutinesFacade effectFacade;
+    private mir.routines.simpleChangesTests.RoutinesFacade effectFacade;
     
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);

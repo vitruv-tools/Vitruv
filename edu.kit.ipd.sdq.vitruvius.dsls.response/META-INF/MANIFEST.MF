@@ -27,7 +27,8 @@ Require-Bundle: org.eclipse.xtext,
  edu.kit.ipd.sdq.vitruvius.dsls.mirbase,
  org.eclipse.xtext.ui,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr,

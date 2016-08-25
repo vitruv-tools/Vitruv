@@ -20,12 +20,13 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import java.io.File
 import org.eclipse.xtext.generator.IGenerator
-import java.util.Collections
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
@@ -193,17 +194,30 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val ih = new XtendImportHelper();	
 		val change2CommandTransformingNameGenerator = modelPair.change2CommandTransformingClassNameGenerator;
 		val classImplementation = '''
-		public abstract class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractResponseChange2CommandTransforming)» {
-			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
-				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
-				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
-				«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»> pair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(sourceVURI, targetVURI);
-				return «ih.typeRef(Collections)».singletonList(pair);
+		/**
+		 * The {@link «Change2CommandTransforming»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
+		 * To add further change processors overwrite the setup method.
+		 */
+		public abstract class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractChange2CommandTransforming)» {
+			public «change2CommandTransformingNameGenerator.simpleName»() {
+				super (new «ih.typeRef(TransformationMetamodelPair)»(
+					«ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»"),
+					«ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»")));
 			}
+«««			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
+«««				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
+«««				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
+«««				«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»> pair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(sourceVURI, targetVURI);
+«««				return «ih.typeRef(Collections)».singletonList(pair);
+«««			}
 			
+			/**
+			 * Adds the response change processors to this {@link «change2CommandTransformingNameGenerator.simpleName»}.
+			 * For adding further change processors overwrite this method and call the super method at the right place.
+			 */
 			protected void setup() {
 				«FOR executorName : executorsNames»
-					this.addResponseExecutor(new «executorName»(userInteracting));
+					this.addChangeProcessor(new «executorName»(getUserInteracting()));
 				«ENDFOR»		
 			}
 			
