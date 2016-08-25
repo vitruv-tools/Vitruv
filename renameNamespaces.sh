@@ -27,7 +27,8 @@ function migrate_project() {
   project=$1
   # Move edu folders
   EDUFOLDERS=$(find $project -type d -name "edu" -not -path "*bin*");
-  for folder in $EDUFOLDERS; do
+  for folder in $EDUFOLDERS
+  do
     echo "Move folder $folder/kit/ipd/sdq/vitruvius";
     svn mkdir --parents "$folder/../tools/vitruvius" > /dev/null;
     move_folder "$folder/kit/ipd/sdq/vitruvius/*" "$folder/../tools/vitruvius";
@@ -40,14 +41,14 @@ function migrate_project() {
   done
 
   # Replace references in files
-  FILES=$(find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin" -not -name "*.jar");
-  for file in $FILES; do
+  find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin" -not -name "*.jar" | while read file
+  do
     echo "Update file $file";
-    sed -i "s/edu.kit.ipd.sdq.vitruvius/tools.vitruvius/g" $file;
+    sed -i "s/edu.kit.ipd.sdq.vitruvius/tools.vitruvius/g" "$file";
   done
   
-  NAMEFILES=$(find $project -name "*edu.kit.ipd.sdq.vitruvius*");
-  for file in $NAMEFILES; do
+  find $project -name "*edu.kit.ipd.sdq.vitruvius*" | while read file
+  do
     echo "Rename file $file";
     newFileName=$(echo "$file" | sed 's/edu.kit.ipd.sdq.vitruvius/tools.vitruvius/g');
     svn mv "$file" "$newFileName" > /dev/null;
