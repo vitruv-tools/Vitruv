@@ -7,13 +7,13 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util,
+ edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.eclipse.jdt.core,
  org.eclipse.text,
- edu.kit.ipd.sdq.vitruvius.tests.util,
+ edu.kit.ipd.sdq.vitruvius.tests.util;visibility:=reexport,
  org.apache.commons.lang,
  org.apache.log4j,
  org.eclipse.core.resources;bundle-version="3.8.100",
@@ -33,3 +33,4 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm
+

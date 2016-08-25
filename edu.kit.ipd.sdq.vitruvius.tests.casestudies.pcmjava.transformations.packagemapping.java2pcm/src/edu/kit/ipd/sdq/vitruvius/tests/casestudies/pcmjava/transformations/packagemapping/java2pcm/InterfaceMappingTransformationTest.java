@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.ecore.EObject;
@@ -70,14 +69,5 @@ public class InterfaceMappingTransformationTest extends Java2PCMPackageMappingTr
 
         this.assertOperationInterface(repo, newOpInterface, PCM2JaMoPPTestUtils.INTERFACE_NAME
                 + PCM2JaMoPPTestUtils.RENAME);
-    }
-
-    private void assertOperationInterface(final Repository repo, final OperationInterface opIf,
-            final String expectedName) {
-        assertTrue("The created operation interface is null", null != opIf);
-        assertEquals("OperationInterface name does not equals the expected interface Name.", opIf.getEntityName(),
-                expectedName);
-        assertEquals("The created operation interface is not in the repository", repo.getId(), opIf
-                .getRepository__Interface().getId());
     }
 }
