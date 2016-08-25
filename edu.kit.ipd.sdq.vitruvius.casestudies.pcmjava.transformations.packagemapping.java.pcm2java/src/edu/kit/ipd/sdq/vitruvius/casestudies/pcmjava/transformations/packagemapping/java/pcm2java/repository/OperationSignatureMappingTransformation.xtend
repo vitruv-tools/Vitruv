@@ -23,12 +23,12 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.run.util.TransformationUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -189,10 +189,10 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 		PCM2JaMoPPUtils.addEntityName2NameCorrespondence(featureCorrespondenceMap)
 		val OperationSignature pcmDummyOpSig = RepositoryFactory.eINSTANCE.createOperationSignature
 		val InterfaceMethod jaMoPPDummyInterfaceMethod = MembersFactory.eINSTANCE.createInterfaceMethod
-		val EReference pcmOpSigDataTypeReference = TransformationUtils.getReferenceByNameFromEObject(
-			PCMNamespace.PCM_OPERATION_SIGNATURE_RETURN_TYPE, pcmDummyOpSig)
-		val EReference jaMoPPInterfaceMethodTypeReference = TransformationUtils.getReferenceByNameFromEObject(
-			JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE, jaMoPPDummyInterfaceMethod)
+		val EReference pcmOpSigDataTypeReference = EObjectUtil.getReferenceByName(
+			pcmDummyOpSig, PCMNamespace.PCM_OPERATION_SIGNATURE_RETURN_TYPE)
+		val EReference jaMoPPInterfaceMethodTypeReference = EObjectUtil.getReferenceByName(
+			jaMoPPDummyInterfaceMethod, JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE)
 		featureCorrespondenceMap.put(pcmOpSigDataTypeReference, jaMoPPInterfaceMethodTypeReference)
 	}
 }
