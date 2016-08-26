@@ -18,7 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
  */
 public class Change2CommandTransformingProvidingImpl extends AbstractChange2CommandTransformingProviding {
 
-    public Change2CommandTransformingProvidingImpl() {
+    @Override
+    protected void setup() {
         List<Change2CommandTransforming> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
                 Change2CommandTransforming.ID, VitruviusConstants.getExtensionPropertyName(),
                 Change2CommandTransforming.class);
