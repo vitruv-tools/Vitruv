@@ -22,8 +22,8 @@ class IntegrationPackageMappingTransformationTest extends Java2PCMPackageIntegra
 	
 	def private void testAddPackage(String name, String... namespace){
 		val namespaceList = new ArrayList<String>()
-		namespaceList.add(name)
 		namespaceList.addAll(namespace)
+		namespaceList.add(name)
 		this.testUserInteractor.addNextSelections(0);
 		val BasicComponent bc = super.createSecondPackage(BasicComponent, namespaceList);
 		
