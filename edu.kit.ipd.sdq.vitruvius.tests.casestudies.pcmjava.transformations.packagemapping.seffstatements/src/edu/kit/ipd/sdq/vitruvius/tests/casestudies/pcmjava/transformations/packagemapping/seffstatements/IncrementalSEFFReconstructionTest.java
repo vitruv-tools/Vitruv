@@ -3,6 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pack
 import static org.junit.Assert.fail;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -29,6 +30,7 @@ import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;
@@ -51,6 +53,14 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
     protected static final String MEDIA_STORE_CLASSNAME = MEDIA_STORE + "Impl";;
     protected static final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
 
+    public IncrementalSEFFReconstructionTest(Supplier<Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
+    	super(change2CommandTransformingProvidingSupplier);
+    }
+    
+    public IncrementalSEFFReconstructionTest() {
+		super();
+	}
+    
     /**
      * Set up simple media store, which can be used for the tests. It consists of two components
      * (WebGUI and MediaStore) two Interfaces (IWebGUI and IMediastore). The interfaces have two
