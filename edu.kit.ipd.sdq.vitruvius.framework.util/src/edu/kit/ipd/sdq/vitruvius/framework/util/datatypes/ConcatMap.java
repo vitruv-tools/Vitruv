@@ -3,7 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.util.datatypes;
 import java.util.Collection;
 
 public interface ConcatMap<K, V> {
-    V put(V value, K... keys);
+    @SuppressWarnings("unchecked")
+	V put(V value, K... keys);
 
     /**
      * Returns the value to which the specified keys are mapped, or null if this map contains no
@@ -14,7 +15,8 @@ public interface ConcatMap<K, V> {
      * @return the value to which the specified keys are mapped, or null if this map contains no
      *         mapping for these keys.
      */
-    V get(K... keys);
+    @SuppressWarnings("unchecked")
+	V get(K... keys);
 
     /**
      * Returns a collection of all values for which the specified key is one of the mapped keys. If

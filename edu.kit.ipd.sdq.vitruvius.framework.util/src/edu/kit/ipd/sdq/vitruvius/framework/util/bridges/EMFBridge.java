@@ -12,7 +12,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.util.bridges;
 
 import java.io.File;
 
-import org.eclipse.core.internal.resources.Container;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

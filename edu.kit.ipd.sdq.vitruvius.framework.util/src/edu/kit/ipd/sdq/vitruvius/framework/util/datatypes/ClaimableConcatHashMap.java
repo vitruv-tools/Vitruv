@@ -12,35 +12,41 @@ public abstract class ClaimableConcatHashMap<K, V, C> implements ClaimableConcat
         this.map = new ClaimableHashMap<C, V>();
     }
 
-    public abstract C getConcatenatedKey(final K... keys);
+    @SuppressWarnings("unchecked")
+	public abstract C getConcatenatedKey(final K... keys);
 
     public abstract boolean isPartOf(K partialKey, C fullKey);
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public V put(final V value, final K... keys) {
         C concatenatedKey = getConcatenatedKey(keys);
         return this.map.put(concatenatedKey, value);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public V get(final K... keys) {
         C concatenatedKey = getConcatenatedKey(keys);
         return this.map.get(concatenatedKey);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void claimKeysAreMapped(final K... keys) {
         C concatenatedKey = getConcatenatedKey(keys);
         this.map.claimKeyIsMapped(concatenatedKey);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public V claimValueForKeys(final K... keys) {
         C concatenatedKey = getConcatenatedKey(keys);
         return this.map.claimValueForKey(concatenatedKey);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void putClaimingNullOrSameMapped(final V value, final K... keys) {
         C concatenatedKey = getConcatenatedKey(keys);
         this.map.putClaimingNullOrSameMapped(concatenatedKey, value);

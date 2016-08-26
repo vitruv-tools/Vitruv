@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public class ClaimableLexicographicalConcatHashMap<K, V> extends ClaimableConcatHashMap<K, V, String> {
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public String getConcatenatedKey(final K... keys) {
         if (keys.length > 0) {
             Arrays.sort(keys);
