@@ -121,8 +121,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing");
         this.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Requiring");
         // create interface
-        final boolean throwExceptionIfFails = true;
-        super.createInterfaceInPackage("contracts", throwExceptionIfFails, PCM2JaMoPPTestUtils.INTERFACE_NAME);
+        super.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence("contracts", PCM2JaMoPPTestUtils.INTERFACE_NAME);
         // create provided role from providing compontent to interface
         super.addImplementsCorrespondingToOperationProvidedRoleToClass(
                 PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME + "Providing" + "Impl", PCM2JaMoPPTestUtils.INTERFACE_NAME);

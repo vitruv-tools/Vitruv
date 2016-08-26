@@ -37,10 +37,10 @@ class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstruction
         val String mediaStoreInterfaceName = "I" + MEDIA_STORE;
 
         // create interfaces
-        val webGuiIf = super.createInterfaceInPackage( PCM2JaMoPPTestUtils.REPOSITORY_NAME, webGuiInterfaceName) as ConcreteClassifier
+        val webGuiIf = super.createInterfaceInPackageBasedOnJaMoPPPackageWithoutCorrespondence(PCM2JaMoPPTestUtils.REPOSITORY_NAME, webGuiInterfaceName) 
         this.addAnnotationToClassifier(webGuiIf, EJBJaMoPP2PCMTransformationTest.REMOTE_ANNOTATION_NAME, OperationInterface, webGuiInterfaceName)
         
-        val mediaStoreIf = super.createInterfaceInPackage(PCM2JaMoPPTestUtils.REPOSITORY_NAME, mediaStoreInterfaceName) as ConcreteClassifier
+        val mediaStoreIf = super.createInterfaceInPackageBasedOnJaMoPPPackageWithoutCorrespondence(PCM2JaMoPPTestUtils.REPOSITORY_NAME, mediaStoreInterfaceName) 
         this.addAnnotationToClassifier(mediaStoreIf, EJBJaMoPP2PCMTransformationTest.REMOTE_ANNOTATION_NAME, OperationInterface, mediaStoreInterfaceName)
 
         val String uploadMethodName = "upload";

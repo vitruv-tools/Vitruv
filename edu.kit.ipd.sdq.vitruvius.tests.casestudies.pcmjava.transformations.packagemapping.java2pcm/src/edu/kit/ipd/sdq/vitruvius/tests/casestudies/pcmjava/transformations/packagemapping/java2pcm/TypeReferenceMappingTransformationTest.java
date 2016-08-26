@@ -23,7 +23,7 @@ public class TypeReferenceMappingTransformationTest extends Java2PCMPackageMappi
         final BasicComponent basicComponent = this.addClassInSecondPackage(BasicComponent.class);
         this.createPackageWithPackageInfo(repo.getEntityName(), "contracts");
         // create interface
-        final OperationInterface opInterface = this.createInterfaceInPackage("contracts", true,
+        final OperationInterface opInterface = this.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence("contracts",
                 PCM2JaMoPPTestUtils.INTERFACE_NAME);
 
         // add the implement relation

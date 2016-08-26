@@ -52,7 +52,7 @@ public class InterfaceMappingTransformationTest extends Java2PCMPackageMappingTr
         super.addRepoContractsAndDatatypesPackage();
         final BasicComponent bc = super.addSecondPackageCorrespondsToBasicComponent();
 
-        final EObject eObject = super.addInterfaceInSecondPackageWithoutCorrespondence(bc.getEntityName());
+        final EObject eObject = super.addInterfaceInPackageWithoutCorrespondence(bc.getEntityName());
 
         assertTrue("Corresponding object for interface that is created in non main package is not null: " + eObject,
                 null == eObject);

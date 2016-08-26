@@ -459,7 +459,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 				return (IPackageFragment) javaElement;
 			}
 		}
-		throw new RuntimeException("No packageFragment found for JaMoPP package ");
+		throw new RuntimeException("No packageFragment found for JaMoPP package " + packageNamespace);
 	}
 
 	protected ConcreteClassifier getJaMoPPClassifierForVURI(final VURI vuri) {
@@ -568,24 +568,45 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 	}
 
 	protected OperationInterface addInterfaceInContractsPackage() throws Throwable {
-		return this.createInterfaceInPackage("contracts", true);
+		return this.createInterfaceInPackage("contracts");
 	}
 
-	private OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException)
+	private OperationInterface createInterfaceInPackage(final String packageName)
 			throws Throwable, CoreException, InterruptedException {
 		final String interfaceName = PCM2JaMoPPTestUtils.INTERFACE_NAME;
-		return this.createInterfaceInPackage(packageName, throwException, interfaceName);
+		return this.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence(packageName, interfaceName);
 	}
 
-	protected OperationInterface createInterfaceInPackage(final String packageName, final boolean throwException,
-			final String interfaceName) throws Throwable, CoreException, InterruptedException {
+	protected OperationInterface createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence(
+			final String packageName, final String interfaceName)
+					throws Throwable, CoreException, InterruptedException {
 		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
 		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(),
-				interfaceName, throwException);
+				interfaceName, true);
 	}
 
-	protected OperationInterface createInterfaceInPackage(String packageNamespace, final String interfaceName,
-			boolean throwException) throws Throwable, CoreException, InterruptedException {
+	protected ConcreteClassifier createInterfaceInPackageBasedOnJaMoPPPackageWithoutCorrespondence(final String packageName,
+			final String interfaceName) throws Throwable, CoreException, InterruptedException {
+		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
+		return this.createJaMoPPInterfaceInPackage(jaMoPPPackage.getNamespacesAsString(), interfaceName);
+	}
+
+	protected OperationInterface createInterfaceInPackage(String packageNamespace, final String interfaceName, boolean claimOne)
+			throws Throwable, CoreException, InterruptedException {
+		final Classifier jaMoPPIf = createJaMoPPInterfaceInPackage(packageNamespace, interfaceName);
+		Set<OperationInterface> correspondingOpInterfaces = CorrespondenceModelUtil.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPIf, OperationInterface.class);
+		if(claimOne){
+			return CollectionBridge.claimOne(correspondingOpInterfaces);
+		}
+		if(null==correspondingOpInterfaces || 0 == correspondingOpInterfaces.size()){
+			return null;
+		}
+		logger.warn("More than one corresponding interfaces found for interface " + jaMoPPIf + ". Returning the first");
+		return correspondingOpInterfaces.iterator().next();
+	}
+
+	protected ConcreteClassifier createJaMoPPInterfaceInPackage(String packageNamespace, final String interfaceName)
+			throws Throwable, CoreException, InterruptedException {
 		final IPackageFragment packageFragment = this.getPackageFragment(packageNamespace);
 		final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
 		interfaceWizard.setPackageFragment(packageFragment, false);
@@ -594,30 +615,20 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 		interfaceWizard.createType(new NullProgressMonitor());
 		final VURI vuri = this.getVURIForElementInPackage(packageFragment, interfaceName);
 		TestUtil.waitForSynchronization();
-		final Classifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
-		if (throwException) {
-			return CollectionBridge.claimOne(CorrespondenceModelUtil
-					.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPIf, OperationInterface.class));
-		} else {
-			final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
-					.getCorrespondingEObjects(this.getCorrespondenceModel(), jaMoPPIf);
-			if (null == correspondingEObjects || 0 == correspondingEObjects.size()) {
-				return null;
-			} else {
-				return (OperationInterface) correspondingEObjects.iterator().next();
-			}
-		}
+		final ConcreteClassifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
+		return jaMoPPIf;
 	}
 
 	protected OperationInterface addInterfaceInSecondPackageWithCorrespondence(final String packageName)
 			throws Throwable {
 		this.testUserInteractor.addNextSelections(0);
-		return this.createInterfaceInPackage(packageName, true);
+		return this.createInterfaceInPackage(packageName);
 	}
 
-	protected EObject addInterfaceInSecondPackageWithoutCorrespondence(final String packageName) throws Throwable {
+	protected EObject addInterfaceInPackageWithoutCorrespondence(final String packageName) throws Throwable {
 		this.testUserInteractor.addNextSelections(1);
-		return this.createInterfaceInPackage(packageName, false);
+		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
+		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(), "I" + packageName, false);
 	}
 
 	protected Package getPackageWithNameFromCorrespondenceModel(final String name) throws Throwable {

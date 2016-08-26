@@ -375,9 +375,8 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         final String mediaStoreInterfaceName = "I" + MEDIA_STORE;
 
         // create interfaces
-        final boolean throwExceptionIfFails = true;
-        super.createInterfaceInPackage("contracts", throwExceptionIfFails, webGuiInterfaceName);
-        super.createInterfaceInPackage("contracts", throwExceptionIfFails, mediaStoreInterfaceName);
+        super.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence("contracts", webGuiInterfaceName);
+        super.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence("contracts", mediaStoreInterfaceName);
 
         final String uploadMethodName = "upload";
         final String downloadMethodName = "download";

@@ -37,7 +37,7 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 	}
 	
 	def protected createEJBInterface(String interfaceName) {
-		val ConcreteClassifier classifier = super.createInterfaceInPackage(mainPackage.name, interfaceName) as ConcreteClassifier 
+		val ConcreteClassifier classifier = super.createJaMoPPInterfaceInPackage(mainPackage.name, interfaceName) as ConcreteClassifier 
 		val OperationInterface correspondingOpInterface = this.addAnnotationToClassifier(classifier, REMOTE_ANNOTATION_NAME, 
 				OperationInterface, interfaceName)
 		correspondingOpInterface
