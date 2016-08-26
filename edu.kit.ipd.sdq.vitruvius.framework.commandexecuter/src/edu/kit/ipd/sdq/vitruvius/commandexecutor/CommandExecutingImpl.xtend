@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.commandexecuter
+package edu.kit.ipd.sdq.vitruvius.commandexecutor
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID

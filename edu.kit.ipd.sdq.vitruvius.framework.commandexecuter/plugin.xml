@@ -4,11 +4,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.commandexecuting">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl">
-      </provides>
-      <provides
-            provider="edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecuting1">
+            provider="edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl">
       </provides>
    </extension>
-
 </plugin>

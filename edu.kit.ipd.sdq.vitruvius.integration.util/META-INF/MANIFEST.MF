@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
  edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer,
- edu.kit.ipd.sdq.vitruvius.framework.commandexecuter,
+ edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
  edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.palladiosimulator.pcm.repository,
