@@ -61,6 +61,7 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -102,7 +103,8 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 			java.lang.reflect.Constructor<?> ctor = clazz.getConstructor();
 			Change2CommandTransforming transformer = (Change2CommandTransforming) ctor.newInstance();
 			logger.debug("Transformer class used for test: " + transformerClass);
-			result = new SingleTransformerChange2CommandTransformingProviding(transformer);
+			result = AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+					Collections.singletonList(transformer));
 		} catch (Exception e) {
 			logger.debug("Transformer class used for test: DEFAULT");
 			result = new Change2CommandTransformingProvidingImpl();
