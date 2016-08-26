@@ -10,9 +10,17 @@ import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.
 import org.junit.runner.Description
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBClassMappingTest
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBJaMoPP2PCMTransformationTest
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
+	new() {
+		super([ | 
+			AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+				#[new Change2CommandTransformingEJBJavaToPCM()])
+		]);
+	}
 
 	@Override
     override protected void beforeTest(Description description) throws Throwable {
