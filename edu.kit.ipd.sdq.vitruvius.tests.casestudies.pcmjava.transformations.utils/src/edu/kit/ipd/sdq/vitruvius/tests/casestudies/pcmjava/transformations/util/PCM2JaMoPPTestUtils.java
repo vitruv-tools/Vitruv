@@ -20,8 +20,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaInsertEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 

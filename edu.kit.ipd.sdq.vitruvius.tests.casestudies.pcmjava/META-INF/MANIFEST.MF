@@ -51,7 +51,7 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
+ edu.kit.ipd.sdq.vitruvius.domains.java.change,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping

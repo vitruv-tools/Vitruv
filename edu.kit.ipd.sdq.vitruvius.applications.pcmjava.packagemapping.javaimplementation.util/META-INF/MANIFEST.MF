@@ -11,7 +11,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  org.eclipse.xtext.xbase.lib,
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
+ edu.kit.ipd.sdq.vitruvius.domains.java.change,
  edu.kit.ipd.sdq.vitruvius.framework.changes;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension/src-gen"
-    modelPluginID="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.domains.java.change/src-gen"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.domains.java.change"
     modelName="JavaChange" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     usedGenPackages="../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.genmodel#//change"
     operationReflection="true" importOrganizing="true">
   <foreignModel>JavaChange.ecore</foreignModel>
-  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension"
+  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java.change"
       disposableProviderFactory="true" ecorePackage="JavaChange.ecore#/">
     <nestedGenPackages prefix="Feature" disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature">
       <genClasses ecoreClass="JavaChange.ecore#//feature/JavaFeatureEChange">
