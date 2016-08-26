@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Ab
 import mir.responses.AbstractChange2CommandTransformingAllElementTypesToAllElementTypes
 
 public class SimpleTestsChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
-	public new() {
+	public override void setup() {
 		addChange2CommandTransforming(new AbstractChange2CommandTransformingAllElementTypesToAllElementTypes() {});
 	}
 }
