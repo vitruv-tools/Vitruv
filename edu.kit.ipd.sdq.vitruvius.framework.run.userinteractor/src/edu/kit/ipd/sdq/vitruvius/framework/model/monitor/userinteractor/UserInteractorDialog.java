@@ -109,13 +109,13 @@ class SelectionDialog extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
         if (this.postponable)
-            createButton(parent, this.POSTPONE, "Decide Later", false);
+            createButton(parent, POSTPONE, "Decide Later", false);
     }
 
     @Override
     protected void buttonPressed(int buttonId) {
-        if (buttonId == this.POSTPONE) {
-            setReturnCode(this.POSTPONE);
+        if (buttonId == POSTPONE) {
+            setReturnCode(POSTPONE);
         }
         close();
     }

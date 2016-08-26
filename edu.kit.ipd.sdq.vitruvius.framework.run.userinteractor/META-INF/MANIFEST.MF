@@ -1,15 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: UserInteractor
+Bundle-Name: Vitruvius Framework User Interactor
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.userinteractor
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: userinteractor.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor
 Require-Bundle: org.eclipse.osgi,
  org.eclipse.swt,
  org.eclipse.ui.workbench,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.jface,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0"
