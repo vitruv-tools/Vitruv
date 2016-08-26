@@ -1,11 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Vitruvius Domain Java Change Metamodel Extension
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-ClassPath: .
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute,
@@ -19,4 +16,3 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaex
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;visibility:=reexport
-Bundle-ActivationPolicy: lazy
