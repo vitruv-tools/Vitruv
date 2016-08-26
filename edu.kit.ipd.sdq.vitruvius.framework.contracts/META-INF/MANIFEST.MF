@@ -1,12 +1,24 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Vitruvius Framework Contracts Specification
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.contracts;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro, 
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ocl.ecore,
+ org.eclipse.emf.common;visibility:=reexport,
+ org.eclipse.emf.transaction;visibility:=reexport,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.util;visibility:=reexport,
+ edu.kit.ipd.sdq.commons.util.emf;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,
@@ -16,20 +28,3 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
-Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.core.resources,
- org.eclipse.core.runtime,
- org.eclipse.ocl.ecore,
- org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.framework.util;visibility:=reexport,
- org.apache.commons.lang;bundle-version="2.6.0",
- org.eclipse.emf.common;visibility:=reexport,
- org.eclipse.emf.transaction;visibility:=reexport,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.commons.util.emf;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
-Bundle-ActivationPolicy: lazy
-
