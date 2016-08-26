@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
 
 import org.eclipse.emf.common.command.Command
 import java.util.List

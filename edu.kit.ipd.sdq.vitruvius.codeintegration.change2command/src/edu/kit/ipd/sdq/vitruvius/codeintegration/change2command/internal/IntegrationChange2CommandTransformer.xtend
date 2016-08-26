@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID

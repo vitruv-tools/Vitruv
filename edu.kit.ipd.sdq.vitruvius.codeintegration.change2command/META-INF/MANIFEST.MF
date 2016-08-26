@@ -7,11 +7,13 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  org.eclipse.emf.common,
  org.eclipse.xtext.xbase.lib,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.pcm2java;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
