@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Changes
+Bundle-Name: Vitruvius Framework Changes Model
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.changes
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -8,9 +8,9 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
- org.eclipse.emf.ecore.change,
+ org.eclipse.emf.ecore.change;visibility:=reexport,
  org.apache.log4j
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.change,
  edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder,
