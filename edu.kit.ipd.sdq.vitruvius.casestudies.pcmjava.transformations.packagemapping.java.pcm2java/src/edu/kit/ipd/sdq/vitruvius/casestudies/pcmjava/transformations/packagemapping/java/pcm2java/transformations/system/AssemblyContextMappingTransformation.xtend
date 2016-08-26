@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.system
+package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.system
 
 import com.google.common.collect.Lists
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
