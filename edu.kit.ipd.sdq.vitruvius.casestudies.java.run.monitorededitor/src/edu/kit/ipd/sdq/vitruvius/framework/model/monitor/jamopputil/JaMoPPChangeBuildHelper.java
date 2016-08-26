@@ -24,12 +24,12 @@ import org.emftext.language.java.types.TypedElement;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.AttributeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.attribute.JavaReplaceSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaInsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaRemoveEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.JavaReplaceSingleValuedEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributeFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaReplaceSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaInsertEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaRemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaReplaceSingleValuedEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory;
