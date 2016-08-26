@@ -52,12 +52,6 @@ public abstract class VitruviusCasestudyTest {
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
-    protected static class SingleTransformerChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {
-		public SingleTransformerChange2CommandTransformingProviding(Change2CommandTransforming transformer) {
-			this.addChange2CommandTransforming(transformer);
-		}
-	}
-    
     /**
      * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
      */
