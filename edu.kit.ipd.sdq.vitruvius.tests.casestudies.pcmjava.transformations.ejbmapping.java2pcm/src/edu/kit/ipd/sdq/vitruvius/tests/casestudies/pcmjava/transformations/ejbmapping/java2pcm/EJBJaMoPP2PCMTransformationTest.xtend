@@ -6,6 +6,7 @@ import org.palladiosimulator.pcm.repository.OperationInterface
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChange2CommandTransforming
 
 /**
  * class that contains special methods for EJB testing
@@ -20,14 +21,11 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 	protected static val String TEST_INTERFACE_NAME = "TestEJBInterface"
 	protected static val String TEST_FIELD_NAME = "testEJBfield"
 	
-	static class EJBTransformingProviding extends AbstractChange2CommandTransformingProviding {
-		new() {
-			addChange2CommandTransforming(new Change2CommandTransformingEJBJavaToPCM());
-		}
-	}
-	
 	new() {
-		super([ | new EJBTransformingProviding() ]);
+		super([ | 
+			AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+				#[new Change2CommandTransformingEJBJavaToPCM()])
+		]);
 	}
 	
 	def protected createEJBClass(String className) {
