@@ -23,8 +23,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteractor.UserInteractor;
 
 /**
  * @author messinger

@@ -18,7 +18,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.LoggerConfigurator;
