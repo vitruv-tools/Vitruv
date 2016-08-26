@@ -14,6 +14,9 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import java.util.Set
 import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
+import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.Java2PCMIntegrationChange2CommandTransforming
+import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.PCM2JavaIntegrationChange2CommandTransforming
 
 class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
@@ -22,6 +25,12 @@ class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackag
 	val public static String NAME_OF_INTEGRATED_PACKAGE = "packageInIntegratedArea"
 	val public static String INTEGRATED_METHOD_NAME = "integratedMethodName"
 	val public static String NON_INTEGRATED_METHOD_NAME = "nonIntegradedMethodName"
+
+	new() {
+		super([| AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+		 	#[new Java2PCMIntegrationChange2CommandTransforming(), new PCM2JavaIntegrationChange2CommandTransforming()]
+		)])
+	}
 
 	override protected void beforeTest(Description description) throws Throwable {
 		super.beforeTest(description)
