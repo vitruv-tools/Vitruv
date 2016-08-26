@@ -61,7 +61,7 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		var currentChange = change;
 		for (changeProcessor : changeProcessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');
-			val processingResult = changeProcessor.transformChange(change, blackboard.correspondenceModel);
+			val processingResult = changeProcessor.transformChange(currentChange, blackboard.correspondenceModel);
 			currentChange = processingResult.resultingChange;
 			commandList += processingResult.generatedCommands;
 		}
