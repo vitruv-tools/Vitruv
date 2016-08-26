@@ -10,7 +10,7 @@ import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import org.emftext.language.java.members.Method
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension.change.feature.JavaFeatureEChange
+import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
 import org.emftext.language.java.statements.StatementsPackage
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference

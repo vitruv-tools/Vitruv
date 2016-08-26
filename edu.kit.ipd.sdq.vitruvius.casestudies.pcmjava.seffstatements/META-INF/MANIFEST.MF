@@ -14,12 +14,12 @@ Require-Bundle: com.google.guava,
  org.somox.sourcecodedecorator;bundle-version="1.0.1",
  org.somox.kdmhelper,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
  org.eclipse.emf.ecore.change,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension
+ edu.kit.ipd.sdq.vitruvius.domains.java.change
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 

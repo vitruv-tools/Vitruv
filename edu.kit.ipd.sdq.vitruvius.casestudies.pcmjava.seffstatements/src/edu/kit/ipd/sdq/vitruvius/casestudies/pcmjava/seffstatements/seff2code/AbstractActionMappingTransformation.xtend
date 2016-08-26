@@ -4,7 +4,7 @@ import org.palladiosimulator.pcm.seff.AbstractAction
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.members.Method
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.* 
