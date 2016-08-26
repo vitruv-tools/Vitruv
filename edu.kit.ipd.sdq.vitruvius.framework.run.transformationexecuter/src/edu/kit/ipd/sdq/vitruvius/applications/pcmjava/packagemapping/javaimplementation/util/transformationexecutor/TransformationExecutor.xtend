@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap
@@ -26,9 +26,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribu
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
-public class TransformationExecuter {
+package class TransformationExecutor {
 
-	val private static final Logger logger = Logger.getLogger(TransformationExecuter.simpleName)
+	val private static final Logger logger = Logger.getLogger(TransformationExecutor.simpleName)
 
 	val protected ClaimableMap<Class<?>, EObjectMappingTransformation> mappingTransformations
 	var protected CorrespondenceModel correspondenceModel
