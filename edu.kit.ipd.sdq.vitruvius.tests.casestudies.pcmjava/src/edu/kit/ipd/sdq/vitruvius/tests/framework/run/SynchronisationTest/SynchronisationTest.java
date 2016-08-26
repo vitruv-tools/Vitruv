@@ -27,7 +27,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange;
