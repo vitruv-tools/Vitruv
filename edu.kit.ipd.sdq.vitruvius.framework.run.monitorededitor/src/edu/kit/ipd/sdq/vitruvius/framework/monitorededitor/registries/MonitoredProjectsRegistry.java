@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries;
+package edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries;
 
 /**
  * Registry for monitored projects, which implements the singleton pattern.

@@ -1,13 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Monitored
+Bundle-Name: Vitruvius Framework MonitoredEditor
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
- org.eclipse.osgi
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.Activator
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0";visibility:=reexport
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor
