@@ -1,6 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;
 
 import java.util.Iterator;
+import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
@@ -22,6 +23,7 @@ public abstract class AbstractChange2CommandTransformingProviding implements Cha
 
     public AbstractChange2CommandTransformingProviding() {
         this.transformationExecuterMap = new ClaimableHashMap<TransformationMetamodelPair, Change2CommandTransforming>();
+        setup();
     }
 
     public void addChange2CommandTransforming(final Change2CommandTransforming change2CommandTransforming) {
@@ -40,4 +42,17 @@ public abstract class AbstractChange2CommandTransformingProviding implements Cha
         return this.transformationExecuterMap.values().iterator();
     }
 
+    protected abstract void setup();
+
+    public static Change2CommandTransformingProviding createChange2CommandTransformingProviding(
+            final List<Change2CommandTransforming> change2CommandTransformings) {
+        return new AbstractChange2CommandTransformingProviding() {
+            @Override
+            public void setup() {
+                for (Change2CommandTransforming transformer : change2CommandTransformings) {
+                    addChange2CommandTransforming(transformer);
+                }
+            }
+        };
+    }
 }
