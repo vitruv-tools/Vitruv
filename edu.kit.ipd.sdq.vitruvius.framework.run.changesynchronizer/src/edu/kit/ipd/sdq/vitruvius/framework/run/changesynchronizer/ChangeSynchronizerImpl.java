@@ -48,8 +48,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private final ModelProviding modelProviding;
     private final Change2CommandTransformingProviding change2CommandTransformingProviding;
     private final CorrespondenceProviding correspondenceProviding;
-    private final InvariantProviding invariantProviding;
-    private final Validating validating;
     private final ChangePreparing changePreparing;
     private final CommandExecuting commandExecuting;
 
@@ -69,8 +67,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         if (null != synchronisationListener) {
             this.synchronisationListeners.add(synchronisationListener);
         }
-        this.invariantProviding = invariantProviding;
-        this.validating = validating;
         this.commandExecuting = commandExecuting;
         this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE);
     }
