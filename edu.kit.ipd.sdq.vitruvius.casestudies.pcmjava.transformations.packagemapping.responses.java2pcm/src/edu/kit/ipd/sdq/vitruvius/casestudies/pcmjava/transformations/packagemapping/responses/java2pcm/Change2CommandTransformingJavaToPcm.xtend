@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util.Java2PcmPackagePreprocessor
 
 class Change2CommandTransformingJavaToPcm extends AbstractChange2CommandTransformingJavaTo5_1 {
-	public override setup() {
+	protected override setup() {
 		addChangeProcessor(new Java2PcmPackagePreprocessor(userInteracting));
 		addChangeProcessor(new Java2PcmPackageMappingMethodBodyChangePreprocessor(userInteracting)); 
 		addChangeProcessor(new Java2PcmTransformationsPreprocessor(userInteracting));
