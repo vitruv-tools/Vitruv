@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
- edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.javaextension,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
