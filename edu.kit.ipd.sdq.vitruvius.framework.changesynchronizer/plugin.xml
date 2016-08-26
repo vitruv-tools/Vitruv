@@ -4,7 +4,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.changesynchronizing">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl">
       </provides>
    </extension>
 

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer;
+package edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
