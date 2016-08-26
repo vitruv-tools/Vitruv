@@ -2,7 +2,7 @@
 //
 //import com.google.inject.Inject
 //import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
-//import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl
+//import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 //import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl
