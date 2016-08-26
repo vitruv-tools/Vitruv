@@ -1,8 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
 import java.util.List
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.BasicEList
@@ -195,30 +193,23 @@ package class ChangeDescription2EChangesTransformation {
 		}
 	}
 
-//	def private AdditiveEReferenceChange<?> addChangeForObjectToAttach(EObject objectToAttach, EObject newContainer) {
-//		if (isNotRootAndNotAlreadyProcessed(objectToAttach, newContainer)) {
-//			// eChanges.add(createAdditive..)
-////			throw new UnsupportedOperationException()
+//	def private boolean isNotRootAndNotAlreadyProcessed(EObject eObject, EObject newContainer) {
+//		val wasOrIsRoot = wasRootBeforeChange(eObject) || isRootAfterChange(eObject, newContainer)
+//		if (wasOrIsRoot) {
+//			var rootChangeForObjectProcessed = false
+//			for (eChange : eChanges) {
+//				rootChangeForObjectProcessed = rootChangeForObjectProcessed || switch eChange {
+//					InsertRootEObject<?>: eChange.newValue == eObject
+//					RemoveRootEObject<?>: eChange.oldValue == eObject
+//					default: false
+//				}
+//			}
+//			if (!rootChangeForObjectProcessed) {
+//				throw new RuntimeException("No resource change was processed for this root element: '" + eObject + "'")
+//			}
 //		}
+//		return !wasOrIsRoot
 //	}
-
-	def private boolean isNotRootAndNotAlreadyProcessed(EObject eObject, EObject newContainer) {
-		val wasOrIsRoot = wasRootBeforeChange(eObject) || isRootAfterChange(eObject, newContainer)
-		if (wasOrIsRoot) {
-			var rootChangeForObjectProcessed = false
-			for (eChange : eChanges) {
-				rootChangeForObjectProcessed = rootChangeForObjectProcessed || switch eChange {
-					InsertRootEObject<?>: eChange.newValue == eObject
-					RemoveRootEObject<?>: eChange.oldValue == eObject
-					default: false
-				}
-			}
-			if (!rootChangeForObjectProcessed) {
-				throw new RuntimeException("No resource change was processed for this root element: '" + eObject + "'")
-			}
-		}
-		return !wasOrIsRoot
-	}
 
 	def private void recursivelyAddChangesForIndirectlyDeletedObjects(EObject parent) {
 		for (containmentReference : parent.eClass.EAllContainments) {
@@ -246,7 +237,7 @@ package class ChangeDescription2EChangesTransformation {
 					it.referenceValues)
 			].flatten.toList
 			val elementsReferencedAfterChange = featureChange.referenceValue
-			if (elementsReferencedAfterChange == null && listChanges?.isEmpty) {
+			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedReference)
 				for (var index = 0; index < elementsReferencedBeforeChange.size; index++) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
@@ -304,7 +295,7 @@ package class ChangeDescription2EChangesTransformation {
 				createChangeForMultiAttributeChange(affectedEObject, affectedAttribute, it.index, it.kind, it.values)
 			].flatten.toList
 			val elementsReferencedAfterChange = featureChange.referenceValue
-			if (elementsReferencedAfterChange == null && listChanges?.isEmpty) {
+			if (elementsReferencedAfterChange == null && listChanges != null && listChanges.isEmpty) {
 				val elementsReferencedBeforeChange = affectedEObject.getReferenceValueList(affectedAttribute)
 				for (var index = 0; index < elementsReferencedBeforeChange.size; index++) {
 					var elementReferencedBeforeChange = elementsReferencedBeforeChange.get(index)
@@ -339,11 +330,6 @@ package class ChangeDescription2EChangesTransformation {
 		}
 	}
 
-	def private void addChangeForObjectToDetach(EObject objectToDetach, EObject newContainer) {
-		if (isNotRootAndNotAlreadyProcessed(objectToDetach, newContainer)) {
-			eChanges.add(EMFModelChangeTransformationUtil.createSubtractiveEChangeForEObject(objectToDetach))
-		}
-	}
 
 //	def private static List<EChange> sortChanges(List<EChange> changes) {
 //		val deletions = new BasicEList

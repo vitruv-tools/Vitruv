@@ -1,20 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Change Preparer
+Bundle-Name: Vitruvius Framework Change Preparer
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
- org.apache.log4j,
- org.eclipse.emf.ecore,
- org.eclipse.emf.ecore.change,
+Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
- edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.changes;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 

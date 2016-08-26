@@ -7,5 +7,4 @@
             provider="edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl">
       </provides>
    </extension>
-
 </plugin>

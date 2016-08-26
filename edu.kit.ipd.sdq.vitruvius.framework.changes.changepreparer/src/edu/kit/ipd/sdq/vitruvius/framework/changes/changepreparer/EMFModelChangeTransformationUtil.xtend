@@ -147,7 +147,7 @@ package class EMFModelChangeTransformationUtil {
 		return createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index, isDelete)
 	}
 	
-	def static ReplaceSingleValuedEReference createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue) {
+	def static ReplaceSingleValuedEReference<?,?> createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue) {
 		val isContainment = affectedReference.containment
 		val container = affectedEObject;
 		val resource = if (oldReferenceValue != null) oldReferenceValue.eResource else newReferenceValue.eResource;
