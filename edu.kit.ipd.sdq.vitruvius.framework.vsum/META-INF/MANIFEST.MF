@@ -1,16 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Virtual Single Underlying Model
+Bundle-Name: Vitruvius Framework Virtual Single Underlying Model
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.vsum;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.metarepository,
- org.eclipse.emf.ecore;bundle-version="2.8.3",
- org.eclipse.core.resources,
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.eclipse.emf.transaction,
+ org.eclipse.emf.ecore,
+ org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.core.runtime,
- org.apache.log4j;bundle-version="1.2.15",
  edu.kit.ipd.sdq.vitruvius.framework.util,
- org.eclipse.emf.transaction
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.vsum.helper

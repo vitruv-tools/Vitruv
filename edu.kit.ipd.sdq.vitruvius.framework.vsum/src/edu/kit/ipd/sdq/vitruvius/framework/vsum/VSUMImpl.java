@@ -43,13 +43,13 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     private final MappingManaging mappingManaging;
     private final MetamodelManaging metamodelManaging;
-    private final ViewTypeManaging viewTypeManaging;
+    // private final ViewTypeManaging viewTypeManaging;
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
     private final Map<Mapping, InternalCorrespondenceModel> mapping2CorrespondenceModelMap;
 
-    private ClassLoader classLoader;
+    // private ClassLoader classLoader;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging) {
@@ -59,7 +59,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
             final MappingManaging mappingManaging, final ClassLoader classLoader) {
         this.metamodelManaging = metamodelManaging;
-        this.viewTypeManaging = viewTypeManaging;
+        // this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
 
         this.resourceSet = new ResourceSetImpl();
@@ -67,7 +67,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.mapping2CorrespondenceModelMap = new HashMap<Mapping, InternalCorrespondenceModel>();
 
-        this.classLoader = classLoader;
+        // this.classLoader = classLoader;
 
         loadVURIsOfVSMUModelInstances();
         loadAndMapCorrepondenceInstances();
@@ -311,8 +311,8 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
     }
 
     /**
-     * Returns the correspondenceModel for the mapping from the metamodel at the first VURI to
-     * the metamodel at the second VURI or the other way round
+     * Returns the correspondenceModel for the mapping from the metamodel at the first VURI to the
+     * metamodel at the second VURI or the other way round
      *
      * @return the found correspondenceModel or null if there is none
      */
