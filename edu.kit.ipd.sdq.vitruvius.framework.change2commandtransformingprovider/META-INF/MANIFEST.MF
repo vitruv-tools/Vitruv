@@ -1,10 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Provider for sync transformations
+Bundle-Name: Vitruvius Framework Change2CommandTransformingProviding Implementation
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
- org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.framework.util
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider
