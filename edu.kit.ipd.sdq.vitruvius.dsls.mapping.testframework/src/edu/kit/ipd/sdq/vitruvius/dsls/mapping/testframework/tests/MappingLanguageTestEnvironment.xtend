@@ -14,7 +14,7 @@
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause
 //import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
-//import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl
+//import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl
 //import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 //import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants
 //import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
