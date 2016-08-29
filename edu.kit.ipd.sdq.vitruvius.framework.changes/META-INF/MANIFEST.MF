@@ -12,6 +12,5 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  org.eclipse.emf.ecore.change;visibility:=reexport,
  org.apache.log4j
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.change,
- edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder,
- edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.change
