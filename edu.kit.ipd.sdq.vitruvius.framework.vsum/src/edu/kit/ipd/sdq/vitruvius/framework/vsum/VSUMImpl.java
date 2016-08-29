@@ -29,7 +29,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
@@ -51,13 +50,12 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     // private ClassLoader classLoader;
 
-    public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
-            final MappingManaging mappingManaging) {
-        this(metamodelManaging, viewTypeManaging, mappingManaging, null);
+    public VSUMImpl(final MetamodelManaging metamodelManaging, final MappingManaging mappingManaging) {
+        this(metamodelManaging, mappingManaging, null);
     }
 
-    public VSUMImpl(final MetamodelManaging metamodelManaging, final ViewTypeManaging viewTypeManaging,
-            final MappingManaging mappingManaging, final ClassLoader classLoader) {
+    public VSUMImpl(final MetamodelManaging metamodelManaging, final MappingManaging mappingManaging,
+            final ClassLoader classLoader) {
         this.metamodelManaging = metamodelManaging;
         // this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;

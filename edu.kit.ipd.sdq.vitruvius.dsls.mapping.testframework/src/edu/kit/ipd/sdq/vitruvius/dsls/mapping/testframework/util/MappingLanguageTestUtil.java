@@ -40,7 +40,7 @@ public final class MappingLanguageTestUtil {
 	 */
 	public static VSUMImpl createEmptyVSUM(Collection<Metamodel> metamodels) {
 		MetaRepositoryImpl metarepository = createEmptyMetaRepository(metamodels);
-		return new VSUMImpl(metarepository, metarepository, metarepository);
+		return new VSUMImpl(metarepository, metarepository);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public final class MappingLanguageTestUtil {
 	}
 
 	public static VSUMImpl createEmptyVSUM(MetaRepositoryImpl metaRepository) {
-		return new VSUMImpl(metaRepository, metaRepository, metaRepository);
+		return new VSUMImpl(metaRepository, metaRepository);
 	}
 	
 	public static Metamodel createMetamodel(String nsURI, String... extensions) {

@@ -56,7 +56,7 @@ public class JaMoPPIntegrationHandler extends IntegrationHandler<IJavaProject> {
         }
 
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
         vsum.getOrCreateAllCorrespondenceModelsForMM(
                 metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
 

@@ -31,7 +31,7 @@ public class IntegrationUtil {
     }
 
     public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository) {
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
         return vsum;
     }
 

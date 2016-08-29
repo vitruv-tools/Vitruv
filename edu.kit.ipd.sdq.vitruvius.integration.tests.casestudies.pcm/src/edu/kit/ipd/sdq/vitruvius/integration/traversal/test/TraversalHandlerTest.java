@@ -58,7 +58,7 @@ public class TraversalHandlerTest {
     public void setUpTest() throws Exception {
 
         final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository);
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();

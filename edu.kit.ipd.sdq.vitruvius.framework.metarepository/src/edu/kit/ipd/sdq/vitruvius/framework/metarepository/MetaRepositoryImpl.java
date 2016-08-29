@@ -10,17 +10,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ViewType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ViewTypeManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
-public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing {
+public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging, ProjectPreparing {
 
     // TODO MK (meta repo): either rename all gets in interfaces to claim... instead of get... or
     // change
@@ -34,13 +32,11 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
      * most one metamodel is mapped.
      */
     private Map<String, Metamodel> fileExtension2MetamodelMap;
-    private ClaimableMap<VURI, ViewType> uri2ViewTypeMap;
     private ClaimableConcatMap<VURI, Mapping> uris2MappingMap;
 
     public MetaRepositoryImpl() {
         this.uri2MetamodelMap = new ClaimableHashMap<VURI, Metamodel>();
         this.fileExtension2MetamodelMap = new HashMap<String, Metamodel>();
-        this.uri2ViewTypeMap = new ClaimableHashMap<VURI, ViewType>();
         this.uris2MappingMap = new ClaimableLexicographicalConcatHashMap<VURI, Mapping>();
     }
 
@@ -75,23 +71,11 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
         return this.fileExtension2MetamodelMap.get(fileExtension);
     }
 
-    @Override
-    public void addViewType(final ViewType viewType) {
-        claimReferredMetamodels(viewType);
-        VURI viewTypeURI = viewType.getURI();
-        this.uri2ViewTypeMap.putClaimingNullOrSameMapped(viewTypeURI, viewType);
-    }
-
     private void claimReferredMetamodels(final MetamodelsReferring metamodelsReferring) {
         VURI[] metamodelURIs = metamodelsReferring.getMetamodelURIs();
         for (VURI metamodelURI : metamodelURIs) {
             this.uri2MetamodelMap.claimKeyIsMapped(metamodelURI);
         }
-    }
-
-    @Override
-    public ViewType getViewType(final VURI uri) {
-        return this.uri2ViewTypeMap.get(uri);
     }
 
     @Override
@@ -127,7 +111,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, 
 
     @Override
     public ProjectInput getProjectInput() {
-        ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uri2ViewTypeMap, this.uris2MappingMap);
+        ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uris2MappingMap);
         return projectInput;
     }
 
