@@ -4,9 +4,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReferenceFactory;
 
 /**
  * A helper class that provides methods for creating atomic change models from EMF elements
