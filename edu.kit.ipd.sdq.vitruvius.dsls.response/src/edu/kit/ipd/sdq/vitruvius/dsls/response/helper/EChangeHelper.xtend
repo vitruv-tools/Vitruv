@@ -16,16 +16,16 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.RemoveRootChange
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.SingleValuedFeatureReplace
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.FeatureOfElement
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.ChangePackage
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootPackage
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.ChangePackage
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReferencePackage
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootPackage
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootEChange
 
 final class EChangeHelper {
 	

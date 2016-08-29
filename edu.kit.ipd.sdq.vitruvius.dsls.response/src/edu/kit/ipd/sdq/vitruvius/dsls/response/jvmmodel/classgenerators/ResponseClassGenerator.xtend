@@ -17,9 +17,9 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCode
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootEChange
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;
