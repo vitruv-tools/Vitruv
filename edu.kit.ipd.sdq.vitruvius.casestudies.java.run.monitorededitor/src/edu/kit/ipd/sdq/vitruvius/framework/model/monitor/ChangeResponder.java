@@ -38,7 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddFieldEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddImportEvent;

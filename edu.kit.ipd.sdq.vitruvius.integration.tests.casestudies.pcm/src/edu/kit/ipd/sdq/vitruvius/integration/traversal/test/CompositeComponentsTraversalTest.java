@@ -20,7 +20,7 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite.CompositeTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;

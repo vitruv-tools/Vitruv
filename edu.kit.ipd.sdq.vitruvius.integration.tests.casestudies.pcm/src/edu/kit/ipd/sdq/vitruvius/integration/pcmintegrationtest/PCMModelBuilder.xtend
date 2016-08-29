@@ -25,8 +25,8 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 

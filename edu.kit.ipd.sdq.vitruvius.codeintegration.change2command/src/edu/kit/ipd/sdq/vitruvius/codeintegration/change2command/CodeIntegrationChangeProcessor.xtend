@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult

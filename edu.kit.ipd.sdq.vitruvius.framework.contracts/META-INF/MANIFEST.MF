@@ -15,7 +15,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.transaction;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf;bundle-version="1.0.0"
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,

@@ -22,11 +22,11 @@ import org.emftext.language.java.containers.CompilationUnit
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import org.palladiosimulator.pcm.core.entity.NamedElement
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 class IntegrationChange2CommandTransformer {

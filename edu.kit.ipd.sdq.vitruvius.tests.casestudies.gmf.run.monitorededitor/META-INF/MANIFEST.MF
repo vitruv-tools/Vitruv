@@ -23,7 +23,7 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.pcm.resources;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange,
  edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
