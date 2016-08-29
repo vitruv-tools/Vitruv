@@ -65,7 +65,7 @@ public final class TestUtil {
      * @return vsum
      */
     public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository, final ClassLoader classLoader) {
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository, classLoader);
+        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, classLoader);
         return vsum;
     }
 
