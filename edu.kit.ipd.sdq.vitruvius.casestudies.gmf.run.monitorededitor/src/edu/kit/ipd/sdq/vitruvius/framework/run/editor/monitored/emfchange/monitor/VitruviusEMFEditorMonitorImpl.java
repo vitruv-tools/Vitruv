@@ -23,12 +23,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -106,7 +106,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            need to be monitored.
      */
     public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, ChangeSynchronizing changeSync,
-            ModelCopyProviding modelCopyProviding, IVitruviusAccessor vitruvAccessor) {
+            ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
         ResourceChangeSynchronizing internalChangeSync = createInternalChangeSynchronizing();
         changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(internalChangeSync, factory, monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
@@ -130,9 +130,9 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            A {@link IVitruviusAccessor} instance providing information about which EMF models
      *            need to be monitored.
      */
-    public VitruviusEMFEditorMonitorImpl(ChangeSynchronizing changeSync, ModelCopyProviding modelCopyProviding,
+    public VitruviusEMFEditorMonitorImpl(ChangeSynchronizing changeSync, ModelProviding modelProviding,
             IVitruviusAccessor vitruvAccessor) {
-        this(new DefaultEditorPartAdapterFactoryImpl(), changeSync, modelCopyProviding, vitruvAccessor);
+        this(new DefaultEditorPartAdapterFactoryImpl(), changeSync, modelProviding, vitruvAccessor);
     }
 
     private boolean isPendingSynchronizationRequest(VURI resourceURI) {
@@ -263,7 +263,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         updateSynchronizationTimestamp(resourceURI);
         if (collectedChanges != null && !collectedChanges.isEmpty()) {
             LOGGER.trace("Got a change for " + resourceURI + ", continuing synchronization.");
-            CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(collectedChanges);
+            CompositeChange compositeChange = VitruviusChangeFactory.getInstance()
+                    .createCompositeChange(collectedChanges);
             summaryChangeSynchronizing.synchronizeChange(compositeChange);
             this.collectedChanges.clear();
         }

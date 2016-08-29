@@ -14,7 +14,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monit
 import java.util.Collection;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
@@ -39,8 +39,8 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(IEditorPartAdapterFactory factory,
-            ChangeSynchronizing changeSync, ModelCopyProviding modelCopyProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(factory, changeSync, modelCopyProviding, vitruvAccessor);
+            ChangeSynchronizing changeSync, ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+        return new VitruviusEMFEditorMonitorImpl(factory, changeSync, modelProviding, vitruvAccessor);
     }
 
     /**
@@ -56,8 +56,8 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(ChangeSynchronizing changeSync,
-            ModelCopyProviding modelCopyProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(changeSync, modelCopyProviding, vitruvAccessor);
+            ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+        return new VitruviusEMFEditorMonitorImpl(changeSync, modelProviding, vitruvAccessor);
     }
 
     public IEditorPartAdapterFactory createDefaultEditorPartAdapterFactory(Collection<String> acceptedFileSuffixes) {

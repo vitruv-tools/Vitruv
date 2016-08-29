@@ -43,7 +43,7 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     public void EMFEditorsCanBeFoundByVURI() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.initialize();
 

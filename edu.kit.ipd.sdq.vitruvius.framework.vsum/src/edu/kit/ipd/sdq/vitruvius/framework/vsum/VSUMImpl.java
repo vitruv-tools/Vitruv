@@ -68,13 +68,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         loadAndMapCorrepondenceInstances();
     }
 
-    @Override
-    public ModelInstance getModelInstanceCopy(final VURI uri) {
-        // TODO Auto-generated method stub
-
-        return null;
-    }
-
     /**
      * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
      * existing that contains at most a root element without children. But throws an exception if an
@@ -334,12 +327,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     public Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI model1uri) {
         Metamodel metamodelForUri = this.metamodelManaging.getMetamodel(model1uri.getFileExtension());
         return getOrCreateAllCorrespondenceModelsForMM(metamodelForUri);
-    }
-
-    @Override
-    public CorrespondenceModel getCorrespondenceModelCopy(final VURI model1uri, final VURI model2uri) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     private void loadVURIsOfVSMUModelInstances() {

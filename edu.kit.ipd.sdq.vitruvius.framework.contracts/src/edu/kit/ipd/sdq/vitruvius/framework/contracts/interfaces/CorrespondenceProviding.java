@@ -5,7 +5,7 @@ import java.util.Set;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 
-public interface CorrespondenceProviding extends CorrespondenceCopyProviding {
+public interface CorrespondenceProviding {
     CorrespondenceModel getCorrespondenceModelOriginal(final VURI mmAVURI, final VURI mmBVURI);
 
     void saveCorrespondenceModelAndDecorators(final CorrespondenceModel correspondenceModel);

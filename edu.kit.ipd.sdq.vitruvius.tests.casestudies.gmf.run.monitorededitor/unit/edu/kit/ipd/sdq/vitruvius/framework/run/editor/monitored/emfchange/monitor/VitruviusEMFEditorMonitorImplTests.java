@@ -70,7 +70,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING, va);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
@@ -89,7 +89,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -115,7 +115,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.NONE_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -135,7 +135,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -166,7 +166,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         TestChangeSynchronizing cs = TestChangeSynchronizing.createInstance();
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -218,7 +218,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING, va);
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING, va);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
@@ -236,7 +236,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     public void modelIsStoppedBeingMonitoredWhenVitruviusDecidesItBecomesNotMonitorable() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
                 DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
-                DefaultImplementations.DEFAULT_MODEL_COPY_PROVIDING,
+                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();

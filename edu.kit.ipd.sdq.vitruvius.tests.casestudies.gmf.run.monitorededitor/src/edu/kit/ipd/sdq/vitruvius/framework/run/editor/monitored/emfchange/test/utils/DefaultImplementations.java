@@ -15,13 +15,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 
@@ -57,10 +60,47 @@ public class DefaultImplementations {
         }
     };
 
-    public static final ModelCopyProviding DEFAULT_MODEL_COPY_PROVIDING = new ModelCopyProviding() {
+    public static final ModelProviding DEFAULT_MODEL_PROVIDING = new ModelProviding() {
         @Override
-        public ModelInstance getModelInstanceCopy(VURI uri) {
+        public ModelInstance getAndLoadModelInstanceOriginal(VURI uri) {
+            // TODO Auto-generated method stub
             return null;
+        }
+
+        @Override
+        public void saveExistingModelInstanceOriginal(VURI vuri) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public TransactionalEditingDomain getTransactionalEditingDomain() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public void detachTransactionalEditingDomain() {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void deleteModelInstanceOriginal(VURI vuri) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void saveModelInstanceOriginalWithEObjectAsOnlyContent(VURI vuri, EObject rootEObject, TUID oldTUID) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void forceReloadModelInstanceOriginalIfExisting(VURI modelURI) {
+            // TODO Auto-generated method stub
+
         }
     };
 
