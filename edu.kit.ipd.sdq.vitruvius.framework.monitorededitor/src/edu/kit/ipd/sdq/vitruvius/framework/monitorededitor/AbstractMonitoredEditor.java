@@ -1,16 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.monitorededitor;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 
 public abstract class AbstractMonitoredEditor {
-	protected final ChangeSynchronizing changeSynchronizing;
-	protected final ModelCopyProviding modelCopyProviding;
-	
-	public AbstractMonitoredEditor(ChangeSynchronizing changeSynchronizing,
-			ModelCopyProviding modelCopyProviding) {
-		this.changeSynchronizing = changeSynchronizing;
-		this.modelCopyProviding = modelCopyProviding;
-	}	
+    protected final ChangeSynchronizing changeSynchronizing;
+    protected final ModelProviding modelProviding;
+
+    public AbstractMonitoredEditor(final ChangeSynchronizing changeSynchronizing, final ModelProviding modelProviding) {
+        this.changeSynchronizing = changeSynchronizing;
+        this.modelProviding = modelProviding;
+    }
 
 }
