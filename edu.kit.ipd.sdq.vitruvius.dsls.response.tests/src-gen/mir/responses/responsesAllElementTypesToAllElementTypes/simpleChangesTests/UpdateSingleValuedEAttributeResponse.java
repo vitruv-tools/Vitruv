@@ -3,8 +3,8 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")

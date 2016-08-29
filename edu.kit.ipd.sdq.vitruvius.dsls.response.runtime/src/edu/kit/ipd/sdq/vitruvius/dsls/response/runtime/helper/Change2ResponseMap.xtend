@@ -7,7 +7,7 @@ import java.util.ArrayList
 import java.util.Set
 import java.util.HashSet
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 
 class Change2ResponseMap {
 	private Map<Class<? extends EChange>, List<IResponseRealization>> change2responseMap;

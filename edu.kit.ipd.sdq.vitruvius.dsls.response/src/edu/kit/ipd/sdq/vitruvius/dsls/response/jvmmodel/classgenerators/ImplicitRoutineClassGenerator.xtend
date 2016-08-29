@@ -7,7 +7,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ImplicitRoutine
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 
 class ImplicitRoutineClassGenerator extends RoutineClassGenerator {
 	protected final Class<? extends EChange> change;

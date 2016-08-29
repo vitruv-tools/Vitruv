@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 
 class MappingUtil {
 	public static def boolean isEChangeInPackage(EChange eChange, EPackage ePackage) {

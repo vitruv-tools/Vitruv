@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.datatypes;
 
 import org.eclipse.emf.ecore.EClass;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
 
 
 public class ChangeType {
