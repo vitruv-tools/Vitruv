@@ -2,12 +2,10 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.*;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;

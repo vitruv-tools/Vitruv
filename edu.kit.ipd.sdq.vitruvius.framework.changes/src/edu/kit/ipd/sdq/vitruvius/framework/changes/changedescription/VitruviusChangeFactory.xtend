@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.FileChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.CompositeChangeImpl
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.GeneralChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.TransactionalChangeImpl

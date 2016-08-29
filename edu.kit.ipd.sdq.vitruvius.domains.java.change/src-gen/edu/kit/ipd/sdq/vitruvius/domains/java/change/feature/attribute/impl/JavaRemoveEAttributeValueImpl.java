@@ -2,12 +2,11 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.impl.RemoveEAttributeValueImpl;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributePackage;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaRemoveEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;

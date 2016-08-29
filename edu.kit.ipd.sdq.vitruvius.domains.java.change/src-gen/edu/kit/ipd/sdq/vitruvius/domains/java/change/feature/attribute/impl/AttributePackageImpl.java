@@ -2,8 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.ChangePackage;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributeFactory;
@@ -17,6 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.impl.FeaturePackage
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferencePackage;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl.ReferencePackageImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.ChangePackage;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
@@ -211,7 +210,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage theAttributePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.eNS_URI);
+		edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage theAttributePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 
 		// Create type parameters

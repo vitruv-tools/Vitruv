@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplem
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.EChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.concurrent.Callable
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult

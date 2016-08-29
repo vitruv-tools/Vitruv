@@ -22,7 +22,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.changes.echange,
+ edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.domains.java.change,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.framework.changes

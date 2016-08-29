@@ -1,9 +1,10 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.RemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference;
+
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Parameter;

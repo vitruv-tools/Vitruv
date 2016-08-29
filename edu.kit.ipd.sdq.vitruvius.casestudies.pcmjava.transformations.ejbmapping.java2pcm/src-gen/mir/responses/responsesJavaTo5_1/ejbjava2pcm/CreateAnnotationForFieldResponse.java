@@ -2,9 +2,10 @@ package mir.responses.responsesJavaTo5_1.ejbjava2pcm;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBAnnotationHelper;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
+
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;

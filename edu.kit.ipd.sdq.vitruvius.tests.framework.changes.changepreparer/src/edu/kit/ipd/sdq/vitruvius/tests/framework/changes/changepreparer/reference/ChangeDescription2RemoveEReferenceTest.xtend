@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.referen
 import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util.ChangeAssertHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 
 class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenceTest {
 

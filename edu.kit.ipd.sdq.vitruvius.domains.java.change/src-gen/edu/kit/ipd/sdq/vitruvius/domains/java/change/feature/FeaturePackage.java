@@ -72,7 +72,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_FEATURE_ECHANGE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
+	int JAVA_FEATURE_ECHANGE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeaturePackage.FEATURE_ECHANGE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -81,7 +81,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_FEATURE_ECHANGE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
+	int JAVA_FEATURE_ECHANGE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -90,7 +90,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_FEATURE_ECHANGE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
+	int JAVA_FEATURE_ECHANGE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Feature EChange</em>' class.
@@ -99,7 +99,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_FEATURE_ECHANGE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 1;
+	int JAVA_FEATURE_ECHANGE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeaturePackage.FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Java Feature EChange</em>' class.
@@ -108,7 +108,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_FEATURE_ECHANGE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.FEATURE_ECHANGE_OPERATION_COUNT + 0;
+	int JAVA_FEATURE_ECHANGE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeaturePackage.FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
 
 	/**

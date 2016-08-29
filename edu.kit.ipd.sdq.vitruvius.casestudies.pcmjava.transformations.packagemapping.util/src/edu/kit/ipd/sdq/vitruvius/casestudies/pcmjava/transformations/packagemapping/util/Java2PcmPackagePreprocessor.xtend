@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.emftext.language.java.containers.Package
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel

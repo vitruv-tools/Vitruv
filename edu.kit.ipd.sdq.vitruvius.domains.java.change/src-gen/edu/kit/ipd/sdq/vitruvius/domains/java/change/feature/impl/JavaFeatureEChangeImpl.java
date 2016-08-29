@@ -2,10 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.impl.FeatureEChangeImpl;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.impl.FeatureEChangeImpl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;

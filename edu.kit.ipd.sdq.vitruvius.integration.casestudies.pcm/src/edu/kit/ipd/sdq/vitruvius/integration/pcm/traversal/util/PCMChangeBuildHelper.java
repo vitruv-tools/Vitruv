@@ -24,11 +24,11 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferenceFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootFactory;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.ChangeBuildHelper;
 
 /**

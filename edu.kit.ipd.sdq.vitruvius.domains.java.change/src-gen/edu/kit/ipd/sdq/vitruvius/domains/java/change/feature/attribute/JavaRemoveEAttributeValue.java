@@ -2,9 +2,9 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.RemoveEAttributeValue;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.RemoveEAttributeValue;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 

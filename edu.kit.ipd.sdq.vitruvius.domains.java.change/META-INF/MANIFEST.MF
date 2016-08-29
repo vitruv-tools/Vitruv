@@ -15,4 +15,4 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.change.feature,
  edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.changes.echange;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.change.echange;visibility:=reexport

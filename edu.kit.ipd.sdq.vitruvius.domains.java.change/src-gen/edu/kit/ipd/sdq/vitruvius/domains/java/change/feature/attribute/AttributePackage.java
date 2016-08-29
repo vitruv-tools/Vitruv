@@ -71,7 +71,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
+	int JAVA_INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -80,7 +80,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
+	int JAVA_INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -89,7 +89,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__INDEX;
+	int JAVA_INSERT_EATTRIBUTE_VALUE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__INDEX;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -98,7 +98,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
+	int JAVA_INSERT_EATTRIBUTE_VALUE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -107,7 +107,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT + 0;
+	int JAVA_INSERT_EATTRIBUTE_VALUE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Insert EAttribute Value</em>' class.
@@ -116,7 +116,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT + 1;
+	int JAVA_INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -125,7 +125,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE;
+	int JAVA_INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Java Insert EAttribute Value</em>' class.
@@ -134,7 +134,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT + 0;
+	int JAVA_INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl.JavaRemoveEAttributeValueImpl <em>Java Remove EAttribute Value</em>}' class.
@@ -153,7 +153,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -162,7 +162,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -171,7 +171,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__INDEX;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__INDEX;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -180,7 +180,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -189,7 +189,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT + 0;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Remove EAttribute Value</em>' class.
@@ -198,7 +198,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT + 1;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -207,7 +207,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Java Remove EAttribute Value</em>' class.
@@ -216,7 +216,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT + 0;
+	int JAVA_REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl.JavaReplaceSingleValuedEAttributeImpl <em>Java Replace Single Valued EAttribute</em>}' class.
@@ -235,7 +235,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -244,7 +244,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
@@ -253,7 +253,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
@@ -262,7 +262,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -271,7 +271,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT + 0;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Replace Single Valued EAttribute</em>' class.
@@ -280,7 +280,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT + 1;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -289,7 +289,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -298,7 +298,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Java Replace Single Valued EAttribute</em>' class.
@@ -307,7 +307,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT + 0;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT + 0;
 
 
 	/**

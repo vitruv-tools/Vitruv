@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.command.Command
 import java.util.List

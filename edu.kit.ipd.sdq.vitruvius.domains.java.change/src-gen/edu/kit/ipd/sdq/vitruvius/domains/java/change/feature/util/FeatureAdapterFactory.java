@@ -2,12 +2,10 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.*;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -124,13 +122,13 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange <em>EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 	 * @generated
 	 */
 	public Adapter createEChangeAdapter() {
@@ -138,13 +136,13 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange <em>Atomic EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.change.echange.AtomicEChange
 	 * @generated
 	 */
 	public Adapter createAtomicEChangeAdapter() {
@@ -152,13 +150,13 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange <em>EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
 	 * @generated
 	 */
 	public Adapter createFeatureEChangeAdapter() {

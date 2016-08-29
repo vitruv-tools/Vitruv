@@ -2,28 +2,24 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateMultiValuedFeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateSingleValuedFeatureEChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AdditiveAttributeEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.InsertEAttributeValue;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.RemoveEAttributeValue;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.SubtractiveAttributeEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.UpdateAttributeEChange;
-
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange;
-
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.*;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.InsertEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.RemoveEAttributeValue;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.UpdateAttributeEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;

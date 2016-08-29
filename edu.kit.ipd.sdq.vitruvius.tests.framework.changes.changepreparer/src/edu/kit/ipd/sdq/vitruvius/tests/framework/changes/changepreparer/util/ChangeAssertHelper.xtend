@@ -1,19 +1,19 @@
 package edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.ExplicitUnsetEFeature
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.MoveEObject
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.ReplaceInEList
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.InsertEAttributeValue
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.RemoveEAttributeValue
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AdditiveEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.SubtractiveEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.compound.ExplicitUnsetEFeature
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.compound.MoveEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.compound.ReplaceInEList
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.InsertEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.RemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.RemoveEReference
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Quadruple
 import java.util.List
@@ -23,16 +23,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.PermuteListEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.CompoundEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectAddedEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectSubtractedEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.PermuteListEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.UpdateReferenceEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.UpdateSingleListEntryEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.RemoveFromListEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.InsertInListEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.compound.CompoundEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EObjectAddedEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EObjectSubtractedEChange
 
 class ChangeAssertHelper {
 

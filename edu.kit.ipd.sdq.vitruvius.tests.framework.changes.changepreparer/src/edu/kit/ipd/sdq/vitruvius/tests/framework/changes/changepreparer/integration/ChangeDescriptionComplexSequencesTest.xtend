@@ -5,7 +5,7 @@ import org.junit.Test
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util.ChangeAssertHelper.*
 import edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.AdditiveEChange
 import allElementTypes.AllElementTypesPackage
 import org.junit.Assert
 
