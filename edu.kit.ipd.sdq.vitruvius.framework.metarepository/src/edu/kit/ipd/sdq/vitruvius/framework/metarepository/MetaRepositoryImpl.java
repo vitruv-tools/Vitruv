@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ViewType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
@@ -22,8 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
-public class MetaRepositoryImpl
-        implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing, InvariantProviding {
+public class MetaRepositoryImpl implements MetamodelManaging, ViewTypeManaging, MappingManaging, ProjectPreparing {
 
     // TODO MK (meta repo): either rename all gets in interfaces to claim... instead of get... or
     // change
@@ -132,12 +129,6 @@ public class MetaRepositoryImpl
     public ProjectInput getProjectInput() {
         ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uri2ViewTypeMap, this.uris2MappingMap);
         return projectInput;
-    }
-
-    @Override
-    public Invariants getInvariants(final VURI mmURI) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
