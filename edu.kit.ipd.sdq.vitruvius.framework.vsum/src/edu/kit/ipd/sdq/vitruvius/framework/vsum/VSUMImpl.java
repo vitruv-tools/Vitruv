@@ -17,18 +17,15 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Invariants;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ValidationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalContractsBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
@@ -36,7 +33,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
-public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Validating {
+public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private static final Logger logger = Logger.getLogger(VSUMImpl.class.getSimpleName());
 
@@ -342,25 +339,6 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding, Valida
 
     @Override
     public CorrespondenceModel getCorrespondenceModelCopy(final VURI model1uri, final VURI model2uri) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ValidationResult validate(final Invariants invariants) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ValidationResult validate(final ModelInstance modelInstance, final Invariants invariants) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ValidationResult validate(final ModelInstance modelInstanceA, final ModelInstance modelInstanceB,
-            final Invariants invariants) {
         // TODO Auto-generated method stub
         return null;
     }

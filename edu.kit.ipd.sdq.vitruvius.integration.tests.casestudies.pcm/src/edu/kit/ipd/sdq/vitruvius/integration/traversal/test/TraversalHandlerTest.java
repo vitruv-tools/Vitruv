@@ -63,7 +63,7 @@ public class TraversalHandlerTest {
         final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum,
-                this.vsum, null, changePreparing, commandExecuting);
+                null, changePreparing, commandExecuting);
         this.resourceSet = new ResourceSetImpl();
     }
 
