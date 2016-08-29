@@ -1,10 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
@@ -81,7 +79,4 @@ public interface Blackboard {
 
     void unarchiveChangesAndCommandsForRedo();
 
-    void pushTUID(EObject eObject, TUID tuid);
-
-    Map<EObject, TUID> popTUIDMap();
 }

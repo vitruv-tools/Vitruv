@@ -1,16 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
@@ -27,7 +23,6 @@ public class BlackboardImpl implements Blackboard {
     private List<Command> archivedCommands;
     private CheckResult checkResult;
     private CorrespondenceProviding correspondenceProviding;
-    private Map<EObject, TUID> tuidMap;
 
     public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelProviding modelProviding,
             final CorrespondenceProviding correspondenceProviding) {
@@ -35,7 +30,6 @@ public class BlackboardImpl implements Blackboard {
         this.correspondenceModel = correspondenceModel;
         this.modelProviding = modelProviding;
         this.correspondenceProviding = correspondenceProviding;
-        this.tuidMap = new HashMap<EObject, TUID>();
     }
 
     private void checkTransitionFromTo(final BlackboardState expectedSource, final BlackboardState target,
@@ -129,15 +123,4 @@ public class BlackboardImpl implements Blackboard {
         return this.correspondenceProviding;
     }
 
-    @Override
-    public void pushTUID(final EObject eObject, final TUID tuid) {
-        this.tuidMap.put(eObject, tuid);
-    }
-
-    @Override
-    public Map<EObject, TUID> popTUIDMap() {
-        Map<EObject, TUID> result = this.tuidMap;
-        this.tuidMap = new HashMap<EObject, TUID>();
-        return result;
-    }
 }
