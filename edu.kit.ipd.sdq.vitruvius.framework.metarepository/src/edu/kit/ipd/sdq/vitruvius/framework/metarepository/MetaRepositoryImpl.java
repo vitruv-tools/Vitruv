@@ -8,17 +8,15 @@ import java.util.Set;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ProjectInput;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ProjectPreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
 
-public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging, ProjectPreparing {
+public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
 
     // TODO MK (meta repo): either rename all gets in interfaces to claim... instead of get... or
     // change
@@ -107,12 +105,6 @@ public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging, P
     public Collection<Mapping> getAllMappings(final Metamodel metamodel) {
         VURI uri = metamodel.getURI();
         return this.uris2MappingMap.get(uri);
-    }
-
-    @Override
-    public ProjectInput getProjectInput() {
-        ProjectInput projectInput = new ProjectInput(this.uri2MetamodelMap, this.uris2MappingMap);
-        return projectInput;
     }
 
     @Override
