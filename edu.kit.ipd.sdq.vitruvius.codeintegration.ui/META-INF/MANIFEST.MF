@@ -18,5 +18,6 @@ Require-Bundle: org.eclipse.core.commands,
  edu.kit.ipd.sdq.vitruvius.codeintegration,
  org.eclipse.core.resources,
  org.eclipse.jst.ws,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util
+ edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
+ edu.kit.ipd.sdq.vitruvius.framework.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands

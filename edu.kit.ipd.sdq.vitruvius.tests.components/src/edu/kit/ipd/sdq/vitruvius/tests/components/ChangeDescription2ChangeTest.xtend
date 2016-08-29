@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.components
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest
 import edu.kit.ipd.sdq.vitruvius.tests.VitruviusEMFCasestudyTest
 import java.util.List

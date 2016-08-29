@@ -8,8 +8,8 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -17,7 +17,6 @@ import org.eclipse.ui.IEditorPart;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.mocking.EclipseMock;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels.Files;
@@ -25,6 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.u
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.DefaultImplementations;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;

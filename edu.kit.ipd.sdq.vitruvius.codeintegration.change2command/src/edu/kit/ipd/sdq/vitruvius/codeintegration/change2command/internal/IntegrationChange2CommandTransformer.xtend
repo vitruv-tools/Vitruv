@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import java.util.ArrayList
@@ -27,7 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObjec
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class IntegrationChange2CommandTransformer {
 	

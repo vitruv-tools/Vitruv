@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CorrespondenceProvider;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 
 public abstract class AbstractWrapper implements ElementProvider {
 	protected final ElementProvider elementProvider;

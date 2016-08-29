@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -41,6 +40,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.u
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.utils.EnsureNotExecuted;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;

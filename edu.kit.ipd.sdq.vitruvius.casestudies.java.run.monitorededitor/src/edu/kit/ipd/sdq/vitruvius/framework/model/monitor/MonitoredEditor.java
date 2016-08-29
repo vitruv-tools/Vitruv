@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelCopyProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
@@ -128,9 +128,9 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.refactoringInProgress = true;
     }
 
-    public MonitoredEditor(final ChangeSynchronizing changeSynchronizing, final ModelCopyProviding modelCopyProviding,
+    public MonitoredEditor(final ChangeSynchronizing changeSynchronizing, final ModelProviding modelProviding,
             final String... monitoredProjectNames) {
-        super(changeSynchronizing, modelCopyProviding);
+        super(changeSynchronizing, modelProviding);
 
         this.configureLogger();
 

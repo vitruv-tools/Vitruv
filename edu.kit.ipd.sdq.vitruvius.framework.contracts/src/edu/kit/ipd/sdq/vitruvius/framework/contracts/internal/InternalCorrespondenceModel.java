@@ -2,8 +2,9 @@ package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public interface InternalCorrespondenceModel extends CorrespondenceModel {
 
@@ -16,4 +17,6 @@ public interface InternalCorrespondenceModel extends CorrespondenceModel {
     public VURI getURI();
 
     public void saveModel();
+
+    public Mapping getMapping();
 }

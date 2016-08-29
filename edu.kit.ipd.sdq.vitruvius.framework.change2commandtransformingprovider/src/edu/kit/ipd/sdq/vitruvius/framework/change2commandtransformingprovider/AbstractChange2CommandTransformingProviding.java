@@ -4,11 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * This abstract implementation of the {@link Change2CommandTransformingProviding} provides a

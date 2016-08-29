@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.DefaultTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.DefaultTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Component;

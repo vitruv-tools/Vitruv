@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+
 public class Mapping implements MetamodelsReferring {
     private Metamodel metamodelA;
     private Metamodel metamodelB;

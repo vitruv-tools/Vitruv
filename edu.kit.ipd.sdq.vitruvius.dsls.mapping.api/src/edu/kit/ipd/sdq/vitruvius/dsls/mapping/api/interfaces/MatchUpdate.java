@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;
 

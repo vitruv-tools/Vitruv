@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.ResponseCorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;

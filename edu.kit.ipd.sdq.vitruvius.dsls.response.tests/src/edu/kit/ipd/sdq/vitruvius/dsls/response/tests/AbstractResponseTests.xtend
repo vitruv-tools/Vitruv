@@ -5,7 +5,7 @@ import org.junit.runner.Description
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding

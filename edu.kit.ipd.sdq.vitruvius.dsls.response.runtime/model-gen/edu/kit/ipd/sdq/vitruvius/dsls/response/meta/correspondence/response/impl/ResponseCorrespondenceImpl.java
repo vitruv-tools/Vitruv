@@ -5,10 +5,12 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.imp
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponsePackage;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -34,6 +36,7 @@ public class ResponseCorrespondenceImpl extends CorrespondenceImpl implements Re
 	 * @ordered
 	 */
 	protected static final String TAG_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getTag() <em>Tag</em>}' attribute.
 	 * <!-- begin-user-doc -->

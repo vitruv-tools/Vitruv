@@ -6,11 +6,11 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.MappingHelper
 import java.util.function.Supplier
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import org.eclipse.xtend.lib.annotations.Delegate
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 

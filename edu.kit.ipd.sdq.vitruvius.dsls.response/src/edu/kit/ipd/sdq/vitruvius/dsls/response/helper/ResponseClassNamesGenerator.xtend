@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.helper
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response

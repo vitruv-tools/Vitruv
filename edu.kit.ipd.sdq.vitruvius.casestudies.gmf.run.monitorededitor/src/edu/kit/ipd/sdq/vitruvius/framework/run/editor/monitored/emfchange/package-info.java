@@ -43,7 +43,7 @@ remove operations.
 
 This front-end for the Vitruvius system buffers the changes collected when the user
 saves models and synchronizes the changes when the user calls 
-{@link edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor#triggerSynchronisation(edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI)}.
+{@link edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor#triggerSynchronisation(edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI)}.
 
 Known issues:
  - Feature maps are not supported yet. Should this need arise, the packages

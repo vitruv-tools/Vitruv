@@ -8,10 +8,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.DefaultTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.DefaultTUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.components.VSUMTest;
 

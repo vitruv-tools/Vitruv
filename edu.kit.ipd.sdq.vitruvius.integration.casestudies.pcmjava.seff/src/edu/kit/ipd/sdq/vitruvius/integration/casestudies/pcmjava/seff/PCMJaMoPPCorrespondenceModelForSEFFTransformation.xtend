@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcmjava.seff
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPCorrespondenceModelTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import org.apache.log4j.Logger
 import org.emftext.language.java.commons.Commentable

@@ -1,11 +1,11 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import java.util.HashSet
 import java.util.List
 import java.util.Map
@@ -17,7 +17,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {

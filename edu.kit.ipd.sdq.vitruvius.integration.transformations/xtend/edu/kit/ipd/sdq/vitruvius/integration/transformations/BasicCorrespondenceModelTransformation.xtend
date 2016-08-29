@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.integration.transformations
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import java.util.HashSet
 import org.apache.log4j.Logger
@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EObject
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 /**
  * Class that provides general methods for creating correspondences between two metamodels. 

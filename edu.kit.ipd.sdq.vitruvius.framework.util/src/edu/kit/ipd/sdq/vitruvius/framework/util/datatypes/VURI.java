@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
+package edu.kit.ipd.sdq.vitruvius.framework.util.datatypes;
 
 import java.util.HashMap;
 import java.util.Map;

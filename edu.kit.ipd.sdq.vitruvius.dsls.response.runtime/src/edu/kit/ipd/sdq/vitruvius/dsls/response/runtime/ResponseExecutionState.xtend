@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class ResponseExecutionState {
 	private val UserInteracting userInteracting;

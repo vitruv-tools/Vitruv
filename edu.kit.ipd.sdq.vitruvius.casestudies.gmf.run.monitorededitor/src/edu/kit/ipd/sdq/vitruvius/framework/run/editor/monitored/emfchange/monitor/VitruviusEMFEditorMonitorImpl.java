@@ -25,7 +25,6 @@ import org.eclipse.ui.IEditorPart;
 
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
@@ -39,6 +38,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitru
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.EclipseAdapterProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * A simple implementation of {@link IVitruviusEMFEditorMonitor} using an {@link IVitruviusAccessor}

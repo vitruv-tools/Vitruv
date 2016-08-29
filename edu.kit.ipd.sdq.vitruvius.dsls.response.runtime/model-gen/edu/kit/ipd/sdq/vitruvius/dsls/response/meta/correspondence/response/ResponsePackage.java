@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -182,6 +182,7 @@ public interface ResponsePackage extends EPackage {
 		 * @generated
 		 */
 		EClass RESPONSE_CORRESPONDENCE = eINSTANCE.getResponseCorrespondence();
+
 		/**
 		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->

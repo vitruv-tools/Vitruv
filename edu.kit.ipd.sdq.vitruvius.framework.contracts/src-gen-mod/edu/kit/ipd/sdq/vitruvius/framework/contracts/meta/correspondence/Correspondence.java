@@ -1,6 +1,6 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence;
+package edu.kit.ipd.sdq.vitruvius.framework.correspondence;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -15,21 +15,21 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent <em>Parent</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn <em>Depends On</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getATUIDs <em>ATUI Ds</em>}</li>
- *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getBTUIDs <em>BTUI Ds</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getParent <em>Parent</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependsOn <em>Depends On</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getATUIDs <em>ATUI Ds</em>}</li>
+ *   <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getBTUIDs <em>BTUI Ds</em>}</li>
  * </ul>
  *
- * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence()
+ * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence()
  * @model abstract="true"
  * @generated
  */
 public interface Correspondence extends EObject {
     /**
      * Returns the value of the '<em><b>Parent</b></em>' container reference.
-     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}'.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences#getCorrespondences <em>Correspondences</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Parent</em>' container reference isn't clear, there really should
@@ -38,15 +38,15 @@ public interface Correspondence extends EObject {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Parent</em>' container reference.
      * @see #setParent(Correspondences)
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_Parent()
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences#getCorrespondences
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence_Parent()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences#getCorrespondences
      * @model opposite="correspondences" required="true" transient="false"
      * @generated
      */
     Correspondences getParent();
 
     /**
-     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getParent <em>Parent</em>}' container reference.
+     * Sets the value of the '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getParent <em>Parent</em>}' container reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @param value the new value of the '<em>Parent</em>' container reference.
      * @see #getParent()
@@ -56,8 +56,8 @@ public interface Correspondence extends EObject {
 
     /**
      * Returns the value of the '<em><b>Depends On</b></em>' reference list.
-     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}.
-     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}'.
+     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence}.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Depends On</em>' reference list isn't clear, there really should
@@ -65,8 +65,8 @@ public interface Correspondence extends EObject {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Depends On</em>' reference list.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_DependsOn()
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependedOnBy
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence_DependsOn()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependedOnBy
      * @model opposite="dependedOnBy" ordered="false"
      * @generated
      */
@@ -74,8 +74,8 @@ public interface Correspondence extends EObject {
 
     /**
      * Returns the value of the '<em><b>Depended On By</b></em>' reference list.
-     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence}.
-     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn <em>Depends On</em>}'.
+     * The list contents are of type {@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence}.
+     * It is bidirectional and its opposite is '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependsOn <em>Depends On</em>}'.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Depended On By</em>' reference list isn't clear, there really
@@ -83,8 +83,8 @@ public interface Correspondence extends EObject {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Depended On By</em>' reference list.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_DependedOnBy()
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence#getDependsOn
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence_DependedOnBy()
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence#getDependsOn
      * @model opposite="dependsOn" ordered="false"
      * @generated
      */
@@ -101,8 +101,8 @@ public interface Correspondence extends EObject {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>ATUI Ds</em>' attribute list.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_ATUIDs()
-     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.TUID"
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence_ATUIDs()
+     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.correspondence.TUID"
      * @generated
      */
     EList<TUID> getATUIDs();
@@ -118,8 +118,8 @@ public interface Correspondence extends EObject {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>BTUI Ds</em>' attribute list.
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage#getCorrespondence_BTUIDs()
-     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.TUID"
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage#getCorrespondence_BTUIDs()
+     * @model dataType="edu.kit.ipd.sdq.vitruvius.framework.correspondence.TUID"
      * @generated
      */
     EList<TUID> getBTUIDs();
@@ -142,7 +142,7 @@ public interface Correspondence extends EObject {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model kind="operation"
-     *        dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.TUID"
+     *        dataType="edu.kit.ipd.sdq.vitruvius.framework.correspondence.TUID"
      * @generated NOT
      * @deprecated
      */
@@ -152,7 +152,7 @@ public interface Correspondence extends EObject {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model kind="operation"
-     *        dataType="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.TUID"
+     *        dataType="edu.kit.ipd.sdq.vitruvius.framework.correspondence.TUID"
      * @generated NOT
      * @deprecated
      */

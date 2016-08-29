@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 
 public abstract class AbstractCorrespondenceWrapper {
 	public Correspondence getCorrespondence() {

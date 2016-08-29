@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Data

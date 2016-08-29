@@ -9,6 +9,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class TransformationResult {
 

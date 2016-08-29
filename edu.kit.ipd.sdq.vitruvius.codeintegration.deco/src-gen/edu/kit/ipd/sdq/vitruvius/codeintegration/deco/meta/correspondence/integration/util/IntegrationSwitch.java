@@ -5,7 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integ
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.*;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;

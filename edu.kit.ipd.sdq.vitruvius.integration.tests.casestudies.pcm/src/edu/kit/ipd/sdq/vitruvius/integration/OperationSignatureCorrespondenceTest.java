@@ -11,7 +11,8 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Interface;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Class for testing correspondences between PCM operationSignatures and JaMoPP interfaceMethods.

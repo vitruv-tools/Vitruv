@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CorrespondingObjectCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Effect

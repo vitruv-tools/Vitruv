@@ -20,12 +20,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Helper class for MIR mapping realizations.

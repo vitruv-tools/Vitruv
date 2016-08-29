@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.HierarchicalTUIDCalculatorAndResolver
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.HierarchicalTUIDCalculatorAndResolver
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Classifier

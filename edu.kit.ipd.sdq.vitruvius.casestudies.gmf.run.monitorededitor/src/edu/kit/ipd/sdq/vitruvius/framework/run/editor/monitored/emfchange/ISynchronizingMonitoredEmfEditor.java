@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * An interface for monitors listening for model changes in EMF/GMF editors, triggering model

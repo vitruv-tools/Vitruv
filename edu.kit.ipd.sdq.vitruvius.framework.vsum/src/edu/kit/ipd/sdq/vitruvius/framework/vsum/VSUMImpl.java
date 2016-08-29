@@ -16,12 +16,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
@@ -29,8 +26,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.CorrespondenceModelImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
 public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
@@ -43,7 +43,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
-    private final Map<Mapping, InternalCorrespondenceModel> mapping2CorrespondenceModelMap;
+    private final Map<Mapping, edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel> mapping2CorrespondenceModelMap;
 
     // private ClassLoader classLoader;
 
@@ -319,7 +319,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
      * {@link getCorrespondenceModelOriginal} must be called before to create the appropriate
      * correspondence instance
      *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.datatypes.
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.datatypes.
      *      CorrespondenceModel
      * @return set that contains all CorrespondenceModels for the VURI or null if there is non
      */

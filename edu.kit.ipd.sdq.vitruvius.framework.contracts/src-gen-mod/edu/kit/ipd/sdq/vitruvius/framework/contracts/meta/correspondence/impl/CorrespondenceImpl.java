@@ -1,6 +1,6 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl;
+package edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl;
 
 import java.util.Collection;
 
@@ -19,9 +19,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Correspondence</b></em>'.
@@ -30,15 +30,15 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl#getParent
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl#getParent
  * <em>Parent</em>}</li>
- * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl#getDependsOn
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl#getDependsOn
  * <em>Depends On</em>}</li>
- * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl#getDependedOnBy
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl#getDependedOnBy
  * <em>Depended On By</em>}</li>
- * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl#getATUIDs
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl#getATUIDs
  * <em>ATUI Ds</em>}</li>
- * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl#getBTUIDs
+ * <li>{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl#getBTUIDs
  * <em>BTUI Ds</em>}</li>
  * </ul>
  *

@@ -11,9 +11,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorrespondenceWrapper;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public abstract class AbstractMappingRealization implements MappingRealization {
 	protected static void destroy(ElementProvider elementProvider, MappingExecutionState state) {

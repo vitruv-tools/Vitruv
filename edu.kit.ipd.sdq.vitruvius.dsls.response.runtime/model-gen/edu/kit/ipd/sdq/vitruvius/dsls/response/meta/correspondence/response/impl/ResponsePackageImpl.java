@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.Resp
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponsePackage;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;

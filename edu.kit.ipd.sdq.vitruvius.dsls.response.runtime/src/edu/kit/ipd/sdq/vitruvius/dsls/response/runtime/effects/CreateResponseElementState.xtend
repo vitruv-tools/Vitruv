@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class CreateResponseElementState extends AbstractResponseElementState {
 	

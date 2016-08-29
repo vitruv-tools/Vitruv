@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.GenericCorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.GenericCorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 
 class CorrespondenceModelUtil {
 	private new() {

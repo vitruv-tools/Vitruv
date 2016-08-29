@@ -34,7 +34,6 @@ import org.emftext.language.java.types.PrimitiveType;
 import org.emftext.language.java.types.Type;
 import org.emftext.language.java.types.TypeReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
@@ -84,6 +83,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.CompilationU
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.JaMoPPChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * The {@link ChangeResponder} implements a {@link ChangeEventVisitor} for

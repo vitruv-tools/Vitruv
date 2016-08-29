@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.effects
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 
 class RetrieveResponseElementState extends AbstractResponseElementState {
 	private final TUID oldTUID;

@@ -11,7 +11,7 @@
 
 package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * An interface for front-ends of the EMF editor monitor system providing convenient usage within

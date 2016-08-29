@@ -8,13 +8,13 @@ import java.util.Set;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
 

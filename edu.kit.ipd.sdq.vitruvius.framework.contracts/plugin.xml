@@ -22,7 +22,7 @@
       <!-- @generated correspondence -->
       <package
             uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage"
+            class="edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage"
             genModel="metamodel/correspondence.genmodel"/>
    </extension>
 </plugin>

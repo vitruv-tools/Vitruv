@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.environment;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.XtendImportHelper
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import java.util.Map

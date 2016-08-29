@@ -1,5 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
 
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+
 public abstract class AbstractURIHaving implements URIHaving, Comparable<URIHaving> {
     private VURI uri;
 

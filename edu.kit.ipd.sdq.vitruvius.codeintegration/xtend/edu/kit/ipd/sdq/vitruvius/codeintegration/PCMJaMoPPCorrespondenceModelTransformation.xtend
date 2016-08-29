@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge
@@ -41,7 +41,7 @@ import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.

@@ -4,12 +4,8 @@ import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
@@ -36,6 +32,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceFactory
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {

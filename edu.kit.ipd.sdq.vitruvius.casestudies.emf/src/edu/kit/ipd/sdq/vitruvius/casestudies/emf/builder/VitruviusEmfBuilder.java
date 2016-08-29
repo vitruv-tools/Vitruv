@@ -23,7 +23,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
@@ -36,6 +35,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitru
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.DefaultEditorPartAdapterFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.monitor.EMFEditorMonitorFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder implements SynchronisationListener {

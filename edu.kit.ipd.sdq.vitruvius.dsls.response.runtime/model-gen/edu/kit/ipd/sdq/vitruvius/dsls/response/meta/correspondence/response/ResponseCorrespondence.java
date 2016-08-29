@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +21,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Corresp
  * @generated
  */
 public interface ResponseCorrespondence extends Correspondence {
-
 	/**
 	 * Returns the value of the '<em><b>Tag</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -47,4 +46,5 @@ public interface ResponseCorrespondence extends Correspondence {
 	 * @generated
 	 */
 	void setTag(String value);
+
 } // ResponseCorrespondence
