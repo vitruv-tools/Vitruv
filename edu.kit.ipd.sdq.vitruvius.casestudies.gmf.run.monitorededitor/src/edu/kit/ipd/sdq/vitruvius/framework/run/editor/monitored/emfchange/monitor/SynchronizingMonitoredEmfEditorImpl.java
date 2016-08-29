@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.EditorNotMonitorableException;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;

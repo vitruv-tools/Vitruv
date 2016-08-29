@@ -17,7 +17,7 @@ import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.FileChangeKind
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 

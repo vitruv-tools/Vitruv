@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;

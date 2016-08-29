@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.change.ChangeDescription;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ISaveEventListener;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.ResourceReloadListener;

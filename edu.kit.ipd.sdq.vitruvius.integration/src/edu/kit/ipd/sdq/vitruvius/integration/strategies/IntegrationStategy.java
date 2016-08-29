@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 

@@ -29,7 +29,7 @@ Require-Bundle: org.eclipse.xtext,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
- edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
+ edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage,
  edu.kit.ipd.sdq.vitruvius.dsls.response.parser.antlr,

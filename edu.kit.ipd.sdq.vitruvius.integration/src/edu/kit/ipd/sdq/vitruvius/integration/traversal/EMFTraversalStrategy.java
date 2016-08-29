@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.integration.traversal;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 
 /**

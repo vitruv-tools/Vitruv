@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory.IEditorPartAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor;

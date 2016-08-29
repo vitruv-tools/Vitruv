@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.change.util.ChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl
+import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
