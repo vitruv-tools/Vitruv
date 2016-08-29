@@ -3,6 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 
@@ -18,6 +20,18 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
  */
 public class Change2CommandTransformingProvidingImpl extends AbstractChange2CommandTransformingProviding {
 
+    /**
+     * Defines the user interacting that is used for all Change2CommandTransforming implementations.
+     * For now, we use the same user interactor for all Change2CommandTransforming. In future work
+     * this should be extended to allow the use of different user interactors depending on the used
+     * metamodels.
+     */
+    private final UserInteracting userInteracting;
+
+    public Change2CommandTransformingProvidingImpl() {
+        this.userInteracting = new UserInteractor();
+    }
+
     @Override
     protected void setup() {
         List<Change2CommandTransforming> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
@@ -27,6 +41,7 @@ public class Change2CommandTransformingProvidingImpl extends AbstractChange2Comm
             // TODO if third party extensions are used call all extensions in protected mode
             // EclipseBridge.callInProtectedMode(callable);
             addChange2CommandTransforming(transformationExecuting);
+            transformationExecuting.setUserInteracting(this.userInteracting);
         }
     }
 
