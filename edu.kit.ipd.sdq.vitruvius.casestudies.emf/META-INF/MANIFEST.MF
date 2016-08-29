@@ -23,7 +23,7 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.change.preparation,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
- edu.kit.ipd.sdq.vitruvius.framework.changes
+ edu.kit.ipd.sdq.vitruvius.framework.change
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder,
  edu.kit.ipd.sdq.vitruvius.casestudies.emf.util
 

@@ -12,7 +12,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0";visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
- edu.kit.ipd.sdq.vitruvius.framework.changes;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.change.preparation;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
 

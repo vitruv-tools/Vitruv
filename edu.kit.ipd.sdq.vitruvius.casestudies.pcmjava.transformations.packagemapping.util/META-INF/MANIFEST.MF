@@ -17,7 +17,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements;vis
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.changes,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.framework.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util

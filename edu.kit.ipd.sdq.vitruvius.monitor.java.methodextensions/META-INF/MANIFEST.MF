@@ -25,4 +25,4 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.framework.changes
+ edu.kit.ipd.sdq.vitruvius.framework.change

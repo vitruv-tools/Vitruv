@@ -43,7 +43,7 @@ Require-Bundle: org.junit,
  org.eclipse.jdt.launching,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.framework.changes;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java

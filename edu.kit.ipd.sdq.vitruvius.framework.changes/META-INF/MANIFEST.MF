@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework Changes Model
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.changes
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.change
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,

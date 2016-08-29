@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.commands,
  org.eclipse.m2m.qvt.oml;bundle-version="3.5.0",
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.framework.changes
+ edu.kit.ipd.sdq.vitruvius.framework.change
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
  edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository
 
