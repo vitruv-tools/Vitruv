@@ -33,7 +33,7 @@ import org.eclipse.xtext.generator.IGenerator
 
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 
 class MappingLanguageGenerator implements IMappingLanguageGenerator {
 	public final static String PACKAGE_NAME_FIELD = "edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGenerator.PACKAGE_NAME_FIELD"
