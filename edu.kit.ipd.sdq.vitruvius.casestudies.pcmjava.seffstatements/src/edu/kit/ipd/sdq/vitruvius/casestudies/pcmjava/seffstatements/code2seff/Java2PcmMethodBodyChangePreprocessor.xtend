@@ -18,8 +18,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.Inse
 import org.emftext.language.java.statements.Statement
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.TransactionalChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 
 class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {

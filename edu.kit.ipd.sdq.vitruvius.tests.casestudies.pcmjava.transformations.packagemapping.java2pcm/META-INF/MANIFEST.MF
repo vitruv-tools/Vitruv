@@ -32,6 +32,6 @@ Require-Bundle: org.junit,
  org.eclipse.xtext.xbase.lib,
  edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
- edu.kit.ipd.sdq.vitruvius.framework.change.preparation;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm
 

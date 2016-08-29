@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing
 
 import org.eclipse.emf.common.command.Command
 import java.util.List

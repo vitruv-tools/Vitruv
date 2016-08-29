@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 abstract class AbstractChangeProcessor implements ChangeProcessor {

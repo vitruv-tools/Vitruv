@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
 
 class TUIDUpdatePreprocessor extends AbstractChangeProcessor {
 

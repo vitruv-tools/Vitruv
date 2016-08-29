@@ -11,10 +11,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.JavaReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {

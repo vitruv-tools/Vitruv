@@ -20,7 +20,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.emfstore.common,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
- edu.kit.ipd.sdq.vitruvius.framework.change.preparation,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  org.eclipse.emf.transaction,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching

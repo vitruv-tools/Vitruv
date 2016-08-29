@@ -1,6 +1,6 @@
 package mir.responses;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChange2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
