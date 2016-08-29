@@ -36,7 +36,7 @@ public interface ReferencePackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/Reference/1.0";
+	String eNS_URI = "http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Reference/1.0";
 
 	/**
 	 * The package namespace name.
@@ -71,7 +71,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE__AFFECTED_FEATURE;
+	int JAVA_INSERT_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -80,7 +80,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT;
+	int JAVA_INSERT_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -89,7 +89,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE__INDEX;
+	int JAVA_INSERT_EREFERENCE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE__INDEX;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -98,7 +98,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
+	int JAVA_INSERT_EREFERENCE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -107,7 +107,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__IS_CREATE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE__IS_CREATE;
+	int JAVA_INSERT_EREFERENCE__IS_CREATE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE__IS_CREATE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -116,7 +116,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE_FEATURE_COUNT + 0;
+	int JAVA_INSERT_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Insert EReference</em>' class.
@@ -125,7 +125,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE_FEATURE_COUNT + 1;
+	int JAVA_INSERT_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -134,7 +134,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE___GET_NEW_VALUE;
+	int JAVA_INSERT_EREFERENCE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE___GET_NEW_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -143,7 +143,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT;
+	int JAVA_INSERT_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE___IS_CONTAINMENT;
 
 	/**
 	 * The number of operations of the '<em>Java Insert EReference</em>' class.
@@ -152,7 +152,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_INSERT_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.INSERT_EREFERENCE_OPERATION_COUNT + 0;
+	int JAVA_INSERT_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.INSERT_EREFERENCE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl.JavaRemoveEReferenceImpl <em>Java Remove EReference</em>}' class.
@@ -171,7 +171,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE;
+	int JAVA_REMOVE_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -180,7 +180,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT;
+	int JAVA_REMOVE_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -189,7 +189,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE__INDEX;
+	int JAVA_REMOVE_EREFERENCE__INDEX = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE__INDEX;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -198,7 +198,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE;
+	int JAVA_REMOVE_EREFERENCE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -207,7 +207,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__IS_DELETE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE__IS_DELETE;
+	int JAVA_REMOVE_EREFERENCE__IS_DELETE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE__IS_DELETE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -216,7 +216,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE_FEATURE_COUNT + 0;
+	int JAVA_REMOVE_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Remove EReference</em>' class.
@@ -225,7 +225,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE_FEATURE_COUNT + 1;
+	int JAVA_REMOVE_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -234,7 +234,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE;
+	int JAVA_REMOVE_EREFERENCE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -243,7 +243,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
+	int JAVA_REMOVE_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE___IS_CONTAINMENT;
 
 	/**
 	 * The number of operations of the '<em>Java Remove EReference</em>' class.
@@ -252,7 +252,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REMOVE_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REMOVE_EREFERENCE_OPERATION_COUNT + 0;
+	int JAVA_REMOVE_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REMOVE_EREFERENCE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl.JavaReplaceSingleValuedEReferenceImpl <em>Java Replace Single Valued EReference</em>}' class.
@@ -271,7 +271,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -280,7 +280,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' reference.
@@ -289,7 +289,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
@@ -298,7 +298,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE;
 
 	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
@@ -307,7 +307,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
@@ -316,7 +316,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -325,7 +325,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT + 0;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE__OLD_AFFECTED_EOBJECT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Java Replace Single Valued EReference</em>' class.
@@ -334,7 +334,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT + 1;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -343,7 +343,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -352,7 +352,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -361,7 +361,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Java Replace Single Valued EReference</em>' class.
@@ -370,7 +370,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT + 0;
+	int JAVA_REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT + 0;
 
 
 	/**

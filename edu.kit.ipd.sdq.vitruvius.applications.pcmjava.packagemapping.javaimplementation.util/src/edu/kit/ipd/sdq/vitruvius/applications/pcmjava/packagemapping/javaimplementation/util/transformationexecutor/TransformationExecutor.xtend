@@ -8,22 +8,22 @@ import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaInsertEReference
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaRemoveEReference
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaReplaceSingleValuedEReference
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaInsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaRemoveEAttributeValue
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.ReplaceSingleValuedEAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.InsertEAttributeValue
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.RemoveEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.InsertEAttributeValue
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.RemoveEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 
 package class TransformationExecutor {

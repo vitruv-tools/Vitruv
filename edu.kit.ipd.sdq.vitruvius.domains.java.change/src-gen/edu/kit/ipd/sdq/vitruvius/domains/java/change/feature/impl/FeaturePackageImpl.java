@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.ChangePackage;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeatureFactory;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
@@ -186,7 +186,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Obtain other dependent packages
 		AttributePackage theAttributePackage = (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
 		ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
-		edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage theFeaturePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage.eNS_URI);
+		edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage theFeaturePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage.eNS_URI);
 
 		// Add subpackages
 		getESubpackages().add(theAttributePackage);

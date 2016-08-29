@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange

@@ -2,10 +2,10 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.*;
 

@@ -9,56 +9,56 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.ChangePackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeaturePackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeaturePackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.ListPackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/List/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.ListPackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Attribute/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.AttributePackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/Attribute/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.AttributePackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Reference/Containment/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/Reference/Containment/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Root/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootPackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Root/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootPackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated change -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Compound/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.CompoundPackage"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Compound/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.CompoundPackage"
             genModel="metamodel/change.genmodel"/>
    </extension>
 

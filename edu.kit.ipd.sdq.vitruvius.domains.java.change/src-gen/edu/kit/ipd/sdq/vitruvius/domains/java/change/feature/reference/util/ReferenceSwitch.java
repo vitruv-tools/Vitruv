@@ -2,27 +2,27 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectAddedEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectSubtractedEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateSingleValuedFeatureEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.AdditiveReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.SubtractiveReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.*;

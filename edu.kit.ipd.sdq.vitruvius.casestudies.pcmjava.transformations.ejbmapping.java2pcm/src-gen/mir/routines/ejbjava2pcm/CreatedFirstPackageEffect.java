@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;

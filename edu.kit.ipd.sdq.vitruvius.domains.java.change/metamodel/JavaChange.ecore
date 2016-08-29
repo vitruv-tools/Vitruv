@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Java/1.0"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/1.0"
     nsPrefix="change">
-  <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/1.0"
+  <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/1.0"
       nsPrefix="feature">
     <eClassifiers xsi:type="ecore:EClass" name="JavaFeatureEChange">
       <eTypeParameters name="A">
@@ -14,12 +14,12 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="oldAffectedEObject" lowerBound="1">
         <eGenericType eTypeParameter="#//feature/JavaFeatureEChange/A"/>
       </eStructuralFeatures>
-      <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/FeatureEChange">
+      <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/FeatureEChange">
         <eTypeArguments eTypeParameter="#//feature/JavaFeatureEChange/A"/>
         <eTypeArguments eTypeParameter="#//feature/JavaFeatureEChange/F"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/Attribute/1.0"
+    <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Attribute/1.0"
         nsPrefix="attribute">
       <eClassifiers xsi:type="ecore:EClass" name="JavaInsertEAttributeValue">
         <eTypeParameters name="A">
@@ -28,7 +28,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/attribute/InsertEAttributeValue">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/attribute/InsertEAttributeValue">
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaInsertEAttributeValue/A"/>
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaInsertEAttributeValue/T"/>
         </eGenericSuperTypes>
@@ -44,7 +44,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/attribute/RemoveEAttributeValue">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/attribute/RemoveEAttributeValue">
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaRemoveEAttributeValue/A"/>
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaRemoveEAttributeValue/T"/>
         </eGenericSuperTypes>
@@ -60,7 +60,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute">
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
           <eTypeArguments eTypeParameter="#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
         </eGenericSuperTypes>
@@ -70,7 +70,7 @@
         </eGenericSuperTypes>
       </eClassifiers>
     </eSubpackages>
-    <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/Reference/1.0"
+    <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Reference/1.0"
         nsPrefix="reference">
       <eClassifiers xsi:type="ecore:EClass" name="JavaInsertEReference">
         <eTypeParameters name="A">
@@ -79,7 +79,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/reference/InsertEReference">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/reference/InsertEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/JavaInsertEReference/A"/>
           <eTypeArguments eTypeParameter="#//feature/reference/JavaInsertEReference/T"/>
         </eGenericSuperTypes>
@@ -95,7 +95,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/reference/RemoveEReference">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/reference/RemoveEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/JavaRemoveEReference/A"/>
           <eTypeArguments eTypeParameter="#//feature/reference/JavaRemoveEReference/T"/>
         </eGenericSuperTypes>
@@ -111,7 +111,7 @@
         <eTypeParameters name="T">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
-        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change/metamodel/change.ecore#//feature/reference/ReplaceSingleValuedEReference">
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../edu.kit.ipd.sdq.vitruvius.framework.changes.echange/metamodel/change.ecore#//feature/reference/ReplaceSingleValuedEReference">
           <eTypeArguments eTypeParameter="#//feature/reference/JavaReplaceSingleValuedEReference/A"/>
           <eTypeArguments eTypeParameter="#//feature/reference/JavaReplaceSingleValuedEReference/T"/>
         </eGenericSuperTypes>

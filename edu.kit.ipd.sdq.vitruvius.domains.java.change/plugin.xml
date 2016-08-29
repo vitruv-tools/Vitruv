@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated JavaChange -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/1.0"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/1.0"
             class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>
@@ -17,7 +17,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated JavaChange -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/Attribute/1.0"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Attribute/1.0"
             class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>
@@ -25,7 +25,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated JavaChange -->
       <package
-            uri="http://edu.kit.ipd.sdq.vitruvius/Change/Java/Feature/Reference/1.0"
+            uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Reference/1.0"
             class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferencePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>

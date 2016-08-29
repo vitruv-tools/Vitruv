@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;

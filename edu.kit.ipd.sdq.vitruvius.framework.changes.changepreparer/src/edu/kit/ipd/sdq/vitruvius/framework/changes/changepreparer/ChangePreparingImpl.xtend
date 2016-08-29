@@ -5,13 +5,13 @@ import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
 import org.eclipse.emf.ecore.resource.Resource
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RootFactory
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange

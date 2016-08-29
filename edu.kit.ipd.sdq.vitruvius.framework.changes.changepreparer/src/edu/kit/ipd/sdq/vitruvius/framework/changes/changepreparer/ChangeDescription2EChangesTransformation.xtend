@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.List
 import java.util.Map.Entry
 import org.eclipse.emf.common.util.BasicEList
@@ -16,9 +16,9 @@ import org.eclipse.emf.ecore.change.ResourceChange
 import static extension edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformationUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import java.util.Collections
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.AdditiveReferenceEChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange
 import org.eclipse.emf.ecore.change.ChangeDescription
 
 package class ChangeDescription2EChangesTransformation {

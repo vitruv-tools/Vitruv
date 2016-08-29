@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.InsertRootEObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.RemoveRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
@@ -13,12 +13,12 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
-import static edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.TypeInferringAtomicEChangeFactory
+import static edu.kit.ipd.sdq.vitruvius.framework.changes.echange.TypeInferringAtomicEChangeFactory.*
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.TypeInferringAtomicEChangeFactory
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.

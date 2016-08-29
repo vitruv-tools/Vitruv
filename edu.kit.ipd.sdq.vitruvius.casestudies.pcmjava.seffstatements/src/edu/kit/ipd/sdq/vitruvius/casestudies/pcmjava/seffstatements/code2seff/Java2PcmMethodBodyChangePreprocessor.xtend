@@ -11,10 +11,10 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 import org.emftext.language.java.members.Method
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange
 import org.emftext.language.java.statements.StatementsPackage
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel

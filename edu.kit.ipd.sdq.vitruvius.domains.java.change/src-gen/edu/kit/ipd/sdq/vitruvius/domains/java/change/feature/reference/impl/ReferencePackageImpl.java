@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.ChangePackage;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.ChangePackage;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 
@@ -211,7 +211,7 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage theReferencePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReferencePackage.eNS_URI);
+		edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage theReferencePackage_1 = (edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReferencePackage.eNS_URI);
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
 
 		// Create type parameters

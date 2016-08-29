@@ -2,27 +2,27 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectAddedEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectSubtractedEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateMultiValuedFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateSingleValuedFeatureEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.AdditiveReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.SubtractiveReferenceEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.*;
@@ -242,13 +242,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange <em>EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 	 * @generated
 	 */
 	public Adapter createEChangeAdapter() {
@@ -256,13 +256,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange <em>Atomic EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange <em>Atomic EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AtomicEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AtomicEChange
 	 * @generated
 	 */
 	public Adapter createAtomicEChangeAdapter() {
@@ -270,13 +270,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange <em>EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.FeatureEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange
 	 * @generated
 	 */
 	public Adapter createFeatureEChangeAdapter() {
@@ -284,13 +284,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateMultiValuedFeatureEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateMultiValuedFeatureEChange
 	 * @generated
 	 */
 	public Adapter createUpdateMultiValuedFeatureEChangeAdapter() {
@@ -298,13 +298,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange <em>Update Single List Entry EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange <em>Update Single List Entry EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.UpdateSingleListEntryEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.UpdateSingleListEntryEChange
 	 * @generated
 	 */
 	public Adapter createUpdateSingleListEntryEChangeAdapter() {
@@ -312,13 +312,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange <em>Insert In List EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange <em>Insert In List EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.InsertInListEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.InsertInListEChange
 	 * @generated
 	 */
 	public Adapter createInsertInListEChangeAdapter() {
@@ -326,13 +326,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange <em>Additive EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange <em>Additive EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.AdditiveEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.AdditiveEChange
 	 * @generated
 	 */
 	public Adapter createAdditiveEChangeAdapter() {
@@ -340,13 +340,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange <em>EObject Added EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectAddedEChange <em>EObject Added EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectAddedEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectAddedEChange
 	 * @generated
 	 */
 	public Adapter createEObjectAddedEChangeAdapter() {
@@ -354,13 +354,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange <em>Update Reference EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange <em>Update Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.UpdateReferenceEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange
 	 * @generated
 	 */
 	public Adapter createUpdateReferenceEChangeAdapter() {
@@ -368,13 +368,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange <em>Additive Reference EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.AdditiveReferenceEChange <em>Additive Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.AdditiveReferenceEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.AdditiveReferenceEChange
 	 * @generated
 	 */
 	public Adapter createAdditiveReferenceEChangeAdapter() {
@@ -382,13 +382,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference <em>Insert EReference</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference <em>Insert EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
 	 * @generated
 	 */
 	public Adapter createInsertEReferenceAdapter() {
@@ -410,13 +410,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange <em>Remove From List EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange <em>Remove From List EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.RemoveFromListEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.RemoveFromListEChange
 	 * @generated
 	 */
 	public Adapter createRemoveFromListEChangeAdapter() {
@@ -424,13 +424,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange <em>Subtractive EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange <em>Subtractive EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.SubtractiveEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.SubtractiveEChange
 	 * @generated
 	 */
 	public Adapter createSubtractiveEChangeAdapter() {
@@ -438,13 +438,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange <em>EObject Subtracted EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectSubtractedEChange <em>EObject Subtracted EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.EObjectSubtractedEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EObjectSubtractedEChange
 	 * @generated
 	 */
 	public Adapter createEObjectSubtractedEChangeAdapter() {
@@ -452,13 +452,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange <em>Subtractive Reference EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.SubtractiveReferenceEChange <em>Subtractive Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.SubtractiveReferenceEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.SubtractiveReferenceEChange
 	 * @generated
 	 */
 	public Adapter createSubtractiveReferenceEChangeAdapter() {
@@ -466,13 +466,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference <em>Remove EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.RemoveEReference
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference
 	 * @generated
 	 */
 	public Adapter createRemoveEReferenceAdapter() {
@@ -480,13 +480,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange <em>Update Single Valued Feature EChange</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateSingleValuedFeatureEChange <em>Update Single Valued Feature EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.UpdateSingleValuedFeatureEChange
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.UpdateSingleValuedFeatureEChange
 	 * @generated
 	 */
 	public Adapter createUpdateSingleValuedFeatureEChangeAdapter() {
@@ -494,13 +494,13 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference <em>Replace Single Valued EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.ReplaceSingleValuedEReference
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.ReplaceSingleValuedEReference
 	 * @generated
 	 */
 	public Adapter createReplaceSingleValuedEReferenceAdapter() {

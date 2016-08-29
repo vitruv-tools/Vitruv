@@ -4,7 +4,7 @@ import org.junit.Test
 
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util.ChangeAssertHelper.*
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util.ChangeDescription2ChangeTransformationTestUtil.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.PermuteEAttributeValues
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.PermuteEAttributeValues
 
 class ChangeDescription2PermuteEAttrbuteValueTest extends edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.ChangeDescription2ChangeTransformationTest {
 

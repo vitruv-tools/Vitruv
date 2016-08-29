@@ -2,7 +2,7 @@
  */
 package edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl.ReplaceSingleValuedEReferenceImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange;

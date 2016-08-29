@@ -30,7 +30,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
  edu.kit.ipd.sdq.vitruvius.domains.java.change,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.pcm2java;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

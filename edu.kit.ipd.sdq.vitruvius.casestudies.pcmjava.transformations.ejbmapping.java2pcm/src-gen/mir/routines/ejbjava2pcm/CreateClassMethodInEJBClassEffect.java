@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import java.io.IOException;

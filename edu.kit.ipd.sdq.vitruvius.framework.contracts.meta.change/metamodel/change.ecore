@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/1.0"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="change" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/1.0"
     nsPrefix="change">
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicEChange" abstract="true" eSuperTypes="#//EChange"/>
@@ -47,7 +47,7 @@
       <eTypeArguments eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
-  <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/1.0"
+  <eSubpackages name="feature" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/1.0"
       nsPrefix="feature">
     <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="#//AtomicEChange">
       <eTypeParameters name="A">
@@ -88,7 +88,7 @@
         <eTypeArguments eTypeParameter="#//feature/UpdateSingleValuedFeatureEChange/F"/>
       </eGenericSuperTypes>
     </eClassifiers>
-    <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/List/1.0"
+    <eSubpackages name="list" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/List/1.0"
         nsPrefix="list">
       <eClassifiers xsi:type="ecore:EClass" name="UpdateSingleListEntryEChange" abstract="true">
         <eTypeParameters name="A">
@@ -143,7 +143,7 @@
         </eGenericSuperTypes>
       </eClassifiers>
     </eSubpackages>
-    <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Attribute/1.0"
+    <eSubpackages name="attribute" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/Attribute/1.0"
         nsPrefix="attribute">
       <eClassifiers xsi:type="ecore:EClass" name="UpdateAttributeEChange" abstract="true">
         <eTypeParameters name="A">
@@ -253,7 +253,7 @@
         </eGenericSuperTypes>
       </eClassifiers>
     </eSubpackages>
-    <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Feature/Reference/Containment/1.0"
+    <eSubpackages name="reference" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Feature/Reference/Containment/1.0"
         nsPrefix="reference">
       <eClassifiers xsi:type="ecore:EClass" name="UpdateReferenceEChange" abstract="true">
         <eTypeParameters name="A">
@@ -359,7 +359,7 @@
       </eClassifiers>
     </eSubpackages>
   </eSubpackages>
-  <eSubpackages name="root" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Root/1.0"
+  <eSubpackages name="root" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Root/1.0"
       nsPrefix="root">
     <eClassifiers xsi:type="ecore:EClass" name="RootEChange" abstract="true" eSuperTypes="#//AtomicEChange">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
@@ -384,7 +384,7 @@
       </eGenericSuperTypes>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="compound" nsURI="http://edu.kit.ipd.sdq.vitruvius/Change/Compound/1.0"
+  <eSubpackages name="compound" nsURI="http://edu.kit.ipd.sdq.vitruvius/EChange/Compound/1.0"
       nsPrefix="compound">
     <eClassifiers xsi:type="ecore:EClass" name="CompoundEChange" abstract="true" eSuperTypes="#//EChange">
       <eOperations name="getAtomicChanges" lowerBound="1" upperBound="-1" eType="#//AtomicEChange"/>

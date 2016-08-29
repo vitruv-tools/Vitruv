@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.ChangeDe
 import org.junit.Test
 import static extension edu.kit.ipd.sdq.vitruvius.tests.framework.changes.changepreparer.util.ChangeAssertHelper.*
 import org.eclipse.emf.ecore.EReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.PermuteEReferences
+import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.PermuteEReferences
 
 class ChangeDescription2PermuteEReferenceTest extends ChangeDescription2ChangeTransformationTest{
 	

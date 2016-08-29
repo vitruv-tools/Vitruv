@@ -1,35 +1,35 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework Change Metamodel
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.changes.echange;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.compound.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.attribute.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.list.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.reference.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.feature.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.impl,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.root.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.change.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.echange,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.compound.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.list.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.impl,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.util,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.echange.util
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.commons.util.emf
 
