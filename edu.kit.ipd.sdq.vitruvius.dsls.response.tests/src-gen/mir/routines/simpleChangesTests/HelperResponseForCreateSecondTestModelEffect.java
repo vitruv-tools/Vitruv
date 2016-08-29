@@ -5,7 +5,8 @@ import allElementTypes.impl.AllElementTypesFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
+
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;

@@ -7,7 +7,8 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.RemoveEReference;
+
 import java.io.IOException;
 import java.util.function.Predicate;
 import mir.routines.simpleChangesTests.RoutinesFacade;

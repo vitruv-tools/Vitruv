@@ -4,7 +4,8 @@ import allElementTypes.Root;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject;
+
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;

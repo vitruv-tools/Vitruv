@@ -34,10 +34,10 @@ import org.emftext.language.java.types.PrimitiveType;
 import org.emftext.language.java.types.Type;
 import org.emftext.language.java.types.TypeReference;
 
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddFieldEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddImportEvent;

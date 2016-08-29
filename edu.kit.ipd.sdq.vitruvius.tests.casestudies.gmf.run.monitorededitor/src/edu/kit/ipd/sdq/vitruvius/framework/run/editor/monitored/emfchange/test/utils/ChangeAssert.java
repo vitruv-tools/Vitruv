@@ -15,10 +15,10 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.FeatureEChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 public final class ChangeAssert {
     private ChangeAssert() {

@@ -30,7 +30,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 import pcm_mockup.PInterface
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

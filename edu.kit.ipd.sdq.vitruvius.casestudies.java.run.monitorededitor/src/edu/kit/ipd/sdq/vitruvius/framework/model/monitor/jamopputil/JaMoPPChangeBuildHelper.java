@@ -22,17 +22,17 @@ import org.emftext.language.java.parameters.Parametrizable;
 import org.emftext.language.java.types.TypeReference;
 import org.emftext.language.java.types.TypedElement;
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributeFactory;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaReplaceSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaRemoveEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaReplaceSingleValuedEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferenceFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootFactory;
 
 // TODO are those EChanges correct?
 public class JaMoPPChangeBuildHelper {

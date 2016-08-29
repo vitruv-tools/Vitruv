@@ -13,7 +13,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
- edu.kit.ipd.sdq.vitruvius.framework.changes.echange,
+ edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.pcm2java;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command

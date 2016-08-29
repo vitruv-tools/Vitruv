@@ -20,5 +20,5 @@ Require-Bundle: org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.userinteractor,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
- edu.kit.ipd.sdq.vitruvius.framework.changes.echange
+ edu.kit.ipd.sdq.vitruvius.framework.change.echange
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
