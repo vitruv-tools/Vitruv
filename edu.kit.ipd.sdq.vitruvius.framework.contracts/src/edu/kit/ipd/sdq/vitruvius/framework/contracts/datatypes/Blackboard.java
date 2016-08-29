@@ -71,10 +71,6 @@ public interface Blackboard {
 
     List<Command> getAndArchiveCommandsForExecution();
 
-    void pushCheckResult(CheckResult checkResult);
-
-    CheckResult getCheckResult();
-
     Pair<List<VitruviusChange>, List<Command>> getArchivedChangesAndCommandsForUndo();
 
     void unarchiveChangesAndCommandsForRedo();

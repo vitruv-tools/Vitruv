@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.emf.common.command.Command;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CheckResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
@@ -21,7 +20,6 @@ public class BlackboardImpl implements Blackboard {
     private List<Command> commands;
     private List<VitruviusChange> archivedChanges;
     private List<Command> archivedCommands;
-    private CheckResult checkResult;
     private CorrespondenceProviding correspondenceProviding;
 
     public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelProviding modelProviding,
@@ -86,19 +84,6 @@ public class BlackboardImpl implements Blackboard {
                 "get and archive commands for execution");
         this.archivedCommands = this.commands;
         return this.archivedCommands;
-    }
-
-    @Override
-    public void pushCheckResult(final CheckResult checkResult) {
-        checkTransitionFromTo(BlackboardState.WAITING4CHECK, BlackboardState.WAITING4UNDO, "push check result");
-        this.checkResult = checkResult;
-    }
-
-    @Override
-    public CheckResult getCheckResult() {
-        checkTransitionFromTo(BlackboardState.WAITING4UNDO, BlackboardState.WAITING4UNDO,
-                "pop check result for evaluation");
-        return this.checkResult;
     }
 
     @Override
