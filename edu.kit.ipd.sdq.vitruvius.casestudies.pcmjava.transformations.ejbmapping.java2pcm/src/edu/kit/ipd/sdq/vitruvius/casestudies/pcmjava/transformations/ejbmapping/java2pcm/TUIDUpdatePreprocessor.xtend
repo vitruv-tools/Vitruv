@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel

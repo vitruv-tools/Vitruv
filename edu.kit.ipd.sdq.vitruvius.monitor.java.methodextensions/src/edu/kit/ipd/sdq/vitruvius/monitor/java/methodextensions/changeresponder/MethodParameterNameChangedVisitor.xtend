@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeSubmitter
 import org.eclipse.emf.ecore.EAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events.MethodParameterNameChangedEvent
-import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributeFactory
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.AttributeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
 
 class MethodParameterNameChangedVisitor extends VisitorBase<MethodParameterNameChangedEvent> {

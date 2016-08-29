@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeSubmitter
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.statements.StatementsPackage
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
-import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferenceFactory
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory
 
 class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 	

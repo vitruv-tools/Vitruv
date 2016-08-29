@@ -26,6 +26,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements,
  org.somox.gast2seff,
  edu.kit.ipd.sdq.vitruvius.framework.changes,
- edu.kit.ipd.sdq.vitruvius.domains.java.change,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming

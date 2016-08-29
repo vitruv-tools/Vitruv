@@ -10,7 +10,7 @@
       <!-- @generated JavaChange -->
       <package
             uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.FeaturePackage"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange.feature.FeaturePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>
 
@@ -18,7 +18,7 @@
       <!-- @generated JavaChange -->
       <package
             uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Attribute/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.AttributePackage"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange.feature.attribute.AttributePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>
 
@@ -26,7 +26,7 @@
       <!-- @generated JavaChange -->
       <package
             uri="http://edu.kit.ipd.sdq.vitruvius/EChange/Java/Feature/Reference/1.0"
-            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.ReferencePackage"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange.feature.reference.ReferencePackage"
             genModel="metamodel/JavaChange.genmodel"/>
    </extension>
 </plugin>

@@ -20,6 +20,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.domains.java.change
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 

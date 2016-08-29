@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.kit.ipd.sdq.vitruvius.domains.java.change/src-gen"
-    modelPluginID="edu.kit.ipd.sdq.vitruvius.domains.java.change"
-    modelName="JavaChange" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../edu.kit.ipd.sdq.vitruvius.framework.change.echange/metamodel/change.genmodel#//change"
+    modelPluginID="edu.kit.ipd.sdq.vitruvius.domains.java.change" modelName="JavaChange"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../edu.kit.ipd.sdq.vitruvius.framework.change.echange/metamodel/change.genmodel#//echange"
     operationReflection="true" importOrganizing="true">
   <foreignModel>JavaChange.ecore</foreignModel>
-  <genPackages prefix="Change" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java.change"
+  <genPackages prefix="EChange" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java"
       disposableProviderFactory="true" ecorePackage="JavaChange.ecore#/">
-    <nestedGenPackages prefix="Feature" disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature">
+    <nestedGenPackages prefix="Feature" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange"
+        disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature">
       <genClasses ecoreClass="JavaChange.ecore#//feature/JavaFeatureEChange">
         <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/JavaFeatureEChange/A"/>
         <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/JavaFeatureEChange/F"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JavaChange.ecore#//feature/JavaFeatureEChange/oldAffectedEObject"/>
       </genClasses>
-      <nestedGenPackages prefix="Attribute" disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/attribute">
+      <nestedGenPackages prefix="Attribute" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange.feature"
+          disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/attribute">
         <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue">
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/A"/>
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/T"/>
@@ -29,7 +30,8 @@
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
         </genClasses>
       </nestedGenPackages>
-      <nestedGenPackages prefix="Reference" disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/reference">
+      <nestedGenPackages prefix="Reference" basePackage="edu.kit.ipd.sdq.vitruvius.domains.java.change.echange.feature"
+          disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/reference">
         <genClasses ecoreClass="JavaChange.ecore#//feature/reference/JavaInsertEReference">
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaInsertEReference/A"/>
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaInsertEReference/T"/>

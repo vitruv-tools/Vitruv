@@ -1,18 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Domain Java Change Metamodel Extension
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.change;singleton:=true
+Bundle-Name: %pluginName
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.echange;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.change.feature,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.impl,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.util,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.impl,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.impl,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.util,
- edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.impl,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.util,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.impl,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.impl,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.util,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange;visibility:=reexport
+Bundle-ActivationPolicy: lazy
