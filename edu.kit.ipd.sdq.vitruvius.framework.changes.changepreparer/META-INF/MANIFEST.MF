@@ -12,6 +12,5 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.changes;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf,
  edu.kit.ipd.sdq.vitruvius.framework.util
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer,
- edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
 
