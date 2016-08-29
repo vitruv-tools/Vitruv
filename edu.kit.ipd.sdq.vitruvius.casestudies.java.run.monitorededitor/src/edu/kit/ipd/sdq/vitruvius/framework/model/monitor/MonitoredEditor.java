@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IStartup;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;

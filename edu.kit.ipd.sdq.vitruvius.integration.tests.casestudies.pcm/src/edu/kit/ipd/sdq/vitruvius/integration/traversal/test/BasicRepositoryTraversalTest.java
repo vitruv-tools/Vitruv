@@ -28,9 +28,9 @@ import org.palladiosimulator.pcm.repository.ProvidesComponentType;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.Signature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
