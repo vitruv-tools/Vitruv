@@ -78,7 +78,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum);
         this.transformingProviding = syncTransformationProviderSupplier.get();
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding, this.vsum,
-                this.metaRepository, this.vsum, this, changePreparer, commandExecuter);
+                this.vsum, this, changePreparer, commandExecuter);
         this.testUserInteractor = new TestUserInteractor();
         this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
         this.resourceSet = new ResourceSetImpl();

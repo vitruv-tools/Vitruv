@@ -32,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.InvariantProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
@@ -56,9 +55,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
     public ChangeSynchronizerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
-            final CorrespondenceProviding correspondenceProviding, final InvariantProviding invariantProviding,
-            final Validating validating, final SynchronisationListener synchronisationListener,
-            final ChangePreparing changePreparing, final CommandExecuting commandExecuting) {
+            final CorrespondenceProviding correspondenceProviding, final Validating validating,
+            final SynchronisationListener synchronisationListener, final ChangePreparing changePreparing,
+            final CommandExecuting commandExecuting) {
         this.modelProviding = modelProviding;
         this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
