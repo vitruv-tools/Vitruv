@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder
+package edu.kit.ipd.sdq.vitruvius.framework.change.recording
 
 import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
@@ -8,8 +8,8 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 
 class AtomicEMFChangeRecorder {
 	val List<ChangeDescription> changeDescriptions;

@@ -10,9 +10,9 @@ import org.junit.Before
 import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder.AtomicEMFChangeRecorder
+import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl
 
 /** 
  * This class is the test class for the new {@link changes.changepreparerTransformation}. It

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
+package edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.List
@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.change.ListChange
 import org.eclipse.emf.ecore.change.ResourceChange
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.EMFModelChangeTransformationUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import java.util.Collections
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReplaceSingleValuedEReference

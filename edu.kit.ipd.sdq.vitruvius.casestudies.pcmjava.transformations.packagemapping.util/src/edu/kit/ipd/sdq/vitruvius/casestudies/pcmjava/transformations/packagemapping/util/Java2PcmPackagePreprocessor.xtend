@@ -6,10 +6,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.emftext.language.java.containers.Package
 import org.eclipse.emf.ecore.resource.Resource
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.JavaReplaceSingleValuedEAttribute
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 import java.util.ArrayList

@@ -100,8 +100,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilde
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;

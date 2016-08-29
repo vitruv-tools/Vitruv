@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription
+package edu.kit.ipd.sdq.vitruvius.framework.change.description
 
 import org.eclipse.emf.ecore.change.ChangeDescription
 

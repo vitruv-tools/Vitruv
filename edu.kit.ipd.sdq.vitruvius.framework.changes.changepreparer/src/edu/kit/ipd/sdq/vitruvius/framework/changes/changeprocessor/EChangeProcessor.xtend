@@ -1,14 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
 
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.command.Command
 import java.util.List
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
 abstract class EChangeProcessor extends AbstractChangeProcessor {

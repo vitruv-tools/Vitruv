@@ -8,8 +8,8 @@ import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import org.apache.log4j.Logger
 
 abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {

@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
+package edu.kit.ipd.sdq.vitruvius.framework.change.description.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.ArrayList

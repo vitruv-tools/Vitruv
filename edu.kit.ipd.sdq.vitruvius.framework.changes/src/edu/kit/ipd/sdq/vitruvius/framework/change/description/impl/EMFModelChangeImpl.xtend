@@ -1,8 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
+package edu.kit.ipd.sdq.vitruvius.framework.change.description.impl
 
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange
 
 class EMFModelChangeImpl extends ConcreteChangeImpl implements EMFModelChange {
 	private final ChangeDescription changeDescription;

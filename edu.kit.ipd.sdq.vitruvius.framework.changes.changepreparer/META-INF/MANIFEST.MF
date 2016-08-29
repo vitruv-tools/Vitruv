@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Framework Change Preparer
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.change.preparation;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,

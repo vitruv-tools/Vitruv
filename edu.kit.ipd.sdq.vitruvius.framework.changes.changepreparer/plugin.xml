@@ -4,7 +4,7 @@
    <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.contracts.changepreparing">
       <provides
-            provider="edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer.ChangePreparingImpl">
+            provider="edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl">
       </provides>
    </extension>
 </plugin>

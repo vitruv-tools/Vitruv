@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
+package edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject

@@ -17,5 +17,5 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.commons.util.java;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
+ edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 

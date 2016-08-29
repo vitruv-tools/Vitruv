@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
+package edu.kit.ipd.sdq.vitruvius.framework.change.description.impl
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 
 class GeneralChangeImpl extends ConcreteChangeImpl implements GeneralChange {

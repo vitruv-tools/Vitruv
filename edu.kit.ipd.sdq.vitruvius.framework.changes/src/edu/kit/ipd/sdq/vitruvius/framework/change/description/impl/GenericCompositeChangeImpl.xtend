@@ -1,8 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
+package edu.kit.ipd.sdq.vitruvius.framework.change.description.impl
 
 import java.util.List
 import java.util.LinkedList
-import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GenericCompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GenericCompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
