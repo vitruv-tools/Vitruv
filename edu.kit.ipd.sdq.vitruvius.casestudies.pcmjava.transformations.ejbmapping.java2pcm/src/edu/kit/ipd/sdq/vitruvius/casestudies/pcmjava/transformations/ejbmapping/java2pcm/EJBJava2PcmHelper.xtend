@@ -7,7 +7,7 @@ import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class EJBJava2PcmHelper {
 	private new(){}

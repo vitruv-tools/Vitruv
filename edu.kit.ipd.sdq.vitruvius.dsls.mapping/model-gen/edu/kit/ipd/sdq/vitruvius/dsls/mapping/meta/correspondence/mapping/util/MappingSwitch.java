@@ -3,9 +3,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.*;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -105,7 +102,7 @@ public class MappingSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseCorrespondence(Correspondence object) {
+	public T caseCorrespondence(edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence object) {
 		return null;
 	}
 

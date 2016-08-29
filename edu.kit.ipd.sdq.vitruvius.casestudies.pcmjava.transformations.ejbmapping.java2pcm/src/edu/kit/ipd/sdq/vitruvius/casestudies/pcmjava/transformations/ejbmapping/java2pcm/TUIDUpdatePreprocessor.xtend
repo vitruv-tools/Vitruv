@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 
 class TUIDUpdatePreprocessor extends AbstractChangeProcessor {

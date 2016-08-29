@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.Notification
 import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
 

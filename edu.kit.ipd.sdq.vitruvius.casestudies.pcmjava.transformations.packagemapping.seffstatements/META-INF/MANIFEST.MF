@@ -14,6 +14,7 @@ Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
 

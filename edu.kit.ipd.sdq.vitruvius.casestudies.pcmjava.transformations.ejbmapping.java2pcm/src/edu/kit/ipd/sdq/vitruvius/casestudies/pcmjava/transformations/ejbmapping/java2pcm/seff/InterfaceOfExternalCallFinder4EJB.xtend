@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.Corresponden
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import java.util.Set
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class InterfaceOfExternalCallFinder4EJB implements InterfaceOfExternalCallFinding {
 	

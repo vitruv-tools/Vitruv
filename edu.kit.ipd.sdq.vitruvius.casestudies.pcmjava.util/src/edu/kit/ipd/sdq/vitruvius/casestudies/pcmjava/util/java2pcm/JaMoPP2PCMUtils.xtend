@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.ArrayList
 import java.util.HashSet
@@ -39,7 +39,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {

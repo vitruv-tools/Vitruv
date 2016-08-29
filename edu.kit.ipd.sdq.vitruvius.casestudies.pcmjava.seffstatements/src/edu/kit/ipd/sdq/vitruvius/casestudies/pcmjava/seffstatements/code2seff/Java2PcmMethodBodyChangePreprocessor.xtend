@@ -17,7 +17,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.Rem
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.TransactionalChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory

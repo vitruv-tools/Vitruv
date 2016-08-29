@@ -2,8 +2,6 @@
  */
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -72,7 +70,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE__PARENT = CorrespondencePackage.CORRESPONDENCE__PARENT;
+	int MAPPING_CORRESPONDENCE__PARENT = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE__PARENT;
 
 	/**
 	 * The feature id for the '<em><b>Depends On</b></em>' reference list.
@@ -81,7 +79,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE__DEPENDS_ON = CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON;
+	int MAPPING_CORRESPONDENCE__DEPENDS_ON = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON;
 
 	/**
 	 * The feature id for the '<em><b>Depended On By</b></em>' reference list.
@@ -90,7 +88,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE__DEPENDED_ON_BY = CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY;
+	int MAPPING_CORRESPONDENCE__DEPENDED_ON_BY = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
 	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
@@ -99,7 +97,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE__ATUI_DS = CorrespondencePackage.CORRESPONDENCE__ATUI_DS;
+	int MAPPING_CORRESPONDENCE__ATUI_DS = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE__ATUI_DS;
 
 	/**
 	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
@@ -108,7 +106,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE__BTUI_DS = CorrespondencePackage.CORRESPONDENCE__BTUI_DS;
+	int MAPPING_CORRESPONDENCE__BTUI_DS = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE__BTUI_DS;
 
 	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
@@ -117,7 +115,7 @@ public interface MappingPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MAPPING_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
+	int MAPPING_CORRESPONDENCE_FEATURE_COUNT = edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
 
 
 	/**

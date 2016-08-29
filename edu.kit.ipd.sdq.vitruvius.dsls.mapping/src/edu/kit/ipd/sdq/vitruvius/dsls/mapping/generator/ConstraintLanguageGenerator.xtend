@@ -15,7 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.EqualsLiteralExpre
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.InExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.RequiredMapping
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.ArrayList
 import java.util.List
 import java.util.Map

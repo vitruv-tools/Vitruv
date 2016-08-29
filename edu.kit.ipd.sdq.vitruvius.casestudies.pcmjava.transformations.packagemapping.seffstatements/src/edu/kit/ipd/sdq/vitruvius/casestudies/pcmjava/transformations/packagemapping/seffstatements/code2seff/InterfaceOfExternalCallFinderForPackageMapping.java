@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 
 /**

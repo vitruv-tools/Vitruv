@@ -1,13 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.commandexecutor
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
@@ -23,7 +20,10 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())

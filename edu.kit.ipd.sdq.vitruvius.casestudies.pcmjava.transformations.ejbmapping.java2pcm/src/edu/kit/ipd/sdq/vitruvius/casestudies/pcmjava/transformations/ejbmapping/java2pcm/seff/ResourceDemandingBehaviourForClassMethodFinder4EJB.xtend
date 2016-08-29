@@ -7,7 +7,7 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 import java.util.Set
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 // copied from ResourceDemandingBehaviourForClassMethodFinderForPackageMapping
 class ResourceDemandingBehaviourForClassMethodFinder4EJB implements ResourceDemandingBehaviourForClassMethodFinding {

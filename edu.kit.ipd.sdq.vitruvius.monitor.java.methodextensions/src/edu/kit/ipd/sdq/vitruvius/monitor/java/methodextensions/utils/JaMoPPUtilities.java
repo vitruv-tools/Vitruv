@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.utils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.AST2JaMoPP;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.CompilationUnitAdapter;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Utility class for JaMoPP helper methods.

@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject

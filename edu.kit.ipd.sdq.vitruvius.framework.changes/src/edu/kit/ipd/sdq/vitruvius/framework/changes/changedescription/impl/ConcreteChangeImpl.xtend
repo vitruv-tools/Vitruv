@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteCha
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 
 abstract class ConcreteChangeImpl implements ConcreteChange {

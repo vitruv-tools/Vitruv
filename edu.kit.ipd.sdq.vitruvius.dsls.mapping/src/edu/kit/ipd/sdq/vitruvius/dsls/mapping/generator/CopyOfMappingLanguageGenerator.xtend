@@ -26,8 +26,8 @@
 //import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+//import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
+//import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange
 //import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 //import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper

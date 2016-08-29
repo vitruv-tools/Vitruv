@@ -4,9 +4,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.impl;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.impl.CorrespondenceImpl;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -16,7 +13,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class MappingCorrespondenceImpl extends CorrespondenceImpl implements MappingCorrespondence {
+public class MappingCorrespondenceImpl extends edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondenceImpl implements MappingCorrespondence {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

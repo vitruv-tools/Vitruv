@@ -18,10 +18,10 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.integration.handler.IntegrationHandler;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;

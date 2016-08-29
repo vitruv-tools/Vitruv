@@ -5,7 +5,7 @@ import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 
 public interface Code2SEFFFactory {
 

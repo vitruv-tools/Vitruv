@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.EMFModelChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.FileChangeKind

@@ -13,7 +13,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstrain
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.postprocessor.MappingLanguageDerivedStateComputer
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import java.util.ArrayList
 import java.util.Arrays

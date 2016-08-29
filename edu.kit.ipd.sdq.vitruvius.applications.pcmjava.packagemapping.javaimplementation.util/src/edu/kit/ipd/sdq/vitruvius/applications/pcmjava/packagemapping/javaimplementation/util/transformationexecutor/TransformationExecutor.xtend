@@ -24,7 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.Rep
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.InsertEAttributeValue
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.attribute.RemoveEAttributeValue
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 package class TransformationExecutor {
 

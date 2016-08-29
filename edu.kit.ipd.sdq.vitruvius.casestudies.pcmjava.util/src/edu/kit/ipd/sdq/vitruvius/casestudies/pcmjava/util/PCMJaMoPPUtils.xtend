@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.util.Map
@@ -29,9 +29,9 @@ import org.palladiosimulator.pcm.system.System
 import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 
 class PCMJaMoPPUtils {

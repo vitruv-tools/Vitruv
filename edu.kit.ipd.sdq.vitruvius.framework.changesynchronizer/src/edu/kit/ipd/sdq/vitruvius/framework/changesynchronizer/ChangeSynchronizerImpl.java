@@ -21,10 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeCh
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
@@ -35,7 +32,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondencePr
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
@@ -118,8 +119,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             }
             updateTUIDs(tuidMap, correspondenceModels.iterator().next());
             for (CorrespondenceModel correspondenceModel : correspondenceModels) {
-                Metamodel mmA = correspondenceModel.getMapping().getMetamodelA();
-                Metamodel mmB = correspondenceModel.getMapping().getMetamodelB();
+                Metamodel mmA = ((InternalCorrespondenceModel) correspondenceModel).getMapping().getMetamodelA();
+                Metamodel mmB = ((InternalCorrespondenceModel) correspondenceModel).getMapping().getMetamodelB();
                 // assume mmaA is source metamodel
                 VURI sourceMMURI = mmA.getURI();
                 VURI targetMMURI = mmB.getURI();

@@ -4,9 +4,9 @@ import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.io.ByteArrayInputStream
 import java.util.ArrayList
@@ -72,7 +72,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)

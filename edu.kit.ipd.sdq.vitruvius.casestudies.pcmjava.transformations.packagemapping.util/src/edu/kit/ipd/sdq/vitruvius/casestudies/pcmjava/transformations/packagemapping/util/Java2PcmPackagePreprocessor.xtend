@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -10,7 +10,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChan
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.attribute.JavaReplaceSingleValuedEAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command

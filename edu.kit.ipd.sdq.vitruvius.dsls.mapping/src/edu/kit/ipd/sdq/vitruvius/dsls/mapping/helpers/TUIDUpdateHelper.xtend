@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class TUIDUpdateHelper {
 	private static final Logger LOGGER = Logger.getLogger(TUIDUpdateHelper)

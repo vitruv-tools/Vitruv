@@ -2,7 +2,7 @@ package mir.responses;
 
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChange2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * The {@link interface edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming} for transformations between the metamodels http://palladiosimulator.org/PalladioComponentModel/5.1 and http://www.emftext.org/java.

@@ -5,9 +5,6 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.impl;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingCorrespondence;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingFactory;
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingPackage;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.CorrespondencePackage;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -74,7 +71,7 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		CorrespondencePackage.eINSTANCE.eClass();
+		edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theMappingPackage.createPackageContents();
@@ -155,7 +152,7 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		CorrespondencePackage theCorrespondencePackage = (CorrespondencePackage)EPackage.Registry.INSTANCE.getEPackage(CorrespondencePackage.eNS_URI);
+		edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage theCorrespondencePackage = (edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage)EPackage.Registry.INSTANCE.getEPackage(edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage.eNS_URI);
 
 		// Create type parameters
 

@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.List
 import org.apache.log4j.Logger
 import org.emftext.language.java.containers.ContainersFactory
@@ -14,7 +14,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datat
 import org.eclipse.emf.ecore.resource.ResourceSet
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 /**
  * Finds the corresponding basic component for a given method.

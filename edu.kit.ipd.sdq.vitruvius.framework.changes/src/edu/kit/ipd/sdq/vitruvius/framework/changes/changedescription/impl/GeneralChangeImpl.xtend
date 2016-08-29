@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
 
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 

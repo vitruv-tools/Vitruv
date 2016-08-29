@@ -16,7 +16,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.PreProcessingFileSystemAccess
 import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseBuilderFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper
 import java.util.Arrays
 import java.util.Collection

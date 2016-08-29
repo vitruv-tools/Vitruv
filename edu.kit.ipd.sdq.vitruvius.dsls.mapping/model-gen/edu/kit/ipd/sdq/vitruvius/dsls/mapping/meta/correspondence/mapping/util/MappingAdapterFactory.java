@@ -3,9 +3,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.*;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -74,7 +71,7 @@ public class MappingAdapterFactory extends AdapterFactoryImpl {
 				return createMappingCorrespondenceAdapter();
 			}
 			@Override
-			public Adapter caseCorrespondence(Correspondence object) {
+			public Adapter caseCorrespondence(edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence object) {
 				return createCorrespondenceAdapter();
 			}
 			@Override
@@ -112,13 +109,13 @@ public class MappingAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence <em>Correspondence</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence <em>Correspondence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 	 * @generated
 	 */
 	public Adapter createCorrespondenceAdapter() {

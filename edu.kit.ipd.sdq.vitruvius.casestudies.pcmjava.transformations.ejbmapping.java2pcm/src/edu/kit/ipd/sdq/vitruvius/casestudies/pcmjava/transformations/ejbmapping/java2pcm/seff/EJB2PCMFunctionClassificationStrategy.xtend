@@ -11,7 +11,7 @@ import org.palladiosimulator.pcm.repository.OperationSignature
 import org.somox.gast2seff.visitors.AbstractFunctionClassificationStrategy
 import org.somox.gast2seff.visitors.MethodCallFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class EJB2PCMFunctionClassificationStrategy extends AbstractFunctionClassificationStrategy {
 	

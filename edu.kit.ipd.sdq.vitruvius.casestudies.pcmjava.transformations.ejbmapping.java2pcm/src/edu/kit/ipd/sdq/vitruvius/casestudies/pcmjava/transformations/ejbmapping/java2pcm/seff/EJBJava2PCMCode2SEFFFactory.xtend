@@ -6,7 +6,7 @@ import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.Code2SEFFFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class EJBJava2PCMCode2SEFFFactory implements Code2SEFFFactory {
 	override BasicComponentFinding createBasicComponentFinding() {
