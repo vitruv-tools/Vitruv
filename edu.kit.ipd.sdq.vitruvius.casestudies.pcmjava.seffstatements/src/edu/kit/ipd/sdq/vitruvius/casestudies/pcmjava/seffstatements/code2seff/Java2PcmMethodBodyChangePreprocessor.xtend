@@ -9,18 +9,18 @@ import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import org.emftext.language.java.members.Method
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.UpdateReferenceEChange
 import org.emftext.language.java.statements.StatementsPackage
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.RemoveEReference
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.TransactionalChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.TransactionalChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
 
 class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 

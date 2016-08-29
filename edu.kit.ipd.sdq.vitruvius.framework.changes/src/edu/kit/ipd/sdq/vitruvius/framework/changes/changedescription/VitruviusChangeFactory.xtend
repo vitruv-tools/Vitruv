@@ -1,17 +1,17 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.change
+package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.EMFModelChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange.FileChangeKind
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.FileChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.CompositeChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.EMFModelChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange.FileChangeKind
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.FileChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.CompositeChangeImpl
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.GeneralChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.GeneralChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.TransactionalChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.EmptyChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.TransactionalChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.EmptyChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;

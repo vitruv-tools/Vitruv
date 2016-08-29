@@ -17,9 +17,9 @@ import org.eclipse.emf.ecore.change.FeatureChange;
 
 import com.google.common.collect.EvictingQueue;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;

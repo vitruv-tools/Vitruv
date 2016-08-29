@@ -8,8 +8,8 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory
 
 class AtomicEMFChangeRecorder {
 	val List<ChangeDescription> changeDescriptions;

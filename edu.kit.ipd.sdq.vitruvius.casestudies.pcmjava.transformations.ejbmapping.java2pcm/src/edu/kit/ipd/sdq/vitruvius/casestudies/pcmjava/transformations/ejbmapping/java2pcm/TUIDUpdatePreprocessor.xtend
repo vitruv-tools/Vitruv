@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.AbstractChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor.ChangeProcessorResult
 

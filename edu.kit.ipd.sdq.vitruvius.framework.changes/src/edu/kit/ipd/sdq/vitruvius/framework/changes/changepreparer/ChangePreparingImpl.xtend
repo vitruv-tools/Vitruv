@@ -10,10 +10,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RemoveRootEObjec
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.root.RootFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.changes.echange.EChange
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 
 class ChangePreparingImpl implements ChangePreparing {

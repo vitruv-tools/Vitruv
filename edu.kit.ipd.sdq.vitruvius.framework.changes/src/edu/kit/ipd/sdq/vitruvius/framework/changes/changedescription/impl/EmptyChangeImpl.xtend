@@ -1,7 +1,7 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl
+package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl.ConcreteChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl.ConcreteChangeImpl
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 

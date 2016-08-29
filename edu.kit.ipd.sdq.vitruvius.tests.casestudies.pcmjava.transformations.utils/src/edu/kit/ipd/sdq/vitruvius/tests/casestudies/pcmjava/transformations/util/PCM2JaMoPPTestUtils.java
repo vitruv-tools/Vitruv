@@ -16,8 +16,8 @@ import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.SystemFactory;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.GeneralChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.domains.java.change.feature.reference.JavaInsertEReference;

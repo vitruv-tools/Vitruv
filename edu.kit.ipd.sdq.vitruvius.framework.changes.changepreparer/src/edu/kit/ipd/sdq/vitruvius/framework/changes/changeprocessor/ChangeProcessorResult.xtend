@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.changes.changeprocessor
 import org.eclipse.emf.common.command.Command
 import java.util.List
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.ConcreteChange
 
 class ChangeProcessorResult {
 	val ConcreteChange resultingChange;

@@ -14,6 +14,6 @@ Require-Bundle: com.google.guava,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.commons.util.emf
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer,
- edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.change
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.changepreparer,
+ edu.kit.ipd.sdq.vitruvius.framework.changes.changerecorder

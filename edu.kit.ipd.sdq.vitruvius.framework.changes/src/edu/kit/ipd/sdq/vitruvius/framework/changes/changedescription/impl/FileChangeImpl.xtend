@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.change.impl
+package edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.FileChange
+import edu.kit.ipd.sdq.vitruvius.framework.changes.changedescription.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
 
 class FileChangeImpl extends ConcreteChangeImpl implements FileChange {
