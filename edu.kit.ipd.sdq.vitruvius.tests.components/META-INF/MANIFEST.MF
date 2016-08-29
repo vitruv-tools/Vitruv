@@ -30,6 +30,6 @@ Require-Bundle: org.junit,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.framework.change.preparation
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing
 Bundle-ActivationPolicy: lazy
 

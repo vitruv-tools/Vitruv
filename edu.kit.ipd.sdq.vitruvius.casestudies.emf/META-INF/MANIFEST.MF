@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
  edu.kit.ipd.sdq.vitruvius.casestudies.gmf.run.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.change.preparation,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
  edu.kit.ipd.sdq.vitruvius.framework.change
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder,

@@ -28,7 +28,7 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;bundle-version="1.0.0",
  org.eclipse.xtext.junit4,
  edu.kit.ipd.sdq.vitruvius.framework.commandexecutor;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.change.preparation;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing;bundle-version="1.0.0",
  org.eclipse.xtend.lib,
  com.google.inject;bundle-version="3.0.0",
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.util
