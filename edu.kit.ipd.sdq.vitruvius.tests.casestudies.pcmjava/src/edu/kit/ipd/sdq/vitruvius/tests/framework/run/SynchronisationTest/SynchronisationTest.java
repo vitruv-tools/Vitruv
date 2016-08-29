@@ -83,7 +83,7 @@ public class SynchronisationTest {
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum,
-                this.vsum, null, changePreparing, commandExecuting);
+                null, changePreparing, commandExecuting);
 
         final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
