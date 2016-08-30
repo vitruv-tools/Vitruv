@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.URIHaving;
 
@@ -189,6 +190,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public List<T> getAllCorrespondences();
 
+    public Mapping getMapping();
+    
     /**
      * Returns the TUIDs for a correspondence that belong to the side that has a metamodel whose
      * namespace URIs include the given <code>metamodelNamespaceUri</code>

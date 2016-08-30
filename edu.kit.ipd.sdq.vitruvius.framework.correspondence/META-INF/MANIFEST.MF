@@ -14,7 +14,8 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.tuid
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.metamodel
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl,

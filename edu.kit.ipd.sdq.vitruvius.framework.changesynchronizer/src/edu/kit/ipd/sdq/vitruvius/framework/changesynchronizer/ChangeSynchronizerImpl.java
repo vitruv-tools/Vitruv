@@ -25,7 +25,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
