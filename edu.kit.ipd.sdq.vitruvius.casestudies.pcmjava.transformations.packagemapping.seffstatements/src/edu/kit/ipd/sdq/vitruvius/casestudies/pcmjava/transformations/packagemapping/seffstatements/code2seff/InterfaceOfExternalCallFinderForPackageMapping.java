@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 
 /**
  * Class realizes a InterfaceOfExternalCallFinding for the simple package mapping

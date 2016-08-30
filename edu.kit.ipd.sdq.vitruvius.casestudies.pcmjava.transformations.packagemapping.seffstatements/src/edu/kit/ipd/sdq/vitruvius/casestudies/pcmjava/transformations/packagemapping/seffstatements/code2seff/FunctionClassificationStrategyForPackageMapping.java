@@ -13,7 +13,7 @@ import org.somox.gast2seff.visitors.MethodCallFinder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 
 /**
  * FunctionClassificationStrategy for the simple package mapping Strategy.

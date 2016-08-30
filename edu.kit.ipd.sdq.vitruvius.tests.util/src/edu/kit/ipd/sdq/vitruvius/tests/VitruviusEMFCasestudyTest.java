@@ -22,8 +22,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTrans
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;

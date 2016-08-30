@@ -5,7 +5,7 @@ import org.palladiosimulator.pcm.repository.Repository
 
 import static org.junit.Assert.assertEquals
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
 class EJBPackageMappingTest extends EJBJaMoPP2PCMTransformationTest {
