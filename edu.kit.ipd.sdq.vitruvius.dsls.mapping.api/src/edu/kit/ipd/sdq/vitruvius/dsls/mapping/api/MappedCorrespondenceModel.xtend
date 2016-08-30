@@ -12,11 +12,10 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.MappingHelper
 import java.util.function.Supplier
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import org.eclipse.xtend.lib.annotations.Delegate
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 
 class MappedCorrespondenceModel implements CorrespondenceModel {
 	@Delegate
-	val InternalCorrespondenceModel correspondenceModel;
+	val CorrespondenceModel correspondenceModel;
 
 	HashMap<Correspondence, Collection<String>> correspondence2MappingMap
 
@@ -25,7 +24,7 @@ class MappedCorrespondenceModel implements CorrespondenceModel {
 	// correspondence elements have to be extended to MappingCorrespondence elements containing a list
 	// of mappings they belong to
 	@SuppressWarnings("unchecked")
-	new(InternalCorrespondenceModel correspondenceModel) {
+	new(CorrespondenceModel correspondenceModel) {
 		this.correspondenceModel = correspondenceModel;
 		this.correspondence2MappingMap = new HashMap<Correspondence, Collection<String>>()
 	}

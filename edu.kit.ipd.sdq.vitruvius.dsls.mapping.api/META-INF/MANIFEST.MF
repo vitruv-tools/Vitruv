@@ -20,3 +20,4 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces
+Import-Package: edu.kit.ipd.sdq.vitruvius.framework.command

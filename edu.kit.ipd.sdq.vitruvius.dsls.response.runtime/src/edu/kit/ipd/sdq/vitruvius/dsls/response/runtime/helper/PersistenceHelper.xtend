@@ -6,7 +6,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 
 public final class PersistenceHelper {
 	private new() {}
@@ -34,7 +33,7 @@ public final class PersistenceHelper {
 		val newModelFileSegments = relativePath.split("/");
 		if (!newModelFileSegments.last.contains(".")) {
 			// No file extension was specified, add the first one that is valid for the metamodel
-			val fileExtension = (correspondenceModel as InternalCorrespondenceModel).getMapping().getMetamodelB().
+			val fileExtension = correspondenceModel.getMapping().getMetamodelB().
 				getFileExtensions().get(0);
 			newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last + "." + fileExtension);
 		}

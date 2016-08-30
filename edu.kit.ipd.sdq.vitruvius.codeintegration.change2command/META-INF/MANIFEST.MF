@@ -19,3 +19,5 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+Import-Package: edu.kit.ipd.sdq.vitruvius.framework.command.util,
+ edu.kit.ipd.sdq.vitruvius.framework.command

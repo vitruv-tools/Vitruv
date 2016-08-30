@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.tests.components
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
@@ -31,7 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
 import pcm_mockup.PInterface
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class CorrespondenceTest extends VSUMTest {

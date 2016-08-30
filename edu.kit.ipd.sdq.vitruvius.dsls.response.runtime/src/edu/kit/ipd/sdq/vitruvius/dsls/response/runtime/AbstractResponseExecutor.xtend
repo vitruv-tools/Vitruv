@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 import org.apache.log4j.Logger
 import java.util.List
 import org.eclipse.emf.common.command.Command
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting

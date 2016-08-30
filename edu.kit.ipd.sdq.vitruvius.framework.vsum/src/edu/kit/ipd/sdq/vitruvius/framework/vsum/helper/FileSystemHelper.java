@@ -29,7 +29,7 @@ public class FileSystemHelper {
     private FileSystemHelper() {
     }
 
-    public static VURI getCorrespondencesVURI(final VURI[] mmURIs) {
+    public static VURI getCorrespondencesVURI(final VURI... mmURIs) {
         IFile correspondenceFile = getCorrespondenceIFile(mmURIs);
         return VURI.getInstance(correspondenceFile);
     }

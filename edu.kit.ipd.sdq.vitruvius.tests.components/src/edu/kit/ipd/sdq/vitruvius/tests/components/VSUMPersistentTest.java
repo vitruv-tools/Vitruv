@@ -12,10 +12,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -59,9 +59,9 @@ public class VSUMPersistentTest extends VSUMTest {
         VSUMImpl newVSUM = testMetaRepositoryAndVSUMCreation();
 
         // assert Maps
-        Map<Metamodel, Set<InternalCorrespondenceModel>> oldMetamodel2CorrespondenceModelsMap = JavaBridge
+        Map<Metamodel, Set<CorrespondenceModel>> oldMetamodel2CorrespondenceModelsMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceModelsMap", vsum);
-        Map<Metamodel, Set<InternalCorrespondenceModel>> newMetamodel2CorrespondenceModelsMap = JavaBridge
+        Map<Metamodel, Set<CorrespondenceModel>> newMetamodel2CorrespondenceModelsMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "metamodel2CorrespondenceModelsMap", newVSUM);
         assertEquals("Metamodel maps must have the same size", oldMetamodel2CorrespondenceModelsMap.size(),
                 newMetamodel2CorrespondenceModelsMap.size());
@@ -72,13 +72,13 @@ public class VSUMPersistentTest extends VSUMTest {
                     // found metamodel
                     foundMetamodel = true;
                     // Check Set of CorrespondenceModels
-                    Set<InternalCorrespondenceModel> oldCIs = oldMetamodel2CorrespondenceModelsMap.get(oldMetamodel);
-                    Set<InternalCorrespondenceModel> newCIs = newMetamodel2CorrespondenceModelsMap.get(newMetamodel);
+                    Set<CorrespondenceModel> oldCIs = oldMetamodel2CorrespondenceModelsMap.get(oldMetamodel);
+                    Set<CorrespondenceModel> newCIs = newMetamodel2CorrespondenceModelsMap.get(newMetamodel);
                     assertEquals("Correspondence sets for metamodel " + oldMetamodel + " have to have the same size",
                             oldCIs.size(), newCIs.size());
-                    for (edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel oldCi : oldCIs) {
+                    for (CorrespondenceModel oldCi : oldCIs) {
                         boolean foundCorrespondenceModel = false;
-                        for (InternalCorrespondenceModel newCi : newCIs) {
+                        for (CorrespondenceModel newCi : newCIs) {
                             if (correspondenceModelEquals(oldCi, newCi)) {
                                 foundCorrespondenceModel = true;
                                 break;
@@ -93,9 +93,9 @@ public class VSUMPersistentTest extends VSUMTest {
             assertTrue("Metamodel " + oldMetamodel + " not found in the new metamodel map", foundMetamodel);
         }
 
-        Map<Mapping, InternalCorrespondenceModel> oldMapping2CorrespondenceModelMap = JavaBridge
+        Map<Mapping, CorrespondenceModel> oldMapping2CorrespondenceModelMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceModelMap", vsum);
-        Map<Mapping, InternalCorrespondenceModel> newMapping2CorrespondenceModelMap = JavaBridge
+        Map<Mapping, CorrespondenceModel> newMapping2CorrespondenceModelMap = JavaBridge
                 .getFieldFromClass(VSUMImpl.class, "mapping2CorrespondenceModelMap", newVSUM);
         assertEquals("Mapping maps must have the same size", oldMetamodel2CorrespondenceModelsMap.size(),
                 newMetamodel2CorrespondenceModelsMap.size());
@@ -104,8 +104,8 @@ public class VSUMPersistentTest extends VSUMTest {
             for (Mapping newMapping : newMapping2CorrespondenceModelMap.keySet()) {
                 if (mappingEquals(oldMapping, newMapping)) {
                     mappingFound = true;
-                    InternalCorrespondenceModel oldCi = oldMapping2CorrespondenceModelMap.get(oldMapping);
-                    InternalCorrespondenceModel newCi = newMapping2CorrespondenceModelMap.get(newMapping);
+                    CorrespondenceModel oldCi = oldMapping2CorrespondenceModelMap.get(oldMapping);
+                    CorrespondenceModel newCi = newMapping2CorrespondenceModelMap.get(newMapping);
                     assertTrue(
                             "Old correspondence instance " + oldCi + " does not equal new CorrespondenceModel " + newCi,
                             correspondenceModelEquals(oldCi, newCi));
@@ -129,8 +129,7 @@ public class VSUMPersistentTest extends VSUMTest {
         fail("TODO: check whether correspondence instances and the maps within the correspondence instances are equal.");
     }
 
-    private boolean correspondenceModelEquals(final InternalCorrespondenceModel oldCi,
-            final InternalCorrespondenceModel newCi) {
+    private boolean correspondenceModelEquals(final CorrespondenceModel oldCi, final CorrespondenceModel newCi) {
         VURI oldVURI = VURI.getInstance(oldCi.getResource().getURI());
         VURI newVURI = VURI.getInstance(newCi.getResource().getURI());
         return oldVURI == newVURI && mappingEquals(oldCi.getMapping(), newCi.getMapping());

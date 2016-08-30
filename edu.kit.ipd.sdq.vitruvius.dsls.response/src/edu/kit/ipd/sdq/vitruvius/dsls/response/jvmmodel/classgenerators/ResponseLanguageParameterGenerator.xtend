@@ -7,7 +7,7 @@ import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange

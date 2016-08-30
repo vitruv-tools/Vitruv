@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge

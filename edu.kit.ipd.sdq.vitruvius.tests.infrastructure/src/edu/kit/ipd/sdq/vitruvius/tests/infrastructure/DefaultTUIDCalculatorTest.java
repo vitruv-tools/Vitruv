@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
