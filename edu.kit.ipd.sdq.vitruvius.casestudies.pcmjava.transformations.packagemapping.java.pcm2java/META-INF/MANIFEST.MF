@@ -18,5 +18,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  org.apache.log4j,
- edu.kit.ipd.sdq.commons.util.emf
+ edu.kit.ipd.sdq.commons.util.emf,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java

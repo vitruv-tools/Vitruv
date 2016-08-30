@@ -24,6 +24,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.eclipse.emf.transaction,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
- edu.kit.ipd.sdq.vitruvius.framework.userinteraction;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests,
  edu.kit.ipd.sdq.vitruvius.tests.util

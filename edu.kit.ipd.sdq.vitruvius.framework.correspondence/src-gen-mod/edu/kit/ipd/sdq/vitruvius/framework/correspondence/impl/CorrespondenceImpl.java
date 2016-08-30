@@ -49,7 +49,8 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     /**
      * @generated NOT
      */
-    private static final long serialVersionUID = -1129928608053571384L;
+    @SuppressWarnings("unused")
+	private static final long serialVersionUID = -1129928608053571384L;
 
     /**
      * The cached value of the '{@link #getDependsOn() <em>Depends On</em>}' reference list. <!--
