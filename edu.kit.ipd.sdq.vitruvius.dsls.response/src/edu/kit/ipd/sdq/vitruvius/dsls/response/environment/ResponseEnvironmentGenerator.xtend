@@ -25,7 +25,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
@@ -200,9 +199,8 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		 */
 		public abstract class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractChange2CommandTransforming)» {
 			public «change2CommandTransformingNameGenerator.simpleName»() {
-				super (new «ih.typeRef(TransformationMetamodelPair)»(
-					«ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»"),
-					«ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»")));
+				super («ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»"),
+					«ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»"));
 			}
 «««			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
 «««				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
