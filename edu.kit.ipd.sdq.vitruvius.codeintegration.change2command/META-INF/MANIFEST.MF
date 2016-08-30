@@ -16,5 +16,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.pcm2java;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.userinteraction
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command

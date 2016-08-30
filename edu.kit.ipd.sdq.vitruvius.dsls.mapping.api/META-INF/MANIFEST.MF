@@ -15,6 +15,7 @@ Require-Bundle: com.google.guava,
  org.eclipse.emf.common,
  org.eclipse.emf.transaction,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.framework.userinteraction
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces

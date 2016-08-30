@@ -10,8 +10,6 @@
       </documentation>
    </annotation>
 
-   <include schemaLocation="edu.kit.ipd.sdq.vitruvius.framework.contracts.modelcopyproviding.exsd"/>
-
    <element name="extension">
       <annotation>
          <appinfo>

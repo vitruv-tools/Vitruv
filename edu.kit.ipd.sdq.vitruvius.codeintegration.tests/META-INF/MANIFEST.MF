@@ -23,6 +23,7 @@ Require-Bundle: org.junit,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.tests,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util

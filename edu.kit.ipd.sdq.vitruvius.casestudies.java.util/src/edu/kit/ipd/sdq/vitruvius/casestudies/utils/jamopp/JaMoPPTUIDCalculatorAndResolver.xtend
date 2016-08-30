@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.HierarchicalTUIDCalculatorAndResolver
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Classifier
@@ -25,6 +24,7 @@ import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.HierarchicalTUIDCalculatorAndResolver
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model. 

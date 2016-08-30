@@ -10,6 +10,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.vsum.helper
