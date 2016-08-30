@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
@@ -259,7 +260,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final String fileExtension = iResource.getFileExtension();
         if (this.monitoredFileTypes.contains(fileExtension)) {
             final VURI vuri = VURI.getInstance(iResource);
-            final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+            Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
+            final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
             this.changeSynchronizing.synchronizeChange(fileChange);
         }
     }
