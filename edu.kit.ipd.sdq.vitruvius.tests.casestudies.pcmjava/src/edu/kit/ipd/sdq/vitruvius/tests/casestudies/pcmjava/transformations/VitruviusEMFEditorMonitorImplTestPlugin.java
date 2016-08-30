@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;

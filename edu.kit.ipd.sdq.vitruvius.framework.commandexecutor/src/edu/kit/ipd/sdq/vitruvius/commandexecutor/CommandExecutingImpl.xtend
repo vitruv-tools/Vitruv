@@ -21,7 +21,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 

@@ -5,7 +5,7 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing
 
 abstract class ConcreteChangeImpl implements ConcreteChange {
 	protected final List<EChange> eChanges;

@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.CompositeChan
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.GeneralChangeImpl
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.TransactionalChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.EmptyChangeImpl
 import org.eclipse.emf.ecore.resource.Resource

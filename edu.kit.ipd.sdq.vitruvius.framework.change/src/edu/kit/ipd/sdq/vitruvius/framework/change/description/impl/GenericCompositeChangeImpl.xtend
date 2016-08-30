@@ -5,8 +5,8 @@ import java.util.LinkedList
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GenericCompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing
 
 class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
     List<C> changes;

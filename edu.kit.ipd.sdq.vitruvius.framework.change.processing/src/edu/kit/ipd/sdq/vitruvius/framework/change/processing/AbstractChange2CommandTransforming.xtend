@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange

@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
@@ -12,7 +11,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 
 class ChangePreparingImpl implements ChangePreparing {
 	private static Logger logger = Logger.getLogger(ChangePreparingImpl);

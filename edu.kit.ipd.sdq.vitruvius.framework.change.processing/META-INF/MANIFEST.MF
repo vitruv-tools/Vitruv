@@ -9,8 +9,8 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf,
- edu.kit.ipd.sdq.vitruvius.framework.util
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.change.processing
 

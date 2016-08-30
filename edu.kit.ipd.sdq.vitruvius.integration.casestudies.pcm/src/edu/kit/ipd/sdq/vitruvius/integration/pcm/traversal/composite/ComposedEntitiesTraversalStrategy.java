@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.InsertInListEChange;

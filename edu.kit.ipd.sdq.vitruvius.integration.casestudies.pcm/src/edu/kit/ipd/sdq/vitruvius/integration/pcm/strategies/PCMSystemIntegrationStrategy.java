@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;

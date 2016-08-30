@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.change.description.impl
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.ConcreteChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing
 
 class EmptyChangeImpl extends ConcreteChangeImpl implements ConcreteChange {
 	
