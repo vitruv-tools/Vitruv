@@ -195,16 +195,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                         tuidToUpdateNewRootEObjectPair.getFirst());
             }
             if (correspondenceModel.changedAfterLastSave()) {
-                saveCorrespondenceModelAndDecorators(correspondenceModel);
+                correspondenceModel.saveModel();
                 correspondenceModel.resetChangedAfterLastSave();
             }
         }
-    }
-
-    @Override
-    public void saveCorrespondenceModelAndDecorators(final CorrespondenceModel correspondenceModel) {
-        // FIXME HK This is really bad
-        ((InternalCorrespondenceModel) correspondenceModel).saveModel();
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
@@ -304,7 +298,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
      * @return the found correspondenceModel or null if there is none
      */
     @Override
-    public CorrespondenceModel getCorrespondenceModelOriginal(final VURI mmAVURI, final VURI mmBVURI) {
+    public CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI) {
         Mapping mapping = this.mappingManaging.getMapping(mmAVURI, mmBVURI);
         if (this.mapping2CorrespondenceModelMap.containsKey(mapping)) {
             return this.mapping2CorrespondenceModelMap.get(mapping);
@@ -319,8 +313,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
      * {@link getCorrespondenceModelOriginal} must be called before to create the appropriate
      * correspondence instance
      *
-     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.datatypes.
-     *      CorrespondenceModel
+     * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.datatypes. CorrespondenceModel
      * @return set that contains all CorrespondenceModels for the VURI or null if there is non
      */
     @Override
