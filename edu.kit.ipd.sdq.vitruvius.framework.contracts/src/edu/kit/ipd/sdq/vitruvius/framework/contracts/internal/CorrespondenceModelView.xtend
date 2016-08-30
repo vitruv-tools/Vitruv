@@ -170,5 +170,9 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	override getURI() {
 		return correspondenceModelDelegate.URI;
 	}
+	
+	override getMapping() {
+		return correspondenceModelDelegate.mapping
+	}
 
 }

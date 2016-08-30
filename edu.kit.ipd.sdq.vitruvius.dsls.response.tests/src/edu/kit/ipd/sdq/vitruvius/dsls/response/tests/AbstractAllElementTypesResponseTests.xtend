@@ -6,8 +6,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays
 import java.util.HashSet
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping
 import allElementTypes.Root
 import allElementTypes.AllElementTypesPackage
 import static org.junit.Assert.assertEquals

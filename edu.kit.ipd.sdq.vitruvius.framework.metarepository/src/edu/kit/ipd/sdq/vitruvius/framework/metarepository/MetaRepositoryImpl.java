@@ -5,11 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.MetamodelsReferring;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MappingManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MetamodelManaging;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableConcatMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableHashMap;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
@@ -69,18 +68,16 @@ public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
         return this.fileExtension2MetamodelMap.get(fileExtension);
     }
 
-    private void claimReferredMetamodels(final MetamodelsReferring metamodelsReferring) {
-        VURI[] metamodelURIs = metamodelsReferring.getMetamodelURIs();
-        for (VURI metamodelURI : metamodelURIs) {
-            this.uri2MetamodelMap.claimKeyIsMapped(metamodelURI);
-        }
+    private void claimReferredMetamodels(final Mapping mapping) {
+        this.uri2MetamodelMap.claimKeyIsMapped(mapping.getMetamodelA().getURI());
+        this.uri2MetamodelMap.claimKeyIsMapped(mapping.getMetamodelB().getURI());
     }
 
     @Override
     public void addMapping(final Mapping mapping) {
         claimReferredMetamodels(mapping);
-        VURI[] metamodelURIs = mapping.getMetamodelURIs();
-        this.uris2MappingMap.putClaimingNullOrSameMapped(mapping, metamodelURIs);
+        this.uris2MappingMap.putClaimingNullOrSameMapped(mapping, mapping.getMetamodelA().getURI(),
+                mapping.getMetamodelB().getURI());
     }
 
     @Override
