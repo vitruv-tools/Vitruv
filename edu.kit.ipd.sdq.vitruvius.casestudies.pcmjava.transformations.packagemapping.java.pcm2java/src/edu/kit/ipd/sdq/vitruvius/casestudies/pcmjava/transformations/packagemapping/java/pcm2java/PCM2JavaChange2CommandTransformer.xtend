@@ -20,7 +20,6 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.system.ProvidedDelegationConnectorMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.system.RequiredDelegationConnectorMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.system.SystemMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
@@ -30,9 +29,8 @@ import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimpleme
 class PCM2JavaChange2CommandTransformer extends AbstractChange2CommandTransforming {
 	
 	new() {
-		super(
-			new TransformationMetamodelPair(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE),
-				VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)))
+		super(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE),
+				VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE))
 	}
 
 	private def ChangeProcessor createTransformationExecutorChangeProcessor() {

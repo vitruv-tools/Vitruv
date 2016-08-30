@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
@@ -11,25 +10,27 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MetamodelPair
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 
 abstract class AbstractChange2CommandTransforming implements edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
 	
 	private UserInteracting userInteracting;
-	private val TransformationMetamodelPair transformationMetamodelPair;
+	private val MetamodelPair metamodelPair;
 	private val List<edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor> changeProcessors;
 	
-	new(TransformationMetamodelPair metamodelPair) {
-		this.transformationMetamodelPair = metamodelPair;
-		this.changeProcessors = new ArrayList<edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor>();
+	new(VURI fromMetamodel, VURI toMetamodel) {
+		this.metamodelPair = new MetamodelPair(fromMetamodel, toMetamodel);
+		this.changeProcessors = new ArrayList<ChangeProcessor>();
 	}
 	 
 	protected def UserInteracting getUserInteracting() {
 		return userInteracting;
 	}
 	
-	override TransformationMetamodelPair getTransformableMetamodels() {
-		return transformationMetamodelPair;
+	override MetamodelPair getTransformableMetamodels() {
+		return metamodelPair;
 	}
 	
 	protected def addChangeProcessor(ChangeProcessor changeProcessor) {

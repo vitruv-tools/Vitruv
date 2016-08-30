@@ -1,7 +1,6 @@
 package mir.responses;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
@@ -10,9 +9,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
  */
 public abstract class AbstractChange2CommandTransforming5_1ToJava extends AbstractChange2CommandTransforming {
 	public AbstractChange2CommandTransforming5_1ToJava() {
-		super (new TransformationMetamodelPair(
-			VURI.getInstance("http://palladiosimulator.org/PalladioComponentModel/5.1"),
-			VURI.getInstance("http://www.emftext.org/java")));
+		super (VURI.getInstance("http://palladiosimulator.org/PalladioComponentModel/5.1"),
+			VURI.getInstance("http://www.emftext.org/java"));
 	}
 	
 	/**
