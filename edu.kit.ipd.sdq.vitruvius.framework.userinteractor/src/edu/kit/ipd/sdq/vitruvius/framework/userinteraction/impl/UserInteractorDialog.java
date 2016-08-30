@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.userinteractor;
+package edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

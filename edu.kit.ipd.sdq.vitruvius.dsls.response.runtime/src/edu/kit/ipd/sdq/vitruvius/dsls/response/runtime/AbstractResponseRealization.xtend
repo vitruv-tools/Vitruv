@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange

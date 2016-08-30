@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.correspondenceFailHandler
 
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 
 class CorrespondenceFailCustomDialog extends AbstractCorrespondenceFailHandler {
 	private final boolean abortEffect;

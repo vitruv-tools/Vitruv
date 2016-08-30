@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractEChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange

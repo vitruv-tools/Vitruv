@@ -5,8 +5,8 @@ import java.util.List;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ExtensionPoints;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 

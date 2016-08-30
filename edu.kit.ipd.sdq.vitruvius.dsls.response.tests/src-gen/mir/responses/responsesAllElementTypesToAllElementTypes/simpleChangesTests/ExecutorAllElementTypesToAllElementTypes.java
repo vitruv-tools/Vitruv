@@ -1,7 +1,7 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseExecutor;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractResponseExecutor {

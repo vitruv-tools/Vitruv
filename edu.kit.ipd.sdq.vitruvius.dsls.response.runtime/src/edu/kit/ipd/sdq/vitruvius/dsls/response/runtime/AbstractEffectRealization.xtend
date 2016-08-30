@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 import org.eclipse.emf.ecore.EObject
 import java.io.IOException
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.PersistenceHelper

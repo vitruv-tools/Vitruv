@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 
 interface CorrespondenceFailHandler {
 	/** 

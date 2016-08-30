@@ -16,7 +16,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import org.apache.log4j.Logger
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 @Accessors(PUBLIC_GETTER)

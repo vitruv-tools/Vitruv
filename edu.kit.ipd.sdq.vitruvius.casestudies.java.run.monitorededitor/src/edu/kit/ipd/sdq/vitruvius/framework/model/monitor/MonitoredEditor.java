@@ -17,14 +17,14 @@ import org.eclipse.ui.IStartup;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 
 /**
  * @author messinger
@@ -226,12 +226,6 @@ public class MonitoredEditor extends AbstractMonitoredEditor
     public int selectFromMessage(final UserInteractionType type, final String message,
             final String... selectionDescriptions) {
         return this.userInteractor.selectFromMessage(type, message, selectionDescriptions);
-    }
-
-    @Override
-    public int selectFromModel(final UserInteractionType type, final String message,
-            final ModelInstance... modelInstances) {
-        return this.userInteractor.selectFromModel(type, message, modelInstances);
     }
 
     @Override

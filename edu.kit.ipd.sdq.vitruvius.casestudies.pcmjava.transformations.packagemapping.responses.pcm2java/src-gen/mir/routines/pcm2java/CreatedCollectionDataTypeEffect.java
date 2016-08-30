@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 
 import java.io.IOException;
 import java.util.AbstractCollection;

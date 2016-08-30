@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemap
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util.Java2PcmPackagePreprocessor
@@ -11,9 +10,8 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 class Java2PCMChange2CommandTransformer extends AbstractChange2CommandTransforming {
 	
 	new() {
-		super(
-			new TransformationMetamodelPair(VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE),
-				VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)))
+		super(VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE),
+				VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE))
 	}
 
 	override protected setup() {

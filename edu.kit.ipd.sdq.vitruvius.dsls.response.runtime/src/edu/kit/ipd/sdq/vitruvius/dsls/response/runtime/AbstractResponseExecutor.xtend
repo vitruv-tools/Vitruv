@@ -6,7 +6,7 @@ import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.IResponseRealization
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel

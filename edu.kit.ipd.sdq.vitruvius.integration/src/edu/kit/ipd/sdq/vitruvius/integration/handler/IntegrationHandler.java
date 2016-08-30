@@ -16,9 +16,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.LoggerConfigurator;

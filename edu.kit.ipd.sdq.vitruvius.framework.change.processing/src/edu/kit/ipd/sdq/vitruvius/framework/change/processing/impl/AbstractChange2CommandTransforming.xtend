@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange

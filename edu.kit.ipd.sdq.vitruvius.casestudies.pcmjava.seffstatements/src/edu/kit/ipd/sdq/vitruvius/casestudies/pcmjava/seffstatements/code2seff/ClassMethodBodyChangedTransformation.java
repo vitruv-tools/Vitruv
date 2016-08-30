@@ -21,11 +21,10 @@ import org.somox.gast2seff.visitors.MethodCallFinder;
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding;
 import org.somox.gast2seff.visitors.VisitorUtils;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 

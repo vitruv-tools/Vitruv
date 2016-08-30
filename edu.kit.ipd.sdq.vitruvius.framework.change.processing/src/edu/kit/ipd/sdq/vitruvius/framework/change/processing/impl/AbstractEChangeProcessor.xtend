@@ -9,7 +9,7 @@ import org.eclipse.emf.common.command.Command
 import java.util.List
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 
 abstract class AbstractEChangeProcessor extends AbstractChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractEChangeProcessor);

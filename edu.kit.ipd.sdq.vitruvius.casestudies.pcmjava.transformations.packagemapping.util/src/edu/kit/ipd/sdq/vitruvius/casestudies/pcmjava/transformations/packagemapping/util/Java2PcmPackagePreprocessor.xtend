@@ -15,7 +15,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResu
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 
 class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
     

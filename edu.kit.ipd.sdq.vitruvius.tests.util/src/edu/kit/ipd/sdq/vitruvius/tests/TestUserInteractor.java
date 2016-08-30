@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 
 /**
  * The {@link TestUserInteractor} can be used in tests to simulate UserInteracting. It has a queue
@@ -81,14 +81,6 @@ public class TestUserInteractor implements UserInteracting {
         logger.info("selectFromMessage: " + message + " Type: " + type + " Choices: "
                 + StringUtils.join(selectionDescriptions, ", "));
         return this.selectFromMessage(selectionDescriptions.length);
-    }
-
-    @Override
-    public int selectFromModel(final UserInteractionType type, final String message,
-            final ModelInstance... modelInstances) {
-        logger.info("selectFromModel: " + message + " Type: " + type + " Choices: "
-                + StringUtils.join(modelInstances, ", "));
-        return this.selectFromMessage(modelInstances.length);
     }
 
     private int selectFromMessage(final int maxLength) {

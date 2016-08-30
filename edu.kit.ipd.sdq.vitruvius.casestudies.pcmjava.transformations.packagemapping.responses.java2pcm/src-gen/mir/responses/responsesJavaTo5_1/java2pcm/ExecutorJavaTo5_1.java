@@ -1,7 +1,7 @@
 package mir.responses.responsesJavaTo5_1.java2pcm;
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseExecutor;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 public class ExecutorJavaTo5_1 extends AbstractResponseExecutor {

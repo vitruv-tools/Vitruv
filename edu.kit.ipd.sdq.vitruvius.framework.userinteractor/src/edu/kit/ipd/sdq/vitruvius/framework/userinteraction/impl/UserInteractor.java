@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.userinteractor;
+package edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl;
 
 import javax.swing.JOptionPane;
 
@@ -7,9 +7,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseUIBridge;
 
 /**
@@ -90,13 +89,6 @@ public class UserInteractor implements UserInteracting {
         final String textInput = JOptionPane.showInputDialog(null, msg, VITRUVIUS_TEXT_INPUT_DIALOG,
                 JOptionPane.OK_OPTION);
         return textInput;
-    }
-
-    @Override
-    public int selectFromModel(final UserInteractionType type, final String message,
-            final ModelInstance... modelInstances) {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
 	@Override
