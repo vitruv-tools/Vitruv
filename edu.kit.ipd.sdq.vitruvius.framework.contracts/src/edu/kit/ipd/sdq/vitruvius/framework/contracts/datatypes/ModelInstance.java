@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.AbstractURIHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class ModelInstance extends AbstractURIHaving {

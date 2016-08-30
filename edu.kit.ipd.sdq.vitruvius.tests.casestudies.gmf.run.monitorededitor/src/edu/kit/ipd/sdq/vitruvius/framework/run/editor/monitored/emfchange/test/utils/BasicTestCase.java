@@ -17,9 +17,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 
 public class BasicTestCase {
 

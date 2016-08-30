@@ -17,7 +17,8 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.correspondence;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,

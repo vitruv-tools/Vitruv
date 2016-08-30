@@ -25,7 +25,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 
 class ChangeDescription2ChangeTest extends VSUMTest {
 	static val LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())

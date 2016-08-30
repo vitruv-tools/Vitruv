@@ -6,7 +6,7 @@ import org.eclipse.emf.common.util.EList;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 
 /**
  * This class provides common methods for similar traversal strategies regarding PCM models.
