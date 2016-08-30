@@ -16,7 +16,5 @@ public interface InternalCorrespondenceModel extends CorrespondenceModel {
 
     public VURI getURI();
 
-    public void saveModel();
-
     public Mapping getMapping();
 }

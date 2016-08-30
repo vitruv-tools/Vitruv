@@ -79,7 +79,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		var mmURiB = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		// FIXME do that without a cast
-		this.cInstance = vsum.getCorrespondenceModelOriginal(mmUriA, mmURiB)
+		this.cInstance = vsum.getCorrespondenceModel(mmUriA, mmURiB)
 
 		this.scdmPath = scdmPath
 		this.pcmPath = pcmPath

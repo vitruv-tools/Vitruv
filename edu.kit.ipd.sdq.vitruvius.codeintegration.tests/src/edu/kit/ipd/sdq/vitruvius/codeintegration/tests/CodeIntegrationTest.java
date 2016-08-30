@@ -191,7 +191,7 @@ public class CodeIntegrationTest {
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceModel corresponcenceInstance = vsum
-                .getCorrespondenceModelOriginal(pcmVURI, jaMoPPVURI);
+                .getCorrespondenceModel(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
     }
 

@@ -6,9 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public interface CorrespondenceProviding {
-    CorrespondenceModel getCorrespondenceModelOriginal(final VURI mmAVURI, final VURI mmBVURI);
-
-    void saveCorrespondenceModelAndDecorators(final CorrespondenceModel correspondenceModel);
+    CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI);
 
     Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI mmVURI);
 }

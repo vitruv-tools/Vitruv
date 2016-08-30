@@ -192,7 +192,7 @@ class CorrespondenceTest extends VSUMTest {
 	def private CorrespondenceModel testCorrespondenceModelCreation(VSUMImpl vsum) {
 		var VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI)
 		var VURI umlMMVURI = VURI.getInstance(UML_MM_URI)
-		var CorrespondenceModel corresp = vsum.getCorrespondenceModelOriginal(pcmMMVURI, umlMMVURI)
+		var CorrespondenceModel corresp = vsum.getCorrespondenceModel(pcmMMVURI, umlMMVURI)
 		assertNotNull(corresp)
 		return corresp
 	}
