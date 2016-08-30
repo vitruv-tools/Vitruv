@@ -166,5 +166,9 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		Supplier<U> correspondenceCreator) {
 		correspondenceModelDelegate.getEditableView(correspondenceType, correspondenceCreator)
 	}
+	
+	override getURI() {
+		return correspondenceModelDelegate.URI;
+	}
 
 }
