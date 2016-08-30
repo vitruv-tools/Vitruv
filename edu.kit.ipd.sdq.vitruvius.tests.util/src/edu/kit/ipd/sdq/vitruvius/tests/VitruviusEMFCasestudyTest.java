@@ -103,7 +103,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         final Mapping mapping = this.metaRepository.getAllMappings(firstMM).iterator().next();
         final VURI mm1VURI = mapping.getMetamodelA().getURI();
         final VURI mm2VURI = mapping.getMetamodelB().getURI();
-        return this.vsum.getCorrespondenceModelOriginal(mm1VURI, mm2VURI);
+        return this.vsum.getCorrespondenceModel(mm1VURI, mm2VURI);
     }
 
     protected void triggerSynchronization(final VURI vuri) {

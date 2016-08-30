@@ -47,7 +47,7 @@ class CommandExecutingImpl implements CommandExecuting {
 		this.executeTransformationResults(transformationResults, blackboard)
 		this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
 		modelProviding.detachTransactionalEditingDomain() // FIXME
-		blackboard.correspondenceProviding.saveCorrespondenceModelAndDecorators(blackboard.correspondenceModel)
+		blackboard.correspondenceModel.saveModel()
 		return Collections::emptyList()
 	}
 

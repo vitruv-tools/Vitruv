@@ -205,7 +205,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 		final VSUMImpl vsum = this.getVSUM();
 		final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
 		final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-		final CorrespondenceModel corresponcenceInstance = vsum.getCorrespondenceModelOriginal(pcmVURI, jaMoPPVURI);
+		final CorrespondenceModel corresponcenceInstance = vsum.getCorrespondenceModel(pcmVURI, jaMoPPVURI);
 		return corresponcenceInstance;
 	}
 
