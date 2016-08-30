@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Framework Temporary Unique Identifier Specification
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.tuid
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.apache.commons.lang,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.change,
+ edu.kit.ipd.sdq.vitruvius.framework.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid
+
