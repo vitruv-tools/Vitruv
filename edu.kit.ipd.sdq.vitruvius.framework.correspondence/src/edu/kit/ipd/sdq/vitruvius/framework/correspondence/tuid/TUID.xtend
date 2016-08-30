@@ -14,10 +14,8 @@ import com.google.common.base.Strings
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ForwardHashedBackwardLinkedTree
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 
 /** 
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a{@link ForwardHashedBackwardLinkedTree} to ensure that depending TUIDs are indirectly changed,
@@ -152,13 +150,13 @@ class TUID implements Serializable {
 	 * 
 	 * @throws IllegalArgumentException if both conditions are not met
 	 */
-	def void renameOrMoveLastSegment(TUID anotherTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+	def void renameOrMoveLastSegment(TUID anotherTUID, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		val newLastSegment = getNewLastSegmentIfIdenticalExceptForLastSegment(anotherTUID)
 		if (newLastSegment != null) {
-			renameLastSegment(newLastSegment, before, after)
+			renameLastSegment(newLastSegment, beforeAfterUpdate)
 		} else {
 			// that there are at least two previous segments will be checked in move method
-			moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID, before, after)
+			moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID, beforeAfterUpdate)
 		}
 	}
 	
@@ -184,11 +182,11 @@ class TUID implements Serializable {
 	 * 
 	 * @param anotherTUID
 	 */
-	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDWithEquivalentLastSegmentAndMergeChildren(TUID anotherTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDWithEquivalentLastSegmentAndMergeChildren(TUID anotherTUID, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		if (!lastSegmentsAreEquivalent(anotherTUID)) {
 			throw new IllegalArgumentException(getMoveExceptionMsg(anotherTUID))
 		}
-		moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID, before, after)
+		moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID, beforeAfterUpdate)
 	}
 	/** 
 	 * Moves the last segment of this TUID to the second but last segment of the given {@link anotherTUID} and
@@ -198,11 +196,11 @@ class TUID implements Serializable {
 	 * 
 	 * @param anotherTUID
 	 */
-	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(TUID anotherTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(TUID anotherTUID, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		if (!haveAtLeastTwoSegments(anotherTUID)) {
 			throw new IllegalArgumentException(getRenameExceptionMsg(anotherTUID))
 		}
-		moveLastSegment(anotherTUID, before, after)
+		moveLastSegment(anotherTUID, beforeAfterUpdate)
 	}
 
 	/** 
@@ -212,13 +210,12 @@ class TUID implements Serializable {
 	 * @param newLastSegmentString the new name for the last segment
 	 * @throws an {@link IllegalArgumentException} if the specified {@link newLastSegmentString} contains the TUID separator
 	 */
-	def void renameLastSegment(String newLastSegmentString, BeforeHashCodeUpdateLambda before,
-		AfterHashCodeUpdateLambda after) {
+	def void renameLastSegment(String newLastSegmentString, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		val segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator()
 		val containsSeparator = newLastSegmentString.indexOf(segmentSeperator) !== -1
 		if (!containsSeparator) {
 			val TUID fullDestinationTUID = getTUIDWithNewLastSegment(newLastSegmentString)
-			moveLastSegment(fullDestinationTUID, before, after)
+			moveLastSegment(fullDestinationTUID, beforeAfterUpdate)
 		} else {
 			throw new IllegalArgumentException('''The last segment '«this.lastSegment»' of the TUID '«this»' cannot be renamed to '«newLastSegmentString»' because this String contains the TUID separator '«segmentSeperator»'!''')
 		}
@@ -243,10 +240,10 @@ class TUID implements Serializable {
 	 * <br/>
 	 * @param anotherTUID the TUID with the new last segment
 	 */
-	def void renameLastSegment(TUID anotherTUID, BeforeHashCodeUpdateLambda before, AfterHashCodeUpdateLambda after) {
+	def void renameLastSegment(TUID anotherTUID, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		val newLastSegmentString = getNewLastSegmentIfIdenticalExceptForLastSegment(anotherTUID)
 		if (newLastSegmentString != null) {
-			renameLastSegment(newLastSegmentString, before, after)
+			renameLastSegment(newLastSegmentString, beforeAfterUpdate)
 		} else {
 			throw new IllegalArgumentException(getRenameExceptionMsg(anotherTUID))
 		}
@@ -269,18 +266,17 @@ class TUID implements Serializable {
 	 * @param fullDestinationTUIDthe full TUID of the move destination
 	 * @return
 	 */
-	def private void moveLastSegment(TUID fullDestinationTUID, BeforeHashCodeUpdateLambda before,
-		AfterHashCodeUpdateLambda after) {
+	def private <T> void moveLastSegment(TUID fullDestinationTUID, BeforeAfterTUIDUpdate<T> beforeAfterUpdate) {
 		val segmentPairs = SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment)
 		for (segmentPair : segmentPairs) {
 			val oldSegment = segmentPair.getFirst()
 			val oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment)
 			val newSegment = segmentPair.getSecond()
-			var removedMapEntries = before?.performPreAction(oldTUID)
+			var preResult = beforeAfterUpdate?.performPreAction(oldTUID)
 			// this update changes the hashcode of the given tuid
 			TUID.updateInstance(oldTUID, newSegment)
-			if (removedMapEntries !== null) {
-				after?.performPostAction(removedMapEntries)
+			if (preResult !== null) {
+				beforeAfterUpdate?.performPostAction(preResult)
 			}
 		}
 	}
@@ -358,15 +354,10 @@ lastSegment2TUIDMap:
 		return true
 	}
 
-	interface BeforeHashCodeUpdateLambda {
-		def Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>> performPreAction(TUID oldTUID)
-
-	}
-
-	interface AfterHashCodeUpdateLambda {
-		def void performPostAction(
-			Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>> removedMapEntries)
-
+	// Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>>
+	interface BeforeAfterTUIDUpdate<T> {
+		def T performPreAction(TUID oldTUID)
+		def void performPostAction(T value)
 	}
 
 	def private Object writeReplace() throws ObjectStreamException {
@@ -434,7 +425,7 @@ lastSegment2TUIDMap:
 	 * segments
 	 */
 	@Deprecated def void renameSegments(TUID newTUID) {
-		this.renameSegments(newTUID, null, null)
+		this.renameSegments(newTUID, null)
 	}
 
 	/** 
@@ -448,8 +439,7 @@ lastSegment2TUIDMap:
 	 * @throws an {@link IllegalArgumentException} if {@link newTUID} has a different number of
 	 * segments
 	 */
-	@Deprecated def List<Pair<String, String>> renameSegments(TUID newTUID, BeforeHashCodeUpdateLambda before,
-		AfterHashCodeUpdateLambda after) {
+	@Deprecated def List<Pair<String, String>> renameSegments(TUID newTUID, BeforeAfterTUIDUpdate<?> beforeAfterUpdate) {
 		val List<Pair<String, String>> changedPairs = new LinkedList<Pair<String, String>>()
 		var int firstSegmentToChange = getFirstSegmentToChange(newTUID)
 		while (-1 !== firstSegmentToChange) {
@@ -458,7 +448,7 @@ lastSegment2TUIDMap:
 			changedPairs.add(
 				new Pair<String, String>(oldPrefixPlusFirstSegmentToChange.toString(),
 					newPrefixPlusFirstChangedSegment.toString()))
-			oldPrefixPlusFirstSegmentToChange.moveLastSegment(newPrefixPlusFirstChangedSegment, before, after) // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed
+			oldPrefixPlusFirstSegmentToChange.moveLastSegment(newPrefixPlusFirstChangedSegment, beforeAfterUpdate) // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed
 			// too
 			firstSegmentToChange = getFirstSegmentToChange(newTUID)
 		}
