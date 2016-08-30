@@ -3,18 +3,17 @@ package edu.kit.ipd.sdq.vitruvius.framework.change.preparation
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.ecore.resource.Resource
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 
 class ChangePreparingImpl implements ChangePreparing {
 	private static Logger logger = Logger.getLogger(ChangePreparingImpl);
@@ -37,18 +36,15 @@ class ChangePreparingImpl implements ChangePreparing {
 	}
 	
 	private def dispatch List<EChange> prepareTypedChange(FileChange fileChange) {
-        val VURI sourceModelURI = fileChange.getURI();
         switch (fileChange.getFileChangeKind()) {
         case CREATE:
-            return this.prepareFileCreated(sourceModelURI)
+            return this.prepareFileCreated(fileChange.changedFileResource)
         case DELETE:
-            return this.prepareFileDeleted(sourceModelURI)
+            return this.prepareFileDeleted(fileChange.changedFileResource)
         }
 	}
 	
-	private def List<EChange> prepareFileCreated(VURI sourceModelURI) {
-        val ModelInstance newModelInstance = modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
-        val Resource resource = newModelInstance.getResource();
+	private def List<EChange> prepareFileCreated(Resource resource) {
         var EObject rootElement = null;
         if (1 == resource.getContents().size()) {
             rootElement = resource.getContents().get(0);
@@ -57,7 +53,7 @@ class ChangePreparingImpl implements ChangePreparing {
                     "The requested model instance resource '" + resource + "' has to contain at most one root element "
                             + "in order to be added to the VSUM without an explicit import!");
         } else { // resource.getContents().size() == null --> no element in newModelInstance
-            logger.info("Empty model file created: " + sourceModelURI
+            logger.info("Empty model file created: " + VURI.getInstance(resource)
                     + ". Synchronization for 'root element created' not triggerd.");
             return null;
         }
@@ -66,16 +62,14 @@ class ChangePreparingImpl implements ChangePreparing {
         return #[createRootEObj];
     }
 
-    private def List<EChange> prepareFileDeleted(VURI sourceModelURI) {
-        val ModelInstance oldModelInstance = modelProviding.getAndLoadModelInstanceOriginal(sourceModelURI);
-        val Resource resource = oldModelInstance.getResource();
+    private def List<EChange> prepareFileDeleted(Resource resource) {
         if (0 < resource.getContents().size()) {
             val EObject rootElement = resource.getContents().get(0);
             val RemoveRootEObject<EObject> deleteRootObj = RootFactory.eINSTANCE.createRemoveRootEObject();
             deleteRootObj.setOldValue(rootElement);
             return #[deleteRootObj];
         }
-        logger.info("Deleted resource " + sourceModelURI + " did not contain any EObject");
+        logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");
         return null;
     }
 	

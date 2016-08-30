@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
@@ -118,7 +119,8 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
     }
 
     protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, vuri);
+    	Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
+        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
         this.changeSynchronizer.synchronizeChange(fileChange);
     }
 

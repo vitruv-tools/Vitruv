@@ -12,6 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.TransactionalChangeImpl
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.impl.EmptyChangeImpl
+import org.eclipse.emf.ecore.resource.Resource
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
@@ -37,8 +38,8 @@ class VitruviusChangeFactory {
 		return new GeneralChangeImpl(changes, vuri);
 	}
 	
-	public def FileChange createFileChange(FileChangeKind kind, VURI vuri) {
-		return new FileChangeImpl(kind, vuri);
+	public def FileChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
+		return new FileChangeImpl(kind, changedFileResource);
 	}
 	
 	public def CompositeChange createCompositeChange() {

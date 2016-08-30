@@ -249,7 +249,8 @@ public class SynchronisationTest {
      * repository model
      */
     private void createAndSyncFileChange(final VURI vuri) {
-        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(FileChangeKind.CREATE, vuri);
+    	Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
+        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(FileChangeKind.CREATE, modelResource);
         this.changeSynchronizer.synchronizeChange(fileChange);
     }
 }
