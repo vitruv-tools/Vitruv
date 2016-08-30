@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractResponseTests
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays

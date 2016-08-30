@@ -10,9 +10,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper.Change2ResponseMap
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.EChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractEChangeProcessor
 
-abstract class AbstractResponseExecutor extends EChangeProcessor {
+abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;

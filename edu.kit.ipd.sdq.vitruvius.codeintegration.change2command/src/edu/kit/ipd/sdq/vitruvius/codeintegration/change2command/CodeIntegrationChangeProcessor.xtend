@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel

@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
 import org.eclipse.xtext.generator.IFileSystemAccess
 import java.util.Collection
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
+import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ExtensionPoints
 
 /**
  * Helper class containing methods for setting up the plugin project to generate
@@ -39,7 +39,7 @@ class MappingPluginProjectHelper {
 		<?eclipse version="3.4"?>
 		<plugin>
 		   <extension
-		         point="«Change2CommandTransforming.ID»">
+		         point="«ExtensionPoints.Change2CommandTransformingID»">
 		      <provides
 		            «VitruviusConstants.getExtensionPropertyName()»="«classFQN»">
 		      </provides>

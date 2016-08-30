@@ -20,12 +20,12 @@ import com.google.common.collect.EvictingQueue;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
@@ -138,7 +138,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 // or: make them read only, i.e. give them a read-only interface!
                 blackboard.pushChanges(Collections.singletonList(change));
                 this.blackboardHistory.add(blackboard);
-                change2CommandTransforming.transformChanges2Commands(blackboard);
+                blackboard.pushCommands(change2CommandTransforming.transformChange2Commands(
+                        blackboard.getAndArchiveChangesForTransformation().get(0), correspondenceModel));
                 commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard));
             }
         }

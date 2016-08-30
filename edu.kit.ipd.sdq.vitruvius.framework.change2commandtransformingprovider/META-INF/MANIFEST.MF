@@ -6,5 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.userinteractor
+ edu.kit.ipd.sdq.vitruvius.framework.userinteractor,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider

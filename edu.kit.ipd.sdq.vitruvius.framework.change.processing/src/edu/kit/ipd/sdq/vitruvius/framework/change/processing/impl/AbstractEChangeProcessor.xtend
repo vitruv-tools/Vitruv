@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.change.processing
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.AbstractChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
@@ -11,8 +11,8 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 
-abstract class EChangeProcessor extends AbstractChangeProcessor {
-	private final static val LOGGER = Logger.getLogger(EChangeProcessor);
+abstract class AbstractEChangeProcessor extends AbstractChangeProcessor {
+	private final static val LOGGER = Logger.getLogger(AbstractEChangeProcessor);
 	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
@@ -20,14 +20,15 @@ abstract class EChangeProcessor extends AbstractChangeProcessor {
 	
 	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
 		val commandList = new ArrayList<Command>();
-		for (eChange : change.EChanges) {
+		for (eChange : change.getEChanges) {
 			LOGGER.debug('''Transforming eChange  «eChange» of change «change»''');
 			commandList += transformChange(eChange, correspondenceModel);
 		}
 		
-		return new ChangeProcessorResult(VitruviusChangeFactory.instance.createEmptyChange(change.URI), commandList);
+		return new edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult(VitruviusChangeFactory.instance.createEmptyChange(change.getURI), commandList);
 	}
 	
 	protected def List<Command> transformChange(EChange change, CorrespondenceModel correspondenceModel);
 	
 }
+			

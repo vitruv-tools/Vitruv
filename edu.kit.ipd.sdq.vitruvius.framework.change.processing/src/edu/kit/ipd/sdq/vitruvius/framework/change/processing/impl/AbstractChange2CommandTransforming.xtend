@@ -1,8 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.framework.change.processing
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationMetamodelPair
 import java.util.ArrayList
 import org.eclipse.emf.common.command.Command
@@ -11,17 +9,19 @@ import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import org.apache.log4j.Logger
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
 
-abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
+abstract class AbstractChange2CommandTransforming implements edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
 	
 	private UserInteracting userInteracting;
 	private val TransformationMetamodelPair transformationMetamodelPair;
-	private val List<ChangeProcessor> changeProcessors;
+	private val List<edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor> changeProcessors;
 	
 	new(TransformationMetamodelPair metamodelPair) {
 		this.transformationMetamodelPair = metamodelPair;
-		this.changeProcessors = new ArrayList<ChangeProcessor>();
+		this.changeProcessors = new ArrayList<edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor>();
 	}
 	 
 	protected def UserInteracting getUserInteracting() {
@@ -36,32 +36,27 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		this.changeProcessors += changeProcessor;
 	}
 	
-	override transformChanges2Commands(Blackboard blackboard) {
-		val changes = blackboard.getAndArchiveChangesForTransformation();
+	override List<Command> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
 		val commands = new ArrayList<Command>();
-
-		for (VitruviusChange change : changes) {
-			this.processChange(change, blackboard, commands);
-		}
-
-		blackboard.pushCommands(commands);
+		this.processChange(change, correspondenceModel, commands);
+		return commands;
 	}
 
-	private def dispatch void processChange(VitruviusChange change, Blackboard blackboard, List<Command> commandList) {
+	private def dispatch void processChange(VitruviusChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 
-	private def dispatch void processChange(CompositeChange change, Blackboard blackboard, List<Command> commandList) {
+	private def dispatch void processChange(CompositeChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
 		for (containedChange : change.changes) {
-			processChange(containedChange, blackboard, commandList);
+			processChange(containedChange, correspondenceModel, commandList);
 		}
 	}
 
-	private def dispatch void processChange(ConcreteChange change, Blackboard blackboard, List<Command> commandList) {
+	private def dispatch void processChange(ConcreteChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
 		var currentChange = change;
 		for (changeProcessor : changeProcessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');
-			val processingResult = changeProcessor.transformChange(currentChange, blackboard.correspondenceModel);
+			val processingResult = changeProcessor.transformChange(currentChange, correspondenceModel);
 			currentChange = processingResult.resultingChange;
 			commandList += processingResult.generatedCommands;
 		}

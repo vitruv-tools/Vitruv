@@ -8,7 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 import org.eclipse.emf.ecore.resource.Resource

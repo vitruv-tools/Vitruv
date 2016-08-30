@@ -2,13 +2,13 @@ package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplem
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.EChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractEChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.concurrent.Callable
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 
-class TransformationExecutorChangeProcessor extends EChangeProcessor {
+class TransformationExecutorChangeProcessor extends AbstractEChangeProcessor {
 	private val TransformationExecutor transformationExecutor;
 
 	new(UserInteracting userInteracting) {

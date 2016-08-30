@@ -30,7 +30,7 @@ import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;

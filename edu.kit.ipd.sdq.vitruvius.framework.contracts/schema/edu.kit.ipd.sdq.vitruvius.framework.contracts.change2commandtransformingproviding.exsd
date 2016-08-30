@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding"/>
+                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding"/>
                </appinfo>
             </annotation>
          </attribute>

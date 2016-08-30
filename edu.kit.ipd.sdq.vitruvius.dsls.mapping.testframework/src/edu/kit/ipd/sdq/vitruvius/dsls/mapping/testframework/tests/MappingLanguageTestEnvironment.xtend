@@ -10,7 +10,7 @@
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind
 //import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
+//import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener
 //import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause
 //import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl

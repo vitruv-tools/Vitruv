@@ -4,7 +4,7 @@
 //
 //import org.junit.runner.RunWith;
 //
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+//import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 //import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 //
 //@RunWith(MappingLanguageTestRunner.class)

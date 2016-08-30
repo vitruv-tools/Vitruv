@@ -102,9 +102,9 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInse
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;

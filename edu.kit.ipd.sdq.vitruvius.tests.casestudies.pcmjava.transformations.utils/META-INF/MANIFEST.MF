@@ -31,4 +31,5 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.apache.commons.lang,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing

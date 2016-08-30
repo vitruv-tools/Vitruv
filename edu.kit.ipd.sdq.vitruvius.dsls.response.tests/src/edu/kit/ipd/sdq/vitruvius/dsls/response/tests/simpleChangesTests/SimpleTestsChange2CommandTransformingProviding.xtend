@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests;
 
-import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.AbstractChange2CommandTransformingProviding
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
 import mir.responses.AbstractChange2CommandTransformingAllElementTypesToAllElementTypes
 
 public class SimpleTestsChange2CommandTransformingProviding extends AbstractChange2CommandTransformingProviding {

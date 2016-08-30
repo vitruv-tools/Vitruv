@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.change.processing
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing;
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
