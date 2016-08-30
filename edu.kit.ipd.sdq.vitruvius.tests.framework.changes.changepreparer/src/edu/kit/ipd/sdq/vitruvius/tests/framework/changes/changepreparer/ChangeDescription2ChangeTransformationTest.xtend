@@ -68,7 +68,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			changeDescriptions.get(i).changeDescription.applyAndReverse();
 		}
 		return changeDescriptions.map[
-			val changes = new ChangePreparingImpl(null).prepareChange(it);
+			val changes = new ChangePreparingImpl().prepareChange(it);
 			it.changeDescription.applyAndReverse();
 			return changes;
 		].flatten.toList;

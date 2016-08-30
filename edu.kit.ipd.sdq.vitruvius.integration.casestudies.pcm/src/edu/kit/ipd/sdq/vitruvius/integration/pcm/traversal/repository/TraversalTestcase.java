@@ -60,7 +60,7 @@ public class TraversalTestcase {
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
 
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl();
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
 
         final ChangeSynchronizerImpl changeSynchronizing = new ChangeSynchronizerImpl(vsum,

@@ -76,7 +76,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
         final CommandExecuting commandExecuter = new CommandExecutingImpl();
-        final ChangePreparing changePreparer = new ChangePreparingImpl(this.vsum);
+        final ChangePreparing changePreparer = new ChangePreparingImpl();
         this.transformingProviding = syncTransformationProviderSupplier.get();
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding,
                 this.vsum, this, changePreparer, commandExecuter);

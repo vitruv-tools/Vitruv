@@ -81,7 +81,7 @@ public class SynchronisationTest {
         this.vsum = TestUtil.createVSUM(metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformationProvider = new Change2CommandTransformingProvidingImpl();
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl();
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum,
                 null, changePreparing, commandExecuting);
 
