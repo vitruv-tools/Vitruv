@@ -1,22 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Vitruvius Framework Correspondence Model
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.correspondence;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-ClassPath: .
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: com.google.guava,
+Require-Bundle: org.apache.log4j,
+ org.apache.commons.lang,
+ com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.framework.util,
- org.apache.commons.lang,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.change,
- org.apache.log4j
+ edu.kit.ipd.sdq.vitruvius.framework.util
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl,
