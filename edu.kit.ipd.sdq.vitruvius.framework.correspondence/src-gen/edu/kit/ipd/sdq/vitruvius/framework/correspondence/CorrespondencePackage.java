@@ -235,7 +235,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * The meta object id for the '<em>TUID</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 	 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondencePackageImpl#getTUID()
 	 * @generated
 	 */
@@ -361,12 +361,12 @@ public interface CorrespondencePackage extends EPackage {
 	EDataType getCorrespondenceModel();
 
 	/**
-	 * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID <em>TUID</em>}'.
+	 * Returns the meta object for data type '{@link edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID <em>TUID</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>TUID</em>'.
-	 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
-	 * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID"
+	 * @see edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
+	 * @model instanceClass="edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID"
 	 * @generated
 	 */
 	EDataType getTUID();
@@ -493,7 +493,7 @@ public interface CorrespondencePackage extends EPackage {
 		 * The meta object literal for the '<em>TUID</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+		 * @see edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 		 * @see edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl.CorrespondencePackageImpl#getTUID()
 		 * @generated
 		 */

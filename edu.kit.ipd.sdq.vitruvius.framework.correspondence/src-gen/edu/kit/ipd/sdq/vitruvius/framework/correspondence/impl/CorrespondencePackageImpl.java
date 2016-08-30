@@ -333,7 +333,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 		// Initialize data types
 		initEDataType(correspondenceModelEDataType, CorrespondenceModel.class, "CorrespondenceModel", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(tuidEDataType, edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID.class, "TUID", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

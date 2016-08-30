@@ -22,7 +22,7 @@ import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFind
 import org.somox.gast2seff.visitors.VisitorUtils;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil;

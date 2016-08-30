@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.ecore.EObject

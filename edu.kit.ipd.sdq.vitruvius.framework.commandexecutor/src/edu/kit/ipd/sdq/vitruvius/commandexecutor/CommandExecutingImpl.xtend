@@ -23,7 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())

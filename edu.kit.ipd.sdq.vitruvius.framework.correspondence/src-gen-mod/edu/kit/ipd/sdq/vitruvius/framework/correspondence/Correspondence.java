@@ -5,7 +5,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.correspondence;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Correspondence</b></em>'.

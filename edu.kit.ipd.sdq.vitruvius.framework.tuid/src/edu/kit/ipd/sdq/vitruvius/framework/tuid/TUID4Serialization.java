@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid;
+package edu.kit.ipd.sdq.vitruvius.framework.tuid;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 
 /**
  * Class that is only used to serialize and deserialize TUIDs.

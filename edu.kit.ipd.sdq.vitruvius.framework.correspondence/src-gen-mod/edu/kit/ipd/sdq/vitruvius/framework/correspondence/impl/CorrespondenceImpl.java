@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences;
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Correspondence</b></em>'.

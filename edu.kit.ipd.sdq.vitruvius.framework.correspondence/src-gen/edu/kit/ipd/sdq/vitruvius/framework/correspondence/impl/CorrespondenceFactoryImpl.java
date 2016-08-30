@@ -4,7 +4,7 @@ package edu.kit.ipd.sdq.vitruvius.framework.correspondence.impl;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.*;
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;

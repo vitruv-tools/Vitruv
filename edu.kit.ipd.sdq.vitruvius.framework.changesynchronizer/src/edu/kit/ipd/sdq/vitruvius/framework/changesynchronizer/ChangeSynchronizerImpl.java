@@ -35,7 +35,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {

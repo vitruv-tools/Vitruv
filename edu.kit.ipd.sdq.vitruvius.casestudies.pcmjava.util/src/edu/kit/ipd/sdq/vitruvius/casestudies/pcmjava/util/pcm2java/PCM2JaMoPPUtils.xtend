@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationRes
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.ClaimableMap
 import java.io.ByteArrayInputStream
 import java.util.ArrayList

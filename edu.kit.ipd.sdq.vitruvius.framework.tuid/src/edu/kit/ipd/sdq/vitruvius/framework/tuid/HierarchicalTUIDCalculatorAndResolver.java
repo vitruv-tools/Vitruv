@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid;
+package edu.kit.ipd.sdq.vitruvius.framework.tuid;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUIDCalculatorAndResolverBase;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolverBase;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 /**

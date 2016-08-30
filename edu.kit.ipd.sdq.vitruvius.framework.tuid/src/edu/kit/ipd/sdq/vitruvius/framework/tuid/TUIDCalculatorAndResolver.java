@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid;
+package edu.kit.ipd.sdq.vitruvius.framework.tuid;
 
 import java.util.List;
 

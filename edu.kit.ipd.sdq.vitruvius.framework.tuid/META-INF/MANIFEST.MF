@@ -14,5 +14,5 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.vitruvius.framework.util
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.tuid
 

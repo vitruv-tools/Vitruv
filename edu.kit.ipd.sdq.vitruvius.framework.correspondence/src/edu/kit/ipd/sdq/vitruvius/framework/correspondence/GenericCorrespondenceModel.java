@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.URIHaving;
 
 /**

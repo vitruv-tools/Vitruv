@@ -30,5 +30,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel"
       serializable="false"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID"/>
 </ecore:EPackage>

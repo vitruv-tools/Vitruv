@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
