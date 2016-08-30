@@ -117,7 +117,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
         this.vsum = new VSUMImpl(metaRepositoryImpl, metaRepositoryImpl);
         this.transformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl();
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
         		this.transformingProviding, this.vsum, this, changePreparing,

@@ -20,7 +20,7 @@ public class IntegrationUtil {
             final MetaRepositoryImpl metaRepository) {
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
 
-        final ChangePreparing changePreparing = new ChangePreparingImpl(vsum);
+        final ChangePreparing changePreparing = new ChangePreparingImpl();
         final CommandExecuting commandExecuting = new CommandExecutingImpl();
 
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(vsum,

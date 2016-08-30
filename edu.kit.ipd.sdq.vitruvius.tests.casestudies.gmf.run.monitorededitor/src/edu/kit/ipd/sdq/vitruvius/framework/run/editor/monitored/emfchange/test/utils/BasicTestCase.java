@@ -41,7 +41,7 @@ public class BasicTestCase {
             if (changes.get(i) instanceof EMFModelChange)
                 ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
         }
-        ChangePreparing preparer = new ChangePreparingImpl(null);
+        ChangePreparing preparer = new ChangePreparingImpl();
         for (VitruviusChange change : changes) {
             change.prepare(preparer);
             if (change instanceof EMFModelChange) {
