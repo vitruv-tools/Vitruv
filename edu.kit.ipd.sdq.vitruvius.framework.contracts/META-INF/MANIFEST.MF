@@ -24,5 +24,4 @@ Require-Bundle: org.apache.log4j,
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
  edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.internal,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes
+ edu.kit.ipd.sdq.vitruvius.framework.contracts.internal

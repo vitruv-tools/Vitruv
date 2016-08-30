@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
 import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {

@@ -5,7 +5,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
 import java.util.Set
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil
 import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

@@ -10,9 +10,9 @@ import org.emftext.language.java.containers.Package
 import org.emftext.language.java.members.Method
 import org.palladiosimulator.pcm.repository.BasicComponent
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import org.eclipse.emf.ecore.resource.ResourceSet
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

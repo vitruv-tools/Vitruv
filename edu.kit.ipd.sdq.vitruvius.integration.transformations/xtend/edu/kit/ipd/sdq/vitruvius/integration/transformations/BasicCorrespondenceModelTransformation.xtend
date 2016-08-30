@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.IPath
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil
 import java.util.Set
 import org.apache.log4j.Logger
 import org.emftext.language.java.members.ClassMethod
