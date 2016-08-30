@@ -36,6 +36,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceFactory
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID.BeforeAfterTUIDUpdate
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
@@ -469,15 +470,13 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		updateTUID(oldTUID, newTUID)
 	}
 
-	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
-	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
-	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
-	override void updateTUID(TUID oldTUID, TUID newTUID) {
-		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
-		if (sameTUID || oldTUID === null) {
-			return;
+	private static class CorrespondenceModelTUIDUpdateCallback implements BeforeAfterTUIDUpdate<Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>>> {
+		private CorrespondenceModelImpl correspondenceModel;
+		
+		public new(CorrespondenceModelImpl correspondenceModel) {
+			this.correspondenceModel = correspondenceModel;
 		}
-		var String oldTUIDString = oldTUID.toString()
+		
 		/**
 		 * Removes the current entries in the
 		 * {@link CorrespondenceModelImpl#tuid2CorrespondencesMap} map for the given oldTUID
@@ -487,25 +486,25 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		 * @param oldCurrentTUID
 		 * @return oldCurrentTUIDAndStringAndMapEntriesTriple
 		 */
-		var TUID.BeforeHashCodeUpdateLambda before = ([ TUID oldCurrentTUID | 
+		override Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>> performPreAction(TUID oldCurrentTUID) {
 			// The TUID is used as key in this map. Therefore the entry has to be removed before
-			// the hashCode of the TUID changes.
+				// the hashCode of the TUID changes.
 			// remove the old map entries for the tuid before its hashcode changes
-			val oldTUIDLists = this.tuid2tuidListsMap.remove(oldCurrentTUID) ?: new HashSet<List<TUID>>()
+			val oldTUIDLists = correspondenceModel.tuid2tuidListsMap.remove(oldCurrentTUID) ?: new HashSet<List<TUID>>()
 			val oldTUIDList2Correspondences = new ArrayList<Pair<List<TUID>,Set<Correspondence>>>(oldTUIDLists.size);
 			for (oldTUIDList : oldTUIDLists) {
-				val correspondencesForOldTUIDList = this.tuid2CorrespondencesMap.remove(oldTUIDList) ?: new HashSet<Correspondence>()
+				val correspondencesForOldTUIDList = correspondenceModel.tuid2CorrespondencesMap.remove(oldTUIDList) ?: new HashSet<Correspondence>()
 				oldTUIDList2Correspondences.add(new Pair<List<TUID>,Set<Correspondence>>(oldTUIDList,correspondencesForOldTUIDList))
 			}
 			return new Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>>(oldCurrentTUID, oldCurrentTUID.toString(),oldTUIDList2Correspondences)
-		] as TUID.BeforeHashCodeUpdateLambda)
-		
+		}
+			
 		 /**
 		 * Re-adds all map entries after the hash code of tuids was updated.
 		 *
 		 * @param removedMapEntries
 		 */
-		var TUID.AfterHashCodeUpdateLambda after = ([ Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>> removedMapEntry |
+		override void performPostAction(Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>> removedMapEntry) {
 			val oldCurrentTUID = removedMapEntry.first
 			val oldCurrentTUIDString = removedMapEntry.second
 			val oldTUIDList2Correspondences = removedMapEntry.third
@@ -522,7 +521,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
 				newSetOfoldTUIDLists.add(oldTUIDList)
 				// re-add the correspondences entry for the current list of tuids with the new hashcode 
-				this.tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
+				correspondenceModel.tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
 				// update the TUID in the correspondence model
 				for (correspondence : correspondences) {
 					val replacedATUID = correspondence.ATUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
@@ -530,19 +529,30 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 					if (replacedATUID == null && replacedBTUID == null && !correspondence.ATUIDs.contains(oldCurrentTUID) && !correspondence.BTUIDs.contains(oldCurrentTUID)) {
 						throw new RuntimeException('''None of the corresponding elements in '«correspondence»' has a TUID equal to '«oldCurrentTUIDString»'!''')
 					} else if (replacedATUID != null && replacedBTUID != null) {
-						throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
+							throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
 					}
 					// nothing to do as the TUID in one of the lists was already updated
 				}
 			}
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
-			this.tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
-		] as TUID.AfterHashCodeUpdateLambda)
-		oldTUID.renameOrMoveLastSegment(newTUID, before,after)
-		var Metamodel metamodel = getMetamodelHavingTUID(
-			oldTUIDString)
-		metamodel.
-			removeIfRootAndCached(oldTUIDString)
+			correspondenceModel.tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
+		}
+	}
+
+	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
+	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
+	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
+	override void updateTUID(TUID oldTUID, TUID newTUID) {
+		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
+		if (sameTUID || oldTUID === null) {
+			return;
+		}
+		var String oldTUIDString = oldTUID.toString()
+		
+		var update = new CorrespondenceModelTUIDUpdateCallback(this);
+		oldTUID.renameOrMoveLastSegment(newTUID, update)
+		var Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString)
+		metamodel.removeIfRootAndCached(oldTUIDString)
 	}
 	
 	override getAllCorrespondencesWithoutDependencies() {

@@ -81,7 +81,7 @@ public class TUIDTest {
         TUID tuid1prefix = TUID.getInstance(s1prefix);
         assertEquals(s1prefix, tuid1prefix.toString());
         String s1prefixr = "p2";
-        tuid1prefix.renameLastSegment(s1prefixr, null, null);
+        tuid1prefix.renameLastSegment(s1prefixr, null);
         System.out.println("**** BEGIN FIRST OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END FIRST OPERATION ****\n\n");
         assertEquals(s1prefixr, tuid1prefix.toString());
@@ -100,7 +100,7 @@ public class TUIDTest {
         /**********************************************/
         /** second operation (rename folder s to s2) **/
         /**********************************************/
-        tuid1.renameLastSegment("s2", null, null);
+        tuid1.renameLastSegment("s2", null);
         System.out.println("**** BEGIN SECOND OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END SECOND OPERATION ****\n\n");
         String s1rr = "p2" + sep + "s2";
@@ -129,7 +129,7 @@ public class TUIDTest {
         /** fourth operation (rename package c.i to ci) **/
         /*************************************************/
         String s2rrrr = s1rr + sep + "ci";
-        tuid2.renameLastSegment("ci", null, null);
+        tuid2.renameLastSegment("ci", null);
         System.out.println("**** BEGIN FOURTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END FOURTH OPERATION ****\n\n");
         assertEquals(s2rrrr, tuid2.toString());
@@ -141,7 +141,7 @@ public class TUIDTest {
         /** fifth operation (rename folder p2 to q) **/
         /*********************************************/
         String s1prefixrrrrr = "q";
-        tuid1prefix.renameLastSegment(s1prefixrrrrr, null, null);
+        tuid1prefix.renameLastSegment(s1prefixrrrrr, null);
         System.out.println("**** BEGIN FIFTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END FIFTH OPERATION ****\n\n");
         String s1rrrrr = s1prefixrrrrr + sep + "s2";
