@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.URIHaving;
 
 /**
  * Contains all correspondences for all model instances that conform to the metamodels of a give
@@ -21,7 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID;
  * @author kramerm
  *
  */
-public interface GenericCorrespondenceModel<T extends Correspondence> {
+public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving {
 
     /**
      * Returns whether at least one object corresponds to the given object.
