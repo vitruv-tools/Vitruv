@@ -24,7 +24,7 @@ import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.HierarchicalTUIDCalculatorAndResolver
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.HierarchicalTUIDCalculatorAndResolver
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model. 

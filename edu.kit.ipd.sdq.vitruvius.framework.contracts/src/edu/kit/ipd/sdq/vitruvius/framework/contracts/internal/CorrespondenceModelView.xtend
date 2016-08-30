@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import java.util.function.Supplier
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.GenericCorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 
 class CorrespondenceModelView<T extends Correspondence> implements GenericCorrespondenceModel<T> {
 	private final GenericCorrespondenceModel<Correspondence> correspondenceModelDelegate;

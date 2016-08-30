@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting

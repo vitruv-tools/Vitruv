@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.helper
 import java.util.ArrayList
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseCorrespondence
 import edu.kit.ipd.sdq.vitruvius.dsls.response.meta.correspondence.response.ResponseFactory
 import java.util.List

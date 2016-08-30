@@ -34,9 +34,9 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceFactory
-import edu.kit.ipd.sdq.vitruvius.framework.correspondence.tuid.TUID.BeforeAfterTUIDUpdate
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID.BeforeAfterTUIDUpdate
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
