@@ -7,7 +7,7 @@ import java.util.Deque
 import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject

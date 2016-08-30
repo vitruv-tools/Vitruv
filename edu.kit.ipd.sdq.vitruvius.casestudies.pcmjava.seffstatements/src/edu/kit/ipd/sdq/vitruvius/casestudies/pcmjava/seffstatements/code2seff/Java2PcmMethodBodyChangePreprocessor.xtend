@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
 import java.util.concurrent.Callable
 import org.eclipse.emf.common.command.Command
 import org.palladiosimulator.pcm.repository.BasicComponent

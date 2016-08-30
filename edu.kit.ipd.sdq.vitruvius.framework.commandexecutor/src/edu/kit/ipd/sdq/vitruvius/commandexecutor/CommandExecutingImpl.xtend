@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.commandexecutor
 
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.VitruviusTransformationRecordingCommand
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.command.VitruviusTransformationRecordingCommand
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collections

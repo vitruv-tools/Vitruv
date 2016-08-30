@@ -4,11 +4,13 @@ Bundle-Name: Vitruvius Framework Metamodel Representations
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.metamodel
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: com.google.guava,
+Require-Bundle: org.apache.log4j,
+ com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.eclipse.emf.ecore,
+ org.eclipse.emf.transaction,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.metamodel
