@@ -13,15 +13,9 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.List
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
 
 class ChangePreparingImpl implements ChangePreparing {
 	private static Logger logger = Logger.getLogger(ChangePreparingImpl);
-	private val ModelProviding modelProviding;
-	
-	public new(ModelProviding modelProviding) {
-		this.modelProviding = modelProviding;
-	}
 	
 	override List<EChange> prepareChange(VitruviusChange unpreparedChange) {
 		prepareTypedChange(unpreparedChange);
