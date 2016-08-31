@@ -22,8 +22,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
- edu.kit.ipd.sdq.vitruvius.framework.metamodel,
- edu.kit.ipd.sdq.vitruvius.framework.command;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.metamodel
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
  edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure,
