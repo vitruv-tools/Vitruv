@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
 
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI

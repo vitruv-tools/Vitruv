@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard;
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution;
 
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 
 public interface CommandExecuting {
     List<VitruviusChange> executeCommands(Blackboard blackboard);

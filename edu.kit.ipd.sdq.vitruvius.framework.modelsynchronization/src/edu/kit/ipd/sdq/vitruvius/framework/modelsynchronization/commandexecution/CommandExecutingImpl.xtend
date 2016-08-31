@@ -1,9 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusTransformationRecordingCommand
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
@@ -21,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class CommandExecutingImpl implements CommandExecuting {

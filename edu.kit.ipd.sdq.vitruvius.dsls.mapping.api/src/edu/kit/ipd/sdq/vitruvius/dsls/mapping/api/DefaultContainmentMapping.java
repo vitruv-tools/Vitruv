@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
 import org.eclipse.emf.common.util.URI;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;

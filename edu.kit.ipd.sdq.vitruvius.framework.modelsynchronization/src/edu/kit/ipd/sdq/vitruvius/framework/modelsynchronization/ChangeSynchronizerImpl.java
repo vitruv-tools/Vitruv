@@ -24,13 +24,13 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
