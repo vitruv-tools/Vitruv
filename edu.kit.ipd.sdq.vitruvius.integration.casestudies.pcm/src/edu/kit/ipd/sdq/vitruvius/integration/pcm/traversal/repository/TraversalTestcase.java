@@ -8,14 +8,10 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
@@ -60,12 +56,8 @@ public class TraversalTestcase {
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
 
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl();
-        final CommandExecuting commandExecuting = new CommandExecutingImpl();
-
         final ChangeSynchronizerImpl changeSynchronizing = new ChangeSynchronizerImpl(vsum,
-                change2CommandTransformingProviding, vsum, null, changePreparing,
-                commandExecuting);
+                change2CommandTransformingProviding, vsum, null);
         
         final VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         // propagate changes

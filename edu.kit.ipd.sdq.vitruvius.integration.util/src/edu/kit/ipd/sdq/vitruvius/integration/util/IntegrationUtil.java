@@ -1,14 +1,10 @@
 package edu.kit.ipd.sdq.vitruvius.integration.util;
 
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public class IntegrationUtil {
@@ -20,12 +16,8 @@ public class IntegrationUtil {
             final MetaRepositoryImpl metaRepository) {
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
 
-        final ChangePreparing changePreparing = new ChangePreparingImpl();
-        final CommandExecuting commandExecuting = new CommandExecutingImpl();
-
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(vsum,
-                change2CommandTransformingProviding, vsum, null, changePreparing,
-                commandExecuting);
+                change2CommandTransformingProviding, vsum, null);
 
         return changeSynchronizerImpl;
     }

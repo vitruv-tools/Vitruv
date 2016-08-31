@@ -19,8 +19,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
@@ -28,8 +26,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
@@ -117,11 +113,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
         this.vsum = new VSUMImpl(metaRepositoryImpl, metaRepositoryImpl);
         this.transformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl();
-        final CommandExecuting commandExecuting = new CommandExecutingImpl();
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
-        		this.transformingProviding, this.vsum, this, changePreparing,
-                commandExecuting);
+        		this.transformingProviding, this.vsum, this);
         this.changeSynchronizing = changeSynchronizerImpl;
         return this.vsum;
     }

@@ -22,6 +22,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
+import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
@@ -31,6 +32,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.impl.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
@@ -52,17 +54,16 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     public ChangeSynchronizerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
             final CorrespondenceProviding correspondenceProviding,
-            final SynchronisationListener synchronisationListener, final ChangePreparing changePreparing,
-            final CommandExecuting commandExecuting) {
+            final SynchronisationListener synchronisationListener) {
         this.modelProviding = modelProviding;
         this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
-        this.changePreparing = changePreparing;
+        this.changePreparing = new ChangePreparingImpl();
         this.synchronisationListeners = new HashSet<SynchronisationListener>();
         if (null != synchronisationListener) {
             this.synchronisationListeners.add(synchronisationListener);
         }
-        this.commandExecuting = commandExecuting;
+        this.commandExecuting = new CommandExecutingImpl();
         this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE);
     }
 

@@ -14,8 +14,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
@@ -26,8 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
@@ -75,11 +71,9 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
         this.metaRepository = this.createMetaRepository();
         this.vsum = TestUtil.createVSUM(this.metaRepository);
-        final CommandExecuting commandExecuter = new CommandExecutingImpl();
-        final ChangePreparing changePreparer = new ChangePreparingImpl();
         this.transformingProviding = syncTransformationProviderSupplier.get();
         this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding,
-                this.vsum, this, changePreparer, commandExecuter);
+                this.vsum, this);
         this.testUserInteractor = new TestUserInteractor();
         this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
         this.resourceSet = new ResourceSetImpl();

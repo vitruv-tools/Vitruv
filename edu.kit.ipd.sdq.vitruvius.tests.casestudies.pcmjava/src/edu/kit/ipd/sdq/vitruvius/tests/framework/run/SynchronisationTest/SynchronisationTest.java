@@ -30,16 +30,12 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
@@ -80,10 +76,7 @@ public class SynchronisationTest {
         final MetaRepositoryImpl metaRepository = JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
         this.vsum = TestUtil.createVSUM(metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformationProvider = new Change2CommandTransformingProvidingImpl();
-        final CommandExecuting commandExecuting = new CommandExecutingImpl();
-        final ChangePreparing changePreparing = new ChangePreparingImpl();
-        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum,
-                null, changePreparing, commandExecuting);
+        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformationProvider, this.vsum, null);
 
         final EMFEditorMonitorFactory monitorFactory = new EMFEditorMonitorFactory();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(
