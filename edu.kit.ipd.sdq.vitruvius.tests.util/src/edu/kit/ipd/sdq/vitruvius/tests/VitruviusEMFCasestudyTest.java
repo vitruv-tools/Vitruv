@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecutingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
@@ -19,6 +18,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileCha
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;

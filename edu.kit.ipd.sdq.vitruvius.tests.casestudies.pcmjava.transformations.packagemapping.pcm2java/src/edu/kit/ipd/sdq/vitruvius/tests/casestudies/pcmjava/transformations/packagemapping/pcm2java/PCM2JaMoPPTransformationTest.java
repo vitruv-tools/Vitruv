@@ -65,7 +65,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileCha
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;

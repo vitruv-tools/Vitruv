@@ -1,9 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider;
+package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl;
 
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ExtensionPoints;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
