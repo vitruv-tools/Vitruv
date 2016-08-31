@@ -7,7 +7,6 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.pa
 Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.change,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  com.google.guava,
  org.eclipse.core.resources,

@@ -6,12 +6,12 @@ Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ org.eclipse.emf.transaction,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

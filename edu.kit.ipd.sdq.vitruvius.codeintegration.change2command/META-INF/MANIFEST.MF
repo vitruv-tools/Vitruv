@@ -7,7 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
  org.eclipse.emf.common,
  org.eclipse.xtext.xbase.lib,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,

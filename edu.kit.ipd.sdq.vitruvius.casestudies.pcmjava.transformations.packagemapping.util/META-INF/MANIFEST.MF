@@ -7,7 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements;visibility:=reexport,
  org.apache.log4j,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  org.somox.gast2seff,

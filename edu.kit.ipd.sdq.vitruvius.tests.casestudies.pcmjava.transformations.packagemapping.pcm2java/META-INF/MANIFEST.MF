@@ -5,7 +5,6 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transfo
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  org.palladiosimulator.pcm;bundle-version="3.2.0",
  org.emftext.language.java,
  org.eclipse.ui.workbench,

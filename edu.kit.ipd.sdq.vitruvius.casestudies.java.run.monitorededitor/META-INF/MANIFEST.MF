@@ -7,7 +7,6 @@ Bundle-Activator: monitorededitor.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0",
  org.eclipse.emf.ecore;bundle-version="2.9.2",
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge,
  org.eclipse.jdt.core,

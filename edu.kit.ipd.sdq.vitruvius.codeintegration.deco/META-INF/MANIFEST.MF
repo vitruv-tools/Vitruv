@@ -9,7 +9,6 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  org.apache.log4j,
  com.google.guava,

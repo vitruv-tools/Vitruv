@@ -7,7 +7,6 @@ Bundle-Activator: edu.kit.ipd.sdq.vitruvius.integration.util.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,

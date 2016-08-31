@@ -9,7 +9,6 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.components
 Require-Bundle: org.junit,
- edu.kit.ipd.sdq.vitruvius.framework.contracts,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,

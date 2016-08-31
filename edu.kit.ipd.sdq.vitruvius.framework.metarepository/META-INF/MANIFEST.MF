@@ -4,7 +4,6 @@ Bundle-Name: Vitruvius Framework Metamodel Repository
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.framework.metarepository;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.util,
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.metarepository
