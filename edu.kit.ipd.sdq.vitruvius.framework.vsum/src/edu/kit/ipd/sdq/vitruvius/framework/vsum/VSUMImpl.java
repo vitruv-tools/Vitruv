@@ -17,9 +17,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.InternalCorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MappingManaging;
