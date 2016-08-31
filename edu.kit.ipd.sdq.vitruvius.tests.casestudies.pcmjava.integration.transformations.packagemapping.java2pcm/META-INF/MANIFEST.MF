@@ -26,7 +26,6 @@ Require-Bundle: com.google.guava,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.codeintegration.tests,
  org.eclipse.jdt.core,
- edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
  edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
 

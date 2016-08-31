@@ -12,7 +12,6 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.contracts;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
- edu.kit.ipd.sdq.vitruvius.framework.command,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
