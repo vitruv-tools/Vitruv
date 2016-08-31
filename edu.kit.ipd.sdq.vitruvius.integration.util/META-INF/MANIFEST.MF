@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
- edu.kit.ipd.sdq.vitruvius.framework.commandexecutor,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: edu.kit.ipd.sdq.vitruvius.framework.change.preparation,

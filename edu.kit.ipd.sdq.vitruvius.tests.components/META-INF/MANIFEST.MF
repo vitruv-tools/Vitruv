@@ -31,7 +31,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
- edu.kit.ipd.sdq.vitruvius.framework.correspondence,
- edu.kit.ipd.sdq.vitruvius.framework.commandexecutor
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Bundle-ActivationPolicy: lazy
 
