@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingComman
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MetamodelPair;
 
 public interface Change2CommandTransforming {
-	String ExtensionPointID = "edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming";
+	String ExtensionPointID = "edu.kit.ipd.sdq.vitruvius.framework.change.processing.change2commandtransforming";
 	
 	List<VitruviusRecordingCommand> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel);
     MetamodelPair getTransformableMetamodels();

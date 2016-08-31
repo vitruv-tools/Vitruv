@@ -2,13 +2,13 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
+         point="edu.kit.ipd.sdq.vitruvius.framework.change.processing.change2commandtransforming">
       <provides
             provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm.Change2CommandTransformingJavaToPcm">
       </provides>
    </extension>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming">
+         point="edu.kit.ipd.sdq.vitruvius.framework.change.processing.change2commandtransforming">
    	<provides
     	 provider="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.pcm2java.Change2CommandTransformingPcmToJava">
       </provides>
