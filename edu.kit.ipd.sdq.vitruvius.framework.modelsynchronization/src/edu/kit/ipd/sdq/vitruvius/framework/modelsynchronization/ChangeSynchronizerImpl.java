@@ -29,7 +29,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProvidin
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.impl.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;

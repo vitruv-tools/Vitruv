@@ -1,13 +1,12 @@
-package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.impl;
 
 import java.util.List;
 
-import org.eclipse.emf.common.command.Command;
-
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
@@ -40,6 +39,7 @@ public class BlackboardImpl implements Blackboard {
         }
     }
 
+    @Override
     public CorrespondenceModel getCorrespondenceModel() {
         return this.correspondenceModel;
     }
@@ -91,7 +91,8 @@ public class BlackboardImpl implements Blackboard {
                 "get archived changes and commands for undo");
         // no need to clear check result and archives as transition checking ensures setting before
         // getting
-        return new Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>>(this.archivedChanges, this.archivedCommands);
+        return new Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>>(this.archivedChanges,
+                this.archivedCommands);
     }
 
     @Override

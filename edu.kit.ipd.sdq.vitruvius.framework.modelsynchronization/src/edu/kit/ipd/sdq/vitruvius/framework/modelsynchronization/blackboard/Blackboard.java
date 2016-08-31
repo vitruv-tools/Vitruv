@@ -2,8 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard;
 
 import java.util.List;
 
-import org.eclipse.emf.common.command.Command;
-
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;

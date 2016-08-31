@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.impl;
 
 enum BlackboardState {
 
