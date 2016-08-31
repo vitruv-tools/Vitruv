@@ -1,6 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
-
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization;
 
 /**
  * Listener for the synchronisation status.

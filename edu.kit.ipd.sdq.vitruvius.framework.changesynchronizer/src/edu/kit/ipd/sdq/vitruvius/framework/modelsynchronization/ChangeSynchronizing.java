@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization;
 
 import java.util.List;
 

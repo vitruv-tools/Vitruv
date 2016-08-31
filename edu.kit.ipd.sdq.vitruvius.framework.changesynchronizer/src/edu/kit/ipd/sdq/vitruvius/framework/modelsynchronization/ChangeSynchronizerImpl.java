@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer;
+package edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTrans
 import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.BlackboardImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;

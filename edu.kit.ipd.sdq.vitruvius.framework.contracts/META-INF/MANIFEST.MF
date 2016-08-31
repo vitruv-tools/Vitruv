@@ -21,5 +21,4 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces,
- edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces

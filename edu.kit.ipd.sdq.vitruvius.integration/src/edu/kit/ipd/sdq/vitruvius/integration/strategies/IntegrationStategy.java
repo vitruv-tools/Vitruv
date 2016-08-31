@@ -8,8 +8,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 
 /**
  * Abstract base class for all integration strategies. does not use GoF strategy pattern.

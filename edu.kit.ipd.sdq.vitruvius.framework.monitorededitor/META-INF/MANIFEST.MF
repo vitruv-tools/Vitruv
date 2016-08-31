@@ -7,5 +7,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.Activator
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.contracts;bundle-version="1.0.0";visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.metamodel;visibility:=reexport
+ edu.kit.ipd.sdq.vitruvius.framework.metamodel;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor

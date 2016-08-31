@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.framework.monitorededitor;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 
 public abstract class AbstractMonitoredEditor {
     protected final ChangeSynchronizing changeSynchronizing;
