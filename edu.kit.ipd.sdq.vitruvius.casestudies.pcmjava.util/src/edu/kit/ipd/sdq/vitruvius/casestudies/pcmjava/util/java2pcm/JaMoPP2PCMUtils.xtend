@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting

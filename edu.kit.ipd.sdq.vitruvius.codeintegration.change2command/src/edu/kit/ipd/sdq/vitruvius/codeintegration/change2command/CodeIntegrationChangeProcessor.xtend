@@ -6,10 +6,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
-import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
 import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal.IntegrationChange2CommandTransformer
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
 	private val IntegrationChange2CommandTransformer integrationTransformer;
@@ -21,7 +21,7 @@ class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
 	
 	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
 		val nonIntegratedEChanges = new ArrayList<EChange>();
-		val commands = new ArrayList<Command>();
+		val commands = new ArrayList<VitruviusRecordingCommand>();
 		for (eChange : change.getEChanges) {
 			// Special behavior for changes to integrated elements
 			val integrationTransformResult = integrationTransformer.compute(eChange, correspondenceModel);

@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
-import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
@@ -21,10 +21,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImp
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;

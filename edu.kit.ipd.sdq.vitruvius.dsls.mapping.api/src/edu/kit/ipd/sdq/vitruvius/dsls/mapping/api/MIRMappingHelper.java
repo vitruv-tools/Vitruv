@@ -23,7 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.UpdateReferenceEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 

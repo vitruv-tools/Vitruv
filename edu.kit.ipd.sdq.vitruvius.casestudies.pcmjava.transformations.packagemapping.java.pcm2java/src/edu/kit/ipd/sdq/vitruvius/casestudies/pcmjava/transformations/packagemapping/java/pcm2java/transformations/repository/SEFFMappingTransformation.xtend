@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.repository
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute

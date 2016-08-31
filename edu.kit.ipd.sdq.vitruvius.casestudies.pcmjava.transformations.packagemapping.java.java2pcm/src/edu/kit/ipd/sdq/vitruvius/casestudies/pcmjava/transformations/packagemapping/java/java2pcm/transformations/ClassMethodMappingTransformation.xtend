@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
 import java.util.LinkedList

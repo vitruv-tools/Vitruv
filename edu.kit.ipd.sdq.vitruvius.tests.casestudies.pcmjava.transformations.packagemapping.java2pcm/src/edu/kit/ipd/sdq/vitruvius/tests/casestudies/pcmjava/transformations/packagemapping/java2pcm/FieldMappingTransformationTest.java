@@ -20,7 +20,7 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
@@ -128,7 +128,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
     }
 
     private void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+    	this.getVSUM().createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {
@@ -155,7 +155,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
                 }
                 return null;
             }
-        }, this.getVSUM());
+        });
 
     }
 

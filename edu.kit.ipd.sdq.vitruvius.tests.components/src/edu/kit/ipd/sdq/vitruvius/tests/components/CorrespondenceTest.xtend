@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.tests.components
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
@@ -39,7 +39,7 @@ class CorrespondenceTest extends VSUMTest {
 
 	@Test def void testAllInCommand() {
 		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand([testAll(vsum) return null], vsum)
+		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([testAll(vsum) return null]);
 	}
 
 	def private void testAll(VSUMImpl vsum) {
@@ -62,7 +62,7 @@ class CorrespondenceTest extends VSUMTest {
 
 	@Test def void testCorrespondenceUpdate() {
 		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand([ // create vsum and Repo and UPackage
+		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ // create vsum and Repo and UPackage
 			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
 			// create correspondence
@@ -78,12 +78,12 @@ class CorrespondenceTest extends VSUMTest {
 				trace('''After adding the pkg to the new resource it has the tuid '«»«correspondenceModel.calculateTUIDFromEObject(pkg)»'.''')
 			assertRepositoryCorrespondences(repo, correspondenceModel)
 			return null
-		], vsum)
+		])
 	}
 
 	@Test def void testMoveRootEObjectBetweenResource() {
 		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand([
+		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([
 			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
 			// create correspondence
@@ -95,7 +95,7 @@ class CorrespondenceTest extends VSUMTest {
 			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
 			assertRepositoryCorrespondences(repo, correspondenceModel)
 			return null
-		], vsum)
+		])
 	}
 
 	def private void assertRepositoryCorrespondences(Repository repo,

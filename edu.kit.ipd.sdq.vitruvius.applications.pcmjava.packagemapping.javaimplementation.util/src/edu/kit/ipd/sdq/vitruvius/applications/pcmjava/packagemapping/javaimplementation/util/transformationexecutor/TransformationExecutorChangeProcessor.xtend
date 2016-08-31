@@ -5,8 +5,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractEChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import java.util.concurrent.Callable
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 
 class TransformationExecutorChangeProcessor extends AbstractEChangeProcessor {
 	private val TransformationExecutor transformationExecutor;

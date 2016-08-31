@@ -1,15 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.framework.change.processing
 
-import org.eclipse.emf.common.command.Command
 import java.util.List
 import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class ChangeProcessorResult {
 	val ConcreteChange resultingChange;
-	val List<Command> generatedCommands;
+	val List<VitruviusRecordingCommand> generatedCommands;
 	
-	new(ConcreteChange resultingChange, List<Command> generatedCommands) {
+	new(ConcreteChange resultingChange, List<VitruviusRecordingCommand> generatedCommands) {
 		this.resultingChange = resultingChange;
 		this.generatedCommands = generatedCommands;
 	}
@@ -18,8 +18,8 @@ class ChangeProcessorResult {
 		return resultingChange;
 	}
 	
-	def List<Command> getGeneratedCommands() {
-		return new ArrayList<Command>(generatedCommands);
+	def List<VitruviusRecordingCommand> getGeneratedCommands() {
+		return new ArrayList<VitruviusRecordingCommand>(generatedCommands);
 	}
 	
 }

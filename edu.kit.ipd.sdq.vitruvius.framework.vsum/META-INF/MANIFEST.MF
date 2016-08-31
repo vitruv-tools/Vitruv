@@ -16,4 +16,3 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.vsum.helper
-Import-Package: edu.kit.ipd.sdq.vitruvius.framework.command.util

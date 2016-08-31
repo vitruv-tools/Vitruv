@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseLanguageGeneratorConstants.*;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import org.eclipse.xtend2.lib.StringConcatenationClient

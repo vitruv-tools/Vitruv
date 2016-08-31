@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemap
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
 import java.util.List

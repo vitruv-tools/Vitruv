@@ -24,12 +24,11 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparing;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
@@ -198,13 +197,13 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
             final TUID newTUID = correspondenceModel.calculateTUIDFromEObject(object);
             if (newTUID != null) {
-                EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+                this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
                     @Override
-                    public Void call() throws Exception {
+                    public Void call() {
                         correspondenceModel.updateTUID(tuidMap.get(object), newTUID);
                         return null;
                     }
-                }, this.modelProviding);
+                });
             }
         }
     }

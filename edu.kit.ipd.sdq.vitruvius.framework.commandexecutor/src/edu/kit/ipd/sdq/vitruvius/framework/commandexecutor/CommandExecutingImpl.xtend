@@ -1,12 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.commandexecutor
+package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.command.VitruviusTransformationRecordingCommand
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusTransformationRecordingCommand
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collections
@@ -16,7 +14,6 @@ import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.transaction.TransactionalEditingDomain
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants
@@ -24,22 +21,20 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondences
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
 
 	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
 		val ModelProviding modelProviding = blackboard.getModelProviding()
-		val TransactionalEditingDomain domain = modelProviding.getTransactionalEditingDomain()
 		val ArrayList<Object> affectedObjects = new ArrayList()
 		val ArrayList<TransformationResult> transformationResults = new ArrayList()
-		for (Command command : blackboard.getAndArchiveCommandsForExecution()) {
+		for (VitruviusRecordingCommand command : blackboard.getAndArchiveCommandsForExecution()) {
+			modelProviding.executeRecordingCommandOnTransactionalDomain(command);
 			if (command instanceof VitruviusTransformationRecordingCommand) {
-				val TransformationResult transformationResult = EMFCommandBridge::
-					executeVitruviusRecordingCommand(modelProviding, command as VitruviusTransformationRecordingCommand)
-				transformationResults.add(transformationResult)
-			} else {
-				domain.getCommandStack().execute(command)
+				transformationResults.add(command.transformationResult)
 			}
 			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
@@ -55,7 +50,7 @@ class CommandExecutingImpl implements CommandExecuting {
 	 * undo all commands on the blackboard
 	 */
 	override void rollbackCommands(Blackboard blackboard) {
-		val Pair<List<VitruviusChange>, List<Command>> commandAndChangePairs = blackboard.getArchivedChangesAndCommandsForUndo()
+		val Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>> commandAndChangePairs = blackboard.getArchivedChangesAndCommandsForUndo()
 		val ArrayList<Object> affectedObjects = new ArrayList()
 		for (Command command : commandAndChangePairs.getSecond()) {
 			command.undo()
@@ -108,5 +103,5 @@ class CommandExecutingImpl implements CommandExecuting {
 		}
 
 	}
-
+	
 }

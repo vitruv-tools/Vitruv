@@ -17,7 +17,6 @@ import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
-import java.util.concurrent.Callable
 import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
@@ -35,7 +34,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID.BeforeAfterTUIDUpdate
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
+import org.eclipse.emf.common.command.Command
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
@@ -62,15 +62,13 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override void addCorrespondence(Correspondence correspondence) {
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(
-			new Callable<Void>() {
-				override call() throws Exception {
+		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(
+				[ |
 					addCorrespondenceToModel(correspondence)
 					registerCorrespondence(correspondence)
 					setChangeAfterLastSaveFlag()
 					return null
-				}
-	    }, this.modelProviding)
+				]);
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {

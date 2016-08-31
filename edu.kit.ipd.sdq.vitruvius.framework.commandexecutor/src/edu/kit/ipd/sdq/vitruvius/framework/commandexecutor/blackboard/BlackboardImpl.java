@@ -1,14 +1,14 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
+package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard;
 
 import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 public class BlackboardImpl implements Blackboard {
@@ -17,9 +17,9 @@ public class BlackboardImpl implements Blackboard {
     private final CorrespondenceModel correspondenceModel;
     private final ModelProviding modelProviding;
     private List<VitruviusChange> changes;
-    private List<Command> commands;
+    private List<VitruviusRecordingCommand> commands;
     private List<VitruviusChange> archivedChanges;
-    private List<Command> archivedCommands;
+    private List<VitruviusRecordingCommand> archivedCommands;
     private CorrespondenceProviding correspondenceProviding;
 
     public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelProviding modelProviding,
@@ -40,7 +40,6 @@ public class BlackboardImpl implements Blackboard {
         }
     }
 
-    @Override
     public CorrespondenceModel getCorrespondenceModel() {
         return this.correspondenceModel;
     }
@@ -73,13 +72,13 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public void pushCommands(final List<Command> commands) {
+    public void pushCommands(final List<VitruviusRecordingCommand> commands) {
         checkTransitionFromTo(BlackboardState.WAITING4COMMANDS, BlackboardState.WAITING4EXECUTION, "push commands");
         this.commands = commands;
     }
 
     @Override
-    public List<Command> getAndArchiveCommandsForExecution() {
+    public List<VitruviusRecordingCommand> getAndArchiveCommandsForExecution() {
         checkTransitionFromTo(BlackboardState.WAITING4EXECUTION, BlackboardState.WAITING4CHECK,
                 "get and archive commands for execution");
         this.archivedCommands = this.commands;
@@ -87,12 +86,12 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public Pair<List<VitruviusChange>, List<Command>> getArchivedChangesAndCommandsForUndo() {
+    public Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>> getArchivedChangesAndCommandsForUndo() {
         checkTransitionFromTo(BlackboardState.WAITING4UNDO, BlackboardState.WAITING4REDO,
                 "get archived changes and commands for undo");
         // no need to clear check result and archives as transition checking ensures setting before
         // getting
-        return new Pair<List<VitruviusChange>, List<Command>>(this.archivedChanges, this.archivedCommands);
+        return new Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>>(this.archivedChanges, this.archivedCommands);
     }
 
     @Override

@@ -34,4 +34,3 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing;visibility:=reexport
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm
-Import-Package: edu.kit.ipd.sdq.vitruvius.framework.command.util

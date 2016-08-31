@@ -8,7 +8,7 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
@@ -44,7 +44,7 @@ public class CompositeDataTypeMappingTransformationTest extends PCM2JaMoPPTransf
         final InnerDeclaration innerDec = this.addInnerDeclaration(cdt, repo);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        this.vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {
@@ -56,7 +56,7 @@ public class CompositeDataTypeMappingTransformationTest extends PCM2JaMoPPTransf
                 }
                 return null;
             }
-        }, this.vsum);
+        });
     }
 
     @Test

@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
@@ -29,6 +28,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
@@ -79,7 +80,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     private ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI,
             final boolean forceLoadByDoingUnloadBeforeLoad) {
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() {
                 try {
@@ -92,7 +93,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 }
                 return null;
             }
-        }, this);
+        });
 
         return modelInstance;
     }
@@ -112,7 +113,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
-            EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+            createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
                 @Override
                 public Void call() {
                     // case 2 or 3
@@ -121,7 +122,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                     saveVURIsOfVSUMModelInstances();
                     return null;
                 }
-            }, this);
+            });
             modelInstance = this.modelInstances.get(modelURI);
         }
         return modelInstance;
@@ -144,7 +145,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private void saveExistingModelInstanceOriginal(final VURI vuri,
             final Pair<EObject, TUID> tuidToUpdateWithRootEObjectPair) {
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
@@ -162,7 +163,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 return null;
             }
 
-        }, this);
+        });
     }
 
     @Override
@@ -170,7 +171,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
             final TUID oldTUID) {
         final ModelInstance modelInstance = getAndLoadModelInstanceOriginal(vuri);
 
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 final Resource resource = modelInstance.getResource();
@@ -180,7 +181,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 VSUMImpl.this.saveExistingModelInstanceOriginal(vuri, new Pair<EObject, TUID>(rootEObject, oldTUID));
                 return null;
             }
-        }, this);
+        });
     }
 
     private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave,
@@ -347,8 +348,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         }
     }
 
-    @Override
-    public synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
+    private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
         if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
             attachTransactionalEditingDomain();
         }
@@ -372,7 +372,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     public void deleteModelInstanceOriginal(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 try {
@@ -383,6 +383,18 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 }
                 return null;
             }
-        }, this);
+        });
     }
+
+    @Override
+    public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(final Callable<Void> callable) {
+        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(callable, getTransactionalEditingDomain());
+    }
+
+    @Override
+    public void executeRecordingCommandOnTransactionalDomain(final VitruviusRecordingCommand command) {
+        EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command);
+
+    }
+
 }

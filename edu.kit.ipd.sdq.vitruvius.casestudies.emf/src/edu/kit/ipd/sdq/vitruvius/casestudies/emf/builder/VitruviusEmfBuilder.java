@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.commandexecutor.CommandExecutingImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecutingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
@@ -25,8 +25,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImp
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change2commandtransformingprovider.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;

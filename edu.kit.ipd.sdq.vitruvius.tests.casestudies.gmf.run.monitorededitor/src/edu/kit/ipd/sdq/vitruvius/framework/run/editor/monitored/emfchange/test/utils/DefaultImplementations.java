@@ -14,18 +14,19 @@ package edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class DefaultImplementations {
@@ -74,12 +75,6 @@ public class DefaultImplementations {
         }
 
         @Override
-        public TransactionalEditingDomain getTransactionalEditingDomain() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
         public void detachTransactionalEditingDomain() {
             // TODO Auto-generated method stub
 
@@ -102,6 +97,19 @@ public class DefaultImplementations {
             // TODO Auto-generated method stub
 
         }
+
+        @Override
+        public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
+            // TODO Auto-generated method stub
+
+        }
+
     };
 
     public static class TestChangeSynchronizing implements ResourceChangeSynchronizing, ChangeSynchronizing {

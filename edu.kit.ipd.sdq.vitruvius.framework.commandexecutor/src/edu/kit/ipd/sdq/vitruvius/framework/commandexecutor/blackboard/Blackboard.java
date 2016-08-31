@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes;
+package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /*
@@ -69,11 +70,11 @@ public interface Blackboard {
 
     List<VitruviusChange> getAndArchiveChangesForTransformation();
 
-    void pushCommands(List<Command> commands);
+    void pushCommands(List<VitruviusRecordingCommand> commands);
 
-    List<Command> getAndArchiveCommandsForExecution();
+    List<VitruviusRecordingCommand> getAndArchiveCommandsForExecution();
 
-    Pair<List<VitruviusChange>, List<Command>> getArchivedChangesAndCommandsForUndo();
+    Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>> getArchivedChangesAndCommandsForUndo();
 
     void unarchiveChangesAndCommandsForRedo();
 

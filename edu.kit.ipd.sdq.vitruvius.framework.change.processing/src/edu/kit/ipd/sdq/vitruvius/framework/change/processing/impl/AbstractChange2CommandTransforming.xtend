@@ -12,8 +12,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MetamodelPair
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming
 
-abstract class AbstractChange2CommandTransforming implements edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming {
+abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
 	
 	private UserInteracting userInteracting;
@@ -37,23 +39,23 @@ abstract class AbstractChange2CommandTransforming implements edu.kit.ipd.sdq.vit
 		this.changeProcessors += changeProcessor;
 	}
 	
-	override List<Command> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
-		val commands = new ArrayList<Command>();
+	override List<VitruviusRecordingCommand> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
+		val commands = new ArrayList<VitruviusRecordingCommand>();
 		this.processChange(change, correspondenceModel, commands);
 		return commands;
 	}
 
-	private def dispatch void processChange(VitruviusChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
+	private def dispatch void processChange(VitruviusChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 
-	private def dispatch void processChange(CompositeChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
+	private def dispatch void processChange(CompositeChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		for (containedChange : change.changes) {
 			processChange(containedChange, correspondenceModel, commandList);
 		}
 	}
 
-	private def dispatch void processChange(ConcreteChange change, CorrespondenceModel correspondenceModel, List<Command> commandList) {
+	private def dispatch void processChange(ConcreteChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		var currentChange = change;
 		for (changeProcessor : changeProcessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');

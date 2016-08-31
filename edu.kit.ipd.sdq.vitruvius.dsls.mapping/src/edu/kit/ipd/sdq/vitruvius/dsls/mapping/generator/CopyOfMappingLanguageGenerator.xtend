@@ -24,8 +24,8 @@
 //import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 //import edu.kit.ipd.sdq.vitruvius.dsls.response.api.generator.ResponseBuilderFactory
 //import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Response
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-//import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+//import edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard.Blackboard
+//import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 //import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 //import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 //import edu.kit.ipd.sdq.vitruvius.framework.meta.change.EChange

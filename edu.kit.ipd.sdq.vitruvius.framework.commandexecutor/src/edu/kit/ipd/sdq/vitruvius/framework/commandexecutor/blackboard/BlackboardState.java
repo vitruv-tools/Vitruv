@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.contracts.internal;
+package edu.kit.ipd.sdq.vitruvius.framework.commandexecutor.blackboard;
 
 enum BlackboardState {
 

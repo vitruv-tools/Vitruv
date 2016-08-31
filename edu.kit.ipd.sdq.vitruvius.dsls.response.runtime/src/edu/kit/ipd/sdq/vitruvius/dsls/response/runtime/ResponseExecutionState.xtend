@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.runtime
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

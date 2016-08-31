@@ -5,9 +5,8 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.NamedJavaElement
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
@@ -44,10 +43,6 @@ class ResponseLanguageParameterGenerator {
 	
 	protected def JvmFormalParameter generateResponseExecutionStateParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, RESPONSE_EXECUTION_STATE_PARAMETER_NAME, ResponseExecutionState);
-	}
-	
-	protected def JvmFormalParameter generateBlackboardParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, BLACKBOARD_PARAMETER_NAME, Blackboard);
 	}
 	
 	protected def JvmFormalParameter generateTransformationResultParameter(EObject parameterContext) {

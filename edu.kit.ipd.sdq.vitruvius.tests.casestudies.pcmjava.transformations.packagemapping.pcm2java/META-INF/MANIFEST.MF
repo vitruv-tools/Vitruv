@@ -47,4 +47,3 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java
-Import-Package: edu.kit.ipd.sdq.vitruvius.framework.command.util

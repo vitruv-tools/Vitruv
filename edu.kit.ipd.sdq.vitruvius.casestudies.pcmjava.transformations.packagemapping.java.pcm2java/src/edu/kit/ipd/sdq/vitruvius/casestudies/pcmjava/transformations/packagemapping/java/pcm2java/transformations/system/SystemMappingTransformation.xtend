@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemap
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.ComposedProvidingRequiringEntityMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.system.System
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import org.emftext.language.java.containers.JavaRoot
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*

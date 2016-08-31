@@ -2,11 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import java.util.ArrayList
 import java.util.HashSet
@@ -14,7 +14,6 @@ import java.util.List
 import java.util.Set
 import java.util.concurrent.Callable
 import mir.responses.responsesJavaTo5_1.rename.ExecutorJavaTo5_1
-import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
@@ -28,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.Inse
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class IntegrationChange2CommandTransformer {
 	
@@ -52,7 +52,7 @@ class IntegrationChange2CommandTransformer {
     		if (responseCommands != null) {
 				return responseCommands
 			}
-    		val commands = newClassOrInterfaceInIntegratedAreaCommand.toList as List<? extends Command>
+    		val commands = newClassOrInterfaceInIntegratedAreaCommand.toList as List<? extends VitruviusRecordingCommand>
     		return commands
     	}
     	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, correspondenceModel)
@@ -60,7 +60,7 @@ class IntegrationChange2CommandTransformer {
     		if (responseCommands != null) {
 				return responseCommands
 			}
-    		val commands = defaultIntegrationChangeCommand.toList as List<? extends Command>
+    		val commands = defaultIntegrationChangeCommand.toList as List<? extends VitruviusRecordingCommand>
     		return commands
     	}
     	return new ArrayList()

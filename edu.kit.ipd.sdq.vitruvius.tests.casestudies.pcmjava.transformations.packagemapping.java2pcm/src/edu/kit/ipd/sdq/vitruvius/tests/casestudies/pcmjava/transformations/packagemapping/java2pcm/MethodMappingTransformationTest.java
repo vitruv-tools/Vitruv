@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 
-import edu.kit.ipd.sdq.vitruvius.framework.command.util.EMFCommandBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
@@ -80,7 +80,7 @@ public class MethodMappingTransformationTest extends Java2PCMPackageMappingTrans
                 opSig.getInterface__OperationSignature().getId(), opInterface.getId());
         this.assertPCMNamedElement(opSig, expectedName);
 
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+        this.getVSUM().createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
 
             @Override
             public Void call() {
@@ -95,6 +95,6 @@ public class MethodMappingTransformationTest extends Java2PCMPackageMappingTrans
                         opSig.getReturnType__OperationSignature());
                 return null;
             }
-        }, this.getVSUM());
+        });
     }
 }
