@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl;
 import java.util.List;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ExtensionPoints;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
@@ -36,7 +35,7 @@ public class Change2CommandTransformingProvidingImpl extends AbstractChange2Comm
     @Override
     protected void setup() {
         List<Change2CommandTransforming> transformationExecutingList = EclipseBridge.getRegisteredExtensions(
-                ExtensionPoints.Change2CommandTransformingID, VitruviusConstants.getExtensionPropertyName(),
+                Change2CommandTransforming.ExtensionPointID, VitruviusConstants.getExtensionPropertyName(),
                 Change2CommandTransforming.class);
         for (final Change2CommandTransforming transformationExecuting : transformationExecutingList) {
             // TODO if third party extensions are used call all extensions in protected mode
