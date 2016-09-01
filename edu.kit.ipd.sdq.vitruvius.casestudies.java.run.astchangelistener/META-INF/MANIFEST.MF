@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Domain Java ASTChangeListener
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.run.astchangelistener;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: astchangelistener.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.core,
@@ -14,5 +14,5 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor,
- edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification
+Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener,
+ edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification

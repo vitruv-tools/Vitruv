@@ -14,13 +14,13 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IStartup;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.ASTChangeListener;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.RefactoringChangeListener;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ASTChangeListener;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeOperationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
