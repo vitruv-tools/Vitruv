@@ -32,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.IVitruviusEMFEditor
 import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
@@ -42,6 +41,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;

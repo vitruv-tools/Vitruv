@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.components
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusCasestudyTest
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusEMFCasestudyTest
+import edu.kit.ipd.sdq.vitruvius.framework.tests.VitruviusCasestudyTest
+import edu.kit.ipd.sdq.vitruvius.framework.tests.VitruviusEMFCasestudyTest
 import java.util.List
 import multicontainment_a.Multicontainment_aPackage
 import org.apache.log4j.Logger

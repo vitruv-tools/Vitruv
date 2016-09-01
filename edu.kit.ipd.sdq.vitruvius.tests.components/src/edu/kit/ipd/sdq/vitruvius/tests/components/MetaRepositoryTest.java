@@ -10,9 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 

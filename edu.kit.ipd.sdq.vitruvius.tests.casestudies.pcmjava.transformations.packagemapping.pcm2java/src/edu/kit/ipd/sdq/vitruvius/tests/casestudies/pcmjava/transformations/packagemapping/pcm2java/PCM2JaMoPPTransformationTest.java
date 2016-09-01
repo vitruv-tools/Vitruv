@@ -61,8 +61,6 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusEMFCasestudyTest;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
@@ -70,6 +68,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.VitruviusEMFCasestudyTest;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;

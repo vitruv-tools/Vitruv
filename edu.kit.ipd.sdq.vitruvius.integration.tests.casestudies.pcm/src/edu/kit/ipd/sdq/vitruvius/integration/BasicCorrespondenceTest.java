@@ -13,9 +13,9 @@ import org.junit.Before;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.integration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java.PCM2JaMoPPTransformationTest;

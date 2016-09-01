@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.extensions.tests;
+package edu.kit.ipd.sdq.vitruvius.framework.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;

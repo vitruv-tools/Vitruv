@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusEMFCasestudyTest
+import edu.kit.ipd.sdq.vitruvius.framework.tests.VitruviusEMFCasestudyTest
 import org.junit.runner.Description
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI

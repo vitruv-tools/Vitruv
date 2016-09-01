@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;

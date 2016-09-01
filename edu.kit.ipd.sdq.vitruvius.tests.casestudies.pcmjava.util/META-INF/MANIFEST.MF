@@ -4,7 +4,7 @@ Bundle-Name: JaMoPP PCM Util
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.extensions.tests.util,
+Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.tests.util,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  org.apache.log4j,

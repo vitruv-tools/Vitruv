@@ -16,9 +16,9 @@ import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 /**

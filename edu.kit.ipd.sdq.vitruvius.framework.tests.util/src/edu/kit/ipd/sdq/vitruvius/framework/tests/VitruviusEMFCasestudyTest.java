@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.extensions.tests;
+package edu.kit.ipd.sdq.vitruvius.framework.tests;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
-import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
@@ -25,6 +24,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
