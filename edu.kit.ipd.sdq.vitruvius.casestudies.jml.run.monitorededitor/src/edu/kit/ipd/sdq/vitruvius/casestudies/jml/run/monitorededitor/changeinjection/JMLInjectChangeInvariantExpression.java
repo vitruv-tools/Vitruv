@@ -10,12 +10,13 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLInvariantExpression;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ChangeBuilder;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ModelUtilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.Choice.EObjectToString;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 
 /**
  * A change injector for JML invariants. The user can choose an invariant to change and replace its
@@ -55,7 +56,7 @@ public class JMLInjectChangeInvariantExpression extends JMLInjectionHandler {
         JMLInvariantExpression invariantNew = ModelUtilities.clone(choosenInvariant);
 
         invariantNew.setExpr(newExpression);
-        EMFModelChange change = ChangeBuilder.createUpdateChange(invariantOld, invariantNew,
+        GeneralChange change = ChangeBuilder.createUpdateChange(invariantOld, invariantNew,
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         submitChange(change);

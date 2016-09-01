@@ -15,14 +15,17 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ModelUtilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.Choice.EObjectToString;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaRemoveEReference;
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
+import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Base class for modifier changes on JML methods. The user can choose the method, which shall be
@@ -56,7 +59,7 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
             return false;
         }
 
-        EMFModelChange change = createChange(chosenMemberDecl, addMofifier);
+        GeneralChange change = createChange(chosenMemberDecl, addMofifier);
 
         submitChange(change);
 
@@ -128,13 +131,14 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
      *            Flag to indicate whether the modifier shall be added (true) or deleted (false).
      * @return The constructed change.
      */
-    private EMFModelChange createChange(MemberDeclWithModifier chosenMemberDecl, boolean addModifier) {
+    private GeneralChange createChange(MemberDeclWithModifier chosenMemberDecl, boolean addModifier) {
         MemberDeclWithModifier oldMemberDecl = ModelUtilities.clone(chosenMemberDecl);
         MemberDeclWithModifier newMemberDecl = ModelUtilities.clone(chosenMemberDecl);
 
-        EFeatureChange<EReference> change = null;
+        JavaFeatureEChange<EObject, EReference> change = null;
         if (addModifier) {
-            CreateNonRootEObjectInList<EObject> tmp = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
+            JavaInsertEReference<EObject, EObject> tmp = ReferenceFactory.eINSTANCE.createJavaInsertEReference();
+            tmp.setIsCreate(true);
             JMLMemberModifier newModifier = JMLFactory.eINSTANCE.createJMLMemberModifier();
             newModifier.setModifier(getWantedModifier());
             newMemberDecl.getJmlModifiers().add(0, newModifier);
@@ -142,7 +146,8 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
             tmp.setNewValue(newModifier);
             change = tmp;
         } else {
-            DeleteNonRootEObjectInList<EObject> tmp = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList();
+            JavaRemoveEReference<EObject, EObject> tmp = ReferenceFactory.eINSTANCE.createJavaRemoveEReference();
+            tmp.setIsDelete(true);
             JMLMemberModifier oldModifier = findModifier(oldMemberDecl);
             int index = newMemberDecl.getJmlModifiers().indexOf(findModifier(newMemberDecl));
             newMemberDecl.getJmlModifiers().remove(index);
@@ -153,9 +158,9 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
 
         change.setAffectedFeature(JMLPackage.eINSTANCE.getMemberDeclWithModifier_JmlModifiers());
         change.setOldAffectedEObject(oldMemberDecl);
-        change.setNewAffectedEObject(newMemberDecl);
+        change.setAffectedEObject(newMemberDecl);
 
-        return new EMFModelChange(change, VURI.getInstance(oldMemberDecl.eResource()));
+        return VitruviusChangeFactory.getInstance().createGeneralChange(change, VURI.getInstance(oldMemberDecl.eResource()));
     }
 
 }

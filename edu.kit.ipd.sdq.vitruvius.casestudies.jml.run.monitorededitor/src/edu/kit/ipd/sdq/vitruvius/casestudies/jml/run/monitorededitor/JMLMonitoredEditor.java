@@ -12,8 +12,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.CommandState;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.CommandState.Commands;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SourceDirProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredProjectsRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.RegisteredMonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredProjectsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.RegisteredMonitoredEditor;
 
 /**
  * A monitored editor for JML. At the moment it only supports returning source

@@ -23,11 +23,10 @@ import org.eclipse.ui.ide.ResourceUtil;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLTypeExpression;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 
 

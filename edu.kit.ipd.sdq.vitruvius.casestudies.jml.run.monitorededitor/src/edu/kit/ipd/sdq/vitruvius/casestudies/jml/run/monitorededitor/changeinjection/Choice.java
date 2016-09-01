@@ -7,7 +7,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractorDialog;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractorDialog;
+
 
 /**
  * Class for user choices.

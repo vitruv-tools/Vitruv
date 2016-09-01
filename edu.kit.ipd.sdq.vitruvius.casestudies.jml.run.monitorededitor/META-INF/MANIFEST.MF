@@ -9,7 +9,12 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.9.0",
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench,
  org.eclipse.xtext.ui,
- edu.kit.ipd.sdq.vitruvius.casestudies.jmljava
+ edu.kit.ipd.sdq.vitruvius.casestudies.jml.language,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
+ edu.kit.ipd.sdq.vitruvius.framework.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange,
+ edu.kit.ipd.sdq.vitruvius.framework.change
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.apache.commons.lang,
  org.apache.log4j;version="1.2.15"

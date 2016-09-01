@@ -17,8 +17,8 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractorDialog;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractorDialog;
 
 /**
  * Base class for all JML injection handlers.
@@ -78,7 +78,7 @@ public abstract class JMLInjectionHandler extends AbstractHandler {
      * @param change
      *            The change to be submitted.
      */
-    protected void submitChange(final Change change) {
+    protected void submitChange(final VitruviusChange change) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -93,7 +93,7 @@ public abstract class JMLInjectionHandler extends AbstractHandler {
      * @param changes
      *            The changes to be submitted.
      */
-    protected void submitChanges(final List<Change> changes) {
+    protected void submitChanges(final List<VitruviusChange> changes) {
         new Thread(new Runnable() {
             @Override
             public void run() {
