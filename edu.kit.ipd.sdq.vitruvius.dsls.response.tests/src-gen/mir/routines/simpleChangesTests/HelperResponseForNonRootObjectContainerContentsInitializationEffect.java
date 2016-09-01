@@ -3,9 +3,9 @@ package mir.routines.simpleChangesTests;
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.impl.AllElementTypesFactoryImpl;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 
 import java.io.IOException;

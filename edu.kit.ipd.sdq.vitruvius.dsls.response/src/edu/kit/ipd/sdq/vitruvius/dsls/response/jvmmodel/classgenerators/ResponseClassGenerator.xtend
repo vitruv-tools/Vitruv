@@ -15,7 +15,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseL
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.PreconditionCodeBlock
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseRealization
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootEChange

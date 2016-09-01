@@ -1,6 +1,6 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseExecutor;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseExecutor;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")

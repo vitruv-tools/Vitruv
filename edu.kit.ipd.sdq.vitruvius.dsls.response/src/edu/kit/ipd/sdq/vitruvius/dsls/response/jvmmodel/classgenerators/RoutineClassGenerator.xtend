@@ -16,8 +16,8 @@ import org.eclipse.xtext.common.types.JvmConstructor
 import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageConstants.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExistingElementReference
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.CreateCorrespondence
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Taggable

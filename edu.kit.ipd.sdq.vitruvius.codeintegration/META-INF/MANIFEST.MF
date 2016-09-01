@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.codeintegration,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco,
- edu.kit.ipd.sdq.vitruvius.dsls.response.runtime,
+ edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
  edu.kit.ipd.sdq.vitruvius.framework.tuid

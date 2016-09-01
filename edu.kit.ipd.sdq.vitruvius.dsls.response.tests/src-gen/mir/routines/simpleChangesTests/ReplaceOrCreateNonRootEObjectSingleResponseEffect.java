@@ -4,9 +4,9 @@ import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import allElementTypes.impl.AllElementTypesFactoryImpl;
 import com.google.common.base.Objects;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 

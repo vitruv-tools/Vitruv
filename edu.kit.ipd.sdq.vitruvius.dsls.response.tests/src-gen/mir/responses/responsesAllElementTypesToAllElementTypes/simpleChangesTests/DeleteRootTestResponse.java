@@ -2,7 +2,7 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import com.google.common.base.Objects;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;

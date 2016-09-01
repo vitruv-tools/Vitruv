@@ -12,7 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.Trigger
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ConcreteModelElementChange
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.EChangeHelper.*;
 import java.util.List
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState
 import org.eclipse.emf.ecore.EClass
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement

@@ -1,6 +1,6 @@
 package mir.responses.responsesJavaTo5_1.rename;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;

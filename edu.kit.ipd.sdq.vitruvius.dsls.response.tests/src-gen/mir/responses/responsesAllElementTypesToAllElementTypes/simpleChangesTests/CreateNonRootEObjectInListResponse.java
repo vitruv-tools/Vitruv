@@ -2,7 +2,7 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractResponseRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;

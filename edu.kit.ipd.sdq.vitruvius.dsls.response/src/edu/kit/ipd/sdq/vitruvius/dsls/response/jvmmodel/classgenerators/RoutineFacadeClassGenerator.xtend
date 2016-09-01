@@ -7,8 +7,8 @@ import static edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseLanguageCon
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.*;
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ResponsesSegment
 import edu.kit.ipd.sdq.vitruvius.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectsFacade
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import edu.kit.ipd.sdq.vitruvius.dsls.response.responseLanguage.ExplicitRoutine
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
