@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests;
+package edu.kit.ipd.sdq.vitruvius.extensions.tests;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
@@ -27,7 +28,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAb
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * Base class for all Vitruvius EMF case study tests

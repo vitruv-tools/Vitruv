@@ -100,6 +100,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilde
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.TestUserInteractor;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusCasestudyTest;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
@@ -116,9 +119,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.TestUserInteractor;
-import edu.kit.ipd.sdq.vitruvius.tests.VitruviusCasestudyTest;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * Test class that contains utillity methods that can be used by JaMoPP2PCM

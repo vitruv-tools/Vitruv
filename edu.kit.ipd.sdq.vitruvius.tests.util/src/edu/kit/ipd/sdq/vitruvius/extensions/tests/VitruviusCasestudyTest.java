@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests;
+package edu.kit.ipd.sdq.vitruvius.extensions.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * Base class for all Vitruvius case study tests

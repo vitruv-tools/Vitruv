@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests;
+package edu.kit.ipd.sdq.vitruvius.extensions.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 
-import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 

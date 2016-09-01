@@ -15,7 +15,7 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 
 /**
  * Helper class that allows the manipulation of compilation units that causes a notification of the

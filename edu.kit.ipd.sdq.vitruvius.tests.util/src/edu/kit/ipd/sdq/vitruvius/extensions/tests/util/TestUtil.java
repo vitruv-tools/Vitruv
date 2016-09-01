@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.util;
+package edu.kit.ipd.sdq.vitruvius.extensions.tests.util;
 
 import java.net.URISyntaxException;
 import java.util.Date;
