@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.java.util
+package edu.kit.ipd.sdq.vitruvius.domains.java.util
 
 final class JaMoPPNamespace {
 	private new() {

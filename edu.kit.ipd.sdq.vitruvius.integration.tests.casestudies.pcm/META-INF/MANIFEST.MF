@@ -24,7 +24,7 @@ Require-Bundle: org.junit,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util,
  edu.kit.ipd.sdq.vitruvius.framework.change
 Import-Package: edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
  edu.kit.ipd.sdq.vitruvius.integration.traversal,

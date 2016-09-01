@@ -13,7 +13,7 @@ import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;

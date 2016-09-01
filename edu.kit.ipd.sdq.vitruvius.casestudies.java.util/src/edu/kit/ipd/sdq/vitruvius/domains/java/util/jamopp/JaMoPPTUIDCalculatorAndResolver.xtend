@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp
+package edu.kit.ipd.sdq.vitruvius.domains.java.util.jamopp
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -254,10 +254,6 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 		return "";
 	}
 
-	private def String getNamespaceAsString(CompilationUnit cu) {
-		return StringOperationsJaMoPP.getNamespaceAsString(cu.namespaces)
-	}
-	
 	override hasTUID(EObject eObject) {
 		return true;
 	}

@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;

@@ -1,1 +1,0 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp;

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.utils.jamopp
+package edu.kit.ipd.sdq.vitruvius.domains.java.util.jamopp
 
 import org.apache.commons.lang.StringUtils
 import org.emftext.language.java.classifiers.Classifier
@@ -12,7 +12,6 @@ import org.emftext.language.java.parameters.VariableLengthParameter
 import org.emftext.language.java.references.ReferenceableElement
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
-import org.emftext.language.java.expressions.AssignmentExpression
 
 /**
  * Converts a JaMoPP model element to a string representation.

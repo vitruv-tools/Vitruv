@@ -40,7 +40,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.parameters.Parametrizable
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 /**
