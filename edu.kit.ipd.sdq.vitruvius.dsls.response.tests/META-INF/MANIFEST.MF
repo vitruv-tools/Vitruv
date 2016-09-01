@@ -31,7 +31,8 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
- edu.kit.ipd.sdq.vitruvius.framework.metamodel
+ edu.kit.ipd.sdq.vitruvius.framework.metamodel,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",

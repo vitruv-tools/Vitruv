@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.framework.tuid
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration,
  edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.impl,
