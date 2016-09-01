@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeclassifiers;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.changeclassifiers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events.MethodBodyChangedEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
-import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events.MethodBodyChangedEvent;
 
 /**
  * Extension classifier for the method body change event.

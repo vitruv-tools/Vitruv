@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.changeresponder
 
-import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events.MethodBodyChangedEvent
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events.MethodBodyChangedEvent
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeSubmitter
 import org.emftext.language.java.members.ClassMethod

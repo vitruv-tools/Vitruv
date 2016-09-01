@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEventExtension;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;

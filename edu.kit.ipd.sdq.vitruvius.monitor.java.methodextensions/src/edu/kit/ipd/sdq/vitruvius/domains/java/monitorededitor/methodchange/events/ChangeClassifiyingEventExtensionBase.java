@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassificati
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEventExtension;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeEventVisitor;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;
-import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.utils.JaMoPPUtilities;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.utils.JaMoPPUtilities;
 
 /**
  * Base class for all change classifying event extensions, which need an old and

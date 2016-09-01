@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.utils;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.utils;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.dom.ASTNode;

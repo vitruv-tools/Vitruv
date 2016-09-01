@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events;
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 

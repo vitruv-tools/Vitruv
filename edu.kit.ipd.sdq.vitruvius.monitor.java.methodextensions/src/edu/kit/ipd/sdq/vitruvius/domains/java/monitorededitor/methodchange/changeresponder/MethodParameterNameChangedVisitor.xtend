@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.changeresponder
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeSubmitter
 import org.eclipse.emf.ecore.EAttribute
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events.MethodParameterNameChangedEvent
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.methodchange.events.MethodParameterNameChangedEvent
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.AttributeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 
