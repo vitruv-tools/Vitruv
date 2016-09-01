@@ -11,10 +11,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 import pcm_mockup.Component;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;

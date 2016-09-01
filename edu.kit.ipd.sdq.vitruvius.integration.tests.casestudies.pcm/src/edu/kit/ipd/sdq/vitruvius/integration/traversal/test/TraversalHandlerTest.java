@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
@@ -23,7 +24,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 /**
  * The Class TraversalHandlerTest.

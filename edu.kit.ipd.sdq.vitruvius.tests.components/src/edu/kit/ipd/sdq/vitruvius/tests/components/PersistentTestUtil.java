@@ -13,9 +13,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import pcm_mockup.Pcm_mockupFactory;
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public class PersistentTestUtil {
     private PersistentTestUtil() {

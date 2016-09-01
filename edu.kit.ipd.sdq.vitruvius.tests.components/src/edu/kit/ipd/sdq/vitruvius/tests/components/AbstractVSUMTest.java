@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.tests.components;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.util.TestUtil;
 
 public abstract class AbstractVSUMTest extends MetaRepositoryTest {
 
