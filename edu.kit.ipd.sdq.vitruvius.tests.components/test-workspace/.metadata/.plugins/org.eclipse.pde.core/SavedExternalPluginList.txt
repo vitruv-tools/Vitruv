@@ -129,9 +129,9 @@ file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.cases
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast/
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jdttooltipprovider/
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener/
-file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jml.language/
-file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.tests/
-file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ui/
+file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.domains.jml.language/
+file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.domains.jml.language.tests/
+file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.domains.jml.language.ui/
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor/
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jmljava/
 file:/C:/Eclipse/workspaces/VitruviusSVN18030215/edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer/

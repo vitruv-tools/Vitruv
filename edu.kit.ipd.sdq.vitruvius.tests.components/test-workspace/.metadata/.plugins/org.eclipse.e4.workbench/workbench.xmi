@@ -2688,7 +2688,7 @@
   <commands xmi:id="_wvMIMs2BEeSvv8KYuMjd-g" elementId="org.eclipse.emf.emfstore.client.ui.exportProject" commandName="Export Project" category="_wvEMWs2BEeSvv8KYuMjd-g"/>
   <commands xmi:id="_wvMIM82BEeSvv8KYuMjd-g" elementId="org.eclipse.emf.ecp.emfstore.ui.deleteOnServer" commandName="Delete on Server" category="_Br8_XZf3EeOez6Q15lA_5g"/>
   <commands xmi:id="_wvMINM2BEeSvv8KYuMjd-g" elementId="org.eclipse.emf.ecp.ui.addrepository" commandName="Add Repository" category="_Br8_XZf3EeOez6Q15lA_5g"/>
-  <commands xmi:id="_wvMINc2BEeSvv8KYuMjd-g" elementId="edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.JML.validate" commandName="Validate" description="Trigger expensive validation" category="_Br8_XZf3EeOez6Q15lA_5g"/>
+  <commands xmi:id="_wvMINc2BEeSvv8KYuMjd-g" elementId="edu.kit.ipd.sdq.vitruvius.domains.jml.language.JML.validate" commandName="Validate" description="Trigger expensive validation" category="_Br8_XZf3EeOez6Q15lA_5g"/>
   <commands xmi:id="_wvMINs2BEeSvv8KYuMjd-g" elementId="org.eclipse.xtext.xbase.ui.OpenImplementationCommand" commandName="Open Implementation" description="Open the Implementations in the method's hierarchy" category="_Br8_Qpf3EeOez6Q15lA_5g"/>
   <commands xmi:id="_wvMIN82BEeSvv8KYuMjd-g" elementId="org.eclipse.emf.emfstore.client.ui.projectProperties" commandName="Project Properties" category="_Br8_XZf3EeOez6Q15lA_5g"/>
   <commands xmi:id="_wvMIOM2BEeSvv8KYuMjd-g" elementId="org.eclipse.emf.emfstore.client.ui.exportChanges" commandName="Export Changes" category="_Br8_XZf3EeOez6Q15lA_5g"/>
