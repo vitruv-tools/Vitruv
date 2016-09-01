@@ -44,7 +44,7 @@ import org.emftext.language.java.references.ReferenceableElement
 import java.util.ArrayList
 import org.emftext.language.java.containers.JavaRoot
 import java.io.ByteArrayInputStream
-import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser.JaMoPPParser
 import org.emftext.language.java.imports.ImportsFactory
 import org.eclipse.emf.common.util.URI
 import org.emftext.language.java.types.PrimitiveType

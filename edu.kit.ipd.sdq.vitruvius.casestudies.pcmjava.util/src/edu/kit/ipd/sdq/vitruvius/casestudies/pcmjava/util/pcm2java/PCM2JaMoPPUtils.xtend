@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser.JaMoPPParser
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
