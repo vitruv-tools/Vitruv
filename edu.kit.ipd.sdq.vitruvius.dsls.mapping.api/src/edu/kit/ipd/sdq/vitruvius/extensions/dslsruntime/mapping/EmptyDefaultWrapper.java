@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping;
 
 import java.util.Collections;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorrespondenceWrapper;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.AbstractCorrespondenceWrapper;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.ElementProvider;
 
 public class EmptyDefaultWrapper extends AbstractWrapper {
 	public enum Side { A, B }

@@ -1,11 +1,12 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces;
 
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappedCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.Candidate;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 
 public interface CandidateGenerator {

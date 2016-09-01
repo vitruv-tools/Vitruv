@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces;
 
 import java.util.List;
 

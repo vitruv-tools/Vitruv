@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping
 
 import java.util.Collection
 import java.util.HashMap
@@ -7,7 +7,7 @@ import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MappingRealization
 import java.util.function.Supplier
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import org.eclipse.xtend.lib.annotations.Delegate

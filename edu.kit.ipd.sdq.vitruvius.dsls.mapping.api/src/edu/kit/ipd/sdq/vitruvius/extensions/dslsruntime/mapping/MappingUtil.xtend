@@ -1,8 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MIRMappingHelper
 import java.util.Collection
 import java.util.List
 import java.util.Objects

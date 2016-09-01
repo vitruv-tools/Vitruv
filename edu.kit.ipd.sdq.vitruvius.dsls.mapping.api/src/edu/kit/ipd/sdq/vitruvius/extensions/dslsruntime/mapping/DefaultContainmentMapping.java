@@ -1,7 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping;
 
 import org.eclipse.emf.common.util.URI;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;

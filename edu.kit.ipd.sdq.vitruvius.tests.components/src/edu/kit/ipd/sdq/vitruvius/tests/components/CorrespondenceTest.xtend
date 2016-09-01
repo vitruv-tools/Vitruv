@@ -26,9 +26,9 @@ import static org.junit.Assert.assertTrue
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappedCorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MappingRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState
 import pcm_mockup.PInterface
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel

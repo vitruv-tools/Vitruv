@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,9 +8,10 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorrespondenceWrapper;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.AbstractCorrespondenceWrapper;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.ElementProvider;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MappingRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;

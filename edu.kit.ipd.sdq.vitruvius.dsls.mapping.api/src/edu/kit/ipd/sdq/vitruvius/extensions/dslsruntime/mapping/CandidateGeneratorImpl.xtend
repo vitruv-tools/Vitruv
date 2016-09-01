@@ -1,9 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping
 
 import com.google.common.collect.Sets
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.Candidate
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CandidateGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.Candidate
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.CandidateGenerator
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MappingRealization
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EClass

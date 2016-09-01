@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping
 
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID

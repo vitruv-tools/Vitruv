@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
 

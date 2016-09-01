@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.datatypes;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.datatypes;
 
 import org.eclipse.emf.ecore.EClass;
 

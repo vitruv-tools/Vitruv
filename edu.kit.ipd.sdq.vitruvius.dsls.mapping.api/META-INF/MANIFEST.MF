@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -18,5 +18,5 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
-Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping.api,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces
+Export-Package: edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping,
+ edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces

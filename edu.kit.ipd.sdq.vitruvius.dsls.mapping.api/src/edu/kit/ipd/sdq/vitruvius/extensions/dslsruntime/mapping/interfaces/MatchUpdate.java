@@ -1,6 +1,5 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -8,7 +7,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappedCorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.Candidate;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Triple;

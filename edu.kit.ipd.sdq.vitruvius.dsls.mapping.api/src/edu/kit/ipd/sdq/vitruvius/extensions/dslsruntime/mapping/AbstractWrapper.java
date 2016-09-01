@@ -1,12 +1,12 @@
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.api;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CorrespondenceProvider;
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.CorrespondenceProvider;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.ElementProvider;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 
 public abstract class AbstractWrapper implements ElementProvider {
