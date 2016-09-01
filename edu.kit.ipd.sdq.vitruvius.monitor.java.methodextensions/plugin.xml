@@ -1,6 +1,6 @@
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile">
+         point="edu.kit.ipd.sdq.vitruvius.domains.java.monitoreditor.astchangelistener.postreconcile">
       <provides
             provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeclassifiers.MethodParameterNameChangedClassifier">
       </provides>

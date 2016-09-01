@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.PreviousASTState;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.ConcreteChangeClassifier;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events.MethodBodyChangedEvent;
