@@ -1,8 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.dsls.response.ide
-Bundle-Vendor: My Company
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruvius DSLs Response Language IDE
+Bundle-Version: 1.0.0
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response,

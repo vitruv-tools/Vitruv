@@ -1,10 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-Name: Vitruvius DSLs Response Language
+Bundle-Version: 1.0.0
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
