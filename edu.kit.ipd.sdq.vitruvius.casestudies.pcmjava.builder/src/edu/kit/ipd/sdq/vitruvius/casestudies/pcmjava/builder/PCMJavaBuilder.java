@@ -10,9 +10,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;

@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;
 
 import org.eclipse.ui.IStartup;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.util.BuildProjects;
+import edu.kit.ipd.sdq.vitruvius.domains.emf.util.BuildProjects;
 
 /**
  * {@link BuildOnEclipseStartup} issues an incremental build of all open projects just after Eclipse

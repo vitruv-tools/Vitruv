@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.emf;
+package edu.kit.ipd.sdq.vitruvius.domains.emf;
 
 import java.util.Iterator;
 

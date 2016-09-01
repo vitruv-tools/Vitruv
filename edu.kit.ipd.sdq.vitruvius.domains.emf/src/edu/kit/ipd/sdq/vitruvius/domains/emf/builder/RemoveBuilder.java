@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder;
+package edu.kit.ipd.sdq.vitruvius.domains.emf.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

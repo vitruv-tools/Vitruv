@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.AddBuilder;
+import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.AddBuilder;
 
 public class PCMJavaAddBuilder extends AddBuilder {
 

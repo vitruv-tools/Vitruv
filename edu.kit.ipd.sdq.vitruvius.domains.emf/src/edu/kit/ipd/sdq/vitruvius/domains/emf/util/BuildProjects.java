@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.emf.util;
+package edu.kit.ipd.sdq.vitruvius.domains.emf.util;
 
 import java.util.HashMap;
 

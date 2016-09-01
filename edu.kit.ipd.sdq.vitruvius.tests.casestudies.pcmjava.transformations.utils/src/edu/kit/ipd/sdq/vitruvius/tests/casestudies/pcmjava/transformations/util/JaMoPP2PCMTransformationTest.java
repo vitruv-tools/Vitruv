@@ -90,14 +90,14 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.system.System;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.builder.VitruviusEmfBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.emf.util.BuildProjects;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
+import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
+import edu.kit.ipd.sdq.vitruvius.domains.emf.util.BuildProjects;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
