@@ -21,7 +21,8 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.framework.tuid
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
