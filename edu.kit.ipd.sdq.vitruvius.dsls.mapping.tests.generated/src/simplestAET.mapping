@@ -1,6 +1,0 @@
-import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes2" as ae2
-import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as ae1
-
-mapping simpleRoot:
-map [ ae1.Root  as r1 ]
-and [ ae2.Root2 as r2 ]

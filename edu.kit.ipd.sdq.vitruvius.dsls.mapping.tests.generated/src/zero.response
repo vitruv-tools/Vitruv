@@ -1,5 +1,0 @@
-import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes" as aet
-import "http://edu.kit.ipd.sdq.vitruvius.tests.metamodels.allElementTypes2" as aet2
-
-responses from metamodel aet to metamodel aet2
-called empty
