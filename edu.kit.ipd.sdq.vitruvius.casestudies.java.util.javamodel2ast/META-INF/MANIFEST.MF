@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JavaModel2AST
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.javamodel2ast
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: javamodel2ast.Activator
+Bundle-Name: Vitruvius Domains Java JavaModel2AST
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast
+Bundle-Version: 1.0.0
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast

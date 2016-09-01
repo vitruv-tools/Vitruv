@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast;
 
 import java.util.ArrayList;
 import java.util.Collection;

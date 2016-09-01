@@ -9,12 +9,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassModifiersEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeInterfaceModifiersEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeTypeModifiersEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.CompilationUnitUtil;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 
 public class ChangeTypeModifiersClassifier extends SingleNodeChangeClassifier {
 

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast;
 
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -51,17 +51,17 @@ public class CompilationUnitUtil {
         return unit.getLineNumber(node.getStartPosition());
     }
 
-    private static TypeDeclaration findTopLevelType(final String typeName, final CompilationUnit unit) {
-        for (final Object type : unit.types()) {
-            if (!(type instanceof TypeDeclaration)) {
-                continue;
-            }
-            if (typeName.equals(((TypeDeclaration) type).getName().getIdentifier())) {
-                return (TypeDeclaration) type;
-            }
-        }
-        return null;
-    }
+//    private static TypeDeclaration findTopLevelType(final String typeName, final CompilationUnit unit) {
+//        for (final Object type : unit.types()) {
+//            if (!(type instanceof TypeDeclaration)) {
+//                continue;
+//            }
+//            if (typeName.equals(((TypeDeclaration) type).getName().getIdentifier())) {
+//                return (TypeDeclaration) type;
+//            }
+//        }
+//        return null;
+//    }
 
     public static BodyDeclaration findBodyDeclarationOnLine(final int line, final CompilationUnit compilationUnit) {
         final ASTNodeOnLineFinder visitor = new ASTNodeOnLineFinder(line, BodyDeclaration.class, compilationUnit);

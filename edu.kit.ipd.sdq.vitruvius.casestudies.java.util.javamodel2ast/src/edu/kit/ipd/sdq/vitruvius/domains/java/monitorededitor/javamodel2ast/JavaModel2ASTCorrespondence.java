@@ -1,11 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportDeclaration;
@@ -58,8 +57,6 @@ public final class JavaModel2ASTCorrespondence {
         }
         return true;
     }
-
-    private static NullProgressMonitor nullProgressMonitor = new NullProgressMonitor();
 
     /**
      * WARNING: does not check type category (interface or class) if itype does currently not exist
@@ -139,7 +136,8 @@ public final class JavaModel2ASTCorrespondence {
         return sameName;
     }
 
-    public static boolean corresponds(IType anonymousIType, AnonymousClassDeclaration anonymousClassDeclaration)
+    @SuppressWarnings("unchecked")
+	public static boolean corresponds(IType anonymousIType, AnonymousClassDeclaration anonymousClassDeclaration)
             throws JavaModelException {
         List<IMethod> imethods = Arrays.asList(anonymousIType.getMethods());
 

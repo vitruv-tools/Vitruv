@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;

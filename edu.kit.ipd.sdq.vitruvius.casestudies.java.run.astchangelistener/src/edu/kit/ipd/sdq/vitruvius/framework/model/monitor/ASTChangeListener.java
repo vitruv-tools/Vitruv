@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.ui.IStartup;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.ConcreteChangeClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postchange.CreatePackageClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postchange.DeletePackageClassifier;
@@ -42,7 +43,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreco
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.RenameMethodClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.postreconcile.RenameTypeClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.CompilationUnitUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 

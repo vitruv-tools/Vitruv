@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -39,6 +39,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
  *         level is declared in {@link JavaModel2ASTCorrespondence}.
  *
  */
+@SuppressWarnings("deprecation")
 public final class JavaModel2AST {
 
     private static ASTParser parser;
@@ -53,7 +54,8 @@ public final class JavaModel2AST {
 
     // in one CompilationUnit type names are unique
     // has to support anonymous types!
-    public static TypeDeclaration getTypeDeclaration(final IType itype, final CompilationUnit astUnit) {
+    @SuppressWarnings("unchecked")
+	public static TypeDeclaration getTypeDeclaration(final IType itype, final CompilationUnit astUnit) {
         try {
             if (itype.exists() && itype.isAnonymous()) {
                 return null;
@@ -200,7 +202,8 @@ public final class JavaModel2AST {
         return null;
     }
 
-    private static MethodDeclaration getMethodDeclarationInAnonymousClass(final IMethod imethod,
+    @SuppressWarnings("unchecked")
+	private static MethodDeclaration getMethodDeclarationInAnonymousClass(final IMethod imethod,
             final CompilationUnit unit, final IType itype) {
         final String anonymousClassToString = itype.toString();
         final int indexOfAnonymousClass = Integer.parseInt(anonymousClassToString
@@ -211,7 +214,7 @@ public final class JavaModel2AST {
         parentMethodDeclaration.accept(anonFinder);
         final AnonymousClassDeclaration astAnonymousClass = (AnonymousClassDeclaration) anonFinder.getFoundASTNodes()
                 .get(indexOfAnonymousClass);
-        final ASTNodeByTypeFinder methodFinder = new ASTNodeByTypeFinder(MethodDeclaration.class);
+//        final ASTNodeByTypeFinder methodFinder = new ASTNodeByTypeFinder(MethodDeclaration.class);
         for (final Object method : Util.filterBySupertype(astAnonymousClass.bodyDeclarations(),
                 MethodDeclaration.class)) {
             final MethodDeclaration methodDeclaration = (MethodDeclaration) method;

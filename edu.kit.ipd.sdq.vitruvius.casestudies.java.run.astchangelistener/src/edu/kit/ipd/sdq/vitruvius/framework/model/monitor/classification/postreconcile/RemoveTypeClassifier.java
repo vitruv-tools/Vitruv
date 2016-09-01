@@ -12,12 +12,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.ConcreteChangeClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteClassEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteInterfaceEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteTypeEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 
 public class RemoveTypeClassifier implements ConcreteChangeClassifier {
 

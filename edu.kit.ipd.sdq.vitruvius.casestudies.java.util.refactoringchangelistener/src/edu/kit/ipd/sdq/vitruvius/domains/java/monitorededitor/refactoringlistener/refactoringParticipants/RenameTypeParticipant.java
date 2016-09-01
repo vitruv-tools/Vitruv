@@ -6,10 +6,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameClassEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 
 public class RenameTypeParticipant extends RenameParticipantAdapter {
 

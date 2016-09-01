@@ -1,4 +1,4 @@
-package javamodel2ast;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.activator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

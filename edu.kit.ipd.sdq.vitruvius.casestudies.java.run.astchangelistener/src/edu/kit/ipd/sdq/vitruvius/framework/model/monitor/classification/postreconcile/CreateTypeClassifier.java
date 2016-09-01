@@ -13,12 +13,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.ConcreteChangeClassifier;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateClassEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateInterfaceEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateTypeEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 
 public class CreateTypeClassifier implements ConcreteChangeClassifier {
 
