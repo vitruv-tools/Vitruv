@@ -13,8 +13,6 @@ class VitruviusDslsCommonConstants {
 		"edu.kit.ipd.sdq.vitruvius.framework.correspondence",
 		"edu.kit.ipd.sdq.vitruvius.framework.change.processing",
 		"edu.kit.ipd.sdq.vitruvius.framework.userinteraction",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api",
  		"edu.kit.ipd.sdq.vitruvius.dsls.response.runtime"
 	]
