@@ -16,7 +16,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor.HadoopCodeElements.HadoopCoompilationUnitSize;
 
 public class EditorManipulator extends WriterAppender {

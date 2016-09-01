@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,8 +17,11 @@ import org.eclipse.ui.IStartup;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ASTChangeListener;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeOperationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.RefactoringChangeListener;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.RefactoringStatusListener;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;

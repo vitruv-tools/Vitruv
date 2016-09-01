@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: MonitoredEditor
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: monitorededitor.Activator
+Bundle-Name: Vitruvius Domain Java MonitoredEditor
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.monitorededitor,
@@ -26,7 +26,7 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor,
- edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil
+Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil

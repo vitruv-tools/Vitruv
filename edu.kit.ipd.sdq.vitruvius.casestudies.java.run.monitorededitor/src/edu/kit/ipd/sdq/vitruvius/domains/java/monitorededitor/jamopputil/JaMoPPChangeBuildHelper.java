@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -29,7 +29,6 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaRemo
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaReplaceSingleValuedEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RemoveRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootFactory;
@@ -105,22 +104,22 @@ public class JaMoPPChangeBuildHelper {
         return updateEReference;
     }
 
-    private static EChange createChangeSuperClassChange(final Class changedClass, final TypeReference superClass) {
-        final JavaReplaceSingleValuedEReference<EObject, TypeReference> updateEReference = ReferenceFactory.eINSTANCE
-                .createJavaReplaceSingleValuedEReference();
-        updateEReference.setOldAffectedEObject(changedClass);
-        updateEReference.setAffectedEObject(superClass.eContainer());
-        final EReference superClassReference = superClass.eContainmentFeature();
-        updateEReference.setAffectedFeature(superClassReference);
-        updateEReference.setOldValue((TypeReference) changedClass.eGet(superClassReference));
-        updateEReference.setNewValue(superClass);
-        return updateEReference;
-    }
-
-    private static EChange createAddSuperTypeChange(final ConcreteClassifier originalBase,
-            final TypeReference superType) {
-        return createAddNonRootEObjectInListChange(superType, originalBase);
-    }
+//    private static EChange createChangeSuperClassChange(final Class changedClass, final TypeReference superClass) {
+//        final JavaReplaceSingleValuedEReference<EObject, TypeReference> updateEReference = ReferenceFactory.eINSTANCE
+//                .createJavaReplaceSingleValuedEReference();
+//        updateEReference.setOldAffectedEObject(changedClass);
+//        updateEReference.setAffectedEObject(superClass.eContainer());
+//        final EReference superClassReference = superClass.eContainmentFeature();
+//        updateEReference.setAffectedFeature(superClassReference);
+//        updateEReference.setOldValue((TypeReference) changedClass.eGet(superClassReference));
+//        updateEReference.setNewValue(superClass);
+//        return updateEReference;
+//    }
+//
+//    private static EChange createAddSuperTypeChange(final ConcreteClassifier originalBase,
+//            final TypeReference superType) {
+//        return createAddNonRootEObjectInListChange(superType, originalBase);
+//    }
 
     public static EChange createAddClassChange(final Class newClass, final CompilationUnit beforeChange) {
         return createAddNonRootEObjectInListChange(newClass, beforeChange);

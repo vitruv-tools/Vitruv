@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +35,9 @@ import org.emftext.language.java.types.Type;
 import org.emftext.language.java.types.TypeReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.AST2JaMoPP;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.JaMoPPChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
@@ -78,9 +81,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameMethodEven
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenamePackageDeclarationEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenamePackageEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameParameterEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.AST2JaMoPP;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.CompilationUnitAdapter;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.JaMoPPChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
@@ -113,7 +113,7 @@ public class ChangeResponder implements ChangeEventVisitor {
 
     private void fillDispatcherMap() {
         for (final ChangeEventExtendedVisitor visitor : getRegisteredVisitors(
-                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors")) {
+                "edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor")) {
             for (final java.lang.Class<? extends ChangeClassifyingEventExtension> clazz : visitor.getTreatedClasses()) {
                 this.dispatcher.put(clazz, visitor);
             }

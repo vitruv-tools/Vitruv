@@ -3,7 +3,7 @@
 <schema targetNamespace="MonitoredEditor" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="MonitoredEditor" id="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors" name="Change Event Extended Visitors"/>
+         <meta.schema plugin="MonitoredEditor" id="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor" name="Change Event Extended Visitors"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

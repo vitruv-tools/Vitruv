@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil;
 
 import java.util.HashMap;
 
@@ -41,7 +41,9 @@ import org.emftext.language.java.types.impl.VoidImpl;
 public final class AST2JaMoPPCorrespondence {
 
     private static HashMap<Class<?>, String> primitiveTypeStrings = new HashMap<Class<?>, String>() {
-        {
+		private static final long serialVersionUID = 8465597480374410579L;
+
+		{
             this.put(IntImpl.class, "int");
             this.put(CharImpl.class, "char");
             this.put(ByteImpl.class, "byte");

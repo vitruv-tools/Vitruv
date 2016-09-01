@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

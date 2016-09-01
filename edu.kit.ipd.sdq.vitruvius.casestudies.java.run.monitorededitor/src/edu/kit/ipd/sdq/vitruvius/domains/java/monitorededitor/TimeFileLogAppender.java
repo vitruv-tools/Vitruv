@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,6 @@ import org.apache.log4j.spi.LoggingEvent;
 public final class TimeFileLogAppender extends FileAppender {
 
     private static final String TIME_FORMAT = "yyyy-MM-dd HH.mm.ss";
-    private static final String MONITORED_EDITOR_TIME_LOG = "MonitoredEditorTimeLog";
     private static final String MSG_PATTERN = "TimeMeasurement:";
     private static TimeFileLogAppender app = null;
 
