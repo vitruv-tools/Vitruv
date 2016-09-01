@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeEventExtendedVisitor;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeSubmitter;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeEventExtendedVisitor;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeSubmitter;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEventExtension;
 
 /**

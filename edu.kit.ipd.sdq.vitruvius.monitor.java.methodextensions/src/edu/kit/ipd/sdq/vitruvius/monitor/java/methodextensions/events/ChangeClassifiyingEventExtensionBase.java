@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEventExtension;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeEventVisitor;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.jamopputil.CompilationUnitAdapter;
 import edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.utils.JaMoPPUtilities;
 
 /**

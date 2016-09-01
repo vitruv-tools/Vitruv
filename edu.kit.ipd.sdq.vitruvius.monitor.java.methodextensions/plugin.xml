@@ -9,7 +9,7 @@
       </provides>
    </extension>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.changeeventextendedvisitors">
+         point="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor">
       <provides
             provider="edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.changeresponder.MethodParameterNameChangedVisitor">
       </provides>

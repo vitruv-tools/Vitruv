@@ -100,6 +100,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilde
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.ReferenceFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.extensions.tests.TestUserInteractor;
 import edu.kit.ipd.sdq.vitruvius.extensions.tests.VitruviusCasestudyTest;
 import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
@@ -109,7 +110,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTrans
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;

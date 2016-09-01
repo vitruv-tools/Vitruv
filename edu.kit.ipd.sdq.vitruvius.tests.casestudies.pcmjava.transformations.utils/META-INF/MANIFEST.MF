@@ -29,6 +29,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
  org.apache.commons.lang,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.run.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor,
  org.eclipse.xtext.xbase.lib,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing
