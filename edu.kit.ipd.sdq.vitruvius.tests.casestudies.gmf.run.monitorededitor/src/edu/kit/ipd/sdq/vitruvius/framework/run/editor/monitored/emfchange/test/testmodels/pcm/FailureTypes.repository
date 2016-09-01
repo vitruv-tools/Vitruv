@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Repository xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:pcm.reliability="http://sdq.ipd.uka.de/PalladioComponentModel/Reliability/5.0" id="_oP6ycOgjEd-ir5gxNwImPA" entityName="FailureTypes">
-  <failureTypes__Repository xsi:type="pcm.reliability:HardwareInducedFailureType" id="_HlRi4UNsEd-z_dlODpG6uw" entityName="HardwareInducedFailure (CPU)" processingResourceType__HardwareInducedFailureType="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-  <failureTypes__Repository xsi:type="pcm.reliability:NetworkInducedFailureType" id="_P0TZ10NsEd-z_dlODpG6uw" entityName="NetworkInducedFailure (LAN)" communicationLinkResourceType__NetworkInducedFailureType="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
-  <failureTypes__Repository xsi:type="pcm.reliability:HardwareInducedFailureType" id="_L-N5F0NsEd-z_dlODpG6uw" entityName="HardwareInducedFailure (HDD)" processingResourceType__HardwareInducedFailureType="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
-  <failureTypes__Repository xsi:type="pcm.reliability:HardwareInducedFailureType" id="_41yAR0PGEd-ZmrACNr1Mew" entityName="HardwareInducedFailure (DELAY)" processingResourceType__HardwareInducedFailureType="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
-</Repository>
