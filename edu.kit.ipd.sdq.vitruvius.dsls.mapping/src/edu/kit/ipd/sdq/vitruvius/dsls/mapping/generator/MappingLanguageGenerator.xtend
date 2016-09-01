@@ -1,15 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractMappingRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.CandidateGeneratorImpl
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappedCorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingUtil
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.Candidate
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.CandidateGenerator
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MappingRealization
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.MatchUpdate
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.AbstractMappingRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.CandidateGeneratorImpl
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappedCorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingUtil
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.Candidate
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.CandidateGenerator
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MappingRealization
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.MatchUpdate
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
@@ -131,10 +131,10 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 					.setTrigger(imp.package)
 					.setTargetChange(imp.otherImport.package)
 					.setExecutionBlock('''
-						final edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState state =
-							new edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MappingExecutionState(transformationResult, this.userInteracting, blackboard);
+						final edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState state =
+							new edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState(transformationResult, this.userInteracting, blackboard);
 						«importToAllCalls.get(imp).join("\n")»
-						edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.DefaultContainmentMapping
+						edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.DefaultContainmentMapping
 							.INSTANCE.applyEChange(change, blackboard, state);
 					''')
 					.generateResponse

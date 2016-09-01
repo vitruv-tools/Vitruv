@@ -25,7 +25,7 @@ class MappingPluginProjectHelper {
  		"org.eclipse.xtend.lib.macro",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.api"
+ 		"edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping"
 	]
 	
 	/**

@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.MIRMappingHelper
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MIRMappingHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGeneratorHelper.ImportHelper
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.AttributeEquivalenceExpression
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.ConstraintBooleanLiteral

@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.jvmmodel
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.AbstractWrapper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.AbstractCorrespondenceWrapper
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.api.interfaces.ElementProvider
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.AbstractWrapper
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.AbstractCorrespondenceWrapper
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.interfaces.ElementProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorNameProvider
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.MappingLanguageGeneratorState
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.Mapping
