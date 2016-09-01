@@ -13,7 +13,7 @@
  *   DevBoost GmbH - Berlin, Germany
  *      - initial API and implementation
  ******************************************************************************/
-package edu.kit.ipd.sdq.vitruvius.framework.code.jamopp;
+package edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class JaMoPP {
 
     private final ResourceSet rs;
 
-    public JaMoPP() {
+    protected JaMoPP() {
         this.rs = new ResourceSetImpl();
         this.setUp();
     }

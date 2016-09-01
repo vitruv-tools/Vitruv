@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.emftext.language.java.containers.CompilationUnit;
 
-import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser;
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser.JaMoPPParser;
 
 public final class AST2JaMoPP {
 

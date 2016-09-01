@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors.IContentValidator
-import edu.kit.ipd.sdq.vitruvius.framework.code.jamopp.JaMoPPParser
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser.JaMoPPParser
 import java.io.ByteArrayInputStream
 import org.eclipse.emf.common.util.URI
 import java.nio.charset.StandardCharsets

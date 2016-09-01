@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.code.jamopp;
+package edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser;
 
 import java.io.File;
 import java.io.IOException;

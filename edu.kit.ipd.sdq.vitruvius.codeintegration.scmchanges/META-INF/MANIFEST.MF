@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  com.google.gson,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util.jamoppbridge,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser,
  org.eclipse.jface.text
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
