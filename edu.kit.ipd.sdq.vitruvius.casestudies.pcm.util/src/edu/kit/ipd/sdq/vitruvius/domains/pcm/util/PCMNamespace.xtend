@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util
+package edu.kit.ipd.sdq.vitruvius.domains.pcm.util
 
 class PCMNamespace {
 	private new() {

@@ -38,7 +38,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.Corre
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {

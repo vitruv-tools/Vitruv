@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.OperationProvidedRoleMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.OperationRequiredRoleMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.repository.BasicComponentMappingTransformation

@@ -19,10 +19,11 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.domains.pcm.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
- edu.kit.ipd.sdq.vitruvius.framework.correspondence
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence,
+ org.palladiosimulator.pcm
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java

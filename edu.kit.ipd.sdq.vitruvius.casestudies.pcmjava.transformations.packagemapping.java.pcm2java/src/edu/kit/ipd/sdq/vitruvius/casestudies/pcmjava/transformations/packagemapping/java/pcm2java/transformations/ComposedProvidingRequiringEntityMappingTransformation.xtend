@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
