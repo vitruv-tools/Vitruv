@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.java.run.monitorededitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.tests.monitorededitor;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
