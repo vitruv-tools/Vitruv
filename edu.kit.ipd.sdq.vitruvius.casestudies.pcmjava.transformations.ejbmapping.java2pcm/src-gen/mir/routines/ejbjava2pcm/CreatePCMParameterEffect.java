@@ -1,9 +1,9 @@
 package mir.routines.ejbjava2pcm;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;

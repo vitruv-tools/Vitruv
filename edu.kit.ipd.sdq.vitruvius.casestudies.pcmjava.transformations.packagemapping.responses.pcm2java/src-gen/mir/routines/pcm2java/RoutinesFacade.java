@@ -1,8 +1,8 @@
 package mir.routines.pcm2java;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectsFacade;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectsFacade;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.Constructor;

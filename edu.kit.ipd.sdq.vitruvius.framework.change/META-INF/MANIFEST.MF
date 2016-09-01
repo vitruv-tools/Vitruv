@@ -9,7 +9,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.emf.ecore.change;visibility:=reexport,
+ org.eclipse.emf.ecore.change,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.commons.util.emf,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange;visibility:=reexport

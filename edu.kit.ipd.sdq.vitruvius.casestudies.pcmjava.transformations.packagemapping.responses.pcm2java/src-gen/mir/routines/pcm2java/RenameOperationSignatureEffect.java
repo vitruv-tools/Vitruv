@@ -3,9 +3,9 @@ package mir.routines.pcm2java;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.AbstractEffectRealization;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.ResponseExecutionState;
-import edu.kit.ipd.sdq.vitruvius.dsls.response.runtime.structure.CallHierarchyHaving;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractEffectRealization;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.ResponseExecutionState;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 import java.io.IOException;
