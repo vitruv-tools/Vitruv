@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Domains Java Refactoring Change Listener
+Bundle-Name: Vitruvius Domain Java Refactoring Change Listener
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.activator.Activator
