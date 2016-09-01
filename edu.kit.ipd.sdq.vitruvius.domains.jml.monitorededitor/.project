@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor</name>
+	<name>edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor</name>
 	<comment></comment>
 	<projects>
 		<project>edu.kit.ipd.sdq.seifermann.thesis.cst</project>

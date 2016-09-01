@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor;
 
 import java.util.Collection;
 import java.util.Vector;
@@ -20,9 +20,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.ResourceUtil;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLTypeExpression;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodExpression;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLTypeExpression;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;

@@ -1,19 +1,19 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection;
 
 import javax.swing.JOptionPane;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.IdentifierHaving;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDecl;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.IdentifierHaving;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDecl;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VariableDeclarator;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.ModelUtilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ChangeBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ModelUtilities;
 
 /**
  * Base class for rename operations on member elements in JML.

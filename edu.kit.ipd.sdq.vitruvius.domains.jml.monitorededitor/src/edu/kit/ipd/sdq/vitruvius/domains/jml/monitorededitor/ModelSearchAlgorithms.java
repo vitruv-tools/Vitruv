@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor;
 
 import java.util.ArrayList;
 import java.util.Collection;

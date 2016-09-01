@@ -1,6 +1,6 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier;
 
 /**
  * Change injector for modifcations on the pure modifier of JML methods.

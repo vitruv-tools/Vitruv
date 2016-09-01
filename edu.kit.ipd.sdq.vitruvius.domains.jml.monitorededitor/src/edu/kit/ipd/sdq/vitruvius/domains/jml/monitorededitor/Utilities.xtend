@@ -1,8 +1,8 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSinglelineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSinglelineSpec
 import java.util.Collection
 import org.apache.commons.lang.RandomStringUtils
 import org.eclipse.emf.common.util.EList

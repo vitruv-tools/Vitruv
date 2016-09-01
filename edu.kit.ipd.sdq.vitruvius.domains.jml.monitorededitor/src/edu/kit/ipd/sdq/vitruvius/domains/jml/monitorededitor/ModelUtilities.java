@@ -1,8 +1,10 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor;
 
 import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
+
+import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.Utilities;
 
 /**
  * Utility class for general model handling tools.

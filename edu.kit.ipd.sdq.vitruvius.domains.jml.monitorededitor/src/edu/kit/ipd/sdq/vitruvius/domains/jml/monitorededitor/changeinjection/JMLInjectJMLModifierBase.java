@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,15 @@ import javax.swing.JOptionPane;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.Choice.EObjectToString;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.ModelUtilities;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection.Choice.EObjectToString;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaInsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.reference.JavaRemoveEReference;

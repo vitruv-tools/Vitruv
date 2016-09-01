@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection;
 
 import java.util.HashMap;
 import java.util.Map;

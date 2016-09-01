@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.CommandState;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.CommandState.Commands;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SourceDirProvider;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection.CommandState;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection.CommandState.Commands;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredProjectsRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.RegisteredMonitoredEditor;
 

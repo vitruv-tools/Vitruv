@@ -1,18 +1,18 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection;
+package edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLInvariantExpression;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Expression;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLInvariantExpression;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.ModelUtilities;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.changeinjection.Choice.EObjectToString;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ChangeBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.changeinjection.Choice.EObjectToString;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.EMFModelChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
