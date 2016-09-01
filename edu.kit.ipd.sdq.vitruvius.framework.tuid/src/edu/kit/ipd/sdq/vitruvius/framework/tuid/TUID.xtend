@@ -43,9 +43,9 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
  * <br/>
  * @author kramerm
  */
-class TUID implements Serializable {
+final class TUID implements Serializable {
 	
-	private static final long serialVersionUID = 5018494116382201707L
+	protected static final long serialVersionUID = 5018494116382201707L
 	
 	static val SEGMENTS = generateForwardHashedBackwardLinkedTree()
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
@@ -93,7 +93,7 @@ class TUID implements Serializable {
 			var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTUIDString)
 			var TUID instance
 			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix != null) {
-				lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator())
+				lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator());
 			}
 			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
@@ -169,11 +169,16 @@ class TUID implements Serializable {
 	def private String getRenameOrMoveExceptionMsgPrefix(TUID anotherTUID) '''To either rename or move the last segment of '«this»' according to '«anotherTUID»' both TUIDs have to'''
 	
 	def private boolean lastSegmentsAreEquivalent(TUID anotherTUID) {
-		return this.getLastSegment()?.getValueString()?.equals(anotherTUID?.getLastSegment()?.getValueString())
+		val thisLastSegment = this.getLastSegment();
+		val otherLastSegment = anotherTUID.getLastSegment();
+		if (thisLastSegment != null && otherLastSegment != null) {
+			return thisLastSegment.valueString != null && thisLastSegment.valueString.equals(otherLastSegment.valueString);
+		}
+		return false
 	}
 	
 	def private boolean haveAtLeastTwoSegments(TUID anotherTUID) {
-		return this.getSegmentCount() > 2 && anotherTUID?.getSegmentCount() > 2
+		return this.getSegmentCount() > 2 && anotherTUID != null && anotherTUID.getSegmentCount() > 2
 	}
 	
 	/** 
@@ -356,6 +361,7 @@ lastSegment2TUIDMap:
 		return true
 	}
 
+	// Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>>
 	interface BeforeAfterTUIDUpdate<T> {
 		def T performPreAction(TUID oldTUID)
 		def void performPostAction(T value)
