@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated mapping_correspondence -->
+      <package
+            uri="http://edu.kit.ipd.sdq.vitruvius/Correspondence/Mapping/1.0"
+            class="edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.MappingPackage"
+            genModel="model/mapping_correspondence.genmodel"/>
+   </extension>
+
+</plugin>

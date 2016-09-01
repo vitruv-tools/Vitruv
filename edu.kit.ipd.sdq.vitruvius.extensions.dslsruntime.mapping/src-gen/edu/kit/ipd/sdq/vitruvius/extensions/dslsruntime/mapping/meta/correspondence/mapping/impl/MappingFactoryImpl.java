@@ -1,8 +1,8 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.impl;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.impl;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.*;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.*;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;

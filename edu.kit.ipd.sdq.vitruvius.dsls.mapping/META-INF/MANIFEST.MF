@@ -48,8 +48,5 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.mapping,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.serializer,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.services,
  edu.kit.ipd.sdq.vitruvius.dsls.mapping.validation,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.impl,
- edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util
+ edu.kit.ipd.sdq.vitruvius.dsls.mapping.scoping
 

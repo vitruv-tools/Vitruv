@@ -1,8 +1,11 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.util;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.*;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.*;
+
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -15,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingPackage
+ * @see edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.MappingPackage
  * @generated
  */
 public class MappingAdapterFactory extends AdapterFactoryImpl {
@@ -71,7 +74,7 @@ public class MappingAdapterFactory extends AdapterFactoryImpl {
 				return createMappingCorrespondenceAdapter();
 			}
 			@Override
-			public Adapter caseCorrespondence(edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence object) {
+			public Adapter caseCorrespondence(Correspondence object) {
 				return createCorrespondenceAdapter();
 			}
 			@Override
@@ -95,13 +98,13 @@ public class MappingAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingCorrespondence <em>Correspondence</em>}'.
+	 * Creates a new adapter for an object of class '{@link edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.MappingCorrespondence <em>Correspondence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingCorrespondence
+	 * @see edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.MappingCorrespondence
 	 * @generated
 	 */
 	public Adapter createMappingCorrespondenceAdapter() {

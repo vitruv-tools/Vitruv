@@ -1,8 +1,11 @@
 /**
  */
-package edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.util;
+package edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.util;
 
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.*;
+import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.*;
+
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -18,7 +21,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see edu.kit.ipd.sdq.vitruvius.dsls.mapping.meta.correspondence.mapping.MappingPackage
+ * @see edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.meta.correspondence.mapping.MappingPackage
  * @generated
  */
 public class MappingSwitch<T> extends Switch<T> {
@@ -102,7 +105,7 @@ public class MappingSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseCorrespondence(edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence object) {
+	public T caseCorrespondence(Correspondence object) {
 		return null;
 	}
 
