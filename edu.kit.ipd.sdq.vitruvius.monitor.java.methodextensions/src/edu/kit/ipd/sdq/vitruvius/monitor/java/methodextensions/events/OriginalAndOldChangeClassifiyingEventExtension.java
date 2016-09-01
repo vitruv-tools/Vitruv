@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.monitor.java.methodextensions.events;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEventExtension;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEventExtension;
 
 /**
  * Base interface for change events, which are extensions for the

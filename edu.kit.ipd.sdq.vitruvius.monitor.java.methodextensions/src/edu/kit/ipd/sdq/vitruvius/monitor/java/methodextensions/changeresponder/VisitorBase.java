@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeEventExtendedVisitor;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.ChangeSubmitter;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEventExtension;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEventExtension;
 
 /**
  * Base class for change event visitors used as extension to the monitored
