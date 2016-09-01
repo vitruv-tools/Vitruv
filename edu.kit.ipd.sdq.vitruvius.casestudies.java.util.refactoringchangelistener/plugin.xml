@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.RenameMethodParticipant"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants.RenameMethodParticipant"
             id="RefactoringChangeListener.renameParticipant1"
             name="RenameMethodParticipant">
             <enablement>
@@ -22,7 +22,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.RenameTypeParticipant"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants.RenameTypeParticipant"
             id="RefactoringChangeListener.renameParticipant2"
             name="RenameTypeParticipant">
             <enablement>
@@ -40,7 +40,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.RenameFieldParticipant"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants.RenameFieldParticipant"
             id="RefactoringChangeListener.renameParticipant3"
             name="RenameFieldParticipant">
          <enablement>
@@ -58,7 +58,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
       <renameParticipant
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.RenameLocalVariableParticipant"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants.RenameLocalVariableParticipant"
             id="RefactoringChangeListener.renameParticipant4"
             name="RenameLocalVariableParticipant">
          <enablement>
@@ -76,7 +76,7 @@
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
       <moveParticipant
-            class="edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants.MoveMethodParticipant"
+            class="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants.MoveMethodParticipant"
             id="RefactoringChangeListener.moveParticipant1"
             name="name">
          <enablement>

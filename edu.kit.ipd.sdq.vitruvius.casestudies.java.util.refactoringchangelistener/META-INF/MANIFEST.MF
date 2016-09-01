@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RefactoringChangeListener
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.java.util.refactoringchangelistener;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: refactoringchangelistener.Activator
+Bundle-Name: Vitruvius Domains Java Refactoring Change Listener
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.activator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.casestudies.java.run.changeclassification,
@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text;bundle-version="3.8.101",
  org.eclipse.ui.editors;bundle-version="3.8.100",
  org.eclipse.ui.workbench
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.model.monitor
+Export-Package: edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener
 Import-Package: org.apache.log4j

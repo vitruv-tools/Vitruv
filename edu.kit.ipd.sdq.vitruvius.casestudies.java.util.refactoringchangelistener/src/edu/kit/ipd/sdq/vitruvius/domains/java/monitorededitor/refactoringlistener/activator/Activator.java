@@ -1,4 +1,4 @@
-package refactoringchangelistener;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.activator;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

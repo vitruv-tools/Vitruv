@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener;
 
 /**
  * @author messinger

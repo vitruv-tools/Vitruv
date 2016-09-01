@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,8 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.RefactoringStatusListener.RefactoringStatus;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener.RefactoringStatus;
+import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeOperationListener;
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 
 /**
@@ -39,7 +40,6 @@ public final class RefactoringChangeListener implements IStartup, IRefactoringEx
     private static final Logger LOG = Logger.getLogger(RefactoringChangeListener.class);
     private final List<ChangeOperationListener> listeners;
     private final List<RefactoringStatusListener> statusListeners;
-    private final QuickFixListener quickFixListener;
     private boolean listening = false;
     private List<String> monitoredProjectNames;
 
@@ -52,7 +52,6 @@ public final class RefactoringChangeListener implements IStartup, IRefactoringEx
         refactoringService.addExecutionListener(this);
         ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
         service.addExecutionListener(this);
-        this.quickFixListener = QuickFixListener.getInstance();
     }
 
     /**

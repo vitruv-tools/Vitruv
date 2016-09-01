@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor.refactoringParticipants;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.refactoringParticipants;
 
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;

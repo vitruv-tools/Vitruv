@@ -1,36 +1,26 @@
-package edu.kit.ipd.sdq.vitruvius.framework.model.monitor;
+package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.ImportDeclaration;
-import org.eclipse.jdt.internal.ui.text.correction.GetterSetterCorrectionSubProcessor.SelfEncapsulateFieldProposal;
-import org.eclipse.jdt.ui.text.java.correction.ASTRewriteCorrectionProposal;
 import org.eclipse.jface.text.contentassist.ContentAssistEvent;
 import org.eclipse.jface.text.contentassist.ICompletionListener;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.quickassist.IQuickAssistAssistant;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
 import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.util.JavaModel2AST;
 
 public final class QuickFixListener implements ICompletionListener, IPartListener2 {
 
     private static QuickFixListener instance = null;
-    private ICompletionProposal lastProposal;
     private Method getSourceViewer;
     private final IWorkbench workbench;
 
@@ -48,8 +38,8 @@ public final class QuickFixListener implements ICompletionListener, IPartListene
 
             @Override
             public void run() {
-                IWorkbenchWindow window = QuickFixListener.this.workbench.getActiveWorkbenchWindow();
-                IPartService partService = window.getPartService();
+//                IWorkbenchWindow window = QuickFixListener.this.workbench.getActiveWorkbenchWindow();
+//                IPartService partService = window.getPartService();
                 // partService.addPartListener(QuickFixListener.this);
             }
         });
@@ -64,7 +54,7 @@ public final class QuickFixListener implements ICompletionListener, IPartListene
 
     @Override
     public void selectionChanged(ICompletionProposal proposal, boolean smartToggle) {
-        this.lastProposal = proposal;
+//        this.lastProposal = proposal;
     }
 
     @Override
@@ -75,28 +65,28 @@ public final class QuickFixListener implements ICompletionListener, IPartListene
     @Override
     public void assistSessionEnded(ContentAssistEvent event) {
         List<ChangeClassifyingEvent> changes = null;
-        if (this.lastProposal instanceof SelfEncapsulateFieldProposal) {
-            // handle getter/setter creation
-        }
+//        if (this.lastProposal instanceof SelfEncapsulateFieldProposal) {
+//            // handle getter/setter creation
+//        }
         RefactoringChangeListener.getInstance().addChangeClassifyingEvents(changes);
     }
 
-    private List<ChangeClassifyingEvent> handleAddImportCorrectionProposal() {
-        List<ChangeClassifyingEvent> addImportEvents = new ArrayList<ChangeClassifyingEvent>();
-        String src = null;
-        try {
-            src = ((ASTRewriteCorrectionProposal) this.lastProposal).getPreviewContent();
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-        CompilationUnit unit = JavaModel2AST.parseCompilationUnit(src.toCharArray());
-        for (String addedImport : ((ASTRewriteCorrectionProposal) this.lastProposal).getImportRewrite()
-                .getAddedImports()) {
-            ImportDeclaration importDeclaration = JavaModel2AST.getImportDeclaration(addedImport, unit);
-            // addImportEvents.add(new AddImportEvent(importDeclaration));
-        }
-        return addImportEvents;
-    }
+//    private List<ChangeClassifyingEvent> handleAddImportCorrectionProposal() {
+//        List<ChangeClassifyingEvent> addImportEvents = new ArrayList<ChangeClassifyingEvent>();
+//        String src = null;
+//        try {
+//            src = ((ASTRewriteCorrectionProposal) this.lastProposal).getPreviewContent();
+//        } catch (CoreException e) {
+//            e.printStackTrace();
+//        }
+//        CompilationUnit unit = JavaModel2AST.parseCompilationUnit(src.toCharArray());
+//        for (String addedImport : ((ASTRewriteCorrectionProposal) this.lastProposal).getImportRewrite()
+//                .getAddedImports()) {
+//            ImportDeclaration importDeclaration = JavaModel2AST.getImportDeclaration(addedImport, unit);
+//            // addImportEvents.add(new AddImportEvent(importDeclaration));
+//        }
+//        return addImportEvents;
+//    }
 
     private void addQuickAssistantListenerToEditor(IWorkbenchPartReference part) {
         IWorkbenchPage page = part.getPage();
