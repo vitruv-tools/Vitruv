@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.dsls.mapping.util
+Bundle-Name: Vitruvius DSLs Mapping Language Utilities
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.mapping.util
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
