@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace;
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
