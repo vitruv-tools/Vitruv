@@ -1,6 +1,5 @@
 package edu.kit.ipd.sdq.vitruvius.framework.tuid
 
-import java.io.ObjectStreamException
 import java.io.Serializable
 import java.util.Arrays
 import java.util.Collection
@@ -93,7 +92,10 @@ class TUID implements Serializable {
 			val splitTUIDString = split(tuidString)
 			var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTUIDString)
 			var TUID instance
-			if (lastSegmentOrPrefix?.toString(VitruviusConstants.getTUIDSegmentSeperator())?.equals(tuidString)) {
+			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix != null) {
+				lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator())
+			}
+			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
 				instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix)
 				if (instance === null) {
@@ -252,7 +254,7 @@ class TUID implements Serializable {
 	def private String getNewLastSegmentIfIdenticalExceptForLastSegment(TUID anotherTUID) {
 		val newLastSegmentString = anotherTUID?.getLastSegment()?.getValueString()
 		val tuidWithNewLastSegment = getTUIDWithNewLastSegment(newLastSegmentString)
-		if (tuidWithNewLastSegment?.equals(anotherTUID)) {
+		if (tuidWithNewLastSegment != null && tuidWithNewLastSegment.equals(anotherTUID)) {
 			return newLastSegmentString
 		} else {
 			return null
@@ -354,18 +356,11 @@ lastSegment2TUIDMap:
 		return true
 	}
 
-	// Triple<TUID, String, Iterable<Pair<List<TUID>, Set<Correspondence>>>>
 	interface BeforeAfterTUIDUpdate<T> {
 		def T performPreAction(TUID oldTUID)
 		def void performPostAction(T value)
 	}
 
-	def private Object writeReplace() throws ObjectStreamException {
-		val TUID4Serialization tuid4Serialization = new TUID4Serialization()
-		tuid4Serialization.setTUIDString(toString())
-		return tuid4Serialization
-	}
-	
 	@Deprecated
 	def private int getCommonPrefixSegmentsCount(TUID otherTUID) {
 		val thisTUIDString = toString()

@@ -34,8 +34,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceFactory
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID.BeforeAfterTUIDUpdate
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
-import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
-import org.eclipse.emf.common.command.Command
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
@@ -511,7 +509,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 				val correspondences = oldTUIDList2CorrespondencesEntry.second
 				// replace the old tuid in the list with the new tuid
 				// oldCurrentTUID is already the new TUID because this happens after the update
-				val replacedTUID = oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
+//				val replacedTUID = oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
 //				if (replacedTUID == null) {
 //					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
 //				}
