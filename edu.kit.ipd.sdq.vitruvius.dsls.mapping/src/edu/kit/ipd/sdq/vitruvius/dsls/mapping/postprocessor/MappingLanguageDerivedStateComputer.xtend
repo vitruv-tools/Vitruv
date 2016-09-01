@@ -8,10 +8,7 @@ import org.eclipse.xtext.resource.DerivedStateAwareResource
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.AttributeEquivalenceExpression
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
-import org.eclipse.emf.ecore.resource.Resource
 
 class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 	override discardDerivedState(DerivedStateAwareResource resource) {

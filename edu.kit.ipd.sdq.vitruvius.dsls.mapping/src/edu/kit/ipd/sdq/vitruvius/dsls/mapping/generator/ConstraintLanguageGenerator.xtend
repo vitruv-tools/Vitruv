@@ -19,7 +19,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.ArrayList
 import java.util.List
 import java.util.Map
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 
@@ -31,15 +30,10 @@ import static extension java.util.Objects.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.ModelElement
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
-import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.MappingFile
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
-import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 
 class ConstraintLanguageGenerator {
-	private static final Logger LOGGER = Logger.getLogger(ConstraintLanguageGenerator)
-
 	private final extension EMFGeneratorHelper emfGeneratorHelper
 	private final extension MappingLanguageGeneratorNameProvider nameProvider
 	private final extension MappingLanguageGeneratorState state

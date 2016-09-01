@@ -18,7 +18,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.JavaGener
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
 import java.util.Set
 import org.eclipse.emf.ecore.EDataType
-import com.google.inject.Inject
 
 /**
  * Generates a class that can be used in generated code

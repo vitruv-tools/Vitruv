@@ -6,7 +6,6 @@ import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.function.BiFunction
-import org.eclipse.xtend.lib.annotations.Delegate
 import org.eclipse.xtext.generator.IFileSystemAccess
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*

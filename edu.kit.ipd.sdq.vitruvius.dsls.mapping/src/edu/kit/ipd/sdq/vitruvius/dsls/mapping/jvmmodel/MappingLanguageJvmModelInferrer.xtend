@@ -36,7 +36,6 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHel
  * 
  * @author Dominik Werle     
  */
- @SuppressWarnings("discouraged")
 class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
 	@Inject MappingLanguageDerivedStateComputer derivedStateComputer

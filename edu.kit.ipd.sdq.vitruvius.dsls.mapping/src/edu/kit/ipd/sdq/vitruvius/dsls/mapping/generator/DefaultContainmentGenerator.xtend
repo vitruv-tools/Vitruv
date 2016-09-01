@@ -1,12 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator
 
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.TemplateGenerator
-import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MIRMappingHelper
 import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.helpers.MappingLanguageHelper.*
 import edu.kit.ipd.sdq.vitruvius.dsls.mapping.mappingLanguage.DefaultContainExpression
 import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping.MappingExecutionState
-import static extension edu.kit.ipd.sdq.vitruvius.dsls.mapping.generator.ConstraintLanguageGenerator.*
-import org.eclipse.emf.ecore.EObject
 import edu.kit.ipd.sdq.vitruvius.dsls.mirbase.mirBase.MetamodelImport
 import java.util.Set
 

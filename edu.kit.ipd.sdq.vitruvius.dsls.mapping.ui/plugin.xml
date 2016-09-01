@@ -475,42 +475,6 @@
          <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
       </factory> 
    </extension>
-   <extension point="org.eclipse.ui.editorActions">
-      <editorContribution targetID="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage" 
-                          id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.rulerActions">
-	     <action
-	             label="Not Used"
-	             class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-	             style="push"
-	             actionID="RulerDoubleClick"
-	             id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.doubleClickBreakpointAction"/>
-	  </editorContribution>
-   </extension>
-   <extension point="org.eclipse.ui.popupMenus">
-      <viewerContribution
-         targetID="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.RulerContext"
-         id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.RulerPopupActions">
-         <action
-            label="Toggle Breakpoint"
-            class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-            menubarPath="debug"
-            id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.rulerContextMenu.toggleBreakpointAction">
-         </action>
-         <action
-            label="Not used"
-            class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
-            menubarPath="debug"
-            id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.rulerContextMenu.enableDisableBreakpointAction">
-         </action>
-         <action
-           label="Breakpoint Properties"
-           helpContextId="breakpoint_properties_action_context"
-           class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.MappingLanguageExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
-           menubarPath="group.properties"
-           id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.MappingLanguage.rulerContextMenu.openBreapointPropertiesAction">
-         </action>
-      </viewerContribution>
-   </extension>
     <!-- Introduce Local Variable Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
 		<handler 
@@ -586,23 +550,4 @@
     </fileTypes>
   </extension>
   
-  <!-- Launch configuration -->
-  <extension
-        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-     <launchConfigurationTabGroup
-           class="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launcher.MappingLanguageLaunchConfigurationTabGroup"
-           id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.tabGroupGenerateMappings"
-           type="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launchConfigurationGenerateMappings">
-     </launchConfigurationTabGroup>
-  </extension>
-    <extension
-        point="org.eclipse.debug.core.launchConfigurationTypes">
-     <launchConfigurationType
-           delegate="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launcher.MappingLanguageLaunchConfigurationDelegate"
-           id="edu.kit.ipd.sdq.vitruvius.dsls.mapping.ui.launchConfigurationGenerateMappings"
-           modes="run"
-           name="Generate Mappings">
-     </launchConfigurationType>
-  </extension>
-
 </plugin>
