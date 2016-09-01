@@ -21,7 +21,7 @@ import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.Collect
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 

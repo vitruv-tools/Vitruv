@@ -70,7 +70,7 @@ import org.emftext.language.java.modifiers.Public
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

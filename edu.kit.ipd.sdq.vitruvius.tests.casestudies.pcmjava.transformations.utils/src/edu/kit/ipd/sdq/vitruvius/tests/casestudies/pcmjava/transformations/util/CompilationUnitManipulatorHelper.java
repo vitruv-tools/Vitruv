@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace;
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.extensions.tests.util.TestUtil;
 
 /**

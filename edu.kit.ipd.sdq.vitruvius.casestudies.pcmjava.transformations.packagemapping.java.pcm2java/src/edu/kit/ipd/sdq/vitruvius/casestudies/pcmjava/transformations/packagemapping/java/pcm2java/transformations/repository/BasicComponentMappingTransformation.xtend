@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
 

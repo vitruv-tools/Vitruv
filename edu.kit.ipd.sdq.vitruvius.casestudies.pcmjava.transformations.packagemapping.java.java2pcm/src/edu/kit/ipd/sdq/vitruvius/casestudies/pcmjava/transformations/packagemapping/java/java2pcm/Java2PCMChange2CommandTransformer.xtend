@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming

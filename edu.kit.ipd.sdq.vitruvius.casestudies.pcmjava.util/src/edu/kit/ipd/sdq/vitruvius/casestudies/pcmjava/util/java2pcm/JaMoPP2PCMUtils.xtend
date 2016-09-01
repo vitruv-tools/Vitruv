@@ -37,7 +37,7 @@ import org.palladiosimulator.pcm.system.System
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 

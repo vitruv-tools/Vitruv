@@ -20,7 +20,7 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response;bundle-version="1.0.0",
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.casestudies.java.util;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
