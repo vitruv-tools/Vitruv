@@ -11,8 +11,8 @@ import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
 import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.RefactoringChangeListener;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 
 public abstract class RenameParticipantAdapter extends RenameParticipant {
 

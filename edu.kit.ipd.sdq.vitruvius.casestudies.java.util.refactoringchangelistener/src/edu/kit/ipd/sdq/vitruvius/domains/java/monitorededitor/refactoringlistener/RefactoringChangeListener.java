@@ -19,9 +19,9 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.ChangeOperationListener;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener.RefactoringStatus;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeOperationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 
 /**
  * The {@link RefactoringChangeListener} is notified by {@link RefactoringParticipant}s when the

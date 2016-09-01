@@ -13,12 +13,12 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddAnnotationEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AnnotationEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveAnnotationEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddAnnotationEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AnnotationEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveAnnotationEvent;
 
 public class ChangeAnnotationClassifier extends SingleNodeChangeClassifier {
 

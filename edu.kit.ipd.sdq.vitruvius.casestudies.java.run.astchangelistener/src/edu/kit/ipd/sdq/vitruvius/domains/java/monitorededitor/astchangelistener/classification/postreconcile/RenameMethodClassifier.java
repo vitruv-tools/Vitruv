@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener
 
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeMethodSignatureEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameMethodEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeMethodSignatureEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameMethodEvent;
 
 public class RenameMethodClassifier extends ChangeMethodSignatureClassifier {
 

@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveImportEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveImportEvent;
 
 public class RemoveImportClassifier extends SingleNodeChangeClassifier {
 

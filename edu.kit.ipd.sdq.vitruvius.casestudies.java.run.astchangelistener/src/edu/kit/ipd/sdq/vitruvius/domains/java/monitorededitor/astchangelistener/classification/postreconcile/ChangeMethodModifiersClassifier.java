@@ -10,10 +10,10 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeMethodModifiersEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeMethodModifiersEvent;
 
 public class ChangeMethodModifiersClassifier extends SingleNodeChangeClassifier {
 

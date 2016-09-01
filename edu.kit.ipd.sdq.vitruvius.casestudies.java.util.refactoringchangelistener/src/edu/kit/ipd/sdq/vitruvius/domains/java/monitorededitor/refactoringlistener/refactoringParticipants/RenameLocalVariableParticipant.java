@@ -7,10 +7,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameParameterEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameParameterEvent;
 
 public class RenameLocalVariableParticipant extends RenameParticipantAdapter {
 

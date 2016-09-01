@@ -13,10 +13,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameTypeEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameTypeEvent;
 
 public class RenameTypeClassifier implements ConcreteChangeClassifier {
 

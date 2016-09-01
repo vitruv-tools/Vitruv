@@ -12,13 +12,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddSuperClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddSuperInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangedSuperTypesEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveSuperClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveSuperInterfaceEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddSuperClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddSuperInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangedSuperTypesEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveSuperClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveSuperInterfaceEvent;
 
 public class ChangeSupertypeClassifier extends SingleNodeChangeClassifier {
 

@@ -11,23 +11,23 @@ import org.eclipse.jdt.core.dom.ASTMatcher;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.ChangeHistory;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddFieldEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddMethodEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeMethodSignatureEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateTypeEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteTypeEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.MoveMethodEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveFieldEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveMethodEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameFieldEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RenameTypeEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddFieldEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddMethodEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeMethodSignatureEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateTypeEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteTypeEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.MoveMethodEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveFieldEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveMethodEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameFieldEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RenameTypeEvent;
 
 /**
  * @author messinger

@@ -14,10 +14,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.DeleteTypeEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.DeleteTypeEvent;
 
 public class RemoveTypeClassifier implements ConcreteChangeClassifier {
 

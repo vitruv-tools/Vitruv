@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeFieldModifiersEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeFieldModifiersEvent;
 
 public class ChangeFieldModifiersClassifier extends ChangeFieldClassifier {
 

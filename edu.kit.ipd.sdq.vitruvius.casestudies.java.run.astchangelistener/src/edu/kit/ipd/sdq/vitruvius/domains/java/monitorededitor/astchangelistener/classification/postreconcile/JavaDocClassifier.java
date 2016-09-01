@@ -14,10 +14,10 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.Javadoc;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.AddJavaDocEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeJavaDocEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.JavaDocEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.RemoveJavaDocEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.AddJavaDocEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeJavaDocEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.JavaDocEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.RemoveJavaDocEvent;
 
 public class JavaDocClassifier extends SingleNodeChangeClassifier {
 

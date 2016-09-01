@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor;
 
 import java.util.Collection;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEventExtension;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEventExtension;
 
 /**
  * @author messinger

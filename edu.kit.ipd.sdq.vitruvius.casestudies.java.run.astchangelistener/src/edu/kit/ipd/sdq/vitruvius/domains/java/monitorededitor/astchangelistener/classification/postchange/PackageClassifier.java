@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
 
 public abstract class PackageClassifier implements ConcreteChangeClassifier {
 

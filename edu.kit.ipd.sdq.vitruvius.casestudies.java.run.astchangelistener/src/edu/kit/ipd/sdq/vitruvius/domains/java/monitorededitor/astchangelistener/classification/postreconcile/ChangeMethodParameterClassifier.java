@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeMethodParameterEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeMethodSignatureEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeMethodParameterEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeMethodSignatureEvent;
 
 public class ChangeMethodParameterClassifier extends ChangeMethodSignatureClassifier {
 

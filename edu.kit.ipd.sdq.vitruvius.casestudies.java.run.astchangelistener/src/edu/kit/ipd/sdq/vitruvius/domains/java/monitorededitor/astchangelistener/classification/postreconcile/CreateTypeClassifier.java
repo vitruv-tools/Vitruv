@@ -15,10 +15,10 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.PreviousASTState;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateClassEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateInterfaceEvent;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.CreateTypeEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.JavaModel2AST;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateClassEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateInterfaceEvent;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.CreateTypeEvent;
 
 public class CreateTypeClassifier implements ConcreteChangeClassifier {
 

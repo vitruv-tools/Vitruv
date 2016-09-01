@@ -41,9 +41,9 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.postreconcile.RenameFieldClassifier;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.postreconcile.RenameMethodClassifier;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.postreconcile.RenameTypeClassifier;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.ChangeOperationListener;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.javamodel2ast.CompilationUnitUtil;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.ChangeOperationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.events.ChangeClassifyingEvent;
 import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EclipseBridge;
 
