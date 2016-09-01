@@ -6,11 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -24,7 +22,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.UpdateReferenceEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult;
-import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
@@ -34,7 +31,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
  *
  */
 public final class MIRMappingHelper {
-	private final static Logger LOGGER = Logger.getLogger(MIRMappingHelper.class);
 
 	public static Collection<EObject> getReverseFeature(EObject target, EStructuralFeature feature) {
 		Collection<Setting> settings = EcoreUtil.UsageCrossReferencer.find(target, target.eResource());

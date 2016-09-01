@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaHelper.*
-import org.apache.log4j.Logger
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
@@ -24,7 +23,6 @@ class MappingExecutionState {
 	private final TransformationResult transformationResult
 	private final UserInteracting userInteracting
 	
-	private static final Logger LOGGER = Logger.getLogger(MappingExecutionState)
 	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
 	
 	private final List<EObject> createdEObjects = newArrayList
