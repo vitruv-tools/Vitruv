@@ -60,7 +60,8 @@ public class ChangeSupertypeClassifier extends SingleNodeChangeClassifier {
         return events;
     }
 
-    private List<ChangedSuperTypesEvent> checkSuperInterfaces(TypeDeclaration original, TypeDeclaration changed) {
+    @SuppressWarnings("unchecked")
+	private List<ChangedSuperTypesEvent> checkSuperInterfaces(TypeDeclaration original, TypeDeclaration changed) {
         List<ChangedSuperTypesEvent> events = new ArrayList<ChangedSuperTypesEvent>(5);
         List<Object> originalSuperInterfaces = new LinkedList<Object>();
         originalSuperInterfaces.addAll(original.superInterfaceTypes());

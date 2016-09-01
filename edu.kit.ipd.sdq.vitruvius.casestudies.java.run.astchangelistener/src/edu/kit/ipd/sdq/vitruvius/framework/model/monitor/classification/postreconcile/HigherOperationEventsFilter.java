@@ -49,7 +49,8 @@ public class HigherOperationEventsFilter {
 
     private static ASTMatcher astMatcher = new ASTMatcher();
 
-    public static List<ChangeClassifyingEvent> filter(List<ChangeClassifyingEvent> events, ChangeHistory changeHistory) {
+    @SuppressWarnings("unchecked")
+	public static List<ChangeClassifyingEvent> filter(List<ChangeClassifyingEvent> events, ChangeHistory changeHistory) {
 
         Map<Class<?>, List<ChangeClassifyingEvent>> sortedEvents = sortEventsByClassification(events);
         List<ChangeMethodSignatureEvent> changeSignatures = (List<ChangeMethodSignatureEvent>) getAllEventsOfType(
@@ -154,7 +155,8 @@ public class HigherOperationEventsFilter {
         }
     }
 
-    private static void addMoveMethodIfRemoveMethodInWithheldHistory(
+    @SuppressWarnings("unchecked")
+	private static void addMoveMethodIfRemoveMethodInWithheldHistory(
             Map<Class<?>, List<ChangeClassifyingEvent>> sortedEvents, ChangeHistory changeHistory) {
         List<ChangeClassifyingEvent> addMethods = sortedEvents.get(AddMethodEvent.class);
         List<RemoveMethodEvent> oldRemoveMethods = (List<RemoveMethodEvent>) getAllEventsOfType(
@@ -204,7 +206,8 @@ public class HigherOperationEventsFilter {
 
     // a generic instanceof <Class> would be nice, Java..., or lambda
     // expressions...
-    private static <T extends ChangeClassifyingEvent> List<? extends ChangeClassifyingEvent> getAllEventsOfType(
+    @SuppressWarnings("unchecked")
+	private static <T extends ChangeClassifyingEvent> List<? extends ChangeClassifyingEvent> getAllEventsOfType(
             List<ChangeClassifyingEvent> events, Class<?> type) {
         List<T> filteredEvents = new ArrayList<T>(events.size());
         for (ChangeClassifyingEvent event : events) {

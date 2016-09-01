@@ -104,7 +104,8 @@ public class JavaDocClassifier extends SingleNodeChangeClassifier {
             super(true);
         }
 
-        @Override
+        @SuppressWarnings("deprecation")
+		@Override
         public boolean match(MethodDeclaration node, Object other) {
             if (!(other instanceof MethodDeclaration)) {
                 return false;
@@ -132,7 +133,8 @@ public class JavaDocClassifier extends SingleNodeChangeClassifier {
                         node.getBody(), o.getBody()));
         }
 
-        @Override
+        @SuppressWarnings("deprecation")
+		@Override
         public boolean match(org.eclipse.jdt.core.dom.FieldDeclaration node, Object other) {
             if (!(other instanceof FieldDeclaration)) {
                 return false;
