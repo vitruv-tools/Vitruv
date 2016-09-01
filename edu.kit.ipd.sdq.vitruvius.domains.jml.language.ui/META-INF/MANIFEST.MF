@@ -19,7 +19,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.domains.jml.language;visibility:=reexp
  org.eclipse.xtext.xbase.lib
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.kit.ipd.sdq.vitruvius.domains.jml.language.ui.contentassist,
  edu.kit.ipd.sdq.vitruvius.domains.jml.language.ui.contentassist.antlr,
  edu.kit.ipd.sdq.vitruvius.domains.jml.language.ui.internal,
