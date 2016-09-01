@@ -34,6 +34,7 @@ public class EclipseResourceDeltaMockFactory {
 
         return new IResourceDelta() {
 
+            @SuppressWarnings("unchecked")
             @Override
             public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
                 throw new UnsupportedOperationException();

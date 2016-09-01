@@ -24,10 +24,8 @@ import org.eclipse.core.commands.IExecutionListener;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPartReference;
 
 import edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.tools.IEclipseAdapter;
 
@@ -36,15 +34,15 @@ public class EclipseMock {
     private final Set<IEditorPart> currentEditors;
     private final EclipseWorkbenchMock workbenchMock;
     private IEditorPart activeEditorPart;
-    
+
     private final Set<IExecutionListener> saveListeners = new HashSet<>();
-    
+
     public EclipseMock() {
         eclipseUtils = createEclipseUtilsMock();
         workbenchMock = new EclipseWorkbenchMock();
         currentEditors = new HashSet<>();
     }
-    
+
     private IEclipseAdapter createEclipseUtilsMock() {
         return new IEclipseAdapter() {
             @Override
@@ -64,7 +62,7 @@ public class EclipseMock {
 
             @Override
             public Set<IEditorPart> getCurrentlyActiveEditors() {
-                return EclipseMock.this.currentEditors; 
+                return EclipseMock.this.currentEditors;
             }
 
             @Override
@@ -73,7 +71,7 @@ public class EclipseMock {
             }
 
             @Override
-            public void removeCommandServiceListener(IExecutionListener iel) {           
+            public void removeCommandServiceListener(IExecutionListener iel) {
                 EclipseMock.this.saveListeners.remove(iel);
             }
 
@@ -83,7 +81,7 @@ public class EclipseMock {
             }
         };
     }
-    
+
     public IEditorPart openNewNonEMFEditorPart() {
         IEditorPart result = createNiceMock(IEditorPart.class);
         reset(result);
@@ -93,7 +91,7 @@ public class EclipseMock {
         workbenchMock.changedEditorPart(result, EditorPartMgmtEvent.OPEN);
         return result;
     }
-    
+
     public IEditorPart openNewNonEMFEditorPart(IWorkbenchPage page) {
         IEditorPart result = createNiceMock(IEditorPart.class);
         reset(result);
@@ -101,56 +99,55 @@ public class EclipseMock {
         this.activeEditorPart = result;
         currentEditors.add(result);
         workbenchMock.changedEditorPart(result, EditorPartMgmtEvent.OPEN, page);
-        return result;        
+        return result;
     }
-    
+
     public IEditorPart openNewEMFTreeEditorPart(URL modelURL) {
         MockEditingDomainFactory fact = new MockEditingDomainFactory();
         EditingDomain editingDomain = fact.createEditingDomain(modelURL);
-        
+
         IEMFTreeEditor result = createNiceMock(IEMFTreeEditor.class);
         reset(result);
         expect(result.getEditingDomain()).andReturn(editingDomain).anyTimes();
         replay(result);
-        
+
         this.activeEditorPart = result;
         currentEditors.add(result);
         workbenchMock.changedEditorPart(result, EditorPartMgmtEvent.OPEN);
         return result;
     }
-    
+
     public IEditorPart openNewEMFDiagramEditorPart(URL modelURL, URL diagramURL) {
         MockEditingDomainFactory fact = new MockEditingDomainFactory();
         TransactionalEditingDomain editingDomain = fact.createEditingDomain(modelURL);
-        
+
         // TODO: actually open diagram, this currently results in exception
         // Resource diagRes = Models.loadModel(diagramURL);
         // editingDomain.getResourceSet().getResources().add(diagRes);
-        
+
         IGMFEditor result = createNiceMock(IGMFEditor.class);
         reset(result);
         expect(result.getEditingDomain()).andReturn(editingDomain).anyTimes();
         replay(result);
-        
+
         this.activeEditorPart = result;
         currentEditors.add(result);
         workbenchMock.changedEditorPart(result, EditorPartMgmtEvent.OPEN);
-        return result;  
+        return result;
     }
-    
+
     public void closeEditorPart(IEditorPart it) {
         currentEditors.remove(it);
         if (it == this.activeEditorPart) {
             if (!currentEditors.isEmpty()) {
                 this.activeEditorPart = currentEditors.iterator().next();
-            }
-            else {
+            } else {
                 this.activeEditorPart = null;
             }
         }
         workbenchMock.changedEditorPart(it, EditorPartMgmtEvent.CLOSE);
     }
-    
+
     public void issueSaveEvent(SaveEventKind kind) {
         for (IExecutionListener listener : this.saveListeners) {
             listener.preExecute(kind.getEclipseActionID(), null);
@@ -159,34 +156,33 @@ public class EclipseMock {
     }
 
     public enum SaveEventKind {
-        SAVE(org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE),
-        SAVE_AS(org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE_AS),
-        SAVE_ALL(org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE_ALL);
-        
+        SAVE(org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE), SAVE_AS(
+                org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE_AS), SAVE_ALL(
+                        org.eclipse.ui.IWorkbenchCommandConstants.FILE_SAVE_ALL);
+
         private final String eclipseActionID;
-        
+
         private SaveEventKind(String eclipseActoinID) {
             this.eclipseActionID = eclipseActoinID;
         }
-        
+
         public String getEclipseActionID() {
             return eclipseActionID;
         }
     }
-    
+
     public enum EditorPartMgmtEvent {
-        OPEN,
-        CLOSE;
+        OPEN, CLOSE;
     }
-    
+
     public IEclipseAdapter getEclipseUtils() {
         return this.eclipseUtils;
     }
-    
+
     public boolean hasListeners() {
         return !workbenchMock.getPartListeners().isEmpty() || !saveListeners.isEmpty();
     }
-    
+
     public EclipseWorkbenchMock getWorkbenchMockCtrl() {
         return this.workbenchMock;
     }

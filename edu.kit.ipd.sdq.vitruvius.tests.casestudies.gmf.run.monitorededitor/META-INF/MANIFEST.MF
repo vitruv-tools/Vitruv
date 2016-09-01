@@ -26,7 +26,7 @@ Require-Bundle: org.eclipse.ui,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.emfmodels.advancedfeatures,
  edu.kit.ipd.sdq.vitruvius.framework.run.editor.monitored.emfchange.test.testmodels,
