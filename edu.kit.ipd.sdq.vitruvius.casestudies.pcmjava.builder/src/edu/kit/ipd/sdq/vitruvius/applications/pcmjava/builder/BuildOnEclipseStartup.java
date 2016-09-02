@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder;
 
 import org.eclipse.ui.IStartup;
 

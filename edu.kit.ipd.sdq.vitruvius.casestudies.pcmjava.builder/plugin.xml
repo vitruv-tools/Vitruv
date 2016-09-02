@@ -2,11 +2,11 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id"
+         id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder.id"
          point="org.eclipse.core.resources.builders">
       <builder>
          <run
-               class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder">
+               class="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder">
          </run>
        </builder>
    </extension>
@@ -17,7 +17,7 @@
 	    	   allPopups="false"
 	    	   locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
 	        <command
-	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.addbuilder.commandId"
+	        	commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.addbuilder.commandId"
 	        	style="push">
 	        	<visibleWhen
                   checkEnabled="false">
@@ -36,7 +36,7 @@
                      <not>
                         <test
                               forcePluginActivation="true"
-                              property="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.isEnabled">
+                              property="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.isEnabled">
                         </test>
                      </not>
                   </iterate>
@@ -44,7 +44,7 @@
             </visibleWhen>
 	        </command>
 	        <command 
-	        	commandId="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.removebuilder.commandId"
+	        	commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.removebuilder.commandId"
 	         	style="push">
 	         	<visibleWhen
                   checkEnabled="false">
@@ -62,7 +62,7 @@
                   <iterate>
                      <test
                            forcePluginActivation="true"
-                           property="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.isEnabled">
+                           property="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.isEnabled">
                      </test>
                   </iterate>
                </and>
@@ -73,13 +73,13 @@
 	
 	<extension point="org.eclipse.ui.commands">
     	<command
-    		 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder" 
-    		 id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.addbuilder.commandId" 
+    		 defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaAddBuilder" 
+    		 id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.addbuilder.commandId" 
     		 name="Add PCM Java Builder">
     	</command>
 	    <command
-	    	 defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder"
-	    	  id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.removebuilder.commandId" 
+	    	 defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaRemoveBuilder"
+	    	  id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.removebuilder.commandId" 
 	    	  name="Remove PCM Java Builder">
 	    </command>
 	</extension>
@@ -87,9 +87,9 @@
 	<extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaTestBuilderEnabled"
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id"
-            namespace="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder"
+            class="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaTestBuilderEnabled"
+            id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder.id"
+            namespace="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder"
             properties="isEnabled"
             type="java.lang.Object">
       </propertyTester>
@@ -97,7 +97,7 @@
  <extension
        point="org.eclipse.ui.startup">
     <startup
-          class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.BuildOnEclipseStartup">
+          class="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.BuildOnEclipseStartup">
     </startup>
  </extension>
    

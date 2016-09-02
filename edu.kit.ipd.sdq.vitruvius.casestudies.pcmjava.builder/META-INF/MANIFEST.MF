@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java Builder
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder;singleton:=true
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -11,16 +11,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.common.ui,
  org.eclipse.core.resources,
  org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.domains.emf,
  org.emftext.language.java,
- org.eclipse.core.expressions;bundle-version="3.4.500",
+ org.eclipse.core.expressions,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.vsum;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
- edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.domains.emf,
  edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui,
+ edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder

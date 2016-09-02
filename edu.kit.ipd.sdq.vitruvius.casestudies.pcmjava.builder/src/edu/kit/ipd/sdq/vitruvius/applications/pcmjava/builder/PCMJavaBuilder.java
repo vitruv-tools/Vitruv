@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAb
 
 public class PCMJavaBuilder extends VitruviusEmfBuilder implements SynchronisationListener {
     // ID of PCMJavaBuilder
-    public static final String BUILDER_ID = "edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder.id";
+    public static final String BUILDER_ID = "edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder.id";
 
     private static Logger logger = Logger.getLogger(PCMJavaBuilder.class.getSimpleName());
 

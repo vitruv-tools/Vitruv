@@ -33,11 +33,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaAddBuilder;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;

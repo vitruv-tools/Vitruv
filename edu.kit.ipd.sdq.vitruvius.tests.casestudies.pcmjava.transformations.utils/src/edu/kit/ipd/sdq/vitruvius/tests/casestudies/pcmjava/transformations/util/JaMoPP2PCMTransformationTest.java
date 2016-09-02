@@ -92,9 +92,9 @@ import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaAddBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder.PCMJavaRemoveBuilder;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaAddBuilder;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaRemoveBuilder;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.util.BuildProjects;
