@@ -23,6 +23,5 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements,
- edu.kit.ipd.sdq.vitruvius.codeintegration
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming

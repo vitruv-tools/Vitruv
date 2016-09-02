@@ -12,6 +12,5 @@ class Change2CommandTransformingEJBJavaToPCM extends AbstractChange2CommandTrans
 		addChangeProcessor(new Java2PcmPackagePreprocessor(userInteracting));  
 		addChangeProcessor(new Java2PcmMethodBodyChangePreprocessor(userInteracting, new EJBJava2PCMCode2SEFFFactory));
 		super.setup();
-		// TODO HK Replace this preprocessor with a generic mechanism in the change synchronizer
 	}
 }

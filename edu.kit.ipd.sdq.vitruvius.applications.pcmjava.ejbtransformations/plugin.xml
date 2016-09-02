@@ -2,12 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.codeintegration.correspondencetypedeciding">
-      <provides
-            provider="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.EJBCorrepondenceTypeDecider">
-      </provides>
-   </extension>
-   <extension
          point="edu.kit.ipd.sdq.vitruvius.framework.change.processing.change2commandtransforming">
       <provides
             provider="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM">

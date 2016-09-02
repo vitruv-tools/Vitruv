@@ -1,6 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java EJB Transformations Extensions for Integration
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.codeintegration,
+ edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+
