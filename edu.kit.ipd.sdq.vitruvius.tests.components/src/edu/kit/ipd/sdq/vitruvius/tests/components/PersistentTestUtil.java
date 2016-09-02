@@ -12,21 +12,20 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import pcm_mockup.Pcm_mockupFactory;
-import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import pcm_mockup.Pcm_mockupFactory;
 
 public class PersistentTestUtil {
     private PersistentTestUtil() {
 
     }
 
-    public static Set<VURI> createDummyVURIs(final int nrOfVURIs) {
+    public static Set<VURI> createDummyVURIs(final String projectFolderName, final int nrOfVURIs) {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
-            vuris.add(VURI.getInstance(TestUtil.PROJECT_URI + "/dummyInstances/testInstance_" + i + "."
-                    + MetaRepositoryTest.PCM_FILE_EXT));
+            vuris.add(VURI.getInstance(
+                    projectFolderName + "/dummyInstances/testInstance_" + i + "." + MetaRepositoryTest.PCM_FILE_EXT));
         }
         return vuris;
     }

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<correspondence:Correspondences xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:correspondence="http://edu.kit.ipd.sdq.vitruvius/Correspondence/1.0">
-  <correspondences xsi:type="correspondence:EObjectCorrespondence" elementATUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewPCMInstance.pcm_mockup#_y19nYM2BEeSvv8KYuMjd-g" elementBTUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewUMLInstance.uml_mockup#_y2E8IM2BEeSvv8KYuMjd-g">
-    <dependentCorrespondences xsi:type="correspondence:EObjectCorrespondence" elementATUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewPCMInstance.pcm_mockup#_y19nYM2BEeSvv8KYuMjd-g#_y19nYc2BEeSvv8KYuMjd-g" elementBTUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewUMLInstance.uml_mockup#_y2E8IM2BEeSvv8KYuMjd-g#_y2E8Ic2BEeSvv8KYuMjd-g"/>
-    <dependentCorrespondences xsi:type="correspondence:EObjectCorrespondence" elementATUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewPCMInstance.pcm_mockup#_y19nYM2BEeSvv8KYuMjd-g#_y2ADoM2BEeSvv8KYuMjd-g" elementBTUID="DefaultTUIDCalculatorAndResolver#platform:/resource/MockupProject/model/NewUMLInstance.uml_mockup#_y2E8IM2BEeSvv8KYuMjd-g#_y2E8Is2BEeSvv8KYuMjd-g"/>
-  </correspondences>
-</correspondence:Correspondences>

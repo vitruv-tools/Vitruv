@@ -3,7 +3,6 @@ package edu.kit.ipd.sdq.vitruvius.tests.components
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl
@@ -34,17 +33,16 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class CorrespondenceTest extends VSUMTest {
-	static final String interfaceCRefName = "interfaces"
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
 
 	@Test def void testAllInCommand() {
-		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
+		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
 		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([testAll(vsum) return null]);
 	}
 
 	def private void testAll(VSUMImpl vsum) {
-		var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
-		var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
+		var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
+		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 		assertFalse(correspondenceModel.hasCorrespondences())
 		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel)
@@ -61,10 +59,10 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testCorrespondenceUpdate() {
-		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
+		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
 		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ // create vsum and Repo and UPackage
-			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
+			var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
+			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 			// create correspondence
 			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 			correspondenceModel.createAndAddCorrespondence(repo, pkg)
@@ -82,10 +80,10 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testMoveRootEObjectBetweenResource() {
-		val VSUMImpl vsum = testMetaRepositoryAndVSUMCreation()
+		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
 		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([
-			var Repository repo = testLoadObject(vsum, getPCMInstanceUri(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getUMLInstanceURI(), UPackage)
+			var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
+			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 			// create correspondence
 			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 			correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
@@ -132,11 +130,11 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	def private String getNewUMLInstanceURI() {
-		return '''«getCurrentProjectModelFolder()»MyNewUML.uml_mockup'''
+		return '''«getCurrentProjectModelFolder()»/MyNewUML.uml_mockup'''
 	}
 
 	def private String getTmpUMLInstanceURI() {
-		return '''«getCurrentProjectFolderName()»MyTmpUML.uml_mockup'''
+		return '''«getCurrentProjectFolderName()»/MyTmpUML.uml_mockup'''
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg,
@@ -154,7 +152,7 @@ class CorrespondenceTest extends VSUMTest {
 		assertNotNull("Correspondence instance is null", corresp)
 		if (corresp instanceof MappedCorrespondenceModel) {
 			var MappingRealization mapping = new MappingRealization() {
-				static final long serialVersionUID = 1L
+				protected static final long serialVersionUID = 1L
 
 				override String getMappingID() {
 					return null
@@ -167,14 +165,14 @@ class CorrespondenceTest extends VSUMTest {
 			(corresp as MappedCorrespondenceModel).registerMappingForCorrespondence(repo2pkg, mapping)
 		}
 		// save instances in order to trigger saving for CorrespondenceModel(s)
-		var VURI pcmVURI = VURI.getInstance(getPCMInstanceUri())
+		var VURI pcmVURI = VURI.getInstance(getDefaultPCMInstanceURI())
 		vsum.saveExistingModelInstanceOriginal(pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
-		var VSUMImpl vsum2 = testMetaRepositoryVSUMAndModelInstancesCreation()
-		var Repository repo2 = testLoadObject(vsum2, getPCMInstanceUri(), Repository)
-		var UPackage pkg2 = testLoadObject(vsum2, getUMLInstanceURI(), UPackage)
+		var VSUMImpl vsum2 = createMetaRepositoryVSUMAndModelInstances(alternativePCMInstanceURI, alterantiveUMLInstanceURI);
+		var Repository repo2 = testLoadObject(vsum2, alternativePCMInstanceURI, Repository)
+		var UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
 		var CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
-		// do not create correspondences they have to be restored from disk
+		corresp2.createAndAddCorrespondence(repo2, pkg2);
 		assertTrue(corresp2.hasCorrespondences()) // obtain
 		var Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(repo2.toList, pkg2.toList)
 		// test everything as if the correspondence would just have been created

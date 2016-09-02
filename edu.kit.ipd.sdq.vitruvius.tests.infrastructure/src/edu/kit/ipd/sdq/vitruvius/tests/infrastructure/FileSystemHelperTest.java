@@ -9,8 +9,9 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 import edu.kit.ipd.sdq.vitruvius.tests.components.PersistentTestUtil;
+import edu.kit.ipd.sdq.vitruvius.tests.components.VSUMTest;
 
-public class FileSystemHelperTest {
+public class FileSystemHelperTest extends VSUMTest {
 
     private static final Logger logger = Logger.getLogger(FileSystemHelperTest.class.getSimpleName());
 
@@ -21,7 +22,7 @@ public class FileSystemHelperTest {
     @Test
     public void testSaveAndLoadVURIs() {
         final int nrOfVURIs = 1000;
-        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(nrOfVURIs);
+        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolderName(), nrOfVURIs);
 
         long start = System.currentTimeMillis();
         // save to disk
