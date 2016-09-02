@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PCM-Java EJB-Mapping Transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping;singleton:=true
+Bundle-Name: Vitruvius PCM-Java EJB Transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm
