@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM-Java Package-Mapping Seffstatements
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
@@ -19,5 +19,5 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.change
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements
 

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements.code2seff;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements.code2seff;
 
 import java.util.List;
 import java.util.Set;

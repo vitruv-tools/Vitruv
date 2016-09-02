@@ -23,7 +23,7 @@ Require-Bundle: org.eclipse.emf.ecore,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
