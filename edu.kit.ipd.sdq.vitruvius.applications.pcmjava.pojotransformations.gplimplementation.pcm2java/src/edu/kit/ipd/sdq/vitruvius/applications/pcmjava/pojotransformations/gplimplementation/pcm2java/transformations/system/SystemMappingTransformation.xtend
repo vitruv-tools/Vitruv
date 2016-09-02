@@ -6,7 +6,6 @@ import org.palladiosimulator.pcm.system.System
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import org.emftext.language.java.containers.JavaRoot
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJaMoPPUtils
 

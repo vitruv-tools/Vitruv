@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplim
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EmptyEObjectMappingTransformation
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -27,8 +26,6 @@ import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJaMoPPUtils
  * 
  */
 class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
-
-	private static final Logger logger = Logger.getLogger(CompositeDataTypeMappingTransformation.simpleName)
 
 	override getClassOfMappedEObject() {
 		return CompositeDataType

@@ -5,7 +5,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.lang.reflect.Modifier
 import java.util.ArrayList
-import java.util.Collection
 import java.util.HashSet
 import java.util.LinkedList
 import java.util.List
@@ -73,21 +72,22 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		//		if (0 == createOwnClassInt) {
 		//			createOwnClass = true
 		//		}
-		val createOwnClass = true
+
 
 		//ii) ask data type
 		//reflections does not work for java.util?
 		//val reflection = new Reflections()
 		//var Set<Class<? extends Collection>> collectionDataTypes = reflection.getSubTypesOf(Collection)
-		var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
+		var Set<Class<?>> collectionDataTypes = new HashSet
 		collectionDataTypes.add(ArrayList)
 		collectionDataTypes.add(LinkedList)
 		collectionDataTypes.add(Vector)
 		collectionDataTypes.add(Stack)
 		collectionDataTypes.add(HashSet)
-		if (createOwnClass) {
+//		val createOwnClass = true;
+//		if (createOwnClass) {
 			collectionDataTypes = removeAbstractClasses(collectionDataTypes)
-		}
+//		}
 		val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
 		for (collectionDataType : collectionDataTypes) {
 			collectionDataTypeNames.add(collectionDataType.name)
@@ -95,8 +95,8 @@ class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransfo
 		val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
 		val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
 			collectionDataTypeNames)
-		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
-		if (createOwnClass) {
+		val Class<?> selectedClass = collectionDataTypes.get(selectedType)
+//		if (createOwnClass) {
 			var datatypePackage = PCM2JaMoPPUtils.getDatatypePackage(correspondenceModel,
 				cdt.repository__DataType, cdt.entityName, userInteracting)
 			val String content = '''package «datatypePackage.namespacesAsString + datatypePackage.name»;
@@ -111,16 +111,16 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 			val classifier = cu.classifiers.get(0)
 			val superTypeRef = classifier.superTypeReferences.get(0)
 			return #[cu, classifier, superTypeRef]
-		} else {
-
-			//TODO ML:
-			throw new UnsupportedOperationException(
-				"Not creating a class for collection data type is currently not supported")
-		}
+//		} else {
+//
+//			//TODO ML:
+//			throw new UnsupportedOperationException(
+//				"Not creating a class for collection data type is currently not supported")
+//		}
 	}
 
-	def Set<Class<? extends Collection>> removeAbstractClasses(Set<Class<? extends Collection>> collectionDataTypes) {
-		val Set<Class<? extends Collection>> nonAbstractCollections = new HashSet<Class<? extends Collection>>
+	def <T> Set<Class<?>> removeAbstractClasses(Set<Class<?>> collectionDataTypes) {
+		val Set<Class<?>> nonAbstractCollections = new HashSet
 		for (currentClass : collectionDataTypes) {
 			if (!Modifier.isAbstract(currentClass.getModifiers())) {
 				nonAbstractCollections.add(currentClass)
