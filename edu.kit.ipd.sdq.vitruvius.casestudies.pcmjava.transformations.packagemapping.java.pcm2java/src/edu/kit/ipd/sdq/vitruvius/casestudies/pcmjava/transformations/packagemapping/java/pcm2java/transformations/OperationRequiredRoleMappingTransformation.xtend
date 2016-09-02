@@ -21,7 +21,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 

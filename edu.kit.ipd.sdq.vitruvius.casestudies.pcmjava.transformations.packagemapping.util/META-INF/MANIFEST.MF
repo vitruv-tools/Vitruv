@@ -10,7 +10,7 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements;vis
  org.emftext.language.java,
  org.palladiosimulator.pcm,
  org.somox.gast2seff,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

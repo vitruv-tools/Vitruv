@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
 
 import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
@@ -27,7 +27,7 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.system.System
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*

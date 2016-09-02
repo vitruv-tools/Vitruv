@@ -29,8 +29,8 @@ import org.palladiosimulator.pcm.repository.InnerDeclaration
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 
 class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransformation {
 

@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemap
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.ComposedProvidingRequiringEntityMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.repository.CompositeComponent
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 class CompositeComponentMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {
 	

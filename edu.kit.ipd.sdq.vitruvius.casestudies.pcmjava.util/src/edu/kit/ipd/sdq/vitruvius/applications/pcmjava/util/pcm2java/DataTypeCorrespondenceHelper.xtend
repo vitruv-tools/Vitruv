@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java
 
 import org.palladiosimulator.pcm.repository.CollectionDataType
 import org.palladiosimulator.pcm.repository.CompositeDataType

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PcmJavaTransformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util
+Bundle-Name: Vitruvius Application PCM-Java Utilities
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -10,20 +10,18 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.emf.ecore,
- org.emftext.language.java,
  org.eclipse.swt;bundle-version="3.102.0",
  org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.core.runtime;bundle-version="3.9.0",
+ org.emftext.language.java,
+ org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.framework.userinteraction;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
- edu.kit.ipd.sdq.vitruvius.domains.pcm.util;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.domains.java.util;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
- org.palladiosimulator.pcm
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java
+ edu.kit.ipd.sdq.vitruvius.domains.pcm.util;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util;visibility:=reexport,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java

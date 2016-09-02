@@ -19,7 +19,7 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 

@@ -9,7 +9,7 @@ import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
 import org.palladiosimulator.pcm.core.entity.NamedElement
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation

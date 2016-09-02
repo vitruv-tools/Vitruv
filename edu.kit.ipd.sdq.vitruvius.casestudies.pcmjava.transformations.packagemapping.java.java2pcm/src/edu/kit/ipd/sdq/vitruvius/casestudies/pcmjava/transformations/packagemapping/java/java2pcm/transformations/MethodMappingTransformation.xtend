@@ -18,9 +18,9 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.JaMoPP2PCMUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.util.PCMJaMoPPUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
