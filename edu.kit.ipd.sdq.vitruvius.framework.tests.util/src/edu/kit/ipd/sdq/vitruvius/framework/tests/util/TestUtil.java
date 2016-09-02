@@ -344,17 +344,38 @@ public final class TestUtil {
         originalProject.copy(copyPath, true, new NullProgressMonitor());
         return projectCopyName;
     }
+    
+    public static String createProjectFolderWithTimestamp(final String projectName) {
+        final String timestamp = "" + System.currentTimeMillis();
+        try {
+            return createProjectWithSuffix(projectName, timestamp);
+        } catch (final CoreException e) {
+            // soften
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static String createProjectWithSuffix(final String projectName, final String suffix)
+            throws CoreException {
+        String projectCopyName = projectName + suffix;
+        int count = 0;
+        IProject project = FileSystemHelper.getProject(projectCopyName + count);
+        while (project.exists()) {
+            count++;
+            project = FileSystemHelper.getProject(projectCopyName + count);
+        }
+        project.create(null);
+        project.open(null);
+        return project.getName();
+    }
 
     public static void clearMetaProject() {
         try {
             final IFolder correspondenceFolder = FileSystemHelper.getCorrespondenceFolder();
             correspondenceFolder.delete(true, new NullProgressMonitor());
             FileSystemHelper.createFolder(correspondenceFolder);
-            final IFile originalInstancesFile = FileSystemHelper.getVSUMInstancesFile(ORIGINAL_FILE_PREFIX);
             final IFile currentInstancesFile = FileSystemHelper.getVSUMInstancesFile();
             currentInstancesFile.delete(true, new NullProgressMonitor());
-            final IPath currentPath = currentInstancesFile.getFullPath();
-            originalInstancesFile.copy(currentPath, true, new NullProgressMonitor());
         } catch (final CoreException e) {
             // soften
             throw new RuntimeException(e);
