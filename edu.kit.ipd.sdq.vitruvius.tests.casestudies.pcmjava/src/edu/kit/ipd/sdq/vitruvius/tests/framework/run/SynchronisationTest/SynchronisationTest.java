@@ -26,6 +26,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.JaMoPPPCMTestUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
@@ -44,7 +45,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchroniz
 import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 
 public class SynchronisationTest {
 

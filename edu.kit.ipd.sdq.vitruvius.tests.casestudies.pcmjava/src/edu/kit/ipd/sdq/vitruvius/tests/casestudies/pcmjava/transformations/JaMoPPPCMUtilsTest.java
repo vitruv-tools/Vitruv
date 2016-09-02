@@ -14,8 +14,8 @@ import org.emftext.language.java.members.ClassMethod;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.JaMoPPPCMTestUtil;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
-import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 
 /**
  * Test for the JaMoPPPCMUtil class - not a utility class. Tests the textual creation of a

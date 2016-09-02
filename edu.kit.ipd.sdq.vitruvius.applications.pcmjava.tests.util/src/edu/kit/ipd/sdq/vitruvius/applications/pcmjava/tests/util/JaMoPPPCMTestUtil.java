@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util;
 
 import java.util.Map;
 

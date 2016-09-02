@@ -58,6 +58,7 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.palladiosimulator.pcm.system.System;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.JaMoPPPCMTestUtil;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJaMoPPUtils;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
@@ -74,7 +75,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.tests.jamopppcm.util.JaMoPPPCMTestUtil;
 
 /**
  * super class for all repository and system tests. Contains helper methods
