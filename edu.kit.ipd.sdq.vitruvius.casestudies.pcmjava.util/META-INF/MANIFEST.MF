@@ -19,6 +19,8 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.metamodel,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.domains.pcm.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.util;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser

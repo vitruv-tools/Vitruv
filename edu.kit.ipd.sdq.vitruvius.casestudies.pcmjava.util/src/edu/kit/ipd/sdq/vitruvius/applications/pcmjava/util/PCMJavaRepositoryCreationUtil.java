@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,12 +18,12 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
  * @author Langhamm
  *
  */
-public class PCMJavaUtils {
+public class PCMJavaRepositoryCreationUtil {
 
     /**
      * Util classes should not have public constructor
      */
-    private PCMJavaUtils() {
+    private PCMJavaRepositoryCreationUtil() {
 
     }
 

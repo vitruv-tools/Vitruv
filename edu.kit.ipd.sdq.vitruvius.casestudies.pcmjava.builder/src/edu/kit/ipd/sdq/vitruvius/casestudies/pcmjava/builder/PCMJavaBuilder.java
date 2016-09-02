@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
@@ -29,7 +29,7 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
     public PCMJavaBuilder() {
         super();
         logger.trace("PCMJavaBuilder is ALIVE");
-        final MetaRepositoryImpl metarepository = PCMJavaUtils.createPCMJavaMetarepository();
+        final MetaRepositoryImpl metarepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
         Set<String> monitoredFileTypes = new HashSet<String>(
                 Arrays.asList(PCMNamespace.REPOSITORY_FILE_EXTENSION
                         // since java files already monitored by the java monitor we do not have to monitor

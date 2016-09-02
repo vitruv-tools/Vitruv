@@ -13,9 +13,9 @@ import org.emftext.language.java.resource.java.mopp.JavaResourceFactory;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.util.PcmResourceFactoryImpl;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondencePackage;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
@@ -74,6 +74,6 @@ public final class JaMoPPPCMTestUtil {
      * @return
      */
     public static MetaRepositoryImpl createJaMoPPPCMMetaRepository() {
-        return PCMJavaUtils.createPCMJavaMetarepository();
+        return PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
     }
 }
