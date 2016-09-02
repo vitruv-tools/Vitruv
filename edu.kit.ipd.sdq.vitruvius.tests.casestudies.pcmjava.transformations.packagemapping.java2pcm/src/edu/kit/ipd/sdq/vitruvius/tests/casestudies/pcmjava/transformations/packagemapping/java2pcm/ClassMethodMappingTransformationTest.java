@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.PCM2JaMoPPTestUtils;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 
 public class ClassMethodMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 

@@ -3,8 +3,8 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transfor
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.CompilationUnitManipulatorHelper;
 
 public class IntegrationClassMappingTransformationTest extends Java2PCMPackageIntegrationMappingTransformationTest {
 

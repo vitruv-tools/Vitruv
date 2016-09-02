@@ -41,5 +41,5 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui,
  edu.kit.ipd.sdq.vitruvius.framework.change;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
- edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.pcm2java

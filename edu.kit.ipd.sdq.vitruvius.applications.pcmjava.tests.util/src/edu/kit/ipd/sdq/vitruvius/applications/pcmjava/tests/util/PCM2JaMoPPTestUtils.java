@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util;
 
 import java.io.IOException;
 import java.util.Collections;
