@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.infrastructure;
+package edu.kit.ipd.sdq.vitruvius.framewotk.util.datatypes;
 
 import java.util.HashSet;
 import java.util.Set;

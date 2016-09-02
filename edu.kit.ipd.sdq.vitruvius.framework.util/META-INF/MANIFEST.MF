@@ -9,6 +9,8 @@ Export-Package: edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.util.command,
  edu.kit.ipd.sdq.vitruvius.framework.util.datatypes
 Require-Bundle: org.apache.log4j,
+ org.apache.commons.lang,
+ org.junit,
  org.eclipse.core.resources,
  org.eclipse.equinox.registry,
  org.eclipse.osgi,
