@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList

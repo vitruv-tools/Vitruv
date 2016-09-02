@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm
 
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.TransformationExecutorChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.TransformationExecutorChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations.PackageMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations.CompilationUnitMappingTransformation
@@ -12,7 +12,7 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations.FieldMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations.ClassMethodMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations.TypeReferenceMappingTransformation
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
 
 class Java2PCMChangeProcessor extends TransformationExecutorChangeProcessor {
 	new(UserInteracting userInteracting) {

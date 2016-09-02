@@ -22,9 +22,9 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapp
 import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.pcm2java.transformations.system.SystemMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.DefaultEObjectMappingTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessor
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor.TransformationExecutorChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.TransformationExecutorChangeProcessor
 
 class PCM2JavaChange2CommandTransformer extends AbstractChange2CommandTransforming {
 	

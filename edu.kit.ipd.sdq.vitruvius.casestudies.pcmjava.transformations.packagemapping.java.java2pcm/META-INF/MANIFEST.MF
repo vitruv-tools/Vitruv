@@ -12,11 +12,15 @@ Require-Bundle: com.google.guava,
  org.apache.log4j,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.domains.java.util,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements,
- edu.kit.ipd.sdq.vitruvius.framework.tuid
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations

@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util.transformationexecutor
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
 import org.apache.log4j.Logger
