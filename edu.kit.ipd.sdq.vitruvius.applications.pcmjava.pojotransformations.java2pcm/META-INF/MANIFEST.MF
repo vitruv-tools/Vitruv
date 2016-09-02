@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius PCM-Java POJO Transformations PCM -> Java
+Bundle-Name: Vitruvius PCM-Java POJO Transformations Java -> PCM
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm
 Bundle-Version: 1.0.0
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm
