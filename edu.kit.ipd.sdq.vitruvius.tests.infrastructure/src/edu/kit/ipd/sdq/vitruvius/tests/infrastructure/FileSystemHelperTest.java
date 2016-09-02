@@ -6,10 +6,10 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.kit.ipd.sdq.vitruvius.framework.tests.vsum.PersistentTestUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.vsum.VSUMTest;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
-import edu.kit.ipd.sdq.vitruvius.tests.components.PersistentTestUtil;
-import edu.kit.ipd.sdq.vitruvius.tests.components.VSUMTest;
 
 public class FileSystemHelperTest extends VSUMTest {
 
