@@ -183,7 +183,7 @@ public final class EcoreResourceBridge {
 	public static Set<EObject> getAllContentsSet(final Resource resource) {
 		return EcoreBridge.getAllContentsSet(resource.getAllContents());
 	}
-	
+
 	/**
 	 * Saves the given eObject as the only content of the model at the given
 	 * URI.<br/>
@@ -194,23 +194,25 @@ public final class EcoreResourceBridge {
 	 * @param eObject
 	 *            the new root element
 	 * @param resourceURI
-	 *            the URI of the resource for which the content should be replaced or
-	 *            created
+	 *            the URI of the resource for which the content should be
+	 *            replaced or created
 	 * @throws IOException
 	 *             if an error occurred during saving
 	 */
-	public static void saveEObjectAsOnlyContent(final EObject eObject, final URI resourceURI, final ResourceSet resourceSet) throws IOException {
+	public static void saveEObjectAsOnlyContent(final EObject eObject, final URI resourceURI,
+			final ResourceSet resourceSet) throws IOException {
 		Resource resource = loadResourceAtURI(resourceURI, resourceSet);
 		saveEObjectAsOnlyContent(eObject, resource);
 	}
-		
+
 	/**
 	 * Saves the given eObject as the only content of the given resource.
 	 *
 	 * @param eObject
 	 *            the new root element
 	 * @param resource
-	 *            the resource for which the content should be replaced or created
+	 *            the resource for which the content should be replaced or
+	 *            created
 	 * @throws IOException
 	 *             if an error occurred during saving
 	 */
@@ -258,9 +260,16 @@ public final class EcoreResourceBridge {
 			try {
 				resource = resourceSet.getResource(resourceURI, true);
 			} catch (org.eclipse.emf.common.util.WrappedException e) {
-				// swallow silently
-				e = null; // otherwise checkstyle complains: "Must have at least
-							// one statement."
+				// If there is an exception, the resource is added to the
+				// resourceSet nevertheless.
+				// We have to remove it because it is not correctly added before
+				// creating the resource
+				// to avoid duplicates
+				Resource potentiallyNotCompletelyLoadedResource = resourceSet.getResources()
+						.get(resourceSet.getResources().size() - 1);
+				if (potentiallyNotCompletelyLoadedResource.getURI().equals(resourceURI)) {
+					resourceSet.getResources().remove(potentiallyNotCompletelyLoadedResource);
+				}
 			}
 			if (resource == null) {
 				resource = resourceSet.createResource(resourceURI);
@@ -281,11 +290,11 @@ public final class EcoreResourceBridge {
 		}
 		return resource;
 	}
-	
+
 	public static void registerMetamodelPackages(ResourceSet rs, Object factory, String... nsURIs) {
 		for (String nsURI : nsURIs) {
-			rs.getPackageRegistry().put(nsURI,factory);
-//			registerMetamodelPackages(nsURI,factory);
+			rs.getPackageRegistry().put(nsURI, factory);
+			// registerMetamodelPackages(nsURI,factory);
 		}
 	}
 
@@ -293,11 +302,11 @@ public final class EcoreResourceBridge {
 	public static void registerMetamodelPackages(String nsURI, Object factory) {
 		EPackage.Registry.INSTANCE.put(nsURI, factory);
 	}
-	
+
 	public static void registerExtensionFactories(ResourceSet rs, Object resourceFactory, String... fileExtensions) {
 		for (String fileExtension : fileExtensions) {
 			rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension, resourceFactory);
-//			registerExtensionFactories(fileExtension, resourceFactory);
+			// registerExtensionFactories(fileExtension, resourceFactory);
 		}
 	}
 
@@ -305,7 +314,7 @@ public final class EcoreResourceBridge {
 	public static void registerExtensionFactories(String fileExtension, Object resourceFactory) {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(fileExtension, resourceFactory);
 	}
-	
+
 	public static void registerDefaultXMIExtensionFactory(String fileExtension) {
 		registerExtensionFactories(fileExtension, new XMIResourceFactoryImpl());
 	}
