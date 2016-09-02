@@ -148,7 +148,6 @@ class EMFGeneratorHelper {
 	def void generateCode(IFileSystemAccess fsa) {
 		fsa.generateJavaFile(classFQN, [ ih |
 			'''
-			@SuppressWarnings("unused")
 			public final class «classFQN.toSimpleName» {
 				«FOR pkg : referencedEMFEntities.keySet»
 «««					// EPackage «pkg.commentString»
