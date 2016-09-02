@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.infrastructure;
+package edu.kit.ipd.sdq.vitruvius.framework.tuid;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +14,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.VitruviusConstants;
 
 public class TUIDTest {
 
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void test() {
         String sep = VitruviusConstants.getTUIDSegmentSeperator();
         // 1: p#s ..... -> p2#s ..... 2-> p2#s2 .............................. 5-> q#s2
@@ -201,7 +202,8 @@ public class TUIDTest {
         testUpdateSegment(input, expected, "prefix#b#c", "prefix#b#c2", useUpdateMultipleSegmentsMethod);
     }
 
-    private void testUpdateSegment(final String[] input, final String[] expected, final String oldTUIDString,
+    @SuppressWarnings("deprecation")
+	private void testUpdateSegment(final String[] input, final String[] expected, final String oldTUIDString,
             final String newTUIDString, final boolean updateMultipleSegments) {
         // construct TUIDs
         List<TUID> tuids = new ArrayList<TUID>();
@@ -246,7 +248,8 @@ public class TUIDTest {
         testUpdateSegment(input, expected, "pre#a#b#c#d#e#f", "pre#a2#b2#c#d2#e2#f", updateMultipleSegments);
     }
 
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void testUpdateSingleSegmentTargetContainsNoChildren() {
         String[] input = new String[] { "prefix2#a", "prefix2#a#b", "prefix2#a#c" };
         String[] expected = new String[] { "prefix2#a", "prefix2#a#c", "prefix2#a#c" };
