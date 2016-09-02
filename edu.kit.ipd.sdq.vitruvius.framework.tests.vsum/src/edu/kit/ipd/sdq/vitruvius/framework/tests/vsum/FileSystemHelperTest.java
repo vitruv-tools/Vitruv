@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.infrastructure;
+package edu.kit.ipd.sdq.vitruvius.framework.tests.vsum;
 
 import java.util.Set;
 
@@ -6,8 +6,6 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.framework.tests.vsum.PersistentTestUtil;
-import edu.kit.ipd.sdq.vitruvius.framework.tests.vsum.VSUMTest;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.helper.FileSystemHelper;
 
