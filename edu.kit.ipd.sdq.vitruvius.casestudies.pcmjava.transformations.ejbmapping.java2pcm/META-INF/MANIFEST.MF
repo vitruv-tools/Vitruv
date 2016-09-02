@@ -24,7 +24,6 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration,
  org.somox.gast2seff,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence

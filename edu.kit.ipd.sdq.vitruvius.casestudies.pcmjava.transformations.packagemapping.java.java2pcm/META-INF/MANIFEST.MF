@@ -15,7 +15,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements,
  edu.kit.ipd.sdq.vitruvius.framework.tuid
