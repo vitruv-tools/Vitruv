@@ -4,7 +4,7 @@ import org.emftext.language.java.classifiers.ConcreteClassifier
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.OperationInterface
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util.JaMoPP2PCMTransformationTest
 
 /**

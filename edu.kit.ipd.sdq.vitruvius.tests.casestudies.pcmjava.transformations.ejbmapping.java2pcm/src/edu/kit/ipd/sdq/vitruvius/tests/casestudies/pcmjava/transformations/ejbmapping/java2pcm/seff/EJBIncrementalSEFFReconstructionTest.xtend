@@ -11,7 +11,7 @@ import org.junit.runner.Description
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBClassMappingTest
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBJaMoPP2PCMTransformationTest
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
