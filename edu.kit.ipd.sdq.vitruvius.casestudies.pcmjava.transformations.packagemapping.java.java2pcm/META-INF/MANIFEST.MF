@@ -17,6 +17,7 @@ Require-Bundle: com.google.guava,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.seffstatements,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements,
  edu.kit.ipd.sdq.vitruvius.framework.tuid
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
  edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.transformations

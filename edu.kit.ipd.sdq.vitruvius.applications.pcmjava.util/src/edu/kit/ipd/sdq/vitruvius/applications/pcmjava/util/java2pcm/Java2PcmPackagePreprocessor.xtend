@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
@@ -12,8 +12,6 @@ import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.attribute.JavaRepl
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
-import java.util.ArrayList
-import org.eclipse.emf.common.command.Command
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 

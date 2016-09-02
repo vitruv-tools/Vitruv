@@ -4,8 +4,7 @@ Bundle-Name: PCMJava Preprocessors
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements;visibility:=reexport,
- org.apache.log4j,
+Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore,
  org.emftext.language.java,
  org.palladiosimulator.pcm,
@@ -21,4 +20,3 @@ Require-Bundle: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements;vi
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.util
