@@ -1,7 +1,7 @@
 package mir.responses.responsesJavaTo5_1.ejbjava2pcm;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.EJBAnnotationHelper;
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.ejbmapping.java2pcm.EJBJava2PcmHelper;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper;
 import edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response.AbstractResponseRealization;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
