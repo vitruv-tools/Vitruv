@@ -115,7 +115,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
                 new AddImportClassifier(), new RemoveImportClassifier(), new ChangeSupertypeClassifier(),
                 new ChangeAnnotationClassifier(), new JavaDocClassifier()));
         classifiers.addAll(getRegisteredClassifiers(
-                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postreconcile"));
+                "edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.postreconcile"));
         return classifiers.toArray(new ConcreteChangeClassifier[0]);
     }
 
@@ -124,7 +124,7 @@ public class ASTChangeListener implements IStartup, IElementChangedListener {
                 Arrays.asList(new RemoveCompilationUnitClassifier(), new RenamePackageClassifier(),
                         new CreatePackageClassifier(), new DeletePackageClassifier()));
         classifiers.addAll(getRegisteredClassifiers(
-                "edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.classifiers.postchange"));
+                "edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.postchange"));
         return classifiers.toArray(new ConcreteChangeClassifier[0]);
     }
 

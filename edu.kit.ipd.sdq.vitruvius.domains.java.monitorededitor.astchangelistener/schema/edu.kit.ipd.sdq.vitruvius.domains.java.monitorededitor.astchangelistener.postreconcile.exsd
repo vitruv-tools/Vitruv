@@ -3,7 +3,7 @@
 <schema targetNamespace="ASTChangeListener" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ASTChangeListener" id="edu.kit.ipd.sdq.vitruvius.domains.java.monitoreditor.astchangelistener.postchange" name="Postchange Classifiers"/>
+         <meta.schema plugin="ASTChangeListener" id="edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.postreconcile" name="Postreconcile Classifiers"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.framework.model.monitor.classification.ConcreteChangeClassifier"/>
+                  <meta.attribute kind="java" basedOn=":edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.astchangelistener.classification.ConcreteChangeClassifier"/>
                </appinfo>
             </annotation>
          </attribute>
