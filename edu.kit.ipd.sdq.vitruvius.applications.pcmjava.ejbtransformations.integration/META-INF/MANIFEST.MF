@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java EJB Transformations Extensions for Integration
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
