@@ -9,11 +9,11 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.tests.vsum.VSUMTest;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.components.VSUMTest;
 
 public class DefaultTUIDCalculatorTest extends VSUMTest {
     private static final String PCM_REPO_ID = "_r5CW0PxiEeO_U4GJ6Zitkg";
