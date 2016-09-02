@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.palladiosimulator.pcm,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm,
  edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.util;visibility:=reexport,
  org.emftext.language.java,
  edu.kit.ipd.sdq.vitruvius.framework.util,

@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2
 
 import mir.responses.AbstractChange2CommandTransformingJavaTo5_1
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.seffstatements.Java2PcmPackageMappingMethodBodyChangePreprocessor
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.java.java2pcm.Java2PCMChangeProcessor
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm.Java2PCMChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.java2pcm.Java2PcmPackagePreprocessor
 
 class Change2CommandTransformingJavaToPcm extends AbstractChange2CommandTransformingJavaTo5_1 {
