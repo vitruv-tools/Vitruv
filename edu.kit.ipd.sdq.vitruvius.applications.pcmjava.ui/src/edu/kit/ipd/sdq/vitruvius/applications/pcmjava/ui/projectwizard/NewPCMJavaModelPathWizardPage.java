@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.projectwizard;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui.projectwizard;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.emf.common.ui.dialogs.WorkspaceResourceDialog;

@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
  edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor,
  edu.kit.ipd.sdq.vitruvius.domains.emf.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.builder

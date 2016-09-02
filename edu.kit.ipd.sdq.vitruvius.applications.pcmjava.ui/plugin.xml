@@ -5,16 +5,16 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            category="edu.kit.ipd.sdq.vitruvius.casestudies.vitruvius_projects"
-            class="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui.projectwizard.NewPCMJavaProjectWizard"
+            category="edu.kit.ipd.sdq.vitruvius.applications.vitruvius_projects"
+            class="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui.projectwizard.NewPCMJavaProjectWizard"
             finalPerspective="org.palladiosimulator.pcmbench.perspectives.palladio"
             hasPages="true"
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaWizard"
+            id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.PCMJavaWizard"
             name="PCM Java Project"
             project="true">
       </wizard>
       <category
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava."
+            id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava."
             name="New PCM Java Project">
       </category>
    </extension>

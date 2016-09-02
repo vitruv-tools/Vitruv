@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.ui;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;

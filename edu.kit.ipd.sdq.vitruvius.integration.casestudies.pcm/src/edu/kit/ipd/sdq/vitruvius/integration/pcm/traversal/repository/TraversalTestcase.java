@@ -8,7 +8,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
@@ -52,7 +52,7 @@ public class TraversalTestcase {
         }
 
         // create syncManager
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
 
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();

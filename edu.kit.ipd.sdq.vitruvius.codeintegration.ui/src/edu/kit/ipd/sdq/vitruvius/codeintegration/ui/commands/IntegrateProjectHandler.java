@@ -18,7 +18,7 @@ import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPCorrespondenceModelTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
@@ -72,7 +72,7 @@ public class IntegrateProjectHandler extends AbstractHandler {
             throw new IllegalArgumentException("Run SoMoX first!");
         }
 
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
         final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
         vsum.getOrCreateAllCorrespondenceModelsForMM(
                 metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));

@@ -16,7 +16,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaUtils;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
@@ -67,7 +67,7 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
 
         if (changeSynchronizing == null) {
-            final MetaRepositoryImpl pcmJavaMetarepository = PCMJavaUtils.createPCMJavaMetarepository();
+            final MetaRepositoryImpl pcmJavaMetarepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
             this.vsum = IntegrationUtil.createVSUM(pcmJavaMetarepository);
             changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum, pcmJavaMetarepository);
         }
@@ -99,7 +99,7 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
         }
 
         // create underlying elements (MetaRepo, VSUM,...)
-        final MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository();
+        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
         final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore(metaRepository);
 
         // find all referenced repositories and integrate them first

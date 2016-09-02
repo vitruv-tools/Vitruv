@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java UI Integration
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ui.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
+ org.eclipse.emf.common.ui,
+ org.eclipse.core.resources,
+ org.apache.log4j,
+ org.emftext.language.java,
+ org.eclipse.core.expressions,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util,
+ edu.kit.ipd.sdq.vitruvius.domains.pcm.util
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

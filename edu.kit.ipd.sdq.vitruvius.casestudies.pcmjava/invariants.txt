@@ -1,2 +1,0 @@
-components.name.toLower unique
-interfaces.name.toLower unique
