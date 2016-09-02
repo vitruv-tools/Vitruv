@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.transformations.packagemapping.responses.java2pcm.Change2CommandTransformingJavaToPcm
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm.Change2CommandTransformingJavaToPcm
 
 class Java2PCMIntegrationChange2CommandTransforming extends Change2CommandTransformingJavaToPcm {
 	
