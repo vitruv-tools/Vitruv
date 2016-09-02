@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Seff Statements
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Name: Vitruvius PCM-Java SEFF Statements Processing
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
@@ -14,13 +14,14 @@ Require-Bundle: com.google.guava,
  org.somox.sourcecodedecorator;bundle-version="1.0.1",
  org.somox.kdmhelper,
  org.eclipse.core.resources,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.packagemapping.javaimplementation.util,
  org.eclipse.emf.ecore.change,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
- edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
- edu.kit.ipd.sdq.vitruvius.framework.tuid
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.domains.java.echange
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements.code2seff
 

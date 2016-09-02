@@ -14,8 +14,8 @@ import org.emftext.language.java.containers.Package;
 import org.emftext.language.java.members.Method;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements.code2seff.BasicComponentFinding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 

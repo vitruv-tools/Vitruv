@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.seffstatements.code2seff;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements.code2seff;
 
 import org.emftext.language.java.members.Method;
 import org.palladiosimulator.pcm.repository.BasicComponent;
