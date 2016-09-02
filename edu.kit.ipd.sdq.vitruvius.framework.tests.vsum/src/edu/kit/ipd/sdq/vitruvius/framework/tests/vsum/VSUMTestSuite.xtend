@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.components
+package edu.kit.ipd.sdq.vitruvius.framework.tests.vsum
 
 import org.junit.runner.RunWith
 import org.junit.runners.Suite.SuiteClasses

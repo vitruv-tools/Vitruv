@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.components;
+package edu.kit.ipd.sdq.vitruvius.framework.tests.vsum;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

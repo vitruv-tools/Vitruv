@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.components
+package edu.kit.ipd.sdq.vitruvius.framework.tests.vsum
 
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance
