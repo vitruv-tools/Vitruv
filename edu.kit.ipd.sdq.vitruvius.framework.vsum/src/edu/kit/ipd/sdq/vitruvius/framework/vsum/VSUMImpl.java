@@ -40,13 +40,10 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private final MappingManaging mappingManaging;
     private final MetamodelManaging metamodelManaging;
-    // private final ViewTypeManaging viewTypeManaging;
 
     protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
     private final Map<Mapping, InternalCorrespondenceModel> mapping2CorrespondenceModelMap;
-
-    // private ClassLoader classLoader;
 
     public VSUMImpl(final MetamodelManaging metamodelManaging, final MappingManaging mappingManaging) {
         this(metamodelManaging, mappingManaging, null);
@@ -55,15 +52,12 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     public VSUMImpl(final MetamodelManaging metamodelManaging, final MappingManaging mappingManaging,
             final ClassLoader classLoader) {
         this.metamodelManaging = metamodelManaging;
-        // this.viewTypeManaging = viewTypeManaging;
         this.mappingManaging = mappingManaging;
 
         this.resourceSet = new ResourceSetImpl();
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.mapping2CorrespondenceModelMap = new HashMap<Mapping, InternalCorrespondenceModel>();
-
-        // this.classLoader = classLoader;
 
         loadVURIsOfVSMUModelInstances();
         loadAndMapCorrepondenceInstances();
