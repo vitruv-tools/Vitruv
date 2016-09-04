@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transfor
 
 import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util.CodeIntegrationUtils
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.packagemapping.java2pcm.Java2PCMPackageMappingTransformationTest
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.java2pcm.Java2PCMPackageMappingTransformationTest
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.CoreException
 import org.junit.runner.Description

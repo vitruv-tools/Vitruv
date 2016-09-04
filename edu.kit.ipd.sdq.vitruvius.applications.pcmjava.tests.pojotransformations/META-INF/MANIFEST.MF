@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java Package Mapping Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.seffstatements
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations

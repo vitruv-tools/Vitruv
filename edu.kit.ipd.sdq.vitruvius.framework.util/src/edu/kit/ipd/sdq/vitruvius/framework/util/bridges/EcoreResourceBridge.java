@@ -265,11 +265,11 @@ public final class EcoreResourceBridge {
 				// We have to remove it because it is not correctly added before
 				// creating the resource
 				// to avoid duplicates
-				Resource potentiallyNotCompletelyLoadedResource = resourceSet.getResources()
-						.get(resourceSet.getResources().size() - 1);
-				if (potentiallyNotCompletelyLoadedResource.getURI().equals(resourceURI)) {
-					resourceSet.getResources().remove(potentiallyNotCompletelyLoadedResource);
-				}
+//				Resource potentiallyNotCompletelyLoadedResource = resourceSet.getResources()
+//						.get(resourceSet.getResources().size() - 1);
+//				if (potentiallyNotCompletelyLoadedResource.getURI().equals(resourceURI)) {
+//					resourceSet.getResources().remove(potentiallyNotCompletelyLoadedResource);
+//				}
 			}
 			if (resource == null) {
 				resource = resourceSet.createResource(resourceURI);
