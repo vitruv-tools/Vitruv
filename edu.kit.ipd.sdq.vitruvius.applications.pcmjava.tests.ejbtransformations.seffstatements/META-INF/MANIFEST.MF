@@ -4,3 +4,17 @@ Bundle-Name: Vitruvius PCM-Java EJB Mapping Tests SEFF Statements
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.ejbtransformations.seffstatements
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.emftext.language.java,
+ org.palladiosimulator.pcm,
+ edu.kit.ipd.sdq.vitruvius.framework.tests.util,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.ejbtransformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.seffstatements
+
