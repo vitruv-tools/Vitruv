@@ -509,7 +509,8 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 				val correspondences = oldTUIDList2CorrespondencesEntry.second
 				// replace the old tuid in the list with the new tuid
 				// oldCurrentTUID is already the new TUID because this happens after the update
-//				val replacedTUID = oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
+				//val replacedTUID = 
+				oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
 //				if (replacedTUID == null) {
 //					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
 //				}
