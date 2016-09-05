@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration;
 
 import java.util.List;
 

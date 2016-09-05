@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcmjava.seff
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPCorrespondenceModelTransformation
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.PCMJaMoPPCorrespondenceModelTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import org.apache.log4j.Logger
@@ -13,7 +13,7 @@ import org.somox.sourcecodedecorator.AbstractActionClassMethodLink
 import org.somox.sourcecodedecorator.MethodLevelResourceDemandingInternalBehaviorLink
 import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository
 import org.somox.sourcecodedecorator.SEFF2MethodMapping
-import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPIntegrationExtending
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.PCMJaMoPPIntegrationExtending
 import org.emftext.language.java.statements.StatementListContainer
 
 /**

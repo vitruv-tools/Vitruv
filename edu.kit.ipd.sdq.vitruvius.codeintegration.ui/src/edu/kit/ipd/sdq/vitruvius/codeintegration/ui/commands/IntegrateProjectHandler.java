@@ -19,7 +19,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
-import edu.kit.ipd.sdq.vitruvius.codeintegration.PCMJaMoPPCorrespondenceModelTransformation;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.PCMJaMoPPCorrespondenceModelTransformation;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
