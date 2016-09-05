@@ -25,4 +25,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.pcm2java
-Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java.repository,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java.system
