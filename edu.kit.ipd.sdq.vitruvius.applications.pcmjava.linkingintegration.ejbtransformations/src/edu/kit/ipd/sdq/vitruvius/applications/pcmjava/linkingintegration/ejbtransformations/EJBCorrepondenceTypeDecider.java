@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.ejbtransformations;
 
 import java.util.List;
 

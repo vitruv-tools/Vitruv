@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.ejbtransformations
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command.CodeIntegrationChangeProcessor
