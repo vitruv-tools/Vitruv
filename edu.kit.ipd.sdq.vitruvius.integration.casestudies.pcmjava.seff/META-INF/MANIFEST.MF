@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Seff
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcmjava.seff;singleton:=true
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.seffstatments;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

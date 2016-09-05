@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcmjava.seff
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.seffstatments
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.PCMJaMoPPCorrespondenceModelTransformation
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
