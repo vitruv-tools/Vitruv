@@ -1,17 +1,17 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.util
+package edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence.util
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationCorrespondence
-import edu.kit.ipd.sdq.vitruvius.codeintegration.deco.meta.correspondence.integration.IntegrationFactory
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.GenericCorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence.integration.IntegrationCorrespondence
+import edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence.integration.IntegrationFactory
 
-class IntegrationCorrespondenceHelper {
+final class IntegrationCorrespondenceHelper {
 	private new() {
 	}
 
 	def static final GenericCorrespondenceModel<IntegrationCorrespondence> getEditableView(
-		CorrespondenceModel ci) {
-		return ci.getEditableView(typeof(IntegrationCorrespondence), [createIntegrationCorrespondence])
+		CorrespondenceModel correspondenceModel) {
+		return correspondenceModel.getEditableView(typeof(IntegrationCorrespondence), [createIntegrationCorrespondence])
 	}
 
 	def static final IntegrationCorrespondence createIntegrationCorrespondence() {

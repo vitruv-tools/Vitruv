@@ -41,7 +41,7 @@ import org.emftext.language.java.parameters.Parametrizable
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
-import edu.kit.ipd.sdq.vitruvius.codeintegration.util.IntegrationCorrespondenceHelper
+import edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence.util.IntegrationCorrespondenceHelper
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
