@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.integration.tests.casestudies.correspondence;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.tests.tests.casestudies.correspondence;
 
 import java.util.Collections;
 
@@ -11,8 +11,8 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.tests.BasicCorrespondenceTest;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.integration.BasicCorrespondenceTest;
 
 /**
  * Class for testing correspondences between PCM components and Java classes.
