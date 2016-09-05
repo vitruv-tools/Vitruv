@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.modelrefinement.inspectit2pcm
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.modelrefinement.inspectit2pcm
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException
