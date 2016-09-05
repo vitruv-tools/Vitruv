@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transformations.packagemapping.java2pcm
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.pojotransformations.java2pcm
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper
 import org.junit.Test

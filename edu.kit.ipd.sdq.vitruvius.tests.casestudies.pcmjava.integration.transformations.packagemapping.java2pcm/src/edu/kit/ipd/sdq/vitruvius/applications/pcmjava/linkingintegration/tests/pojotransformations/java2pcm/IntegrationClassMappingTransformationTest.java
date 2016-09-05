@@ -1,10 +1,9 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transformations.packagemapping.java2pcm;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.pojotransformations.java2pcm;
 
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace;
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 
 public class IntegrationClassMappingTransformationTest extends Java2PCMPackageIntegrationMappingTransformationTest {
 

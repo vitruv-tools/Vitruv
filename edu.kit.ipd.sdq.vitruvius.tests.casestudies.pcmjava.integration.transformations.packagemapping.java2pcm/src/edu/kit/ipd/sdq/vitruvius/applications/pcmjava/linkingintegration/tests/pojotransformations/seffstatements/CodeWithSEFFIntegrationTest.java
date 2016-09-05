@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.integration.casestudies.pcmjava.seff;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.pojotransformations.seffstatements;
 
 import java.util.List;
 import java.util.Set;
