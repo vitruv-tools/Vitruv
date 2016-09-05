@@ -3,7 +3,7 @@
 <plugin>
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-      <command commandId="edu.kit.ipd.sdq.vitruvius.integration.pcm"
+      <command commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration"
         label="Integrate Repository" style="push">
         <visibleWhen
           checkEnabled="false">
@@ -21,7 +21,7 @@
   </extension>
     <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-      <command commandId="edu.kit.ipd.sdq.vitruvius.integration.pcm"
+      <command commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration"
         label="Integrate System and Repositories" style="push">
         <visibleWhen
           checkEnabled="false">
@@ -39,22 +39,22 @@
   </extension>
   <extension point="org.eclipse.ui.commands">
     <command
-          defaultHandler="edu.kit.ipd.sdq.vitruvius.integration.pcm.handler.PCMIntegrationHandler"
+          defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.handler.PCMIntegrationHandler"
           description="Does Something useful"
-          id="edu.kit.ipd.sdq.vitruvius.integration.pcm"
+          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration"
           name="Integrate that shit">
     </command>
   </extension>
   
 <!--<extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-      <command commandId="edu.kit.ipd.sdq.vitruvius.integration"
+      <command commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration"
         label="Integrate Into Vitruv" style="push">
       </command>
     </menuContribution>
   </extension>
   <extension point="org.eclipse.ui.commands">
-    <command defaultHandler="edu.kit.ipd.sdq.vitruvius.integration.handler.IntegrationHandler"
+    <command defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.handler.IntegrationHandler"
       id="de.vogella.plugin.htmlconverter.convert" name="Convert">
     </command>
   </extension>-->

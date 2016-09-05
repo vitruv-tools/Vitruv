@@ -1,31 +1,30 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PCM JaMoPP Integration project
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruvius PCM-Java Reconstruction Integration
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration;singleton:=true
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.resources,
+Require-Bundle: org.apache.log4j,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.core.commands,
  org.eclipse.m2m.qvt.oml,
  org.eclipse.m2m.qvt.oml.project,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
- org.eclipse.jdt.core,
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.framework.metarepository,
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util,
- edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
- org.apache.log4j,
- org.eclipse.core.commands,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
- edu.kit.ipd.sdq.vitruvius.domains.pcm.util
-Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.withocl,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository,
- edu.kit.ipd.sdq.vitruvius.integration.util
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util 
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.composite,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.invariantcheckers,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.invariantcheckers.pcmjamoppenforcer,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.invariantcheckers.pcmjamoppenforcer.withocl,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.repository,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.strategies,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.util
 
