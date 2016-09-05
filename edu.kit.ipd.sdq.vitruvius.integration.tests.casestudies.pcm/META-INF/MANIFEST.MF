@@ -24,11 +24,10 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
- edu.kit.ipd.sdq.vitruvius.integration.util,
- edu.kit.ipd.sdq.vitruvius.integration,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation,
  edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm,
  edu.kit.ipd.sdq.vitruvius.integration.transformations,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
- 
 

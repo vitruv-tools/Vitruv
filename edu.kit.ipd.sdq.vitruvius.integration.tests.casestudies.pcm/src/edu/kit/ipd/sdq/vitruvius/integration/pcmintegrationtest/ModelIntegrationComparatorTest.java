@@ -22,13 +22,13 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util.UnorderedReferencesRespectingEqualityHelper;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies.PCMRepositoryIntegrationStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
-import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
 
 /**

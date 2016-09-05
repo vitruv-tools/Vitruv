@@ -25,7 +25,6 @@ import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.impl.RepositoryImpl;
 
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacade;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryElementSelector;
@@ -38,6 +37,7 @@ import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenfo
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPVitruviusKeywords;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPWhiteSpace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.InvariantEnforcer;
 
 //TODO: refactor load/log parts
 /**

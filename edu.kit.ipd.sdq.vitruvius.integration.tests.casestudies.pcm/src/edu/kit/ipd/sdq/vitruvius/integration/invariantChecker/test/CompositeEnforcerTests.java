@@ -24,7 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryElementSelector;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPBeginChar;

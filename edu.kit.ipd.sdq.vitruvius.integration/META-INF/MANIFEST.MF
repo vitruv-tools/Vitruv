@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framework Extension Model Construction Simulation
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration;singleton:=true
+Bundle-Name: Vitruvius Extension Model Construction Simulation
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.integration.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.junit,
  org.apache.log4j,
  org.eclipse.core.runtime,
@@ -25,13 +26,11 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.integration.util
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.integration.handler,
- edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
- edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.pcmjamoppenforcer,
- edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.pcmjamoppenforcer.withocl,
- edu.kit.ipd.sdq.vitruvius.integration.strategies,
- edu.kit.ipd.sdq.vitruvius.integration.traversal,
- edu.kit.ipd.sdq.vitruvius.integration.traversal.util
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.handler,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.pcmjamoppenforcer,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.pcmjamoppenforcer.withocl,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.strategies,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util

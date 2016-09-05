@@ -20,11 +20,11 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite.CompositeTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 /**
  * This test case is executed on a model which contains Composite Components.
