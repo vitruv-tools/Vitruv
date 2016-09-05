@@ -2,9 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.modelrefinement.inspectit2
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcmjava.PCMJavaUtils
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
@@ -51,10 +48,12 @@ import org.somox.ejbmox.inspectit2pcm.launch.InspectIT2PCMConfigurationAttribute
 import org.somox.sourcecodedecorator.SourceCodeDecoratorRepository
 import org.somox.sourcecodedecorator.SourcecodedecoratorFactory
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceModelUtil.*
-import edu.kit.ipd.sdq.vitruvius.casestudies.java.util.JaMoPPNamespace
-import edu.kit.ipd.sdq.vitruvius.casestudies.pcm.util.PCMNamespace
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceModel
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil
 
 /** 
  * Handler to enrich the coevolved PCM models with resource demands. Is based on the II2PCMJob from
@@ -80,13 +79,13 @@ class InspectIt2PCMHandler extends AbstractHandler {
 		ii2PCMJob.setBlackboard(blackboard)
 		try {
 			//necessary in order to allow manipulation of the repo. 
-			EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(new Callable<Void>() {
+			vsumImpl.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
 
            override public Void call() throws Exception {
 				ii2PCMJob.execute(new NullProgressMonitor())
 				return null	
             }
-        }, vsumImpl);			
+        });			
 		} catch (JobFailedException e) {
 			throw new RuntimeException('''Could not execute II2PCM Job. Reason: «e.toString()»''', e)
 		} catch (UserCanceledException e) {
@@ -236,13 +235,13 @@ class InspectIt2PCMHandler extends AbstractHandler {
 		val VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE)
 		val VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
 		val CorrespondenceModel correspondenceModel = vsum.
-			getCorrespondenceModelOriginal(pcmVURI, jaMoPPVURI)
+			getCorrespondenceModel(pcmVURI, jaMoPPVURI)
 		return correspondenceModel
 	}
 	
 	def private getVSUM(){
-		val MetaRepositoryImpl metaRepository = PCMJavaUtils.createPCMJavaMetarepository()
-		val VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, metaRepository)
+		val MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository()
+		val VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository)
 		vsum.getOrCreateAllCorrespondenceModelsForMM(
 			metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)))
 		return vsum
