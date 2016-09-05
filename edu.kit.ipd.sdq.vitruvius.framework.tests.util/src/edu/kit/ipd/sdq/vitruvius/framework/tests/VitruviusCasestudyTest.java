@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -24,7 +23,6 @@ import org.junit.runner.Description;
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
@@ -45,25 +43,11 @@ public abstract class VitruviusCasestudyTest {
 
     protected IProject currentTestProject;
 
-    protected final Supplier<? extends Change2CommandTransformingProviding> syncTransformationProviderSupplier;
-    
     protected abstract void afterTest(Description description);
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
-    /**
-     * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
-     */
-    public VitruviusCasestudyTest() {
-    	this.syncTransformationProviderSupplier = Change2CommandTransformingProvidingImpl::new;
-    }
-    
-    /**
-     * Initialize a VitruviusEMFCasestudyTest with the specified {@link Supplier} for {@link Change2CommandTransformingProviding}.
-     */
-    public VitruviusCasestudyTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-    	this.syncTransformationProviderSupplier = change2CommandTransformingProvidingSupplier;
-    }
+    protected abstract Change2CommandTransformingProviding createChange2CommandTransformingProviding();
     
     protected void beforeTest(final Description description) throws Throwable {
         createTestProject(description);

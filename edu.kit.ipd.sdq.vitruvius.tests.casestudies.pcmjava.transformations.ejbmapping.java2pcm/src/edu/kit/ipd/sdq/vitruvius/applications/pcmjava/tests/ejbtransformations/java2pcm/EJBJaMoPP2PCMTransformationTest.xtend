@@ -20,11 +20,9 @@ abstract class EJBJaMoPP2PCMTransformationTest extends JaMoPP2PCMTransformationT
 	protected static val String TEST_INTERFACE_NAME = "TestEJBInterface"
 	protected static val String TEST_FIELD_NAME = "testEJBfield"
 	
-	new() {
-		super([ | 
-			AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-				#[new Change2CommandTransformingEJBJavaToPCM()])
-		]);
+	override protected createChange2CommandTransformingProviding() {
+		return AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+				#[new Change2CommandTransformingEJBJavaToPCM()]);
 	}
 	
 	def protected createEJBClass(String className) {

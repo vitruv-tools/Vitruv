@@ -2,7 +2,6 @@ package edu.kit.ipd.sdq.vitruvius.framework.tests;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -15,7 +14,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.change.recording.AtomicEMFChangeRecorder;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
@@ -38,99 +36,85 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements SynchronisationListener {
 
-    protected VSUMImpl vsum;
-    protected ChangeSynchronizerImpl changeSynchronizer;
-    protected MetaRepositoryImpl metaRepository;
-    protected AtomicEMFChangeRecorder changeRecorder;
-    protected CorrespondenceModel correspondenceModel;
-    protected Change2CommandTransformingProviding transformingProviding;
-    
-    /**
-     * Initialize a VitruviusEMFCasestudyTest with the default {@link Supplier} for {@link Change2CommandTransformingProvidingImpl}.
-     */
-    public VitruviusEMFCasestudyTest() {
-    	super();
-    }
-    
-    /**
-     * Initialize a VitruviusEMFCasestudyTest with the specified {@link Supplier} for {@link Change2CommandTransformingProviding}.
-     */
-    public VitruviusEMFCasestudyTest(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-    	super(change2CommandTransformingProvidingSupplier);
-    }
-    
-    /**
-     * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM, Metarepository etc.
-     * before each test
-     *
-     * @throws Throwable
-     */
-    @Override
-    public void beforeTest(final Description description) throws Throwable {
-        super.beforeTest(description);
+	protected VSUMImpl vsum;
+	protected ChangeSynchronizerImpl changeSynchronizer;
+	protected MetaRepositoryImpl metaRepository;
+	protected AtomicEMFChangeRecorder changeRecorder;
+	protected CorrespondenceModel correspondenceModel;
+	protected Change2CommandTransformingProviding transformingProviding;
 
-        this.metaRepository = this.createMetaRepository();
-        this.vsum = TestUtil.createVSUM(this.metaRepository);
-        this.transformingProviding = syncTransformationProviderSupplier.get();
-        this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding,
-                this.vsum, this);
-        this.testUserInteractor = new TestUserInteractor();
-        this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
-        this.resourceSet = new ResourceSetImpl();
-        this.changeRecorder = new AtomicEMFChangeRecorder();
-    }
-    
-    protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
-    	setUserInteractor(newUserInteracting, transformingProviding);
-    }
+	/**
+	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,
+	 * Metarepository etc. before each test
+	 *
+	 * @throws Throwable
+	 */
+	@Override
+	public void beforeTest(final Description description) throws Throwable {
+		super.beforeTest(description);
 
-    protected abstract MetaRepositoryImpl createMetaRepository();
+		this.metaRepository = this.createMetaRepository();
+		this.vsum = TestUtil.createVSUM(this.metaRepository);
+		this.transformingProviding = createChange2CommandTransformingProviding();
+		this.changeSynchronizer = new ChangeSynchronizerImpl(this.vsum, this.transformingProviding, this.vsum, this);
+		this.testUserInteractor = new TestUserInteractor();
+		this.setUserInteractor(this.testUserInteractor, this.transformingProviding);
+		this.resourceSet = new ResourceSetImpl();
+		this.changeRecorder = new AtomicEMFChangeRecorder();
+	}
 
-    @Override
-    protected void afterTest(final org.junit.runner.Description description) {
-        this.correspondenceModel = null;
-    }
+	protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
+		setUserInteractor(newUserInteracting, transformingProviding);
+	}
 
-    @Override
-    protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-        final Metamodel firstMM = this.metaRepository.getAllMetamodels()[0];
-        final Mapping mapping = this.metaRepository.getAllMappings(firstMM).iterator().next();
-        final VURI mm1VURI = mapping.getMetamodelA().getURI();
-        final VURI mm2VURI = mapping.getMetamodelB().getURI();
-        return this.vsum.getCorrespondenceModel(mm1VURI, mm2VURI);
-    }
+	protected abstract MetaRepositoryImpl createMetaRepository();
 
-    protected void triggerSynchronization(final VURI vuri) {
-        final List<EMFModelChange> changes = this.changeRecorder.endRecording();
-        CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-        this.changeSynchronizer.synchronizeChange(compositeChange);
-        this.changeRecorder.beginRecording(vuri, Collections.emptyList());
-    }
+	@Override
+	protected void afterTest(final org.junit.runner.Description description) {
+		this.correspondenceModel = null;
+	}
 
-    protected void triggerSynchronization(final EObject eObject) {
-        final VURI vuri = VURI.getInstance(eObject.eResource());
-        this.triggerSynchronization(vuri);
-    }
+	@Override
+	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
+		final Metamodel firstMM = this.metaRepository.getAllMetamodels()[0];
+		final Mapping mapping = this.metaRepository.getAllMappings(firstMM).iterator().next();
+		final VURI mm1VURI = mapping.getMetamodelA().getURI();
+		final VURI mm2VURI = mapping.getMetamodelB().getURI();
+		return this.vsum.getCorrespondenceModel(mm1VURI, mm2VURI);
+	}
 
-    protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
-    	Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
-        final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
-        this.changeSynchronizer.synchronizeChange(fileChange);
-    }
+	protected void triggerSynchronization(final VURI vuri) {
+		final List<EMFModelChange> changes = this.changeRecorder.endRecording();
+		CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+		this.changeSynchronizer.synchronizeChange(compositeChange);
+		this.changeRecorder.beginRecording(vuri, Collections.emptyList());
+	}
 
-    @Override
-    public void syncStarted() {
+	protected void triggerSynchronization(final EObject eObject) {
+		final VURI vuri = VURI.getInstance(eObject.eResource());
+		this.triggerSynchronization(vuri);
+	}
 
-    }
+	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
+		Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
+		final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
+				modelResource);
+		this.changeSynchronizer.synchronizeChange(fileChange);
+	}
 
-    @Override
-    public void syncFinished() {
+	@Override
+	public void syncStarted() {
 
-    }
+	}
 
-    @Override
-    public void syncAborted(final TransformationAbortCause cause) {
+	@Override
+	public void syncFinished() {
 
-    }
+	}
+
+	@Override
+	public void syncAborted(final TransformationAbortCause cause) {
+
+	}
 
 }

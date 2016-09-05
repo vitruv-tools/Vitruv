@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -126,7 +125,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
  *
  */
 @SuppressWarnings("restriction")
-public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
+public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
 	private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
@@ -137,15 +136,6 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 
 	protected Package mainPackage;
 	protected Package secondPackage;
-
-	public JaMoPP2PCMTransformationTest() {
-		super();
-	}
-
-	public JaMoPP2PCMTransformationTest(
-			Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-		super(change2CommandTransformingProvidingSupplier);
-	}
 
 	@Override
 	protected void beforeTest(final Description description) throws Throwable {
@@ -174,7 +164,7 @@ public class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
 		 * changed field names.
 		 */
 		PCMJavaBuilder builder = getPCMJavaBuilderFromProject();
-		Change2CommandTransformingProviding transformingProviding = syncTransformationProviderSupplier.get();
+		Change2CommandTransformingProviding transformingProviding = createChange2CommandTransformingProviding();
 		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "transformingProviding", builder, transformingProviding);
 		ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
 				"changeSynchronizing", builder);

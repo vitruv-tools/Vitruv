@@ -13,5 +13,6 @@ Require-Bundle: org.junit,
  org.somox.test.gast2seff,
  edu.kit.ipd.sdq.vitruvius.framework.tests.util,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.seffstatements

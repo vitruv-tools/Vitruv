@@ -2,6 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations
 
 import static org.junit.Assert.fail;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -30,9 +31,11 @@ import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm.Change2CommandTransformingJavaToPcm;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 
@@ -53,13 +56,11 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
     protected static final String MEDIA_STORE_CLASSNAME = MEDIA_STORE + "Impl";;
     protected static final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
 
-    protected IncrementalSEFFReconstructionTest(Supplier<Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-    	super(change2CommandTransformingProvidingSupplier);
+    @Override
+    protected Change2CommandTransformingProviding createChange2CommandTransformingProviding() {
+    	return AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+    			Collections.singletonList(new Change2CommandTransformingJavaToPcm()));
     }
-    
-    public IncrementalSEFFReconstructionTest() {
-		super();
-	}
     
     /**
      * Set up simple media store, which can be used for the tests. It consists of two components

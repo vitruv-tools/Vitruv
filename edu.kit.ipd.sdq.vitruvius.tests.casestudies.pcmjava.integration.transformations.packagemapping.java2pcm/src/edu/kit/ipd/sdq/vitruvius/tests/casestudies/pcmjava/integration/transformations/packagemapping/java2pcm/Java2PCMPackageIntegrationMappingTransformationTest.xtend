@@ -26,57 +26,60 @@ class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackag
 	val public static String INTEGRATED_METHOD_NAME = "integratedMethodName"
 	val public static String NON_INTEGRATED_METHOD_NAME = "nonIntegradedMethodName"
 
-	new() {
-		super([| AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-		 	#[new Java2PCMIntegrationChange2CommandTransforming(), new PCM2JavaIntegrationChange2CommandTransforming()]
-		)])
+	override protected createChange2CommandTransformingProviding() {
+		AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
+			#[new Java2PCMIntegrationChange2CommandTransforming(), new PCM2JavaIntegrationChange2CommandTransforming()]
+		);
 	}
 
 	override protected void beforeTest(Description description) throws Throwable {
 		super.beforeTest(description)
 	}
-	
+
 	override protected void createTestProject(Description description) throws CoreException {
 		val workspace = ResourcesPlugin.getWorkspace()
 		this.currentTestProjectName = CodeIntegrationTestCBSNamespace.TEST_PROJECT_NAME
-		CodeIntegrationUtils.importTestProjectFromBundleData(workspace,
-			this.currentTestProjectName, CodeIntegrationTestCBSNamespace.TEST_BUNDLE_NAME,
-			CodeIntegrationTestCBSNamespace.SOURCE_CODE_PATH) 
-		
+		CodeIntegrationUtils.importTestProjectFromBundleData(workspace, this.currentTestProjectName,
+			CodeIntegrationTestCBSNamespace.TEST_BUNDLE_NAME, CodeIntegrationTestCBSNamespace.SOURCE_CODE_PATH)
+
 		this.currentTestProject = workspace.getRoot().getProject(CodeIntegrationTestCBSNamespace.TEST_PROJECT_NAME)
 		CodeIntegrationUtils.integratProject(currentTestProject)
 	}
-	
-	
+
 	def protected void assertMessage(int expectedSize, String... expectedMessages) {
 		val Collection<String> messageLog = super.testUserInteractor.getMessageLog();
 		assertEquals("Size of message log is wrong", expectedSize, messageLog.size());
-		
+
 		val Iterator<String> iterator = messageLog.iterator();
 		var int i = 0;
 		while (iterator.hasNext()) {
 			val String nextMessage = iterator.next();
 			val String expectedNexMessage = expectedMessages.get(i++);
-			assertTrue("The message '" + nextMessage + "' does not contain the expected message '" + expectedNexMessage +"'.",
-					nextMessage.contains(expectedNexMessage));
+			assertTrue(
+				"The message '" + nextMessage + "' does not contain the expected message '" + expectedNexMessage + "'.",
+				nextMessage.contains(expectedNexMessage));
 		}
 	}
-	
+
 	def protected void assertNoUserInteractingMessage() {
 		assertMessage(0)
 	}
-	
-	 def protected void assertNoComponentWithName(String nameOfComponent) throws Throwable {
-    	val Set<RepositoryComponent> repoComponents = CorrespondenceModelUtil.getAllEObjectsOfTypeInCorrespondences(getCorrespondenceModel(), RepositoryComponent);
-    	assertNoBasicComponentWithName(nameOfComponent, repoComponents);
-    	val Set<Repository> repos = CorrespondenceModelUtil.getAllEObjectsOfTypeInCorrespondences(getCorrespondenceModel(), Repository);
-    	repos.forEach[assertNoBasicComponentWithName(nameOfComponent, it.getComponents__Repository())];
+
+	def protected void assertNoComponentWithName(String nameOfComponent) throws Throwable {
+		val Set<RepositoryComponent> repoComponents = CorrespondenceModelUtil.
+			getAllEObjectsOfTypeInCorrespondences(getCorrespondenceModel(), RepositoryComponent);
+		assertNoBasicComponentWithName(nameOfComponent, repoComponents);
+		val Set<Repository> repos = CorrespondenceModelUtil.
+			getAllEObjectsOfTypeInCorrespondences(getCorrespondenceModel(), Repository);
+		repos.forEach[assertNoBasicComponentWithName(nameOfComponent, it.getComponents__Repository())];
 	}
 
-	def private void assertNoBasicComponentWithName(String nameOfComponent, Iterable<RepositoryComponent> repoComponents) {
+	def private void assertNoBasicComponentWithName(String nameOfComponent,
+		Iterable<RepositoryComponent> repoComponents) {
 		for (RepositoryComponent repoComponent : repoComponents) {
-			assertTrue("basic component with name " + nameOfComponent + " found: " + repoComponent,!repoComponent.getEntityName().contains(nameOfComponent))
+			assertTrue("basic component with name " + nameOfComponent + " found: " + repoComponent,
+				!repoComponent.getEntityName().contains(nameOfComponent))
 		}
 	}
-	
+
 }

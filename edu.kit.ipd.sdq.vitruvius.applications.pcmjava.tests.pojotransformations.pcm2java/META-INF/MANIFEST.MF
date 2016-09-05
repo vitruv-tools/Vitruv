@@ -23,5 +23,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
  edu.kit.ipd.sdq.vitruvius.domains.java.echange,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.pcm2java
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java
