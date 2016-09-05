@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius PCM-Java POJO Transformation GPL Implementation
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation;singleton:=true
-Bundle-Version: 1.0.0
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.pcm2java
