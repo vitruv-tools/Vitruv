@@ -1,7 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
 import edu.kit.ipd.sdq.vitruvius.dsls.response.tests.AbstractResponseTests
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays
@@ -16,16 +15,11 @@ import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertArrayEquals
 import java.util.List
 import allElementTypes.Identified
-import java.util.function.Supplier
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
-	
-	new(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-		super(change2CommandTransformingProvidingSupplier)
-	}
 	
 	protected override createMetaRepository() {
 		val metarepository = new MetaRepositoryImpl();

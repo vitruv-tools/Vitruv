@@ -2,13 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 
 import edu.kit.ipd.sdq.vitruvius.framework.tests.VitruviusEMFCasestudyTest
 import org.junit.runner.Description
-import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import java.util.Collections
 import org.eclipse.emf.ecore.EObject
-import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 import org.eclipse.emf.ecore.resource.Resource
@@ -20,10 +18,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.FileChange.FileChangeKind
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
-
-	new(Supplier<? extends Change2CommandTransformingProviding> change2CommandTransformingProvidingSupplier) {
-		super(change2CommandTransformingProvidingSupplier);
-	}
 
 	/**
 	 * Set up test resources and initialize the test model,
