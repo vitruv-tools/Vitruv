@@ -2,7 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="edu.kit.ipd.sdq.vitruvius.codeintegration.correspondencetypedeciding">
+         point="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.correspondencetypedeciding">
       <provides
             provider="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.integration.EJBCorrepondenceTypeDecider">
       </provides>

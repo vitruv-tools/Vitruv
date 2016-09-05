@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.CorrespondenceTypeDeciding;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.CorrespondenceTypeDeciding;
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 
 /**

@@ -14,6 +14,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.ejbtransformations.java2pcm,
- edu.kit.ipd.sdq.vitruvius.codeintegration,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration,
  edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
 
