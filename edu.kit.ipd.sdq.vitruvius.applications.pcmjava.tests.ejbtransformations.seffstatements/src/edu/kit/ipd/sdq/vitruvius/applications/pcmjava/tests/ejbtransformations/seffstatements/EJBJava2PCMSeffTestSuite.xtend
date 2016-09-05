@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.ejbmapping.java2pcm.seff
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.ejbtransformations.seffstatements
 
 import org.junit.runners.Suite.SuiteClasses
 import org.junit.runner.RunWith
@@ -9,6 +9,6 @@ import org.junit.runners.Suite
 @SuiteClasses( #[
 	EJBIncrementalSEFFReconstructionTest
 ])
-class EJBJava2PCMTransformationsSeffTestSuite {
+class EJBJava2PCMSeffTestSuite {
 	
 }
