@@ -18,4 +18,4 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.java2pcm,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java
-
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.gplimplementation

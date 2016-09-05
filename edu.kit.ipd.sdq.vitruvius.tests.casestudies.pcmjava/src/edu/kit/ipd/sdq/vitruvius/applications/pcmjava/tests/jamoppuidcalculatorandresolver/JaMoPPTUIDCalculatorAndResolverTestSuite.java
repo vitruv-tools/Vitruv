@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.jamoppuidcalculatorandresolver;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.jamoppuidcalculatorandresolver;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

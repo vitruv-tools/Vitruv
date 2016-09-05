@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.transformations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

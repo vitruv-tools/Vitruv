@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.transformations;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
