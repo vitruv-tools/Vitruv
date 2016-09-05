@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command.internal
 
 import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult

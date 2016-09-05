@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command
 
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChangeProcessor
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
@@ -8,7 +8,7 @@ import java.util.ArrayList
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.ChangeProcessorResult
-import edu.kit.ipd.sdq.vitruvius.codeintegration.change2command.internal.IntegrationChange2CommandTransformer
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command.internal.IntegrationChange2CommandTransformer
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {

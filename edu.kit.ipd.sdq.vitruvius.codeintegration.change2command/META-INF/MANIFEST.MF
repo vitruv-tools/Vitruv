@@ -1,23 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Change2command
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruvius PCM-Java Linking Integration Change2Command Specification
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: edu.kit.ipd.sdq.vitruvius.codeintegration.response,
- org.eclipse.emf.common,
+Require-Bundle: org.eclipse.emf.common,
  org.eclipse.xtext.xbase.lib,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence,
- edu.kit.ipd.sdq.vitruvius.framework.util,
- edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response,
- edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.pcm2java;visibility:=reexport,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.framework.change,
- edu.kit.ipd.sdq.vitruvius.framework.change.processing
-Export-Package: edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
+ edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.response,
+ edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.pcm2java,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm,
+ edu.kit.ipd.sdq.vitruvius.codeintegration.response
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command

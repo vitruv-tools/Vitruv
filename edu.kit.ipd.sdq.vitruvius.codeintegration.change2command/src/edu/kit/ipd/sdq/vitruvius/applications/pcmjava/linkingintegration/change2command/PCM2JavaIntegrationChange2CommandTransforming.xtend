@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.change2command
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.pcm2java.Change2CommandTransformingPcmToJava
 
