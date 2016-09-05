@@ -5,9 +5,8 @@ import org.junit.runners.Suite
 import org.junit.runners.Suite.SuiteClasses
 
 @RunWith(Suite)
-@SuiteClasses(Pcm2JavaRepositoryGplTestSuite,
-	Pcm2JavaGplTestSuite
-)
+@SuiteClasses(Pcm2JavaGplTestSuite,
+	Java2PcmGplTestSuite)
 class PcmJavaGplTestSuite {
 	
 }
