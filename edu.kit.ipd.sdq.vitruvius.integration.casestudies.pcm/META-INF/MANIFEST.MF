@@ -5,6 +5,8 @@ Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.casestudies.pcm;singl
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.m2m.qvt.oml,
+ org.eclipse.m2m.qvt.oml.project,
  org.palladiosimulator.pcm,
  edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
@@ -16,7 +18,6 @@ Require-Bundle: org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
  org.apache.log4j,
  org.eclipse.core.commands,
- org.eclipse.m2m.qvt.oml;bundle-version="3.5.0",
  edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.domains.pcm.util
