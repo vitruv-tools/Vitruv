@@ -1,12 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.integration.transformations
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.transformations;singleton:=true
+Bundle-Name: Vitruvius PCM-Java Reconstruction Integration Transformations
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.transformations;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.commons.logging,
- org.eclipse.jdt.core;bundle-version="3.5.0",
- com.ibm.icu;bundle-version="4.0.1",
+ org.apache.log4j;bundle-version="1.2.15",
+ com.google.guava,
  org.antlr.runtime;bundle-version="3.0.0",
+ com.ibm.icu;bundle-version="4.0.1",
+ org.eclipse.jdt.core;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="3.5.0",
  org.eclipse.emf.mwe.utils;bundle-version="1.0.0",
  org.eclipse.emf.ecore.xmi;bundle-version="2.5.0",
@@ -14,26 +17,22 @@ Require-Bundle: org.apache.commons.logging,
  org.eclipse.xpand;bundle-version="1.0.0",
  org.eclipse.xtend;bundle-version="1.0.0",
  org.eclipse.xtend.typesystem.emf;bundle-version="1.0.0",
- com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.emftext.language.java,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
- org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.core.resources;bundle-version="3.9.0",
+ org.emftext.language.java,
  org.somox.sourcecodedecorator;bundle-version="1.0.1",
  org.somox.kdmhelper;bundle-version="1.0.0",
- org.eclipse.core.resources;bundle-version="3.9.0",
  edu.kit.ipd.sdq.vitruvius.framework.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation,
- edu.kit.ipd.sdq.vitruvius.domains.pcm.util,
- edu.kit.ipd.sdq.vitruvius.domains.java.util,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
  edu.kit.ipd.sdq.vitruvius.framework.tuid,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
- edu.kit.ipd.sdq.vitruvius.framework.vsum
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: edu.kit.ipd.sdq.vitruvius.integration.transformations
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util,
+ edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.transformations
 

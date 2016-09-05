@@ -3,7 +3,7 @@
 <plugin>
    <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-      <command commandId="edu.kit.ipd.sdq.vitruvius.integration.jamopp"
+      <command commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.jamopp"
         label="Integrate Code" style="push">
         <visibleWhen
           checkEnabled="false">
@@ -20,9 +20,9 @@
   </extension>
   <extension point="org.eclipse.ui.commands">
     <command
-          defaultHandler="edu.kit.ipd.sdq.vitruvius.integration.transformations.JaMoPPIntegrationHandler"
+          defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.transformations.JaMoPPIntegrationHandler"
           description="Integrates Code"
-          id="edu.kit.ipd.sdq.vitruvius.integration.jamopp"
+          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.jamopp"
           name="IntegrateCode">
     </command>
   </extension>
