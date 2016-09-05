@@ -24,7 +24,6 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.invariantcheckers.PCMRepositoryExtractor;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.strategies.PCMRepositoryIntegrationStrategy;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.reconstructionintegration.util.PCMMetaModelConverter;
-import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.reconstructionintegration.pcmintegrationtest.PCMModelBuilder;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util.UnorderedReferencesRespectingEqualityHelper;
 import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util.IntegrationUtil;
