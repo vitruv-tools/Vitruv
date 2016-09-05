@@ -12,7 +12,6 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import java.util.concurrent.Callable
-import mir.responses.responsesJavaTo5_1.rename.ExecutorJavaTo5_1
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
@@ -28,6 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.FeatureEChange
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 import edu.kit.ipd.sdq.vitruvius.extensions.integration.correspondence.integration.IntegrationCorrespondence;
+import mir.responses.responsesJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1
 
 class IntegrationChange2CommandTransformer {
 	
