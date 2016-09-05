@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<uriMap:MappingContainer xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uriMap="http:///www.eclipse.org/m2m/qvt/oml/MModelUriMap/1.0.0">
-  <mapping sourceURI="platform:/resource/de.uka.ipd.sdq.pcm/model/pcm.ecore" targetURI="platform:/resource/de.uka.ipd.sdq.pcm/model/pcm.ecore"/>
-</uriMap:MappingContainer>
