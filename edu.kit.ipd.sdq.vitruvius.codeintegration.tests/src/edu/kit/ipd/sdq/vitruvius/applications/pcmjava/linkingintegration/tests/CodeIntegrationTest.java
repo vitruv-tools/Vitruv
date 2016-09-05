@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.tests;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -169,7 +169,7 @@ public class CodeIntegrationTest {
             final TUID b = bs.get(0);
             Assert.assertEquals(
                     TUID.valueOf(
-                            "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#_auhdcMWvEeWLAeSW2tt_XQ#_auwuAMWvEeWLAeSW2tt_XQ"),
+                            "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#id=_auhdcMWvEeWLAeSW2tt_XQ#id=_auwuAMWvEeWLAeSW2tt_XQ"),
                     b);
         } else if (frameCorr.getBTUIDs().contains(frameCodeTuid)) {
             final EList<TUID> as = frameCorr.getATUIDs();
@@ -179,7 +179,7 @@ public class CodeIntegrationTest {
             final TUID a = as.get(0);
             Assert.assertEquals(
                     TUID.valueOf(
-                            "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#_auhdcMWvEeWLAeSW2tt_XQ#_auwuAMWvEeWLAeSW2tt_XQ"),
+                            "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#id=_auhdcMWvEeWLAeSW2tt_XQ#id=_auwuAMWvEeWLAeSW2tt_XQ"),
                     a);
         } else {
             Assert.assertTrue(false);

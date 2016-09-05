@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transfor
 import org.junit.Test
 import org.palladiosimulator.pcm.repository.BasicComponent
 import java.util.ArrayList
-import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace
 
 class IntegrationPackageMappingTransformationTest extends Java2PCMPackageIntegrationMappingTransformationTest{
 	

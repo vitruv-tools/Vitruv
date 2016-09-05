@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.integration.transfor
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper
 import org.junit.Test
-import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace
 
 class IntegrationMethodMappingTransformationTest extends Java2PCMPackageIntegrationMappingTransformationTest{
 	

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 
-import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace;
 
 public class IntegrationInterfaceMappingTransformationTest extends Java2PCMPackageIntegrationMappingTransformationTest{
 

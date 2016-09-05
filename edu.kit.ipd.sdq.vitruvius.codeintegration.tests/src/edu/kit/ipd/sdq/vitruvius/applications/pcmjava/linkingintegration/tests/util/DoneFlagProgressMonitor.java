@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.util;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

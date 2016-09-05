@@ -13,9 +13,9 @@ import java.util.Set
 import org.palladiosimulator.pcm.repository.Repository
 import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil
 import edu.kit.ipd.sdq.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util.CodeIntegrationUtils
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.util.CodeIntegrationUtils
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command.Java2PCMIntegrationChange2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.codeintegration.tests.CodeIntegrationTestCBSNamespace
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.change2command.PCM2JavaIntegrationChange2CommandTransforming
 
 class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
