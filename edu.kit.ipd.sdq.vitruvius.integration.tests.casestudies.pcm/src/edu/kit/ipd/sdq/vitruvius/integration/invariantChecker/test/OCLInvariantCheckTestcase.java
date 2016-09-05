@@ -13,7 +13,8 @@ import org.eclipse.ocl.helper.OCLHelper;
 
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
+
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
 
  
 /**

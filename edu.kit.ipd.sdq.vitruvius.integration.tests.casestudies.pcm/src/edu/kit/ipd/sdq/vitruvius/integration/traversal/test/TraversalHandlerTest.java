@@ -23,7 +23,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.tests.util.TestUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
 
 /**
  * The Class TraversalHandlerTest.

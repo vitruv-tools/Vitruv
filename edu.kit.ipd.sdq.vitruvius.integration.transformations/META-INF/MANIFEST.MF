@@ -31,7 +31,9 @@ Require-Bundle: org.apache.commons.logging,
  edu.kit.ipd.sdq.vitruvius.domains.pcm.util,
  edu.kit.ipd.sdq.vitruvius.domains.java.util,
  edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util,
- edu.kit.ipd.sdq.vitruvius.framework.tuid
+ edu.kit.ipd.sdq.vitruvius.framework.tuid,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.transformations
 

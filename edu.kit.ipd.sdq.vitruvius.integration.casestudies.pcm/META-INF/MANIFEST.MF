@@ -17,8 +17,14 @@ Require-Bundle: org.eclipse.core.resources,
  org.apache.log4j,
  org.eclipse.core.commands,
  org.eclipse.m2m.qvt.oml;bundle-version="3.5.0",
- edu.kit.ipd.sdq.vitruvius.framework.change.echange,
- edu.kit.ipd.sdq.vitruvius.framework.change
-Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
- edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository
+ edu.kit.ipd.sdq.vitruvius.framework.change,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.domains.pcm.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.withocl,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite,
+ edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository,
+ edu.kit.ipd.sdq.vitruvius.integration.util
 

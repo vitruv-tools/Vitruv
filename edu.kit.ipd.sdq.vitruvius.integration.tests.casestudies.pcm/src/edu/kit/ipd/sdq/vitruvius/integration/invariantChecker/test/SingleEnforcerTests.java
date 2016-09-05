@@ -37,7 +37,7 @@ import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenfo
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPSpecialChars;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPVitruviusKeywords;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPWhiteSpace;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
 
 //TODO: refactor load/log parts
 /**

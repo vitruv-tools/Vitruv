@@ -17,6 +17,7 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
@@ -31,7 +32,6 @@ import edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies.PCMSystemIntegration
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
 import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
 import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 
 public class PCMIntegrationHandler extends IntegrationHandler<IFile> {

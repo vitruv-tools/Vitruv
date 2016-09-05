@@ -34,8 +34,8 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.ConcreteChange;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
 import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.util.RepositoryModelLoader;
 
 /**
  * This test case will be executed with a model which contains all basic elements from the

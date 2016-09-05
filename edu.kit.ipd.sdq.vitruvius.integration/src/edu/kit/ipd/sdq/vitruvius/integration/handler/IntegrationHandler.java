@@ -48,7 +48,8 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
      * @see
      * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
 
         LoggerConfigurator.setUpLogger();

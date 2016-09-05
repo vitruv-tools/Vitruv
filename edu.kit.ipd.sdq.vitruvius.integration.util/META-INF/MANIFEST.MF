@@ -3,21 +3,19 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Util
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration.util
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.integration.util.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  edu.kit.ipd.sdq.vitruvius.framework.metarepository,
  edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: edu.kit.ipd.sdq.vitruvius.framework.change.preparation,
- org.apache.commons.io,
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.apache.commons.io,
  org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.resource,
  org.eclipse.emf.ecore.resource.impl,
- org.eclipse.emf.ecore.xmi.impl,
- org.palladiosimulator.pcm.repository
+ org.eclipse.emf.ecore.xmi.impl
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.util

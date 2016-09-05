@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.integration.util;
+package edu.kit.ipd.sdq.vitruvius.domains.pcm.util;
 
 import java.io.File;
 

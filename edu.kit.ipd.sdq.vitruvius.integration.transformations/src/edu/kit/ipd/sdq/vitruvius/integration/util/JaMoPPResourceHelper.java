@@ -13,6 +13,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.somox.sourcecodedecorator.SourcecodedecoratorPackage;
 import org.splevo.jamopp.extraction.JaMoPPSoftwareModelExtractor;
 
+import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+
 /**
  * Helper class for loading {@link Resource}s.
  *

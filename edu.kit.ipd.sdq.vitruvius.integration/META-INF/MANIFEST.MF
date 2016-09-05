@@ -1,32 +1,32 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Integration
+Bundle-Name: Vitruvius Framework Extension Model Construction Simulation
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.integration;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.integration.Activator
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.junit,
+ org.apache.log4j,
+ org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.core.resources,
- org.junit,
- org.apache.log4j,
- edu.kit.ipd.sdq.vitruvius.framework.metarepository,
- edu.kit.ipd.sdq.vitruvius.framework.tests.util,
- edu.kit.ipd.sdq.vitruvius.framework.vsum,
  org.eclipse.jdt.core,
  org.eclipse.core.expressions,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.framework.util,
- org.eclipse.emf.emfstore.common,
  org.eclipse.m2m.qvt.oml,
+ org.eclipse.emf.emfstore.common,
+ edu.kit.ipd.sdq.vitruvius.framework.metarepository,
+ edu.kit.ipd.sdq.vitruvius.framework.tests.util,
+ edu.kit.ipd.sdq.vitruvius.framework.vsum,
+ edu.kit.ipd.sdq.vitruvius.framework.util,
  edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
- edu.kit.ipd.sdq.vitruvius.integration.util,
  edu.kit.ipd.sdq.vitruvius.framework.change,
- edu.kit.ipd.sdq.vitruvius.framework.change.echange
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ edu.kit.ipd.sdq.vitruvius.framework.change.echange,
+ edu.kit.ipd.sdq.vitruvius.integration.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.integration.handler,
  edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers,
