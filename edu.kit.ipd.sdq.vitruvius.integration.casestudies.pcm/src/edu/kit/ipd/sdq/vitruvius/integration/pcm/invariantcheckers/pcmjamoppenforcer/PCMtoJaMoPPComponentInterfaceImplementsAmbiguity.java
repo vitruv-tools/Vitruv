@@ -3,15 +3,11 @@ package edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenf
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 
 import org.palladiosimulator.pcm.repository.Interface;
-import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import org.palladiosimulator.pcm.repository.ProvidedRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositorytoJaMoPPInvariantEnforcer;
 
@@ -71,10 +67,10 @@ public class PCMtoJaMoPPComponentInterfaceImplementsAmbiguity extends PCMReposit
             }
 
             final EStructuralFeature sig = target.eClass().getEAllStructuralFeatures().get(6);
-            final EObjectContainmentWithInverseEList list = (EObjectContainmentWithInverseEList) target.eGet(sig);
+            final EObjectContainmentWithInverseEList<?> list = (EObjectContainmentWithInverseEList<?>) target.eGet(sig);
             for (int i = 0; i < list.size(); i++) {
                 final OperationSignature opsig = (OperationSignature) list.get(i);
-                final String mname = opsig.getEntityName();
+                //final String mname = opsig.getEntityName();
 
                 opsig.setEntityName("RNDUPLICATE_" + this.ctr + opsig.getEntityName());
                 this.ctr++;
@@ -96,24 +92,24 @@ public class PCMtoJaMoPPComponentInterfaceImplementsAmbiguity extends PCMReposit
      *
      * @return t/f
      */
-    private boolean identifyConflictingComponents() {
-        final ArrayList<Interface> providingInterfaces = new ArrayList<>();
-        for (final RepositoryComponent s : this.root.getComponents__Repository()) {
-
-            final EList<ProvidedRole> list = s.getProvidedRoles_InterfaceProvidingEntity();
-
-            // get InterfaceImpl
-            final EStructuralFeature feature = list.get(0).eClass().getEAllStructuralFeatures().get(3);
-            for (final ProvidedRole r : list) {
-
-                final OperationInterface impl = (OperationInterface) r.eGet(feature);
-                System.out.println("-->" + impl.getEntityName());
-                providingInterfaces.add(impl);
-            }
-        }
-
-        return false;
-    }
+//    private boolean identifyConflictingComponents() {
+//        final ArrayList<Interface> providingInterfaces = new ArrayList<>();
+//        for (final RepositoryComponent s : this.root.getComponents__Repository()) {
+//
+//            final EList<ProvidedRole> list = s.getProvidedRoles_InterfaceProvidingEntity();
+//
+//            // get InterfaceImpl
+//            final EStructuralFeature feature = list.get(0).eClass().getEAllStructuralFeatures().get(3);
+//            for (final ProvidedRole r : list) {
+//
+//                final OperationInterface impl = (OperationInterface) r.eGet(feature);
+//                System.out.println("-->" + impl.getEntityName());
+//                providingInterfaces.add(impl);
+//            }
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Two (or more) interfaces must have at least 1 common method signature. If not, no conflict
@@ -135,14 +131,14 @@ public class PCMtoJaMoPPComponentInterfaceImplementsAmbiguity extends PCMReposit
         final EStructuralFeature sig = allInterfaces.get(0).eClass().getEAllStructuralFeatures().get(6);
         for (int j = 0; j < allInterfaces.size(); j++) {
             final Interface s = allInterfaces.get(j);
-            final EObjectContainmentWithInverseEList list = (EObjectContainmentWithInverseEList) s.eGet(sig);
+            final EObjectContainmentWithInverseEList<?> list = (EObjectContainmentWithInverseEList<?>) s.eGet(sig);
             for (int i = 0; i < list.size(); i++) {
                 final OperationSignature opsig = (OperationSignature) list.get(i);
                 final String mname = opsig.getEntityName();
 
                 for (int k = j + 1; k < allInterfaces.size(); k++) {
                     final Interface tmp = allInterfaces.get(k);
-                    final EObjectContainmentWithInverseEList tmplist = (EObjectContainmentWithInverseEList) tmp
+                    final EObjectContainmentWithInverseEList<?> tmplist = (EObjectContainmentWithInverseEList<?>) tmp
                             .eGet(sig);
                     for (int m = 0; m < tmplist.size(); m++) {
                         final OperationSignature tmpopsig = (OperationSignature) tmplist.get(m);

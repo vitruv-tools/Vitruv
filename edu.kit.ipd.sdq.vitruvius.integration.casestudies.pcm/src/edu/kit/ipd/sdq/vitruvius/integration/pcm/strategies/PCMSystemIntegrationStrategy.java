@@ -111,7 +111,7 @@ public class PCMSystemIntegrationStrategy extends PCMIntegrationStrategy {
         // traverse model and get ordered list of changes
         EList<VitruviusChange> changes = null;
 
-        final IMModelImplExtractor extractor = new PCMSystemExtractor();
+        final IMModelImplExtractor<?> extractor = new PCMSystemExtractor();
         final System system = (System) extractor.getImpl(validModel);
 
         final ITraversalStrategy<System> systemTraversal = new SystemTraversalStrategy();

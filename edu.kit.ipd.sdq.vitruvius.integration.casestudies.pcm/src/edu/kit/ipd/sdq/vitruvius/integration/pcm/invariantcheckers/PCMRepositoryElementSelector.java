@@ -66,7 +66,7 @@ public class PCMRepositoryElementSelector extends PCMElementSelector<Repository>
 
             // method names and parameter names
             final EStructuralFeature sig = s.eClass().getEAllStructuralFeatures().get(6);
-            final EObjectContainmentWithInverseEList list = (EObjectContainmentWithInverseEList) s.eGet(sig);
+            final EObjectContainmentWithInverseEList<?> list = (EObjectContainmentWithInverseEList<?>) s.eGet(sig);
             for (int i = 0; i < list.size(); i++) {
                 final OperationSignature opsig = (OperationSignature) list.get(i);
                 final String mname = opsig.getEntityName();

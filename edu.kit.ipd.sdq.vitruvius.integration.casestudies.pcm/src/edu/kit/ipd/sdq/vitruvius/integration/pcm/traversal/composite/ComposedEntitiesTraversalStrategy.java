@@ -15,7 +15,6 @@ import org.palladiosimulator.pcm.system.System;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
-import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.InsertInListEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.EMFTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
@@ -107,7 +106,6 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
         // last element a role?
         if (roleDelegationChanges.size() > 0) {
-            @SuppressWarnings("unchecked")
             final InsertEReference<?,?> lastChange = (InsertEReference<?,?>) roleDelegationChanges
                     .get(roleDelegationChanges.size() - 1);
             if (lastChange.getNewValue() instanceof Role) {

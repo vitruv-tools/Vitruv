@@ -31,7 +31,7 @@ public class PJIE_ComponentInterfaceImplementsAmbiguity extends PCMRepositorytoJ
     public void enforceInvariant() {
 
         final Bundle bundle = Platform
-                .getBundle("edu.kit.ipd.sdq.vitruvius.integration.invariantEnforcingTransformations");
+                .getBundle("edu.kit.ipd.sdq.vitruvius.integration");
         final URL fileURL = bundle.getEntry("transforms/DeterministicInterfaceAmbiguityImplementsSolver.qvto");
         File file = null;
         try {

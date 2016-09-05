@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantchec
  */
 public class InvariantEnforcerFacade extends InvariantEnforcer {
 
-    private PCMElementSelector traversalStrategy; // TODO: make more abstract
+    private PCMElementSelector<?> traversalStrategy; // TODO: make more abstract
     private PCMtoJaMoPPRenameInvariantEnforcer enforcer; // TODO: same here
 
     /**
@@ -20,7 +20,7 @@ public class InvariantEnforcerFacade extends InvariantEnforcer {
      * @param enforcer
      *            the enforcer
      */
-    public InvariantEnforcerFacade(final PCMElementSelector strategy,
+    public InvariantEnforcerFacade(final PCMElementSelector<?> strategy,
             final PCMtoJaMoPPRenameInvariantEnforcer enforcer) {
         this.setTraversalStrategy(strategy);
         this.setEnforcer(enforcer);
@@ -51,7 +51,7 @@ public class InvariantEnforcerFacade extends InvariantEnforcer {
      *
      * @return the traversal strategy
      */
-    public PCMElementSelector getTraversalStrategy() {
+    public PCMElementSelector<?>getTraversalStrategy() {
         return this.traversalStrategy;
     }
 
@@ -61,7 +61,7 @@ public class InvariantEnforcerFacade extends InvariantEnforcer {
      * @param traversalStrategy
      *            the new traversal strategy
      */
-    public void setTraversalStrategy(final PCMElementSelector traversalStrategy) {
+    public void setTraversalStrategy(final PCMElementSelector<?> traversalStrategy) {
         this.traversalStrategy = traversalStrategy;
         traversalStrategy.setParentEnforcer(this);
     }
