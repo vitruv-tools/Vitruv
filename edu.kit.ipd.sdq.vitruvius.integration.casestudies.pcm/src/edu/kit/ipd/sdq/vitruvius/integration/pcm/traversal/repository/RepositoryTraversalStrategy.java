@@ -25,11 +25,11 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.EMFTraversalStrategy;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.util.PCMChangeBuildHelper;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.EMFTraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 /**
  * The Class RepositoryTraversalStrategy.

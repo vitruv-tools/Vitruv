@@ -17,10 +17,10 @@ import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.list.InsertInListEChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.EMFTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChangeFactory;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.util.PCMChangeBuildHelper;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.EMFTraversalStrategy;
 
 /**
  * This base class provides common methods used for traversing composed PCM entities that derive

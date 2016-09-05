@@ -24,12 +24,12 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.system.System;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util.ChangeBuildHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.InsertEReference;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.feature.reference.ReferenceFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.InsertRootEObject;
 import edu.kit.ipd.sdq.vitruvius.framework.change.echange.root.RootFactory;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.ChangeBuildHelper;
 
 /**
  * A helper class that provides methods for creating atomic change models from PCM elements

@@ -9,9 +9,9 @@ import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 /**
  * This class traverses all composed PCM entities that derive from ComposedProvidingRequiringEntity

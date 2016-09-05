@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.repository.Repository;
 
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.StandardInvariantEnforcer;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.StandardInvariantEnforcer;
 
 /**
  * base class for all PCMRepositorytoJaMoPP-Invar-Enforcer.

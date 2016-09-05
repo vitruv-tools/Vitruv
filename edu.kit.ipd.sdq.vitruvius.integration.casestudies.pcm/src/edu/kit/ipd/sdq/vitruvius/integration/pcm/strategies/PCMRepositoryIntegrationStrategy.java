@@ -10,9 +10,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.IMModelImplExtractor;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.InvariantEnforcer;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.ITraversalStrategy;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util.ResourceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryElementSelector;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;
@@ -25,8 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenfo
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.withocl.PJIE_ComponentInterfaceImplementsAmbiguity;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite.CompositeTraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.repository.RepositoryTraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 
 /**
  * This integration strategy is used for PCM repository models. It checks only JaMoPP invariants as

@@ -18,21 +18,21 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.handler.IntegrationHandler;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.IMModelImplExtractor;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util.UnorderedReferencesRespectingEqualityHelper;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util.IntegrationUtil;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util.ResourceHelper;
 import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.integration.handler.IntegrationHandler;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMRepositoryExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMSystemExtractor;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies.PCMRepositoryIntegrationStrategy;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies.PCMSystemIntegrationStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.util.UnorderedReferencesRespectingEqualityHelper;
-import edu.kit.ipd.sdq.vitruvius.integration.util.IntegrationUtil;
 import edu.kit.ipd.sdq.vitruvius.integration.util.PCMMetaModelConverter;
-import edu.kit.ipd.sdq.vitruvius.integration.util.ResourceHelper;
 
 public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
 

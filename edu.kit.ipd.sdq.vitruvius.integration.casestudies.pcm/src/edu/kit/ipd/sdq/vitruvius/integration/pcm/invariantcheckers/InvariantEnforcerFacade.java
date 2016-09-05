@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.InvariantEnforcer;
 
 /**
  * The Class DynamicInvariantEnforcer.

@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.integration.pcm.strategies;
 
-import edu.kit.ipd.sdq.vitruvius.integration.strategies.IntegrationStategy;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.strategies.IntegrationStategy;
 
 /**
  * The Class PCMIntegrationStrategy.

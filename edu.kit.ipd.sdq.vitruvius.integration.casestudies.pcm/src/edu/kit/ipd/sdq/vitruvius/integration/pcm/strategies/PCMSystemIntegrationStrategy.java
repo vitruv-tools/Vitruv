@@ -14,9 +14,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.system.System;
 
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.RepositoryModelLoader;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.IMModelImplExtractor;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.InvariantEnforcer;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.ITraversalStrategy;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.InvariantEnforcer;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.InvariantEnforcerFacadeBuilder;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMSystemElementSelector;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.PCMSystemExtractor;
@@ -26,7 +27,6 @@ import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenfo
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPVitruviusKeywords;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers.pcmjamoppenforcer.PCMtoJaMoPPWhiteSpace;
 import edu.kit.ipd.sdq.vitruvius.integration.pcm.traversal.composite.SystemTraversalStrategy;
-import edu.kit.ipd.sdq.vitruvius.integration.traversal.ITraversalStrategy;
 
 /**
  * This integration strategy is used for PCM system models. It checks only JaMoPP invariants as

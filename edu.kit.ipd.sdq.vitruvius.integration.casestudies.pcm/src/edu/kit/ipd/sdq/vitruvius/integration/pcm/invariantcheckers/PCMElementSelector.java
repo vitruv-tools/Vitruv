@@ -3,7 +3,7 @@ package edu.kit.ipd.sdq.vitruvius.integration.pcm.invariantcheckers;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
-import edu.kit.ipd.sdq.vitruvius.integration.invariantcheckers.IMModelImplExtractor;
+import edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.IMModelImplExtractor;
 
 /**
  * Base class for traversal of different pcm model instances. (e.g. Repository, System) Is mainly
