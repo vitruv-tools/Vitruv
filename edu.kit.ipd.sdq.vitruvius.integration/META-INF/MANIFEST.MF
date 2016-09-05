@@ -29,8 +29,6 @@ Require-Bundle: org.junit,
  edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.util
 Export-Package: edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.handler,
  edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers,
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.pcmjamoppenforcer,
- edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.invariantcheckers.pcmjamoppenforcer.withocl,
  edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.strategies,
  edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal,
  edu.kit.ipd.sdq.vitruvius.extensions.constructionsimulation.traversal.util
