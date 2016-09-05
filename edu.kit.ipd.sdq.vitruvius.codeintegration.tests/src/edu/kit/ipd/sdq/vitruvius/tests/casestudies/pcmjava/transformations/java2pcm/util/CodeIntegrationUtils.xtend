@@ -14,7 +14,7 @@ import org.eclipse.ui.dialogs.IOverwriteQuery
 import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider
 import org.eclipse.ui.wizards.datatransfer.ImportOperation
 import org.osgi.framework.Bundle
-import edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.ui.commands.IntegrateProjectHandler
 
 class CodeIntegrationUtils {
 	private new(){ 

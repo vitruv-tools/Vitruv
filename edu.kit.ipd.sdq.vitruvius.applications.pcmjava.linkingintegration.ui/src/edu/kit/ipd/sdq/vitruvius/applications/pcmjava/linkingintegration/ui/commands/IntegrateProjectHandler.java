@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands;
+package edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.ui.commands;
 
 import java.io.File;
 import java.util.ArrayList;

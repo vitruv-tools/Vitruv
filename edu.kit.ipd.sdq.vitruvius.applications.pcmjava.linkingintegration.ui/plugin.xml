@@ -8,7 +8,7 @@
             id="edu.kit.ipd.sdq.vitruvius"
             label="Vitruvius">
          <command
-               commandId="edu.kit.ipd.sdq.vitruvius.codeintegeration.integrateproject"
+               commandId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.integrateproject"
                label="Integrate Project"
                style="push">
             <visibleWhen
@@ -30,13 +30,13 @@
   
   <extension point="org.eclipse.ui.commands">
     <category
-          id="edu.kit.ipd.sdq.vitruvius.codeintegration" name="codeintegration">
+          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration" name="codeintegration">
     </category>
     <command
-          categoryId="edu.kit.ipd.sdq.vitruvius.codeintegration"
-          defaultHandler="edu.kit.ipd.sdq.vitruvius.codeintegration.ui.commands.IntegrateProjectHandler"
+          categoryId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration"
+          defaultHandler="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.ui.commands.IntegrateProjectHandler"
           description="Integrate Project into Vitruvius Approach"
-          id="edu.kit.ipd.sdq.vitruvius.codeintegeration.integrateproject"
+          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.integrateproject"
           name="Integrate Project">
     </command>
   </extension>
