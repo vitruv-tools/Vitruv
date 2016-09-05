@@ -4,7 +4,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
