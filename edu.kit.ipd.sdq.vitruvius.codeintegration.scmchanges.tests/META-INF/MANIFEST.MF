@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SCMChanges Tests
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruvius Domain Java Git Changes Replay Tool Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.tests
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.eclipse.osgi,
@@ -12,5 +12,5 @@ Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.emf.common,
- edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay
 Bundle-ClassPath: .

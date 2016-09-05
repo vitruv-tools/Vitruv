@@ -1,8 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Scmchanges
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Vitruvius Domain Java Git Changes Replay Tool
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.google.guava,
@@ -15,19 +17,17 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  com.google.gson,
  org.emftext.language.java,
- edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser,
- org.eclipse.jface.text
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ActivationPolicy: lazy
+ org.eclipse.jface.text,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.jamoppparser
 Export-Package: com.github.gumtreediff.actions,
  com.github.gumtreediff.actions.model,
  com.github.gumtreediff.gen,
  com.github.gumtreediff.gen.jdt,
  com.github.gumtreediff.io,
  com.github.gumtreediff.tree,
- edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges,
- edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.converters,
- edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.extractors
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.converters,
+ edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.extractors
 Bundle-ClassPath: .,
  lib/core-2.1.0-SNAPSHOT.jar,
  lib/trove4j-3.0.3.jar,

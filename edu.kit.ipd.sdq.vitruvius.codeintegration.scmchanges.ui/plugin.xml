@@ -8,7 +8,7 @@
             id="edu.kit.ipd.sdq.vitruvius"
             label="Vitruvius">
          <command
-               commandId="edu.kit.ipd.sdq.vitruvius.codeintegeration.scmchanges.applyscmchanges"
+               commandId="edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.applyscmchanges"
                label="Replay SCM Changes"
                style="push">
             <visibleWhen
@@ -30,13 +30,13 @@
   
   <extension point="org.eclipse.ui.commands">
     <category
-          id="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges" name="scmchanges">
+          id="edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay" name="scmchanges">
     </category>
     <command
-          categoryId="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges"
-          defaultHandler="edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.ui.commands.ApplyScmChangesCommand"
+          categoryId="edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay"
+          defaultHandler="edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.ui.commands.ApplyScmChangesCommand"
           description="Apply scm changes to files"
-          id="edu.kit.ipd.sdq.vitruvius.codeintegeration.scmchanges.applyscmchanges"
+          id="edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.applyscmchanges"
           name="Apply SCM Changes">
     </command>
   </extension>

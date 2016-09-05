@@ -1,4 +1,4 @@
-package edu.kit.ipd.sdq.vitruvius.codeintegration.scmchanges.tests;
+package edu.kit.ipd.sdq.vitruvius.domains.java.util.gitchangereplay.tests;
 
 public class Test {
 	
