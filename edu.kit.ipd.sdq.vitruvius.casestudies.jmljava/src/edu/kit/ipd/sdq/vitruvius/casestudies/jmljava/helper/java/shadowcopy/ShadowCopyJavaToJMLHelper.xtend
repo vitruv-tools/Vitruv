@@ -1,20 +1,20 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Block
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.BlockStatement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLExpressionHaving
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLForAllExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodBehavior
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodSpecificationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLTypeExpressionWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ParenthesisExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Block
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.BlockStatement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Expression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLExpressionHaving
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLForAllExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodBehavior
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodSpecificationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLTypeExpressionWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ParenthesisExpression
 import java.util.ArrayList
 import java.util.List
 import org.apache.commons.lang.StringUtils
@@ -111,7 +111,7 @@ class ShadowCopyJavaToJMLHelper extends ShadowCopyJavaJmlHelperBase {
 	}
 	
 	private static def String createJMLForallLoopConcreteSyntax(List<String> initExpressions, String conditionalExpression, String updateExpression) '''
-	(\forall «StringUtils.join(initExpressions, ", ")»; «conditionalExpression»; «updateExpression»)'''
+	(\forall ï¿½StringUtils.join(initExpressions, ", ")ï¿½; ï¿½conditionalExpressionï¿½; ï¿½updateExpressionï¿½)'''
 
 	private def static getIndexOfFirstNonDummyStatement(ClassMethod shadowObject, ShadowCopyCorrespondences corr) {
 		val firstOtherStatement = shadowObject.statements.findFirst[corr.get(it) == null]

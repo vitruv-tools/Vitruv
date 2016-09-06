@@ -1,6 +1,6 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
 
 /**
  * A provider for meta models.

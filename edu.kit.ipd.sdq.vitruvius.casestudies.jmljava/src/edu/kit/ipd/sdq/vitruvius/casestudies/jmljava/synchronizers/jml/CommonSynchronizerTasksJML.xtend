@@ -5,12 +5,12 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.Shad
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyCorrespondences
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyJavaJmlHelperBase
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLFactory
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.LinkedList
@@ -28,7 +28,7 @@ import org.emftext.language.java.statements.Statement
 
 class CommonSynchronizerTasksJML {
 	
-	public static def isPureMethod(ClassMethod method, CorrespondenceInstance ci) {
+	public static def isPureMethod(ClassMethod method, CorrespondenceModel ci) {
 		return !method.statements.exists[CommonSynchronizerTasksJML.isStatementAssignmentToFieldOrCallToNonPureMethod(it, ci)]
 	}
 	
@@ -36,12 +36,12 @@ class CommonSynchronizerTasksJML {
 		return jmlMethod.jmlModifiers.exists[modifier == JMLSpecMemberModifier.PURE]
 	}
 	
-	public static def isStatementAssignmentToFieldOrCallToNonPureMethod(Statement stmt, CorrespondenceInstance ci) {
+	public static def isStatementAssignmentToFieldOrCallToNonPureMethod(Statement stmt, CorrespondenceModel ci) {
 		val expressions = Utilities.getChildrenOfType(stmt, Expression)
 		return expressions.exists[isExpressionAssignmentToFieldOrCallToNonPureMethod(ci)]
 	}
 	
-	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(MethodCall expr, CorrespondenceInstance ci) {
+	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(MethodCall expr, CorrespondenceModel ci) {
 		val correspondingJmlMethod = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, expr.target, MemberDeclWithModifier)
 		if (correspondingJmlMethod == null) {
 			if (ShadowCopyJavaJmlHelperBase.isAReplacementMethod(expr.target)) {
@@ -54,7 +54,7 @@ class CommonSynchronizerTasksJML {
 		return !isPureMethod
 	}
 	
-	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(AssignmentExpression expr, CorrespondenceInstance ci) {
+	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(AssignmentExpression expr, CorrespondenceModel ci) {
 		if (!(expr.child instanceof IdentifierReference)) {
 			return false
 		}
@@ -63,11 +63,11 @@ class CommonSynchronizerTasksJML {
 		return identifierReference.target instanceof Field
 	}
 	
-	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(Expression expr, CorrespondenceInstance ci) {
+	private static def dispatch isExpressionAssignmentToFieldOrCallToNonPureMethod(Expression expr, CorrespondenceModel ci) {
 		return false
 	}
 	
-	public static def adjustPureModifiersForMethod(boolean oldMethodIsPure, boolean newMethodIsPure, ClassMethod newJavaMethod, ShadowCopy newShadowCopy, CorrespondenceInstance ci) {
+	public static def adjustPureModifiersForMethod(boolean oldMethodIsPure, boolean newMethodIsPure, ClassMethod newJavaMethod, ShadowCopy newShadowCopy, CorrespondenceModel ci) {
 		val changedEObjects = new ArrayList<EObject>()
 
 		if (oldMethodIsPure && !newMethodIsPure) {
@@ -154,7 +154,7 @@ class CommonSynchronizerTasksJML {
 		jmlMethod.jmlModifiers.addAll(newModifiers)
 	}
 	
-	private static def transitivelyAddPureIfPossible(ClassMethod newlyPureMethod, ShadowCopyCorrespondences shadowCorrespondences, CorrespondenceInstance ci) {
+	private static def transitivelyAddPureIfPossible(ClassMethod newlyPureMethod, ShadowCopyCorrespondences shadowCorrespondences, CorrespondenceModel ci) {
 		val changedJmlMethods = new ArrayList<JMLSpecifiedElement>()
 		val processedElements = new HashSet<EObject>()
 		val queue = new LinkedList<ClassMethod>()

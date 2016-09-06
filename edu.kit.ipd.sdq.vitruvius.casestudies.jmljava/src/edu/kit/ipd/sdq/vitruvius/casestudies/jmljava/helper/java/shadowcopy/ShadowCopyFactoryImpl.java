@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
 
 /**
  * Implementation of the ShadowCopyFactory.
@@ -25,12 +25,12 @@ public class ShadowCopyFactoryImpl implements ShadowCopyFactory {
     }
     
     @Override
-    public ShadowCopy create(CorrespondenceInstance ci, boolean useJMLCopy) {
+    public ShadowCopy create(CorrespondenceModel ci, boolean useJMLCopy) {
         return new ShadowCopyImpl(ci, javaModelUriProvider, useJMLCopy);
     }
 
     @Override
-    public ShadowCopy create(CorrespondenceInstance ci) {
+    public ShadowCopy create(CorrespondenceModel ci) {
         return new ShadowCopyImpl(ci, javaModelUriProvider);
     }
 

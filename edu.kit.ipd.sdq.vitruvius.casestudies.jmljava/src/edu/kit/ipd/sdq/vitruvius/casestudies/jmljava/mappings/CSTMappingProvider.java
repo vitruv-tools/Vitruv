@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.MappingProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MetamodelManaging;
 
 /**
  * Mapping provider for code, specifications and tests. This basically only maps Java on JML and

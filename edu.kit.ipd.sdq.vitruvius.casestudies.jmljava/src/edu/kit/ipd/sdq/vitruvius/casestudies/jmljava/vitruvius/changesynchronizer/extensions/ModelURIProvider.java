@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchroniz
 
 import java.util.List;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * A provider for model URIs. It is not limited to URIs of a particular type of models.

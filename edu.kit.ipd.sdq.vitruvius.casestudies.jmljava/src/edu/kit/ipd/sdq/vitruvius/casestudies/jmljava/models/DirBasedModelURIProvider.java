@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.CoreException;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SourceDirProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.utils.EclipseUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Base class for model URI providers, which use folders of Eclipse projects and file extensions to

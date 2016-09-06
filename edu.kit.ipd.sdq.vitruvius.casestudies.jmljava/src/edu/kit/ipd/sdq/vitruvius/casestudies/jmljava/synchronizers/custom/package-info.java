@@ -1,4 +1,4 @@
 /**
- * Contains custom transformations, which are not inherited from {@link edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EObjectMappingTransformation}.
+ * Contains custom transformations, which are not inherited from {@link edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EObjectMappingTransformation}.
  */
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom;

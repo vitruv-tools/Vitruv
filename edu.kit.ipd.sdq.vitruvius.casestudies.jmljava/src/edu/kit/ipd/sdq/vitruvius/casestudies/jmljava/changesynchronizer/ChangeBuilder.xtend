@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.FeatureFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.attribute.AttributeFactory
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.ReferenceFactory

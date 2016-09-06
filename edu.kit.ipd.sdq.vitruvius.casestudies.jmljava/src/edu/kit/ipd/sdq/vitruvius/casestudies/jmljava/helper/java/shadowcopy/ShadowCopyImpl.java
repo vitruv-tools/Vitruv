@@ -19,21 +19,21 @@ import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.statements.Statement;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyJMLToJavaHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyJavaToJMLHelper;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassBodyDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLTypeExpressionWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassBodyDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLTypeExpressionWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 public class ShadowCopyImpl implements ShadowCopy {
 
@@ -43,12 +43,12 @@ public class ShadowCopyImpl implements ShadowCopy {
 	private final Collection<CompilationUnit> javaCUs;
 	private final ShadowCopyCorrespondencesWritable dummyCorrespondences;
 
-	public ShadowCopyImpl(CorrespondenceInstance ci,
+	public ShadowCopyImpl(CorrespondenceModel ci,
 			ModelURIProvider javaModelUriProvider) {
 		this(ci, javaModelUriProvider, false);
 	}
 
-	public ShadowCopyImpl(CorrespondenceInstance ci,
+	public ShadowCopyImpl(CorrespondenceModel ci,
 			ModelURIProvider javaModelUriProvider, boolean useJMLCopies) {
 		CachedModelInstanceLoader temporaryLoader = new CachedModelInstanceLoader();
 		this.javaCUs = Collections.unmodifiableCollection(collectJavaCUs(
@@ -72,7 +72,7 @@ public class ShadowCopyImpl implements ShadowCopy {
 	 */
 	private static List<CompilationUnit> collectJavaCUs(
 			final CachedModelInstanceLoader modelInstanceHelper,
-			CorrespondenceInstance ci, ModelURIProvider javaModelUriProvider) {
+			CorrespondenceModel ci, ModelURIProvider javaModelUriProvider) {
 		LOGGER.debug("Looking for monitored Java models.");
 		final List<CompilationUnit> matches = new ArrayList<CompilationUnit>();
 		for (final VURI uri : javaModelUriProvider.getAllRelevantURIs()) {

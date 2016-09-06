@@ -11,11 +11,11 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.JavaJmlFile
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.CorrespondenceProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 
 /**
@@ -31,7 +31,7 @@ public class CSTCorrespondenceProvider implements CorrespondenceProvider {
     protected static final VURI SECOND_MM_URI = JMLMetaModelProvider.URI;
 
     @Override
-    public void setAllCorrespondences(CorrespondenceInstance correspondenceInstance, List<VURI> relevantURIs,
+    public void setAllCorrespondences(CorrespondenceModel correspondenceInstance, List<VURI> relevantURIs,
             ModelProviding modelProviding, MetamodelManaging mmManaging) {
 
         Metamodel mmJava = mmManaging.getMetamodel(FIRST_MM_URI);

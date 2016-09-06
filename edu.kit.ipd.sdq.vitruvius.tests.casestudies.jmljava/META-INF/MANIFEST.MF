@@ -21,9 +21,13 @@ Require-Bundle: org.apache.commons.compress,
  org.emftext.language.java.resource.bcel,
  org.hamcrest.core,
  org.junit,
+ edu.kit.ipd.sdq.vitruvius.framework.change.processing,
+ edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.external.openjml,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer,
- edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor
+ edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util,
+ edu.kit.ipd.sdq.vitruvius.domains.jml.language
 Bundle-ClassPath: libs/easymock-3.2.jar,
  .,
  libs/java-diff-utils-1.3.0-SNAPSHOT.jar

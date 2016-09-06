@@ -9,11 +9,11 @@ import org.apache.log4j.Logger;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.ModelProvidingDirtyMarker;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.internal.VitruviusChangeSynchronizer;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
 
 /**
  * Singleton implementation of the ChangeSynchronizer. Listeners can register to be informed about
@@ -24,7 +24,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
     private static final Logger LOGGER = Logger.getLogger(ChangeSynchronizing.class);
 
     private final VitruviusChangeSynchronizer vitruviusSynchronizer = new VitruviusChangeSynchronizer();
-    private final Set<SynchronisationListener> listeners = new HashSet<SynchronisationListener>();
+    private final Set<JmlSynchronizationListener> listeners = new HashSet<JmlSynchronizationListener>();
     private boolean doNotAcceptNewChanges = false;
 
     /**
@@ -33,7 +33,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * @param listener
      *            The listener to register.
      */
-    public synchronized void register(final SynchronisationListener listener) {
+    public synchronized void register(final JmlSynchronizationListener listener) {
         this.listeners.add(listener);
     }
 
@@ -43,37 +43,25 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * @param listener
      *            The listener to unregister.
      */
-    public synchronized void unregister(final SynchronisationListener listener) {
+    public synchronized void unregister(final JmlSynchronizationListener listener) {
         this.listeners.remove(listener);
     }
 
     @Override
-    public List<List<Change>> synchronizeChanges(final List<Change> changes) {
+    public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange change) {
         if (this.doNotAcceptNewChanges) {
             return null;
         }
         synchronized (this.vitruviusSynchronizer) {
             this.notifyListenersSynchronisationStarted();
-            final List<List<Change>> ret = this.vitruviusSynchronizer.synchronizeChanges(changes);
+            final List<List<VitruviusChange>> ret = this.vitruviusSynchronizer.synchronizeChange(change);
             this.notifyListenersSynchronisationFinished();
             return ret;
         }
     }
 
     @Override
-    public void synchronizeChange(final Change change) {
-        if (this.doNotAcceptNewChanges) {
-            return;
-        }
-        synchronized (this.vitruviusSynchronizer) {
-            this.notifyListenersSynchronisationStarted();
-            this.vitruviusSynchronizer.synchronizeChange(change);
-            this.notifyListenersSynchronisationFinished();
-        }
-    }
-
-    @Override
-    public void synchronisationAborted(final EMFModelChange abortedChange) {
+    public void synchronisationAborted(final GeneralChange abortedChange) {
         this.notifyListenersSynchronisationAborted(abortedChange);
     }
 
@@ -86,9 +74,9 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * Informs all listeners about the start of a synchronization.
      */
     private void notifyListenersSynchronisationStarted() {
-        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<JmlSynchronizationListener>() {
             @Override
-            public void notifyListener(final SynchronisationListener listener) {
+            public void notifyListener(final JmlSynchronizationListener listener) {
                 listener.syncStarted();
             }
         });
@@ -98,9 +86,9 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * Informs all listeners about the end of a synchronization.
      */
     private void notifyListenersSynchronisationFinished() {
-        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<JmlSynchronizationListener>() {
             @Override
-            public void notifyListener(final SynchronisationListener listener) {
+            public void notifyListener(final JmlSynchronizationListener listener) {
                 listener.syncFinished();
             }
         });
@@ -112,10 +100,10 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * @param abortedChange
      *            The unprocessed change because of the aborted transformation.
      */
-    private void notifyListenersSynchronisationAborted(final EMFModelChange abortedChange) {
-        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
+    private void notifyListenersSynchronisationAborted(final GeneralChange abortedChange) {
+        this.notifyListeners(new ListenerCaller<JmlSynchronizationListener>() {
             @Override
-            public void notifyListener(final SynchronisationListener listener) {
+            public void notifyListener(final JmlSynchronizationListener listener) {
                 listener.syncAborted(abortedChange);
             }
         });
@@ -128,9 +116,9 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      *            The cause for the abortion.
      */
     private void notifyListenersSynchronisationAborted(final TransformationAbortCause cause) {
-        this.notifyListeners(new ListenerCaller<SynchronisationListener>() {
+        this.notifyListeners(new ListenerCaller<JmlSynchronizationListener>() {
             @Override
-            public void notifyListener(final SynchronisationListener listener) {
+            public void notifyListener(final JmlSynchronizationListener listener) {
                 listener.syncAborted(cause);
             }
         });
@@ -161,8 +149,8 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * @param notifiable
      *            The notifier, which informs the listener.
      */
-    private void notifyListeners(final ListenerCaller<SynchronisationListener> notifiable) {
-        for (final SynchronisationListener listener : this.listeners) {
+    private void notifyListeners(final ListenerCaller<JmlSynchronizationListener> notifiable) {
+        for (final JmlSynchronizationListener listener : this.listeners) {
             try {
                 notifiable.notifyListener(listener);
             } catch (final Exception e) {

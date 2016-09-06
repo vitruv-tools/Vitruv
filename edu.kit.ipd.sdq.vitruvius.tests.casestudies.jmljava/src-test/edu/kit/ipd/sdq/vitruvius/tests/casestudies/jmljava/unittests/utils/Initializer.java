@@ -5,8 +5,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EPackage;
 import org.emftext.language.java.resource.JaMoPPUtil;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.JMLStandaloneSetup;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.JMLStandaloneSetup;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
 
 public class Initializer {
 

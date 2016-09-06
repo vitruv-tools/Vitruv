@@ -2,12 +2,11 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composi
 
 import java.util.List;
 
-import org.eclipse.emf.common.command.Command;
-
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
 
 /**
  * Base interface for all possible composite change refiner results. The only requirement is a
@@ -32,7 +31,7 @@ public interface CompositeChangeRefinerResult {
      *            A listener for aborted synchronisations.
      * @return The result of the application process.
      */
-    public List<Command> apply(CSSynchronizer transformationExecuting, Blackboard blackboard, UserInteracting ui,
+    public List<VitruviusRecordingCommand> apply(CSSynchronizer transformationExecuting, CorrespondenceModel correspondenceModel, UserInteracting ui,
             SynchronisationAbortedListener abortListener);
 
 }

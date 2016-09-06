@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VitruviusChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
 
 /**
  * Listener for aborted synchronisations.
@@ -17,7 +17,7 @@ public interface SynchronisationAbortedListener {
      * @param abortedChange
      *            The change, which triggered the aborted transformation.
      */
-    void synchronisationAborted(VitruviusChange abortedChange);
+    void synchronisationAborted(GeneralChange abortedChange);
     
     /**
      * Called whenever a transformation has been aborted.

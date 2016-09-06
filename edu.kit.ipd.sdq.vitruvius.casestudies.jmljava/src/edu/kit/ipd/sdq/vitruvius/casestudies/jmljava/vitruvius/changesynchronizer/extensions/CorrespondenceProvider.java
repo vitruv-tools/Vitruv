@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchroniz
 
 import java.util.List;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 
 /**
  * A provider for correspondences, which calculates and adds all correspondences
@@ -31,7 +31,7 @@ public interface CorrespondenceProvider {
 	 *            supported meta-models. The order of the meta-models is
 	 *            crucial.
 	 */
-	void setAllCorrespondences(CorrespondenceInstance correspondenceInstance,
+	void setAllCorrespondences(CorrespondenceModel correspondenceInstance,
 			List<VURI> relevantURIs, ModelProviding modelProviding,
 			MetamodelManaging mmManaging);
 

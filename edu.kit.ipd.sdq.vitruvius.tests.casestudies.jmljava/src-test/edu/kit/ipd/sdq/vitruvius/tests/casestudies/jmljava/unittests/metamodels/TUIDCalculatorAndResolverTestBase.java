@@ -11,7 +11,7 @@ import java.io.IOException;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Before;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.TUIDCalculatorAndResolverBase;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolverBase;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader.IResourceFiles;
 

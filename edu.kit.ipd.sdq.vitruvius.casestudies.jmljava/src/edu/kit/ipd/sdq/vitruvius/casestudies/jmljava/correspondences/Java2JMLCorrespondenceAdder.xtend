@@ -1,21 +1,21 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.DeclaredException
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FormalParameterDecl
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ImportDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifiable
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalInterfaceDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassifierDeclarationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.DeclaredException
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FormalParameterDecl
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.GenericMethodOrConstructorDecl
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ImportDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Modifiable
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Modifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalInterfaceDeclaration
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.meta.correspondence.Correspondence
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.Correspondence
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.classifiers.Class
@@ -31,13 +31,13 @@ import org.emftext.language.java.modifiers.AnnotableAndModifiable
 import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.NamespaceClassifierReference
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 
 class Java2JMLCorrespondenceAdder {
 	
 	private static val LOGGER = Logger.getLogger(Java2JMLCorrespondenceAdder)
 
-	static def addCorrespondencesForCompilationUnit(CompilationUnit javaRoot, edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlRoot, CorrespondenceInstance ci) {
+	static def addCorrespondencesForCompilationUnit(CompilationUnit javaRoot, edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit jmlRoot, CorrespondenceModel ci) {
 		ci.createAndAddCorrespondence(javaRoot, jmlRoot)
 		
 		LOGGER.debug(
@@ -63,7 +63,7 @@ class Java2JMLCorrespondenceAdder {
 		}
 	}
 
-	static def dispatch Void addCorrespondences(Interface javaInterface, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Interface javaInterface, ClassifierDeclarationWithModifier cdwm, CorrespondenceModel ci) {
 		// class declaration with modifier
 		val cdwmCorr = ci.createAndAddCorrespondence(javaInterface, cdwm)
 		
@@ -96,7 +96,7 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 
-	static def dispatch Void addCorrespondences(Class javaClass, ClassifierDeclarationWithModifier cdwm, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Class javaClass, ClassifierDeclarationWithModifier cdwm, CorrespondenceModel ci) {
 		// class declaration with modifier
 		val cdwmCorr = ci.createAndAddCorrespondence(javaClass, cdwm)
 		
@@ -136,7 +136,7 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def Void addCorrespondencesNullableJMLElement(NamedElement javaObject, EObject jmlObject, CorrespondenceInstance ci) {
+	static def Void addCorrespondencesNullableJMLElement(NamedElement javaObject, EObject jmlObject, CorrespondenceModel ci) {
 		if (jmlObject == null) {
 			LOGGER.warn("No matching JML element for Java element (" + StringOperationsJaMoPP.getQualifiedName(javaObject.containingConcreteClassifier) + "." + javaObject.name + ") found.")
 			return null
@@ -144,7 +144,7 @@ class Java2JMLCorrespondenceAdder {
 		return addCorrespondences(javaObject, jmlObject, ci)
 	}
 	
-	static def dispatch Void addCorrespondences(Method javaMethod, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Method javaMethod, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceModel ci) {
 		var topLevelCorr = ci.createAndAddCorrespondence(javaMethod, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
@@ -202,7 +202,7 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Constructor javaConstructor, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Constructor javaConstructor, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceModel ci) {
 		var topLevelCorr = ci.createAndAddCorrespondence(javaConstructor, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
@@ -213,7 +213,7 @@ class Java2JMLCorrespondenceAdder {
 		addCorrespondencesForModifier(javaConstructor, jmlMemberDeclWithModifier, ci, jmlMemberDeclWithModifierCorrespondence)
 		
 		// member declaration
-		val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
+		val jmlMemberDecl = jmlMemberDeclWithModifier.memberdecl as edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Constructor
 		val memberDeclarationCorrespondence = ci.createAndAddCorrespondence(javaConstructor, jmlMemberDecl)
 		
 		// exceptions
@@ -234,7 +234,7 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Field javaField, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Field javaField, JMLSpecifiedElement jmlSpecifiedElement, CorrespondenceModel ci) {
 		var topLevelCorr = ci.createAndAddCorrespondence(javaField, jmlSpecifiedElement)
 		val jmlMemberDeclWithModifier = jmlSpecifiedElement.element
 		
@@ -275,7 +275,7 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Parameter javaParameter, FormalParameterDecl jmlParameter, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Parameter javaParameter, FormalParameterDecl jmlParameter, CorrespondenceModel ci) {
 		val parameterCorrespondence = ci.createAndAddCorrespondence(javaParameter, jmlParameter)
 		
 		ci.createAndAddCorrespondence(javaParameter.typeReference, jmlParameter.type)
@@ -285,22 +285,22 @@ class Java2JMLCorrespondenceAdder {
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(NamespaceClassifierReference javaException, DeclaredException jmlException, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(NamespaceClassifierReference javaException, DeclaredException jmlException, CorrespondenceModel ci) {
 		ci.createAndAddCorrespondence(javaException, jmlException)
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(Import javaImport, ImportDeclaration jmlImport, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(Import javaImport, ImportDeclaration jmlImport, CorrespondenceModel ci) {
 		ci.createAndAddCorrespondence(javaImport, jmlImport)
 		return null
 	}
 	
-	static def dispatch Void addCorrespondences(org.emftext.language.java.modifiers.Modifier javaModifier, Modifier jmlModifier, CorrespondenceInstance ci) {
+	static def dispatch Void addCorrespondences(org.emftext.language.java.modifiers.Modifier javaModifier, Modifier jmlModifier, CorrespondenceModel ci) {
 		ci.createAndAddCorrespondence(javaModifier, jmlModifier)
 		return null
 	}
 	
-	private static def Void addCorrespondencesForModifier(AnnotableAndModifiable javaAnnotable, Modifiable jmlModifiable, CorrespondenceInstance ci, Correspondence parentCorr) {
+	private static def Void addCorrespondencesForModifier(AnnotableAndModifiable javaAnnotable, Modifiable jmlModifiable, CorrespondenceModel ci, Correspondence parentCorr) {
 		// process modifiers
 		for (javaModifier : javaAnnotable.annotationsAndModifiers) {
 			val jmlModifier = MatchingModelElementsFinder.findMatchingModifier(javaModifier, jmlModifiable.modifiers)

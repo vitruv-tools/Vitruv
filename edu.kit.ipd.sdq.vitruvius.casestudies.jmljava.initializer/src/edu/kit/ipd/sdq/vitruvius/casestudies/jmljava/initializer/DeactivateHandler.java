@@ -7,8 +7,8 @@ import org.eclipse.core.commands.ExecutionException;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.CommandState.Commands;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredEditorsRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredProjectsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredEditorsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredProjectsRegistry;
 
 /**
  * Handler for the deactivation event from the UI. It deactivates the whole synchronisation

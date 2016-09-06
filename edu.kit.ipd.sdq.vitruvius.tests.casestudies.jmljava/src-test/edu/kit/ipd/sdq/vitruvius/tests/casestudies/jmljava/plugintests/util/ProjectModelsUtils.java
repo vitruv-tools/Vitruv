@@ -14,13 +14,13 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VariableDeclarator;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 
 public class ProjectModelsUtils {

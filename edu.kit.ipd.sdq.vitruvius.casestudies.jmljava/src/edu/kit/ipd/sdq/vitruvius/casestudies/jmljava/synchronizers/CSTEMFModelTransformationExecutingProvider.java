@@ -8,7 +8,7 @@ import com.google.inject.Injector;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.Change2CommandTransformingProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming ;
 
 /**
  * Provider for EMF transformation executings. It is used to create and provide

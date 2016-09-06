@@ -1,27 +1,27 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.AnnotationTypeDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassOrInterfaceTypeWithBrackets
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.DeclaredException
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.EnumDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalInterfaceDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.PrimitiveTypeWithBrackets
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.AnnotationTypeDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassOrInterfaceTypeWithBrackets
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.DeclaredException
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.EnumDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalInterfaceDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.PrimitiveTypeWithBrackets
 import java.util.ArrayList
 import org.apache.commons.lang.StringUtils
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Constructor
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.GenericMethodOrConstructorDecl
 
 /**
  * Converts a JML model element to a string representation.
  * This representation is not necessarily the concrete syntax
  * but might be anything appropriate to fulfil the need in the
  * place it is used.
- * Use the {@link edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper}
+ * Use the {@link edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper}
  * class for strict concrete syntax conversions.
  */
 class StringOperationsJML {

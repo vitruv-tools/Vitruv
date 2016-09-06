@@ -15,18 +15,18 @@ import org.emftext.language.java.parameters.Parameter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FormalParameterDecl;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSinglelineSpec;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FormalParameterDecl;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSinglelineSpec;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.CommonTasks;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.Initializer;
@@ -70,9 +70,9 @@ public class Java2JMLCorrespondenceAdderTest {
     }
 
     private static Mapping MAPPING;
-    private CorrespondenceInstance ci;
+    private CorrespondenceModel ci;
     private CompilationUnit javaCu;
-    private edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu;
+    private edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit jmlCu;
 
     @BeforeClass
     public static void init() {
@@ -87,10 +87,10 @@ public class Java2JMLCorrespondenceAdderTest {
         this.javaCu = java.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         final ModelInstance jml = CommonTasks.loadModelInstance(jmlFile, this);
         this.jmlCu = jml.getUniqueRootEObjectIfCorrectlyTyped(
-                edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+                edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
         final Pair<ModelInstance, ModelInstance> modelInstancePair = new Pair<ModelInstance, ModelInstance>(java, jml);
         final ModelProviding mp = CommonTasks.createModelProviding(modelInstancePair);
-        this.ci = CommonTasks.createCorrespondenceInstance(MAPPING, mp, modelInstancePair);
+        this.ci = CommonTasks.createCorrespondenceModel(MAPPING, mp, modelInstancePair);
     }
 
     private void assertCorrespondenceExistsBidirectional(final EObject o1, final EObject o2) {
@@ -101,7 +101,7 @@ public class Java2JMLCorrespondenceAdderTest {
     }
 
     private void assertCorrespondenceFromFirstToSecondExists(final EObject o1, final EObject o2) {
-        final Set<EObject> o1Corrs = CorrespondenceInstanceUtil.getCorrespondingEObjects(this.ci, o1);
+        final Set<EObject> o1Corrs = CorrespondenceModelUtil.getCorrespondingEObjects(this.ci, o1);
         boolean correspondenceExists = false;
         for (final EObject o : o1Corrs) {
             if (EcoreUtil.equals(o2, o)) {

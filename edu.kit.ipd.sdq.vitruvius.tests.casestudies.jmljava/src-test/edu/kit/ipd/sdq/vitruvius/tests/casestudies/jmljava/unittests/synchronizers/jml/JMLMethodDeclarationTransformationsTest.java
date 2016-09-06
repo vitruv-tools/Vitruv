@@ -7,17 +7,17 @@ import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLModelElement;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLModelElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.synchronizers.TransformationTestsBase;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader.IResourceFiles;
@@ -44,7 +44,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
     }
 
     private CompilationUnit cuJava;
-    private edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit cuJML;
+    private edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit cuJML;
 
     @Override
     protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception {
@@ -52,7 +52,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
         cuJava = miJava.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         ModelInstance miJML = loadModelInstance(ResourceFiles.JML);
         cuJML = miJML
-                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
         return new Pair<ModelInstance, ModelInstance>(miJava, miJML);
     }
     

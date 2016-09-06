@@ -3,9 +3,9 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests.util;
 import org.eclipse.emf.common.util.URI;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.UserInteractingProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 
 public class UserInteractingProviderImpl implements UserInteractingProvider {
 
@@ -16,12 +16,6 @@ public class UserInteractingProviderImpl implements UserInteractingProvider {
             @Override
             public void showMessage(final UserInteractionType type, final String message) {
                 // ignore the message
-            }
-
-            @Override
-            public int selectFromModel(final UserInteractionType type, final String message,
-                    final ModelInstance... modelInstances) {
-                throw new UnsupportedOperationException();
             }
 
             @Override

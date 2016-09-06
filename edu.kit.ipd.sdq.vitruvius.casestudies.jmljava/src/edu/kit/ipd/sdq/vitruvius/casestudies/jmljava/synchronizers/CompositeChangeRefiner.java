@@ -1,7 +1,7 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.compositerefiners.CompositeChangeRefinerResult;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
 
 /**
  * Refiner for a composite changes. If it matches a given composite change it can be used to refine

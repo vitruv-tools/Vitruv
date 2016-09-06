@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests;
 
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier;
 
 public class AddPureTest extends JMLModifierTestBase {
 

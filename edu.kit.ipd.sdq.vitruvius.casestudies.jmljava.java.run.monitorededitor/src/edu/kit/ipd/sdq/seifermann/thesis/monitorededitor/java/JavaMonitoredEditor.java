@@ -25,21 +25,23 @@ import org.emftext.language.java.containers.CompilationUnit;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JavaTransformation;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JmlSynchronizationListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.SourceDirProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.EFeatureChange;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredProjectsRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.RegisteredMonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.domains.java.echange.feature.JavaFeatureEChange;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.AbstractMonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredProjectsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.RegisteredMonitoredEditor;
 
 /**
  * A monitored editor for Java, which supports change detection.
  */
-public class JavaMonitoredEditor extends MonitoredEditor implements SynchronisationListener, RegisteredMonitoredEditor {
+public class JavaMonitoredEditor extends MonitoredEditor implements JmlSynchronizationListener, RegisteredMonitoredEditor {
 
     private static final String[] SUPPORTED_EXTENSIONS = { "java" };
     private static final Logger LOGGER = Logger.getLogger(JavaMonitoredEditor.class);
@@ -91,21 +93,11 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
     public JavaMonitoredEditor() {
         super(new ChangeSynchronizing() {
             @Override
-            public List<List<Change>> synchronizeChanges(final List<Change> changes) {
+            public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange changes) {
                 // new Thread() {
                 // @Override
                 // public void run() {
-                return ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChanges(changes);
-                // }
-                // } .start();
-            }
-
-            @Override
-            public void synchronizeChange(final Change change) {
-                // new Thread() {
-                // @Override
-                // public void run() {
-                ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChange(change);
+                return ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChange(changes);
                 // }
                 // } .start();
             }
@@ -127,9 +119,9 @@ public class JavaMonitoredEditor extends MonitoredEditor implements Synchronisat
     }
 
     @Override
-    public void syncAborted(final EMFModelChange abortedChange) {
-        final EFeatureChange<?> featureChange = (EFeatureChange<?>) abortedChange.getEChange();
-        EObject affectedObject = featureChange.getNewAffectedEObject();
+    public void syncAborted(final GeneralChange abortedChange) {
+        final JavaFeatureEChange<?,?> featureChange = (JavaFeatureEChange<?,?>) abortedChange.getEChanges().get(0);
+        EObject affectedObject = featureChange.getAffectedEObject();
         if (affectedObject == null) {
             affectedObject = featureChange.getOldAffectedEObject();
         }

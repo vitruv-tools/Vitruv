@@ -7,7 +7,7 @@
 		<project>edu.kit.ipd.sdq.vitruvius.framework.contracts</project>
 		<project>edu.kit.ipd.sdq.vitruvius.framework.meta.change</project>
 		<project>edu.kit.ipd.sdq.vitruvius.framework.meta.correspondence</project>
-		<project>edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor</project>
+		<project>edu.kit.ipd.sdq.vitruvius.framework.monitorededitor</project>
 		<project>edu.kit.ipd.sdq.vitruvius.framework.run.syncmanager</project>
 		<project>MonitoredEditor</project>
 	</projects>

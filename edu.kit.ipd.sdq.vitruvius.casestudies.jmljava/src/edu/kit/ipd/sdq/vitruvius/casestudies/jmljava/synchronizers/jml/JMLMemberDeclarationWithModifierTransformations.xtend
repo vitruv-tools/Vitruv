@@ -1,17 +1,17 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLInvariantExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLInvariantExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMemberModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyCorrespondences
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import java.util.ArrayList
 import java.util.Collection
 import org.apache.log4j.Logger
@@ -68,14 +68,14 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 //						return createTransformationChangeResultAborted()
 //					}
 //				}
-				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
 					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
 				val javaMember = shadowCopy.shadowCopyCorrespondences.getMember(
 					affectedObj.eContainer as JMLSpecifiedElement)
 				val result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(false, true,
-					javaMember as ClassMethod, shadowCopy, blackboard.correspondenceInstance)
+					javaMember as ClassMethod, shadowCopy, correspondenceModel)
 				if (result.size() == 0) {
 					userInteracting.showMessage(UserInteractionType.MODAL,
 						"The modifier can not be added since the method does not have the query property.")
@@ -104,7 +104,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 
 			val oldJMLMemberModifier = oldValue as JMLMemberModifier
 			if (oldJMLMemberModifier.modifier == JMLSpecMemberModifier.HELPER) {
-				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
 					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
@@ -121,7 +121,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 				memberDecl.jmlModifiers.remove(index)
 				changedObjects.add(memberDecl)
 			} else if (oldJMLMemberModifier.modifier == JMLSpecMemberModifier.PURE) {
-				val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+				val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 				val affectedObj = shadowCopy.shadowCopyCorrespondences.getJMLElement(
 					oldAffectedEObject as MemberDeclWithModifier)
 				shadowCopy.setupShadowCopyWithJMLSpecifications(false)
@@ -130,7 +130,7 @@ class JMLMemberDeclarationWithModifierTransformations extends JML2JavaTransforma
 				var Collection<EObject> result;
 				try {
 					result = CommonSynchronizerTasksJML.adjustPureModifiersForMethod(true, false,
-						javaMember as ClassMethod, shadowCopy, blackboard.correspondenceInstance)
+						javaMember as ClassMethod, shadowCopy, correspondenceModel)
 				} catch (CommonSynchronizerTasksJML.OperationNotApplicableException e) {
 					userInteracting.showMessage(UserInteractionType.MODAL,
 						"The modifier can not be removed since the method is used in the specification " +

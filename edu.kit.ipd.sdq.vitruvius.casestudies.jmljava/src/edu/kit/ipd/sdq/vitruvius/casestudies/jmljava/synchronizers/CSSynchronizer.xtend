@@ -1,9 +1,9 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Expression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMemberModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLMetaModelProvider
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelProvider
@@ -26,15 +26,15 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLInvari
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLMemberDeclarationWithModifierTransformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLMethodDeclarationTransformations
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.JMLVariableDeclarationTransformations
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.bridges.EMFCommandBridge
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationExecuter
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming 
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.EMFCommandBridge
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.TransformationExecutor
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.LinkedList
@@ -47,14 +47,17 @@ import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import java.util.concurrent.Callable
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.MetamodelPair
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
  * change refiners. Additionally creates the transformation result, which is relevant
  * for the model handling (e.g. which model has to be saved).
  */
-class CSSynchronizer extends TransformationExecuter implements Change2CommandTransforming {
+class CSSynchronizer extends TransformationExecutor implements Change2CommandTransforming {
 
 	static val Logger LOGGER = Logger.getLogger(CSSynchronizer)
 	val compositeChangeRefiners = new ArrayList<CompositeChangeRefiner>()
@@ -99,6 +102,9 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		this.syncAbortedListener = syncAbortedListener
 	}
 
+/*
+ * TODO This must be implemented for each direction separately!
+ */
 	override getTransformableMetamodels() {
 		val List<Pair<VURI, VURI>> result = new ArrayList<Pair<VURI, VURI>>();
 
@@ -108,37 +114,23 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		return result;
 	}
 
-	override transformChanges2Commands(Blackboard blackboard) {
-		val changes = blackboard.getAndArchiveChangesForTransformation
-		val commands = transformChanges2Commands(changes, blackboard)
-		blackboard.pushCommands(commands)
-
-	// TODO vurisToAdd is not supported because no URI affecting changes are supported atm
-	// FIXME SS: remove the following workaround after a concept for this has been added to Vitruvius
-	// if (!result.transformationAborted && ChangeSynchronizerRegistry.getInstance != null) {
-	// ChangeSynchronizerRegistry.getInstance.changeSynchronizer.modelProvidingDirtyMarker.markAllModelInstancesDirty(JaMoPPMetaModelProvider.URI)
-	// }
-	}
-
-	def transformChanges2Commands(List<Change> changes, Blackboard blackboard) {
-		val List<Command> commands = new ArrayList<Command>()
-		for (change : changes) {
-			if (change instanceof CompositeChange) {
-				commands.addAll(executeTransformation(change as CompositeChange, blackboard))
-			} else {
-				commands.add(transformEMFModelChange2Command(change as EMFModelChange, blackboard))
-			}
+	override transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
+		val List<VitruviusRecordingCommand> commands = new ArrayList<VitruviusRecordingCommand>()
+		if (change instanceof CompositeChange) {
+			commands.addAll(executeTransformation(change as CompositeChange, correspondenceModel))
+		} else {
+			commands.add(transformEMFModelChange2Command(change as GeneralChange, correspondenceModel))
 		}
 		return commands
 	}
 
-	def transformEMFModelChange2Command(EMFModelChange change, Blackboard blackboard) {
+	def transformEMFModelChange2Command(GeneralChange change, CorrespondenceModel correspondenceModel) {
 		LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
 
-		this.setBlackboard(blackboard)
+		this.correspondenceModel = correspondenceModel
 
-		val modelChange = (change as EMFModelChange).EChange
-		this.setSyncAbortChange(change as EMFModelChange)
+		val modelChange = (change as GeneralChange).EChanges.get(0)
+		this.setSyncAbortChange(change as GeneralChange)
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
 			override call() {
 				val res = executeTransformationForChange(modelChange)
@@ -148,17 +140,17 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 		return command
 	}
 
-	def void setSyncAbortChange(EMFModelChange change) {
+	def void setSyncAbortChange(GeneralChange change) {
 		this.mappingTransformations.values.filter(AbortableEObjectMappingTransformationBase).forEach [
 			setSyncAbortChange(change)
 		]
 	}
 
-	def executeTransformation(CompositeChange compositeChange, Blackboard blackboard) {
+	def List<VitruviusRecordingCommand> executeTransformation(CompositeChange compositeChange, CorrespondenceModel correspondenceModel) {
 		LOGGER.info("Synchronization of composite change (" + compositeChange.allChanges.size +
 			" changes included) started.")
 
-		this.setBlackboard(blackboard)
+		this.correspondenceModel = correspondenceModel;
 
 		var CompositeChangeRefinerResult refinementResult;
 		val matchingProcessor = compositeChangeRefiners.findFirst[match(compositeChange)]
@@ -169,7 +161,7 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 			LOGGER.info("Using default handling for composite change.")
 			refinementResult = new CompositeChangeRefinerResultAtomicTransformations(compositeChange.allChanges)
 		}
-		val command = refinementResult.apply(this, blackboard, userinteracting, syncAbortedListener)
+		val command = refinementResult.apply(this, correspondenceModel, userinteracting, syncAbortedListener)
 		return command
 	}
 
@@ -178,13 +170,13 @@ class CSSynchronizer extends TransformationExecuter implements Change2CommandTra
 	}
 
 	private static def getAllChanges(CompositeChange compositeChange) {
-		val changes = new ArrayList<EMFModelChange>()
-		val queue = new LinkedList<Change>()
+		val changes = new ArrayList<GeneralChange>()
+		val queue = new LinkedList<VitruviusChange>()
 		queue.add(compositeChange)
 		while (!queue.empty) {
 			val change = queue.pop()
-			if (change instanceof EMFModelChange) {
-				changes.add(change as EMFModelChange)
+			if (change instanceof GeneralChange) {
+				changes.add(change as GeneralChange)
 			} else if (change instanceof CompositeChange) {
 				queue.addAll((change as CompositeChange).changes)
 			} else {

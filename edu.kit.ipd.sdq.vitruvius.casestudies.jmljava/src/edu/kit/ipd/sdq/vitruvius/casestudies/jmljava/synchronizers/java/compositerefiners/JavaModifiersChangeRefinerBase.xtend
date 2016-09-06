@@ -2,8 +2,8 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.composi
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeBuilder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList
 import java.util.ArrayList

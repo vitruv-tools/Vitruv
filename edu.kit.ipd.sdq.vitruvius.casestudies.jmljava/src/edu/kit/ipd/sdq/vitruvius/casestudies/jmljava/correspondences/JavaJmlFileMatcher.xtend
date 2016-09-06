@@ -2,7 +2,7 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JMLModelURIProvider
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JavaModelURIProvider
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EMFBridge
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.ArrayList

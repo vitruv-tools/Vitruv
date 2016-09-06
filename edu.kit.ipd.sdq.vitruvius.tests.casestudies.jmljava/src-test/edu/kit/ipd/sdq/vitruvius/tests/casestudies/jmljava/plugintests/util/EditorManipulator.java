@@ -39,8 +39,8 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.JavaMonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.MonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredEditorsRegistry;
+import edu.kit.ipd.sdq.vitruvius.domains.java.monitorededitor.MonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredEditorsRegistry;
 
 public class EditorManipulator {
 

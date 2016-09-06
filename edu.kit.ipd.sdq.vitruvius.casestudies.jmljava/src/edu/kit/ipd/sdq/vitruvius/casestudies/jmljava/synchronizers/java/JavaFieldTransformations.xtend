@@ -1,15 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassOrInterfaceDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassOrInterfaceDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VariableDeclarator
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -20,7 +20,7 @@ import org.emftext.language.java.members.MembersPackage
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.types.TypeReference
 
-import static extension edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil.*
+import static extension edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil.*
 
 class JavaFieldTransformations extends Java2JMLTransformationBase {
 
@@ -76,14 +76,14 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 			changedObjects.addAll((affectedEObject as Field).renameInAllJMLSpecifications(newValue as String))
 			
 			// rename the corresponding fields
-			val jmlVariableDeclarations = blackboard.correspondenceInstance.getCorrespondingEObjects(affectedEObject).
+			val jmlVariableDeclarations = correspondenceModel.getCorrespondingEObjects(affectedEObject).
 				filter(VariableDeclarator).filter[identifier.equals(oldValue as String)]
 			for (jmlVariableDeclaration : jmlVariableDeclarations) {
 				LOGGER.trace("Updating " + jmlVariableDeclaration)
-				val oldTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
+				val oldTUID = correspondenceModel.calculateTUIDFromEObject(jmlVariableDeclaration)
 				jmlVariableDeclaration.identifier = newValue as String
-				val newTUID = blackboard.correspondenceInstance.calculateTUIDFromEObject(jmlVariableDeclaration)
-				blackboard.correspondenceInstance.updateTUID(oldTUID, newTUID)
+				val newTUID = correspondenceModel.calculateTUIDFromEObject(jmlVariableDeclaration)
+				correspondenceModel.updateTUID(oldTUID, newTUID)
 				changedObjects.add(jmlVariableDeclaration)
 			}
 		}
@@ -102,7 +102,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 
 		if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 			CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject, oldValue as Modifier,
-				newValue as Modifier, blackboard.correspondenceInstance)
+				newValue as Modifier, correspondenceModel)
 			return new TransformationResult 
 		}
 
@@ -122,7 +122,7 @@ class JavaFieldTransformations extends Java2JMLTransformationBase {
 
 		if (jmlFeature == JMLPackage.eINSTANCE.typed_Type) {
 				CommonSynchronizerTransformations.replaceNonRootEObjectSingleType(javaField, oldValue as TypeReference,
-					newValue as TypeReference, blackboard.correspondenceInstance)
+					newValue as TypeReference, correspondenceModel)
 		}
 		return new TransformationResult
 	}

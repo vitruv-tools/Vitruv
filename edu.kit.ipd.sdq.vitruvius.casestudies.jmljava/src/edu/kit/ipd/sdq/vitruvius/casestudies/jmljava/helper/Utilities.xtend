@@ -1,15 +1,14 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSinglelineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifierRegular
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Constructor
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.GenericMethodOrConstructorDecl
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSinglelineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifierRegular
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration
 import java.util.Collection
 import org.apache.commons.lang.RandomStringUtils
 import org.eclipse.emf.common.util.EList
@@ -22,16 +21,17 @@ import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.modifiers.Private
 import org.emftext.language.java.modifiers.Protected
 import org.emftext.language.java.modifiers.Public
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
 
 class Utilities {
 	
-	public static def <T extends EObject> T getModelInstanceElement(T obj, CorrespondenceInstance ci) {
+	public static def <T extends EObject> T getModelInstanceElement(T obj, CorrespondenceModel ci) {
 		val rootObject = EcoreUtil.getRootContainer(obj)
 //		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
 		return Utilities.getChildEqualToEObject(rootObject, obj);
 	}
 	
-	public static def <T extends EObject> T getModelInstanceElementByTUID(T obj, CorrespondenceInstance ci) {
+	public static def <T extends EObject> T getModelInstanceElementByTUID(T obj, CorrespondenceModel ci) {
 		val rootObject = EcoreUtil.getRootContainer(obj)
 //		val modelInstanceRoot = ci.resolveEObjectFromTUID(TUID.getInstance(rootObject.TUID));
 //		return resolve(modelInstanceRoot, getTUID(obj)) as T

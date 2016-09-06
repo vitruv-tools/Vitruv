@@ -2,14 +2,16 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.VitruviusRecordingCommand;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 
 public class ModelProvidingMock implements ModelProviding {
     final Map<VURI, ModelInstance> mapping = new HashMap<VURI, ModelInstance>();
@@ -24,17 +26,7 @@ public class ModelProvidingMock implements ModelProviding {
     }
 
     @Override
-    public ModelInstance getModelInstanceCopy(final VURI uri) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void saveExistingModelInstanceOriginal(final VURI vuri) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public TransactionalEditingDomain getTransactionalEditingDomain() {
         throw new UnsupportedOperationException();
     }
 
@@ -58,5 +50,17 @@ public class ModelProvidingMock implements ModelProviding {
 	public void forceReloadModelInstanceOriginalIfExisting(VURI modelURI) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
+		// TODO Auto-generated method stub
+		
 	}
 }

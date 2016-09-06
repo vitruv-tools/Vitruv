@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair
 import java.util.List
 import org.emftext.language.java.containers.CompilationUnit
@@ -16,9 +16,9 @@ import org.emftext.language.java.containers.CompilationUnit
 class Java2JMLFileCorrespondenceAdder {
 
 	val ModelProviding modelProviding
-	val CorrespondenceInstance corrInst
+	val CorrespondenceModel corrInst
 
-	public new(ModelProviding modelProviding, CorrespondenceInstance correspondenceInstance) {
+	public new(ModelProviding modelProviding, CorrespondenceModel correspondenceInstance) {
 		this.modelProviding = modelProviding
 		this.corrInst = correspondenceInstance
 	}
@@ -34,7 +34,7 @@ class Java2JMLFileCorrespondenceAdder {
 		val jmlModel = modelProviding.getAndLoadModelInstanceOriginal(correspondence.second)
 
 		val javaRoot = javaModel.getUniqueTypedRootEObject(CompilationUnit)
-		val jmlRoot = jmlModel.getUniqueTypedRootEObject(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit)
+		val jmlRoot = jmlModel.getUniqueTypedRootEObject(edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit)
 
 		Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaRoot, jmlRoot, corrInst)
 	}

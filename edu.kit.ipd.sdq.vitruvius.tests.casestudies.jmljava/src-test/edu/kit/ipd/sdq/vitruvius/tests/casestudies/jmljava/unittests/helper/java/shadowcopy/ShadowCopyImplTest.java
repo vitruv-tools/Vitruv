@@ -7,12 +7,12 @@ import org.emftext.language.java.members.InterfaceMethod;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopy;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.CommonTasks;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.Initializer;
@@ -72,7 +72,7 @@ public class ShadowCopyImplTest {
 
 	private ShadowCopy shadowCopy;
 	private CompilationUnit javaCu;
-	private edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu;
+	private edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit jmlCu;
 
 	private void setup(JavaResourceFiles javaResource,
 			JMLResourceFiles jmlResource, boolean useJMLCopy) throws Exception {
@@ -83,12 +83,12 @@ public class ShadowCopyImplTest {
 		ModelInstance jmlModelInstance = CommonTasks.loadModelInstance(
 				jmlResource, ShadowCopyImplTest.class, true);
 		jmlCu = jmlModelInstance
-				.getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+				.getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
 		Pair<ModelInstance, ModelInstance> modelInstances = new Pair<ModelInstance, ModelInstance>(
 				javaModelInstance, jmlModelInstance);
 		ModelProviding modelProviding = CommonTasks
 				.createModelProviding(modelInstances);
-		CorrespondenceInstance ci = CommonTasks.createCorrespondenceInstance(
+		CorrespondenceModel ci = CommonTasks.createCorrespondenceModel(
 				CommonTasks.createMapping(), modelProviding, modelInstances);
 		shadowCopy = CommonTasks.createShadowCopyFactory(javaModelInstance)
 				.create(ci, useJMLCopy);

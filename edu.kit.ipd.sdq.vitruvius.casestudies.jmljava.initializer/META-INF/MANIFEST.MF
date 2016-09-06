@@ -10,8 +10,12 @@ Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.core.runtime;bundle-version="3.10.0",
  org.eclipse.jdt.core,
  org.eclipse.ui,
+ edu.kit.ipd.sdq.vitruvius.framework.change,
+ edu.kit.ipd.sdq.vitruvius.framework.userinteraction,
+ edu.kit.ipd.sdq.vitruvius.framework.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization,
  edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor;bundle-version="1.0.0",
- edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor;bundle-version="1.0.0"
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.Activator
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer

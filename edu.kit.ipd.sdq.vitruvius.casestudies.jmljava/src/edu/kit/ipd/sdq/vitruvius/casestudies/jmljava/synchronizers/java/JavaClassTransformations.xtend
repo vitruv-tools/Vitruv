@@ -1,19 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.NormalClassDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.RegularModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassifierDeclarationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.NormalClassDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.RegularModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.MatchingModelElementsFinder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -66,7 +65,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 
 			if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 				CommonSynchronizerTransformations.createNonRootEObjectInList(oldAffectedEObject, newValue as Modifier,
-					blackboard.correspondenceInstance)
+					correspondenceModel)
 				return new TransformationResult
 			} else if (jmlFeature == JMLPackage.eINSTANCE.normalClassDeclaration_BodyDeclarations) {
 				val jmlNormalClassDecl = getSingleCorrespondingEObjectOfType(oldAffectedEObject, NormalClassDeclaration)
@@ -89,7 +88,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 								val jmlMethod = CommonSynchronizerTasks.createJMLMethod(newValue as Method)
 								jmlNormalClassDecl.bodyDeclarations.add(index, jmlMethod)
 								Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Method, jmlMethod,
-									blackboard.correspondenceInstance)
+									correspondenceModel)
 								changedObjects.add(jmlMethod)
 								changedObjects.add(jmlNormalClassDecl)
 
@@ -99,7 +98,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 								val jmlField = CommonSynchronizerTasks.createJMLField(newValue as Field)
 								jmlNormalClassDecl.bodyDeclarations.add(index, jmlField)
 								Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Field, jmlField,
-									blackboard.correspondenceInstance)
+									correspondenceModel)
 								changedObjects.add(jmlField)
 								changedObjects.add(jmlNormalClassDecl)
 
@@ -132,9 +131,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 
 								val jmlModifier = getSingleCorrespondingEObjectOfType(oldValue, RegularModifier)
 
-								blackboard.correspondenceInstance.
+								correspondenceModel.
 									removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
-								blackboard.correspondenceInstance.
+								correspondenceModel.
 									removeCorrespondencesThatInvolveAtLeastAndDependend(jmlModifier.toSet)
 
 								jmlClassifierDecl.modifiers.remove(jmlModifier)
@@ -161,9 +160,9 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 								var jmlSpecifiedElement = getSingleCorrespondingEObjectOfType(oldValue,
 									JMLSpecifiedElement)
 
-								blackboard.correspondenceInstance.
+								correspondenceModel.
 									removeCorrespondencesThatInvolveAtLeastAndDependend(jmlSpecifiedElement.toSet)
-								blackboard.correspondenceInstance.
+								correspondenceModel.
 									removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 
 								jmlNormalClassDecl.bodyDeclarations.remove(jmlSpecifiedElement)
@@ -187,7 +186,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 
 						if (jmlFeature == JMLPackage.eINSTANCE.modifiable_Modifiers) {
 							CommonSynchronizerTransformations.replaceNonRootEObjectInList(affectedEObject,
-								oldValue as Modifier, newValue as Modifier, blackboard.correspondenceInstance)
+								oldValue as Modifier, newValue as Modifier, correspondenceModel)
 							return new TransformationResult
 						}
 
@@ -195,7 +194,7 @@ class JavaClassTransformations extends Java2JMLTransformationBase {
 
 				}
 				/*
-				 * 	override protected execute(UpdateEAttribute change, ModelInstance sourceModel, CorrespondenceInstance correspondenceInstance) {
+				 * 	override protected execute(UpdateEAttribute change, ModelInstance sourceModel, CorrespondenceModel correspondenceInstance) {
 				 * 		
 				 * 		val changedClazz = change.affectedEObject as Class
 				 * 		val correspondingClassifiers = correspondenceInstance.claimCorrespondingEObjectsByType(changedClazz, ClassOrInterfaceDeclaration).filter(ClassDeclaration)

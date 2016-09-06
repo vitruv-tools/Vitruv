@@ -1,8 +1,8 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassOrInterfaceTypeWithBrackets
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.PrimitiveTypeWithBrackets
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassOrInterfaceTypeWithBrackets
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.PrimitiveTypeWithBrackets
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type
 import java.util.ArrayList
 import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.StringUtils
@@ -71,17 +71,17 @@ class ShadowCopyJavaJmlHelperBase {
 	
 	protected static def getJmlReplacementOldMethodString()
 	'''
-	public static <T> T «JML_REPLACEMENT_OLD_METHOD_NAME» (T param) {return param;}
+	public static <T> T ï¿½JML_REPLACEMENT_OLD_METHOD_NAMEï¿½ (T param) {return param;}
 	'''
 	
 	protected static def getJmlReplacementFreshMethodString()
 	'''
-	public static <T> T «JML_REPLACEMENT_FRESH_METHOD_NAME» (T param) {return param;}
+	public static <T> T ï¿½JML_REPLACEMENT_FRESH_METHOD_NAMEï¿½ (T param) {return param;}
 	'''
 	
 	protected static def getJmlReplacementResultMethodString(Type type)
 	'''
-	private static «type.typeName» «type.jmlReplacementResult» {return («type.typeName»)new java.lang.Object();}
+	private static ï¿½type.typeNameï¿½ ï¿½type.jmlReplacementResultï¿½ {return (ï¿½type.typeNameï¿½)new java.lang.Object();}
 	'''
 	
 	protected static def getJavaFieldSpecificationMethodName(String fieldName) {

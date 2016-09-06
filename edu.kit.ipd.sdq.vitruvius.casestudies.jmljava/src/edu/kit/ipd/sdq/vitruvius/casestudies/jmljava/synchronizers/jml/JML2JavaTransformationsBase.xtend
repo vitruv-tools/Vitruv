@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.FieldDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLModelElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.FieldDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLModelElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VariableDeclarator
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java.AbortableEObjectMappingTransformationBase
@@ -48,7 +48,7 @@ abstract class JML2JavaTransformationsBase extends AbortableEObjectMappingTransf
 		
 		
 		//TODO this only works if the old state of the model is serialized to a file
-		val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+		val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 		shadowCopy.setupShadowCopyWithJMLSpecifications(true)
 		val obj = shadowCopy.shadowCopyCorrespondences.getMember(tmpSpecifiedElement)
 		obj.name = newName

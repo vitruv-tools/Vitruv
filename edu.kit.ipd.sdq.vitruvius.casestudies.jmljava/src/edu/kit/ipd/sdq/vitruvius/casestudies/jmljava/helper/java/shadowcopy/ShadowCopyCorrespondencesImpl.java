@@ -22,15 +22,15 @@ import org.emftext.language.java.statements.Statement;
 
 import com.google.common.collect.BiMap;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLExpressionHaving;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLExpressionHaving;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLTUIDCalculatorAndResolver;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPTUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUIDCalculatorAndResolver;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.CorrespondenceInstanceUtil;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUIDCalculatorAndResolver;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUtil;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 
 public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesWritable {
@@ -44,11 +44,11 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     private final BiMap<NamedElement, NamedElement> javaToShadowElement = IdentityBiMap.create();
     private final BiMap<JMLExpressionHaving, Statement> jmlExpression2ShadowStatement = IdentityBiMap.create();
     private final BiMap<Member, ClassMethod> jmlShadowMemberToSpecContainingMethod = IdentityBiMap.create();
-    private final CorrespondenceInstance ci;
+    private final CorrespondenceModel ci;
     private final Collection<CompilationUnit> javaCUs;
     private final boolean useJMLCopies;
 
-    public ShadowCopyCorrespondencesImpl(final CorrespondenceInstance ci, final Collection<CompilationUnit> javaCUs,
+    public ShadowCopyCorrespondencesImpl(final CorrespondenceModel ci, final Collection<CompilationUnit> javaCUs,
             final boolean useJMLCopies) {
         this.ci = ci;
         this.javaCUs = javaCUs;
@@ -130,7 +130,7 @@ public class ShadowCopyCorrespondencesImpl implements ShadowCopyCorrespondencesW
     @SuppressWarnings("unchecked")
     @Override
     public <T extends EObject> Set<T> getCorrespondingEObjectsByType(final EObject eObject, final Class<T> type) {
-        final Set<T> correspondingElements = CorrespondenceInstanceUtil.getCorrespondingEObjectsByType(this.ci, eObject,
+        final Set<T> correspondingElements = CorrespondenceModelUtil.getCorrespondingEObjectsByType(this.ci, eObject,
                 type);
         if (correspondingElements == null || !this.useJMLCopies) {
             return correspondingElements;

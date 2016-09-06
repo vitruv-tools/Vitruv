@@ -3,18 +3,18 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJML
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.DeclaredException
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.GenericMethodOrConstructorDecl
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ImportDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.InterfaceDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.RegularModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassifierDeclarationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.DeclaredException
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.GenericMethodOrConstructorDecl
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ImportDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.InterfaceDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Modifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.RegularModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type
 import java.util.ArrayList
 import java.util.List
 import org.emftext.language.java.annotations.AnnotationInstance
@@ -81,7 +81,7 @@ class MatchingModelElementsFinder {
 	 * Finds a corresponding NON model constructor.
 	 */
 	def static findMatchingConstructor(Constructor constructor, Iterable<JMLSpecifiedElement> candidates) {
-		val jmlCandidates = candidates.filter[element.memberdecl instanceof edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Constructor]
+		val jmlCandidates = candidates.filter[element.memberdecl instanceof edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Constructor]
 		return jmlCandidates.findFirst[Utilities.corresponds(constructor, element)]
 	}
 

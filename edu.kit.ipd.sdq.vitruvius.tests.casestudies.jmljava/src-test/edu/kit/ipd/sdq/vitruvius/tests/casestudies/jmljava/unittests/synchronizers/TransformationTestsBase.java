@@ -47,21 +47,19 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelP
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstanceDecorator;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.internal.BlackboardImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
@@ -110,11 +108,11 @@ public abstract class TransformationTestsBase {
 
     }
 
-    private static class CorrespondenceInstanceProxy implements InvocationHandler {
-        private final CorrespondenceInstance ci;
+    private static class CorrespondenceModelProxy implements InvocationHandler {
+        private final CorrespondenceModel ci;
         private final List<Pair<String, String>> updateCalls = new ArrayList<Pair<String, String>>();
 
-        public CorrespondenceInstanceProxy(final CorrespondenceInstance ci) {
+        public CorrespondenceModelProxy(final CorrespondenceModel ci) {
             this.ci = ci;
         }
 
@@ -147,9 +145,9 @@ public abstract class TransformationTestsBase {
     private static final Mapping MAPPING_JAVA2JML = constructMapping();
     private ModelProvidingMock modelProviding;
     private CorrespondingProvidingMock correspondingProding;
-    private CorrespondenceInstanceProxy correspondenceInstanceUpdateRecorder;
+    private CorrespondenceModelProxy correspondenceInstanceUpdateRecorder;
     protected CSSynchronizer synchronizer;
-    protected CorrespondenceInstanceDecorator correspondenceInstance;
+    protected CorrespondenceModel correspondenceInstance;
     protected UserInteracting userInteracting;
     protected SynchronisationAbortedListener syncAbortedListener;
     private Blackboard blackboard;
@@ -168,22 +166,13 @@ public abstract class TransformationTestsBase {
     public void setup() throws Exception {
         final Pair<ModelInstance, ModelInstance> modelInstances = this.getModelInstances();
         this.modelProviding = createModelProviding(modelInstances);
-        this.correspondenceInstanceUpdateRecorder = createCorrespondenceInstanceProxy(this.modelProviding,
+        this.correspondenceInstanceUpdateRecorder = createCorrespondenceModelProxy(this.modelProviding,
                 modelInstances);
-        this.correspondenceInstance = createCorrespondenceInstance(this.correspondenceInstanceUpdateRecorder);
+        this.correspondenceInstance = createCorrespondenceModel(this.correspondenceInstanceUpdateRecorder);
         this.userInteracting = createUserInteracting();
         this.syncAbortedListener = createSyncAbortedListener();
-        this.blackboard = this.createBlackboard(this.correspondenceInstance, this.modelProviding,
-                this.correspondingProding);
-        this.synchronizer = createChangeSynchronizer(this.blackboard, this.userInteracting, this.syncAbortedListener,
+        this.synchronizer = createChangeSynchronizer(this.correspondenceInstance, this.userInteracting, this.syncAbortedListener,
                 modelInstances);
-    }
-
-    private Blackboard createBlackboard(final CorrespondenceInstanceDecorator correspondenceInstance,
-            final ModelProvidingMock modelProviding, CorrespondingProvidingMock correspondingProvidingMock) {
-        final Blackboard blackboard = new BlackboardImpl(correspondenceInstance, modelProviding,
-                correspondingProvidingMock);
-        return blackboard;
     }
 
     private static SynchronisationAbortedListener createSyncAbortedListener() {
@@ -194,30 +183,30 @@ public abstract class TransformationTestsBase {
         return EasyMock.createStrictMock(UserInteracting.class);
     }
 
-    private static CorrespondenceInstanceDecorator createCorrespondenceInstance(
-            final CorrespondenceInstanceProxy proxy) {
-        return (CorrespondenceInstanceDecorator) Proxy.newProxyInstance(
-                CorrespondenceInstanceProxy.class.getClassLoader(), new Class[] { CorrespondenceInstance.class },
+    private static CorrespondenceModel createCorrespondenceModel(
+            final CorrespondenceModelProxy proxy) {
+        return (CorrespondenceModel) Proxy.newProxyInstance(
+                CorrespondenceModelProxy.class.getClassLoader(), new Class[] { CorrespondenceModel.class },
                 proxy);
     }
 
-    private static CorrespondenceInstanceProxy createCorrespondenceInstanceProxy(final ModelProviding modelProviding,
+    private static CorrespondenceModelProxy createCorrespondenceModelProxy(final ModelProviding modelProviding,
             final Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
-        final URI dummyURICorrespondenceInstance = getDummyURI();
+        final URI dummyURICorrespondenceModel = getDummyURI();
 
-        final CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(MAPPING_JAVA2JML,
-                modelProviding, VURI.getInstance(dummyURICorrespondenceInstance),
-                new ResourceImpl(dummyURICorrespondenceInstance));
+        final CorrespondenceModel ci = new CorrespondenceModelImpl(MAPPING_JAVA2JML,
+                modelProviding, VURI.getInstance(dummyURICorrespondenceModel),
+                new ResourceImpl(dummyURICorrespondenceModel));
 
         final CompilationUnit javaCu = modelInstances.getFirst()
                 .getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
-        final edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
+        final edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
                 .getUniqueRootEObjectIfCorrectlyTyped(
-                        edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+                        edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
 
         Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaCu, jmlCu, ci);
 
-        return new CorrespondenceInstanceProxy(ci);
+        return new CorrespondenceModelProxy(ci);
     }
 
     private static ModelProvidingMock createModelProviding(final Pair<ModelInstance, ModelInstance> modelInstances)
@@ -230,18 +219,18 @@ public abstract class TransformationTestsBase {
         return modelProviding;
     }
 
-    private static CSSynchronizer createChangeSynchronizer(final Blackboard blackboard,
+    private static CSSynchronizer createChangeSynchronizer(final CorrespondenceModel correspondenceModel,
             final UserInteracting userInteracting, final SynchronisationAbortedListener syncAbortedListener,
             final Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
 
         final ShadowCopyFactory shadowCopyFactory = new ShadowCopyFactory() {
             @Override
-            public ShadowCopy create(final CorrespondenceInstance ci, final boolean useJMLCopy) {
+            public ShadowCopy create(final CorrespondenceModel ci, final boolean useJMLCopy) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(modelInstances.getFirst().getURI()), useJMLCopy);
             }
 
             @Override
-            public ShadowCopy create(final CorrespondenceInstance ci) {
+            public ShadowCopy create(final CorrespondenceModel ci) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(modelInstances.getFirst().getURI()));
             }
         };
@@ -249,7 +238,7 @@ public abstract class TransformationTestsBase {
                 .createInjector(new CSSynchronizerModule(shadowCopyFactory, userInteracting, syncAbortedListener));
 
         final CSSynchronizer synchronizer = injector.getInstance(CSSynchronizer.class);
-        synchronizer.setBlackboard(blackboard);
+        synchronizer.setCorrespondenceModel(correspondenceModel);
         return synchronizer;
     }
 
@@ -262,7 +251,7 @@ public abstract class TransformationTestsBase {
 
     abstract protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception;
 
-    protected void callSynchronizer(final Change change) {
+    protected void callSynchronizer(final VitruviusChange change) {
         replay(this.userInteracting);
         replay(this.syncAbortedListener);
         this.callSynchronizerInternal(change);
@@ -270,13 +259,13 @@ public abstract class TransformationTestsBase {
         verify(this.syncAbortedListener);
     }
 
-    private void callSynchronizerInternal(final Change change) {
-        if (change instanceof EMFModelChange) {
-            this.synchronizer.transformChanges2Commands(this.blackboard);
+    private void callSynchronizerInternal(final VitruviusChange change) {
+        if (change instanceof GeneralChange) {
+            this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
             return;
         }
         if (change instanceof CompositeChange) {
-            this.synchronizer.executeTransformation((CompositeChange) change, this.blackboard);
+            this.synchronizer.executeTransformation((CompositeChange) change, this.blackboard.getCorrespondenceModel());
             return;
         }
         throw new IllegalArgumentException(

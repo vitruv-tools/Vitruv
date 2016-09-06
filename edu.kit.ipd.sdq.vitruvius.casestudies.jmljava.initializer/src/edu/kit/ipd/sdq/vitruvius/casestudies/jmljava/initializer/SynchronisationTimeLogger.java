@@ -6,11 +6,12 @@ import org.apache.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
 
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.SynchronisationListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JmlSynchronizationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
 
-public final class SynchronisationTimeLogger implements SynchronisationListener {
+public final class SynchronisationTimeLogger implements JmlSynchronizationListener {
 
 	private static final Logger LOGGER = Logger.getLogger(SynchronisationTimeLogger.class);
 	private static final SynchronisationTimeLogger INSTANCE = new SynchronisationTimeLogger();
@@ -34,7 +35,7 @@ public final class SynchronisationTimeLogger implements SynchronisationListener 
 	}
 
 	@Override
-	public void syncAborted(EMFModelChange abortedChange) {
+	public void syncAborted(GeneralChange abortedChange) {
 	}
 
 	@Override

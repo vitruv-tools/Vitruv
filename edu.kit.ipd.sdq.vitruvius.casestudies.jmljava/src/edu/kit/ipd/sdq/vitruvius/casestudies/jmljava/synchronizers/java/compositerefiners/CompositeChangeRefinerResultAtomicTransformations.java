@@ -7,9 +7,9 @@ import org.eclipse.emf.common.command.Command;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.CSSynchronizer;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
 
 /**
  * Composite change refiner result, which contains atomic changes only. The atomic changes can be
@@ -20,7 +20,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
  */
 public class CompositeChangeRefinerResultAtomicTransformations implements CompositeChangeRefinerResult {
 
-    private final List<EMFModelChange> changes;
+    private final List<GeneralChange> changes;
 
     /**
      * Constructor.
@@ -28,7 +28,7 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
      * @param changes
      *            The atomic changes.
      */
-    public CompositeChangeRefinerResultAtomicTransformations(final List<EMFModelChange> changes) {
+    public CompositeChangeRefinerResultAtomicTransformations(final List<GeneralChange> changes) {
         this.changes = changes;
     }
 
@@ -36,7 +36,7 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
     public List<Command> apply(final CSSynchronizer transformationExecuting, final Blackboard blackboard,
             final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
         final List<Command> commands = new ArrayList<Command>(this.changes.size());
-        for (final EMFModelChange change : this.changes) {
+        for (final GeneralChange change : this.changes) {
             final Command command = transformationExecuting.transformEMFModelChange2Command(change, blackboard);
             commands.add(command);
         }

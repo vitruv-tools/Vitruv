@@ -6,15 +6,15 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMemberModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecMemberModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLFactory;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecMemberModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeBuilder;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
 
 public abstract class JMLModifierTestBase extends FrameworkTestBase {
 

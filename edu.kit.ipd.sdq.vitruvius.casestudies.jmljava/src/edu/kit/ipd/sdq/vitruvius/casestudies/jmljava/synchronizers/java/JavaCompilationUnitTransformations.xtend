@@ -1,16 +1,15 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ClassifierDeclarationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ImportDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ClassifierDeclarationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ImportDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.SynchronisationAbortedListener
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -58,7 +57,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				val jmlImport = CommonSynchronizerTasks.createJMLImportDeclaration(newValue as Import)
 				jmlCu.importdeclaration.add(index, jmlImport)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, blackboard.correspondenceInstance)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Import, jmlImport, correspondenceModel)
 	
 				changedObjects.add(jmlImport)
 				changedObjects.add(jmlCu)
@@ -79,7 +78,7 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				val jmlType = CommonSynchronizerTasks.createJMLClass(newValue as Class)
 				jmlCu.typedeclaration.add(index, jmlType)
 
-				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, blackboard.correspondenceInstance)
+				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Class, jmlType, correspondenceModel)
 	
 				changedObjects.add(jmlType)
 				changedObjects.add(jmlCu)
@@ -102,8 +101,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlImport = getSingleCorrespondingEObjectOfType(oldValue, ImportDeclaration)
 				
-				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlImport.toSet)
-				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
+				correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlImport.toSet)
+				correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 				
 				jmlCu.importdeclaration.remove(jmlImport)
 
@@ -116,8 +115,8 @@ class JavaCompilationUnitTransformations extends Java2JMLTransformationBase {
 				
 				val jmlType = getSingleCorrespondingEObjectOfType(oldValue, ClassifierDeclarationWithModifier)
 				
-				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlType.toSet)
-				blackboard.correspondenceInstance.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
+				correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(jmlType.toSet)
+				correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldValue.toSet)
 				
 				jmlCu.typedeclaration.remove(jmlType)
 				

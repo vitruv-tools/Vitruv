@@ -19,11 +19,11 @@ import org.junit.Test;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom.JavaMethodBodyChangedTransformation;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CompositeChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.ContainmentFactory;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
 import edu.kit.ipd.sdq.vitruvius.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
@@ -56,7 +56,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
     }
 
     private CompilationUnit cuJava;
-    private edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit cuJML;
+    private edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit cuJML;
 
     @Override
     protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception {
@@ -64,7 +64,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         cuJava = miJava.getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
         ModelInstance miJML = loadModelInstance(ResourceFiles.JML);
         cuJML = miJML
-                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
         return new Pair<ModelInstance, ModelInstance>(miJava, miJML);
     }
     

@@ -14,8 +14,8 @@ import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.ClassifierReference
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.util.datatypes.HierarchicalTUIDCalculatorAndResolver
 import org.emftext.language.java.members.Constructor
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.HierarchicalTUIDCalculatorAndResolver
 
 /**
  * TUID calculator and resolver for the JaMoPP meta-model.

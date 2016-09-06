@@ -30,13 +30,13 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.Shad
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JMLMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.metamodels.JaMoPPMetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ContractsBuilder;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.ModelInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelInstance;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.EcoreResourceBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.Pair;
 import edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.unittests.utils.ModelLoader.IResourceFiles;
@@ -61,27 +61,27 @@ public class CommonTasks {
     public static ShadowCopyFactory createShadowCopyFactory(final ModelInstance javaModelInstance) {
         return new ShadowCopyFactory() {
             @Override
-            public ShadowCopy create(CorrespondenceInstance ci, boolean useJMLCopy) {
+            public ShadowCopy create(CorrespondenceModel ci, boolean useJMLCopy) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(javaModelInstance.getURI()), useJMLCopy);
             }
 
             @Override
-            public ShadowCopy create(CorrespondenceInstance ci) {
+            public ShadowCopy create(CorrespondenceModel ci) {
                 return new ShadowCopyImpl(ci, new JavaModelURIProvider(javaModelInstance.getURI()));
             }
         };
     }
     
-    public static CorrespondenceInstance createCorrespondenceInstance(Mapping mapping, ModelProviding modelProviding,
+    public static CorrespondenceModel createCorrespondenceModel(Mapping mapping, ModelProviding modelProviding,
             Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
-        URI dummyURICorrespondenceInstance = getDummyURI();
+        URI dummyURICorrespondenceModel = getDummyURI();
 
-        CorrespondenceInstance ci = ContractsBuilder.createCorrespondenceInstance(mapping, modelProviding,
-                VURI.getInstance(dummyURICorrespondenceInstance), new ResourceImpl(dummyURICorrespondenceInstance));
+        CorrespondenceModel ci = new CorrespondenceModelImpl(mapping, modelProviding,
+                VURI.getInstance(dummyURICorrespondenceModel), new ResourceImpl(dummyURICorrespondenceModel));
 
         CompilationUnit javaCu = modelInstances.getFirst().getUniqueRootEObjectIfCorrectlyTyped(CompilationUnit.class);
-        edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
-                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.CompilationUnit.class);
+        edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit jmlCu = modelInstances.getSecond()
+                .getUniqueRootEObjectIfCorrectlyTyped(edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit.class);
 
         Java2JMLCorrespondenceAdder.addCorrespondencesForCompilationUnit(javaCu, jmlCu, ci);
 

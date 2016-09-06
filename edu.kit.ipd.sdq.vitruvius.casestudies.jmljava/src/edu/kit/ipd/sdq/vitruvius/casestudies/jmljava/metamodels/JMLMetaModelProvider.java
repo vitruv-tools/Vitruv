@@ -9,9 +9,9 @@ import java.util.Set;
 
 import org.eclipse.xtext.resource.SaveOptions;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 
 /**
  * Provider for the JML meta model.

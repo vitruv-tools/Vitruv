@@ -6,8 +6,8 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.statements.Statement;
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLExpressionHaving;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLExpressionHaving;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement;
 
 public interface ShadowCopyCorrespondencesWritable extends ShadowCopyCorrespondences {
 

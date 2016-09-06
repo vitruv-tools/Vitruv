@@ -1,13 +1,13 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifiable
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.RegularModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Typed
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Modifiable
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.RegularModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Typed
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.correspondences.Java2JMLCorrespondenceAdder
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -16,7 +16,6 @@ import org.emftext.language.java.members.Method
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.types.TypeReference
 import org.emftext.language.java.variables.Variable
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.TransformationUtils
 
 import static extension edu.kit.ipd.sdq.vitruvius.framework.util.bridges.CollectionBridge.*
 
@@ -24,7 +23,7 @@ class CommonSynchronizerTransformations {
 	
 	private static val LOGGER = Logger.getLogger(CommonSynchronizerTransformations)
 	
-	static def replaceNonRootEObjectInList(EObject affectedJavaObject, Modifier javaOldValue, Modifier javaNewValue, CorrespondenceInstance ci) {
+	static def replaceNonRootEObjectInList(EObject affectedJavaObject, Modifier javaOldValue, Modifier javaNewValue, CorrespondenceModel ci) {
 		
 		val jmlModifiable = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, affectedJavaObject, Modifiable)
 		val changedObjects = new ArrayList
@@ -52,7 +51,7 @@ class CommonSynchronizerTransformations {
 		}
 	}
 	
-	static def createNonRootEObjectInList(EObject affectedJavaObject, Modifier javaModifier, CorrespondenceInstance ci) {
+	static def createNonRootEObjectInList(EObject affectedJavaObject, Modifier javaModifier, CorrespondenceModel ci) {
 		val changedObjects = new ArrayList
 		
 		val jmlModifiable = CorrespondenceHelper.getSingleCorrespondingEObjectOfType(ci, affectedJavaObject, Modifiable)
@@ -69,7 +68,7 @@ class CommonSynchronizerTransformations {
 		}
 	}
 	
-	static def replaceNonRootEObjectSingleType(EObject affectedJavaObject, TypeReference javaOldValue, TypeReference javaNewValue, CorrespondenceInstance ci) {
+	static def replaceNonRootEObjectSingleType(EObject affectedJavaObject, TypeReference javaOldValue, TypeReference javaNewValue, CorrespondenceModel ci) {
 		val changedObjects = new ArrayList<EObject>()
 		
 		// this does not treat varargs for parameters...

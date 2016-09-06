@@ -1,18 +1,18 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.custom
 
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.JavaTransformation
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.jml.CommonSynchronizerTasksJML
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Blackboard
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.blackboard.Blackboard
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting
 import java.util.Collection
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -36,14 +36,14 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 			"Starting custom transformation " + JavaMethodBodyChangedTransformation.simpleName + " for method " +
 				oldMethod.name)
 
-		val oldMethodIsPure = oldMethod.isMethodDeclaredPure(blackboard.correspondenceInstance)
+		val oldMethodIsPure = oldMethod.isMethodDeclaredPure(blackboard.correspondenceModel)
 
-		val newShadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+		val newShadowCopy = shadowCopyFactory.create(blackboard.correspondenceModel)
 		val newJavaMember = newShadowCopy.shadowCopyCorrespondences.getShadow(newMethod as ClassMethod)
 		newJavaMember.statements.clear()
 		newMethod.statements.forEach[newJavaMember.statements.add(Utilities.<Statement>clone(it))]
 		newShadowCopy.setupShadowCopyWithJMLSpecifications(false)
-		val newMethodIsPure = newJavaMember.isMethodPure(blackboard.correspondenceInstance)
+		val newMethodIsPure = newJavaMember.isMethodPure(blackboard.correspondenceModel)
 
 		LOGGER.trace("Original method considered pure: " + oldMethodIsPure)
 		LOGGER.trace("Changed method is pure: " + newMethodIsPure)
@@ -55,7 +55,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 				newMethodIsPure,
 				newJavaMember,
 				newShadowCopy,
-				blackboard.correspondenceInstance
+				blackboard.correspondenceModel
 			)
 		} catch (CommonSynchronizerTasksJML.OperationNotApplicableException e) {
 			LOGGER.trace("Transformation aborted since change is not applicable.")
@@ -73,7 +73,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		return new TransformationResult
 	}
 
-	private static def isMethodDeclaredPure(ClassMethod method, CorrespondenceInstance ci) {
+	private static def isMethodDeclaredPure(ClassMethod method, CorrespondenceModel ci) {
 		val jmlMethodDeclaration = CorrespondenceHelper.
 			getSingleCorrespondingEObjectOfType(ci, method, MemberDeclWithModifier)
 		if (jmlMethodDeclaration == null) {
@@ -83,7 +83,7 @@ class JavaMethodBodyChangedTransformation extends CustomTransformationsBase impl
 		return CommonSynchronizerTasksJML.isPureMethod(jmlMethodDeclaration)
 	}
 
-	private static def isMethodPure(ClassMethod method, CorrespondenceInstance ci) {
+	private static def isMethodPure(ClassMethod method, CorrespondenceModel ci) {
 		return CommonSynchronizerTasksJML.isPureMethod(method, ci)
 	}
 

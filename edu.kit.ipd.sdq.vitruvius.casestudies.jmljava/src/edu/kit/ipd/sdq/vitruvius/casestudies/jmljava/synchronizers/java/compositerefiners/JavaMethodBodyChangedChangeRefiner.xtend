@@ -6,8 +6,8 @@ import java.util.ArrayList
 import org.emftext.language.java.members.ClassMethod
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementsPackage
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.change.CompositeChange
 import org.emftext.language.java.members.Method
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.CompositeChange
 
 class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 

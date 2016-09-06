@@ -18,25 +18,20 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronize
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.MappingProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.MetaModelProvider;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.commandexecuter.CommandExecutingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Mapping;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Metamodel;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.VURI;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransforming;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Change2CommandTransformingProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangePreparing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ChangeSynchronizing;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CommandExecuting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.CorrespondenceProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MappingManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.MetamodelManaging;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.ModelProviding;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.Validating;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Mapping;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.Metamodel;
+import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming ;
+import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransformingProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizing;
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceProviding;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MappingManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.MetamodelManaging;
+import edu.kit.ipd.sdq.vitruvius.framework.metamodel.ModelProviding;
 import edu.kit.ipd.sdq.vitruvius.framework.metarepository.MetaRepositoryImpl;
-import edu.kit.ipd.sdq.vitruvius.framework.run.changesynchronizer.ChangeSynchronizerImpl;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.ChangeSynchronizerImpl;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMConstants;
 
 /**
@@ -63,11 +58,8 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
             this.metaRepositoryImpl = this.constructMetaRepositoryImpl();
             this.vsumImpl = this.constructVSUMImpl(this.metaRepositoryImpl, this.metaRepositoryImpl);
             this.change2CommandTransformingProvidingImpl = this.constructChange2CommandTransformingImpl();
-            final CommandExecuting commandExectuing = new CommandExecutingImpl();
-            final ChangePreparing changePreparing = new ChangePreparingImpl(this.vsumImpl, this.vsumImpl);
             this.syncManagerImpl = this.constructSyncManagerImpl(this.vsumImpl,
-                    this.change2CommandTransformingProvidingImpl, this.vsumImpl, this.vsumImpl, changePreparing,
-                    commandExectuing);
+                    this.change2CommandTransformingProvidingImpl, this.vsumImpl);
         } catch (final Exception e) {
             LOGGER.error("Exception thrown during initialization.", e);
             throw e;
@@ -129,7 +121,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
     protected VSUMImplCustom constructVSUMImpl(final MetamodelManaging metamodelManaging,
             final MappingManaging mappingManaging) {
         LOGGER.info("Constructing VSUM.");
-        final VSUMImplCustom result = new VSUMImplCustom(metamodelManaging, null, mappingManaging);
+        final VSUMImplCustom result = new VSUMImplCustom(metamodelManaging, mappingManaging);
 
         final List<VURI> relevantURIs = new ArrayList<VURI>();
         for (final ModelURIProvider modelURIProvider : JavaJMLExtensionProvider.getModelURIProviders()) {
@@ -143,7 +135,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
 
         for (final CorrespondenceProvider correspondenceProvider : JavaJMLExtensionProvider
                 .getCorrespondenceProviders()) {
-            final CorrespondenceInstance ci = result.getCorrespondenceInstanceOriginal(
+            final CorrespondenceModel ci = result.getCorrespondenceModel(
                     correspondenceProvider.getFirstMetaModelUri(), correspondenceProvider.getSecondMetaModelUri());
 
             LOGGER.debug("Setting correspondences for " + correspondenceProvider.getFirstMetaModelUri() + " and "
@@ -192,43 +184,26 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
      */
     protected ChangeSynchronizerImpl constructSyncManagerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
-            final CorrespondenceProviding correspondenceProviding, final Validating validating,
-            final ChangePreparing changePreparing, final CommandExecuting commandExecuting) {
+            final CorrespondenceProviding correspondenceProviding) {
         LOGGER.info("Constructing sync manager.");
 
         final ChangeSynchronizerImpl result = new ChangeSynchronizerImpl(modelProviding,
-                change2CommandTransformingProviding, correspondenceProviding, this.metaRepositoryImpl, validating, null,
-                changePreparing, commandExecuting);
+                change2CommandTransformingProviding, correspondenceProviding, null);
 
         return result;
     }
 
     @Override
-    public List<List<Change>> synchronizeChanges(final List<Change> changes) {
-        if (changes == null) {
+    public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange change) {
+        if (change == null) {
             LOGGER.warn("Ignoring null changes.");
         }
         try {
-            return this.syncManagerImpl.synchronizeChanges(changes);
+            return this.syncManagerImpl.synchronizeChange(change);
         } catch (final Exception e) {
             LOGGER.error("Exception thrown during synchronisation.", e);
         }
         return Collections.emptyList();
-    }
-
-    @Override
-    public void synchronizeChange(final Change change) {
-        if (change == null) {
-            LOGGER.warn("Ignoring null change.");
-            return;
-        }
-
-        try {
-            this.syncManagerImpl.synchronizeChange(change);
-
-        } catch (final Exception e) {
-            LOGGER.error("Exception thrown during synchronisation.", e);
-        }
     }
 
     public ModelProvidingDirtyMarker getModelProvidingDirtyMarker() {

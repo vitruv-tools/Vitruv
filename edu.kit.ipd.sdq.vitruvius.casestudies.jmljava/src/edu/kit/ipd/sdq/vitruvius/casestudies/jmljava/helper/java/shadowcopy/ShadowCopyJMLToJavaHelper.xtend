@@ -2,23 +2,23 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.JaMoPPConcreteSyntax
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.ConcreteSyntaxHelper
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Expression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLForAllExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodBehavior
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMethodSpecificationWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLMultilineSpec
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecificationOnlyElementWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLSpecifiedElement
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLTypeExpressionWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclWithModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ModifierValue
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ParenthesisExpression
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.RegularModifier
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.ConcreteSyntaxHelper
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Expression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLFactory
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLForAllExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodBehavior
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMethodSpecificationWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLMultilineSpec
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecificationOnlyElementWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLSpecifiedElement
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLTypeExpressionWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclWithModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ModifierValue
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ParenthesisExpression
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.RegularModifier
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type
 import java.util.ArrayList
 import java.util.List
 import org.apache.commons.lang.StringUtils
@@ -39,7 +39,7 @@ import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementListContainer
 import org.emftext.language.java.statements.StatementsPackage
 import org.emftext.language.java.types.TypesFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VisibilityModifierValue
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VisibilityModifierValue
 import org.emftext.language.java.modifiers.ModifiersFactory
 
 /**
@@ -224,8 +224,8 @@ class ShadowCopyJMLToJavaHelper extends ShadowCopyJavaJmlHelperBase {
 	}
 	
 	private static def createJavaForLoopConcreteSyntax(ArrayList<String> iniExpressions, String condition, String update) '''
-	for(«StringUtils.join(iniExpressions, ", ")»; «condition»; ) {
-		boolean JML_«randomString» = («update»);
+	for(ï¿½StringUtils.join(iniExpressions, ", ")ï¿½; ï¿½conditionï¿½; ) {
+		boolean JML_ï¿½randomStringï¿½ = (ï¿½updateï¿½);
 	}
 	'''
 	

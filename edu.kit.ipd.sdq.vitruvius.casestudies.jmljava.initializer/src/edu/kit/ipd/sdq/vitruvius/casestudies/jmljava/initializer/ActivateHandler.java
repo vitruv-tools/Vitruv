@@ -14,13 +14,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaCore;
 
 import edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.java.JavaMonitoredEditor;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.run.monitorededitor.JMLMonitoredEditor;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.monitorededitor.JMLMonitoredEditor;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer.CommandState.Commands;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.UserInteractionType;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredEditorsRegistry;
-import edu.kit.ipd.sdq.vitruvius.framework.run.monitorededitor.registries.MonitoredProjectsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteractionType;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredEditorsRegistry;
+import edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries.MonitoredProjectsRegistry;
 
 /**
  * Handler for the activation command for the synchronisation engine.

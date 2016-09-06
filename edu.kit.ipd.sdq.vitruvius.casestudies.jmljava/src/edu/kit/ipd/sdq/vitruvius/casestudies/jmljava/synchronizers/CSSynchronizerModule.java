@@ -11,10 +11,10 @@ import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.extensions.UserInteractingP
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactory;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.java.shadowcopy.ShadowCopyFactoryImpl;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.models.JavaModelURIProvider;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.EMFModelChange;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.UserInteracting;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.interfaces.user.TransformationAbortCause;
-import edu.kit.ipd.sdq.vitruvius.framework.model.monitor.userinteractor.UserInteractor;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.UserInteracting;
+import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.TransformationAbortCause;
+import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractor;
 
 /**
  * Module for google guice dependency injection in the {@link CSSynchronizer} object hierarchy.
@@ -28,7 +28,7 @@ public class CSSynchronizerModule extends AbstractModule {
         bind(ModelURIProvider.class).annotatedWith(Names.named("JavaModelUriProvider")).to(JavaModelURIProvider.class);
         bind(SynchronisationAbortedListener.class).toInstance(new SynchronisationAbortedListener() {
             @Override
-            public void synchronisationAborted(EMFModelChange abortedChange) {
+            public void synchronisationAborted(GeneralChange abortedChange) {
                 ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronisationAborted(abortedChange);
             }
 
@@ -36,6 +36,7 @@ public class CSSynchronizerModule extends AbstractModule {
             public void synchronisationAborted(TransformationAbortCause cause) {
                 ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronisationAborted(cause);
             }
+
         });
 
         bind(ShadowCopyFactory.class).to(ShadowCopyFactoryImpl.class);

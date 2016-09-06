@@ -3,12 +3,12 @@ package edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava.plugintests;
 import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeBuilder;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.IdentifierHaving;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLPackage;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.VariableDeclarator;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.IdentifierHaving;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLPackage;
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.VariableDeclarator;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ModelUtilities;
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.Change;
+import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 
 public class RenameGhostFieldTest extends FrameworkTestBase {
 

@@ -2,10 +2,10 @@ package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.Utilities
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.helpers.CorrespondenceHelper
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.CorrespondenceInstance
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TransformationResult
-import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID
-import edu.kit.ipd.sdq.vitruvius.framework.run.transformationexecuter.EObjectMappingTransformation
+import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModel
+import edu.kit.ipd.sdq.vitruvius.framework.util.command.TransformationResult
+import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
@@ -34,18 +34,18 @@ abstract class EObjectMappingTransformationBase extends EObjectMappingTransforma
 	}
 
 	protected def <T extends EObject> T getSingleCorrespondingEObjectOfType(EObject subject, Class<T> type) {
-		return CorrespondenceHelper.getSingleCorrespondingEObjectOfType(blackboard.correspondenceInstance, subject, type)
+		return CorrespondenceHelper.getSingleCorrespondingEObjectOfType(correspondenceModel, subject, type)
 	}
 
 	protected def getSingleCorrespondence(EObject srcElement, EObject dstElement) {
-		return CorrespondenceHelper.getSingleCorrespondence(blackboard.correspondenceInstance, srcElement, dstElement)
+		return CorrespondenceHelper.getSingleCorrespondence(correspondenceModel, srcElement, dstElement)
 	}
 
 	protected def <T extends EObject> T getModelInstanceElement(T obj) {
-		return obj.getModelInstanceElement(blackboard.correspondenceInstance) 
+		return obj.getModelInstanceElement(correspondenceModel) 
 	}
 
-	protected static def <T extends EObject> T getModelInstanceElement(T obj, CorrespondenceInstance ci) {
+	protected static def <T extends EObject> T getModelInstanceElement(T obj, CorrespondenceModel ci) {
 		val match = Utilities.getModelInstanceElement(obj, ci)
 		if (match != null) {
 			return match

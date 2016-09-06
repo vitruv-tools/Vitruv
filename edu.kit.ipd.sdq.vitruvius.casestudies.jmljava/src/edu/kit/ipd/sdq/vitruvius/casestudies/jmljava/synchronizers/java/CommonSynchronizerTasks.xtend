@@ -1,12 +1,12 @@
 package edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.synchronizers.java
 
 import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.helper.StringOperationsJaMoPP
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.JMLFactory
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MemberDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.MethodDeclaration
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Modifiable
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.ModifierValue
-import edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.Type
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.JMLFactory
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MemberDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.MethodDeclaration
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Modifiable
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.ModifierValue
+import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.Type
 import org.apache.log4j.Logger
 import org.emftext.language.java.arrays.ArrayTypeable
 import org.emftext.language.java.classifiers.Class
@@ -115,7 +115,7 @@ class CommonSynchronizerTasks {
 			} else {
 				val primitiveTypeStr = StringOperationsJaMoPP.getStringRepresentation(javaType as PrimitiveType, 0)
 				val primitiveType = JMLFactory.eINSTANCE.createPrimitiveTypeWithBrackets()
-				primitiveType.primitivetype = edu.kit.ipd.sdq.vitruvius.casestudies.jml.language.jML.PrimitiveType.get(primitiveTypeStr)
+				primitiveType.primitivetype = edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.PrimitiveType.get(primitiveTypeStr)
 				jmlType = primitiveType
 			}
 		} else if (javaType instanceof NamespaceClassifierReference) {

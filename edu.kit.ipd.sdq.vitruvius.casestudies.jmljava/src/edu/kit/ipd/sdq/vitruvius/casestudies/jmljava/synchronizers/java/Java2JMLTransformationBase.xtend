@@ -28,7 +28,7 @@ abstract class Java2JMLTransformationBase extends AbortableEObjectMappingTransfo
 		// TODO this only works if the old state of the model is serialized to a file
 		val modelInstanceRenamedElement = renamedElement.modelInstanceElement
 
-		val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+		val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 		shadowCopy.setupShadowCopyWithJMLSpecifications(true)
 		val obj = shadowCopy.shadowCopyCorrespondences.getShadow(modelInstanceRenamedElement)
 		renameAllParentsIfApplicable(obj, newName);
@@ -70,7 +70,7 @@ abstract class Java2JMLTransformationBase extends AbortableEObjectMappingTransfo
 	}
 
 	protected def simulateElementRemoval(NamedElement removedElement) {
-		val shadowCopy = shadowCopyFactory.create(blackboard.correspondenceInstance)
+		val shadowCopy = shadowCopyFactory.create(correspondenceModel)
 		shadowCopy.setupShadowCopyWithJMLSpecifications(true)
 		val shadowRemovedElement = shadowCopy.shadowCopyCorrespondences.getShadow(removedElement)
 		val references = shadowCopy.shadowCopyCorrespondences.findReferencesToJavaObject(shadowRemovedElement)
