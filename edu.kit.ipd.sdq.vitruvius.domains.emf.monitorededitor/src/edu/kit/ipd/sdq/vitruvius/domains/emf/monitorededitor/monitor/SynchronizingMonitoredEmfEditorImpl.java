@@ -177,7 +177,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                     LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);
                     return;
                 }
-                // final List<List<Change>> changes = new ArrayList<>();
+                // final List<List<VitruviusChange>> changes = new ArrayList<>();
                 // The following code needs to be executed within the editor's
                 // context because even though it does not change the EMF model
                 // in the sense of equality, it does apply changes to the EMF
@@ -195,7 +195,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                 // for (int i = changeDescriptions.size() - 1; i >= 0; i--) {
                 // changeDescriptions.get(i).getChangeDescription().applyAndReverse();
                 // }
-                // List<Change> transformedChanges = new ArrayList<Change>(
+                // List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>(
                 // new ChangeDescription2ChangeTransformation(changeDescriptions,
                 // true).getChanges());
                 triggerSynchronization(new ArrayList<VitruviusChange>(changeDescriptions), editorPart.getEditedModelResource());
