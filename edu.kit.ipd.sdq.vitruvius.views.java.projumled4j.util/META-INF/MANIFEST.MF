@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util
+Bundle-Name: Vitruvius Views Java Projective UML Editor Utilities
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.emftext.language.java,
@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util
+Export-Package: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util

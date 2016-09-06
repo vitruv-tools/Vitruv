@@ -2,32 +2,32 @@
 <?eclipse version="3.4"?>
 <plugin>
 	<extension point="org.eclipse.sirius.common.resourceSetFactory">
-		<factory class="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.jamoppExtension.SiriusResourceSetFactory" />
+		<factory class="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.jamoppExtension.SiriusResourceSetFactory" />
 	</extension>
 	
   <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGenerationCommands"
-            defaultHandler="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramAction"
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
+            categoryId="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGenerationCommands"
+            defaultHandler="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramAction"
+            id="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
             name="Show UML Class Diagramm">
       </command>
       <category
-            id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGenerationCommands"
+            id="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGenerationCommands"
             name="Diagram Generation Commands">
       </category>
    </extension>
 	<extension point="org.eclipse.ui.menus">
     	<menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-      		<command commandId="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
+      		<command commandId="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
         		label="Show UML Class diagram" style="push">
       		</command>
     	</menuContribution>
      <menuContribution
            locationURI="popup:eclipse.sirius.ui.tools.views.model.explorer">
         <command
-              commandId="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
+              commandId="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.commands.OpenUmlDiagramCommand"
               label="Show UML Class diagram"
               style="push">
         </command>

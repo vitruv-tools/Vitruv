@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.javauml.editor.diagramGeneration
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration;singleton:=true
+Bundle-Name: Vitruvius Views Java Projective UML Editor Diagram Generation
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramgeneration;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.activator.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.activator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.100",
  org.eclipse.jdt.core;bundle-version="3.9.2",
@@ -51,17 +51,17 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.registry,
  org.apache.commons.io,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.annotations,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util,
- edu.kit.ipd.sdq.vitruvius.framework.util.bridges,
+Import-Package: edu.kit.ipd.sdq.vitruvius.framework.util.bridges,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.annotations,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util,
  org.apache.log4j,
  org.emftext.language.java,
  org.emftext.language.java.annotations,

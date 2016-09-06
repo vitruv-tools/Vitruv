@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: edu.kit.ipd.sdq.vitruvius.javauml.editor.viewpoint
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint;singleton:=true
+Bundle-Name: Vitruvius Views Java Projective UML Editor Viewpoint
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.Activator
+Bundle-Activator: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -13,8 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.annotations,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util,
  org.eclipse.emf.common,
  org.eclipse.ui.ide,
  org.eclipse.core.filesystem,
@@ -22,8 +22,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.sirius.diagram,
  org.emftext.language.java
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.annotations,
- edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.util,
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.annotations,
+ edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.util,
  org.apache.log4j,
  org.eclipse.emf.transaction

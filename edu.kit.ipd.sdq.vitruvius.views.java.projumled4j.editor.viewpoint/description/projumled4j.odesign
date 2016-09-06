@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j" version="10.0.0.201505222000">
-  <ownedViewpoints name="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure" label="UML Structure" modelFileExtension="package">
-    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram" label="UML Class Diagram" domainClass="containers.Package">
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j" version="10.0.0.201505222000">
+  <ownedViewpoints name="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure" label="UML Structure" modelFileExtension="package">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram" label="UML Class Diagram" domainClass="containers.Package">
       <defaultLayer name="ElementsLayer" label="Elements">
         <containerMappings name="InterfaceContainer" label="Interface" semanticCandidatesExpression="[compilationUnits.classifiers/]" domainClass="classifiers.Interface" childrenPresentation="List">
-          <subNodeMappings name="InterfaceMethodNode" label="Interface Method" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" domainClass="members.InterfaceMethod">
-            <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+          <subNodeMappings name="InterfaceMethodNode" label="Interface Method" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" domainClass="members.InterfaceMethod">
+            <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             </style>
             <conditionnalStyles predicateExpression="[isPrivate()/]">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </conditionnalStyles>
             <conditionnalStyles predicateExpression="[isProtected()/]">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
             </conditionnalStyles>
             <conditionnalStyles predicateExpression="[isPublic()/]">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -41,30 +41,30 @@
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
           </style>
         </containerMappings>
-        <containerMappings name="ClassContainer" label="Class" semanticCandidatesExpression="[compilationUnits.classifiers/]" doubleClickDescription="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='ClickClass']" synchronizationLock="true" domainClass="classifiers.Class" childrenPresentation="VerticalStack">
+        <containerMappings name="ClassContainer" label="Class" semanticCandidatesExpression="[compilationUnits.classifiers/]" doubleClickDescription="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='ClickClass']" synchronizationLock="true" domainClass="classifiers.Class" childrenPresentation="VerticalStack">
           <subContainerMappings name="FieldsContainer" label="Fields" semanticCandidatesExpression="var:self" domainClass="classifiers.Class" childrenPresentation="List">
-            <subNodeMappings name="FieldNode" label="Field" preconditionExpression="[self.isAnyAssociation() = false/]" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.Field">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+            <subNodeMappings name="FieldNode" label="Field" preconditionExpression="[self.isAnyAssociation() = false/]" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.Field">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
               <conditionnalStyles predicateExpression="[isPrivate()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isProtected()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isPublic()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -80,55 +80,55 @@
           </subContainerMappings>
           <subContainerMappings name="MethodsContainer" label="Methods" semanticCandidatesExpression="var:self" domainClass="classifiers.Class" childrenPresentation="List">
             <subNodeMappings name="ClassConstructorNode" label="Class Constructor" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.Constructor">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
               <conditionnalStyles predicateExpression="[isPrivate()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isProtected()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isPublic()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
             </subNodeMappings>
-            <subNodeMappings name="ClassMethodNode" label="Class Method" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.ClassMethod">
-              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+            <subNodeMappings name="ClassMethodNode" label="Class Method" labelDirectEdit="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.ClassMethod">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
                 <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                 <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
               </style>
               <conditionnalStyles predicateExpression="[isPrivate()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isProtected()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
                 </style>
               </conditionnalStyles>
               <conditionnalStyles predicateExpression="[isPublic()/]">
-                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
                   <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
                   <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -161,16 +161,16 @@
           </conditionnalStyles>
         </containerMappings>
         <toolSections name="Tools">
-          <ownedTools xsi:type="tool:DoubleClickDescription" name="ClickClass" label="Click Class" mappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
+          <ownedTools xsi:type="tool:DoubleClickDescription" name="ClickClass" label="Click Class" mappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
             <element name="element"/>
             <elementView name="elementView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:element">
-                <subModelOperations xsi:type="tool_1:ExternalJavaAction" name="OpenJavaEditorAction" id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction"/>
+                <subModelOperations xsi:type="tool_1:ExternalJavaAction" name="OpenJavaEditorAction" id="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateField" label="Create Field" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='FieldsContainer']/@subNodeMappings[name='FieldNode']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateField" label="Create Field" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='FieldsContainer']/@subNodeMappings[name='FieldNode']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -180,7 +180,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateClassMethod" label="Create Class Method" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='MethodsContainer']/@subNodeMappings[name='ClassMethodNode']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateClassMethod" label="Create Class Method" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='MethodsContainer']/@subNodeMappings[name='ClassMethodNode']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -190,7 +190,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateInterfaceMethod" label="Create Interface Method" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']/@subNodeMappings[name='InterfaceMethodNode']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateInterfaceMethod" label="Create Interface Method" nodeMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']/@subNodeMappings[name='InterfaceMethodNode']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
@@ -206,24 +206,24 @@
               <firstModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="var:0"/>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateClassAction" label="Create Class" forceRefresh="true" containerMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateClassAction" label="Create Class" forceRefresh="true" containerMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateClassJavaAction" id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaClassAction"/>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateClassJavaAction" id="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.CreateJavaClassAction"/>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateInterfaceAction" label="Create Interface" forceRefresh="true" containerMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateInterfaceAction" label="Create Interface" forceRefresh="true" containerMappings="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']">
             <variable name="container"/>
             <viewVariable name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateInterfaceJavaAction" id="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaActions.CreateJavaInterfaceAction"/>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateInterfaceJavaAction" id="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.CreateJavaInterfaceAction"/>
             </initialOperation>
           </ownedTools>
         </toolSections>
       </defaultLayer>
       <additionalLayers name="ExtensionRelationshipsLayer" label="Extension Relationships" activeByDefault="true">
-        <edgeMappings name="ClassInheritanceRelation" label="Class Inheritance" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetFinderExpression="[self.getSuperClass()/]">
+        <edgeMappings name="ClassInheritanceRelation" label="Class Inheritance" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetFinderExpression="[self.getSuperClass()/]">
           <style targetArrow="InputClosedArrow" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <centerLabelStyleDescription>
@@ -231,7 +231,7 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <edgeMappings name="InterfaceImplementationRelation" label="Interface Implementation" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
+        <edgeMappings name="InterfaceImplementationRelation" label="Interface Implementation" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
           <style lineStyle="dash" targetArrow="InputClosedArrow" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <centerLabelStyleDescription>
@@ -239,7 +239,7 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <edgeMappings name="InterfaceExtensionRelation" label="Interface Extension" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
+        <edgeMappings name="InterfaceExtensionRelation" label="Interface Extension" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
           <style lineStyle="dash" targetArrow="InputClosedArrow" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <centerLabelStyleDescription>
@@ -249,7 +249,7 @@
         </edgeMappings>
       </additionalLayers>
       <additionalLayers name="ClassRelationshipsLayer" label="Class Relationships" activeByDefault="true">
-        <edgeMappings name="AssociationRelation" label="Association" preconditionExpression="[self.isAnyAssociation()/]" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer'] //@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getAssociationTarget()/]" sourceFinderExpression="[getContainingConcreteClassifier()/]" domainClass="Field" useDomainElement="true">
+        <edgeMappings name="AssociationRelation" label="Association" preconditionExpression="[self.isAnyAssociation()/]" sourceMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer'] //@ownedViewpoints[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getAssociationTarget()/]" sourceFinderExpression="[getContainingConcreteClassifier()/]" domainClass="Field" useDomainElement="true">
           <style sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             <beginLabelStyleDescription showIcon="false" labelExpression="[self.getSourceMultiplicityRepresentation()/]">
@@ -293,9 +293,9 @@
         </edgeMappings>
       </additionalLayers>
     </ownedRepresentations>
-    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaServices.DataTypeRepresentations"/>
-    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaServices.AssociationUtils"/>
-    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaServices.MemberRepresentationsAndUtils"/>
-    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.viewpoint.javaServices.InheritanceUtils"/>
+    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.DataTypeRepresentations"/>
+    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.AssociationUtils"/>
+    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.MemberRepresentationsAndUtils"/>
+    <ownedJavaExtensions qualifiedClassName="edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.InheritanceUtils"/>
   </ownedViewpoints>
 </description:Group>
