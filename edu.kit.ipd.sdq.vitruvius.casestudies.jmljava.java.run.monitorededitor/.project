@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor</name>
+	<name>edu.kit.ipd.sdq.vitruvius.applications.jmljava.monitorededitor</name>
 	<comment></comment>
 	<projects>
 		<project>edu.kit.ipd.sdq.seifermann.thesis.logging</project>

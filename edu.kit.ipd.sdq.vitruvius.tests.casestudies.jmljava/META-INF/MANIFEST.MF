@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.tests.casestudies.jmljava;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Fragment-Host: edu.kit.ipd.sdq.vitruvius.casestudies.jmljava;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Name: Vitruvius JML-Java Tests
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.jmljava.tests;singleton:=true
+Bundle-Version: 1.0.0
+Fragment-Host: edu.kit.ipd.sdq.vitruvius.applications.jmljava;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.commons.compress,
  org.apache.commons.io;bundle-version="2.0.1",
  org.eclipse.emf.compare;bundle-version="3.1.0",
@@ -24,10 +24,10 @@ Require-Bundle: org.apache.commons.compress,
  edu.kit.ipd.sdq.vitruvius.framework.change.processing,
  edu.kit.ipd.sdq.vitruvius.framework.correspondence,
  edu.kit.ipd.sdq.vitruvius.external.openjml,
- edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.initializer,
- edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.java.run.monitorededitor,
- edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util,
- edu.kit.ipd.sdq.vitruvius.domains.jml.language
+ edu.kit.ipd.sdq.vitruvius.domains.jml.language,
+ edu.kit.ipd.sdq.vitruvius.applications.jmljava.initializer,
+ edu.kit.ipd.sdq.vitruvius.applications.jmljava.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util
 Bundle-ClassPath: libs/easymock-3.2.jar,
  .,
  libs/java-diff-utils-1.3.0-SNAPSHOT.jar

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>edu.kit.ipd.sdq.vitruvius.casestudies.jmljava</name>
+	<name>edu.kit.ipd.sdq.vitruvius.applications.jmljava</name>
 	<comment></comment>
 	<projects>
 		<project>de.uka.ipd.sdq.codeconventions</project>
