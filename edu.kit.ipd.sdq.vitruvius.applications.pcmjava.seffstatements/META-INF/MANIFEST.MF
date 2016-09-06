@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java SEFF Statements Processing
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.seffstatements
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,

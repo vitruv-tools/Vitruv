@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java POJO Transformations Java -> PCM
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Export-Package: edu.kit.ipd.sdq.vitruvius.applications.pcmjava.pojotransformations.java2pcm
 Require-Bundle: org.eclipse.emf.ecore,
  com.google.guava,

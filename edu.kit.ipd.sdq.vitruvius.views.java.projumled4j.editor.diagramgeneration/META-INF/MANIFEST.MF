@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Views Java Projective UML Editor Diagram Generation
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramgeneration;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.activator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.8.100",

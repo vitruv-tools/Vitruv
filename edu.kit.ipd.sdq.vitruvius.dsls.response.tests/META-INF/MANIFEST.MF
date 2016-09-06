@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Response Language Tests
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.tests;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Export-Package: edu.kit.ipd.sdq.vitruvius.dsls.response.tests
 Require-Bundle: org.junit,
  org.eclipse.xtext.junit4,

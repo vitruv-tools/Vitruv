@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius DSLs Response Language UI Tests
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.dsls.response.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.vitruvius.dsls.response.ui,
