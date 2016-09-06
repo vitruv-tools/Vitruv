@@ -30,7 +30,6 @@ class MappingPluginProjectHelper {
 	
 	/**
 	 * Creates the plugin.xml for extending the correct extension point
-	 * for edu.kit.ipd.sdq.vitruvius.framework.contracts.transformationexecuting 
 	 */
 	public static def createPluginXML(IFileSystemAccess fsa, String classFQN) {
 		fsa.generateFile("plugin.xml",
