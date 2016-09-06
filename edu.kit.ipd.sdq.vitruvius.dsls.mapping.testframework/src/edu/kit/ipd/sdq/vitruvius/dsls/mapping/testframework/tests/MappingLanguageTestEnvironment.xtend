@@ -6,8 +6,6 @@
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
 //import edu.kit.ipd.sdq.vitruvius.framework.changepreparer.ChangePreparingImpl
 //import edu.kit.ipd.sdq.vitruvius.framework.change.description.GeneralChange
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange
-//import edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.FileChange.FileChangeKind
 //import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI
 //import edu.kit.ipd.sdq.vitruvius.framework.change.processing.Change2CommandTransforming
 //import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.SynchronisationListener
