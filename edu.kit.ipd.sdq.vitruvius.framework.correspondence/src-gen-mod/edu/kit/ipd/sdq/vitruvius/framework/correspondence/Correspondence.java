@@ -92,7 +92,7 @@ public interface Correspondence extends EObject {
 
     /**
      * Returns the value of the '<em><b>ATUI Ds</b></em>' attribute list. The list contents are of
-     * type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID}. <!--
+     * type {@link edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID}. <!--
      * begin-user-doc -->
      * <p>
      * If the meaning of the '<em>ATUI Ds</em>' attribute list isn't clear, there really should be
@@ -109,7 +109,7 @@ public interface Correspondence extends EObject {
 
     /**
      * Returns the value of the '<em><b>BTUI Ds</b></em>' attribute list. The list contents are of
-     * type {@link edu.kit.ipd.sdq.vitruvius.framework.contracts.datatypes.TUID}. <!--
+     * type {@link edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID}. <!--
      * begin-user-doc -->
      * <p>
      * If the meaning of the '<em>BTUI Ds</em>' attribute list isn't clear, there really should be
