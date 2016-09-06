@@ -15,17 +15,15 @@ class MappingPluginProjectHelper {
 	private final static String[] requiredBundles = #[
 		"org.eclipse.emf.ecore",
 		"edu.kit.ipd.sdq.vitruvius.framework.util",
-		"edu.kit.ipd.sdq.vitruvius.framework.contracts",
-		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.apidesign",
-		"edu.kit.ipd.sdq.vitruvius.framework.meta.change",
+		"edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping",
+		"edu.kit.ipd.sdq.vitruvius.framework.change",
 		"com.google.guava",
 		"org.eclipse.core.resources",
 		"org.apache.log4j",
 		"org.eclipse.xtend.lib",
  		"org.eclipse.xtend.lib.macro",
  		"edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework",
- 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping",
- 		"edu.kit.ipd.sdq.vitruvius.extensions.dslsruntime.mapping"
+ 		"edu.kit.ipd.sdq.vitruvius.dsls.mapping"
 	]
 	
 	/**
