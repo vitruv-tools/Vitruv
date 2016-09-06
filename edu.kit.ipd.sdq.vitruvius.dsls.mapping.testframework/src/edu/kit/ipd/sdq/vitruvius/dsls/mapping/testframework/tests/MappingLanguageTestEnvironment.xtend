@@ -1,7 +1,6 @@
 //package edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.tests
 //
 //import com.google.inject.Inject
-//import edu.kit.ipd.sdq.vitruvius.casestudies.emf.changedescription2change.ChangeDescription2ChangeConverter
 //import edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization.commandexecution.CommandExecutingImpl
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.testframework.util.ClaimableSingletonContainer
 //import edu.kit.ipd.sdq.vitruvius.dsls.mapping.util.EclipseProjectHelper
