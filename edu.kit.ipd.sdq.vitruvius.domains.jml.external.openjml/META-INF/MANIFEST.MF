@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tools
-Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.external.openjml
+Bundle-Name: Vitruvius Domain JML External Tools OpenJML
+Bundle-SymbolicName: edu.kit.ipd.sdq.vitruvius.domains.jml.external.openjml
 Bundle-Version: 1.0.0
 Bundle-ClassPath: jmlruntime.jar,
  jmlspecs.jar,
@@ -75,4 +75,4 @@ Export-Package: com.sun.javadoc,
  org.smtlib.logic,
  org.smtlib.sexpr,
  org.smtlib.solvers
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
