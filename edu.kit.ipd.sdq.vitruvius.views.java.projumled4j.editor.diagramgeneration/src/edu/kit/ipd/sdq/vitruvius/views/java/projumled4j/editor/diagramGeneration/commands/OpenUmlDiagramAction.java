@@ -9,7 +9,7 @@
  *    Heiko Klare - initial API and implementation and/or initial documentation
  *******************************************************************************/ 
 
-package edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.commands;
+package edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.commands;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -57,7 +57,7 @@ public class OpenUmlDiagramAction extends AbstractHandler {
 			IRunnableWithProgress diagramGeneration = new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) {
 					try {
-						new edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.UmlClassDiagramGeneration(monitor, packg).createAndOpenDiagram();
+						new edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.UmlClassDiagramGeneration(monitor, packg).createAndOpenDiagram();
 					} catch (CoreException | IOException e) {
 						MessageDialog.openError(shell, "Error", "Error while initializing diagram.");
 						e.printStackTrace();

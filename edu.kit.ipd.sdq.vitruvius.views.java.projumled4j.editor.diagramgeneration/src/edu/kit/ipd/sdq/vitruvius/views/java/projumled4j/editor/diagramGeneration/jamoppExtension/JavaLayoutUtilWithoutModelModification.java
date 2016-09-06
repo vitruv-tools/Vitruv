@@ -9,7 +9,7 @@
  *    Heiko Klare - initial API and implementation and/or initial documentation
  *******************************************************************************/ 
 
-package edu.kit.ipd.sdq.vitruvius.casestudies.projumled4j.editor.diagramGeneration.jamoppExtension;
+package edu.kit.ipd.sdq.vitruvius.views.java.projumled4j.editor.diagramGeneration.jamoppExtension;
 
 import org.emftext.language.java.resource.java.util.JavaLayoutUtil;
 
