@@ -16,7 +16,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import edu.kit.ipd.sdq.vitruvius.domains.jml.language.jML.CompilationUnit;
-import edu.kit.ipd.sdq.vitruvius.casestudies.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
+import edu.kit.ipd.sdq.vitruvius.applications.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import edu.kit.ipd.sdq.vitruvius.framework.change.description.VitruviusChange;
 import edu.kit.ipd.sdq.vitruvius.framework.userinteraction.impl.UserInteractorDialog;
 
