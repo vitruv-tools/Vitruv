@@ -18,7 +18,7 @@ function move_folder() {
   # Try SVN move
   if [ -d "$oldFolder" ]; then
     echo "Moving folder $oldFolder (SVN)";
-    svn mv "$oldFolder" "$newFolder" > /dev/null;
+    svn mv "$oldFolder" "$newFolder" 2> /dev/null;
   fi
   # If folder still exists, it is not versioned, so try a normal move
   if [ -d "$oldFolder" ]; then
@@ -31,7 +31,7 @@ function remove_folder() {
   removeFolder=$1;
   # Try SVN remove
   if [ -d "$removeFolder" ]; then
-    svn rm "$removeFolder" > /dev/null;
+    svn rm "$removeFolder" 2> /dev/null;
   fi
   # If folder still exists, it is not versioned, so try a normal remove
   if [ -d "$removeFolder" ]; then
@@ -56,7 +56,7 @@ function migrate_project() {
   done
 
   # Replace references in files
-  find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin" -not -name "*.jar" | while read file
+  find $project -type f -not -name "*.class" -not -name "*._trace" -not -name "*.xtendbin" -not -name "*.jar" -not -name "*.zip" -not -name "*.resource" | while read file
   do
     echo "Update file $file";
     sed -i "s/edu.kit.ipd.sdq.vitruvius/tools.vitruvius/g" "$file";
