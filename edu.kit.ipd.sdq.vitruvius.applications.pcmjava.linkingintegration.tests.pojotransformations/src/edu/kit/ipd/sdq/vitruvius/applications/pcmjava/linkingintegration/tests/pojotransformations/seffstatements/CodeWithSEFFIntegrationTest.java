@@ -27,7 +27,7 @@ import edu.kit.ipd.sdq.vitruvius.framework.correspondence.CorrespondenceModelUti
 
 public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
 
-    private static final String TEST_BUNDLE_NAME_JSCIENCE = "edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.seffstatements";
+    private static final String TEST_BUNDLE_NAME_JSCIENCE = "edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.pojotransformations.seffstatements";
     private static final String TEST_PROJECT_NAME_JSCIENCE = "Calculator-JScience";
     private static final String SRC_AND_MODEL_FOLDER_JSCIENCE = "exampleCode/Calculator-JScience";
 
