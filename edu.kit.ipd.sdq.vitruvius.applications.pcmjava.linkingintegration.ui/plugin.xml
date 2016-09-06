@@ -30,7 +30,7 @@
   
   <extension point="org.eclipse.ui.commands">
     <category
-          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration" name="codeintegration">
+          id="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration" name="linkingintegration">
     </category>
     <command
           categoryId="edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration"
