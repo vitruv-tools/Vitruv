@@ -9,4 +9,5 @@ Bundle-Activator: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.Activator
 Require-Bundle: org.eclipse.osgi,
  edu.kit.ipd.sdq.vitruvius.framework.metamodel;visibility:=reexport,
  edu.kit.ipd.sdq.vitruvius.framework.modelsynchronization
-Export-Package: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor
+Export-Package: edu.kit.ipd.sdq.vitruvius.framework.monitorededitor,
+ edu.kit.ipd.sdq.vitruvius.framework.monitorededitor.registries
