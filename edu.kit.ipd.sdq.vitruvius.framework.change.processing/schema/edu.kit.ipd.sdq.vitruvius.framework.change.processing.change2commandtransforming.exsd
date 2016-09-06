@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="edu.kit.ipd.sdq.vitruvius.framework.contracts" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="edu.kit.ipd.sdq.vitruvius.framework.change.processing" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.contracts" id="edu.kit.ipd.sdq.vitruvius.framework.contracts.change2commandtransforming" name="Change2CommandTransforming"/>
+         <meta.schema plugin="edu.kit.ipd.sdq.vitruvius.framework.change.processing" id="edu.kit.ipd.sdq.vitruvius.framework.change.processing.change2commandtransforming" name="Change2CommandTransforming"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
