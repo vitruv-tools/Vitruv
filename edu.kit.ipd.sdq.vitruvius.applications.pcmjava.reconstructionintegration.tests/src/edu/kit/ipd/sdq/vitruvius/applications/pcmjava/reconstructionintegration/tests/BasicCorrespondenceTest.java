@@ -107,7 +107,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
     /*
      * (non-Javadoc)
      *
-     * @see edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.pcm2jamopp.
+     * @see edu.kit.ipd.sdq.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java.
      * PCM2JaMoPPTransformationTest#getCorrespondenceModel()
      */
     @Override
