@@ -35,6 +35,7 @@ import org.junit.Test;
 
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaAddBuilder;
 import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.builder.PCMJavaBuilder;
+import edu.kit.ipd.sdq.vitruvius.applications.pcmjava.linkingintegration.tests.util.CodeIntegrationUtils;
 import edu.kit.ipd.sdq.vitruvius.domains.emf.builder.VitruviusEmfBuilder;
 import edu.kit.ipd.sdq.vitruvius.domains.java.util.JaMoPPNamespace;
 import edu.kit.ipd.sdq.vitruvius.domains.pcm.util.PCMNamespace;
@@ -44,7 +45,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.tuid.TUID;
 import edu.kit.ipd.sdq.vitruvius.framework.util.bridges.JavaBridge;
 import edu.kit.ipd.sdq.vitruvius.framework.util.datatypes.VURI;
 import edu.kit.ipd.sdq.vitruvius.framework.vsum.VSUMImpl;
-import edu.kit.ipd.sdq.vitruvius.tests.casestudies.pcmjava.transformations.java2pcm.util.CodeIntegrationUtils;
 
 @SuppressWarnings("restriction")
 public class CodeIntegrationTest {
