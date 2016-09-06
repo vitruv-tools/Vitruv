@@ -18,7 +18,7 @@ function move_folder() {
   # Try SVN move
   if [ -d "$oldFolder" ]; then
     echo "Moving folder $oldFolder (SVN)";
-    svn mv "$oldFolder" "$newFolder" 2> /dev/null;
+    svn mv "$oldFolder" "$newFolder" &>/dev/null;
   fi
   # If folder still exists, it is not versioned, so try a normal move
   if [ -d "$oldFolder" ]; then
@@ -31,7 +31,7 @@ function remove_folder() {
   removeFolder=$1;
   # Try SVN remove
   if [ -d "$removeFolder" ]; then
-    svn rm "$removeFolder" 2> /dev/null;
+    svn rm "$removeFolder" &> /dev/null;
   fi
   # If folder still exists, it is not versioned, so try a normal remove
   if [ -d "$removeFolder" ]; then
