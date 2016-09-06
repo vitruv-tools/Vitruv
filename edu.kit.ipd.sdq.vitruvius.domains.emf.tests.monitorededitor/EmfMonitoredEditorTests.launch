@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/edu.kit.ipd.sdq.vitruvius.domains.emf.tests.monitorededitor"/>
+<listEntry value="/edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor/unit"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
+<listEntry value="2"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor/unit"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.domains.emf.tests.monitorededitor"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="edu.kit.ipd.sdq.vitruvius.tests.casestudies.gmf.run.monitorededitor"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
 </launchConfiguration>
