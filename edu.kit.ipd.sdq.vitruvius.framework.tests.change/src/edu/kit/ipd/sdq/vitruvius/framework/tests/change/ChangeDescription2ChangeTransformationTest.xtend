@@ -15,10 +15,6 @@ import edu.kit.ipd.sdq.vitruvius.framework.change.echange.EChange
 import edu.kit.ipd.sdq.vitruvius.framework.change.preparation.ChangePreparingImpl
 
 /** 
- * This class is the test class for the new {@link changes.changepreparerTransformation}. It
- * reuses some test cases from the test for the old metamodel that can be found in the project
- * edu.kit.ipd.sdq.vitruvius.tests.casestudies.emf.changes.changepreparer However, it is adapted
- * to test the new change metamodel.
  * @author langhamm
  */
 abstract class ChangeDescription2ChangeTransformationTest {
