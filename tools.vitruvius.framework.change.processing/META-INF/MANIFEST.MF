@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Framework Change Preparer
+Bundle-SymbolicName: tools.vitruvius.framework.change.processing;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.commons.util.emf,
+ tools.vitruvius.framework.util,
+ tools.vitruvius.framework.correspondence;visibility:=reexport,
+ tools.vitruvius.framework.userinteraction;visibility:=reexport,
+ tools.vitruvius.framework.change
+Export-Package: tools.vitruvius.framework.change.processing,
+ tools.vitruvius.framework.change.processing.impl

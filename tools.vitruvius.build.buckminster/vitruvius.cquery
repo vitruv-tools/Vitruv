@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><cq:componentQuery xmlns:cq="http://www.eclipse.org/buckminster/CQuery-1.0" resourceMap="vitruvius.rmap">
+    <cq:rootRequest name="tools.vitruvius.buckminster" componentType="eclipse.feature"/>
+    <cq:advisorNode namePattern="^edu\.kit\.ipd\.sdq\.vitruvius\..*" sourceLevel="REQUIRE" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.palladiosimulator\..*" sourceLevel="REQUIRE" useWorkspace="false"/>
+    <cq:advisorNode namePattern=".*" sourceLevel="REJECT"/>
+</cq:componentQuery>

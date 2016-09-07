@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain Java Utils
+Bundle-SymbolicName: tools.vitruvius.domains.java.util
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ org.emftext.language.java;visibility:=reexport,
+ org.eclipse.xtend.lib,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ tools.vitruvius.framework.tuid
+Export-Package: tools.vitruvius.domains.java.util.jamopp,
+ tools.vitruvius.domains.java.util
+

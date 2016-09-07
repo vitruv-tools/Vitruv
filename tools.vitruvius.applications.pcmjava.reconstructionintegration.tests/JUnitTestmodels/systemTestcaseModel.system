@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.1" id="_aER8QKYKEeS1R4FUSvxJvA" entityName="defaultSystem">
+  <assemblyContexts__ComposedStructure id="_s8ta0KYKEeS1R4FUSvxJvA" entityName="Assembly_InnerCC &lt;InnerCC>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="compositeTestcaseModel.repository#_1D0n06SJEeSbnMsEKXLSVg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_ufjGkKYKEeS1R4FUSvxJvA" entityName="Assembly_BC3 &lt;BC3>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="compositeTestcaseModel.repository#_xTRHUKSJEeSbnMsEKXLSVg"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_5V0FgKYKEeS1R4FUSvxJvA" entityName="ProvDelegation Provided_OuterProv -> InnerCCProvRole" outerProvidedRole_ProvidedDelegationConnector="_zTNC0KYKEeS1R4FUSvxJvA" assemblyContext_ProvidedDelegationConnector="_s8ta0KYKEeS1R4FUSvxJvA">
+    <innerProvidedRole_ProvidedDelegationConnector href="compositeTestcaseModel.repository#_Ipz9v6SPEeSog9_tMitgaA"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:RequiredDelegationConnector" id="_8WTbAKYKEeS1R4FUSvxJvA" entityName="ReqDelegation BC3ReqRole -> Required_OuterReq" outerRequiredRole_RequiredDelegationConnector="_04atIKYKEeS1R4FUSvxJvA" assemblyContext_RequiredDelegationConnector="_ufjGkKYKEeS1R4FUSvxJvA">
+    <innerRequiredRole_RequiredDelegationConnector href="compositeTestcaseModel.repository#_lSfyNaSLEeSbnMsEKXLSVg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_9MuFoKYKEeS1R4FUSvxJvA" entityName="Connector Assembly_InnerCC &lt;InnerCC> -> Assembly_BC3 &lt;BC3>" requiringAssemblyContext_AssemblyConnector="_s8ta0KYKEeS1R4FUSvxJvA" providingAssemblyContext_AssemblyConnector="_ufjGkKYKEeS1R4FUSvxJvA">
+    <providedRole_AssemblyConnector href="compositeTestcaseModel.repository#_hbRpAaSLEeSbnMsEKXLSVg"/>
+    <requiredRole_AssemblyConnector href="compositeTestcaseModel.repository#_2ibk06SSEeSVEJcCUfjH2Q"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_zTNC0KYKEeS1R4FUSvxJvA" entityName="Provided_OuterProv">
+    <providedInterface__OperationProvidedRole href="compositeTestcaseModel.repository#_2pUmB6SJEeSbnMsEKXLSVg"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_04atIKYKEeS1R4FUSvxJvA" entityName="Required_OuterReq">
+    <requiredInterface__OperationRequiredRole href="compositeTestcaseModel.repository#_Axd6t6SKEeSbnMsEKXLSVg"/>
+  </requiredRoles_InterfaceRequiringEntity>
+</system:System>

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius DSLs MIR Base Language Tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: tools.vitruvius.dsls.mirbase.tests; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: tools.vitruvius.dsls.mirbase,
+ org.junit;bundle-version="4.7.0",
+ org.eclipse.xtext.junit4,
+ org.eclipse.xtext.xbase.junit,
+ org.eclipse.xtext.xbase.lib,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: tools.vitruvius.dsls.mirbase.tests
+Import-Package: org.hamcrest.core,
+ org.junit;version="4.5.0",
+ org.junit.runners.model;version="4.5.0",
+ org.junit.runner;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0"

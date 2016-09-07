@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="tools.vitruvius.framework.change.processing.change2commandtransforming">
+      <provides
+            provider="tools.vitruvius.applications.pcmjava.pojotransformations.java2pcm.Change2CommandTransformingJavaToPcm">
+      </provides>
+   </extension>
+   <extension
+         point="tools.vitruvius.framework.change.processing.change2commandtransforming">
+   	<provides
+    	 provider="tools.vitruvius.applications.pcmjava.pojotransformations.pcm2java.Change2CommandTransformingPcmToJava">
+      </provides>
+	</extension>
+</plugin>

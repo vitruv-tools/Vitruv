@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xsi:schemaLocation="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition http://palladiosimulator.org/PalladioComponentModel/Repository/5.1 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository">
+  <notation:Diagram xmi:id="_FQIesKC2EeSIwNi_k8C0xA" type="PCM Repository Model" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_FYGH4KC2EeSIwNi_k8C0xA" type="2107" fontName=".Helvetica Neue DeskInterface">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYGu8KC2EeSIwNi_k8C0xA" type="5108"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FYGu8aC2EeSIwNi_k8C0xA" type="7106">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FYGu8qC2EeSIwNi_k8C0xA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FYGu86C2EeSIwNi_k8C0xA"/>
+      </children>
+      <element xmi:type="repository:OperationInterface" href="CompComponentExample.repository#_OM2TYJ_4EeS9GJcPW4mcuA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FYGH4aC2EeSIwNi_k8C0xA" x="243" y="261"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_FYGu9KC2EeSIwNi_k8C0xA" type="2107" fontName=".Helvetica Neue DeskInterface">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYHWAKC2EeSIwNi_k8C0xA" type="5108"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FYHWAaC2EeSIwNi_k8C0xA" type="7106">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FYHWAqC2EeSIwNi_k8C0xA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FYHWA6C2EeSIwNi_k8C0xA"/>
+      </children>
+      <element xmi:type="repository:OperationInterface" href="CompComponentExample.repository#_QCLdUJ_4EeS9GJcPW4mcuA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FYGu9aC2EeSIwNi_k8C0xA" x="-18" y="279"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_FYHWBKC2EeSIwNi_k8C0xA" type="2103" fontName=".Helvetica Neue DeskInterface">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYHWB6C2EeSIwNi_k8C0xA" type="5103"/>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_FYHWBaC2EeSIwNi_k8C0xA" diagramLink="_QVpIoKC4EeSIwNi_k8C0xA" hint="CompositeModel"/>
+      <element xmi:type="repository:CompositeComponent" href="CompComponentExample.repository#_JO8EYJ_3EeS9GJcPW4mcuA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FYHWBqC2EeSIwNi_k8C0xA" x="45" width="226" height="145"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_FYHWCKC2EeSIwNi_k8C0xA" type="2102" fontName=".Helvetica Neue DeskInterface">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYHWCqC2EeSIwNi_k8C0xA" type="5102"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYHWC6C2EeSIwNi_k8C0xA" type="7102">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FYHWDKC2EeSIwNi_k8C0xA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FYHWDaC2EeSIwNi_k8C0xA"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYHWDqC2EeSIwNi_k8C0xA" type="7103">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_FYHWD6C2EeSIwNi_k8C0xA" showTitle="true"/>
+        <styles xmi:type="notation:SortingStyle" xmi:id="_FYHWEKC2EeSIwNi_k8C0xA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_FYHWEaC2EeSIwNi_k8C0xA"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_FYHWEqC2EeSIwNi_k8C0xA" type="7104">
+        <styles xmi:type="notation:TitleStyle" xmi:id="_FYHWE6C2EeSIwNi_k8C0xA" showTitle="true"/>
+      </children>
+      <element xmi:type="repository:BasicComponent" href="CompComponentExample.repository#_HtxXIJ_4EeS9GJcPW4mcuA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FYHWCaC2EeSIwNi_k8C0xA" x="306" y="63"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_6YFzQKSIEeSTzfjpde5SrA" type="2103" fontName="Segoe UI">
+      <children xmi:type="notation:DecorationNode" xmi:id="_6YFzQ6SIEeSTzfjpde5SrA" type="5103"/>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_6YFzQaSIEeSTzfjpde5SrA" diagramLink="_8lBk4KSIEeSTzfjpde5SrA" hint="CompositeModel"/>
+      <element xmi:type="repository:CompositeComponent" href="CompComponentExample.repository#_Uc2o46MZEeSVWYRE3419gw"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6YFzQqSIEeSTzfjpde5SrA" x="-140" y="40" width="171" height="61"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_FQJFwKC2EeSIwNi_k8C0xA"/>
+    <element xmi:type="repository:Repository" href="CompComponentExample.repository#_GUsg0J_3EeS9GJcPW4mcuA"/>
+    <edges xmi:type="notation:Connector" xmi:id="_FYNcoKC2EeSIwNi_k8C0xA" type="4105" source="_FYHWBKC2EeSIwNi_k8C0xA" target="_FYGH4KC2EeSIwNi_k8C0xA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYNco6C2EeSIwNi_k8C0xA" type="6105">
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_FYODsKC2EeSIwNi_k8C0xA"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_FYODsaC2EeSIwNi_k8C0xA" y="40"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_FYNcoaC2EeSIwNi_k8C0xA" fontName=".Helvetica Neue DeskInterface"/>
+      <element xmi:type="repository:OperationProvidedRole" href="CompComponentExample.repository#_dPbhwJ_4EeS9GJcPW4mcuA"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_FYNcoqC2EeSIwNi_k8C0xA" points="[0, 0, 45, -98]$[-45, 98, 0, 0]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FYeiYKC2EeSIwNi_k8C0xA" id="(0.32978723404255317,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FYeiYaC2EeSIwNi_k8C0xA" id="(0.5,0.0)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_FYPR0KC2EeSIwNi_k8C0xA" type="4106" source="_FYHWBKC2EeSIwNi_k8C0xA" target="_FYGu9KC2EeSIwNi_k8C0xA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FYP44KC2EeSIwNi_k8C0xA" type="6106">
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_FYP44aC2EeSIwNi_k8C0xA"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_FYP44qC2EeSIwNi_k8C0xA" y="40"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_FYPR0aC2EeSIwNi_k8C0xA" fontName=".Helvetica Neue DeskInterface"/>
+      <element xmi:type="repository:OperationRequiredRole" href="CompComponentExample.repository#_f-CdEJ_4EeS9GJcPW4mcuA"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_FYPR0qC2EeSIwNi_k8C0xA" points="[-149, -26, -108, -19]$[-181, -31, -140, -24]$[-239, 66, -198, 73]$[-181, 66, -140, 73]$[-72, 66, -31, 73]$[-58, 33, -17, 40]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FYfJcKC2EeSIwNi_k8C0xA" id="(0.6595744680851063,1.0)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_FYfJcaC2EeSIwNi_k8C0xA" id="(0.5,0.0)"/>
+    </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_QVpIoKC4EeSIwNi_k8C0xA" type="CompositeModel" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="_knozcKC-EeSIwNi_k8C0xA" type="2002" fontName=".Helvetica Neue DeskInterface">
+      <children xmi:type="notation:DecorationNode" xmi:id="_knozcqC-EeSIwNi_k8C0xA" type="5012"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_knozc6C-EeSIwNi_k8C0xA" type="7002">
+        <children xmi:type="notation:Shape" xmi:id="_knqooKC-EeSIwNi_k8C0xA" type="3006" fontName=".Helvetica Neue DeskInterface">
+          <children xmi:type="notation:DecorationNode" xmi:id="_knrPsKC-EeSIwNi_k8C0xA" type="5009"/>
+          <element xmi:type="composition:AssemblyContext" href="CompComponentExample.repository#_A6GIAKC1EeSIwNi_k8C0xA"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_knqooaC-EeSIwNi_k8C0xA" x="20" y="175"/>
+        </children>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_kn5SIKC-EeSIwNi_k8C0xA" type="3011" fontName=".Helvetica Neue DeskInterface">
+        <children xmi:type="notation:DecorationNode" xmi:id="_kn55MKC-EeSIwNi_k8C0xA" type="5013">
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_kn55MaC-EeSIwNi_k8C0xA" y="5"/>
+        </children>
+        <element xmi:type="repository:OperationProvidedRole" href="CompComponentExample.repository#_dPbhwJ_4EeS9GJcPW4mcuA"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kn5SIaC-EeSIwNi_k8C0xA" x="-1" y="1"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_kn55MqC-EeSIwNi_k8C0xA" type="3012" fontName=".Helvetica Neue DeskInterface">
+        <children xmi:type="notation:DecorationNode" xmi:id="_kn55NKC-EeSIwNi_k8C0xA" type="5014">
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_kn55NaC-EeSIwNi_k8C0xA" y="5"/>
+        </children>
+        <element xmi:type="repository:OperationRequiredRole" href="CompComponentExample.repository#_f-CdEJ_4EeS9GJcPW4mcuA"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kn55M6C-EeSIwNi_k8C0xA" x="1" y="-1"/>
+      </children>
+      <element xmi:type="repository:CompositeComponent" href="CompComponentExample.repository#_JO8EYJ_3EeS9GJcPW4mcuA"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_knozcaC-EeSIwNi_k8C0xA"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_QVpvsKC4EeSIwNi_k8C0xA"/>
+    <element xmi:type="repository:CompositeComponent" href="CompComponentExample.repository#_JO8EYJ_3EeS9GJcPW4mcuA"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_8lBk4KSIEeSTzfjpde5SrA" type="CompositeModel" measurementUnit="Pixel">
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_8lBk4aSIEeSTzfjpde5SrA"/>
+    <element xmi:type="repository:CompositeComponent" href="CompComponentExample.repository#_Uc2o46MZEeSVWYRE3419gw"/>
+  </notation:Diagram>
+</xmi:XMI>

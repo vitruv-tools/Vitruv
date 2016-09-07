@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.applications.jmljava.extensions.sourcedirprovider" name="SourceDirProvider" schema="schema/edu.kit.ipd.sdq.vitruvius.applications.jmljava.extensions.sourcedirprovider.exsd"/>
-   <extension-point id="edu.kit.ipd.sdq.vitruvius.applications.jmljava.extensions.userinteractingprovider" name="UserInteractingProvider" schema="schema/edu.kit.ipd.sdq.vitruvius.applications.jmljava.extensions.userinteractingprovider.exsd"/>
-
-</plugin>

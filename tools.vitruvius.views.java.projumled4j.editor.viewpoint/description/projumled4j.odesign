@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="tools.vitruvius.views.java.projumled4j" version="10.0.0.201505222000">
+  <ownedViewpoints name="tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure" label="UML Structure" modelFileExtension="package">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram" label="UML Class Diagram" domainClass="containers.Package">
+      <defaultLayer name="ElementsLayer" label="Elements">
+        <containerMappings name="InterfaceContainer" label="Interface" semanticCandidatesExpression="[compilationUnits.classifiers/]" domainClass="classifiers.Interface" childrenPresentation="List">
+          <subNodeMappings name="InterfaceMethodNode" label="Interface Method" labelDirectEdit="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" domainClass="members.InterfaceMethod">
+            <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            </style>
+            <conditionnalStyles predicateExpression="[isPrivate()/]">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[isProtected()/]">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[isPublic()/]">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+            </conditionnalStyles>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="0" arcHeight="0" showIcon="false" labelExpression="[self.getRepresentation()/]" backgroundStyle="Liquid">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelFormat>italic</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="ClassContainer" label="Class" semanticCandidatesExpression="[compilationUnits.classifiers/]" doubleClickDescription="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='ClickClass']" synchronizationLock="true" domainClass="classifiers.Class" childrenPresentation="VerticalStack">
+          <subContainerMappings name="FieldsContainer" label="Fields" semanticCandidatesExpression="var:self" domainClass="classifiers.Class" childrenPresentation="List">
+            <subNodeMappings name="FieldNode" label="Field" preconditionExpression="[self.isAnyAssociation() = false/]" labelDirectEdit="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.Field">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+              <conditionnalStyles predicateExpression="[isPrivate()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isProtected()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isPublic()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" arcWidth="0" arcHeight="0" labelSize="1" showIcon="false" labelExpression="" hideLabelByDefault="true" widthComputationExpression="1" heightComputationExpression="1">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            </style>
+          </subContainerMappings>
+          <subContainerMappings name="MethodsContainer" label="Methods" semanticCandidatesExpression="var:self" domainClass="classifiers.Class" childrenPresentation="List">
+            <subNodeMappings name="ClassConstructorNode" label="Class Constructor" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.Constructor">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+              <conditionnalStyles predicateExpression="[isPrivate()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isProtected()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isPublic()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+            </subNodeMappings>
+            <subNodeMappings name="ClassMethodNode" label="Class Method" labelDirectEdit="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@toolSections.0/@ownedTools[name='RenameMember']" semanticCandidatesExpression="[members/]" synchronizationLock="true" domainClass="members.ClassMethod">
+              <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/default.png" labelAlignment="LEFT">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              </style>
+              <conditionnalStyles predicateExpression="[isPrivate()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/private.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isProtected()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/protected.png" labelAlignment="LEFT" labelPosition="node">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[isPublic()/]">
+                <style xsi:type="style:SquareDescription" labelExpression="[self.getRepresentation()/]" iconPath="/tools.vitruvius.views.java.projumled4j.editor.viewpoint/res/images/public.png" labelAlignment="LEFT">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+                </style>
+              </conditionnalStyles>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" arcWidth="0" arcHeight="0" showIcon="false" hideLabelByDefault="true" widthComputationExpression="1" heightComputationExpression="1">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            </style>
+          </subContainerMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1" showIcon="false" labelExpression="[name/]" backgroundStyle="Liquid">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+          </style>
+          <conditionnalStyles predicateExpression="[getModifiers()->filter(modifiers::Abstract)->one(true)/]">
+            <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1" showIcon="false" labelExpression="[name/]" backgroundStyle="Liquid">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>italic</labelFormat>
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            </style>
+          </conditionnalStyles>
+        </containerMappings>
+        <toolSections name="Tools">
+          <ownedTools xsi:type="tool:DoubleClickDescription" name="ClickClass" label="Click Class" mappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:element">
+                <subModelOperations xsi:type="tool_1:ExternalJavaAction" name="OpenJavaEditorAction" id="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.OpenJavaEditorAction"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateField" label="Create Field" nodeMappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='FieldsContainer']/@subNodeMappings[name='FieldNode']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="members.Field" referenceName="members">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[container.getNewUnusedFieldName()/]"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="types.Int" referenceName="typeReference"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateClassMethod" label="Create Class Method" nodeMappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']/@subContainerMappings[name='MethodsContainer']/@subNodeMappings[name='ClassMethodNode']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="members.ClassMethod" referenceName="members">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[container.getNewUnusedMethodName()/]"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="types.Void" referenceName="typeReference"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="CreateInterfaceMethod" label="Create Interface Method" nodeMappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']/@subNodeMappings[name='InterfaceMethodNode']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="members.InterfaceMethod" referenceName="members">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[container.getNewUnusedMethodName()/]"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="types.Void" referenceName="typeReference"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DirectEditLabel" name="RenameMember" label="Rename Member" inputLabelExpression="[name/]">
+            <mask mask="{0}"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="var:0"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateClassAction" label="Create Class" forceRefresh="true" containerMappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateClassJavaAction" id="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.CreateJavaClassAction"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="CreateInterfaceAction" label="Create Interface" forceRefresh="true" containerMappings="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ExternalJavaAction" name="CreateInterfaceJavaAction" id="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaActions.CreateJavaInterfaceAction"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+      <additionalLayers name="ExtensionRelationshipsLayer" label="Extension Relationships" activeByDefault="true">
+        <edgeMappings name="ClassInheritanceRelation" label="Class Inheritance" sourceMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetFinderExpression="[self.getSuperClass()/]">
+          <style targetArrow="InputClosedArrow" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="InterfaceImplementationRelation" label="Interface Implementation" sourceMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
+          <style lineStyle="dash" targetArrow="InputClosedArrow" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="InterfaceExtensionRelation" label="Interface Extension" sourceMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getImplementedInterfaces()/]">
+          <style lineStyle="dash" targetArrow="InputClosedArrow" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+      </additionalLayers>
+      <additionalLayers name="ClassRelationshipsLayer" label="Class Relationships" activeByDefault="true">
+        <edgeMappings name="AssociationRelation" label="Association" preconditionExpression="[self.isAnyAssociation()/]" sourceMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer']" targetMapping="//@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='ClassContainer'] //@ownedViewpoints[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure']/@ownedRepresentations[name='tools.vitruvius.views.java.projumled4j.editor.viewpoint.structure.classdiagram']/@defaultLayer/@containerMappings[name='InterfaceContainer']" targetFinderExpression="[self.getAssociationTarget()/]" sourceFinderExpression="[getContainingConcreteClassifier()/]" domainClass="Field" useDomainElement="true">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <beginLabelStyleDescription showIcon="false" labelExpression="[self.getSourceMultiplicityRepresentation()/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </beginLabelStyleDescription>
+            <centerLabelStyleDescription showIcon="false" labelExpression="[self.getModifierStringRepresentation() + ' ' + name/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+            <endLabelStyleDescription showIcon="false" labelExpression="[self.getTargetMultiplicityRepresentation()/]">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </endLabelStyleDescription>
+          </style>
+          <conditionnalStyles predicateExpression="[self.isAggregation()/]">
+            <style sourceArrow="Diamond" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <beginLabelStyleDescription showIcon="false" labelExpression="[self.getSourceMultiplicityRepresentation()/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </beginLabelStyleDescription>
+              <centerLabelStyleDescription showIcon="false" labelExpression="[self.getModifierStringRepresentation() + ' ' + name/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+              <endLabelStyleDescription showIcon="false" labelExpression="[self.getTargetMultiplicityRepresentation()/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </endLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+          <conditionnalStyles predicateExpression="[self.isComposition()/]">
+            <style sourceArrow="FillDiamond" sizeComputationExpression="2">
+              <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+              <beginLabelStyleDescription showIcon="false" labelExpression="[self.getSourceMultiplicityRepresentation()/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </beginLabelStyleDescription>
+              <centerLabelStyleDescription showIcon="false" labelExpression="[self.getModifierStringRepresentation() + ' ' + name/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </centerLabelStyleDescription>
+              <endLabelStyleDescription showIcon="false" labelExpression="[self.getTargetMultiplicityRepresentation()/]">
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </endLabelStyleDescription>
+            </style>
+          </conditionnalStyles>
+        </edgeMappings>
+      </additionalLayers>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.DataTypeRepresentations"/>
+    <ownedJavaExtensions qualifiedClassName="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.AssociationUtils"/>
+    <ownedJavaExtensions qualifiedClassName="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.MemberRepresentationsAndUtils"/>
+    <ownedJavaExtensions qualifiedClassName="tools.vitruvius.views.java.projumled4j.editor.viewpoint.javaServices.InheritanceUtils"/>
+  </ownedViewpoints>
+</description:Group>

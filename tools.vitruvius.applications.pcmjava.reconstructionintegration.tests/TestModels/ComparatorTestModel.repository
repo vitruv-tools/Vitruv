@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_2fHo4MvgEeSVNvtm5K7dbQ" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_Zo7rQMvhEeSVNvtm5K7dbQ" entityName="AuctionHouse">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_bYe9UMvhEeSVNvtm5K7dbQ" entityName="Provided_Sales_AuctionHouse" providedInterface__OperationProvidedRole="_2_GJcMvgEeSVNvtm5K7dbQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_cF9HUMvhEeSVNvtm5K7dbQ" entityName="Required_Legal_AuctionHouse" requiredInterface__OperationRequiredRole="_N4dG0MvhEeSVNvtm5K7dbQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_cb7XUMvhEeSVNvtm5K7dbQ" entityName="Required_DBAccess_AuctionHouse" requiredInterface__OperationRequiredRole="_Roeb0MvhEeSVNvtm5K7dbQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_dFM90MvhEeSVNvtm5K7dbQ" entityName="Required_PaymentProvider_AuctionHouse" requiredInterface__OperationRequiredRole="_VL5fQMvhEeSVNvtm5K7dbQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_bYkc4MvhEeSVNvtm5K7dbQ" describedService__SEFF="_4pf1wMvgEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_bYlD8MvhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_bYlD8cvhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_bYlD8cvhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_bYlD8MvhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_bYlrAMvhEeSVNvtm5K7dbQ" describedService__SEFF="_DMU7UMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_bYlrAcvhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_bYlrAsvhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_bYlrAsvhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_bYlrAcvhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_eI3aQMvhEeSVNvtm5K7dbQ" entityName="DB">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_f16K4MvhEeSVNvtm5K7dbQ" entityName="Provided_DBAccess_DB" providedInterface__OperationProvidedRole="_Roeb0MvhEeSVNvtm5K7dbQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_f16K4cvhEeSVNvtm5K7dbQ" describedService__SEFF="_Si-8QMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_f16x8MvhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_f16x8cvhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_f16x8cvhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_f16x8MvhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_gZq_QMvhEeSVNvtm5K7dbQ" entityName="InstantPayment">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_hffX0MvhEeSVNvtm5K7dbQ" entityName="Provided_PaymentProvider_InstantPayment" providedInterface__OperationProvidedRole="_VL5fQMvhEeSVNvtm5K7dbQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_hff-4MvhEeSVNvtm5K7dbQ" describedService__SEFF="_XTjIQMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_hff-4cvhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_hff-4svhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_hff-4svhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_hff-4cvhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_hfgl8MvhEeSVNvtm5K7dbQ" describedService__SEFF="_YE_MQMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_hfgl8cvhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_hfgl8svhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_hfgl8svhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_hfgl8cvhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_hzKhwMvhEeSVNvtm5K7dbQ" entityName="SlowPayment">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_jrkN0MvhEeSVNvtm5K7dbQ" entityName="Provided_PaymentProvider_SlowPayment" providedInterface__OperationProvidedRole="_VL5fQMvhEeSVNvtm5K7dbQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_jrkN0cvhEeSVNvtm5K7dbQ" describedService__SEFF="_XTjIQMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_jrkN0svhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_jrk04MvhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_jrk04MvhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_jrkN0svhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_jrk04cvhEeSVNvtm5K7dbQ" describedService__SEFF="_YE_MQMvhEeSVNvtm5K7dbQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_jrk04svhEeSVNvtm5K7dbQ" entityName="start" successor_AbstractAction="_jrlb8MvhEeSVNvtm5K7dbQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_jrlb8MvhEeSVNvtm5K7dbQ" entityName="stop" predecessor_AbstractAction="_jrk04svhEeSVNvtm5K7dbQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_2_GJcMvgEeSVNvtm5K7dbQ" entityName="Sales">
+    <signatures__OperationInterface id="_4pf1wMvgEeSVNvtm5K7dbQ" entityName="sellItems">
+      <parameters__OperationSignature parameterName="item">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="amount">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_DMU7UMvhEeSVNvtm5K7dbQ" entityName="buyItems">
+      <parameters__OperationSignature parameterName="item">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="amount">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_N4dG0MvhEeSVNvtm5K7dbQ" entityName="Legal">
+    <signatures__OperationInterface id="_PBTlQMvhEeSVNvtm5K7dbQ" entityName="checkConditions"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Roeb0MvhEeSVNvtm5K7dbQ" entityName="DBAccess">
+    <signatures__OperationInterface id="_Si-8QMvhEeSVNvtm5K7dbQ" entityName="init"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_VL5fQMvhEeSVNvtm5K7dbQ" entityName="PaymentProvider">
+    <signatures__OperationInterface id="_XTjIQMvhEeSVNvtm5K7dbQ" entityName="register"/>
+    <signatures__OperationInterface id="_YE_MQMvhEeSVNvtm5K7dbQ" entityName="validate"/>
+  </interfaces__Repository>
+</repository:Repository>

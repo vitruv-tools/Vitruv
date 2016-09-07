@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_pkYwEKSJEeSbnMsEKXLSVg" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_rVtjwKSJEeSbnMsEKXLSVg" entityName="BC1">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_NQnGgaSLEeSbnMsEKXLSVg" entityName="BC1ProvRole" providedInterface__OperationProvidedRole="_2pUmB6SJEeSbnMsEKXLSVg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_VLVhZaSLEeSbnMsEKXLSVg" entityName="BC1ReqRole" requiredInterface__OperationRequiredRole="_OdgM56SKEeSbnMsEKXLSVg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_v_DGYKSJEeSbnMsEKXLSVg" entityName="BC2">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_aEtEEaSLEeSbnMsEKXLSVg" entityName="BC2ProvRole" providedInterface__OperationProvidedRole="_OdgM56SKEeSbnMsEKXLSVg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_dnf1ZaSLEeSbnMsEKXLSVg" entityName="BC2ReqRole" requiredInterface__OperationRequiredRole="_QmItV6SKEeSbnMsEKXLSVg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_xTRHUKSJEeSbnMsEKXLSVg" entityName="BC3">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_hbRpAaSLEeSbnMsEKXLSVg" entityName="BC3ProvRole" providedInterface__OperationProvidedRole="_YL0FR6SKEeSbnMsEKXLSVg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lSfyNaSLEeSbnMsEKXLSVg" entityName="BC3ReqRole" requiredInterface__OperationRequiredRole="_Axd6t6SKEeSbnMsEKXLSVg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:CompositeComponent" id="_y7qog6SJEeSbnMsEKXLSVg" entityName="OuterCC">
+    <assemblyContexts__ComposedStructure id="_pcimMKSKEeSbnMsEKXLSVg" entityName="InnerCC" encapsulatedComponent__AssemblyContext="_1D0n06SJEeSbnMsEKXLSVg"/>
+    <assemblyContexts__ComposedStructure id="_snqeYKSKEeSbnMsEKXLSVg" entityName="BC3" encapsulatedComponent__AssemblyContext="_xTRHUKSJEeSbnMsEKXLSVg"/>
+    <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_IP0zlKSTEeSVEJcCUfjH2Q" entityName="OuterCCInnerCCDelegation" innerProvidedRole_ProvidedDelegationConnector="_Ipz9v6SPEeSog9_tMitgaA" outerProvidedRole_ProvidedDelegationConnector="_EBE7P6STEeSVEJcCUfjH2Q" assemblyContext_ProvidedDelegationConnector="_pcimMKSKEeSbnMsEKXLSVg"/>
+    <connectors__ComposedStructure xsi:type="composition:RequiredDelegationConnector" id="_dr1zxaSUEeSVEJcCUfjH2Q" entityName="OuterCCBC3Delegation" innerRequiredRole_RequiredDelegationConnector="_lSfyNaSLEeSbnMsEKXLSVg" outerRequiredRole_RequiredDelegationConnector="_CJpqI6SUEeSVEJcCUfjH2Q" assemblyContext_RequiredDelegationConnector="_snqeYKSKEeSbnMsEKXLSVg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_EBE7P6STEeSVEJcCUfjH2Q" entityName="OuterCCProvRole" providedInterface__OperationProvidedRole="_2pUmB6SJEeSbnMsEKXLSVg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_CJpqI6SUEeSVEJcCUfjH2Q" entityName="OuterCCReqRole" requiredInterface__OperationRequiredRole="_Axd6t6SKEeSbnMsEKXLSVg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:CompositeComponent" id="_1D0n06SJEeSbnMsEKXLSVg" entityName="InnerCC">
+    <assemblyContexts__ComposedStructure id="_231GoKSKEeSbnMsEKXLSVg" entityName="BC1" encapsulatedComponent__AssemblyContext="_rVtjwKSJEeSbnMsEKXLSVg"/>
+    <assemblyContexts__ComposedStructure id="_45e1UKSKEeSbnMsEKXLSVg" entityName="BC2" encapsulatedComponent__AssemblyContext="_v_DGYKSJEeSbnMsEKXLSVg"/>
+    <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_PqX2ZKSPEeSog9_tMitgaA" entityName="InnerCCBC1Delegation" innerProvidedRole_ProvidedDelegationConnector="_NQnGgaSLEeSbnMsEKXLSVg" outerProvidedRole_ProvidedDelegationConnector="_Ipz9v6SPEeSog9_tMitgaA" assemblyContext_ProvidedDelegationConnector="_231GoKSKEeSbnMsEKXLSVg"/>
+    <connectors__ComposedStructure xsi:type="composition:RequiredDelegationConnector" id="_8Loo9aSSEeSVEJcCUfjH2Q" entityName="InnerCCBC2Delegation" innerRequiredRole_RequiredDelegationConnector="_dnf1ZaSLEeSbnMsEKXLSVg" outerRequiredRole_RequiredDelegationConnector="_2ibk06SSEeSVEJcCUfjH2Q" assemblyContext_RequiredDelegationConnector="_45e1UKSKEeSbnMsEKXLSVg"/>
+    <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_UNsW9qSXEeSVEJcCUfjH2Q" entityName="BC1BC2Assembly" requiringAssemblyContext_AssemblyConnector="_231GoKSKEeSbnMsEKXLSVg" providingAssemblyContext_AssemblyConnector="_45e1UKSKEeSbnMsEKXLSVg" providedRole_AssemblyConnector="_aEtEEaSLEeSbnMsEKXLSVg" requiredRole_AssemblyConnector="_VLVhZaSLEeSbnMsEKXLSVg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Ipz9v6SPEeSog9_tMitgaA" entityName="InnerCCProvRole" providedInterface__OperationProvidedRole="_2pUmB6SJEeSbnMsEKXLSVg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_2ibk06SSEeSVEJcCUfjH2Q" entityName="InnerCCReqRole" requiredInterface__OperationRequiredRole="_QmItV6SKEeSbnMsEKXLSVg"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_2pUmB6SJEeSbnMsEKXLSVg" entityName="OuterProv"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Axd6t6SKEeSbnMsEKXLSVg" entityName="OuterReq"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_OdgM56SKEeSbnMsEKXLSVg" entityName="BC2Prov"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_QmItV6SKEeSbnMsEKXLSVg" entityName="InnerReq"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_YL0FR6SKEeSbnMsEKXLSVg" entityName="BC3Prov"/>
+</repository:Repository>

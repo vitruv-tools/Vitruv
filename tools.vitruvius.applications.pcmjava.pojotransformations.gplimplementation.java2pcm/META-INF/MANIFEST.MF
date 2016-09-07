@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java POJO Transformations GPL Implementation Java -> PCM
+Bundle-SymbolicName: tools.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.apache.log4j,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore,
+ org.palladiosimulator.pcm,
+ org.emftext.language.java,
+ tools.vitruvius.framework.util,
+ tools.vitruvius.framework.tuid,
+ tools.vitruvius.framework.change,
+ tools.vitruvius.framework.change.processing,
+ tools.vitruvius.framework.userinteraction,
+ tools.vitruvius.applications.pcmjava.util,
+ tools.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.util,
+ tools.vitruvius.applications.pcmjava.pojotransformations.seffstatements,
+ tools.vitruvius.applications.pcmjava.seffstatements
+Export-Package: tools.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm,
+ tools.vitruvius.applications.pcmjava.pojotransformations.gplimplementation.java2pcm.transformations

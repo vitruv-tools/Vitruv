@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_YscH8GQREeSiO4MX-GG07A" entityName="defaultRepository">
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_cur1YGQREeSiO4MX-GG07A" entityName="level1"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_fF6ygGQREeSiO4MX-GG07A" entityName="level2a" parentInterfaces__Interface="_cur1YGQREeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_kCRXwGQREeSiO4MX-GG07A" entityName="level2b" parentInterfaces__Interface="_cur1YGQREeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_mUOzUGQREeSiO4MX-GG07A" entityName="level3a" parentInterfaces__Interface="_fF6ygGQREeSiO4MX-GG07A _kCRXwGQREeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_LnlBJ2QqEeSiO4MX-GG07A" entityName="level3b" parentInterfaces__Interface="_kCRXwGQREeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_XyhUB2QqEeSiO4MX-GG07A" entityName="level4" parentInterfaces__Interface="_fF6ygGQREeSiO4MX-GG07A _mUOzUGQREeSiO4MX-GG07A _r5SN92QqEeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_r5SN92QqEeSiO4MX-GG07A" entityName="blaaa" parentInterfaces__Interface="_kCRXwGQREeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Fu_Vx2QtEeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_IJLgR2QtEeSiO4MX-GG07A" entityName="bName" parentInterfaces__Interface="_Fu_Vx2QtEeSiO4MX-GG07A"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_gkUZd2QtEeSiO4MX-GG07A" entityName="Wurst" parentInterfaces__Interface="_Fu_Vx2QtEeSiO4MX-GG07A _XyhUB2QqEeSiO4MX-GG07A"/>
+</repository:Repository>

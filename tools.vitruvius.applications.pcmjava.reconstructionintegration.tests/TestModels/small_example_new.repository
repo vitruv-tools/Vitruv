@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_jpILgFxcEeSTz_OnR9Pwug" entityName="defaultRepository" repositoryDescription="">
+  <components__Repository xsi:type="repository:BasicComponent" id="_km0i0FxcEeSTz_OnR9Pwug" entityName="WebShop">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_uY0oYFxcEeSTz_OnR9Pwug" entityName="Provided_ISell_WebShop" providedInterface__OperationProvidedRole="_lnWLsFxcEeSTz_OnR9Pwug"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_vFh9YFxcEeSTz_OnR9Pwug" entityName="Provided_IBuy_WebShop" providedInterface__OperationProvidedRole="_qvd8EFxcEeSTz_OnR9Pwug"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_uY-ZYFxcEeSTz_OnR9Pwug" describedService__SEFF="_nljk0FxcEeSTz_OnR9Pwug">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_uY-ZYVxcEeSTz_OnR9Pwug" entityName="start" successor_AbstractAction="_uY-ZYlxcEeSTz_OnR9Pwug"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_uY-ZYlxcEeSTz_OnR9Pwug" entityName="stop" predecessor_AbstractAction="_uY-ZYVxcEeSTz_OnR9Pwug"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_uY-ZY1xcEeSTz_OnR9Pwug" describedService__SEFF="_otO-kFxcEeSTz_OnR9Pwug">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_uY-ZZFxcEeSTz_OnR9Pwug" entityName="start" successor_AbstractAction="_uY-ZZVxcEeSTz_OnR9Pwug"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_uY-ZZVxcEeSTz_OnR9Pwug" entityName="stop" predecessor_AbstractAction="_uY-ZZFxcEeSTz_OnR9Pwug"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_vFh9YVxcEeSTz_OnR9Pwug" describedService__SEFF="_rwSf4FxcEeSTz_OnR9Pwug">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_vFh9YlxcEeSTz_OnR9Pwug" entityName="start" successor_AbstractAction="_vFh9Y1xcEeSTz_OnR9Pwug"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_vFh9Y1xcEeSTz_OnR9Pwug" entityName="stop" predecessor_AbstractAction="_vFh9YlxcEeSTz_OnR9Pwug"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_v5PSQFxcEeSTz_OnR9Pwug" entityName="OfflineShop">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_yqaZYFxcEeSTz_OnR9Pwug" entityName="Provided_ISell_OfflineShop" providedInterface__OperationProvidedRole="_lnWLsFxcEeSTz_OnR9Pwug"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_yqaZYVxcEeSTz_OnR9Pwug" describedService__SEFF="_nljk0FxcEeSTz_OnR9Pwug">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_yqaZYlxcEeSTz_OnR9Pwug" entityName="start" successor_AbstractAction="_yqaZY1xcEeSTz_OnR9Pwug"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_yqaZY1xcEeSTz_OnR9Pwug" entityName="stop" predecessor_AbstractAction="_yqaZYlxcEeSTz_OnR9Pwug"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_yqaZZFxcEeSTz_OnR9Pwug" describedService__SEFF="_otO-kFxcEeSTz_OnR9Pwug">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_yqaZZVxcEeSTz_OnR9Pwug" entityName="start" successor_AbstractAction="_yqaZZlxcEeSTz_OnR9Pwug"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_yqaZZlxcEeSTz_OnR9Pwug" entityName="stop" predecessor_AbstractAction="_yqaZZVxcEeSTz_OnR9Pwug"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:ProvidesComponentType" id="_IpM1QGNKEeSKP9T91k-EsQ" entityName="ProvComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_O4NVMGNKEeSKP9T91k-EsQ" entityName="Provided_IBuy_ProvComponent" providedInterface__OperationProvidedRole="_qvd8EFxcEeSTz_OnR9Pwug"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:CompleteComponentType" id="_RRXBEGNOEeSKP9T91k-EsQ" entityName="CompleteComponent">
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_jmHx4GNOEeSKP9T91k-EsQ" entityName="Required_IBuy_CompleteComponent" requiredInterface__OperationRequiredRole="_qvd8EFxcEeSTz_OnR9Pwug"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lnWLsFxcEeSTz_OnR9Pwug" entityName="ISell">
+    <signatures__OperationInterface id="_nljk0FxcEeSTz_OnR9Pwug" entityName="sell"/>
+    <signatures__OperationInterface id="_otO-kFxcEeSTz_OnR9Pwug" entityName="moreSell">
+      <parameters__OperationSignature parameterName="item" modifier__Parameter="in">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="price" modifier__Parameter="in">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature dataType__Parameter="_PJA07GOYEeSFHehhKcqnTg" parameterName="sellerList" modifier__Parameter="out"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_qvd8EFxcEeSTz_OnR9Pwug" entityName="IBuy">
+    <signatures__OperationInterface id="_rwSf4FxcEeSTz_OnR9Pwug" entityName="buy"/>
+  </interfaces__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_uKNfHWN3EeSFHehhKcqnTg" entityName="A"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AE9wTWN_EeSFHehhKcqnTg" entityName="BName" parentType_CompositeDataType="_uKNfHWN3EeSFHehhKcqnTg _dlf1_WN_EeSFHehhKcqnTg">
+    <innerDeclaration_CompositeDataType entityName="InnerByte">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType datatype_InnerDeclaration="_uKNfHWN3EeSFHehhKcqnTg"/>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:PrimitiveDataType"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_dlf1_WN_EeSFHehhKcqnTg" entityName="C"/>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_PJA07GOYEeSFHehhKcqnTg" entityName="StringArray">
+    <innerType_CollectionDataType xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+  </dataTypes__Repository>
+</repository:Repository>

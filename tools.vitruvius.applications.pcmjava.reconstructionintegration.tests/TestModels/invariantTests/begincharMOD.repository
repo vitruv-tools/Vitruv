@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_fsJnkG8_EeS28-1WKH-iuQ" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_sNBuMG8_EeS28-1WKH-iuQ" entityName="RN3_BadComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_v2ehIG8_EeS28-1WKH-iuQ" entityName="Provided_=BadInterface_§BadComponent" providedInterface__OperationProvidedRole="_hhMdoG8_EeS28-1WKH-iuQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_v2fIMG8_EeS28-1WKH-iuQ" describedService__SEFF="_i_0XwG8_EeS28-1WKH-iuQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_v2fIMW8_EeS28-1WKH-iuQ" entityName="start" successor_AbstractAction="_v2fIMm8_EeS28-1WKH-iuQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_v2fIMm8_EeS28-1WKH-iuQ" entityName="stop" predecessor_AbstractAction="_v2fIMW8_EeS28-1WKH-iuQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_tkOKoG8_EeS28-1WKH-iuQ" entityName="GoodComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_uoS2wG8_EeS28-1WKH-iuQ" entityName="Provided_=BadInterface_GoodComponent" providedInterface__OperationProvidedRole="_hhMdoG8_EeS28-1WKH-iuQ"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_vQVuMG8_EeS28-1WKH-iuQ" entityName="Provided_GoodInterface_GoodComponent" providedInterface__OperationProvidedRole="_gJTdoG8_EeS28-1WKH-iuQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_uoXvQG8_EeS28-1WKH-iuQ" describedService__SEFF="_i_0XwG8_EeS28-1WKH-iuQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_uoYWUG8_EeS28-1WKH-iuQ" entityName="start" successor_AbstractAction="_uoYWUW8_EeS28-1WKH-iuQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_uoYWUW8_EeS28-1WKH-iuQ" entityName="stop" predecessor_AbstractAction="_uoYWUG8_EeS28-1WKH-iuQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_vQVuMW8_EeS28-1WKH-iuQ" describedService__SEFF="_g2ZNIG8_EeS28-1WKH-iuQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_vQWVQG8_EeS28-1WKH-iuQ" entityName="start" successor_AbstractAction="_vQWVQW8_EeS28-1WKH-iuQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_vQWVQW8_EeS28-1WKH-iuQ" entityName="stop" predecessor_AbstractAction="_vQWVQG8_EeS28-1WKH-iuQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_gJTdoG8_EeS28-1WKH-iuQ" entityName="GoodInterface">
+    <signatures__OperationInterface id="_g2ZNIG8_EeS28-1WKH-iuQ" entityName="RN0_badMethod">
+      <parameters__OperationSignature entityName="parameter0">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_hhMdoG8_EeS28-1WKH-iuQ" entityName="RN1_BadInterface">
+    <signatures__OperationInterface id="_i_0XwG8_EeS28-1WKH-iuQ" entityName="GoodMethod">
+      <parameters__OperationSignature entityName="RN2_Badparam">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+</repository:Repository>

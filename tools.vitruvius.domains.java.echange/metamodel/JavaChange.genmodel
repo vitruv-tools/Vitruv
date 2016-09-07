@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruvius.domains.java.change/src-gen"
+    modelPluginID="tools.vitruvius.domains.java.change" modelName="JavaChange"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../tools.vitruvius.framework.change.echange/metamodel/change.genmodel#//echange"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>JavaChange.ecore</foreignModel>
+  <genPackages prefix="EChange" basePackage="tools.vitruvius.domains.java"
+      disposableProviderFactory="true" ecorePackage="JavaChange.ecore#/">
+    <nestedGenPackages prefix="Feature" basePackage="tools.vitruvius.domains.java.change.echange"
+        disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature">
+      <genClasses ecoreClass="JavaChange.ecore#//feature/JavaFeatureEChange">
+        <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/JavaFeatureEChange/A"/>
+        <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/JavaFeatureEChange/F"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference JavaChange.ecore#//feature/JavaFeatureEChange/oldAffectedEObject"/>
+      </genClasses>
+      <nestedGenPackages prefix="Attribute" basePackage="tools.vitruvius.domains.java.change.echange.feature"
+          disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/attribute">
+        <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/T"/>
+        </genClasses>
+        <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue/T"/>
+        </genClasses>
+        <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
+        </genClasses>
+      </nestedGenPackages>
+      <nestedGenPackages prefix="Reference" basePackage="tools.vitruvius.domains.java.change.echange.feature"
+          disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/reference">
+        <genClasses ecoreClass="JavaChange.ecore#//feature/reference/JavaInsertEReference">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaInsertEReference/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaInsertEReference/T"/>
+        </genClasses>
+        <genClasses ecoreClass="JavaChange.ecore#//feature/reference/JavaRemoveEReference">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaRemoveEReference/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaRemoveEReference/T"/>
+        </genClasses>
+        <genClasses ecoreClass="JavaChange.ecore#//feature/reference/JavaReplaceSingleValuedEReference">
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaReplaceSingleValuedEReference/A"/>
+          <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/reference/JavaReplaceSingleValuedEReference/T"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

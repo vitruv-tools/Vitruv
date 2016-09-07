@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain Java JavaModel2AST
+Bundle-SymbolicName: tools.vitruvius.domains.java.monitorededitor.javamodel2ast
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: tools.vitruvius.domains.java.monitorededitor.javamodel2ast.activator.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.apache.log4j;bundle-version="1.2.15"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruvius.domains.java.monitorededitor.javamodel2ast

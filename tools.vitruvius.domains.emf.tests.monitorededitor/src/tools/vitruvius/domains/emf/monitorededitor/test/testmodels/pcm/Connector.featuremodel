@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<featuremodel:FeatureDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:featuremodel="http://sdq.ipd.uka.de/FeatureModel/2.0" id="_igd78FLsEd-PyKAJbftYDw" name="Connector">
+  <rootFeature id="_n2JnMFLsEd-PyKAJbftYDw" name="Connector">
+    <childrelation xsi:type="featuremodel:FeatureGroup" min="2" max="2">
+      <children id="_wTXEEFLsEd-PyKAJbftYDw" name="Protocol">
+        <childrelation xsi:type="featuremodel:FeatureGroup">
+          <children id="_00S4oFLsEd-PyKAJbftYDw" name="SOAP"/>
+          <children id="_2C0hRlLsEd-PyKAJbftYDw" name="RMI"/>
+        </childrelation>
+      </children>
+      <children id="_BodHoFLtEd-PyKAJbftYDw" name="Options">
+        <childrelation xsi:type="featuremodel:FeatureGroup" min="0" max="2">
+          <children id="_FKDmIFLtEd-PyKAJbftYDw" name="Encryption"/>
+          <children id="_Gr9dw1LtEd-PyKAJbftYDw" name="Authentication"/>
+        </childrelation>
+      </children>
+    </childrelation>
+  </rootFeature>
+</featuremodel:FeatureDiagram>

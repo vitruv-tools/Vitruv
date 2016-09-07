@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JavaChange -->
+      <package
+            uri="http://tools.vitruvius/EChange/Java/Feature/1.0"
+            class="tools.vitruvius.domains.java.echange.feature.FeaturePackage"
+            genModel="metamodel/JavaChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JavaChange -->
+      <package
+            uri="http://tools.vitruvius/EChange/Java/Feature/Attribute/1.0"
+            class="tools.vitruvius.domains.java.echange.feature.attribute.AttributePackage"
+            genModel="metamodel/JavaChange.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JavaChange -->
+      <package
+            uri="http://tools.vitruvius/EChange/Java/Feature/Reference/1.0"
+            class="tools.vitruvius.domains.java.echange.feature.reference.ReferencePackage"
+            genModel="metamodel/JavaChange.genmodel"/>
+   </extension>
+</plugin>

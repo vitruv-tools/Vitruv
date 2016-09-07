@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <!--Extension point for new project wizard-->
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="tools.vitruvius.applications.vitruvius_projects"
+            class="tools.vitruvius.applications.pcmjava.ui.projectwizard.NewPCMJavaProjectWizard"
+            finalPerspective="org.palladiosimulator.pcmbench.perspectives.palladio"
+            hasPages="true"
+            id="tools.vitruvius.applications.pcmjava.PCMJavaWizard"
+            name="PCM Java Project"
+            project="true">
+      </wizard>
+      <category
+            id="tools.vitruvius.applications.pcmjava."
+            name="New PCM Java Project">
+      </category>
+   </extension>
+  
+</plugin>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="echange" nsURI="http://tools.vitruvius/EChange/Java/1.0"
+    nsPrefix="echange">
+  <eSubpackages name="feature" nsURI="http://tools.vitruvius/EChange/Java/Feature/1.0"
+      nsPrefix="feature">
+    <eClassifiers xsi:type="ecore:EClass" name="JavaFeatureEChange">
+      <eTypeParameters name="A">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="F">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="oldAffectedEObject" lowerBound="1">
+        <eGenericType eTypeParameter="#//feature/JavaFeatureEChange/A"/>
+      </eStructuralFeatures>
+      <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/FeatureEChange">
+        <eTypeArguments eTypeParameter="#//feature/JavaFeatureEChange/A"/>
+        <eTypeArguments eTypeParameter="#//feature/JavaFeatureEChange/F"/>
+      </eGenericSuperTypes>
+    </eClassifiers>
+    <eSubpackages name="attribute" nsURI="http://tools.vitruvius/EChange/Java/Feature/Attribute/1.0"
+        nsPrefix="attribute">
+      <eClassifiers xsi:type="ecore:EClass" name="JavaInsertEAttributeValue">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/attribute/InsertEAttributeValue">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaInsertEAttributeValue/A"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaInsertEAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaInsertEAttributeValue/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="JavaRemoveEAttributeValue">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/attribute/RemoveEAttributeValue">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaRemoveEAttributeValue/A"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaRemoveEAttributeValue/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaRemoveEAttributeValue/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="JavaReplaceSingleValuedEAttribute">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/attribute/ReplaceSingleValuedEAttribute">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="reference" nsURI="http://tools.vitruvius/EChange/Java/Feature/Reference/1.0"
+        nsPrefix="reference">
+      <eClassifiers xsi:type="ecore:EClass" name="JavaInsertEReference">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/reference/InsertEReference">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaInsertEReference/A"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaInsertEReference/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaInsertEReference/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="JavaRemoveEReference">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/reference/RemoveEReference">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaRemoveEReference/A"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaRemoveEReference/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaRemoveEReference/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="JavaReplaceSingleValuedEReference">
+        <eTypeParameters name="A">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eTypeParameters name="T">
+          <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+        </eTypeParameters>
+        <eGenericSuperTypes eClassifier="ecore:EClass ../../tools.vitruvius.framework.change.echange/metamodel/change.ecore#//feature/reference/ReplaceSingleValuedEReference">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaReplaceSingleValuedEReference/A"/>
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaReplaceSingleValuedEReference/T"/>
+        </eGenericSuperTypes>
+        <eGenericSuperTypes eClassifier="#//feature/JavaFeatureEChange">
+          <eTypeArguments eTypeParameter="#//feature/reference/JavaReplaceSingleValuedEReference/A"/>
+          <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
+        </eGenericSuperTypes>
+      </eClassifiers>
+    </eSubpackages>
+  </eSubpackages>
+</ecore:EPackage>

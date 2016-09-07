@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="tools.vitruvius.applications.pcmjava.linkingintegration.correspondencetypedeciding">
+      <provides
+            provider="tools.vitruvius.applications.pcmjava.linkingintegration.ejbtransformations.EJBCorrepondenceTypeDecider">
+      </provides>
+   </extension>
+</plugin>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_s8qyIGA7EeSLEpQQHH2fSA" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_vz9IUGA7EeSLEpQQHH2fSA" entityName="ABCD">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_wxDCsGA7EeSLEpQQHH2fSA" entityName="Provided_ABCD_ABCD" providedInterface__OperationProvidedRole="_tqHG8GA7EeSLEpQQHH2fSA"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_3EldUGA7EeSLEpQQHH2fSA" entityName="Provided_ABCD_ABCD" providedInterface__OperationProvidedRole="_0tCXIGA7EeSLEpQQHH2fSA"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_OGmncGA8EeSLEpQQHH2fSA" entityName="Provided_gggg_ABCD" providedInterface__OperationProvidedRole="_MSOfwGA8EeSLEpQQHH2fSA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_DshOMGA8EeSLEpQQHH2fSA" entityName="Required_CBDA_ABCD" requiredInterface__OperationRequiredRole="_Ay_cUGA8EeSLEpQQHH2fSA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_wxDCsWA7EeSLEpQQHH2fSA" describedService__SEFF="_vG84YGA7EeSLEpQQHH2fSA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_wxDCsmA7EeSLEpQQHH2fSA" entityName="start" successor_AbstractAction="_wxDCs2A7EeSLEpQQHH2fSA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_wxDCs2A7EeSLEpQQHH2fSA" entityName="stop" predecessor_AbstractAction="_wxDCsmA7EeSLEpQQHH2fSA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_3EldUWA7EeSLEpQQHH2fSA" describedService__SEFF="_1Z42EGA7EeSLEpQQHH2fSA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_3EldUmA7EeSLEpQQHH2fSA" entityName="start" successor_AbstractAction="_3EunQGA7EeSLEpQQHH2fSA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_3EunQGA7EeSLEpQQHH2fSA" entityName="stop" predecessor_AbstractAction="_3EldUmA7EeSLEpQQHH2fSA"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_OGmncWA8EeSLEpQQHH2fSA" describedService__SEFF="_M9lw8GA8EeSLEpQQHH2fSA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_OGmncmA8EeSLEpQQHH2fSA" entityName="start" successor_AbstractAction="_OGmnc2A8EeSLEpQQHH2fSA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_OGmnc2A8EeSLEpQQHH2fSA" entityName="stop" predecessor_AbstractAction="_OGmncmA8EeSLEpQQHH2fSA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_tqHG8GA7EeSLEpQQHH2fSA" entityName="ABCD">
+    <signatures__OperationInterface id="_vG84YGA7EeSLEpQQHH2fSA" entityName="foo"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_0tCXIGA7EeSLEpQQHH2fSA" entityName="ABCD">
+    <signatures__OperationInterface id="_1Z42EGA7EeSLEpQQHH2fSA" entityName="bar"/>
+    <signatures__OperationInterface id="__2Cr4GA7EeSLEpQQHH2fSA"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Ay_cUGA8EeSLEpQQHH2fSA" entityName="CBDA">
+    <signatures__OperationInterface id="_Be8jYGA8EeSLEpQQHH2fSA" entityName="foobar"/>
+    <signatures__OperationInterface id="_B3rzgGA8EeSLEpQQHH2fSA" entityName="ggg"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_MSOfwGA8EeSLEpQQHH2fSA" entityName="gggg">
+    <signatures__OperationInterface id="_M9lw8GA8EeSLEpQQHH2fSA" entityName="bar"/>
+  </interfaces__Repository>
+</repository:Repository>

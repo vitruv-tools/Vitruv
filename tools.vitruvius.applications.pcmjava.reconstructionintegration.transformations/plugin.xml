@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+      <command commandId="tools.vitruvius.applications.pcmjava.reconstructionintegration.jamopp"
+        label="Integrate Code" style="push">
+        <visibleWhen
+          checkEnabled="false">
+   			<with variable="activeMenuSelection">
+      		<iterate
+          	 ifEmpty="false">
+               <adapt type="org.eclipse.core.resources.IProject"> <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.jdt.core.javanature"/> 
+               </adapt>
+		      </iterate>
+		   </with>
+		</visibleWhen>
+      </command>
+    </menuContribution>
+  </extension>
+  <extension point="org.eclipse.ui.commands">
+    <command
+          defaultHandler="tools.vitruvius.applications.pcmjava.reconstructionintegration.transformations.JaMoPPIntegrationHandler"
+          description="Integrates Code"
+          id="tools.vitruvius.applications.pcmjava.reconstructionintegration.jamopp"
+          name="IntegrateCode">
+    </command>
+  </extension>
+
+</plugin>

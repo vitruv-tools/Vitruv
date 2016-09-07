@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="tools.vitruvius.applications.jmljava.extensions.sourcedirprovider" name="SourceDirProvider" schema="schema/tools.vitruvius.applications.jmljava.extensions.sourcedirprovider.exsd"/>
+   <extension-point id="tools.vitruvius.applications.jmljava.extensions.userinteractingprovider" name="UserInteractingProvider" schema="schema/tools.vitruvius.applications.jmljava.extensions.userinteractingprovider.exsd"/>
+
+</plugin>

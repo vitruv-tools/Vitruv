@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated response_correspondence -->
+      <package
+            uri="http://tools.vitruvius/Correspondence/Response/1.0"
+            class="tools.vitruvius.dsls.response.meta.correspondence.response.ResponsePackage"
+            genModel="model/response_correspondence.genmodel"/>
+   </extension>
+
+</plugin>

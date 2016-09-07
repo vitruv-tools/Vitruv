@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ASCII"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_HZJnoJSbEd-mVsWhjZHqXg" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_-3VggNCgEduC9O_qbthgAg" entityName="TradingSystem_19Inventory_19Data_19Enterprise">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_d1Mf0NChEduC9O_qbthgAg" entityName="EnterpriseQueryIf" providedInterface__OperationProvidedRole="_Eldg8NChEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_6tZA5dCmEduC9O_qbthgAg" entityName="TradingSystem_20Inventory_20Application_20Store">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_8phWYNCmEduC9O_qbthgAg" entityName="StoreIf" providedInterface__OperationProvidedRole="_4153pNCiEduC9O_qbthgAg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="__f6UsNCmEduC9O_qbthgAg" entityName="CashDeskConnectorIf" providedInterface__OperationProvidedRole="_WoD42tCjEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_4OSEsdCnEduC9O_qbthgAg" entityName="StoreQueryIf" requiredInterface__OperationRequiredRole="_HSKXwNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_0k7YYdCnEduC9O_qbthgAg" entityName="PersistenceIf" requiredInterface__OperationRequiredRole="_F8ovQNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_IpnV8dItEduQ7qbNANXHPw" entityName="ProductDispatcherIf" requiredInterface__OperationRequiredRole="_dbS8pNCiEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_aa6McdCwEduW_YoCCnq0vw" entityName="SaleRegisteredEvent" requiredInterface__OperationRequiredRole="_RQoSZNCpEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_B8esgNChEduC9O_qbthgAg" entityName="TradingSystem_21Inventory_21Data_21Persistence">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_bT0IMNChEduC9O_qbthgAg" entityName="PersistenceIf" providedInterface__OperationProvidedRole="_F8ovQNChEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_C7qRkNChEduC9O_qbthgAg" entityName="TradingSystem_22Inventory_22Data_22Store">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_OmzqENChEduC9O_qbthgAg" entityName="StoreQueryIf" providedInterface__OperationProvidedRole="_HSKXwNChEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_URW_1dCmEduC9O_qbthgAg" entityName="TradingSystem_23Inventory_23Application_23Reporting">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_wrdB4NCmEduC9O_qbthgAg" entityName="ReportingIf" providedInterface__OperationProvidedRole="_vebx9NCiEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_lmx-EdCnEduC9O_qbthgAg" entityName="PersistenceIf" requiredInterface__OperationRequiredRole="_F8ovQNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_t5HAodCnEduC9O_qbthgAg" entityName="StoreQueryIf" requiredInterface__OperationRequiredRole="_HSKXwNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_b-BUEdCnEduC9O_qbthgAg" entityName="EnterpriseQueryIf" requiredInterface__OperationRequiredRole="_Eldg8NChEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_XDTf09CiEduC9O_qbthgAg" entityName="TradingSystem_24Inventory_24Application_24ProductDispatcher">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_gMw-sNCiEduC9O_qbthgAg" entityName="ProductDispatcherIf" providedInterface__OperationProvidedRole="_dbS8pNCiEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_kzNlYdCiEduC9O_qbthgAg" entityName="StoreQueryIf" requiredInterface__OperationRequiredRole="_HSKXwNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_jJt4AdCiEduC9O_qbthgAg" entityName="PersistenceIf" requiredInterface__OperationRequiredRole="_F8ovQNChEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_AXZsESDlEdyyNLPIIGbfMQ" entityName="StoreIf" requiredInterface__OperationRequiredRole="_4153pNCiEduC9O_qbthgAg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_h-Kq4dCiEduC9O_qbthgAg" entityName="EnterpriseQueryIf" requiredInterface__OperationRequiredRole="_Eldg8NChEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_sGEvA9CiEduC9O_qbthgAg" entityName="TradingSystem_25Inventory_25GUI_25Reporting">
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_vsrnUdC4EduW_YoCCnq0vw" entityName="ReportingIf" requiredInterface__OperationRequiredRole="_vebx9NCiEduC9O_qbthgAg"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_zokQE9CiEduC9O_qbthgAg" entityName="TradingSystem_26Inventory_26GUI_26Store">
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_1a8xsdC4EduW_YoCCnq0vw" entityName="StoreIf" requiredInterface__OperationRequiredRole="_4153pNCiEduC9O_qbthgAg"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_4153pNCiEduC9O_qbthgAg" entityName="StoreIf">
+    <signatures__OperationInterface id="_2NPju1cvEeGI_ZRmqWdpYA" entityName="getProductsWithLowStock"/>
+    <signatures__OperationInterface id="_2NPjuVcvEeGI_ZRmqWdpYA" entityName="getStore"/>
+    <signatures__OperationInterface id="_2NQKw1cvEeGI_ZRmqWdpYA" entityName="getAllProductsWithOptionalStockItem"/>
+    <signatures__OperationInterface id="_2NQKwVcvEeGI_ZRmqWdpYA" entityName="getAllProducts"/>
+    <signatures__OperationInterface id="_2NQKxVcvEeGI_ZRmqWdpYA" entityName="orderProducts">
+      <parameters__OperationSignature parameterName="complexOrder">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_L9RhFtIXEduF4-1MMpjBkg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NQKyFcvEeGI_ZRmqWdpYA" entityName="getOrder">
+      <parameters__OperationSignature parameterName="orderId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NQKylcvEeGI_ZRmqWdpYA" entityName="rollInReceivedOrder">
+      <parameters__OperationSignature parameterName="complexOrderTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_L9RhFtIXEduF4-1MMpjBkg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NQx01cvEeGI_ZRmqWdpYA" entityName="markProductsUnavailableInStock">
+      <parameters__OperationSignature parameterName="requiredProductsAndAmount">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_ZxgtBtIXEduF4-1MMpjBkg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NQx0FcvEeGI_ZRmqWdpYA" entityName="changePrice">
+      <parameters__OperationSignature parameterName="stockItemTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_UfQJNtIXEduF4-1MMpjBkg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NQx1VcvEeGI_ZRmqWdpYA" entityName="flushDatabase"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Eldg8NChEduC9O_qbthgAg" entityName="EnterpriseQueryIf">
+    <signatures__OperationInterface id="_2NL5UlcvEeGI_ZRmqWdpYA" entityName="getMeanTimeToDelivery">
+      <parameters__OperationSignature parameterName="supplier">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_HzcZdtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="enterprise">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_43Fu5tFcEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NLSRFcvEeGI_ZRmqWdpYA" entityName="queryEnterpriseById">
+      <parameters__OperationSignature parameterName="enterpriseId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_F8ovQNChEduC9O_qbthgAg" entityName="PersistenceIf">
+    <signatures__OperationInterface id="_2NL5V1cvEeGI_ZRmqWdpYA" entityName="getPersistenceContext"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_HSKXwNChEduC9O_qbthgAg" entityName="StoreQueryIf">
+    <signatures__OperationInterface id="_2NL5WlcvEeGI_ZRmqWdpYA" entityName="queryStoreById">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NMgYlcvEeGI_ZRmqWdpYA" entityName="queryProducts">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NMgZVcvEeGI_ZRmqWdpYA" entityName="queryLowStockItems">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NNHclcvEeGI_ZRmqWdpYA" entityName="queryLowStockItemsWithRespectToIncomingProducts">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NNHdVcvEeGI_ZRmqWdpYA" entityName="queryAllStockItems">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NNHeFcvEeGI_ZRmqWdpYA" entityName="queryOrderById">
+      <parameters__OperationSignature parameterName="orderId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NNuglcvEeGI_ZRmqWdpYA" entityName="queryStockItem">
+      <parameters__OperationSignature parameterName="stockId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NNuhVcvEeGI_ZRmqWdpYA" entityName="queryStockItemById">
+      <parameters__OperationSignature parameterName="stockId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NOVklcvEeGI_ZRmqWdpYA" entityName="queryProductById">
+      <parameters__OperationSignature parameterName="productId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NOVlVcvEeGI_ZRmqWdpYA" entityName="getStockItems">
+      <parameters__OperationSignature parameterName="storeId">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="productIds"/>
+      <parameters__OperationSignature parameterName="pctx">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_C72_dtFdEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_RQoSZNCpEduC9O_qbthgAg" entityName="SaleRegisteredEvent"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_WoD42tCjEduC9O_qbthgAg" entityName="CashDeskConnectorIf">
+    <signatures__OperationInterface id="_2NKrM1cvEeGI_ZRmqWdpYA" entityName="bookSale">
+      <parameters__OperationSignature parameterName="saleTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_J-s5ptFpEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NLSQVcvEeGI_ZRmqWdpYA" entityName="getProductWithStockItem">
+      <parameters__OperationSignature parameterName="productBarCode">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_dbS8pNCiEduC9O_qbthgAg" entityName="ProductDispatcherIf">
+    <signatures__OperationInterface id="_2NO8o1cvEeGI_ZRmqWdpYA" entityName="orderProductsAvailableAtOtherStores">
+      <parameters__OperationSignature parameterName="enterpriseTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="callingStore">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_27zmltFfEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="productAmounts"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_vebx9NCiEduC9O_qbthgAg" entityName="ReportingIf">
+    <signatures__OperationInterface id="_2NO8qVcvEeGI_ZRmqWdpYA" entityName="getStockReport">
+      <parameters__OperationSignature parameterName="storeTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_27zmltFfEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NPjslcvEeGI_ZRmqWdpYA" entityName="getStockReport">
+      <parameters__OperationSignature parameterName="enterpriseTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_2NPjtVcvEeGI_ZRmqWdpYA" entityName="getMeanTimeToDeliveryReport">
+      <parameters__OperationSignature parameterName="enterpriseTO">
+        <dataType__Parameter xsi:type="repository:CompositeDataType" href="file:/D:/KIT/PraxisDerForschung/junit-workspace/ModelVergleich/Testmodels/cocome.repository#_1GiHBtFfEducE6dFyopUlg"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_ZxgtBtIXEduF4-1MMpjBkg" entityName="org_0cocome_0tradingsystem_0inventory_0application_0store_0ProductMovementTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_C72_dtFdEducE6dFyopUlg" entityName="org_1cocome_1tradingsystem_1inventory_1data_1persistence_1PersistenceContext"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_yUl0xtFoEducE6dFyopUlg" entityName="org_2cocome_2tradingsystem_2inventory_2application_2reporting_2ReportTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_1tUGBtIWEduF4-1MMpjBkg" entityName="org_3cocome_3tradingsystem_3inventory_3application_3store_3ProductWithSupplierTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_tGnVBtFdEducE6dFyopUlg" entityName="org_4cocome_4tradingsystem_4inventory_4data_4store_4Store"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_43Fu5tFcEducE6dFyopUlg" entityName="org_5cocome_5tradingsystem_5inventory_5data_5enterprise_5TradingEnterprise"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_JMRpFtFnEducE6dFyopUlg" entityName="org_6cocome_6tradingsystem_6inventory_6data_6store_6ProductOrder"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_HzcZdtFdEducE6dFyopUlg" entityName="org_7cocome_7tradingsystem_7inventory_7data_7enterprise_7ProductSupplier"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_sHYtltIWEduF4-1MMpjBkg" entityName="org_8cocome_8tradingsystem_8inventory_8application_8store_8StoreWithEnterpriseTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_L9RhFtIXEduF4-1MMpjBkg" entityName="org_9cocome_9tradingsystem_9inventory_9application_9store_9ComplexOrderTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AQXeBtFnEducE6dFyopUlg" entityName="org_10cocome_10tradingsystem_10inventory_10data_10store_10StockItem"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_27zmltFfEducE6dFyopUlg" entityName="org_11cocome_11tradingsystem_11inventory_11application_11reporting_11StoreTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_J-s5ptFpEducE6dFyopUlg" entityName="org_12cocome_12tradingsystem_12inventory_12application_12store_12SaleTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_AS3vdtIXEduF4-1MMpjBkg" entityName="org_13cocome_13tradingsystem_13inventory_13application_13store_13ProductWithSupplierAndStockItemTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6wQEZtFmEducE6dFyopUlg" entityName="org_14cocome_14tradingsystem_14inventory_14data_14enterprise_14Product"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_1GiHBtFfEducE6dFyopUlg" entityName="org_15cocome_15tradingsystem_15inventory_15application_15reporting_15EnterpriseTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_UfQJNtIXEduF4-1MMpjBkg" entityName="org_16cocome_16tradingsystem_16inventory_16application_16store_16StockItemTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_qBPNltFfEducE6dFyopUlg" entityName="org_17cocome_17tradingsystem_17inventory_17application_17store_17ProductAmountTO"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_OFaQVtFpEducE6dFyopUlg" entityName="org_18cocome_18tradingsystem_18inventory_18application_18store_18ProductWithStockItemTO"/>
+</repository:Repository>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_Fc1J4F36EeS1Ks2nRP_kGw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_K0w34F36EeS1Ks2nRP_kGw" entityName="for_lol">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_N4bdMF36EeS1Ks2nRP_kGw" entityName="Provided_Shop_for" providedInterface__OperationProvidedRole="_F5cNYF36EeS1Ks2nRP_kGw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_OQ3yYF36EeS1Ks2nRP_kGw" entityName="Provided_transient_for" providedInterface__OperationProvidedRole="_H9B1wF36EeS1Ks2nRP_kGw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_N4lOMF36EeS1Ks2nRP_kGw" describedService__SEFF="_G0KJMF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_N4lOMV36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_N4lOMl36EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_N4lOMl36EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_N4lOMV36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_N4lOM136EeS1Ks2nRP_kGw" describedService__SEFF="_HY-GcF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_N4lONF36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_N4lONV36EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_N4lONV36EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_N4lONF36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_OQ3yYV36EeS1Ks2nRP_kGw" describedService__SEFF="_IzHwQF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_OQ3yYl36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_OQ3yY136EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_OQ3yY136EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_OQ3yYl36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_OQ3yZF36EeS1Ks2nRP_kGw" describedService__SEFF="_Jj_zkF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_OQ3yZV36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_OQ3yZl36EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_OQ3yZl36EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_OQ3yZV36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_MLfaQF36EeS1Ks2nRP_kGw" entityName="++*da">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Ori8MF36EeS1Ks2nRP_kGw" entityName="Provided_transient_Testos" providedInterface__OperationProvidedRole="_H9B1wF36EeS1Ks2nRP_kGw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_Ori8MV36EeS1Ks2nRP_kGw" describedService__SEFF="_IzHwQF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_Ori8Ml36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_Ori8M136EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_Ori8M136EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_Ori8Ml36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_Ori8NF36EeS1Ks2nRP_kGw" describedService__SEFF="_Jj_zkF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_Ori8NV36EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_Ori8Nl36EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_Ori8Nl36EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_Ori8NV36EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_-RT7IF65EeS1Ks2nRP_kGw" entityName="BetterCom">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_BHjIcF66EeS1Ks2nRP_kGw" entityName="Provided_datatypes_BetterCom" providedInterface__OperationProvidedRole="_6QaRgF65EeS1Ks2nRP_kGw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_BxuG0F66EeS1Ks2nRP_kGw" entityName="Provided_0Shop_BetterCom" providedInterface__OperationProvidedRole="_F5cNYF36EeS1Ks2nRP_kGw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_dHZMkF68EeS1Ks2nRP_kGw" entityName="Required_transient_BetterCom" requiredInterface__OperationRequiredRole="_H9B1wF36EeS1Ks2nRP_kGw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_BHjIcV66EeS1Ks2nRP_kGw" describedService__SEFF="_7sM6EF65EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_BHjIcl66EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_BHjIc166EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_BHjIc166EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_BHjIcl66EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_BHjIdF66EeS1Ks2nRP_kGw" describedService__SEFF="_8uNwsF65EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_BHs5cF66EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_BHs5cV66EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_BHs5cV66EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_BHs5cF66EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_BxuG0V66EeS1Ks2nRP_kGw" describedService__SEFF="_G0KJMF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_BxuG0l66EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_BxuG0166EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_BxuG0166EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_BxuG0l66EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_BxuG1F66EeS1Ks2nRP_kGw" describedService__SEFF="_HY-GcF36EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_BxuG1V66EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_BxuG1l66EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_BxuG1l66EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_BxuG1V66EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_BxuG1166EeS1Ks2nRP_kGw" describedService__SEFF="_GI2UkF65EeS1Ks2nRP_kGw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_BxuG2F66EeS1Ks2nRP_kGw" entityName="start" successor_AbstractAction="_BxuG2V66EeS1Ks2nRP_kGw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_BxuG2V66EeS1Ks2nRP_kGw" entityName="stop" predecessor_AbstractAction="_BxuG2F66EeS1Ks2nRP_kGw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_F5cNYF36EeS1Ks2nRP_kGw" entityName="1Shop">
+    <signatures__OperationInterface id="_G0KJMF36EeS1Ks2nRP_kGw" entityName="break">
+      <parameters__OperationSignature parameterName="goto">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="for">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.4"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_HY-GcF36EeS1Ks2nRP_kGw" entityName="uzo">
+      <parameters__OperationSignature parameterName="bro_ol">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.2"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_GI2UkF65EeS1Ks2nRP_kGw" entityName="foo(bar)"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_H9B1wF36EeS1Ks2nRP_kGw" entityName="transient">
+    <signatures__OperationInterface id="_IzHwQF36EeS1Ks2nRP_kGw" entityName="84sell">
+      <parameters__OperationSignature parameterName="inner">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="in">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.4"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_Jj_zkF36EeS1Ks2nRP_kGw" entityName="§goe"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_6QaRgF65EeS1Ks2nRP_kGw" entityName="datatypes">
+    <signatures__OperationInterface id="_7sM6EF65EeS1Ks2nRP_kGw" entityName="validthing">
+      <parameters__OperationSignature parameterName="hhhhhhhhh">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+      <returnType__OperationSignature xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_8uNwsF65EeS1Ks2nRP_kGw" entityName="contract"/>
+  </interfaces__Repository>
+</repository:Repository>

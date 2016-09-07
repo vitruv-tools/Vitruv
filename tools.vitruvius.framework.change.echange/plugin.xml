@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/1.0"
+            class="tools.vitruvius.framework.change.echange.EChangePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Feature/1.0"
+            class="tools.vitruvius.framework.change.echange.feature.FeaturePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Feature/List/1.0"
+            class="tools.vitruvius.framework.change.echange.feature.list.ListPackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Feature/Attribute/1.0"
+            class="tools.vitruvius.framework.change.echange.feature.attribute.AttributePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Feature/Reference/Containment/1.0"
+            class="tools.vitruvius.framework.change.echange.feature.reference.ReferencePackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Root/1.0"
+            class="tools.vitruvius.framework.change.echange.root.RootPackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated change -->
+      <package
+            uri="http://tools.vitruvius/EChange/Compound/1.0"
+            class="tools.vitruvius.framework.change.echange.compound.CompoundPackage"
+            genModel="metamodel/change.genmodel"/>
+   </extension>
+
+</plugin>

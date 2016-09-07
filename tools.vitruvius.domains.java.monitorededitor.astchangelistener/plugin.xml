@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="tools.vitruvius.domains.java.monitorededitor.astchangelistener.postreconcile" name="Postreconcile Classifiers" schema="schema/tools.vitruvius.domains.java.monitorededitor.astchangelistener.postreconcile.exsd"/>
+   <extension-point id="tools.vitruvius.domains.java.monitorededitor.astchangelistener.postchange" name="Postchange Classifiers" schema="schema/tools.vitruvius.domains.java.monitorededitor.astchangelistener.postchange.exsd"/>
+</plugin>

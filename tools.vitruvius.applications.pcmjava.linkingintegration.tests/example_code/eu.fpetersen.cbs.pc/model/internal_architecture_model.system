@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.1" id="_augPUMWvEeWLAeSW2tt_XQ" entityName="SoMoX Reverse Engineered System">
+  <assemblyContexts__ComposedStructure id="_awOGkMWvEeWLAeSW2tt_XQ" entityName="CC No. 1 (dir: eu.fpetersen.cbs.pc.graphics.) &lt;...rsen.cbs.pc.graphics.GraphicsCard.java.GraphicsCard>>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:CompositeComponent" href="internal_architecture_model.repository#_av9A0MWvEeWLAeSW2tt_XQ"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_awPUscWvEeWLAeSW2tt_XQ" entityName="SoMoX Dummy Component Instance">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="internal_architecture_model.repository#_awPUsMWvEeWLAeSW2tt_XQ"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_awOtosWvEeWLAeSW2tt_XQ" entityName="IDisplay.java.IDisplay" outerProvidedRole_ProvidedDelegationConnector="_awOtocWvEeWLAeSW2tt_XQ" assemblyContext_ProvidedDelegationConnector="_awOGkMWvEeWLAeSW2tt_XQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="internal_architecture_model.repository#_av-2AMWvEeWLAeSW2tt_XQ"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_awOtpMWvEeWLAeSW2tt_XQ" entityName="IGraphicsCard.java.IGraphicsCard" outerProvidedRole_ProvidedDelegationConnector="_awOto8WvEeWLAeSW2tt_XQ" assemblyContext_ProvidedDelegationConnector="_awOGkMWvEeWLAeSW2tt_XQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="internal_architecture_model.repository#_av-2AsWvEeWLAeSW2tt_XQ"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_awOtocWvEeWLAeSW2tt_XQ" entityName="IDisplay 2 (prov)(sys)">
+    <providedInterface__OperationProvidedRole href="internal_architecture_model.repository#_auxVEMWvEeWLAeSW2tt_XQ"/>
+  </providedRoles_InterfaceProvidingEntity>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_awOto8WvEeWLAeSW2tt_XQ" entityName="IGraphicsCard 3 (prov)(sys)">
+    <providedInterface__OperationProvidedRole href="internal_architecture_model.repository#_auwG8MWvEeWLAeSW2tt_XQ"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

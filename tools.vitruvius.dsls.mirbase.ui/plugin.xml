@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<!-- adding resource factories -->
+	<!-- marker definitions for tools.vitruvius.dsls.MirBase -->
+	<!-- Quick Outline -->
+	<!-- quickfix marker resolution generator for tools.vitruvius.dsls.MirBase -->
+	<!-- Rename Refactoring -->
+	<!-- Type Hierarchy  -->
+	<!-- Call Hierachy -->
+	<!-- Introduce Local Variable Refactoring -->
+	<!-- Open implementation -->
+</plugin>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_Jk_EoNuGEeSa-9tkD-iFLQ" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_Lg4JkNuGEeSa-9tkD-iFLQ">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_U11t0NuGEeSa-9tkD-iFLQ" entityName="Provided_IF1_aName" providedInterface__OperationProvidedRole="_MpsLwNuGEeSa-9tkD-iFLQ"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_WsDokNuGEeSa-9tkD-iFLQ" entityName="Provided_IF1_aName" providedInterface__OperationProvidedRole="_MpsLwNuGEeSa-9tkD-iFLQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_U15YMNuGEeSa-9tkD-iFLQ" describedService__SEFF="_N4e6INuGEeSa-9tkD-iFLQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_U15_QNuGEeSa-9tkD-iFLQ" entityName="start" successor_AbstractAction="_U15_QduGEeSa-9tkD-iFLQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_U15_QduGEeSa-9tkD-iFLQ" entityName="stop" predecessor_AbstractAction="_U15_QNuGEeSa-9tkD-iFLQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_WsEPoNuGEeSa-9tkD-iFLQ" describedService__SEFF="_N4e6INuGEeSa-9tkD-iFLQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_WsEPoduGEeSa-9tkD-iFLQ" entityName="start" successor_AbstractAction="_WsEPotuGEeSa-9tkD-iFLQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_WsEPotuGEeSa-9tkD-iFLQ" entityName="stop" predecessor_AbstractAction="_WsEPoduGEeSa-9tkD-iFLQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_MpsLwNuGEeSa-9tkD-iFLQ" entityName="IF1">
+    <signatures__OperationInterface id="_N4e6INuGEeSa-9tkD-iFLQ" entityName="doSmth"/>
+  </interfaces__Repository>
+</repository:Repository>

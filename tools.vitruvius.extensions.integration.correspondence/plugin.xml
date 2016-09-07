@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated integration_correspondence -->
+      <package
+            uri="http://tools.vitruvius/Correspondence/Integration/1.0"
+            class="tools.vitruvius.extensions.integration.correspondence.integration.IntegrationPackage"
+            genModel="model/integration_correspondence.genmodel"/>
+   </extension>
+
+</plugin>

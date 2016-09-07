@@ -1,0 +1,45 @@
+import org.emftext.language.java.members.Method
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.emftext.language.java.members.Field
+import org.palladiosimulator.pcm.repository.OperationSignature
+import org.palladiosimulator.pcm.repository.RepositoryFactory
+import org.palladiosimulator.pcm.repository.Repository
+import org.palladiosimulator.pcm.repository.DataType
+import org.emftext.language.java.modifiers.Public
+import org.emftext.language.java.modifiers.Private
+import org.emftext.language.java.modifiers.Protected
+import com.google.common.collect.Sets
+import tools.vitruvius.framework.correspondence.CorrespondenceModelUtil
+
+import "http://www.emftext.org/java" as java using simple names
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
+
+responses from metamodel java to metamodel pcm
+called ParserIntegrationResponse
+
+response: ChangeFieldModifierEventParser
+trigger: insert in list java.Field[annotationsAndModifiers]
+effect:
+	execute:{
+		
+	}
+
+response: RemoveFieldModifierEventParser
+trigger: remove from list java.Field[annotationsAndModifiers]
+effect:
+	execute:{
+		
+	}
+
+response: AddMethodEventParser
+trigger: insert in list java.ConcreteClassifier[members]
+	check: change.newValue instanceof Method
+match:
+	retrieve required element: pcm.OperationInterface as opInterface corresponding to change.affectedEObject
+effect:
+	execute:{	
+		var OperationSignature opSig = RepositoryFactory.eINSTANCE.createOperationSignature
+			opSig.entityName = change.newValue.name
+			opSig.interface__OperationSignature = opInterface
+			CorrespondenceModelUtil.createAndAddCorrespondence(correspondenceModel, opSig, change.newValue)
+	}

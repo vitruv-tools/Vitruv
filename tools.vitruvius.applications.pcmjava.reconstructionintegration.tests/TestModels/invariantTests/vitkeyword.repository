@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_2pOfEGjjEeS1sM1coty-Sw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_9dscgGjjEeS1sM1coty-Sw" entityName="contract">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="__X44UGjjEeS1sM1coty-Sw" entityName="Provided_bar_contract" providedInterface__OperationProvidedRole="_7R6hcGjjEeS1sM1coty-Sw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="__X44UWjjEeS1sM1coty-Sw" describedService__SEFF="_73BZoGjjEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="__X44UmjjEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="__X44U2jjEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="__X44U2jjEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="__X44UmjjEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_-DQAoGjjEeS1sM1coty-Sw" entityName="ok">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_-xveUGjjEeS1sM1coty-Sw" entityName="Provided_datataypes_ok" providedInterface__OperationProvidedRole="_4i1FAGjjEeS1sM1coty-Sw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="__IGI0GjjEeS1sM1coty-Sw" entityName="Provided_bar_ok" providedInterface__OperationProvidedRole="_7R6hcGjjEeS1sM1coty-Sw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_-xveUWjjEeS1sM1coty-Sw" describedService__SEFF="_5nOhQGjjEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_-xveUmjjEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_-xveU2jjEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_-xveU2jjEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_-xveUmjjEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_-xveVGjjEeS1sM1coty-Sw" describedService__SEFF="_6yLRcGjjEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_-xveVWjjEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_-xveVmjjEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_-xveVmjjEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_-xveVWjjEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="__IGI0WjjEeS1sM1coty-Sw" describedService__SEFF="_73BZoGjjEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="__IGI0mjjEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="__IGI02jjEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="__IGI02jjEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="__IGI0mjjEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_4i1FAGjjEeS1sM1coty-Sw" entityName="datatypes">
+    <signatures__OperationInterface id="_5nOhQGjjEeS1sM1coty-Sw" entityName="datatypes"/>
+    <signatures__OperationInterface id="_6yLRcGjjEeS1sM1coty-Sw" entityName="foo"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_7R6hcGjjEeS1sM1coty-Sw" entityName="bar">
+    <signatures__OperationInterface id="_73BZoGjjEeS1sM1coty-Sw" entityName="contract"/>
+  </interfaces__Repository>
+</repository:Repository>

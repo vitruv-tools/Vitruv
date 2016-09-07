@@ -1,0 +1,5 @@
+import "http://www.emftext.org/java" as java
+import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm
+
+responses from metamodel java to metamodel pcm
+called java2pcm

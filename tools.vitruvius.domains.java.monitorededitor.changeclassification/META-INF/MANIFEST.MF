@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain Java Monitored Editor Change Classification
+Bundle-SymbolicName: tools.vitruvius.domains.java.monitorededitor.changeclassification;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruvius.domains.java.monitorededitor.changeclassification,
+ tools.vitruvius.domains.java.monitorededitor.changeclassification.events

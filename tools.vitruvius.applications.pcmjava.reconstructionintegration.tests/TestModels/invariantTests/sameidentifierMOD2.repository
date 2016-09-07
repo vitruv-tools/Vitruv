@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_jgg24GjlEeS1sM1coty-Sw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_k4k2AGjlEeS1sM1coty-Sw" entityName="WebShop">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_o45Q0GjlEeS1sM1coty-Sw" entityName="Provided_WebShop_WebShop" providedInterface__OperationProvidedRole="_j07AoGjlEeS1sM1coty-Sw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_pOWjcGjlEeS1sM1coty-Sw" entityName="Provided_IGoodInterface_WebShop" providedInterface__OperationProvidedRole="_lmUs0GjlEeS1sM1coty-Sw"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_mtaQsGjlEeS1sM1coty-Sw" entityName="GoodComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_pk2X4GjlEeS1sM1coty-Sw" entityName="Provided_IGoodInterface_GoodComponent" providedInterface__OperationProvidedRole="_lmUs0GjlEeS1sM1coty-Sw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_qrfP0GjlEeS1sM1coty-Sw" entityName="Provided_WebShop_GoodComponent" providedInterface__OperationProvidedRole="_j07AoGjlEeS1sM1coty-Sw"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_j07AoGjlEeS1sM1coty-Sw" entityName="I_WebShop"/>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lmUs0GjlEeS1sM1coty-Sw" entityName="IGoodInterface"/>
+</repository:Repository>

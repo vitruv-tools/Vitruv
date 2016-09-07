@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java Linking Integration POJO Transformations Tests
+Bundle-SymbolicName: tools.vitruvius.applications.pcmjava.linkingintegration.tests.pojotransformations
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ com.google.guava,
+ org.eclipse.text,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.core.resources,
+ org.eclipse.ui.workbench,
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime,
+ org.eclipse.jdt.core,
+ org.emftext.language.java,
+ org.palladiosimulator.pcm,
+ tools.vitruvius.framework.tests.util,
+ tools.vitruvius.framework.change.processing,
+ tools.vitruvius.framework.correspondence,
+ tools.vitruvius.applications.pcmjava.tests,
+ tools.vitruvius.applications.pcmjava.tests.util,
+ tools.vitruvius.applications.pcmjava.pojotransformations.pcm2java,
+ tools.vitruvius.applications.pcmjava.pojotransformations.java2pcm,
+ tools.vitruvius.applications.pcmjava.tests.pojotransformations.java2pcm,
+ tools.vitruvius.applications.pcmjava.linkingintegration.tests,
+ tools.vitruvius.applications.pcmjava.linkingintegration.change2command
+
+

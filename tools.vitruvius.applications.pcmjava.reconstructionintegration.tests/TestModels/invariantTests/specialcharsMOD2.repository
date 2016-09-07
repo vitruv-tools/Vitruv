@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_woyKIGjkEeS1sM1coty-Sw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_7FkSEGjkEeS1sM1coty-Sw" entityName="Bad_3Component">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_9wfnQGjkEeS1sM1coty-Sw" entityName="Provided_Bad_4Inter9Face_Bad_4Component" providedInterface__OperationProvidedRole="_w8TjEGjkEeS1sM1coty-Sw"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_-BoakGjkEeS1sM1coty-Sw" entityName="Provided_GoodInterface_Bad_5Component" providedInterface__OperationProvidedRole="_458IAGjkEeS1sM1coty-Sw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_9wfnQWjkEeS1sM1coty-Sw" describedService__SEFF="_ylz3gGjkEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_9wfnQmjkEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_9wfnQ2jkEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_9wfnQ2jkEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_9wfnQmjkEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_9wfnRGjkEeS1sM1coty-Sw" describedService__SEFF="_0LvTgGjkEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_9wfnRWjkEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_9wfnRmjkEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_9wfnRmjkEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_9wfnRWjkEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_-BoakWjkEeS1sM1coty-Sw" describedService__SEFF="_6ftzAGjkEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_-BoakmjkEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_-Boak2jkEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_-Boak2jkEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_-BoakmjkEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_8i2vcGjkEeS1sM1coty-Sw" entityName="GoodComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_-Q1UMGjkEeS1sM1coty-Sw" entityName="Provided_GoodInterface_GoodComponent" providedInterface__OperationProvidedRole="_458IAGjkEeS1sM1coty-Sw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_-Q1UMWjkEeS1sM1coty-Sw" describedService__SEFF="_6ftzAGjkEeS1sM1coty-Sw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_-Q1UMmjkEeS1sM1coty-Sw" entityName="start" successor_AbstractAction="_-Q1UM2jkEeS1sM1coty-Sw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_-Q1UM2jkEeS1sM1coty-Sw" entityName="stop" predecessor_AbstractAction="_-Q1UMmjkEeS1sM1coty-Sw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_w8TjEGjkEeS1sM1coty-Sw" entityName="Bad_0Inter9Face">
+    <signatures__OperationInterface id="_ylz3gGjkEeS1sM1coty-Sw" entityName="bad_1Method">
+      <parameters__OperationSignature entityName="good">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature entityName="bad_2_2_2_2">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+    <signatures__OperationInterface id="_0LvTgGjkEeS1sM1coty-Sw" entityName="foo"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_458IAGjkEeS1sM1coty-Sw" entityName="GoodInterface">
+    <signatures__OperationInterface id="_6ftzAGjkEeS1sM1coty-Sw" entityName="bar"/>
+  </interfaces__Repository>
+</repository:Repository>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="_GUsg0J_3EeS9GJcPW4mcuA" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:CompositeComponent" id="_JO8EYJ_3EeS9GJcPW4mcuA" entityName="CompositeComp">
+    <assemblyContexts__ComposedStructure id="_A6GIAKC1EeSIwNi_k8C0xA" entityName="AssemblyContextForBasicComponent" encapsulatedComponent__AssemblyContext="_HtxXIJ_4EeS9GJcPW4mcuA"/>
+    <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_edYGJJ_5EeS9GJcPW4mcuA" entityName="ProvDelegationConnector" innerProvidedRole_ProvidedDelegationConnector="_T0PuwaC-EeSIwNi_k8C0xA" outerProvidedRole_ProvidedDelegationConnector="_dPbhwJ_4EeS9GJcPW4mcuA" assemblyContext_ProvidedDelegationConnector="_A6GIAKC1EeSIwNi_k8C0xA"/>
+    <connectors__ComposedStructure xsi:type="composition:RequiredDelegationConnector" id="_kSHr9Z_5EeS9GJcPW4mcuA" entityName="ReqDelegationConnector" innerRequiredRole_RequiredDelegationConnector="_kqirlaDAEeSIwNi_k8C0xA" outerRequiredRole_RequiredDelegationConnector="_f-CdEJ_4EeS9GJcPW4mcuA" assemblyContext_RequiredDelegationConnector="_A6GIAKC1EeSIwNi_k8C0xA"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_dPbhwJ_4EeS9GJcPW4mcuA" entityName="Provided_IProvided_CompositeComp" providedInterface__OperationProvidedRole="_OM2TYJ_4EeS9GJcPW4mcuA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_f-CdEJ_4EeS9GJcPW4mcuA" entityName="Required_IRequired_CompositeComp" requiredInterface__OperationRequiredRole="_QCLdUJ_4EeS9GJcPW4mcuA"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_HtxXIJ_4EeS9GJcPW4mcuA" entityName="BasicComp">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_T0PuwaC-EeSIwNi_k8C0xA" entityName="InnerProvidedRole" providedInterface__OperationProvidedRole="_OM2TYJ_4EeS9GJcPW4mcuA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_kqirlaDAEeSIwNi_k8C0xA" entityName="InnerRequiredRole" requiredInterface__OperationRequiredRole="_QCLdUJ_4EeS9GJcPW4mcuA"/>
+  </components__Repository>
+  <components__Repository xsi:type="repository:CompositeComponent" id="_Uc2o46MZEeSVWYRE3419gw" entityName="ParentCompositeComp">
+    <assemblyContexts__ComposedStructure id="_y1QT8KSIEeSTzfjpde5SrA" entityName="AssemblyContextParent" encapsulatedComponent__AssemblyContext="_JO8EYJ_3EeS9GJcPW4mcuA"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_OM2TYJ_4EeS9GJcPW4mcuA" entityName="IProvided">
+    <signatures__OperationInterface id="_vFevYKI_EeSwf42jhJiMLg" entityName="Sig">
+      <parameters__OperationSignature parameterName="Param">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_QCLdUJ_4EeS9GJcPW4mcuA" entityName="IRequired"/>
+</repository:Repository>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_DglB8GLDEeSjK4HN2is3bg" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_FPYtIGLDEeSjK4HN2is3bg" entityName="HelloWorld">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_F-AtsGLDEeSjK4HN2is3bg" entityName="Provided_HelloWorld_HelloWorld" providedInterface__OperationProvidedRole="_EDUioGLDEeSjK4HN2is3bg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_HxlkIGLDEeSjK4HN2is3bg" entityName="Provided_Google_HelloWorld" providedInterface__OperationProvidedRole="_GLvAoGLDEeSjK4HN2is3bg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_F-AtsWLDEeSjK4HN2is3bg" describedService__SEFF="_E1wFIGLDEeSjK4HN2is3bg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_F-BUwGLDEeSjK4HN2is3bg" entityName="start" successor_AbstractAction="_F-BUwWLDEeSjK4HN2is3bg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_F-BUwWLDEeSjK4HN2is3bg" entityName="stop" predecessor_AbstractAction="_F-BUwGLDEeSjK4HN2is3bg"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_HxmLMGLDEeSjK4HN2is3bg" describedService__SEFF="_G93BIGLDEeSjK4HN2is3bg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_HxmLMWLDEeSjK4HN2is3bg" entityName="start" successor_AbstractAction="_HxmLMmLDEeSjK4HN2is3bg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_HxmLMmLDEeSjK4HN2is3bg" entityName="stop" predecessor_AbstractAction="_HxmLMWLDEeSjK4HN2is3bg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_H9tUkGLDEeSjK4HN2is3bg" entityName="Hello">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ItVasGLDEeSjK4HN2is3bg" entityName="Provided_Google_Hello" providedInterface__OperationProvidedRole="_GLvAoGLDEeSjK4HN2is3bg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ItVasWLDEeSjK4HN2is3bg" describedService__SEFF="_G93BIGLDEeSjK4HN2is3bg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_ItWBwGLDEeSjK4HN2is3bg" entityName="start" successor_AbstractAction="_ItWBwWLDEeSjK4HN2is3bg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_ItWBwWLDEeSjK4HN2is3bg" entityName="stop" predecessor_AbstractAction="_ItWBwGLDEeSjK4HN2is3bg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_EDUioGLDEeSjK4HN2is3bg" entityName="HelloWorld">
+    <signatures__OperationInterface id="_E1wFIGLDEeSjK4HN2is3bg" entityName="foor"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_GLvAoGLDEeSjK4HN2is3bg" entityName="Google">
+    <signatures__OperationInterface id="_G93BIGLDEeSjK4HN2is3bg" entityName="search"/>
+    <signatures__OperationInterface id="_BQ6XgGLmEeSjK4HN2is3bg" entityName="foor"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_5_TLEGLlEeSjK4HN2is3bg" entityName="aaa">
+    <signatures__OperationInterface id="_6w_GsGLlEeSjK4HN2is3bg" entityName="search"/>
+    <signatures__OperationInterface id="_PCdGQGNeEeSDQL-2dMBdNw" entityName="foor"/>
+    <signatures__OperationInterface id="_P83gEGNeEeSDQL-2dMBdNw" entityName="bar"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_9Bw2gGLlEeSjK4HN2is3bg" entityName="test">
+    <signatures__OperationInterface id="_9lPXAGLlEeSjK4HN2is3bg" entityName="foor"/>
+    <signatures__OperationInterface id="_QwbD8GNeEeSDQL-2dMBdNw" entityName="bar"/>
+  </interfaces__Repository>
+</repository:Repository>

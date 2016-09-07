@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" id="__6NHsIRtEeSvGcuEPZMQ0Q" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_CRTh8IRuEeSvGcuEPZMQ0Q" entityName="Basic">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_EPOnMIRuEeSvGcuEPZMQ0Q" entityName="Provided_!&quot;InterFa89ce_Basic" providedInterface__OperationProvidedRole="_AKTZMIRuEeSvGcuEPZMQ0Q"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_DvL1MIRuEeSvGcuEPZMQ0Q" entityName="Required_&amp;//.!IFace_Basic" requiredInterface__OperationRequiredRole="_BQCSMIRuEeSvGcuEPZMQ0Q"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_AKTZMIRuEeSvGcuEPZMQ0Q" entityName="RN3_%$InterF9Ace?">
+    <signatures__OperationInterface id="_V9-7EKDBEeSEzIGBSrjH5g" entityName="goodMethod">
+      <parameters__OperationSignature parameterName="parameter0"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_BQCSMIRuEeSvGcuEPZMQ0Q" entityName="RN2_//.!IFace">
+    <signatures__OperationInterface id="_Vfu40KDBEeSEzIGBSrjH5g" entityName="RN0_badMethod">
+      <parameters__OperationSignature parameterName="RN1_badParam"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+</repository:Repository>
