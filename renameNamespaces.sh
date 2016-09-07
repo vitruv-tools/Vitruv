@@ -22,7 +22,7 @@ function move_folder() {
   fi
   # If folder still exists, it is not versioned, so try a normal move
   if [ -d "$oldFolder" ]; then
-    echo "Moving folder $oldFOlder (w/o SVN)";
+    echo "Moving folder $oldFolder (w/o SVN)";
     mv "$oldFolder" "$newFolder" > /dev/null;
   fi
 }
