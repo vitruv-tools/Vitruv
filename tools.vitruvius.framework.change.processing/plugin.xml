@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension-point id="tools.vitruvius.framework.change.processing.change2commandtransforming" name="Change2CommandTransforming" schema="schema/tools.vitruvius.framework.change.processing.change2commandtransforming.exsd"/>
-</plugin>

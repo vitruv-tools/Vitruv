@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain JML Monitored Editor
+Bundle-SymbolicName: tools.vitruv.domains.jml.monitorededitor;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.core.resources;bundle-version="3.9.0",
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench,
+ org.eclipse.xtext.ui,
+ tools.vitruv.domains.jml.language,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.userinteraction,
+ tools.vitruv.framework.monitorededitor,
+ tools.vitruv.domains.java.echange,
+ tools.vitruv.framework.change
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.apache.commons.lang,
+ org.apache.log4j;version="1.2.15"
+Export-Package: tools.vitruv.domains.jml.monitorededitor

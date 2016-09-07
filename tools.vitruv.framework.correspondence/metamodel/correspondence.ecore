@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="correspondence" nsURI="http://tools.vitruv/Correspondence/1.0"
+    nsPrefix="correspondence">
+  <eClassifiers xsi:type="ecore:EClass" name="Correspondences">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondences" upperBound="-1"
+        eType="#//Correspondence" containment="true" eOpposite="#//Correspondence/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="correspondenceModel" lowerBound="1"
+        eType="#//CorrespondenceModel" transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
+    <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getElementATUID" eType="#//TUID"/>
+    <eOperations name="getElementBTUID" eType="#//TUID"/>
+    <eOperations name="getElementsForMetamodel" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eParameters name="metamodelNamespaceUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
+        eType="#//Correspondences" eOpposite="#//Correspondences/correspondences"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependsOn" ordered="false"
+        upperBound="-1" eType="#//Correspondence" eOpposite="#//Correspondence/dependedOnBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependedOnBy" ordered="false"
+        upperBound="-1" eType="#//Correspondence" eOpposite="#//Correspondence/dependsOn"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aTUIDs" upperBound="-1"
+        eType="#//TUID"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTUIDs" upperBound="-1"
+        eType="#//TUID"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TUID" instanceClassName="tools.vitruv.framework.tuid.TUID"/>
+</ecore:EPackage>

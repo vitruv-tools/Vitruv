@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java Linking Integration EJB Transformations Extensions
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.linkingintegration.ejbtransformations;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.correspondence,
+ tools.vitruv.framework.change,
+ tools.vitruv.framework.change.processing,
+ tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm,
+ tools.vitruv.applications.pcmjava.linkingintegration,
+ tools.vitruv.applications.pcmjava.linkingintegration.change2command
+

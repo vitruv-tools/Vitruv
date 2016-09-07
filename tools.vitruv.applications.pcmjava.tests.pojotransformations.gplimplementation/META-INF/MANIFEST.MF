@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java POJO Transformations Tests GPL Implementation
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.tests.pojotransformations.gplimplementation
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.framework.metarepository,
+ tools.vitruv.framework.tests.util,
+ tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.java2pcm,
+ tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.pcm2java,
+ tools.vitruv.applications.pcmjava.tests.util,
+ tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm,
+ tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java
+Export-Package: tools.vitruv.applications.pcmjava.tests.pojotransformations.gplimplementation

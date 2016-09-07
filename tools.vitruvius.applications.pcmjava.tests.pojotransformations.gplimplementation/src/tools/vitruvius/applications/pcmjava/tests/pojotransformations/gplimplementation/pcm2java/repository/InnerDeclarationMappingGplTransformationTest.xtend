@@ -1,9 +1,0 @@
-package tools.vitruvius.applications.pcmjava.tests.pojotransformations.gplimplementation.pcm2java.repository
-
-import tools.vitruvius.applications.pcmjava.tests.pojotransformations.pcm2java.repository.InnerDeclarationMappingTransformationTest
-
-class InnerDeclarationMappingGplTransformationTest extends InnerDeclarationMappingTransformationTest {
-	override protected createChange2CommandTransformingProviding() {
-		Change2CommandTransformingProvidingFactory.createPcm2JavaGplImplementationTransformingProviding();
-	}
-}

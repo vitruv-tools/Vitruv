@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Extension Test Utilities
+Bundle-SymbolicName: tools.vitruv.framework.tests.util
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.framework.vsum,
+ tools.vitruv.framework.metarepository,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.apache.log4j,
+ org.eclipse.emf.ecore,
+ org.junit,
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.framework.util,
+ org.eclipse.emf.ecore.change,
+ org.apache.commons.codec,
+ org.eclipse.emf.emfstore.common,
+ tools.vitruv.framework.change,
+ tools.vitruv.framework.change.processing,
+ org.eclipse.emf.transaction,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching,
+ tools.vitruv.framework.userinteraction;visibility:=reexport,
+ tools.vitruv.framework.tuid
+Export-Package: tools.vitruv.framework.tests,
+ tools.vitruv.framework.tests.util

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+      <menu
+            id="tools.vitruv"
+            label="Vitruvius">
+         <command
+               commandId="tools.vitruv.applications.pcmjava.linkingintegration.integrateproject"
+               label="Integrate Project"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menu>
+    </menuContribution>
+  </extension>
+  
+  <extension point="org.eclipse.ui.commands">
+    <category
+          id="tools.vitruv.applications.pcmjava.linkingintegration" name="linkingintegration">
+    </category>
+    <command
+          categoryId="tools.vitruv.applications.pcmjava.linkingintegration"
+          defaultHandler="tools.vitruv.applications.pcmjava.linkingintegration.ui.commands.IntegrateProjectHandler"
+          description="Integrate Project into Vitruvius Approach"
+          id="tools.vitruv.applications.pcmjava.linkingintegration.integrateproject"
+          name="Integrate Project">
+    </command>
+  </extension>
+
+</plugin>

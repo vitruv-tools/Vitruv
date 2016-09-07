@@ -1,0 +1,7 @@
+package tools.vitruv.dsls.mapping.testframework.tests
+
+import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
+
+abstract class MappingLanguageTestChange2CommandTransformingProvidingImpl extends AbstractChange2CommandTransformingProviding {
+	
+}

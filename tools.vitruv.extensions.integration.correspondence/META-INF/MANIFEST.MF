@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Extension Integration Correspondence
+Bundle-SymbolicName: tools.vitruv.extensions.integration.correspondence;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.apache.log4j,
+ com.google.guava,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.correspondence,
+ tools.vitruv.extensions.dslsruntime.response
+Export-Package: tools.vitruv.extensions.integration.correspondence.util,
+ tools.vitruv.extensions.integration.correspondence.integration,
+ tools.vitruv.extensions.integration.correspondence.integration.impl,
+ tools.vitruv.extensions.integration.correspondence.integration.util
+

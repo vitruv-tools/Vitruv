@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Framwork Tests VSUM
+Bundle-SymbolicName: tools.vitruv.framework.tests.vsum;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: tools.vitruv.framework.tests.vsum
+Require-Bundle: org.junit,
+ tools.vitruv.framework.metarepository,
+ tools.vitruv.framework.vsum,
+ tools.vitruv.framework.modelsynchronization,
+ org.apache.log4j,
+ org.palladiosimulator.pcm,
+ org.emftext.language.java,
+ tools.vitruv.framework.util,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ tools.vitruv.framework.tests.util,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ tools.vitruv.extensions.dslsruntime.mapping,
+ tools.vitruv.framework.tests.util.metamodels,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.change,
+ tools.vitruv.framework.change.echange,
+ tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.correspondence
+Bundle-ActivationPolicy: lazy
+

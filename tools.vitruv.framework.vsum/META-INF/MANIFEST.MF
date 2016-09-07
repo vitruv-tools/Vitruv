@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Framework Virtual Single Underlying Model
+Bundle-SymbolicName: tools.vitruv.framework.vsum;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.eclipse.emf.transaction,
+ org.eclipse.emf.ecore,
+ org.eclipse.core.resources;visibility:=reexport,
+ org.eclipse.core.runtime,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.metamodel;visibility:=reexport,
+ tools.vitruv.framework.correspondence
+Export-Package: tools.vitruv.framework.vsum,
+ tools.vitruv.framework.vsum.helper

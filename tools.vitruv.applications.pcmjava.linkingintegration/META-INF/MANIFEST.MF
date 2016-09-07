@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java Linking Integration
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.linkingintegration;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.xtend.lib,
+ org.eclipse.emf.ecore,
+ org.palladiosimulator.pcm,
+ tools.vitruv.extensions.integration.correspondence,
+ tools.vitruv.framework.vsum,
+ org.apache.log4j,
+ org.somox.sourcecodedecorator,
+ org.somox.kdmhelper,
+ org.eclipse.core.resources,
+ tools.vitruv.framework.util,
+ tools.vitruv.extensions.integration.correspondence,
+ tools.vitruv.extensions.dslsruntime.response,
+ tools.vitruv.domains.pcm.util,
+ tools.vitruv.domains.java.util,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.correspondence
+Export-Package: tools.vitruv.applications.pcmjava.linkingintegration

@@ -1,7 +1,0 @@
-package tools.vitruvius.dsls.mapping.testframework.tests
-
-import tools.vitruvius.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-
-abstract class MappingLanguageTestChange2CommandTransformingProvidingImpl extends AbstractChange2CommandTransformingProviding {
-	
-}

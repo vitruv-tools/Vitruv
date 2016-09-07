@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius PCM-Java Reconstruction Integration
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.reconstructionintegration;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.apache.log4j,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.core.commands,
+ org.eclipse.m2m.qvt.oml,
+ org.eclipse.m2m.qvt.oml.project,
+ org.palladiosimulator.pcm,
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.vsum,
+ tools.vitruv.framework.change,
+ tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.metarepository,
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.extensions.constructionsimulation,
+ tools.vitruv.extensions.constructionsimulation.util,
+ tools.vitruv.applications.pcmjava.util 
+Export-Package: tools.vitruv.applications.pcmjava.reconstructionintegration.composite,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.invariantcheckers,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.invariantcheckers.pcmjamoppenforcer,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.invariantcheckers.pcmjamoppenforcer.withocl,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.repository,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.strategies,
+ tools.vitruv.applications.pcmjava.reconstructionintegration.util
+

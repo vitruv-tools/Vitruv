@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension-point id="tools.vitruv.applications.pcmjava.linkingintegration.pcmjamoppintegrationextending.afterbasictransformation" name="PCMJaMoPPIntegrationExtending" schema="schema/tools.vitruv.applications.pcmjava.linkingintegration.pcmjamoppintegrationextending.afterbasictransformation.exsd"/>
+    <extension-point id="tools.vitruv.applications.pcmjava.linkingintegration.correspondencetypedeciding" name="CorrespondenceTypeDeciding" schema="schema/tools.vitruv.applications.pcmjava.linkingintegration.correspondencetypedeciding.exsd"/>
+</plugin>
