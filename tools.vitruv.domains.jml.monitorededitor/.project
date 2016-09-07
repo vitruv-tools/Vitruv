@@ -2,9 +2,6 @@
 <projectDescription>
 	<name>tools.vitruv.domains.jml.monitorededitor</name>
 	<comment></comment>
-	<projects>
-		<project>edu.kit.ipd.sdq.seifermann.thesis.cst</project>
-	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.xtext.ui.shared.xtextBuilder</name>

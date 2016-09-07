@@ -4,31 +4,31 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection1"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection1"
             name="Rename Model Element">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection2"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection2"
             name="Rename Non-Model Element">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection3"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection3"
             name="Change Invariant">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjectionsubmenu"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjectionsubmenu"
             name="Change Injection">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection4"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection4"
             name="Change Pure Modifier">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection5"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection5"
             name="Change Helper Modifier">
       </command>
       <command
-            id="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.modelstats1"
+            id="tools.vitruv.domains.jml.monitorededitor.jml.modelstats1"
             name="Show Model Stats">
       </command>
    </extension>
@@ -41,27 +41,27 @@
                id="jmlMenu"
                label="JML">
             <menu
-                  commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjectionsubmenu"
+                  commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjectionsubmenu"
                   label="Change Injection">
                <command
-                     commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection2"
+                     commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection2"
                      label="Rename Non-Model Element"
                      style="push">
                </command>
                <command
-                     commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection1"
+                     commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection1"
                      label="Rename Model Element"
                      style="push">
                </command>
                <command
-                     commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection3"
+                     commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection3"
                      label="Change Invariant"
                      style="push">
                </command>
                <visibleWhen
                      checkEnabled="true">
                   <with
-                        variable="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.state.jmlrefactorings">
+                        variable="tools.vitruv.domains.jml.monitorededitor.jml.state.jmlrefactorings">
                      <equals
                            value="TRUE">
                      </equals>
@@ -70,19 +70,19 @@
                <menu
                      label="Modifier">
                   <command
-                        commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection4"
+                        commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection4"
                         label="Pure"
                         style="push">
                   </command>
                   <command
-                        commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection5"
+                        commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection5"
                         label="Helper"
                         style="push">
                   </command>
                </menu>
             </menu>
             <command
-                  commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.modelstats1"
+                  commandId="tools.vitruv.domains.jml.monitorededitor.jml.modelstats1"
                   label="Show Model Stats"
                   style="push">
             </command>
@@ -93,27 +93,27 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.changeinjection.JMLInjectRenameModelElement"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection1">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection1">
       </handler>
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.changeinjection.JMLInjectRenameNonModelElement"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection2">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection2">
       </handler>
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.changeinjection.JMLInjectChangeInvariantExpression"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection3">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection3">
       </handler>
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.changeinjection.JMLInjectChangePureModifier"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection4">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection4">
       </handler>
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.changeinjection.JMLInjectChangeHelperModifier"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.changeinjection5">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.changeinjection5">
       </handler>
       <handler
             class="tools.vitruv.domains.jml.monitorededitor.JMLNumberOfSpecificationStatements"
-            commandId="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.modelstats1">
+            commandId="tools.vitruv.domains.jml.monitorededitor.jml.modelstats1">
       </handler>
    </extension>
    <extension
@@ -121,7 +121,7 @@
       <sourceProvider
             provider="tools.vitruv.domains.jml.monitorededitor.changeinjection.CommandState">
          <variable
-               name="edu.kit.ipd.sdq.seifermann.thesis.monitorededitor.jml.state.jmlrefactorings"
+               name="tools.vitruv.domains.jml.monitorededitor.jml.state.jmlrefactorings"
                priorityLevel="workbench">
          </variable>
       </sourceProvider>
@@ -129,7 +129,7 @@
    <extension
          point="tools.vitruv.applications.jmljava.extensions.sourcedirprovider">
       <provides
-            provider="tools.vitruv.casestudies.jml.run.monitorededitor.JMLMonitoredEditor$JmlSourceDirProvider">
+            provider="tools.vitruv.domains.jml.monitorededitor.JMLMonitoredEditor$JmlSourceDirProvider">
       </provides>
    </extension>
 
