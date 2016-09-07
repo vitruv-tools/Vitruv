@@ -8,7 +8,6 @@ import com.google.common.base.Stopwatch;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.JmlSynchronizationListener;
 import tools.vitruv.framework.change.description.GeneralChange;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 
 public final class SynchronisationTimeLogger implements JmlSynchronizationListener {
