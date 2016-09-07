@@ -3,7 +3,6 @@
 	<name>tools.vitruv.applications.jmljava.monitorededitor</name>
 	<comment></comment>
 	<projects>
-		<project>edu.kit.ipd.sdq.seifermann.thesis.logging</project>
 		<project>tools.vitruv.framework.contracts</project>
 		<project>tools.vitruv.framework.meta.change</project>
 		<project>tools.vitruv.framework.meta.correspondence</project>

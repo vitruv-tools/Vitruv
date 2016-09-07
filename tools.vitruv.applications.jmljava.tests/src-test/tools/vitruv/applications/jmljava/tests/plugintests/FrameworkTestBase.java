@@ -323,7 +323,7 @@ public abstract class FrameworkTestBase {
             ZipArchiveInputStream zais = null;
             try {
                 is = FrameworkTestBase.class
-                        .getResourceAsStream("resources/edu.kit.ipd.sdq.seifermann.casestudies.javacard.zip");
+                        .getResourceAsStream("resources/tools.vitruv.applications.jmljava.tests.javacard.zip");
                 zais = new ZipArchiveInputStream(is);
                 for (ZipArchiveEntry entry = zais.getNextZipEntry(); entry != null; entry = zais.getNextZipEntry()) {
                     final File destinationFile = new File(tmpDir, entry.getName());
