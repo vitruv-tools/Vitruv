@@ -8,7 +8,7 @@ import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.Repository;
 
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.java2pcm.transformations.ClassMappingTransformation;
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations.ClassMappingTransformation;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 
 public class TypeReferenceMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {

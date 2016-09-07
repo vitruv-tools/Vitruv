@@ -11,7 +11,7 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.system.System;
 
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.java2pcm.transformations.ClassMappingTransformation;
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations.ClassMappingTransformation;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 
 public class ClassMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {

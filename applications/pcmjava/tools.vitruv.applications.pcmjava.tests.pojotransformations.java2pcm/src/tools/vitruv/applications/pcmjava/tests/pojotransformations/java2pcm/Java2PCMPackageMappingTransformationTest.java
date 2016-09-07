@@ -4,7 +4,7 @@ import java.util.Collections;
 
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.java2pcm.transformations.ClassMappingTransformation;
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations.ClassMappingTransformation;
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
