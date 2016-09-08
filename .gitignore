@@ -1,0 +1,8 @@
+.metadata
+bin/
+xtend-gen/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.class
