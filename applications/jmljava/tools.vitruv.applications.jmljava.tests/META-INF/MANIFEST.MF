@@ -27,7 +27,7 @@ Require-Bundle: org.apache.commons.compress,
  tools.vitruv.domains.jml.language,
  tools.vitruv.applications.jmljava.initializer,
  tools.vitruv.applications.jmljava.monitorededitor,
- tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util
+ tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util
 Bundle-ClassPath: libs/easymock-3.2.jar,
  .,
  libs/java-diff-utils-1.3.0-SNAPSHOT.jar
