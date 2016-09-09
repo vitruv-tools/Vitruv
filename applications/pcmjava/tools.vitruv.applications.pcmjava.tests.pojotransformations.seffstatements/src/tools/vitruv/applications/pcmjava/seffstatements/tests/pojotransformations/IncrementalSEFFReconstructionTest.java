@@ -30,7 +30,7 @@ import org.somox.test.gast2seff.visitors.AssertSEFFHelper;
 import org.somox.test.gast2seff.visitors.InternalCallActionTestHelper;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.applications.pcmjava.pojotransformations.java2pcm.Change2CommandTransformingJavaToPcm;
+import tools.vitruv.applications.pcmjava.seffstatements.pojotransformations.Change2CommandTransformingJavaToPcmWithSeffstatements;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
@@ -58,7 +58,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
     @Override
     protected Change2CommandTransformingProviding createChange2CommandTransformingProviding() {
     	return AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-    			Collections.singletonList(new Change2CommandTransformingJavaToPcm()));
+    			Collections.singletonList(new Change2CommandTransformingJavaToPcmWithSeffstatements()));
     }
     
     /**

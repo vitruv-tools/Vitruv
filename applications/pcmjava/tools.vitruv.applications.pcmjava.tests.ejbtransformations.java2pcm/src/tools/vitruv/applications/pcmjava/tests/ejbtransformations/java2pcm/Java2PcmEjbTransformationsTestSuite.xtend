@@ -13,6 +13,6 @@ import org.junit.runner.RunWith
 	EJBInterfaceMappingTest,
 	EJBPackageMappingTest
 ])
-class EJBJava2PCMTransformationsTestSuite {
+class Java2PcmEjbTransformationsTestSuite {
 	
 }

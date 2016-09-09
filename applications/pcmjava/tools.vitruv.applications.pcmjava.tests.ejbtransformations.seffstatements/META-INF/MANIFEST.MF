@@ -16,6 +16,7 @@ Require-Bundle: org.junit,
  tools.vitruv.framework.change.processing,
  tools.vitruv.applications.pcmjava.tests.util,
  tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm,
+ tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations,
  tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm,
  tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations
 Export-Package: tools.vitruv.applications.pcmjava.seffstatements.tests.ejbtransformations

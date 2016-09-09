@@ -8,6 +8,6 @@ class Change2CommandTransformingEjbJavaToPcmWithSeffstatements extends Change2Co
 	public override setup() {
 		// FIXME HK This should be a preprocessor after the inherited ones
 		addChangeProcessor(new Java2PcmMethodBodyChangePreprocessor(userInteracting, new EJBJava2PCMCode2SEFFFactory));
-		this.setup();
+		super.setup();
 	}
 }

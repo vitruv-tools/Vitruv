@@ -11,13 +11,13 @@ import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTrans
 import tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations.IncrementalSEFFReconstructionTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBClassMappingTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBJaMoPP2PCMTransformationTest
-import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEjbJavaToPcm
+import tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations.Change2CommandTransformingEjbJavaToPcmWithSeffstatements
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
 	override protected createChange2CommandTransformingProviding() {
 		AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-			#[new Change2CommandTransformingEjbJavaToPcm()]);
+			#[new Change2CommandTransformingEjbJavaToPcmWithSeffstatements()]);
 	}
 
 	@Override

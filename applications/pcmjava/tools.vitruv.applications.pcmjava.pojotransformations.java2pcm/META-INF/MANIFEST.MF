@@ -22,8 +22,6 @@ Require-Bundle: org.eclipse.emf.ecore,
  tools.vitruv.extensions.dslsruntime.response,
  tools.vitruv.domains.java.echange,
  tools.vitruv.applications.pcmjava.util,
- tools.vitruv.applications.pcmjava.seffstatements,
- tools.vitruv.applications.pcmjava.seffstatements.pojotransformations,
  tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util,
  tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

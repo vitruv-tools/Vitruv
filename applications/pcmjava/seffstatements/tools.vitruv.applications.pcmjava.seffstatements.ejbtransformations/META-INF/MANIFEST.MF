@@ -20,4 +20,4 @@ Require-Bundle: com.google.guava,
  tools.vitruv.applications.pcmjava.util,
  tools.vitruv.applications.pcmjava.seffstatements,
  tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm
-
+Export-Package: tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations

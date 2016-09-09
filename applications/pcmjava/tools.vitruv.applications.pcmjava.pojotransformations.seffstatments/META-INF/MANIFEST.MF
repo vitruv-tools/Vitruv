@@ -18,6 +18,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.change,
  tools.vitruv.applications.pcmjava.seffstatements,
+ tools.vitruv.applications.pcmjava.pojotransformations.java2pcm,
  tools.vitruv.applications.pcmjava.util
 Export-Package: tools.vitruv.applications.pcmjava.seffstatements.pojotransformations
 
