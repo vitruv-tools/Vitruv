@@ -12,12 +12,11 @@ import tools.vitruv.framework.change.description.EMFModelChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class AtomicEMFChangeRecorder {
-	val List<ChangeDescription> changeDescriptions;
+	var List<EMFModelChange> modelChanges;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
 	
 	new() {
-		this.changeDescriptions = new ArrayList<ChangeDescription>();
 		this.elementsToObserve = new ArrayList<Notifier>();
 		changeRecorder.setRecordingTransientFeatures(false)
 		changeRecorder.setResolveProxies(true)
@@ -27,16 +26,13 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI;
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		this.changeDescriptions.clear();
+		this.modelChanges = new ArrayList<EMFModelChange>();
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<EMFModelChange> endRecording() {
 		changeRecorder.endRecording()
-		val nonNullChangeDescriptions = changeDescriptions.filterNull.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList;
-		val result = nonNullChangeDescriptions.map[VitruviusChangeFactory.instance.createEMFModelChange(it, modelVURI)];
-		changeDescriptions.clear();
-		return result;
+		return modelChanges;
 	}
 	
 	def List<EMFModelChange> restartRecording() {
@@ -53,6 +49,11 @@ class AtomicEMFChangeRecorder {
 		changeRecorder.dispose()
 	}
 
+	def void addChange(ChangeDescription changeDescription) {
+		if (changeDescription != null && !(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
+			modelChanges += VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
+		}
+	}
 	
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
@@ -67,8 +68,8 @@ class AtomicEMFChangeRecorder {
 		}
 		
 		override notifyChanged(Notification notification) {
-			super.notifyChanged(notification);
-			if (!isDisposed) { 
+			if (isRecording && !isDisposed) {
+				super.notifyChanged(notification);
 				endRecording();
 				beginRecording(rootObjects);
 			}
@@ -83,7 +84,7 @@ class AtomicEMFChangeRecorder {
 		
 		override endRecording() {
 			if (!isDisposed) { 
-				changeDescriptions += super.endRecording();
+				addChange(super.endRecording());
 			}
 			return changeDescription;
 		}

@@ -7,16 +7,32 @@ import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTrans
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.VitruviusChange
 
+/**
+ * Represents a change in an EMF model. Since the {@link ChangeDescription} has to be temporarily rolled back
+ * to extract the change information, this change has to be instantiated directly after the {@link ChangeDescription}
+ * has been recorded and before further changes are made.
+ */
 class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> implements EMFModelChange {
 	private final ChangeDescription changeDescription;
 	private final VURI vuri;
-	private boolean prepared;
 
     public new(ChangeDescription changeDescription, VURI vuri) {
     	this.changeDescription = changeDescription;
         this.vuri = vuri;
-        this.prepared = false;
+		extractChangeInformation();
     }
+
+	private def void extractChangeInformation() {
+        changeDescription.applyAndReverse();
+        val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
+		for (eChange : eChanges) {
+			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
+		}
+		if (changes.empty) {
+			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
+		}
+        changeDescription.applyAndReverse();		
+	}
 
     override ChangeDescription getChangeDescription() {
         return this.changeDescription;
@@ -27,14 +43,7 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
     }
 
 	override prepare() {
-		val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
-		for (eChange : eChanges) {
-			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
-		}
-		if (changes.empty) {
-			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
-		}
-		this.prepared = true;
+		// Do nothing
 	}
 	
 	override getURI() {
@@ -50,7 +59,7 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 	}
 	
 	override isPrepared() {
-		return prepared;
+		return true;
 	}
 	
 }
