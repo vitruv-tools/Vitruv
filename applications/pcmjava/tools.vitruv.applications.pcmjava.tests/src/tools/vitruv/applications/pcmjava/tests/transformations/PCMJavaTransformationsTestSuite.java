@@ -6,9 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 
-@SuiteClasses({ JaMoPPPCMUtilsTest.class, 
-	//JaMoPPTest.class, 
-	VitruviusEMFEditorMonitorImplTestPlugin.class })
+@SuiteClasses({ JaMoPPPCMUtilsTest.class //, JaMoPPTest.class 
+	})
 public class PCMJavaTransformationsTestSuite {
 
 }
