@@ -126,7 +126,7 @@ class CorrespondenceTest extends VSUMTest {
 		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		var VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
 		vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(newVURI, pkg, oldTUID)
-		correspondenceModel.updateTUID(oldTUID, pkg)
+		oldTUID.updateTuid(pkg)
 	}
 
 	def private String getNewUMLInstanceURI() {
@@ -141,7 +141,7 @@ class CorrespondenceTest extends VSUMTest {
 		CorrespondenceModel correspondenceModel) {
 		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		EcoreUtil.remove(pkg)
-		correspondenceModel.updateTUID(oldTUID, pkg)
+		oldTUID.updateTuid(pkg)
 	}
 
 	def private void testCorrespondencePersistence(VSUMImpl vsum, Repository repo, UPackage pkg,
@@ -307,7 +307,7 @@ class CorrespondenceTest extends VSUMTest {
 	def private void testCreateRepo2PkgCorrespondenceAndUpdateTUID(Repository repo, UPackage pkg,
 		CorrespondenceModel corresp, Correspondence repo2pkg) {
 		var Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository()
-		corresp.updateTUID(repo, newRepo)
+		TUID.updateTuid(repo, newRepo)
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Correspondence uniqueNewRepoCorrespondence = corresp.claimUniqueCorrespondence(newRepo)

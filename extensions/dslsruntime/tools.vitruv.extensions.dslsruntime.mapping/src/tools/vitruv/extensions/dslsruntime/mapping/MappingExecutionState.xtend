@@ -56,7 +56,7 @@ class MappingExecutionState {
 		} else {
 			val ciToTUIDs = oldTUIDMap.get(eObject)
 			for (tuid : (ciToTUIDs.get(mci) ?: #[])) {
-				mci.updateTUID(tuid, eObject)
+				tuid.updateTuid(eObject)
 			}
 			oldTUIDMap.get(eObject)?.remove(eObject)
 		}
@@ -69,7 +69,7 @@ class MappingExecutionState {
 				val ciToTUIDs = entry.value
 				for (ciAndTUIDs : ciToTUIDs.entrySet) {
 					for (tuid : ciAndTUIDs.value) {
-						ciAndTUIDs.key.updateTUID(tuid, eObject)
+						tuid.updateTuid(eObject)
 					}
 				}
 			}

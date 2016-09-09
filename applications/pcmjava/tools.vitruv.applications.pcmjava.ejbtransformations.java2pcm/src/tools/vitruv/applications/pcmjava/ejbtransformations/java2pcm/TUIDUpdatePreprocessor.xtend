@@ -6,6 +6,7 @@ import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessorResult
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.tuid.TUID
 
 class TUIDUpdatePreprocessor extends AbstractChangeProcessor {
 
@@ -22,7 +23,7 @@ class TUIDUpdatePreprocessor extends AbstractChangeProcessor {
 				if (null != oldAffectedEObject && null != newAffectedEObject) {
 					//EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(
 						//[| 
-							correspondenceModel.updateTUID(oldAffectedEObject, newAffectedEObject);// return null;
+							TUID.updateTuid(oldAffectedEObject, newAffectedEObject);// return null;
 						//], 
 					//	blackboard.modelProviding);
 				}

@@ -25,6 +25,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.tuid.TUID
 
 package class TransformationExecutor {
 
@@ -62,7 +63,7 @@ package class TransformationExecutor {
 			val EObject oldAffectedEObject = eFeatureChange.oldAffectedEObject
 			val EObject newAffectedEObject = eFeatureChange.affectedEObject
 			if (null != oldAffectedEObject && null != newAffectedEObject) {
-				correspondenceModel.updateTUID(oldAffectedEObject, newAffectedEObject)
+				TUID.updateTuid(oldAffectedEObject, newAffectedEObject)
 			}
 		}
 	}

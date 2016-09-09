@@ -11,8 +11,11 @@ import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
 import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.AbstractURIHaving
+import tools.vitruv.framework.tuid.TuidUpdater
+import tools.vitruv.framework.tuid.TUID
+import java.util.HashMap
 
-class Metamodel extends AbstractURIHaving {
+class Metamodel extends AbstractURIHaving implements TuidUpdater {
 	String[] fileExtensions
 	TUIDCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
@@ -73,6 +76,7 @@ class Metamodel extends AbstractURIHaving {
 		this.nsURIs = nsURIs
 		this.defaultLoadOptions = defaultLoadOptions
 		this.defaultSaveOptions = defaultSaveOptions
+		TUID.registerUpdater(this);
 	}
 
 	def String[] getFileExtensions() {
@@ -146,6 +150,54 @@ class Metamodel extends AbstractURIHaving {
 
 	def Map<Object, Object> getDefaultSaveOptions() {
 		return this.defaultSaveOptions
+	}
+
+	private Map<EObject, TUID> tuidUpdateMap = new HashMap<EObject, TUID>();
+	
+	override canUpdate(EObject objectToUpdate) {
+		return hasMetaclassInstances(#[objectToUpdate]) && hasTUID(objectToUpdate);
+	}
+	
+	override registerObjectForUpdate(EObject objectToUpdate) {
+		if (canUpdate(objectToUpdate)) {
+			tuidUpdateMap.put(objectToUpdate, TUID.getInstance(calculateTUIDFromEObject(objectToUpdate)));
+		}
+	}
+	
+	override updateObjectTuidForRegisteredObject(EObject objectToUpdate) {
+		val oldTuid = tuidUpdateMap.get(objectToUpdate);
+		tuidUpdateMap.remove(objectToUpdate);
+		if (oldTuid == null) {
+			throw new IllegalStateException("Object was not registered for update before calling update");
+		}
+		val newTuid = TUID.getInstance(calculateTUIDFromEObject(objectToUpdate));
+		updateTuid(oldTuid, newTuid);
+	}
+	
+	private def updateTuid(TUID oldTuid, TUID newTuid) {
+		var boolean sameTUID = if(oldTuid !== null) oldTuid.equals(newTuid) else newTuid === null
+		if (sameTUID || oldTuid === null) {
+			return;
+		}
+		var String oldTUIDString = oldTuid.toString()
+		
+		oldTuid.renameOrMoveLastSegment(newTuid)
+		removeIfRootAndCached(oldTUIDString)
+	}
+	
+	override updateObjectTuid(EObject oldObject, EObject newObject) {
+		if (canUpdate(oldObject) && canUpdate(newObject)) {
+			val oldTuid = TUID.getInstance(calculateTUIDFromEObject(oldObject));
+			val newTuid = TUID.getInstance(calculateTUIDFromEObject(newObject));
+			updateTuid(oldTuid, newTuid);
+		}
+	}
+	
+	override updateObjectTuid(TUID oldTuid, EObject newObject) {
+		if (canUpdate(newObject)) {
+			val newTuid = TUID.getInstance(calculateTUIDFromEObject(newObject));
+			updateTuid(oldTuid, newTuid);
+		}
 	}
 
 }

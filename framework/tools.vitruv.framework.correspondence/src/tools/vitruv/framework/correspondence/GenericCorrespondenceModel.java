@@ -114,39 +114,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
     /**
-     * updates the TUID of an EObject
-     *
-     * @param oldEObject
-     *            the old EObject
-     * @param newEObject
-     *            the new EObject
-     */
-    // renamed from update
-    public void updateTUID(EObject oldEObject, EObject newEObject);
-
-    /**
-     * Updates the old TUID with the TUID of the EObject. This method can be used when the TUID of
-     * the old Object is known and the old Object can not be passed to the update(EObject, EObject)
-     * method. However, this requires that the user a) is able to calculate TUIDs, and b) is aware
-     * of TUIDs.
-     *
-     * Note: The oldTUIDString has to be created with the same TUIDCalculator and resolver that is
-     * used for the newEObject
-     *
-     * @param oldTUID
-     *            the old TUID
-     * @param newEObject
-     *            the new EObject
-     */
-    // renamed from update
-    public void updateTUID(TUID oldTUID, EObject newEObject);
-
-    // renamed from update
-    public void updateTUID(TUID oldTUID, TUID newTUID);
-
-    public EObject resolveEObjectFromTUID(final TUID tuid);
-
-    /**
      * syntactic sugar for map[{@link #resolveEObjectFromTUID(TUID)}]
      *
      * @param tuid
@@ -156,6 +123,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public Set<List<EObject>> resolveEObjectsSetsFromTUIDsSets(final Set<List<TUID>> tuidLists);
 
+    public EObject resolveEObjectFromTUID(final TUID tuid);
+    
     public TUID calculateTUIDFromEObject(final EObject eObject);
 
     /**

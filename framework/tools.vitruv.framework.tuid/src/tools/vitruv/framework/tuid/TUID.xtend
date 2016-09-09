@@ -16,6 +16,7 @@ import tools.vitruv.framework.util.datatypes.Pair
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import java.util.ArrayList
+import org.eclipse.emf.ecore.EObject
 
 /** 
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a{@link ForwardHashedBackwardLinkedTree} to ensure that depending TUIDs are indirectly changed,
@@ -52,6 +53,7 @@ final class TUID implements Serializable {
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
 	
 	private static List<TuidUpdateListener> updateListener = new ArrayList<TuidUpdateListener>();
+	private static List<TuidUpdater> updater = new ArrayList<TuidUpdater>();
 	
 	public static def void registerUpdateListener(TuidUpdateListener updateListener) {
 		if (updateListener != null) {
@@ -63,9 +65,52 @@ final class TUID implements Serializable {
 		TUID.updateListener.remove(updateListener);
 	}
 	
+	public static def void registerUpdater(TuidUpdater updater) {
+		if (updater != null) {
+			TUID.updater += updater;
+		}
+	}
+	
+	public static def unregisterUpdater(TuidUpdater updater) {
+		TUID.updater.remove(updater);
+	}
+	
 	public static def reinitialize() {
 		TUID.updateListener.clear();
+		TUID.updater.clear();
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
+	}
+	
+	def public static registerObjectForUpdate(EObject objectToUpdate) {
+		for (potentialUpdater : updater) {
+			if (potentialUpdater.canUpdate(objectToUpdate)) {
+				potentialUpdater.registerObjectForUpdate(objectToUpdate);
+			}
+		}
+	}
+	
+	def public static updateObjectTuid(EObject objectToUpdate) {
+		for (potentialUpdater : updater) {
+			if (potentialUpdater.canUpdate(objectToUpdate)) {
+				potentialUpdater.updateObjectTuidForRegisteredObject(objectToUpdate);
+			}
+		}
+	}
+	
+	def public static updateTuid(EObject oldObject, EObject newObject) {
+		for (potentialUpdater : updater) {
+			if (potentialUpdater.canUpdate(oldObject) && potentialUpdater.canUpdate(newObject)) {
+				potentialUpdater.updateObjectTuid(oldObject, newObject);
+			}
+		}
+	}
+	
+	def public updateTuid(EObject newObject) {
+		for (potentialUpdater : updater) {
+			if (potentialUpdater.canUpdate(newObject)) {
+				potentialUpdater.updateObjectTuid(this, newObject);
+			}
+		}
 	}
 	
 	def private static generateForwardHashedBackwardLinkedTree() {

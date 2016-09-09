@@ -97,7 +97,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 			}
 			interfaceMethod.parameters.add(index, newParameter)
 			correspondenceModel.createAndAddCorrespondence(newValue, newParameter)
-			correspondenceModel.updateTUID(oldTUID, interfaceMethod)
+			oldTUID.updateTuid(interfaceMethod)
 		}
 		transformationResult
 	}
@@ -143,7 +143,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 					correspondingClassMethods.forEach[
 						val oldTUID = correspondenceModel.calculateTUIDFromEObject(it)
 						it.name = newValue.toString
-						correspondenceModel.updateTUID(oldTUID, it)
+						oldTUID.updateTuid(it)
 					]
 				}	
 			]
@@ -174,7 +174,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 			claimUniqueCorrespondingJaMoPPDataTypeReference(newValue as DataType, correspondenceModel)
 		val oldTUID = correspondenceModel.calculateTUIDFromEObject(correspondingInterfaceMethod)
 		correspondingInterfaceMethod.typeReference = newTypeReference;
-		correspondenceModel.updateTUID(oldTUID, correspondingInterfaceMethod)
+		oldTUID.updateTuid(correspondingInterfaceMethod)
 		if (newTypeReference instanceof NamespaceClassifierReference) {
 			PCM2JaMoPPUtils.addImportToCompilationUnitOfClassifier(
 				correspondingInterfaceMethod.containingConcreteClassifier, newTypeReference)

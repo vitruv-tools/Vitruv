@@ -173,7 +173,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 				c.name = classifier.name
 			}
 		}
-		correspondenceModel.updateTUID(oldClassifierTUID, classifier)
+		oldClassifierTUID.updateTuid(classifier)
 	}
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,

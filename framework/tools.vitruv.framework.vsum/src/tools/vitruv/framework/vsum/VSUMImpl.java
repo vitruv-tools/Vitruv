@@ -186,8 +186,7 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 metamodel);
         for (InternalCorrespondenceModel correspondenceModel : allCorrespondenceModels) {
             if (null != tuidToUpdateNewRootEObjectPair && tuidToUpdateNewRootEObjectPair.getSecond() != null) {
-                correspondenceModel.updateTUID(tuidToUpdateNewRootEObjectPair.getSecond(),
-                        tuidToUpdateNewRootEObjectPair.getFirst());
+                tuidToUpdateNewRootEObjectPair.getSecond().updateTuid(tuidToUpdateNewRootEObjectPair.getFirst());
             }
             if (correspondenceModel.changedAfterLastSave()) {
                 correspondenceModel.saveModel();

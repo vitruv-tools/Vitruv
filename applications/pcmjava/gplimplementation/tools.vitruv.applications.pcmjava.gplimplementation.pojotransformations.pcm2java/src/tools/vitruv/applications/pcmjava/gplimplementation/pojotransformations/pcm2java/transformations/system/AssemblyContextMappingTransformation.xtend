@@ -91,7 +91,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 				for (typedElement : typedElementCorrespondences) {
 					val oldTUID = correspondenceModel.calculateTUIDFromEObject(typedElement)
 					typedElement.typeReference = PCM2JaMoPPUtils.createNamespaceClassifierReference(jaMoPPClass)
-					correspondenceModel.updateTUID(oldTUID, typedElement)
+					oldTUID.updateTuid(typedElement)
 				}
 			}
 		}

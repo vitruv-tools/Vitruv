@@ -128,18 +128,6 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.resolveEObjectsSetsFromTUIDsSets(tuidLists);
 	}
 
-	override updateTUID(EObject oldEObject, EObject newEObject) {
-		correspondenceModelDelegate.updateTUID(oldEObject, newEObject);
-	}
-
-	override updateTUID(TUID oldTUID, EObject newEObject) {
-		correspondenceModelDelegate.updateTUID(oldTUID, newEObject);
-	}
-
-	override updateTUID(TUID oldTUID, TUID newTUID) {
-		correspondenceModelDelegate.updateTUID(oldTUID, newTUID);
-	}
-
 	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);

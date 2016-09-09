@@ -451,35 +451,35 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		correspondence.getBTUIDs().addAll(bTUIDs)
 	}
 
-	override void updateTUID(EObject oldEObject, EObject newEObject) {
-		// If the object has no TUID, do nothing
-		val metamodel = oldEObject?.metamodelForEObject;
-		if (metamodel == null || !metamodel.hasTUID(oldEObject)) {
-			return;
-		}
-		var TUID oldTUID = calculateTUIDsFromEObjects(oldEObject.toList).claimOne
-		this.updateTUID(oldTUID, newEObject)
-	}
-
-	override void updateTUID(TUID oldTUID, EObject newEObject) {
-		var TUID newTUID = calculateTUIDsFromEObjects(newEObject.toList).claimOne
-		updateTUID(oldTUID, newTUID)
-	}
-
-	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
-	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
-	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
-	override void updateTUID(TUID oldTUID, TUID newTUID) {
-		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
-		if (sameTUID || oldTUID === null) {
-			return;
-		}
-		var String oldTUIDString = oldTUID.toString()
-		
-		oldTUID.renameOrMoveLastSegment(newTUID)
-		var Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString)
-		metamodel.removeIfRootAndCached(oldTUIDString)
-	}
+//	override void updateTUID(EObject oldEObject, EObject newEObject) {
+//		// If the object has no TUID, do nothing
+//		val metamodel = oldEObject?.metamodelForEObject;
+//		if (metamodel == null || !metamodel.hasTUID(oldEObject)) {
+//			return;
+//		}
+//		var TUID oldTUID = calculateTUIDsFromEObjects(oldEObject.toList).claimOne
+//		this.updateTUID(oldTUID, newEObject)
+//	}
+//
+//	override void updateTUID(TUID oldTUID, EObject newEObject) {
+//		var TUID newTUID = calculateTUIDsFromEObjects(newEObject.toList).claimOne
+//		updateTUID(oldTUID, newTUID)
+//	}
+//
+//	 //FIXME note to MK: this currently only works if all key-lists in tuid2CorrespondencesMap only contain one element. 
+//	 //If you implement an update function for list of TUIDs be careful since there could be the case that one TUID is contained 
+//	 //in more than only one key-lists. My current guess is that we have to update all key-lists in which the TUID occurs
+//	override void updateTUID(TUID oldTUID, TUID newTUID) {
+//		var boolean sameTUID = if(oldTUID !== null) oldTUID.equals(newTUID) else newTUID === null
+//		if (sameTUID || oldTUID === null) {
+//			return;
+//		}
+//		var String oldTUIDString = oldTUID.toString()
+//		
+//		oldTUID.renameOrMoveLastSegment(newTUID)
+//		var Metamodel metamodel = getMetamodelHavingTUID(oldTUIDString)
+//		metamodel.removeIfRootAndCached(oldTUIDString)
+//	}
 	
 	override getAllCorrespondencesWithoutDependencies() {
 		this.correspondences.correspondences.filter[it.dependsOn == null || it.dependsOn.size == 0].toSet

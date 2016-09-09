@@ -93,7 +93,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 				correspondingSignature.returnType__OperationSignature = newReturnValue
 
 				// guess this is not necessary since the id stay the same
-				correspondenceModel.updateTUID(oldTUID, correspondingSignature)
+				oldTUID.updateTuid(correspondingSignature)
 			}
 		}
 		transformationResult
@@ -145,7 +145,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 		if(affectedReference.name != JaMoPPNamespace.JAMOPP_STATEMENTS_REFERENCE){
 			val oldTUID = correspondenceModel.calculateTUIDFromEObject(oldAffectedEObject)
 			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
-			correspondenceModel.updateTUID(oldTUID, oldAffectedEObject)
+			oldTUID.updateTuid(oldAffectedEObject)
 		}
 		return new TransformationResult
 	}

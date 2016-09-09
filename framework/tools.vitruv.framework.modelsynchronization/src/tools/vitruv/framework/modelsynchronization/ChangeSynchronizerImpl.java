@@ -146,7 +146,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
                 if (tuid != null) {
                     tuidMap.put(object, tuid);
+                    TUID.registerObjectForUpdate(object);
                     for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
+                        TUID.registerObjectForUpdate(featureChange.getReferenceValue());
                         tuidMap.put(featureChange.getReferenceValue(),
                                 correspondenceModel.calculateTUIDFromEObject(featureChange.getReferenceValue()));
                     }
@@ -156,6 +158,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
                 if (tuid != null) {
                     tuidMap.put(object, tuid);
+                    TUID.registerObjectForUpdate(object);
                 }
             }
         } else if (recordedChange instanceof ConcreteChange) {
@@ -192,7 +195,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
                     @Override
                     public Void call() {
-                        correspondenceModel.updateTUID(tuidMap.get(object), newTUID);
+                        TUID.updateObjectTuid(object);
+                        // correspondenceModel.updateTUID(tuidMap.get(object), newTUID);
                         return null;
                     }
                 });

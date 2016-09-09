@@ -131,7 +131,7 @@ class FieldMappingTransformation extends EmptyEObjectMappingTransformation {
 					innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 						getCorrespondingPCMDataTypeForTypeReference(newTypeReference, correspondenceModel,
 							userInteracting, null, (newAffectedEObject as Field).arrayDimension )
-					correspondenceModel.updateTUID(oldTUID, innerDec)
+					oldTUID.updateTuid(innerDec)
 				}
 			}
 
