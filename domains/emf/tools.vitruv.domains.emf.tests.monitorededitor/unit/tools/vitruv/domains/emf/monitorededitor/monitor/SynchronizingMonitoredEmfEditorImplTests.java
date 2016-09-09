@@ -25,13 +25,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
-import tools.vitruv.domains.emf.monitorededitor.IMonitoringDecider;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
+import tools.vitruv.domains.emf.monitorededitor.IMonitoringDecider;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
-import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
-import tools.vitruv.domains.emf.monitorededitor.monitor.SynchronizingMonitoredEmfEditorImpl;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock.SaveEventKind;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
@@ -42,6 +39,7 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
@@ -241,8 +239,6 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
             @Override
             public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
-                transformChanges(changes);
-
                 ensureExecuted.markExecuted();
                 assert sourceModelURI == resVURI;
 

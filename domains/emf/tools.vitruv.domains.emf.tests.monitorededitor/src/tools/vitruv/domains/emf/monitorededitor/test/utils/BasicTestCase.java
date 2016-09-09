@@ -11,13 +11,8 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.description.VitruviusChange;
 
 public class BasicTestCase {
 
@@ -34,25 +29,4 @@ public class BasicTestCase {
         }
     }
 
-    protected void transformChanges(List<VitruviusChange> changes) {
-        for (int i = changes.size() - 1; i >= 0; i--) {
-            if (changes.get(i) instanceof EMFModelChange)
-                ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
-        }
-        for (VitruviusChange change : changes) {
-            // change.prepare();
-            if (change instanceof EMFModelChange) {
-                ((EMFModelChange) change).getChangeDescription().applyAndReverse();
-            }
-        }
-
-        /*
-         * List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>(); for (int i =
-         * changes.size() - 1; i >= 0; i--) { if (changes.get(i) instanceof EMFModelChange)
-         * ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse(); } for (Change
-         * change : changes) { if (change instanceof EMFModelChange) { transformedChanges.add(new
-         * EMFModelChangeTransformation((EMFModelChange) change).getChange()); ((EMFModelChange)
-         * change).getChangeDescription().applyAndReverse(); } } return transformedChanges;
-         */
-    }
 }
