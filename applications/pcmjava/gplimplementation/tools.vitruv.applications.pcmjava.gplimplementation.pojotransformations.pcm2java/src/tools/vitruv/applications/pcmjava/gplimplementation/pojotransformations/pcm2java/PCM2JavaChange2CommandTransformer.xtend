@@ -63,7 +63,7 @@ class PCM2JavaChange2CommandTransformer extends AbstractChange2CommandTransformi
 	}
 	
 	override protected setup() {
-		addChangeProcessor(createTransformationExecutorChangeProcessor());
+		addChangeMainprocessor(createTransformationExecutorChangeProcessor());
 	}
 	
 }

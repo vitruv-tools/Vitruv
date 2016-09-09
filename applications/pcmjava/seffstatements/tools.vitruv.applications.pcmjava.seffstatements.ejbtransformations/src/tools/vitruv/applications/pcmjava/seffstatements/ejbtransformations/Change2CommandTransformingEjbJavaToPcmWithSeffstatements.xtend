@@ -6,8 +6,7 @@ import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2comm
 
 class Change2CommandTransformingEjbJavaToPcmWithSeffstatements extends Change2CommandTransformingEjbJavaToPcm {
 	public override setup() {
-		// FIXME HK This should be a preprocessor after the inherited ones
-		addChangeProcessor(new Java2PcmMethodBodyChangePreprocessor(userInteracting, new EJBJava2PCMCode2SEFFFactory));
 		super.setup();
+		addChangePreprocessor(new Java2PcmMethodBodyChangePreprocessor(userInteracting, new EJBJava2PCMCode2SEFFFactory));
 	}
 }

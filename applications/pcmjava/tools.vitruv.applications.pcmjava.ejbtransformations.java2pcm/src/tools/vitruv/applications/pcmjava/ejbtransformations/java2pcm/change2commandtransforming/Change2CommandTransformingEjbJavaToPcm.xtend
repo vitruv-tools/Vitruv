@@ -6,8 +6,8 @@ import tools.vitruv.applications.pcmjava.util.java2pcm.Java2PcmPackagePreprocess
 
 class Change2CommandTransformingEjbJavaToPcm extends AbstractChange2CommandTransformingJavaTo5_1 {
 	public override setup() {
-		addChangeProcessor(new TUIDUpdatePreprocessor(userInteracting));
-		addChangeProcessor(new Java2PcmPackagePreprocessor(userInteracting));  
+		addChangePreprocessor(new TUIDUpdatePreprocessor(userInteracting));
+		addChangePreprocessor(new Java2PcmPackagePreprocessor(userInteracting));  
 		super.setup();
 	}
 }

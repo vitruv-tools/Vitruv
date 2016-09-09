@@ -5,8 +5,8 @@ import tools.vitruv.applications.pcmjava.pojotransformations.java2pcm.Change2Com
 class Java2PCMIntegrationChange2CommandTransforming extends Change2CommandTransformingJavaToPcm {
 	
 	override protected setup() {
-		addChangeProcessor(new CodeIntegrationChangeProcessor(userInteracting));
 		super.setup();
+		addChangePreprocessor(new CodeIntegrationChangeProcessor(userInteracting));
 	}
 	
 }

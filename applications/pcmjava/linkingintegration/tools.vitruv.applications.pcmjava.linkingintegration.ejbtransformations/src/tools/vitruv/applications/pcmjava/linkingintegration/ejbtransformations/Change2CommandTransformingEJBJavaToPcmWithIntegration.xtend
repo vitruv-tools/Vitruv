@@ -5,7 +5,7 @@ import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2comm
 
 class Change2CommandTransformingEJBJavaToPcmWithIntegration extends Change2CommandTransformingEjbJavaToPcm {
 	override setup() {
-		addChangeProcessor(new CodeIntegrationChangeProcessor(userInteracting));
 		super.setup();
+		addChangePreprocessor(new CodeIntegrationChangeProcessor(userInteracting));
 	}
 }

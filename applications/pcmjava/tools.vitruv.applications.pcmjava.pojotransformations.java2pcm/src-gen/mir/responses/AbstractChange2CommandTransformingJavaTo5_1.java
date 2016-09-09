@@ -18,7 +18,7 @@ public abstract class AbstractChange2CommandTransformingJavaTo5_1 extends Abstra
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeProcessor(new mir.responses.responsesJavaTo5_1.java2pcm.ExecutorJavaTo5_1(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.responses.responsesJavaTo5_1.java2pcm.ExecutorJavaTo5_1(getUserInteracting()));
 	}
 	
 }

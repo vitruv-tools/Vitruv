@@ -18,7 +18,7 @@ public abstract class AbstractChange2CommandTransformingAllElementTypesToAllElem
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeProcessor(new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ExecutorAllElementTypesToAllElementTypes(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ExecutorAllElementTypesToAllElementTypes(getUserInteracting()));
 	}
 	
 }

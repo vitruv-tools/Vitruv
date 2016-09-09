@@ -19,11 +19,13 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 	
 	private UserInteracting userInteracting;
 	private val MetamodelPair metamodelPair;
-	private val List<tools.vitruv.framework.change.processing.ChangeProcessor> changeProcessors;
+	private val List<ChangeProcessor> changePreprocessors;
+	private val List<ChangeProcessor> changeMainprocessors;
 	
 	new(VURI fromMetamodel, VURI toMetamodel) {
 		this.metamodelPair = new MetamodelPair(fromMetamodel, toMetamodel);
-		this.changeProcessors = new ArrayList<ChangeProcessor>();
+		this.changePreprocessors = new ArrayList<ChangeProcessor>();
+		this.changeMainprocessors = new ArrayList<ChangeProcessor>();
 	}
 	 
 	protected def UserInteracting getUserInteracting() {
@@ -34,8 +36,20 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		return metamodelPair;
 	}
 	
-	protected def addChangeProcessor(ChangeProcessor changeProcessor) {
-		this.changeProcessors += changeProcessor;
+	/** 
+	 * Adds the specified change processor as a preprocessor, which is executed before the mainprocessors.
+	 * The preprocessors are executed in the order in which they are added.
+	 */
+	protected def addChangePreprocessor(ChangeProcessor changeProcessor) {
+		this.changePreprocessors += changeProcessor;
+	}
+	
+	/** 
+	 * Adds the specified change processor as a main processor, which is executed after the preprocessors.
+	 * The main processors are executed in the order in which they are added.
+	 */
+	protected def addChangeMainprocessor(ChangeProcessor changeProcessor) {
+		this.changeMainprocessors += changeProcessor;
 	}
 	
 	override List<VitruviusRecordingCommand> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
@@ -56,7 +70,7 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 
 	private def dispatch void processChange(ConcreteChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		var currentChange = change;
-		for (changeProcessor : changeProcessors) {
+		for (changeProcessor : changePreprocessors + changeMainprocessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');
 			val processingResult = changeProcessor.transformChange(currentChange, correspondenceModel);
 			currentChange = processingResult.resultingChange;
@@ -70,7 +84,8 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 	}
 
 	private def void cleanAndSetup() {
-		this.changeProcessors.clear();
+		this.changePreprocessors.clear();
+		this.changeMainprocessors.clear();
 		setup();
 	}
 	

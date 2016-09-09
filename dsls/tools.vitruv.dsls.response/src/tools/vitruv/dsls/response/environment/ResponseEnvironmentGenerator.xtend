@@ -215,7 +215,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 			 */
 			protected void setup() {
 				«FOR executorName : executorsNames»
-					this.addChangeProcessor(new «executorName»(getUserInteracting()));
+					this.addChangeMainprocessor(new «executorName»(getUserInteracting()));
 				«ENDFOR»		
 			}
 			

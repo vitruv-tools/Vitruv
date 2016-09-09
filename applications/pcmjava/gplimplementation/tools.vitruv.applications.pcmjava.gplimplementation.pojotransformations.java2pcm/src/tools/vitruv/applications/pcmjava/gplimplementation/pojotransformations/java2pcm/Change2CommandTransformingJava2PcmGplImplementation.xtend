@@ -14,8 +14,8 @@ class Change2CommandTransformingJava2PcmGplImplementation extends AbstractChange
 	}
 
 	override protected setup() {
-		addChangeProcessor(new Java2PcmPackagePreprocessor(userInteracting));
-		addChangeProcessor(new Java2PCMChangeProcessor(userInteracting));
+		addChangePreprocessor(new Java2PcmPackagePreprocessor(userInteracting));
+		addChangeMainprocessor(new Java2PCMChangeProcessor(userInteracting));
 	}
 	
 }
