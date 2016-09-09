@@ -3,8 +3,6 @@ package tools.vitruv.framework.change.description
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.description.FileChange.FileChangeKind
-import tools.vitruv.framework.change.description.impl.FileChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
@@ -13,9 +11,16 @@ import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
+import tools.vitruv.framework.change.description.impl.FileCreateChangeImpl
+import tools.vitruv.framework.change.description.impl.FileDeleteChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
+	
+	public enum FileChangeKind {
+		Create,
+		Delete		
+	}
 	
 	private new() {}
 	
@@ -38,8 +43,12 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeImpl(changes, vuri);
 	}
 	
-	public def FileChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
-		return new FileChangeImpl(kind, changedFileResource);
+	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
+		if (kind == FileChangeKind.Create) {
+			return new FileCreateChangeImpl(changedFileResource);
+		} else {
+			return new FileDeleteChangeImpl(changedFileResource);		
+		}
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {

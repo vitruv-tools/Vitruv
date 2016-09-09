@@ -62,7 +62,7 @@ import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils;
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
-import tools.vitruv.framework.change.description.FileChange.FileChangeKind;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
@@ -225,7 +225,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
         final Repository repo = PCM2JaMoPPTestUtils.createRepository(resourceSet, repositoryName,
                 this.currentTestProjectName);
         this.changeRecorder.beginRecording(VURI.getInstance(repo.eResource()), Collections.singletonList(repo));
-        this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(repo.eResource()));
+        this.synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(repo.eResource()));
         return repo;
     }
 
@@ -361,7 +361,7 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     protected System createAndSyncSystem(final String name) throws Throwable {
         final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, name, this.currentTestProjectName);
         this.changeRecorder.beginRecording(VURI.getInstance(system.eResource()), Collections.singletonList(system));
-        this.synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(system.eResource()));
+        this.synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(system.eResource()));
         return system;
     }
 

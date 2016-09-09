@@ -21,8 +21,6 @@ import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.EMFModelChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter;
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverterImpl;
 import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -45,7 +43,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private final ModelProviding modelProviding;
     private final Change2CommandTransformingProviding change2CommandTransformingProviding;
     private final CorrespondenceProviding correspondenceProviding;
-    private final ChangeToEChangeConverter changePreparing;
     private final CommandExecuting commandExecuting;
 
     private Set<SynchronisationListener> synchronisationListeners;
@@ -58,7 +55,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         this.modelProviding = modelProviding;
         this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
-        this.changePreparing = new ChangeToEChangeConverterImpl();
         this.synchronisationListeners = new HashSet<SynchronisationListener>();
         if (null != synchronisationListener) {
             this.synchronisationListeners.add(synchronisationListener);
@@ -110,7 +106,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         } else {
             Map<EObject, TUID> tuidMap = new HashMap<>();
             getOldObjectTUIDs(change, correspondenceModels.iterator().next(), tuidMap);
-            change.prepare(this.changePreparing);
+            change.prepare();
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }

@@ -21,7 +21,7 @@ import tools.vitruv.framework.change.echange.feature.reference.AdditiveReference
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import org.eclipse.emf.ecore.change.ChangeDescription
 
-package class ChangeDescription2EChangesTransformation {
+public class ChangeDescription2EChangesTransformation {
 
 	// BEGIN LONG VERSION OF REVERSE-ENGINEERED OLD MONITOR
 	// --shadow bullshit-- = make the flat attach part of the change description deep by recursively creating changes for all non-default values (and listing the additional objects to attach, but without any effects)
@@ -106,7 +106,7 @@ package class ChangeDescription2EChangesTransformation {
 		this.eChanges = new BasicEList<EChange>
 	}
 
-	package def List<EChange> transform() {
+	public def List<EChange> transform() {
 		if (changeDescription == null) {
 			return eChanges
 		} else {

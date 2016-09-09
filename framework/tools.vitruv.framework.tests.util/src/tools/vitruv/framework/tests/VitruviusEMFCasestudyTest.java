@@ -9,10 +9,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.description.FileChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.description.FileChange.FileChangeKind;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -97,7 +97,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
 	protected void synchronizeFileChange(final FileChangeKind fileChangeKind, final VURI vuri) {
 		Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
-		final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
+		final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind,
 				modelResource);
 		this.changeSynchronizer.synchronizeChange(fileChange);
 	}

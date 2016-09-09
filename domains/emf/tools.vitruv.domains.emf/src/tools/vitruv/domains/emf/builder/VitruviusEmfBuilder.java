@@ -21,9 +21,9 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
-import tools.vitruv.framework.change.description.FileChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.description.FileChange.FileChangeKind;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
 import tools.vitruv.framework.metamodel.ModelProviding;
@@ -233,7 +233,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         LOGGER.trace("Importing " + iResource);
         final VURI resUri = VURI.getInstance(iResource);
         this.emfMonitor.addModel(resUri);
-        this.triggerFileChangeSynchronisation(iResource, FileChangeKind.CREATE);
+        this.triggerFileChangeSynchronisation(iResource, FileChangeKind.Create);
     }
 
     /**
@@ -246,7 +246,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         LOGGER.trace("Removing " + iResource);
         final VURI resUri = VURI.getInstance(iResource);
         this.emfMonitor.removeModel(resUri);
-        this.triggerFileChangeSynchronisation(iResource, FileChangeKind.DELETE);
+        this.triggerFileChangeSynchronisation(iResource, FileChangeKind.Delete);
     }
 
     private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
@@ -254,7 +254,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         if (this.monitoredFileTypes.contains(fileExtension)) {
             final VURI vuri = VURI.getInstance(iResource);
             Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
-            final FileChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
+            final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
             this.changeSynchronizing.synchronizeChange(fileChange);
         }
     }

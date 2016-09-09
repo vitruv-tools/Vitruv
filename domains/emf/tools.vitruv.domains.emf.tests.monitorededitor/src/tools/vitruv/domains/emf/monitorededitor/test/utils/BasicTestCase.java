@@ -17,8 +17,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter;
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverterImpl;
 import tools.vitruv.framework.change.description.VitruviusChange;
 
 public class BasicTestCase {
@@ -41,9 +39,8 @@ public class BasicTestCase {
             if (changes.get(i) instanceof EMFModelChange)
                 ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
         }
-        ChangeToEChangeConverter preparer = new ChangeToEChangeConverterImpl();
         for (VitruviusChange change : changes) {
-            change.prepare(preparer);
+            change.prepare();
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }

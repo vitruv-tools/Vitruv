@@ -15,7 +15,7 @@ import java.io.File
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static org.junit.Assert.*;
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.FileChange.FileChangeKind
+import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind
 
 abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 
@@ -42,7 +42,7 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 		);
 		resource.contents.add(rootElement);
 		EcoreResourceBridge.saveResource(resource);
-		synchronizeFileChange(FileChangeKind.CREATE, VURI.getInstance(resource));
+		synchronizeFileChange(FileChangeKind.Create, VURI.getInstance(resource));
 		//resource.eAdapters.add(changeRecorder);
 		this.changeRecorder.beginRecording(VURI.getInstance(resource), #[rootElement]);
 	}
@@ -55,7 +55,7 @@ abstract class AbstractResponseTests extends VitruviusEMFCasestudyTest {
 			URI.createPlatformResourceURI(modelPathInProject.platformModelPath, true), true
 		);
 		resource.delete(Collections.EMPTY_MAP);
-		synchronizeFileChange(FileChangeKind.DELETE, VURI.getInstance(resource));
+		synchronizeFileChange(FileChangeKind.Delete, VURI.getInstance(resource));
 	}
 	
 	protected def String getPlatformModelPath(String modelPathInProject) {

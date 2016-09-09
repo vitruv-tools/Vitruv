@@ -3,7 +3,7 @@ package tools.vitruv.framework.change.description.impl
 import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.EMFModelChange
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
+import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 
 class EMFModelChangeImpl extends AbstractConcreteChange implements EMFModelChange {
 	private final ChangeDescription changeDescription;
@@ -22,9 +22,9 @@ class EMFModelChangeImpl extends AbstractConcreteChange implements EMFModelChang
     }
 
 	
-	override prepare(ChangeToEChangeConverter converter) {
+	override prepare() {
 		this.eChanges.clear();
-		this.eChanges.addAll(converter.calculateEChangesForChange(this));
+		this.eChanges.addAll(new ChangeDescription2EChangesTransformation(this.changeDescription).transform());
 		setPrepated();
 	}		
 }

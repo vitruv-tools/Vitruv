@@ -4,7 +4,6 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.List
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.ConcreteChange
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
 
 class ConcreteChangeImpl extends AbstractConcreteChange implements ConcreteChange {
     public new(List<EChange> eChanges, VURI vuri) {
@@ -16,7 +15,7 @@ class ConcreteChangeImpl extends AbstractConcreteChange implements ConcreteChang
         return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChanges: " + this.eChanges;
     }
 				
-	override prepare(ChangeToEChangeConverter converter) {
+	override prepare() {
 		// Do nothing
 	}
 	

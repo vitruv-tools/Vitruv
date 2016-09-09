@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.description.impl
 
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
 
 class EmptyChangeImpl extends AbstractConcreteChange implements ConcreteChange {
 	
@@ -14,7 +13,7 @@ class EmptyChangeImpl extends AbstractConcreteChange implements ConcreteChange {
 		return true;
 	}
 	
-	override prepare(ChangeToEChangeConverter preparer) {
+	override prepare() {
 		// Do nothing, empty changes do not have to be prepared
 	}
 	
