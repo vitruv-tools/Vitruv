@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.TransactionalChange
 
 class AtomicEMFChangeRecorder {
-	var List<TransactionalChange> modelChanges;
+	var List<ChangeDescription> changeDescriptions;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
 	
@@ -26,13 +26,23 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI;
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		this.modelChanges = new ArrayList<TransactionalChange>();
+		this.changeDescriptions =new ArrayList<ChangeDescription>();
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
 	def List<TransactionalChange> endRecording() {
-		changeRecorder.endRecording()
-		return modelChanges;
+		changeRecorder.endRecording();
+		changeDescriptions.reverseView.forEach[applyAndReverse];
+		return changeDescriptions.filterNull.map[createModelChange].filterNull.toList;
+	}
+	
+	private def createModelChange(ChangeDescription changeDescription) {
+		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
+			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
+			changeDescription.applyAndReverse;
+			return result;
+		}
+		return null;
 	}
 	
 	def List<TransactionalChange> restartRecording() {
@@ -49,12 +59,6 @@ class AtomicEMFChangeRecorder {
 		changeRecorder.dispose()
 	}
 
-	def void addChange(ChangeDescription changeDescription) {
-		if (changeDescription != null && !(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
-			modelChanges += VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI)
-		}
-	}
-	
 	/**
 	 * A change recorder that restarts after each change notification to get atomic change descriptions.
 	 */
@@ -84,7 +88,7 @@ class AtomicEMFChangeRecorder {
 		
 		override endRecording() {
 			if (!isDisposed) { 
-				addChange(super.endRecording());
+				changeDescriptions += super.endRecording();
 			}
 			return changeDescription;
 		}

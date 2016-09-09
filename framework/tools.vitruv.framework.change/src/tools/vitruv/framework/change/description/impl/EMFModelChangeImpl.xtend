@@ -23,7 +23,6 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
     }
 
 	private def void extractChangeInformation() {
-        changeDescription.applyAndReverse();
         val eChanges = new ChangeDescription2EChangesTransformation(this.changeDescription).transform()
 		for (eChange : eChanges) {
 			addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, vuri));
@@ -31,7 +30,6 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 		if (changes.empty) {
 			addChange(VitruviusChangeFactory.instance.createEmptyChange(vuri));
 		}
-        changeDescription.applyAndReverse();		
 	}
 
     override ChangeDescription getChangeDescription() {
