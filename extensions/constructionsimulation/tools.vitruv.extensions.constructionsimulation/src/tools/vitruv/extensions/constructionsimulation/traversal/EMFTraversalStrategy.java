@@ -5,7 +5,7 @@ import org.eclipse.emf.common.util.EList;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
-import tools.vitruv.framework.change.description.EMFModelChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 
 /**
@@ -35,8 +35,8 @@ public abstract class EMFTraversalStrategy {
         }
         if (change instanceof CompositeContainerChange) {
             for (final VitruviusChange compChange : ((CompositeContainerChange) change).getChanges()) {
-                if (compChange instanceof EMFModelChange) {
-                    changeElement = (((EMFModelChange) compChange).getEChanges().toString());
+                if (compChange instanceof TransactionalChange) {
+                    changeElement = (((TransactionalChange) compChange).getEChanges().toString());
                     this.logger.info("Element: '" + changeElement + "' added to change list");
                 }
 
