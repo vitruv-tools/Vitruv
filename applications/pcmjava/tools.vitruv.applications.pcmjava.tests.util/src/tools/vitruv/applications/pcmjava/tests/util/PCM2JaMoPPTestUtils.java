@@ -18,7 +18,7 @@ import org.palladiosimulator.pcm.system.SystemFactory;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.bridges.EMFBridge;
@@ -93,7 +93,7 @@ public class PCM2JaMoPPTestUtils {
         return modelInstance;
     }
 
-    public static GeneralChange createCreateChange(final EObject changedEObject, final EObject newAffectedEObject,
+    public static ConcreteChange createCreateChange(final EObject changedEObject, final EObject newAffectedEObject,
             final EObject oldAffectedEObject, final String featureName) {
         final JavaInsertEReference<EObject, EObject> createChange = ReferenceFactory.eINSTANCE
                 .createJavaInsertEReference();
@@ -103,7 +103,7 @@ public class PCM2JaMoPPTestUtils {
         createChange.setOldAffectedEObject(oldAffectedEObject);
         createChange.setAffectedFeature(getEReferenceByName(newAffectedEObject, featureName));
         createChange.setNewValue(changedEObject);
-        final GeneralChange emfModelChange = VitruviusChangeFactory.getInstance().createGeneralChange(Collections.singletonList(createChange),
+        final ConcreteChange emfModelChange = VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(createChange),
                 VURI.getInstance(oldAffectedEObject.eResource()));
         return emfModelChange;
     }

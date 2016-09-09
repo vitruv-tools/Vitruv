@@ -17,12 +17,12 @@ import org.eclipse.emf.ecore.change.FeatureChange;
 
 import com.google.common.collect.EvictingQueue;
 
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.description.GeneralChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.preparation.ChangePreparing;
-import tools.vitruv.framework.change.preparation.ChangePreparingImpl;
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter;
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverterImpl;
 import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
@@ -45,7 +45,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private final ModelProviding modelProviding;
     private final Change2CommandTransformingProviding change2CommandTransformingProviding;
     private final CorrespondenceProviding correspondenceProviding;
-    private final ChangePreparing changePreparing;
+    private final ChangeToEChangeConverter changePreparing;
     private final CommandExecuting commandExecuting;
 
     private Set<SynchronisationListener> synchronisationListeners;
@@ -58,7 +58,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         this.modelProviding = modelProviding;
         this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
-        this.changePreparing = new ChangePreparingImpl();
+        this.changePreparing = new ChangeToEChangeConverterImpl();
         this.synchronisationListeners = new HashSet<SynchronisationListener>();
         if (null != synchronisationListener) {
             this.synchronisationListeners.add(synchronisationListener);
@@ -103,8 +103,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private void synchronizeSingleChange(final VitruviusChange change,
             final Set<CorrespondenceModel> correspondenceModels,
             final List<List<VitruviusChange>> commandExecutionChanges) {
-        if (change instanceof CompositeChange) {
-            for (VitruviusChange innerChange : ((CompositeChange) change).getChanges()) {
+        if (change instanceof CompositeContainerChange) {
+            for (VitruviusChange innerChange : ((CompositeContainerChange) change).getChanges()) {
                 synchronizeSingleChange(innerChange, correspondenceModels, commandExecutionChanges);
             }
         } else {
@@ -165,7 +165,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                     tuidMap.put(object, tuid);
                 }
             }
-        } else if (recordedChange instanceof GeneralChange) {
+        } else if (recordedChange instanceof ConcreteChange) {
             // for (EChange eChange : recordedChange.getEChanges()) {
             // if (eChange instanceof JavaFeatureEChange<?, ?>) {
             // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
@@ -178,8 +178,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             // }
             // }
             // }
-        } else if (recordedChange instanceof CompositeChange) {
-            CompositeChange change = (CompositeChange) recordedChange;
+        } else if (recordedChange instanceof CompositeContainerChange) {
+            CompositeContainerChange change = (CompositeContainerChange) recordedChange;
             for (VitruviusChange innerChange : change.getChanges()) {
                 getOldObjectTUIDs(innerChange, correspondenceModel, tuidMap);
             }
@@ -208,8 +208,8 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     }
 
     private void rollbackChange(final VitruviusChange change) {
-        if (change instanceof CompositeChange) {
-            List<VitruviusChange> innerChanges = ((CompositeChange) change).getChanges();
+        if (change instanceof CompositeContainerChange) {
+            List<VitruviusChange> innerChanges = ((CompositeContainerChange) change).getChanges();
             for (int i = innerChanges.size() - 1; i >= 0; i--) {
                 rollbackChange(innerChanges.get(i));
             }

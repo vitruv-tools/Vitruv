@@ -32,7 +32,7 @@ import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEdito
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelProviding;
@@ -263,7 +263,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         updateSynchronizationTimestamp(resourceURI);
         if (collectedChanges != null && !collectedChanges.isEmpty()) {
             LOGGER.trace("Got a change for " + resourceURI + ", continuing synchronization.");
-            CompositeChange compositeChange = VitruviusChangeFactory.getInstance()
+            CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance()
                     .createCompositeChange(collectedChanges);
             summaryChangeSynchronizing.synchronizeChange(compositeChange);
             this.collectedChanges.clear();

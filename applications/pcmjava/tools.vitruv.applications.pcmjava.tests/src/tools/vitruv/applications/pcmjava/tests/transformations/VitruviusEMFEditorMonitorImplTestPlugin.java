@@ -15,8 +15,8 @@ import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.preparation.ChangePreparing;
-import tools.vitruv.framework.change.preparation.ChangePreparingImpl;
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter;
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverterImpl;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
@@ -47,7 +47,7 @@ public class VitruviusEMFEditorMonitorImplTestPlugin {
         changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singletonList(resource));
         repo.setEntityName("TestNewName");
         final List<EMFModelChange> changes = changeRecorder.endRecording();
-        final ChangePreparing changePreparer = new ChangePreparingImpl();
+        final ChangeToEChangeConverter changePreparer = new ChangeToEChangeConverterImpl();
         for (EMFModelChange change : changes) {
         	change.prepare(changePreparer);
         	logger.warn(change);

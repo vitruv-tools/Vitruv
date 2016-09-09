@@ -31,7 +31,7 @@ import org.palladiosimulator.pcm.repository.Signature;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.applications.pcmjava.reconstructionintegration.repository.RepositoryTraversalStrategy;
 import tools.vitruv.domains.pcm.util.RepositoryModelLoader;
@@ -161,7 +161,7 @@ public class BasicRepositoryTraversalTest {
         }
 
         // 6: ProvidesComponent + Roles
-        final CompositeChange providesComponentChange = (CompositeChange) changes.get(8);
+        final CompositeContainerChange providesComponentChange = (CompositeContainerChange) changes.get(8);
         List<VitruviusChange> atomicChanges = providesComponentChange.getChanges();
         // At least 2 atomic changes must be aggregated (component +
         // providesRoles)
@@ -175,7 +175,7 @@ public class BasicRepositoryTraversalTest {
         assertEquals("_sqDJQGQ6EeSiO4MX-GG07A", provRole.getId());
 
         // 7: CompleteComponent + Roles
-        final CompositeChange completeComponentChange = (CompositeChange) changes.get(9);
+        final CompositeContainerChange completeComponentChange = (CompositeContainerChange) changes.get(9);
         atomicChanges = completeComponentChange.getChanges();
         // At least 2 atomic changes must be aggregated (component +
         // providesRoles / requiredRoles)

@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.applications.pcmjava.reconstructionintegration.util.PCMChangeBuildHelper;
 import tools.vitruv.extensions.constructionsimulation.traversal.EMFTraversalStrategy;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 
 /**
@@ -87,7 +87,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
         for (final AssemblyContext context : entity.getAssemblyContexts__ComposedStructure()) {
             final EChange assemblyContextChange = PCMChangeBuildHelper.createChangeFromAssemblyContext(context);
-            this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(assemblyContextChange, this.vuri), this.changeList);
+            this.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(assemblyContextChange, this.vuri), this.changeList);
         }
 
     }
@@ -114,7 +114,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
             }
         }
 
-        CompositeChange compChange = null;
+        CompositeContainerChange compChange = null;
 
         for (int i = 0; i < roleDelegationChanges.size(); i++) {
 
@@ -122,13 +122,13 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
             @SuppressWarnings("unchecked")
             final InsertEReference<EObject, ?> change = (InsertEReference<EObject, ?>) roleDelegationChanges.get(i);
             if (change.getNewValue() instanceof Role) {
-                compChange = VitruviusChangeFactory.getInstance().createCompositeChange();
-                compChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i), this.vuri));
-                compChange.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i + 1), this.vuri));
+                compChange = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
+                compChange.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(roleDelegationChanges.get(i), this.vuri));
+                compChange.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(roleDelegationChanges.get(i + 1), this.vuri));
                 this.addChange(compChange, this.changeList);
                 i++;
             } else {
-                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(roleDelegationChanges.get(i), this.vuri), this.changeList);
+                this.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(roleDelegationChanges.get(i), this.vuri), this.changeList);
             }
 
         }
@@ -147,7 +147,7 @@ public abstract class ComposedEntitiesTraversalStrategy extends EMFTraversalStra
 
             if (connector instanceof AssemblyConnector) {
                 final EChange assemblyConnectorChange = PCMChangeBuildHelper.createChangeFromConnector(connector);
-                this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(assemblyConnectorChange, this.vuri), this.changeList);
+                this.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(assemblyConnectorChange, this.vuri), this.changeList);
             }
 
         }

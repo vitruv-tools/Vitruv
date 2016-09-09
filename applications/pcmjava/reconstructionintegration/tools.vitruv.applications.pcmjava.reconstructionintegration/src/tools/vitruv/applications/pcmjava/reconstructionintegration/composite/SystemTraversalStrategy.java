@@ -56,7 +56,7 @@ public class SystemTraversalStrategy extends ComposedEntitiesTraversalStrategy i
     private void traverseSystem(final System system) {
 
         final EChange systemChange = PCMChangeBuildHelper.createChangeFromSystem(system);
-        this.addChange(VitruviusChangeFactory.getInstance().createGeneralChange(systemChange, this.vuri), this.changeList);
+        this.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(systemChange, this.vuri), this.changeList);
 
     }
 

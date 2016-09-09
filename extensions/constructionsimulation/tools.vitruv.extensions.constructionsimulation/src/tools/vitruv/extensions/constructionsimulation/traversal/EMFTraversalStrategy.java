@@ -3,7 +3,7 @@ package tools.vitruv.extensions.constructionsimulation.traversal;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.EMFModelChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
@@ -33,8 +33,8 @@ public abstract class EMFTraversalStrategy {
             changeElement = change.getEChanges().toString();
             this.logger.info("Element: '" + changeElement + "' added to change list");
         }
-        if (change instanceof CompositeChange) {
-            for (final VitruviusChange compChange : ((CompositeChange) change).getChanges()) {
+        if (change instanceof CompositeContainerChange) {
+            for (final VitruviusChange compChange : ((CompositeContainerChange) change).getChanges()) {
                 if (compChange instanceof EMFModelChange) {
                     changeElement = (((EMFModelChange) compChange).getEChanges().toString());
                     this.logger.info("Element: '" + changeElement + "' added to change list");

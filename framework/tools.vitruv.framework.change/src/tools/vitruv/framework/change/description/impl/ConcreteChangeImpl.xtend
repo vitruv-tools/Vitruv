@@ -1,49 +1,27 @@
 package tools.vitruv.framework.change.description.impl
 
-import tools.vitruv.framework.change.description.ConcreteChange
-import java.util.List
 import tools.vitruv.framework.change.echange.EChange
-import java.util.ArrayList
+import java.util.List
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.preparation.ChangePreparing
+import tools.vitruv.framework.change.description.ConcreteChange
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
 
-abstract class ConcreteChangeImpl implements ConcreteChange {
-	protected final List<EChange> eChanges;
-	final VURI vuri;
-	boolean prepared;
-	
-	new(VURI vuri) {
-		this.eChanges = new ArrayList<EChange>();
-		this.vuri = vuri;
-		this.prepared = false;
+class ConcreteChangeImpl extends AbstractConcreteChange implements ConcreteChange {
+    public new(List<EChange> eChanges, VURI vuri) {
+    	super(vuri);
+        this.eChanges.addAll(eChanges);
+    }
+
+    public override String toString() {
+        return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChanges: " + this.eChanges;
+    }
+				
+	override prepare(ChangeToEChangeConverter converter) {
+		// Do nothing
 	}
 	
-	override containsConcreteChange() {
+	override isPrepared() {
 		return true;
 	}
-	
-	override validate() {
-		return containsConcreteChange() && URI != null;
-	}
-	
-	override getEChanges() {
-		return new ArrayList<EChange>(eChanges);
-	}
-	
-	override getURI() {
-		return vuri;
-	}
-		
-	override isPrepared() {
-		return this.prepared;
-	}
-	
-	override prepare(ChangePreparing preparer) {
-		if (prepared) {
-			throw new IllegalStateException("The change is already prepared.");
-		}
-		this.eChanges.addAll(preparer.prepareChange(this));
-		this.prepared = true;
-	}
-	
+				
 }

@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.emftext.language.java.containers.Package
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.description.GeneralChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.domains.java.echange.feature.attribute.JavaReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.description.ConcreteChange
@@ -14,6 +13,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessorResult
 import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.description.TransactionalChange
 
 class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
     
@@ -66,9 +66,9 @@ class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
         }
     }
 				
-	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
+	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		val result = new ChangeProcessorResult(change, #[]);
-		if (change instanceof GeneralChange) {
+		if (change instanceof ConcreteChange) {
 			handlePackageInEChange(change);	
 		}
 		

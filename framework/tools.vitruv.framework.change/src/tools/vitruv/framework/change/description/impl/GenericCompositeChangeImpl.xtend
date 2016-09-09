@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.description.GenericCompositeChange
 import tools.vitruv.framework.change.echange.EChange
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.preparation.ChangePreparing
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
 
 class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
     List<C> changes;
@@ -75,7 +75,7 @@ class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCo
 		);
 	}
 	
-	override prepare(ChangePreparing preparer) {
+	override prepare(ChangeToEChangeConverter preparer) {
 		for (change : changes) {
 			change.prepare(preparer);
 		}

@@ -12,7 +12,7 @@ import java.util.Collection
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.preparation.ChangePreparingImpl
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverterImpl
 
 /** 
  * @author langhamm
@@ -63,8 +63,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		for (var i = changeDescriptions.size -1; i>= 0; i--) {
 			changeDescriptions.get(i).changeDescription.applyAndReverse();
 		}
+		// FIXME HK dont use the calculate method, prepare all changes in forall loop and take the changes afterwards
 		return changeDescriptions.map[
-			val changes = new ChangePreparingImpl().prepareChange(it);
+			val changes = new ChangeToEChangeConverterImpl().calculateEChangesForChange(it);
 			it.changeDescription.applyAndReverse();
 			return changes;
 		].flatten.toList;

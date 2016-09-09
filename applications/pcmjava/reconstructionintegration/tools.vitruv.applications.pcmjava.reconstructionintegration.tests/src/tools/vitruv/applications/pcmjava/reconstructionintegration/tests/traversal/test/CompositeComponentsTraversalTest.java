@@ -23,7 +23,7 @@ import tools.vitruv.applications.pcmjava.reconstructionintegration.composite.Com
 import tools.vitruv.applications.pcmjava.reconstructionintegration.repository.RepositoryTraversalStrategy;
 import tools.vitruv.domains.pcm.util.RepositoryModelLoader;
 import tools.vitruv.extensions.constructionsimulation.traversal.ITraversalStrategy;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 
 /**
@@ -105,7 +105,7 @@ public class CompositeComponentsTraversalTest {
         // Don't validate earlier changes. This is covered by BasicRepositoryTraversalTest
 
         ConcreteChange basicChange = null;
-        CompositeChange compChange = null;
+        CompositeContainerChange compChange = null;
 
         AssemblyContext assemblyContext = null;
         ProvidedRole provRole = null;
@@ -124,7 +124,7 @@ public class CompositeComponentsTraversalTest {
         assertEquals("_45e1UKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
         // CompositeChange: Inner provided role + delegation
-        compChange = (CompositeChange) changes.get(19);
+        compChange = (CompositeContainerChange) changes.get(19);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         provRole = (ProvidedRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_Ipz9v6SPEeSog9_tMitgaA", provRole.getId());
@@ -134,7 +134,7 @@ public class CompositeComponentsTraversalTest {
         assertEquals("_PqX2ZKSPEeSog9_tMitgaA", connector.getId());
 
         // CompositeChange: Inner required role + delegation
-        compChange = (CompositeChange) changes.get(20);
+        compChange = (CompositeContainerChange) changes.get(20);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         reqRole = (RequiredRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_2ibk06SSEeSVEJcCUfjH2Q", reqRole.getId());
@@ -160,7 +160,7 @@ public class CompositeComponentsTraversalTest {
         assertEquals("_snqeYKSKEeSbnMsEKXLSVg", assemblyContext.getId());
 
         // CompositeChange: Inner provided role + delegation
-        compChange = (CompositeChange) changes.get(24);
+        compChange = (CompositeContainerChange) changes.get(24);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         provRole = (ProvidedRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_EBE7P6STEeSVEJcCUfjH2Q", provRole.getId());
@@ -170,7 +170,7 @@ public class CompositeComponentsTraversalTest {
         assertEquals("_IP0zlKSTEeSVEJcCUfjH2Q", connector.getId());
 
         // CompositeChange: Inner required role + delegation
-        compChange = (CompositeChange) changes.get(25);
+        compChange = (CompositeContainerChange) changes.get(25);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         reqRole = (RequiredRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_CJpqI6SUEeSVEJcCUfjH2Q", reqRole.getId());

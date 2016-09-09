@@ -3,7 +3,7 @@ package tools.vitruv.framework.change.description
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.URIHaving
-import tools.vitruv.framework.change.preparation.ChangePreparing
+import tools.vitruv.framework.change.preparation.ChangeToEChangeConverter
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -31,7 +31,7 @@ interface VitruviusChange extends URIHaving {
 	/**
 	 * Calls the given {@link ChangePreparer} to generate the {@link EChange}s for this change.
 	 */
-	def void prepare(ChangePreparing  preparer);
+	def void prepare(ChangeToEChangeConverter  preparer);
 
 	/** 
 	 * Returns the {@link EChange}s that describe this change. Requires the change to be prepared so

@@ -18,7 +18,7 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 		val originalMethod = changeClassifyingEvent.originalCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.originalElement)
 		val changedMethod = changeClassifyingEvent.changedCompilationUnit.getMethodOrConstructorForMethodDeclaration(changeClassifyingEvent.changedElement)
  
-		val compositeChange = VitruviusChangeFactory.instance.createTransactionalChange();
+		val compositeChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange();
 		val changeURI = VURI.getInstance(originalMethod.eResource)
 
 		for (stmt : (originalMethod as ClassMethod).statements) {
@@ -29,7 +29,7 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
 			change.oldValue = stmt
 			change.index = (originalMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(VitruviusChangeFactory.instance.createGeneralChange(#[change], changeURI))
+			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(#[change], changeURI))
 		}
 		
 		for (stmt : (changedMethod as ClassMethod).statements) {
@@ -40,7 +40,7 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
 			change.newValue = stmt
 			change.index = (changedMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(VitruviusChangeFactory.instance.createGeneralChange(#[change], changeURI))
+			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(#[change], changeURI))
 		}
 		submitter.submitChange(compositeChange)
 	}

@@ -40,7 +40,7 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
@@ -158,8 +158,8 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
         assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof CompositeChange;
-        int changeCount = ((CompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert cs.getLastChanges().get(0) instanceof CompositeContainerChange;
+        int changeCount = ((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 2 : "Got " + changeCount + " changes instead of 2.";
     }
 
@@ -193,16 +193,16 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !cs.getLastChanges().isEmpty();
         assert cs.hasBeenExecuted();
         assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof CompositeChange;
-        int changeCount = ((CompositeChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert cs.getLastChanges().get(0) instanceof CompositeContainerChange;
+        int changeCount = ((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 3 : "Got " + changeCount + " changes instead of 3.";
 
-        transformChanges(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
+        transformChanges(((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges());
         FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (cs.getLastChanges().get(0).getEChanges().get(0));
         EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
-        List<VitruviusChange> changes = new ArrayList<VitruviusChange>(((CompositeChange) cs.getLastChanges().get(0)).getChanges());
+        List<VitruviusChange> changes = new ArrayList<VitruviusChange>(((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges());
         // System.err.println(root);
         //
         // ChangeAssert.printChangeList(changes);

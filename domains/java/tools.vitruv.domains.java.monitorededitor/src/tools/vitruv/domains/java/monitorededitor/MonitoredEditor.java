@@ -19,7 +19,7 @@ import tools.vitruv.domains.java.monitorededitor.changeclassification.ChangeOper
 import tools.vitruv.domains.java.monitorededitor.changeclassification.events.ChangeClassifyingEvent;
 import tools.vitruv.domains.java.monitorededitor.refactoringlistener.RefactoringChangeListener;
 import tools.vitruv.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelProviding;
@@ -101,7 +101,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
     private final UserInteracting userInteractor;
     private long lastRefactoringTime;
     protected boolean refactoringInProgress = false;
-    private CompositeChange changeStash = null;
+    private CompositeContainerChange changeStash = null;
     private boolean reportChanges;
     private static final String MY_MONITORED_PROJECT = "hadoop-hdfs";// "FooProject";
 
@@ -127,7 +127,7 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
     protected void startCollectInCompositeChange() {
         this.log.debug("Start collecting Changes in CompositeChange stash");
-        this.changeStash = VitruviusChangeFactory.getInstance().createCompositeChange();
+        this.changeStash = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
         this.refactoringInProgress = true;
     }
 

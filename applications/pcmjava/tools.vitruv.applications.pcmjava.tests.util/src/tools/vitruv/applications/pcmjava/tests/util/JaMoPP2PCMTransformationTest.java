@@ -100,7 +100,7 @@ import tools.vitruv.domains.emf.util.BuildProjects;
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.description.VitruviusChange;
@@ -925,8 +925,8 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		createChange.setNewValue(newAnnotation);
 		final ChangeSynchronizing cs = this.getChangeSynchronizing();
 		final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
-		final GeneralChange change = VitruviusChangeFactory.getInstance()
-				.createGeneralChange(Collections.singletonList(createChange), vuri);
+		final ConcreteChange change = VitruviusChangeFactory.getInstance()
+				.createConcreteChange(Collections.singletonList(createChange), vuri);
 		cs.synchronizeChange(change);
 	}
 

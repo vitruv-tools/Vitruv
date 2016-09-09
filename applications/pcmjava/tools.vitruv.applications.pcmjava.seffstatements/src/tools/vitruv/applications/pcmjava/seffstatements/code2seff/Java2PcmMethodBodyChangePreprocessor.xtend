@@ -15,11 +15,12 @@ import org.emftext.language.java.statements.StatementsPackage
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessorResult
 import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import java.util.ArrayList
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
+import tools.vitruv.framework.change.description.TransactionalChange
 
 class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 
@@ -30,9 +31,9 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 		this.code2SEFFfactory = code2SEFFfactory
 	}
 
-	override transformChange(ConcreteChange change, CorrespondenceModel correspondenceModel) {
-		if (change instanceof TransactionalChange && match(change as TransactionalChange)) {
-			val compositeChange = change as TransactionalChange;
+	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		if (change instanceof CompositeTransactionalChange && match(change as CompositeTransactionalChange)) {
+			val compositeChange = change as CompositeTransactionalChange;
 			val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
 				new Callable<TransformationResult>() {
 					public override TransformationResult call() {
@@ -45,7 +46,7 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 		return new ChangeProcessorResult(change, #[]);
 	}
 
-	def match(TransactionalChange change) {
+	def match(CompositeTransactionalChange change) {
 		val eChanges = new ArrayList<JavaFeatureEChange<?, ?>>();
 		for (eChange : change.EChanges) {
 			if (eChange instanceof UpdateReferenceEChange<?>) {
@@ -104,7 +105,7 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 	}
 
 	private def TransformationResult executeClassMethodBodyChangeRefiner(CorrespondenceModel correspondenceModel,
-		UserInteracting userInteracting, TransactionalChange compositeChange) {
+		UserInteracting userInteracting, CompositeTransactionalChange compositeChange) {
 		val ConcreteChange emfChange = compositeChange.getChanges().get(0) as ConcreteChange;
 		val JavaFeatureEChange<?, ?> eFeatureChange = emfChange.getEChanges().get(0) as JavaFeatureEChange<?, ?>;
 		val oldMethod = eFeatureChange.getOldAffectedEObject() as Method;

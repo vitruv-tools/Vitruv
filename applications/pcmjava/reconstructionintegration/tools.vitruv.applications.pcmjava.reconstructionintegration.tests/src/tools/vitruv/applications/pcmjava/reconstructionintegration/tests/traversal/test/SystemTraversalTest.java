@@ -20,7 +20,7 @@ import org.palladiosimulator.pcm.system.System;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.applications.pcmjava.reconstructionintegration.composite.SystemTraversalStrategy;
 import tools.vitruv.domains.pcm.util.RepositoryModelLoader;
@@ -99,7 +99,7 @@ public class SystemTraversalTest {
         }
 
         ConcreteChange basicChange = null;
-        CompositeChange compChange = null;
+        CompositeContainerChange compChange = null;
 
         System changeSystem = null;
         AssemblyContext assemblyContext = null;
@@ -123,7 +123,7 @@ public class SystemTraversalTest {
         assertEquals("_ufjGkKYKEeS1R4FUSvxJvA", assemblyContext.getId());
 
         // CompositeChange: provided role + delegation
-        compChange = (CompositeChange) changes.get(3);
+        compChange = (CompositeContainerChange) changes.get(3);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         provRole = (ProvidedRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_zTNC0KYKEeS1R4FUSvxJvA", provRole.getId());
@@ -133,7 +133,7 @@ public class SystemTraversalTest {
         assertEquals("_5V0FgKYKEeS1R4FUSvxJvA", connector.getId());
 
         // CompositeChange: required role + delegation
-        compChange = (CompositeChange) changes.get(4);
+        compChange = (CompositeContainerChange) changes.get(4);
         basicChange = (ConcreteChange) compChange.getChanges().get(0);
         reqRole = (RequiredRole) ((InsertEReference<EObject, EObject>) basicChange.getEChanges().get(0)).getNewValue();
         assertEquals("_04atIKYKEeS1R4FUSvxJvA", reqRole.getId());

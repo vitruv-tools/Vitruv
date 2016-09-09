@@ -8,11 +8,11 @@ import tools.vitruv.framework.change.description.impl.FileChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.description.impl.GeneralChangeImpl
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
@@ -30,23 +30,23 @@ class VitruviusChangeFactory {
 		return new EMFModelChangeImpl(changeDescription, vuri);
 	}
 	
-	public def GeneralChange createGeneralChange(EChange change, VURI vuri) {
-		return new GeneralChangeImpl(#[change], vuri);
+	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
+		return new ConcreteChangeImpl(#[change], vuri);
 	}
 	
-	public def GeneralChange createGeneralChange(List<EChange> changes, VURI vuri) {
-		return new GeneralChangeImpl(changes, vuri);
+	public def ConcreteChange createConcreteChange(List<EChange> changes, VURI vuri) {
+		return new ConcreteChangeImpl(changes, vuri);
 	}
 	
 	public def FileChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		return new FileChangeImpl(kind, changedFileResource);
 	}
 	
-	public def CompositeChange createCompositeChange() {
+	public def CompositeContainerChange createCompositeContainerChange() {
 		return new CompositeChangeImpl();
 	}
 	
-	public def TransactionalChange createTransactionalChange() {
+	public def CompositeTransactionalChange createCompositeTransactionalChange() {
 		return new TransactionalChangeImpl();
 	}
 	
@@ -54,7 +54,7 @@ class VitruviusChangeFactory {
 		return new EmptyChangeImpl(vuri);
 	}
 	
-	public def CompositeChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
+	public def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		val compositeChange = new CompositeChangeImpl();
 		for (innerChange : innerChanges) {
 			compositeChange.addChange(innerChange);

@@ -2,19 +2,19 @@ package tools.vitruv.framework.change.processing
 
 import java.util.List
 import java.util.ArrayList
-import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.framework.change.description.TransactionalChange
 
 class ChangeProcessorResult {
-	val ConcreteChange resultingChange;
+	val TransactionalChange resultingChange;
 	val List<VitruviusRecordingCommand> generatedCommands;
 	
-	new(ConcreteChange resultingChange, List<VitruviusRecordingCommand> generatedCommands) {
+	new(TransactionalChange resultingChange, List<VitruviusRecordingCommand> generatedCommands) {
 		this.resultingChange = resultingChange;
 		this.generatedCommands = generatedCommands;
 	}
 	
-	def ConcreteChange getResultingChange() {
+	def TransactionalChange getResultingChange() {
 		return resultingChange;
 	}
 	

@@ -4,8 +4,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.List
-import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.ConcreteChange
 import org.apache.log4j.Logger
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessor
@@ -13,6 +11,8 @@ import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.change.processing.Change2CommandTransforming
+import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.description.TransactionalChange
 
 abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
@@ -62,13 +62,13 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
 	}
 
-	private def dispatch void processChange(CompositeChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
+	private def dispatch void processChange(CompositeContainerChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		for (containedChange : change.changes) {
 			processChange(containedChange, correspondenceModel, commandList);
 		}
 	}
 
-	private def dispatch void processChange(ConcreteChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
+	private def dispatch void processChange(TransactionalChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		var currentChange = change;
 		for (changeProcessor : changePreprocessors + changeMainprocessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');

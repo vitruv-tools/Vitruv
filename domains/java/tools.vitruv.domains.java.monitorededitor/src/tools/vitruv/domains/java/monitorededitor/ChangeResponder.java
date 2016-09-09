@@ -78,8 +78,8 @@ import tools.vitruv.domains.java.monitorededitor.changeclassification.events.Ren
 import tools.vitruv.domains.java.monitorededitor.jamopputil.AST2JaMoPP;
 import tools.vitruv.domains.java.monitorededitor.jamopputil.CompilationUnitAdapter;
 import tools.vitruv.domains.java.monitorededitor.jamopputil.JaMoPPChangeBuildHelper;
-import tools.vitruv.framework.change.description.CompositeChange;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.bridges.EclipseBridge;
@@ -354,11 +354,11 @@ public class ChangeResponder implements ChangeEventVisitor {
 
             final EChange[] eChanges = JaMoPPChangeBuildHelper.createMoveMethodChange(removedMethod,
                     classifierMovedFromAfterRemove, addedMethod, classifierMovedToBeforeAdd);
-            final CompositeChange moveMethodChange = VitruviusChangeFactory.getInstance().createCompositeChange();
+            final CompositeContainerChange moveMethodChange = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
             // [0] is remove, [1] is add
-            final GeneralChange removeMethodChange = this.util.wrapToVitruviusModelChange(eChanges[0],
+            final ConcreteChange removeMethodChange = this.util.wrapToVitruviusModelChange(eChanges[0],
                     moveMethodEvent.original);
-            final GeneralChange addMethodChange = this.util.wrapToVitruviusModelChange(eChanges[1], moveMethodEvent.moved);
+            final ConcreteChange addMethodChange = this.util.wrapToVitruviusModelChange(eChanges[1], moveMethodEvent.moved);
             moveMethodChange.addChange(removeMethodChange);
             moveMethodChange.addChange(addMethodChange);
             this.monitoredEditor.submitChange(moveMethodChange);
@@ -436,7 +436,7 @@ public class ChangeResponder implements ChangeEventVisitor {
 
     private void handleParameterChanges(final Parametrizable methodAfterRemove, final Parametrizable methodBeforeAdd,
             final List<Parameter> oldParameters, final List<Parameter> newParameters, final ASTNode oldNode) {
-        final CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange();
+        final CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
         /*
          * for (final Parameter oldParameter : oldParameters) { final EChange eChange =
          * JaMoPPChangeBuildHelper.createRemoveParameterChange(oldParameter, methodAfterRemove);
@@ -540,7 +540,7 @@ public class ChangeResponder implements ChangeEventVisitor {
         if (originalMethod instanceof AnnotableAndModifiable && changedMethod instanceof AnnotableAndModifiable) {
             final AnnotableAndModifiable originalModifiable = (AnnotableAndModifiable) originalMethod;
             final AnnotableAndModifiable changedModifiable = (AnnotableAndModifiable) changedMethod;
-            final CompositeChange change = this.buildModifierChanges(originalMethod, changedMethod,
+            final CompositeContainerChange change = this.buildModifierChanges(originalMethod, changedMethod,
                     originalModifiable.getModifiers(), changedModifiable.getModifiers(),
                     changeMethodModifierEvent.original);
             this.monitoredEditor.submitChange(change);
@@ -568,12 +568,12 @@ public class ChangeResponder implements ChangeEventVisitor {
         final CompilationUnitAdapter changedCU = this.util.getUnsavedCompilationUnitAdapter(changed);
         final ConcreteClassifier changedClassifier = changedCU.getConcreteClassifierForTypeDeclaration(changed);
 
-        final CompositeChange change = this.buildModifierChanges(originalClassifier, changedClassifier,
+        final CompositeContainerChange change = this.buildModifierChanges(originalClassifier, changedClassifier,
                 originalClassifier.getModifiers(), changedClassifier.getModifiers(), original);
         this.monitoredEditor.submitChange(change);
     }
 
-    private CompositeChange buildModifierChanges(final EObject modifiableBeforeChange,
+    private CompositeContainerChange buildModifierChanges(final EObject modifiableBeforeChange,
             final EObject modifiableAfterChange, final List<Modifier> oldModifiers, final List<Modifier> newModifiers,
             final ASTNode oldNode) {
         final List<Modifier> originalModifiers = new ArrayList<Modifier>(oldModifiers);
@@ -589,7 +589,7 @@ public class ChangeResponder implements ChangeEventVisitor {
             }
         }
 
-        final CompositeChange modifierChanges = VitruviusChangeFactory.getInstance().createCompositeChange();
+        final CompositeContainerChange modifierChanges = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
         for (final Modifier removedModifier : originalModifiers) {
             final EChange eChange = JaMoPPChangeBuildHelper.createRemoveAnnotationOrModifierChange(removedModifier,
                     modifiableAfterChange);
@@ -638,7 +638,7 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getUnsavedCompilationUnitAdapter(changeFieldModifiersEvent.changed);
         final List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldModifiersEvent.changed);
 
-        final CompositeChange allFieldModifierChanges = VitruviusChangeFactory.getInstance().createCompositeChange();
+        final CompositeContainerChange allFieldModifierChanges = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
         final ListIterator<Field> ofit = originalFields.listIterator();
         while (ofit.hasNext()) {
             final Field oField = ofit.next();
@@ -647,7 +647,7 @@ public class ChangeResponder implements ChangeEventVisitor {
                 final Field cField = cfit.next();
                 if (oField.getName().equals(cField.getName())) {
                     cfit.remove();
-                    final CompositeChange fieldModifierChanges = this.buildModifierChanges(oField, cField,
+                    final CompositeContainerChange fieldModifierChanges = this.buildModifierChanges(oField, cField,
                             oField.getModifiers(), cField.getModifiers(), changeFieldModifiersEvent.original);
                     allFieldModifierChanges.addChange(fieldModifierChanges);
                 }
@@ -665,7 +665,7 @@ public class ChangeResponder implements ChangeEventVisitor {
                 .getUnsavedCompilationUnitAdapter(changeFieldTypeEvent.changed);
         final List<Field> changedFields = changedCU.getFieldsForFieldDeclaration(changeFieldTypeEvent.changed);
 
-        final CompositeChange typeChanges = VitruviusChangeFactory.getInstance().createCompositeChange();
+        final CompositeContainerChange typeChanges = VitruviusChangeFactory.getInstance().createCompositeContainerChange();
         final ListIterator<Field> ofit = originalFields.listIterator();
         while (ofit.hasNext()) {
             final Field oField = ofit.next();
@@ -805,23 +805,23 @@ public class ChangeResponder implements ChangeEventVisitor {
         }
 
         private void submitVitruviusModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
-            final GeneralChange change = this.wrapToVitruviusModelChange(eChange, astNodeWithIResource);
+            final ConcreteChange change = this.wrapToVitruviusModelChange(eChange, astNodeWithIResource);
             ChangeResponder.this.monitoredEditor.submitChange(change);
         }
 
         private void submitVitruviusModelChange(final EChange eChange, final IResource originalIResource) {
-            final GeneralChange change = this.wrapToVitruviusModelChange(eChange, originalIResource);
+            final ConcreteChange change = this.wrapToVitruviusModelChange(eChange, originalIResource);
             ChangeResponder.this.monitoredEditor.submitChange(change);
         }
 
-        private GeneralChange wrapToVitruviusModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
+        private ConcreteChange wrapToVitruviusModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
             final VURI vuri = VURI.getInstance(AST2JaMoPP.getIResource(astNodeWithIResource));
-            return VitruviusChangeFactory.getInstance().createGeneralChange(Collections.singletonList(eChange), vuri);
+            return VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(eChange), vuri);
         }
 
-        private GeneralChange wrapToVitruviusModelChange(final EChange eChange, final IResource originalIResource) {
+        private ConcreteChange wrapToVitruviusModelChange(final EChange eChange, final IResource originalIResource) {
             final VURI vuri = VURI.getInstance(originalIResource);
-            return VitruviusChangeFactory.getInstance().createGeneralChange(Collections.singletonList(eChange), vuri);
+            return VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(eChange), vuri);
         }
 
         // returns URI from node1 if exists, otherwise URI from node2 or null if both have no

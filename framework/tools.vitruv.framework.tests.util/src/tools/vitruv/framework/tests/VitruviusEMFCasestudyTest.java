@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.runner.Description;
 
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.EMFModelChange;
 import tools.vitruv.framework.change.description.FileChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
@@ -85,7 +85,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 
 	protected void triggerSynchronization(final VURI vuri) {
 		final List<EMFModelChange> changes = this.changeRecorder.endRecording();
-		CompositeChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
+		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.changeSynchronizer.synchronizeChange(compositeChange);
 		this.changeRecorder.beginRecording(vuri, Collections.emptyList());
 	}

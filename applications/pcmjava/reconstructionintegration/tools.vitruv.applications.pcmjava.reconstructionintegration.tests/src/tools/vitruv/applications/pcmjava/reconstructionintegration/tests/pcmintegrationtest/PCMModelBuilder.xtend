@@ -24,11 +24,11 @@ import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
-import tools.vitruv.framework.change.description.CompositeChange;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import java.util.List
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.description.CompositeContainerChange
 
 class PCMModelBuilder { 
 	
@@ -64,7 +64,7 @@ class PCMModelBuilder {
 	def boolean createModelElement(VitruviusChange change) {
 		
 		switch change {
-			CompositeChange: change.changes.forall[createModelElement]
+			CompositeContainerChange: change.changes.forall[createModelElement]
 			ConcreteChange: change.createModelElementFromChange
 			default: return false
 		}
