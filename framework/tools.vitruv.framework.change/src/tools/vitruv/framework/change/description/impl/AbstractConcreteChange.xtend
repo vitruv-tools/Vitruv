@@ -29,10 +29,6 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		return vuri;
 	}
 		
-	override isPrepared() {
-		return true;
-	}
-
 	override getEChange() {
 		return eChange;
 	}

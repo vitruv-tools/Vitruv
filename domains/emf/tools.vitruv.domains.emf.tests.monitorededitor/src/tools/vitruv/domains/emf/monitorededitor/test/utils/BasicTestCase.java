@@ -40,7 +40,7 @@ public class BasicTestCase {
                 ((EMFModelChange) changes.get(i)).getChangeDescription().applyAndReverse();
         }
         for (VitruviusChange change : changes) {
-            change.prepare();
+            // change.prepare();
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }

@@ -18,14 +18,6 @@ class EmptyChangeImpl implements TransactionalChange {
 		return true;
 	}
 	
-	override isPrepared() {
-		return true;
-	}
-	
-	override prepare() {
-		// Do nothing
-	}
-	
 	override getEChanges() {
 		return #[];
 	}

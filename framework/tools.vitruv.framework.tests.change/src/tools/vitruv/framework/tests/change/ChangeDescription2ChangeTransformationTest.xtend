@@ -59,14 +59,13 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	
 	public def List<EChange> endRecording() {
 		val changeDescriptions = changeRecorder.endRecording()
-		for (var i = changeDescriptions.size -1; i>= 0; i--) {
-			changeDescriptions.get(i).changeDescription.applyAndReverse();
-		}
+//		for (var i = changeDescriptions.size -1; i>= 0; i--) {
+//			changeDescriptions.get(i).changeDescription.applyAndReverse();
+//		}
 		// FIXME HK dont use the calculate method, prepare all changes in forall loop and take the changes afterwards
 		return changeDescriptions.map[
-			it.prepare();
 			val changes = it.EChanges;
-			it.changeDescription.applyAndReverse();
+//			it.changeDescription.applyAndReverse();
 			return changes;
 		].flatten.toList;
 //		val change = new changes.changepreparerTransformation(changeDescriptions, true).getChange();

@@ -21,17 +21,6 @@ interface VitruviusChange extends URIHaving {
 	 */
 	def boolean validate();
 	
-	/**
-	 * Indicates whether this or all contained changes are prepared and contain the {@link EChange}s
-	 * that describe the change.
-	 */
-	def boolean isPrepared();
-
-	/**
-	 * Prepared the change by generating the {@link EChange}s for it.
-	 */
-	def void prepare();
-
 	/** 
 	 * Returns the {@link EChange}s that describe this change. Requires the change to be prepared so
 	 * that the original change information is transformed into {@link EChange}s.  

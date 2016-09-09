@@ -61,10 +61,6 @@ abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements 
 		return true;
 	}
 	
-	override isPrepared() {
-		return changes.fold(true, [prepared, change | prepared && change.isPrepared]);
-	}
-	
 	override getEChanges() {
 		return changes.fold(new ArrayList<EChange>(), 
 			[eChangeList, change | 
@@ -72,12 +68,6 @@ abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements 
 				return eChangeList;
 			]
 		);
-	}
-	
-	override prepare() {
-		for (change : changes) {
-			change.prepare();
-		}
 	}
 	
 }

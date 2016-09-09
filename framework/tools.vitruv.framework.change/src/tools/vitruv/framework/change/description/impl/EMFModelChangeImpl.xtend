@@ -42,10 +42,6 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
         return EMFModelChange.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.changeDescription;
     }
 
-	override prepare() {
-		// Do nothing
-	}
-	
 	override getURI() {
 		return vuri;
 	}
@@ -55,10 +51,6 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 	}
 	
 	override validate() {
-		return true;
-	}
-	
-	override isPrepared() {
 		return true;
 	}
 	

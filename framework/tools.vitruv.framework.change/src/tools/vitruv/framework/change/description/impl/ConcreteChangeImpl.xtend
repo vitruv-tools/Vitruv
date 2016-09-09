@@ -13,13 +13,5 @@ class ConcreteChangeImpl extends AbstractConcreteChange implements ConcreteChang
     public override String toString() {
         return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
     }
-				
-	override prepare() {
-		// Do nothing
-	}
-	
-	override isPrepared() {
-		return true;
-	}
 
 }

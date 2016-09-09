@@ -45,10 +45,6 @@ public class VitruviusEMFEditorMonitorImplTestPlugin {
         changeRecorder.beginRecording(VURI.getInstance(resource), Collections.singletonList(resource));
         repo.setEntityName("TestNewName");
         final List<EMFModelChange> changes = changeRecorder.endRecording();
-        for (EMFModelChange change : changes) {
-        	change.prepare();
-        	logger.warn(change);
-        }
         assertTrue("No changes detected ", 0 < changes.size());
     }
 }

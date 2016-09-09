@@ -106,7 +106,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         } else {
             Map<EObject, TUID> tuidMap = new HashMap<>();
             getOldObjectTUIDs(change, correspondenceModels.iterator().next(), tuidMap);
-            change.prepare();
+            // change.prepare();
             if (change instanceof EMFModelChange) {
                 ((EMFModelChange) change).getChangeDescription().applyAndReverse();
             }
