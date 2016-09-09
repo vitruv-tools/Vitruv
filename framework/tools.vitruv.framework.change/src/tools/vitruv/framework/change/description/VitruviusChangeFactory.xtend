@@ -35,9 +35,8 @@ class VitruviusChangeFactory {
 	}
 	
 	/**
-	 * Generates a change from the given {@link ChangeDescription}. Since the change has to be temporarily rolled back
-	 * to extract the change information, this factory method has to be called directly after the {@link ChangeDescription}
-	 * has been recorded and before further changes are made.
+	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
+	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
 	 */
 	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		return new EMFModelChangeImpl(changeDescription, vuri);

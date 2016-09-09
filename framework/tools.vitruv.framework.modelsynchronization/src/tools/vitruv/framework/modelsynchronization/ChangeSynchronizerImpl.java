@@ -84,7 +84,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         Set<CorrespondenceModel> correspondenceModels = this.correspondenceProviding
                 .getOrCreateAllCorrespondenceModels(sourceModelVURI);
 
-        rollbackChange(change);
+        change.applyBackward();
         List<List<VitruviusChange>> commandExecutionChanges = new ArrayList<List<VitruviusChange>>();
         synchronizeSingleChange(change, correspondenceModels, commandExecutionChanges);
 
@@ -106,10 +106,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         } else {
             Map<EObject, TUID> tuidMap = new HashMap<>();
             getOldObjectTUIDs(change, correspondenceModels.iterator().next(), tuidMap);
-            // change.prepare();
-            if (change instanceof EMFModelChange) {
-                ((EMFModelChange) change).getChangeDescription().applyAndReverse();
-            }
+            change.applyForward();
             updateTUIDs(tuidMap, correspondenceModels.iterator().next());
             for (CorrespondenceModel correspondenceModel : correspondenceModels) {
                 Metamodel mmA = correspondenceModel.getMapping().getMetamodelA();
@@ -200,17 +197,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                     }
                 });
             }
-        }
-    }
-
-    private void rollbackChange(final VitruviusChange change) {
-        if (change instanceof CompositeContainerChange) {
-            List<VitruviusChange> innerChanges = ((CompositeContainerChange) change).getChanges();
-            for (int i = innerChanges.size() - 1; i >= 0; i--) {
-                rollbackChange(innerChanges.get(i));
-            }
-        } else if (change instanceof EMFModelChange) {
-            ((EMFModelChange) change).getChangeDescription().applyAndReverse();
         }
     }
 

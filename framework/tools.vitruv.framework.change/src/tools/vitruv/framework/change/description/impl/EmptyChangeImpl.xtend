@@ -25,5 +25,13 @@ class EmptyChangeImpl implements TransactionalChange {
 	override getURI() {
 		return vuri;
 	}
-		
+	
+	override applyBackward() throws IllegalStateException {
+		// Nothing to be done
+	}
+	
+	override applyForward() throws IllegalStateException {
+		// Nothing to be done
+	}
+	
 }

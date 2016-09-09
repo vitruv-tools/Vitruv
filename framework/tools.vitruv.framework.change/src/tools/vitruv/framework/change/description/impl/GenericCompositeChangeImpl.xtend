@@ -70,4 +70,15 @@ abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements 
 		);
 	}
 	
+	override applyBackward() throws IllegalStateException {
+		for (change : changes.reverseView) {
+			change.applyBackward();
+		}
+	}
+	
+	override applyForward() throws IllegalStateException {
+		for (change : changes.reverseView) {
+			change.applyForward();
+		}
+	}
 }
