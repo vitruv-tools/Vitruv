@@ -25,6 +25,7 @@ import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 /**
@@ -50,6 +51,7 @@ public abstract class VitruviusCasestudyTest {
     protected abstract Change2CommandTransformingProviding createChange2CommandTransformingProviding();
     
     protected void beforeTest(final Description description) throws Throwable {
+    	TUID.reinitialize();
         createTestProject(description);
     }
 

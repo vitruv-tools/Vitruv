@@ -48,7 +48,7 @@ final class TUID implements Serializable {
 	
 	protected static final long serialVersionUID = 5018494116382201707L
 	
-	static val SEGMENTS = generateForwardHashedBackwardLinkedTree()
+	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
 	
 	private static List<TuidUpdateListener> updateListener = new ArrayList<TuidUpdateListener>();
@@ -61,6 +61,11 @@ final class TUID implements Serializable {
 	
 	public static def unregisterUpdateListener(TuidUpdateListener updateListener) {
 		TUID.updateListener.remove(updateListener);
+	}
+	
+	public static def reinitialize() {
+		TUID.updateListener.clear();
+		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 	
 	def private static generateForwardHashedBackwardLinkedTree() {
