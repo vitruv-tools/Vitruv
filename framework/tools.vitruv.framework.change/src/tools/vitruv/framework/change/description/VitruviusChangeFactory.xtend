@@ -7,12 +7,12 @@ import tools.vitruv.framework.change.description.impl.CompositeChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.FileCreateChangeImpl
 import tools.vitruv.framework.change.description.impl.FileDeleteChangeImpl
+import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 
 class VitruviusChangeFactory {
 	private static VitruviusChangeFactory instance;
@@ -56,7 +56,7 @@ class VitruviusChangeFactory {
 	}
 	
 	public def CompositeTransactionalChange createCompositeTransactionalChange() {
-		return new TransactionalChangeImpl();
+		return new CompositeTransactionalChangeImpl();
 	}
 	
 	public def ConcreteChange createEmptyChange(VURI vuri) {
