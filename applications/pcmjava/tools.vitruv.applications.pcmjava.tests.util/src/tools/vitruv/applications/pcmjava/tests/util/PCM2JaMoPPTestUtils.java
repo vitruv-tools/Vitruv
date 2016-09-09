@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.tests.util;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
