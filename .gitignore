@@ -2,6 +2,7 @@
 bin/
 xtend-gen/
 tmp/
+EvaluationData/
 *.tmp
 *.bak
 *.swp
