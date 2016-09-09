@@ -13,7 +13,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.userinteraction,
  org.palladiosimulator.pcm,
  org.emftext.language.java,
- org.somox.gast2seff,
  tools.vitruv.framework.util,
  tools.vitruv.framework.change,
  tools.vitruv.framework.tuid,
@@ -22,6 +21,5 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.extensions.dslsruntime.response,
  tools.vitruv.extensions.dslsruntime.mapping,
  tools.vitruv.domains.java.echange,
- tools.vitruv.applications.pcmjava.util,
- tools.vitruv.applications.pcmjava.seffstatements
+ tools.vitruv.applications.pcmjava.util
 Export-Package: tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming

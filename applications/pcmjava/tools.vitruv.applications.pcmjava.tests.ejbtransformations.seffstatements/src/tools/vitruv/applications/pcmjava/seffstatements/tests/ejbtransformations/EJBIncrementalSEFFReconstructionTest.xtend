@@ -8,16 +8,16 @@ import org.palladiosimulator.pcm.repository.Repository
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils
 import org.junit.runner.Description
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEJBJavaToPCM
 import tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations.IncrementalSEFFReconstructionTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBClassMappingTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBJaMoPP2PCMTransformationTest
+import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.change2commandtransforming.Change2CommandTransformingEjbJavaToPcm
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
 	override protected createChange2CommandTransformingProviding() {
 		AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-			#[new Change2CommandTransformingEJBJavaToPCM()]);
+			#[new Change2CommandTransformingEjbJavaToPcm()]);
 	}
 
 	@Override
