@@ -614,4 +614,17 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
             }
         }
     }
+    
+	protected CollectionDataType addCollectionDatatypeAndSync(final Repository repo, final String name, final DataType innerType) throws IOException {
+	    final CollectionDataType cdt = RepositoryFactory.eINSTANCE.createCollectionDataType();
+	    cdt.setEntityName(name);
+	    cdt.setRepository__DataType(repo);
+	    if (null != innerType) {
+	        cdt.setInnerType_CollectionDataType(innerType);
+	    }
+	    EcoreResourceBridge.saveResource(repo.eResource());
+	    super.triggerSynchronization(repo);
+	    return cdt;
+	}
+	
 }

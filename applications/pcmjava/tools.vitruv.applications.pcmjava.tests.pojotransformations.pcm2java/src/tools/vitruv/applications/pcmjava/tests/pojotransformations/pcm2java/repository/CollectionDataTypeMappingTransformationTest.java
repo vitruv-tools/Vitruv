@@ -1,11 +1,8 @@
 package tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.repository;
 
-import java.io.IOException;
-
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
-import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import org.palladiosimulator.pcm.repository.PrimitiveTypeEnum;
 import org.palladiosimulator.pcm.repository.Repository;
@@ -13,7 +10,6 @@ import org.palladiosimulator.pcm.repository.RepositoryFactory;
 
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.PCM2JaMoPPTransformationTest;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -60,18 +56,5 @@ public class CollectionDataTypeMappingTransformationTest extends PCM2JaMoPPTrans
 
         this.assertDataTypeCorrespondence(collectionDataType);
     }
-
-    private CollectionDataType addCollectionDatatypeAndSync(final Repository repo, final String name,
-            final DataType innerType) throws IOException {
-        final CollectionDataType cdt = RepositoryFactory.eINSTANCE.createCollectionDataType();
-        cdt.setEntityName(name);
-        cdt.setRepository__DataType(repo);
-        if (null != innerType) {
-            cdt.setInnerType_CollectionDataType(innerType);
-        }
-        EcoreResourceBridge.saveResource(repo.eResource());
-        super.triggerSynchronization(repo);
-        return cdt;
-    }
-
+    
 }
