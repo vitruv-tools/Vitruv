@@ -24,7 +24,7 @@ import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEdito
 import tools.vitruv.domains.emf.monitorededitor.tools.ISaveEventListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
-import tools.vitruv.framework.change.description.EMFModelChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -102,7 +102,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                List<EMFModelChange> changes = readOutChangesAndEndRecording();
+                List<TransactionalChange> changes = readOutChangesAndEndRecording();
                 LOGGER.trace("Detected a user save action, got change descriptions: " + changes);
                 onSavedResource(changes);
                 resetChangeRecorder();
@@ -151,7 +151,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected List<EMFModelChange> readOutChangesAndEndRecording() {
+    protected List<TransactionalChange> readOutChangesAndEndRecording() {
         return changeRecorder.endRecording();
     }
 
@@ -202,5 +202,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            last saving it (rsp. since opening it, in case it has not been saved yet). This
      *            object is provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(List<EMFModelChange> changeDescription);
+    protected abstract void onSavedResource(List<TransactionalChange> changeDescription);
 }

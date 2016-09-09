@@ -10,7 +10,7 @@ import org.junit.runner.Description;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
-import tools.vitruv.framework.change.description.EMFModelChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
@@ -84,7 +84,7 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	}
 
 	protected void triggerSynchronization(final VURI vuri) {
-		final List<EMFModelChange> changes = this.changeRecorder.endRecording();
+		final List<TransactionalChange> changes = this.changeRecorder.endRecording();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		this.changeSynchronizer.synchronizeChange(compositeChange);
 		this.changeRecorder.beginRecording(vuri, Collections.emptyList());

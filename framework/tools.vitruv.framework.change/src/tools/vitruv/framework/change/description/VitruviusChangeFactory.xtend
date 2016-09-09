@@ -39,7 +39,7 @@ class VitruviusChangeFactory {
 	 * to extract the change information, this factory method has to be called directly after the {@link ChangeDescription}
 	 * has been recorded and before further changes are made.
 	 */
-	public def EMFModelChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
+	public def TransactionalChange createEMFModelChange(ChangeDescription changeDescription, VURI vuri) {
 		return new EMFModelChangeImpl(changeDescription, vuri);
 	}
 	

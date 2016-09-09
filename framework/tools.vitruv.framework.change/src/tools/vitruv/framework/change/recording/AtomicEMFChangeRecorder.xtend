@@ -8,11 +8,11 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.description.EMFModelChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.description.TransactionalChange
 
 class AtomicEMFChangeRecorder {
-	var List<EMFModelChange> modelChanges;
+	var List<TransactionalChange> modelChanges;
 	var VURI modelVURI;
 	var Collection<Notifier> elementsToObserve
 	
@@ -26,19 +26,19 @@ class AtomicEMFChangeRecorder {
 		this.modelVURI = modelVURI;
 		this.elementsToObserve.clear();
 		this.elementsToObserve += elementsToObserve;
-		this.modelChanges = new ArrayList<EMFModelChange>();
+		this.modelChanges = new ArrayList<TransactionalChange>();
 		changeRecorder.beginRecording(elementsToObserve)
 	}
 	
-	def List<EMFModelChange> endRecording() {
+	def List<TransactionalChange> endRecording() {
 		changeRecorder.endRecording()
 		return modelChanges;
 	}
 	
-	def List<EMFModelChange> restartRecording() {
-		val cds = endRecording()
+	def List<TransactionalChange> restartRecording() {
+		val modelChanges = endRecording()
 		beginRecording(modelVURI, elementsToObserve)
-		return cds;
+		return modelChanges;
 	}
 	
 	def boolean isRecording() {

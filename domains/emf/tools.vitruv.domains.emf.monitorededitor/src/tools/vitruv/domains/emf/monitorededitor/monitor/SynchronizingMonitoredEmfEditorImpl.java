@@ -22,18 +22,18 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
-import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.domains.emf.monitorededitor.EditorNotMonitorableException;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
+import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
 import tools.vitruv.domains.emf.monitorededitor.IMonitoringDecider;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor;
-import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.IEditorStateListener.EditorStateChange;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.EditorManagementListenerMgr;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
-import tools.vitruv.framework.change.description.EMFModelChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -171,7 +171,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     private void setupMonitorForEditor(final IEditorPartAdapter editorPart) {
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPart) {
             @Override
-            protected void onSavedResource(final List<EMFModelChange> changeDescriptions) {
+            protected void onSavedResource(final List<TransactionalChange> changeDescriptions) {
                 LOGGER.trace("Received change descriptions " + changeDescriptions);
                 if (null == changeDescriptions || changeDescriptions.isEmpty()) {
                     LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);
@@ -198,7 +198,8 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
                 // List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>(
                 // new ChangeDescription2ChangeTransformation(changeDescriptions,
                 // true).getChanges());
-                triggerSynchronization(new ArrayList<VitruviusChange>(changeDescriptions), editorPart.getEditedModelResource());
+                triggerSynchronization(new ArrayList<VitruviusChange>(changeDescriptions),
+                        editorPart.getEditedModelResource());
             }
         };
 
