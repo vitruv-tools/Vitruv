@@ -33,8 +33,14 @@ class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
 		}
 		val resultingChange = if (nonIntegratedEChanges.isEmpty) {
 			VitruviusChangeFactory.instance.createEmptyChange(change.getURI);
+		} else if (nonIntegratedEChanges.size == 1) {
+			VitruviusChangeFactory.instance.createConcreteChange(nonIntegratedEChanges.get(0), change.getURI);
 		} else {
-			VitruviusChangeFactory.instance.createConcreteChange(nonIntegratedEChanges, change.getURI);
+			val transactionalChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange();
+			for (eChange : nonIntegratedEChanges) {
+				transactionalChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(eChange, change.getURI));
+			}
+			transactionalChange;
 		}
 		
 		return new ChangeProcessorResult(resultingChange, commands);

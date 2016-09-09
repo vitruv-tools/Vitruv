@@ -29,7 +29,7 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
 			change.oldValue = stmt
 			change.index = (originalMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(#[change], changeURI))
+			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(change, changeURI))
 		}
 		
 		for (stmt : (changedMethod as ClassMethod).statements) {
@@ -40,7 +40,7 @@ class MethodBodyChangedVisitor extends VisitorBase<MethodBodyChangedEvent> {
 			change.affectedFeature = StatementsPackage.eINSTANCE.statementListContainer_Statements
 			change.newValue = stmt
 			change.index = (changedMethod as ClassMethod).statements.indexOf(stmt)
-			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(#[change], changeURI))
+			compositeChange.addChange(VitruviusChangeFactory.instance.createConcreteChange(change, changeURI))
 		}
 		submitter.submitChange(compositeChange)
 	}

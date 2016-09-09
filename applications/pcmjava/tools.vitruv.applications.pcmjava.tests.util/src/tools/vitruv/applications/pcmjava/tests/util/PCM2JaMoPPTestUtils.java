@@ -103,7 +103,7 @@ public class PCM2JaMoPPTestUtils {
         createChange.setOldAffectedEObject(oldAffectedEObject);
         createChange.setAffectedFeature(getEReferenceByName(newAffectedEObject, featureName));
         createChange.setNewValue(changedEObject);
-        final ConcreteChange emfModelChange = VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(createChange),
+        final ConcreteChange emfModelChange = VitruviusChangeFactory.getInstance().createConcreteChange(createChange,
                 VURI.getInstance(oldAffectedEObject.eResource()));
         return emfModelChange;
     }

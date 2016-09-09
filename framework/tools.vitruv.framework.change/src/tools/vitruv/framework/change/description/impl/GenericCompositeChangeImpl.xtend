@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.VitruviusChange
 
-class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
+abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
     List<C> changes;
 
     new() {
@@ -23,7 +23,7 @@ class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCo
     }
 
     override addChange(C change) {
-		if (change != null) this.changes.add(change);
+		if (change != null && !(change instanceof EmptyChangeImpl)) this.changes.add(change);
     }
 				
 	override containsConcreteChange() {

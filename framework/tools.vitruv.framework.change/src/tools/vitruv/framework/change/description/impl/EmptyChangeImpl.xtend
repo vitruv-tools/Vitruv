@@ -1,12 +1,21 @@
 package tools.vitruv.framework.change.description.impl
 
-import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.TransactionalChange
 
-class EmptyChangeImpl extends AbstractConcreteChange implements ConcreteChange {
+class EmptyChangeImpl implements TransactionalChange {
+	private val VURI vuri;
 	
 	new(VURI vuri) {
-		super(vuri);
+		this.vuri = vuri;
+	}
+	
+	override containsConcreteChange() {
+		return true;
+	}
+	
+	override validate() {
+		return true;
 	}
 	
 	override isPrepared() {
@@ -14,7 +23,15 @@ class EmptyChangeImpl extends AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override prepare() {
-		// Do nothing, empty changes do not have to be prepared
+		// Do nothing
 	}
 	
+	override getEChanges() {
+		return #[];
+	}
+	
+	override getURI() {
+		return vuri;
+	}
+		
 }

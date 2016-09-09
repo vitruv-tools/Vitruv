@@ -4,7 +4,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeChangeImpl
-import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
@@ -36,11 +35,7 @@ class VitruviusChangeFactory {
 	}
 	
 	public def ConcreteChange createConcreteChange(EChange change, VURI vuri) {
-		return new ConcreteChangeImpl(#[change], vuri);
-	}
-	
-	public def ConcreteChange createConcreteChange(List<EChange> changes, VURI vuri) {
-		return new ConcreteChangeImpl(changes, vuri);
+		return new ConcreteChangeImpl(change, vuri);
 	}
 	
 	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
@@ -59,7 +54,7 @@ class VitruviusChangeFactory {
 		return new CompositeTransactionalChangeImpl();
 	}
 	
-	public def ConcreteChange createEmptyChange(VURI vuri) {
+	public def TransactionalChange createEmptyChange(VURI vuri) {
 		return new EmptyChangeImpl(vuri);
 	}
 	

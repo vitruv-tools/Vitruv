@@ -926,7 +926,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final ChangeSynchronizing cs = this.getChangeSynchronizing();
 		final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
 		final ConcreteChange change = VitruviusChangeFactory.getInstance()
-				.createConcreteChange(Collections.singletonList(createChange), vuri);
+				.createConcreteChange(createChange, vuri);
 		cs.synchronizeChange(change);
 	}
 

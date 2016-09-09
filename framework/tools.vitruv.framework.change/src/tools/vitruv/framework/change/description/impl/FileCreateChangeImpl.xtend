@@ -25,7 +25,7 @@ class FileCreateChangeImpl extends AbstractFileChange {
                             + "in order to be added to the VSUM without an explicit import!");
         } else { // resource.getContents().size() == null --> no element in newModelInstance
             logger.info("Empty model file created: " + VURI.getInstance(resource)
-                    + ". Synchronization for 'root element created' not triggerd.");
+                    + ". Synchronization for 'root element created' not triggered.");
             return null;
         }
         val InsertRootEObject<EObject> createRootEObj = RootFactory.eINSTANCE.createInsertRootEObject();

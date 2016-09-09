@@ -816,12 +816,12 @@ public class ChangeResponder implements ChangeEventVisitor {
 
         private ConcreteChange wrapToVitruviusModelChange(final EChange eChange, final ASTNode astNodeWithIResource) {
             final VURI vuri = VURI.getInstance(AST2JaMoPP.getIResource(astNodeWithIResource));
-            return VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(eChange), vuri);
+            return VitruviusChangeFactory.getInstance().createConcreteChange(eChange, vuri);
         }
 
         private ConcreteChange wrapToVitruviusModelChange(final EChange eChange, final IResource originalIResource) {
             final VURI vuri = VURI.getInstance(originalIResource);
-            return VitruviusChangeFactory.getInstance().createConcreteChange(Collections.singletonList(eChange), vuri);
+            return VitruviusChangeFactory.getInstance().createConcreteChange(eChange, vuri);
         }
 
         // returns URI from node1 if exists, otherwise URI from node2 or null if both have no

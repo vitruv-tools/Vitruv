@@ -26,7 +26,7 @@ class MethodParameterNameChangedVisitor extends VisitorBase<MethodParameterNameC
 		change.newValue = change.affectedEObject.eGet(change.affectedFeature)
 		change.oldValue = change.oldAffectedEObject.eGet(change.affectedFeature)
 		
-		submitter.submitChange(VitruviusChangeFactory.instance.createConcreteChange(#[change], VURI.getInstance(change.oldAffectedEObject.eResource)));
+		submitter.submitChange(VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(change.oldAffectedEObject.eResource)));
 	}
 	
 }

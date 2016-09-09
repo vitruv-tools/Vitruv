@@ -8,7 +8,7 @@ import tools.vitruv.framework.change.description.ConcreteChange
 abstract class AbstractFileChange extends AbstractConcreteChange implements ConcreteChange {
     new(Resource changedFileResource) {
     	super(VURI.getInstance(changedFileResource));
-    	this.eChanges += generateEChange(changedFileResource);
+    	this.eChange = generateEChange(changedFileResource);
     }
 
 	override prepare() {
