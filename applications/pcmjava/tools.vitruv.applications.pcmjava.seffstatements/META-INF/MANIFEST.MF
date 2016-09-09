@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius PCM-Java SEFF Statements Processing
+Bundle-Name: Vitruvius PCM-Java Seffstatements Processing
 Bundle-SymbolicName: tools.vitruv.applications.pcmjava.seffstatements
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
