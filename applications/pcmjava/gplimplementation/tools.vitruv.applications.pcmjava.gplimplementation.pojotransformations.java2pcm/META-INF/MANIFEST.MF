@@ -19,7 +19,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.applications.pcmjava.util,
  tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util,
- tools.vitruv.applications.pcmjava.pojotransformations.seffstatements,
+ tools.vitruv.applications.pcmjava.seffstatements.pojotransformations,
  tools.vitruv.applications.pcmjava.seffstatements
 Export-Package: tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm,
  tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations

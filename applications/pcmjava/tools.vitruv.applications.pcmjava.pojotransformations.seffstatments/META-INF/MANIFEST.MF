@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java POJO Seffstatment Transformations
-Bundle-SymbolicName: tools.vitruv.applications.pcmjava.pojotransformations.seffstatements
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.seffstatements.pojotransformations
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
@@ -19,5 +19,5 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.change,
  tools.vitruv.applications.pcmjava.seffstatements,
  tools.vitruv.applications.pcmjava.util
-Export-Package: tools.vitruv.applications.pcmjava.pojotransformations.seffstatements
+Export-Package: tools.vitruv.applications.pcmjava.seffstatements.pojotransformations
 

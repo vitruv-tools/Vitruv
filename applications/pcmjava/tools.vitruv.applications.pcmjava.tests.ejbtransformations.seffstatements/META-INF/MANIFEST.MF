@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java EJB Transformations Tests SEFF Statements
-Bundle-SymbolicName: tools.vitruv.applications.pcmjava.tests.ejbtransformations.seffstatements
+Bundle-SymbolicName: tools.vitruv.applications.pcmjava.seffstatements.tests.ejbtransformations
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
@@ -17,5 +17,5 @@ Require-Bundle: org.junit,
  tools.vitruv.applications.pcmjava.tests.util,
  tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm,
  tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm,
- tools.vitruv.applications.pcmjava.tests.pojotransformations.seffstatements
-Export-Package: tools.vitruv.applications.pcmjava.tests.ejbtransformations.seffstatements
+ tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations
+Export-Package: tools.vitruv.applications.pcmjava.seffstatements.tests.ejbtransformations

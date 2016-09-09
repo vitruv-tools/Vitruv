@@ -22,7 +22,7 @@ Require-Bundle: org.junit,
  tools.vitruv.applications.pcmjava.tests.util,
  tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm,
  tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java,
- tools.vitruv.applications.pcmjava.tests.pojotransformations.seffstatements,
+ tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations,
  tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm,
- tools.vitruv.applications.pcmjava.tests.ejbtransformations.seffstatements
+ tools.vitruv.applications.pcmjava.seffstatements.tests.ejbtransformations
 
