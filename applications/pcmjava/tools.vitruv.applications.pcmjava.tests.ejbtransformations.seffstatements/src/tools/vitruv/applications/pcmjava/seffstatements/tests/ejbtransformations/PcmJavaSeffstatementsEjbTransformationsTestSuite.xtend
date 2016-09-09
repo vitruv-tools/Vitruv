@@ -9,6 +9,6 @@ import org.junit.runners.Suite
 @SuiteClasses( #[
 	EJBIncrementalSEFFReconstructionTest
 ])
-class EJBJava2PCMSeffTestSuite {
+class PcmJavaSeffstatementsEjbTransformationsTestSuite {
 	
 }
