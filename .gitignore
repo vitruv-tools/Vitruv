@@ -7,3 +7,5 @@ EvaluationData/
 *.bak
 *.swp
 *.class
+*._trace
+*.xtendbin
