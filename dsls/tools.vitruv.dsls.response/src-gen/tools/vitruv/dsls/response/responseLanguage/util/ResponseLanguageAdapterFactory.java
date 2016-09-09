@@ -3,16 +3,16 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.util;
 
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
-
-import tools.vitruv.dsls.response.responseLanguage.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
+
+import tools.vitruv.dsls.response.responseLanguage.*;
 
 /**
  * <!-- begin-user-doc -->

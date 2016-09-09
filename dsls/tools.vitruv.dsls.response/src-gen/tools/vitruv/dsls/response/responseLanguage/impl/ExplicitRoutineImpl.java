@@ -3,11 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -17,6 +12,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
+import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 
 /**
  * <!-- begin-user-doc -->

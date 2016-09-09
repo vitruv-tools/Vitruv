@@ -3,9 +3,9 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
-
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 /**
  * <!-- begin-user-doc -->

@@ -2,12 +2,11 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.Root;
 import com.google.common.base.Objects;
+import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class CreateRootTestResponse extends AbstractResponseRealization {

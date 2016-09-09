@@ -3,10 +3,10 @@
  */
 package tools.vitruv.dsls.response.validation;
 
-import tools.vitruv.dsls.mirbase.validation.MirBaseValidator;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EPackage;
+import tools.vitruv.dsls.mirbase.validation.MirBaseValidator;
 
 public abstract class AbstractResponseLanguageValidator extends MirBaseValidator {
 	

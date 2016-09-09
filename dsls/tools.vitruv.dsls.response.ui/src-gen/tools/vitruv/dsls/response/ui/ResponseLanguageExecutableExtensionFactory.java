@@ -4,9 +4,9 @@
 package tools.vitruv.dsls.response.ui;
 
 import com.google.inject.Injector;
-import tools.vitruv.dsls.response.ui.internal.ResponseActivator;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
+import tools.vitruv.dsls.response.ui.internal.ResponseActivator;
 
 /**
  * This class was generated. Customizations should only happen in a newly
@@ -21,7 +21,7 @@ public class ResponseLanguageExecutableExtensionFactory extends AbstractGuiceAwa
 	
 	@Override
 	protected Injector getInjector() {
-		return ResponseActivator.getInstance().getInjector(ResponseActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE);
+		return ResponseActivator.getInstance().getInjector(ResponseActivator.TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE);
 	}
 	
 }

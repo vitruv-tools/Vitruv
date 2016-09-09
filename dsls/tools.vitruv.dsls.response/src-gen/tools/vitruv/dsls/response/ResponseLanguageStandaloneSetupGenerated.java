@@ -5,13 +5,13 @@ package tools.vitruv.dsls.response;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import tools.vitruv.dsls.mirbase.MirBaseStandaloneSetup;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.ISetup;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import tools.vitruv.dsls.mirbase.MirBaseStandaloneSetup;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 @SuppressWarnings("all")
 public class ResponseLanguageStandaloneSetupGenerated implements ISetup {

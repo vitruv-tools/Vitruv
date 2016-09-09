@@ -4,7 +4,6 @@
 package tools.vitruv.dsls.response.serializer;
 
 import com.google.inject.Inject;
-import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.IGrammarAccess;
@@ -16,6 +15,7 @@ import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
 import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
+import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 
 @SuppressWarnings("all")
 public abstract class AbstractResponseLanguageSyntacticSequencer extends AbstractSyntacticSequencer {

@@ -3,11 +3,11 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.xtext.xtype.XImportSection;
+
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
 
 /**
  * <!-- begin-user-doc -->

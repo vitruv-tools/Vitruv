@@ -3,9 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.response.responseLanguage.CodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -16,6 +13,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.xtext.xbase.XExpression;
+
+import tools.vitruv.dsls.response.responseLanguage.CodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->

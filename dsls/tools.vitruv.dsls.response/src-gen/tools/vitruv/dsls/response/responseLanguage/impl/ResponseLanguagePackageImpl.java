@@ -3,6 +3,17 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import org.eclipse.xtext.xbase.XbasePackage;
+
+import org.eclipse.xtext.xtype.XtypePackage;
+
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 
 import tools.vitruv.dsls.response.responseLanguage.ArbitraryModelElementChange;
@@ -44,17 +55,6 @@ import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.Taggable;
 import tools.vitruv.dsls.response.responseLanguage.Trigger;
-
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.xtext.xbase.XbasePackage;
-
-import org.eclipse.xtext.xtype.XtypePackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -372,9 +372,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     isInited = true;
 
     // Initialize simple dependencies
-    MirBasePackage.eINSTANCE.eClass();
     XbasePackage.eINSTANCE.eClass();
     XtypePackage.eINSTANCE.eClass();
+    MirBasePackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theResponseLanguagePackage.createPackageContents();

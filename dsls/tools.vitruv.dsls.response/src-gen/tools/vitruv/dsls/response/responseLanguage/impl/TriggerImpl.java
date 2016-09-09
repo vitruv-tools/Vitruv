@@ -3,10 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.Trigger;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -15,6 +11,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.Trigger;
 
 /**
  * <!-- begin-user-doc -->

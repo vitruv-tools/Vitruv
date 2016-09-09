@@ -3,11 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.response.responseLanguage.Matching;
-import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -23,6 +18,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import tools.vitruv.dsls.response.responseLanguage.Matching;
+import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 
 /**
  * <!-- begin-user-doc -->

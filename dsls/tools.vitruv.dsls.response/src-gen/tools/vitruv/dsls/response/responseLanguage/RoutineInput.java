@@ -3,12 +3,12 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
 
 /**
  * <!-- begin-user-doc -->

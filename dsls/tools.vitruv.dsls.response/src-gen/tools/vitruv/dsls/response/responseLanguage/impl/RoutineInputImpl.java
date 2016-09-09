@@ -3,12 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -22,6 +16,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
+
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 
 /**
  * <!-- begin-user-doc -->

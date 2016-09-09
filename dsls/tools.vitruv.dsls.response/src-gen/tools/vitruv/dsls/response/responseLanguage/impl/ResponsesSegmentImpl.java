@@ -3,13 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
-
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
-import tools.vitruv.dsls.response.responseLanguage.Response;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -25,6 +18,13 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
+
+import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
+import tools.vitruv.dsls.response.responseLanguage.Response;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 
 /**
  * <!-- begin-user-doc -->

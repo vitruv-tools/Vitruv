@@ -18,7 +18,7 @@ class ManualTests {
 	@Test
 	public def testGenerateResponseEnvironment() {
 		val injections = new Injections();
-		val injector = ResponseActivator.getInstance().getInjector(ResponseActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE);
+		val injector = ResponseActivator.getInstance().getInjector(ResponseActivator.TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE);
 		injector.injectMembers(injections);
 		val environmentGenerator = injector.getInstance(IResponseEnvironmentGenerator);
 		val response = new ResponseBuilderFactory().createResponseBuilder()

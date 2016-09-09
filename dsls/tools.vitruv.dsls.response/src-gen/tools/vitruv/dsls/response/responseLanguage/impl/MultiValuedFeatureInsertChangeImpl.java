@@ -3,10 +3,10 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
+import org.eclipse.emf.ecore.EClass;
+
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * <!-- begin-user-doc -->

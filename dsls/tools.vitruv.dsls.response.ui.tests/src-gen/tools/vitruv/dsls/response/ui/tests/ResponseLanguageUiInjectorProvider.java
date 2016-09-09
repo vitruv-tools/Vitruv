@@ -4,8 +4,8 @@
 package tools.vitruv.dsls.response.ui.tests;
 
 import com.google.inject.Injector;
-import tools.vitruv.dsls.response.ui.internal.ResponseActivator;
 import org.eclipse.xtext.junit4.IInjectorProvider;
+import tools.vitruv.dsls.response.ui.internal.ResponseActivator;
 
 public class ResponseLanguageUiInjectorProvider implements IInjectorProvider {
 

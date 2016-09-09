@@ -11,6 +11,6 @@ public class ResponseLanguageAntlrTokenFileProvider implements IAntlrTokenFilePr
 	@Override
 	public InputStream getAntlrTokenFile() {
 		ClassLoader classLoader = getClass().getClassLoader();
-		return classLoader.getResourceAsStream("tools.vitruv/dsls/response/parser/antlr/internal/InternalResponseLanguage.tokens");
+		return classLoader.getResourceAsStream("tools/vitruv/dsls/response/parser/antlr/internal/InternalResponseLanguage.tokens");
 	}
 }

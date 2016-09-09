@@ -3,12 +3,12 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
+import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 
 /**
  * <!-- begin-user-doc -->

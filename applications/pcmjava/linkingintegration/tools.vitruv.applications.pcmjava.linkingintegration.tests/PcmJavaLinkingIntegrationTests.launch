@@ -14,7 +14,7 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../test-workspace_pcm-java"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/tools.vitruv.applications.pcmjava.linkingintegration.tests/src/tools.vitruv/applications/pcmjava/linkingintegration/tests/CodeIntegrationTest.java"/>
+<listEntry value="/tools.vitruv.applications.pcmjava.linkingintegration.tests/src/tools/vitruv/applications/pcmjava/linkingintegration/tests/CodeIntegrationTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>

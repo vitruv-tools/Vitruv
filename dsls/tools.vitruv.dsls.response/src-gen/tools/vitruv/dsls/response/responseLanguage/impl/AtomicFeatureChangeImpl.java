@@ -3,11 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
-
-import tools.vitruv.dsls.response.responseLanguage.AtomicFeatureChange;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -15,6 +10,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+
+import tools.vitruv.dsls.response.responseLanguage.AtomicFeatureChange;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->

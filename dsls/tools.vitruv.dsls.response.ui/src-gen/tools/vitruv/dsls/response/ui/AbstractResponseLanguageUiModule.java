@@ -6,14 +6,6 @@ package tools.vitruv.dsls.response.ui;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-import tools.vitruv.dsls.response.ide.contentassist.antlr.PartialResponseLanguageContentAssistParser;
-import tools.vitruv.dsls.response.ide.contentassist.antlr.ResponseLanguageParser;
-import tools.vitruv.dsls.response.ide.contentassist.antlr.internal.InternalResponseLanguageLexer;
-import tools.vitruv.dsls.response.ui.contentassist.ResponseLanguageProposalProvider;
-import tools.vitruv.dsls.response.ui.labeling.ResponseLanguageDescriptionLabelProvider;
-import tools.vitruv.dsls.response.ui.labeling.ResponseLanguageLabelProvider;
-import tools.vitruv.dsls.response.ui.outline.ResponseLanguageOutlineTreeProvider;
-import tools.vitruv.dsls.response.ui.quickfix.ResponseLanguageQuickfixProvider;
 import org.eclipse.compare.IViewerCreator;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -107,6 +99,14 @@ import org.eclipse.xtext.xbase.ui.jvmmodel.refactoring.jdt.CombinedJvmJdtRenameC
 import org.eclipse.xtext.xbase.ui.jvmmodel.refactoring.jdt.CombinedJvmJdtRenameRefactoringProvider;
 import org.eclipse.xtext.xbase.ui.refactoring.XbaseReferenceUpdater;
 import org.eclipse.xtext.xbase.ui.templates.XbaseTemplateContextType;
+import tools.vitruv.dsls.response.ide.contentassist.antlr.PartialResponseLanguageContentAssistParser;
+import tools.vitruv.dsls.response.ide.contentassist.antlr.ResponseLanguageParser;
+import tools.vitruv.dsls.response.ide.contentassist.antlr.internal.InternalResponseLanguageLexer;
+import tools.vitruv.dsls.response.ui.contentassist.ResponseLanguageProposalProvider;
+import tools.vitruv.dsls.response.ui.labeling.ResponseLanguageDescriptionLabelProvider;
+import tools.vitruv.dsls.response.ui.labeling.ResponseLanguageLabelProvider;
+import tools.vitruv.dsls.response.ui.outline.ResponseLanguageOutlineTreeProvider;
+import tools.vitruv.dsls.response.ui.quickfix.ResponseLanguageQuickfixProvider;
 
 /**
  * Manual modifications go to {@link ResponseLanguageUiModule}.

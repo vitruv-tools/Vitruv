@@ -23,8 +23,8 @@ public class MIRCommonActivator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public MIRCommonActivator() {
-		 mappingInjector = MappingActivator.getInstance().getInjector(MappingActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_MAPPING_MAPPINGLANGUAGE);
-		 responseInjector = ResponseActivator.getInstance().getInjector(ResponseActivator.EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE);
+		 mappingInjector = MappingActivator.getInstance().getInjector(MappingActivator.TOOLS_VITRUV_DSLS_MAPPING_MAPPINGLANGUAGE);
+		 responseInjector = ResponseActivator.getInstance().getInjector(ResponseActivator.TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE);
 	}
 	
 	/*

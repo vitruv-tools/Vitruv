@@ -4,8 +4,6 @@
 package tools.vitruv.dsls.response.ide.contentassist.antlr;
 
 import com.google.inject.Inject;
-import tools.vitruv.dsls.response.ide.contentassist.antlr.internal.InternalResponseLanguageParser;
-import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +12,8 @@ import org.eclipse.xtext.AbstractElement;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.AbstractContentAssistParser;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.FollowElement;
 import org.eclipse.xtext.ide.editor.contentassist.antlr.internal.AbstractInternalContentAssistParser;
+import tools.vitruv.dsls.response.ide.contentassist.antlr.internal.InternalResponseLanguageParser;
+import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 
 public class ResponseLanguageParser extends AbstractContentAssistParser {
 

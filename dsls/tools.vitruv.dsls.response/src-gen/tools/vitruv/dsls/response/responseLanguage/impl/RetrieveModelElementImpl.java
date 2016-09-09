@@ -3,13 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
-
-import tools.vitruv.dsls.response.responseLanguage.CorrespondingObjectCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -17,6 +10,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+
+import tools.vitruv.dsls.response.responseLanguage.CorrespondingObjectCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 
 /**
  * <!-- begin-user-doc -->

@@ -5,7 +5,6 @@ package tools.vitruv.dsls.response.services;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess;
 import java.util.List;
 import org.eclipse.xtext.Action;
 import org.eclipse.xtext.Alternatives;
@@ -22,6 +21,7 @@ import org.eclipse.xtext.service.AbstractElementFinder.AbstractGrammarElementFin
 import org.eclipse.xtext.service.GrammarProvider;
 import org.eclipse.xtext.xbase.services.XbaseGrammarAccess;
 import org.eclipse.xtext.xbase.services.XtypeGrammarAccess;
+import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess;
 
 @Singleton
 public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder {
@@ -1609,17 +1609,16 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	////fragment ModelElement:
-	// //	element=[ecore::EClass|QualifiedName]
-	// //;
-	// //
-	// //UnnamedModelElement:
-	// //	ModelElement;
-	//
+	////	element=[ecore::EClass|QualifiedName]
+	////;
+	////
+	////UnnamedModelElement:
+	////	ModelElement;
 	////		
-	// //NamedModelElement:
-	// //	ModelElement ('as' name=ValidID)?
-	// //;
-	// FeatureOfElement:
+	////NamedModelElement:
+	////	ModelElement ('as' name=ValidID)?
+	////;
+	//FeatureOfElement:
 	//	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 	public MirBaseGrammarAccess.FeatureOfElementElements getFeatureOfElementAccess() {
 		return gaMirBase.getFeatureOfElementAccess();

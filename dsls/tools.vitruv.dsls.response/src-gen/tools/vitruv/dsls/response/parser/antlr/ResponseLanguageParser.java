@@ -4,10 +4,10 @@
 package tools.vitruv.dsls.response.parser.antlr;
 
 import com.google.inject.Inject;
-import tools.vitruv.dsls.response.parser.antlr.internal.InternalResponseLanguageParser;
-import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 import org.eclipse.xtext.parser.antlr.AbstractAntlrParser;
 import org.eclipse.xtext.parser.antlr.XtextTokenStream;
+import tools.vitruv.dsls.response.parser.antlr.internal.InternalResponseLanguageParser;
+import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 
 public class ResponseLanguageParser extends AbstractAntlrParser {
 

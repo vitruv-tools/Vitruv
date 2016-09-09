@@ -6,15 +6,6 @@ package tools.vitruv.dsls.response;
 import com.google.inject.Binder;
 import com.google.inject.Provider;
 import com.google.inject.name.Names;
-import tools.vitruv.dsls.response.jvmmodel.ResponseLanguageJvmModelInferrer;
-import tools.vitruv.dsls.response.parser.antlr.ResponseLanguageAntlrTokenFileProvider;
-import tools.vitruv.dsls.response.parser.antlr.ResponseLanguageParser;
-import tools.vitruv.dsls.response.parser.antlr.internal.InternalResponseLanguageLexer;
-import tools.vitruv.dsls.response.scoping.ResponseLanguageScopeProvider;
-import tools.vitruv.dsls.response.serializer.ResponseLanguageSemanticSequencer;
-import tools.vitruv.dsls.response.serializer.ResponseLanguageSyntacticSequencer;
-import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
-import tools.vitruv.dsls.response.validation.ResponseLanguageValidator;
 import java.util.Properties;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.IGrammarAccess;
@@ -60,6 +51,15 @@ import org.eclipse.xtext.xbase.typesystem.internal.LogicalContainerAwareBatchTyp
 import org.eclipse.xtext.xbase.typesystem.internal.LogicalContainerAwareReentrantTypeResolver;
 import org.eclipse.xtext.xbase.validation.FeatureNameValidator;
 import org.eclipse.xtext.xbase.validation.LogicalContainerAwareFeatureNameValidator;
+import tools.vitruv.dsls.response.jvmmodel.ResponseLanguageJvmModelInferrer;
+import tools.vitruv.dsls.response.parser.antlr.ResponseLanguageAntlrTokenFileProvider;
+import tools.vitruv.dsls.response.parser.antlr.ResponseLanguageParser;
+import tools.vitruv.dsls.response.parser.antlr.internal.InternalResponseLanguageLexer;
+import tools.vitruv.dsls.response.scoping.ResponseLanguageScopeProvider;
+import tools.vitruv.dsls.response.serializer.ResponseLanguageSemanticSequencer;
+import tools.vitruv.dsls.response.serializer.ResponseLanguageSyntacticSequencer;
+import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
+import tools.vitruv.dsls.response.validation.ResponseLanguageValidator;
 
 /**
  * Manual modifications go to {@link ResponseLanguageRuntimeModule}.
@@ -71,7 +71,7 @@ public abstract class AbstractResponseLanguageRuntimeModule extends DefaultXbase
 
 	@Override
 	public void configure(Binder binder) {
-		properties = tryBindProperties(binder, "tools.vitruv/dsls/response/ResponseLanguage.properties");
+		properties = tryBindProperties(binder, "tools/vitruv/dsls/response/ResponseLanguage.properties");
 		super.configure(binder);
 	}
 	

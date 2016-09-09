@@ -7,8 +7,6 @@ import com.google.common.collect.Maps;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import tools.vitruv.dsls.response.ResponseLanguageRuntimeModule;
-import tools.vitruv.dsls.response.ui.ResponseLanguageUiModule;
 import java.util.Collections;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -16,6 +14,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.ui.shared.SharedStateModule;
 import org.eclipse.xtext.util.Modules2;
 import org.osgi.framework.BundleContext;
+import tools.vitruv.dsls.response.ResponseLanguageRuntimeModule;
+import tools.vitruv.dsls.response.ui.ResponseLanguageUiModule;
 
 /**
  * This class was generated. Customizations should only happen in a newly
@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
  */
 public class ResponseActivator extends AbstractUIPlugin {
 
-	public static final String EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE = "tools.vitruv.dsls.response.ResponseLanguage";
+	public static final String TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE = "tools.vitruv.dsls.response.ResponseLanguage";
 	
 	private static final Logger logger = Logger.getLogger(ResponseActivator.class);
 	
@@ -73,14 +73,14 @@ public class ResponseActivator extends AbstractUIPlugin {
 	}
 	
 	protected Module getRuntimeModule(String grammar) {
-		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE.equals(grammar)) {
+		if (TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE.equals(grammar)) {
 			return new ResponseLanguageRuntimeModule();
 		}
 		throw new IllegalArgumentException(grammar);
 	}
 	
 	protected Module getUiModule(String grammar) {
-		if (EDU_KIT_IPD_SDQ_VITRUVIUS_DSLS_RESPONSE_RESPONSELANGUAGE.equals(grammar)) {
+		if (TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE.equals(grammar)) {
 			return new ResponseLanguageUiModule(this);
 		}
 		throw new IllegalArgumentException(grammar);

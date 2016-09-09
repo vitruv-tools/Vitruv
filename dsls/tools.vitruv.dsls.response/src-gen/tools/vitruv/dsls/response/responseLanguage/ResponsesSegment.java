@@ -3,11 +3,11 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+
+import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 
 /**
  * <!-- begin-user-doc -->

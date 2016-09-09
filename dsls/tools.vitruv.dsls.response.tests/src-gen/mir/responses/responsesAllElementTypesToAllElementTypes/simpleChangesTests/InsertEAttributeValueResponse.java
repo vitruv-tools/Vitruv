@@ -1,12 +1,11 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.Root;
+import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
 
 @SuppressWarnings("all")
 class InsertEAttributeValueResponse extends AbstractResponseRealization {

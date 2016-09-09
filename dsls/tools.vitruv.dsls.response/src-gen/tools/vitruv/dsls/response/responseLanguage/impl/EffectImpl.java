@@ -3,14 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage.impl;
 
-import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence;
-import tools.vitruv.dsls.response.responseLanguage.CreateElement;
-import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
-import tools.vitruv.dsls.response.responseLanguage.Effect;
-import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence;
-import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -26,6 +18,14 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence;
+import tools.vitruv.dsls.response.responseLanguage.CreateElement;
+import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
+import tools.vitruv.dsls.response.responseLanguage.Effect;
+import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence;
+import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
