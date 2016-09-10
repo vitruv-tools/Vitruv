@@ -3,13 +3,10 @@ package tools.vitruv.framework.modelsynchronization;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -104,10 +101,9 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 synchronizeSingleChange(innerChange, correspondenceModels, commandExecutionChanges);
             }
         } else {
-            Map<EObject, TUID> tuidMap = new HashMap<>();
-            getOldObjectTUIDs(change, correspondenceModels.iterator().next(), tuidMap);
+            registerOldObjectTuidsForUpdate(change);
             change.applyForward();
-            updateTUIDs(tuidMap, correspondenceModels.iterator().next());
+            updateTuids();
             for (CorrespondenceModel correspondenceModel : correspondenceModels) {
                 Metamodel mmA = correspondenceModel.getMapping().getMetamodelA();
                 Metamodel mmB = correspondenceModel.getMapping().getMetamodelB();
@@ -135,31 +131,20 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         }
     }
 
-    private void getOldObjectTUIDs(final VitruviusChange recordedChange, final CorrespondenceModel correspondenceModel,
-            final Map<EObject, TUID> tuidMap) {
+    private void registerOldObjectTuidsForUpdate(final VitruviusChange recordedChange) {
         if (recordedChange instanceof EMFModelChange) {
             EMFModelChange change = (EMFModelChange) recordedChange;
             List<EObject> objects = new ArrayList<EObject>();
             objects.addAll(change.getChangeDescription().getObjectChanges().keySet());
             objects.addAll(change.getChangeDescription().getObjectsToDetach());
             for (EObject object : change.getChangeDescription().getObjectChanges().keySet()) {
-                TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
-                if (tuid != null) {
-                    tuidMap.put(object, tuid);
-                    TUID.registerObjectForUpdate(object);
-                    for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
-                        TUID.registerObjectForUpdate(featureChange.getReferenceValue());
-                        tuidMap.put(featureChange.getReferenceValue(),
-                                correspondenceModel.calculateTUIDFromEObject(featureChange.getReferenceValue()));
-                    }
+                TUID.registerObjectForUpdate(object);
+                for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
+                    TUID.registerObjectForUpdate(featureChange.getReferenceValue());
                 }
             }
             for (EObject object : change.getChangeDescription().getObjectsToDetach()) {
-                TUID tuid = correspondenceModel.calculateTUIDFromEObject(object);
-                if (tuid != null) {
-                    tuidMap.put(object, tuid);
-                    TUID.registerObjectForUpdate(object);
-                }
+                TUID.registerObjectForUpdate(object);
             }
         } else if (recordedChange instanceof ConcreteChange) {
             // for (EChange eChange : recordedChange.getEChanges()) {
@@ -177,31 +162,19 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         } else if (recordedChange instanceof CompositeContainerChange) {
             CompositeContainerChange change = (CompositeContainerChange) recordedChange;
             for (VitruviusChange innerChange : change.getChanges()) {
-                getOldObjectTUIDs(innerChange, correspondenceModel, tuidMap);
+                registerOldObjectTuidsForUpdate(innerChange);
             }
         }
     }
 
-    protected void updateTUIDs(final Map<EObject, TUID> tuidMap, final CorrespondenceModel correspondenceModel) {
+    protected void updateTuids() {
         // TODO HK There is something wrong with transactions if we have to start a transaction to
         // update the TUID here.
         // Possibilities:
         // 1. There should not be an active transaction when this method is called
         // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
         // resources
-        for (final EObject object : tuidMap.keySet()) { // TODO HK add filter null in Xtend
-            final TUID newTUID = correspondenceModel.calculateTUIDFromEObject(object);
-            if (newTUID != null) {
-                this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
-                    @Override
-                    public Void call() {
-                        TUID.updateObjectTuid(object);
-                        // correspondenceModel.updateTUID(tuidMap.get(object), newTUID);
-                        return null;
-                    }
-                });
-            }
-        }
+        TUID.updateRegisteredObjectsTuids();
     }
 
 }

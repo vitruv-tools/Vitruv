@@ -89,11 +89,9 @@ final class TUID implements Serializable {
 		}
 	}
 	
-	def public static updateObjectTuid(EObject objectToUpdate) {
+	def public static updateRegisteredObjectsTuids() {
 		for (potentialUpdater : updater) {
-			if (potentialUpdater.canUpdate(objectToUpdate)) {
-				potentialUpdater.updateObjectTuidForRegisteredObject(objectToUpdate);
-			}
+			potentialUpdater.updateRegisteredObjectsTuids();
 		}
 	}
 	

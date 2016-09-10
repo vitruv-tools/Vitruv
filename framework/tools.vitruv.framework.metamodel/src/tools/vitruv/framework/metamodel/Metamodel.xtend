@@ -164,14 +164,15 @@ class Metamodel extends AbstractURIHaving implements TuidUpdater {
 		}
 	}
 	
-	override updateObjectTuidForRegisteredObject(EObject objectToUpdate) {
-		val oldTuid = tuidUpdateMap.get(objectToUpdate);
-		tuidUpdateMap.remove(objectToUpdate);
-		if (oldTuid == null) {
-			throw new IllegalStateException("Object was not registered for update before calling update");
+	override updateRegisteredObjectsTuids() {
+		for (object : tuidUpdateMap.keySet) {
+			val oldTuid = tuidUpdateMap.get(object);
+			if (canUpdate(object)) {
+				val newTuid = TUID.getInstance(calculateTUIDFromEObject(object));
+				updateTuid(oldTuid, newTuid);
+			}
 		}
-		val newTuid = TUID.getInstance(calculateTUIDFromEObject(objectToUpdate));
-		updateTuid(oldTuid, newTuid);
+		tuidUpdateMap.clear;
 	}
 	
 	private def updateTuid(TUID oldTuid, TUID newTuid) {
@@ -199,5 +200,5 @@ class Metamodel extends AbstractURIHaving implements TuidUpdater {
 			updateTuid(oldTuid, newTuid);
 		}
 	}
-
+	
 }
