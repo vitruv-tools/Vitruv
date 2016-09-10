@@ -6,6 +6,10 @@ import tools.vitruv.framework.change.description.EMFModelChange
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.VitruviusChange
+import org.eclipse.emf.ecore.change.FeatureChange
+import org.eclipse.emf.ecore.EObject
+import java.util.ArrayList
+import tools.vitruv.framework.tuid.TUID
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -57,7 +61,7 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
-		changeDescription.applyAndReverse();
+		applyChange();
 		this.canBeBackwardsApplied = false;
 	}
 	
@@ -65,8 +69,39 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
-		changeDescription.applyAndReverse();
+		applyChange();
 		this.canBeBackwardsApplied = true;
 	}
+	
+	private def applyChange() {
+		registerOldObjectTuidsForUpdate();
+		changeDescription.applyAndReverse();
+		updateTuids();
+	}
+	
+	private def void registerOldObjectTuidsForUpdate() {
+		val objects = new ArrayList<EObject>();
+        objects.addAll(getChangeDescription().getObjectChanges().keySet());
+		objects.addAll(getChangeDescription().getObjectsToDetach());
+        for (EObject object : getChangeDescription().getObjectChanges().keySet()) {
+			TUID.registerObjectForUpdate(object);
+        	for (FeatureChange featureChange : getChangeDescription().getObjectChanges().get(object)) {
+	        	TUID.registerObjectForUpdate(featureChange.getReferenceValue());
+			}
+        }
+        for (EObject object : getChangeDescription().getObjectsToDetach()) {
+        	TUID.registerObjectForUpdate(object);
+		}
+    }
+
+    protected def void updateTuids() {
+        // TODO HK There is something wrong with transactions if we have to start a transaction to
+        // update the TUID here.
+        // Possibilities:
+        // 1. There should not be an active transaction when this method is called
+        // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
+        // resources
+        TUID.updateRegisteredObjectsTuids();
+    }
 	
 }

@@ -12,6 +12,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.change,
  tools.vitruv.framework.util,
  edu.kit.ipd.sdq.commons.util.emf,
+ tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.echange;visibility:=reexport
 Export-Package: tools.vitruv.framework.change.description,
  tools.vitruv.framework.change.preparation,

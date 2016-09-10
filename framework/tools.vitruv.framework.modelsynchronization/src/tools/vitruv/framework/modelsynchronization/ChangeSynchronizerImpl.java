@@ -9,14 +9,10 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.change.FeatureChange;
 
 import com.google.common.collect.EvictingQueue;
 
 import tools.vitruv.framework.change.description.CompositeContainerChange;
-import tools.vitruv.framework.change.description.ConcreteChange;
-import tools.vitruv.framework.change.description.EMFModelChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
@@ -28,7 +24,6 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
 import tools.vitruv.framework.modelsynchronization.blackboard.impl.BlackboardImpl;
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecuting;
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecutingImpl;
-import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public class ChangeSynchronizerImpl implements ChangeSynchronizing {
@@ -101,9 +96,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 synchronizeSingleChange(innerChange, correspondenceModels, commandExecutionChanges);
             }
         } else {
-            registerOldObjectTuidsForUpdate(change);
             change.applyForward();
-            updateTuids();
             for (CorrespondenceModel correspondenceModel : correspondenceModels) {
                 Metamodel mmA = correspondenceModel.getMapping().getMetamodelA();
                 Metamodel mmB = correspondenceModel.getMapping().getMetamodelB();
@@ -129,52 +122,6 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
                 commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard));
             }
         }
-    }
-
-    private void registerOldObjectTuidsForUpdate(final VitruviusChange recordedChange) {
-        if (recordedChange instanceof EMFModelChange) {
-            EMFModelChange change = (EMFModelChange) recordedChange;
-            List<EObject> objects = new ArrayList<EObject>();
-            objects.addAll(change.getChangeDescription().getObjectChanges().keySet());
-            objects.addAll(change.getChangeDescription().getObjectsToDetach());
-            for (EObject object : change.getChangeDescription().getObjectChanges().keySet()) {
-                TUID.registerObjectForUpdate(object);
-                for (FeatureChange featureChange : change.getChangeDescription().getObjectChanges().get(object)) {
-                    TUID.registerObjectForUpdate(featureChange.getReferenceValue());
-                }
-            }
-            for (EObject object : change.getChangeDescription().getObjectsToDetach()) {
-                TUID.registerObjectForUpdate(object);
-            }
-        } else if (recordedChange instanceof ConcreteChange) {
-            // for (EChange eChange : recordedChange.getEChanges()) {
-            // if (eChange instanceof JavaFeatureEChange<?, ?>) {
-            // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
-            // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
-            // TUID tuid = correspondenceModel
-            // .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
-            // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
-            // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
-            // }
-            // }
-            // }
-            // }
-        } else if (recordedChange instanceof CompositeContainerChange) {
-            CompositeContainerChange change = (CompositeContainerChange) recordedChange;
-            for (VitruviusChange innerChange : change.getChanges()) {
-                registerOldObjectTuidsForUpdate(innerChange);
-            }
-        }
-    }
-
-    protected void updateTuids() {
-        // TODO HK There is something wrong with transactions if we have to start a transaction to
-        // update the TUID here.
-        // Possibilities:
-        // 1. There should not be an active transaction when this method is called
-        // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
-        // resources
-        TUID.updateRegisteredObjectsTuids();
     }
 
 }

@@ -14,4 +14,20 @@ class ConcreteChangeImpl extends AbstractConcreteChange implements ConcreteChang
         return ConcreteChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.eChange;
     }
 
+	override applyForward() {
+		super.applyForward();
+		// for (EChange eChange : recordedChange.getEChanges()) {
+        // if (eChange instanceof JavaFeatureEChange<?, ?>) {
+        // if (((JavaFeatureEChange<?, ?>) eChange).getOldAffectedEObject() != null) {
+        // JavaFeatureEChange<?, ?> javaFeatureEChange = (JavaFeatureEChange<?, ?>) eChange;
+        // TUID tuid = correspondenceModel
+        // .calculateTUIDFromEObject(javaFeatureEChange.getOldAffectedEObject());
+        // if (tuid != null && javaFeatureEChange.getAffectedEObject() != null) {
+        // tuidMap.put(javaFeatureEChange.getAffectedEObject(), tuid);
+        // }
+        // }
+        // }
+        // }
+	}
+	
 }
