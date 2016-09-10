@@ -7,6 +7,9 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessorResult
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import java.util.ArrayList
+import tools.vitruv.framework.util.command.EMFCommandBridge
 
 class TUIDUpdatePreprocessor extends AbstractChangeProcessor {
 
@@ -15,21 +18,22 @@ class TUIDUpdatePreprocessor extends AbstractChangeProcessor {
 	}
 	
 	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		val commands = new ArrayList<VitruviusRecordingCommand>();
 		for (eChange : change.EChanges) {
 			if (eChange instanceof JavaFeatureEChange<?, ?>) {
 				val typedChange = eChange as JavaFeatureEChange<?, ?>;
 				val oldAffectedEObject = typedChange.oldAffectedEObject
 				val newAffectedEObject = typedChange.affectedEObject
 				if (null != oldAffectedEObject && null != newAffectedEObject) {
-					//EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(
-						//[| 
-							TUID.updateTuid(oldAffectedEObject, newAffectedEObject);// return null;
-						//], 
-					//	blackboard.modelProviding);
+					commands += EMFCommandBridge.createVitruviusRecordingCommand(
+						[| 
+							TUID.updateTuid(oldAffectedEObject, newAffectedEObject);
+							return null;
+						]); 
 				}
 			}
 		}
-		return new ChangeProcessorResult(change, #[]);
+		return new ChangeProcessorResult(change, commands);
 	}
 
 }
