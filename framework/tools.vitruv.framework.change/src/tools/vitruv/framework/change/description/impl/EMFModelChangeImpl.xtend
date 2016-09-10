@@ -19,7 +19,7 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
     public new(ChangeDescription changeDescription, VURI vuri) {
     	this.changeDescription = changeDescription;
         this.vuri = vuri;
-        this.canBeBackwardsApplied = true;
+        this.canBeBackwardsApplied = false;
 		extractChangeInformation();
     }
 

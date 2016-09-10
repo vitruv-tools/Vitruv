@@ -39,7 +39,7 @@ class AtomicEMFChangeRecorder {
 	private def createModelChange(ChangeDescription changeDescription) {
 		if (!(changeDescription.objectChanges.isEmpty && changeDescription.resourceChanges.isEmpty)) {
 			val result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription, modelVURI);
-			changeDescription.applyAndReverse;
+			result.applyForward();
 			return result;
 		}
 		return null;
