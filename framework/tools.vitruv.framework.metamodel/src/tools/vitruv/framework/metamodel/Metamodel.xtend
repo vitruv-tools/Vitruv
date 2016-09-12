@@ -172,4 +172,8 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		// Do nothing
 	}
 	
+	override toString() {
+		return "Metamodel for namespaces: " + nsURIs;
+	}
+	
 }

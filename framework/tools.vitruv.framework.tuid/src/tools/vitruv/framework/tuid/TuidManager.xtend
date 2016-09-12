@@ -55,7 +55,7 @@ final class TuidManager {
 		for (potentialCalculator : tuidCalculator) {
 			if (potentialCalculator.canCalculateTuid(object)) {
 				if (resultCalculator != null) {
-					throw new IllegalStateException("There are two TUID calculators registered that can handle the EObject: " + object);
+					throw new IllegalStateException("There are two TUID calculators registered that can handle the EObject: " + object + ", which are " + resultCalculator + " and " + potentialCalculator);
 				}
 				resultCalculator = potentialCalculator;
 			}
