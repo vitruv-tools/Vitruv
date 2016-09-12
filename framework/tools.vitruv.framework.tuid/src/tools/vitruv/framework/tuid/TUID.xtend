@@ -92,7 +92,8 @@ final class TUID implements Serializable {
 			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
 				val instances = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix);
-				if (instances.nullOrEmpty) {
+				if (instances.
+					nullOrEmpty) {
 					if (!recursively) {
 						throw new IllegalStateException('''A TUID instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
 					}
@@ -114,14 +115,14 @@ final class TUID implements Serializable {
 			return instance
 		}
 	}
-	
+
 	private static def void mapSegmentToTuid(Segment segment, TUID tuid) {
 		val segmentToTuidsListImmutable = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(segment);
 		val segmentToTuidsList = if (segmentToTuidsListImmutable != null) {
-			new ArrayList(segmentToTuidsListImmutable);
-		} else {
-			new ArrayList<TUID>();
-		}
+				new ArrayList(segmentToTuidsListImmutable);
+			} else {
+				new ArrayList<TUID>();
+			}
 		segmentToTuidsList.add(tuid);
 		LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(segment, segmentToTuidsList);
 	}
@@ -134,12 +135,14 @@ final class TUID implements Serializable {
 	 */
 	def private static synchronized void updateInstance(TUID tuid,
 		ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
+		TuidManager.instance.notifyListenerBeforeTuidUpdate(tuid)
 		val oldSegment = tuid.lastSegment
 		val tuidsForOldSegment = new ArrayList<TUID>(LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment));
 		for (representant : tuidsForOldSegment) {
 			representant.lastSegment = newLastSegment;
 			mapSegmentToTuid(newLastSegment, representant);
 		}
+		TuidManager.instance.notifyListenerAfterTuidUpdate(tuid)
 	}
 
 	def private static List<String> split(String tuidString) {
@@ -161,74 +164,7 @@ final class TUID implements Serializable {
 		if (this.equals(newTuid)) {
 			return;
 		}
-		val newLastSegment = getNewLastSegmentIfIdenticalExceptForLastSegment(newTuid)
-		if (newLastSegment != null) {
-			renameLastSegment(newLastSegment)
-		} else {
-			moveLastSegment(newTuid)
-		}
-	}
-
-	def private String getRenameExceptionMsg(
-		TUID anotherTUID) '''«getRenameOrMoveExceptionMsgPrefix(anotherTUID)» have at least two segments!'''
-
-	def private String getRenameOrMoveExceptionMsgPrefix(
-		TUID anotherTUID) '''To either rename or move the last segment of '«this»' according to '«anotherTUID»' both TUIDs have to'''
-
-	/** 
-	 * Renames the <b>last</b> segment of this TUID instance to the given {@link newLastSegmentString}. If an instance for the resulting TUID already exists, then all
-	 * depending TUIDs of this instance and the destination instance are merged.<br/>
-	 * <br/>
-	 * @param newLastSegmentString the new name for the last segment
-	 * @throws an {@link IllegalArgumentException} if the specified {@link newLastSegmentString} contains the TUID separator
-	 */
-	def void renameLastSegment(String newLastSegmentString) {
-		val segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator()
-		val containsSeparator = newLastSegmentString.indexOf(segmentSeperator) !== -1
-		if (!containsSeparator) {
-			val TUID fullDestinationTUID = getTUIDWithNewLastSegment(newLastSegmentString)
-			moveLastSegment(fullDestinationTUID)
-		} else {
-			throw new IllegalArgumentException('''The last segment '«this.lastSegment»' of the TUID '«this»' cannot be renamed to '«newLastSegmentString»' because this String contains the TUID separator '«segmentSeperator»'!''')
-		}
-	}
-
-	def private TUID getTUIDWithNewLastSegment(String newLastSegmentString) {
-		val segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator()
-		val ancestor = this.lastSegment.iterator().next()
-		var tuidWithNewLastSegmentString = ""
-		if (ancestor !== null) {
-			tuidWithNewLastSegmentString = ancestor.toString(segmentSeperator) + segmentSeperator
-		}
-		tuidWithNewLastSegmentString += newLastSegmentString
-		return getInstance(tuidWithNewLastSegmentString)
-	}
-
-	/** 
-	 * Renames the <b>last</b> segment of this TUID instance to the last segment of the given {@link anotherTUID} 
-	 * if they differ and all previous segments are the same.<br/>
-	 * 
-	 * All TUIDs depending on the last segment of this TUID and on the last segment of {@link anotherTUID} are merged.<br/>
-	 * <br/>
-	 * @param anotherTUID the TUID with the new last segment
-	 */
-	def void renameLastSegmegnt(TUID anotherTUID) {
-		val newLastSegmentString = getNewLastSegmentIfIdenticalExceptForLastSegment(anotherTUID)
-		if (newLastSegmentString != null) {
-			renameLastSegment(newLastSegmentString)
-		} else {
-			throw new IllegalArgumentException(getRenameExceptionMsg(anotherTUID))
-		}
-	}
-
-	def private String getNewLastSegmentIfIdenticalExceptForLastSegment(TUID anotherTUID) {
-		val newLastSegmentString = anotherTUID?.getLastSegment()?.getValueString()
-		val tuidWithNewLastSegment = getTUIDWithNewLastSegment(newLastSegmentString)
-		if (tuidWithNewLastSegment != null && tuidWithNewLastSegment.equals(anotherTUID)) {
-			return newLastSegmentString
-		} else {
-			return null
-		}
+		moveLastSegment(newTuid)
 	}
 
 	/** 
@@ -244,10 +180,8 @@ final class TUID implements Serializable {
 			val oldSegment = segmentPair.getFirst()
 			val oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment).get(0)
 			val newSegment = segmentPair.getSecond()
-			TuidManager.instance.notifyListenerBeforeTuidUpdate(oldTUID)
 			// this update changes the hashcode of the given tuid
 			TUID.updateInstance(oldTUID, newSegment)
-			TuidManager.instance.notifyListenerAfterTuidUpdate(oldTUID)
 		}
 	}
 
@@ -264,34 +198,6 @@ final class TUID implements Serializable {
 «SEGMENTS.toString()»
 lastSegment2TUIDMap:
 «LAST_SEGMENT_2_TUID_INSTANCES_MAP.toString()»'''
-	}
-
-	/** 
-	 * Returns whether the TUID instance is valid in the sense that all TUID instances that are
-	 * contained in the forward (tree) registry are also contained in the backward (link) registry
-	 * and vice-versa.
-	 * @return whether the TUID instance is valid
-	 * @throws a {@link IllegalStateException} if the TUID instance is not valid
-	 */
-	def static boolean validate() {
-		val Set<String> treedTUIDStrings = new HashSet<String>()
-		val Collection<ForwardHashedBackwardLinkedTree<String>.Segment> segments = SEGMENTS.values()
-		for (ForwardHashedBackwardLinkedTree<String>.Segment segment : segments) {
-			val String tuidString = segment.toString(VitruviusConstants.getTUIDSegmentSeperator())
-			treedTUIDStrings.add(tuidString)
-		}
-		val Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values().map[it.get(0)].toList;
-		if (treedTUIDStrings.size() !==	tuids.size()) {
-			throw new IllegalStateException('''«treedTUIDStrings.size()» TUIDs are in the segment tree («treedTUIDStrings») but «tuids.size()» are mapped by their last segments («tuids»)!''')
-		}
-		for (TUID tuid : tuids) {
-			val String tuidString = tuid.toString()
-			if (!treedTUIDStrings.contains(
-				tuidString)) {
-				throw new IllegalStateException('''The TUID '«»«tuidString»' is mapped by its last segment but not in the tree!''')
-			}
-		}
-		return true
 	}
 
 	override int hashCode() {
@@ -314,5 +220,35 @@ lastSegment2TUIDMap:
 		}
 		return true
 	}
+
+	/** 
+	 * Returns whether the TUID instance is valid in the sense that all TUID instances that are
+	 * contained in the forward (tree) registry are also contained in the backward (link) registry
+	 * and vice-versa.
+	 * @return whether the TUID instance is valid
+	 * @throws a {@link IllegalStateException} if the TUID instance is not valid
+	 */
+	def static boolean validate() {
+		val Set<String> treedTUIDStrings = new HashSet<String>()
+		val Collection<ForwardHashedBackwardLinkedTree<String>.Segment> segments = SEGMENTS.values()
+		for (ForwardHashedBackwardLinkedTree<String>.Segment segment : segments) {
+			val String tuidString = segment.toString(VitruviusConstants.getTUIDSegmentSeperator())
+			treedTUIDStrings.add(tuidString)
+		}
+		val Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values().map[it.get(0)].toList;
+		if (treedTUIDStrings.size() !==
+			tuids.
+				size()) {
+					throw new IllegalStateException('''«treedTUIDStrings.size()» TUIDs are in the segment tree («treedTUIDStrings») but «tuids.size()» are mapped by their last segments («tuids»)!''')
+				}
+				for (TUID tuid : tuids) {
+					val String tuidString = tuid.toString()
+					if (!treedTUIDStrings.contains(
+						tuidString)) {
+						throw new IllegalStateException('''The TUID '«»«tuidString»' is mapped by its last segment but not in the tree!''')
+					}
+				}
+				return true
+			}
 
 }
