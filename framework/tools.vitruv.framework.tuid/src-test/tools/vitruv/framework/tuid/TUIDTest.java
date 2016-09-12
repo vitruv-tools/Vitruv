@@ -329,4 +329,29 @@ public class TUIDTest {
     	assertEquals(t1new2, t1new);
     	assertEquals(t1new2, t1);
     }
+    
+    
+    @Test
+    public void testRenameChildMerge() {
+    	String sep = VitruviusConstants.getTUIDSegmentSeperator();
+    	String prefix = "prefix" + sep;
+    	String s1 = prefix + "a";
+    	TUID t1 = TUID.getInstance(s1);
+    	String s1new = prefix + "b";
+    	TUID t1new = TUID.getInstance(s1new);
+    	String s2 = prefix + "a" + sep + "c";
+    	TUID t2 = TUID.getInstance(s2);
+    	String s2new = prefix + "b" + sep + "c";
+    	TUID t2new = TUID.getInstance(s2new);
+    	String s2new2 = prefix + "b" + sep + "d";
+    	TUID t2new2 = TUID.getInstance(s2new2);
+    	t1.renameOrMoveLastSegment(t1new);
+    	assertEquals(t1, t1new);
+    	assertEquals(t2, t2new);
+    	t2new.renameOrMoveLastSegment(t2new2);
+    	assertEquals(t2, t2new2);
+    	assertEquals(t2, t2new);
+    	assertEquals(prefix + "b" + sep + "d", t2.toString());
+    	assertEquals(prefix + "b" + sep + "d", t2new.toString());
+    }
 }
