@@ -131,7 +131,11 @@ class JaMoPPTUIDCalculatorAndResolver extends HierarchicalTUIDCalculatorAndResol
 
 	private def dispatch String calculateIndividualTUID(NamespaceClassifierReference ref) {
 		val tuid = new StringBuilder()
-		tuid.append(ref.eContainingFeature.name)
+		// If the reference was removed from the model, the containing feature is null.
+		// Omit it in the TUID then
+		if (ref.eContainingFeature != null) {
+			tuid.append(ref.eContainingFeature.name)
+		}
 		ref.classifierReferences.forEach[tuid.append(target.name)]
 		return tuid.toString
 	}
