@@ -11,7 +11,6 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree
 
 import java.util.ArrayList
-import java.util.Map
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment
 import org.eclipse.emf.ecore.EObject
 
@@ -47,8 +46,7 @@ final class TUID implements Serializable {
 	protected static final long serialVersionUID = 5018494116382201707L
 
 	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
-	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
-	static Map<Segment, List<TUID>> LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP = new HashMap<Segment, List<TUID>>();
+	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, List<TUID>>()
 
 	package static def reinitialize() {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
@@ -68,7 +66,8 @@ final class TUID implements Serializable {
 	 * Multiton classes should not have a public or default constructor. 
 	 */
 	private new(List<String> splitTUIDString) {
-		this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString)
+		this.lastSegment = SEGMENTS.addNewSegmentsWhereNecessary(splitTUIDString);
+		mapSegmentToTuid(lastSegment, this);
 	}
 
 	/** 
@@ -92,41 +91,39 @@ final class TUID implements Serializable {
 				}
 			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
-				instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix)
-				if (instance ===
-					null) {
+				val instances = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix);
+				if (instances.nullOrEmpty) {
 					if (!recursively) {
 						throw new IllegalStateException('''A TUID instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
 					}
 				} else {
-					return instance
+					return instances.get(0)
 				}
 			}
 			// a real prefix of the specified tuidString or nothing was already mapped (but not
 			// the complete tuidString)
 			instance = new TUID(splitTUIDString)
 			var lastSegment = instance.getLastSegment()
-			LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegment, instance) // also create TUIDs for all prefixes of the specified tuidString and register them
-			val lastSegmentsMapUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(lastSegment);
-			val lastSegmentsMap = new ArrayList(
-				if(lastSegmentsMapUnmodifiable != null) lastSegmentsMapUnmodifiable else #[]);
-			lastSegmentsMap.add(instance);
-			LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(lastSegment, lastSegmentsMap);
+			// also create TUIDs for all prefixes of the specified tuidString and register them
 			val segmentIterator = lastSegment.iterator()
 			var ForwardHashedBackwardLinkedTree<String>.Segment pivot
 			while (segmentIterator.hasNext()) {
 				pivot = segmentIterator.next()
-				val TUID subInstance = getInstance(pivot.toString(VitruviusConstants.getTUIDSegmentSeperator()), true)
-				LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), subInstance)
-				val lastSegmentsMapUnmodifiableSub = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(
-					subInstance.getLastSegment());
-				val lastSegmentsMapSub = new ArrayList(
-					if(lastSegmentsMapUnmodifiableSub != null) lastSegmentsMapUnmodifiableSub else #[]);
-				lastSegmentsMapSub.add(subInstance);
-				LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), lastSegmentsMapSub);
+				getInstance(pivot.toString(VitruviusConstants.getTUIDSegmentSeperator()), true)
 			}
 			return instance
 		}
+	}
+	
+	private static def void mapSegmentToTuid(Segment segment, TUID tuid) {
+		val segmentToTuidsListImmutable = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(segment);
+		val segmentToTuidsList = if (segmentToTuidsListImmutable != null) {
+			new ArrayList(segmentToTuidsListImmutable);
+		} else {
+			new ArrayList<TUID>();
+		}
+		segmentToTuidsList.add(tuid);
+		LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(segment, segmentToTuidsList);
 	}
 
 	/** 
@@ -138,18 +135,11 @@ final class TUID implements Serializable {
 	def private static synchronized void updateInstance(TUID tuid,
 		ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
 		val oldSegment = tuid.lastSegment
-		val tuidsForNewSegmentUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(newLastSegment);
-		val tuidsForNewSegment = new ArrayList<TUID>(
-			if(tuidsForNewSegmentUnmodifiable != null) tuidsForNewSegmentUnmodifiable else #[]);
-		val tuidsForOldSegment = new ArrayList<TUID>(LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment));
-		tuidsForNewSegment.addAll(tuidsForOldSegment);
+		val tuidsForOldSegment = new ArrayList<TUID>(LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment));
 		for (representant : tuidsForOldSegment) {
 			representant.lastSegment = newLastSegment;
+			mapSegmentToTuid(newLastSegment, representant);
 		}
-		LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(newLastSegment, tuidsForNewSegment);
-		LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment);
-		LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment)
-		LAST_SEGMENT_2_TUID_INSTANCES_MAP.putIfAbsent(newLastSegment, tuid);
 	}
 
 	def private static List<String> split(String tuidString) {
@@ -222,7 +212,7 @@ final class TUID implements Serializable {
 	 * <br/>
 	 * @param anotherTUID the TUID with the new last segment
 	 */
-	def void renameLastSegment(TUID anotherTUID) {
+	def void renameLastSegmegnt(TUID anotherTUID) {
 		val newLastSegmentString = getNewLastSegmentIfIdenticalExceptForLastSegment(anotherTUID)
 		if (newLastSegmentString != null) {
 			renameLastSegment(newLastSegmentString)
@@ -252,7 +242,7 @@ final class TUID implements Serializable {
 		val segmentPairs = SEGMENTS.mergeSegmentIntoAnother(this.lastSegment, fullDestinationTUID.lastSegment)
 		for (segmentPair : segmentPairs) {
 			val oldSegment = segmentPair.getFirst()
-			val oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment)
+			val oldTUID = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(oldSegment).get(0)
 			val newSegment = segmentPair.getSecond()
 			TuidManager.instance.notifyListenerBeforeTuidUpdate(oldTUID)
 			// this update changes the hashcode of the given tuid
@@ -290,7 +280,7 @@ lastSegment2TUIDMap:
 			val String tuidString = segment.toString(VitruviusConstants.getTUIDSegmentSeperator())
 			treedTUIDStrings.add(tuidString)
 		}
-		val Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values()
+		val Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values().map[it.get(0)].toList;
 		if (treedTUIDStrings.size() !==	tuids.size()) {
 			throw new IllegalStateException('''«treedTUIDStrings.size()» TUIDs are in the segment tree («treedTUIDStrings») but «tuids.size()» are mapped by their last segments («tuids»)!''')
 		}
