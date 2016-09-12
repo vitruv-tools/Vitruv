@@ -58,12 +58,11 @@ final class TUID implements Serializable {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 	
-	public static def updateTuid(TUID oldTuid, TUID newTuid) {
-		var boolean sameTUID = if(oldTuid !== null) oldTuid.equals(newTuid) else newTuid === null
-		if (sameTUID || oldTuid === null) {
+	package def updateTuid(TUID newTuid) {
+		if (this.equals(newTuid)) {
 			return;
 		}
-		oldTuid.renameOrMoveLastSegment(newTuid)
+		renameOrMoveLastSegment(newTuid)
 	}
 	
 	public def updateTuid(EObject newObject) {

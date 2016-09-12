@@ -5,6 +5,7 @@ import java.util.ArrayList
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
+import tools.vitruv.framework.util.XtendAssertHelper
 
 final class TuidManager {
 	private static val instance = new TuidManager();
@@ -90,8 +91,8 @@ final class TuidManager {
 			val oldTuid = tuidUpdateCache.get(object);
 			if (hasTuidCalculator(object)) {
 				val newTuid = object.calculateTuid
-				TUID.updateTuid(oldTuid, newTuid);
-				//tuidUpdateCache.put(object, newTuid);
+				oldTuid.updateTuid(newTuid);
+				XtendAssertHelper.assertTrue(oldTuid.equals(newTuid));
 			}
 		}
 	}
@@ -100,13 +101,13 @@ final class TuidManager {
 		if (oldObject.hasTuidCalculator && newObject.hasTuidCalculator) {
 			val oldTuid = oldObject.calculateTuid;
 			val newTuid = newObject.calculateTuid;
-			TUID.updateTuid(oldTuid, newTuid);
+			oldTuid.updateTuid(newTuid);
 		}
 	}
 	
 	def public updateTuid(TUID oldTuid, EObject newObject) {
 		if (newObject.hasTuidCalculator) {
-			TUID.updateTuid(oldTuid, newObject.calculateTuid);
+			oldTuid.updateTuid(newObject.calculateTuid);
 		}
 	}
 	
