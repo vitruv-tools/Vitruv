@@ -566,6 +566,9 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * @param removedMapEntries
 	 */
 	override void performPostAction(TUID newTUID) {
+		// The correspondence model is an EMF-based model, so modifications have to be
+		// performed within a transaction.
+		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |
 		if (tuidUpdateData == null) {
 			throw new IllegalStateException("Update was not started before performing post action");
 		}
@@ -575,7 +578,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		val oldTUIDList2Correspondences = removedMapEntry.third
 		val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
 		for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
-			val oldTUIDList = oldTUIDList2CorrespondencesEntry.first
+			val oldTUIDList = new ArrayList<TUID>(oldTUIDList2CorrespondencesEntry.first);
 			val correspondences = oldTUIDList2CorrespondencesEntry.second
 			// replace the old tuid in the list with the new tuid
 			// oldCurrentTUID is already the new TUID because this happens after the update
@@ -603,6 +606,9 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		// re-add the entry that maps the tuid to the set if tuid lists that contain it
 		tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
 		tuidUpdateData = null;
+		return null;
+		 
+		]);
 	}
 
 }		
