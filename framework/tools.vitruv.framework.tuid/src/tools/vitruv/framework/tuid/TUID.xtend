@@ -54,13 +54,6 @@ final class TUID implements Serializable {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 
-	package def updateTuid(TUID newTuid) {
-		if (this.equals(newTuid)) {
-			return;
-		}
-		renameOrMoveLastSegment(newTuid)
-	}
-
 	public def updateTuid(EObject newObject) {
 		TuidManager.instance.updateTuid(this, newObject);
 	}
@@ -169,20 +162,20 @@ final class TUID implements Serializable {
 		return this.lastSegment
 	}
 
-	// TODO MK Xtend improvement: define null as default value for before and after using an active annotation in all rename and move methods
 	/**
-	 * Either a) renames the last segment of this TUID to the last segment of the given {@link anotherTUID} 
+	 * Either a) renames the last segment of this TUID to the last segment of the given {@link newTuid} 
 	 * if they differ and all previous segments are the same or b) moves the last segment of this TUID to the second but last 
-	 * segment of the given {@link anotherTUID} if both have at least one previous segment.
-	 * 
-	 * @throws IllegalArgumentException if both conditions are not met
+	 * segment of the given {@link newTuid}.
 	 */
-	def void renameOrMoveLastSegment(TUID anotherTUID) {
-		val newLastSegment = getNewLastSegmentIfIdenticalExceptForLastSegment(anotherTUID)
+	def void updateTuid(TUID newTuid) {
+		if (this.equals(newTuid)) {
+			return;
+		}
+		val newLastSegment = getNewLastSegmentIfIdenticalExceptForLastSegment(newTuid)
 		if (newLastSegment != null) {
 			renameLastSegment(newLastSegment)
 		} else {
-			moveLastSegment(anotherTUID)
+			moveLastSegment(newTuid)
 		}
 	}
 
@@ -204,8 +197,7 @@ final class TUID implements Serializable {
 		val containsSeparator = newLastSegmentString.indexOf(segmentSeperator) !== -1
 		if (!containsSeparator) {
 			val TUID fullDestinationTUID = getTUIDWithNewLastSegment(newLastSegmentString)
-			moveLastSegment(
-				fullDestinationTUID)
+			moveLastSegment(fullDestinationTUID)
 		} else {
 			throw new IllegalArgumentException('''The last segment '«this.lastSegment»' of the TUID '«this»' cannot be renamed to '«newLastSegmentString»' because this String contains the TUID separator '«segmentSeperator»'!''')
 		}

@@ -116,7 +116,7 @@ public class TUIDTest {
         /***********************************************************/
         TUID tuid4prefix = TUID.getInstance(s4prefix);
         TUID tuid5prefix = TUID.getInstance(s5prefix);
-        tuid4prefix.renameOrMoveLastSegment(tuid5prefix);
+        tuid4prefix.updateTuid(tuid5prefix);
         System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END THIRD OPERATION ****\n\n\n");
         assertEquals(s5prefix, tuid4prefix.toString());
@@ -167,7 +167,7 @@ public class TUIDTest {
         /***************************************************************/
         String s5prefixrrrrrr = s9 + sep + "u";
         TUID tuid5prefixrrrrrr = TUID.getInstance(s5prefixrrrrrr);
-        tuid5prefix.renameOrMoveLastSegment(tuid5prefixrrrrrr);
+        tuid5prefix.updateTuid(tuid5prefixrrrrrr);
         System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END SIXTH OPERATION ****\n\n");
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
@@ -212,7 +212,7 @@ public class TUIDTest {
         TUID oldTUID = TUID.getInstance(oldTUIDString);
         TUID newTUID = TUID.getInstance(newTUIDString);
         
-        oldTUID.renameOrMoveLastSegment(newTUID);
+        oldTUID.updateTuid(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());
@@ -240,7 +240,7 @@ public class TUIDTest {
         // rename TUIDs
         TUID oldTUID = TUID.getInstance("prefix2#a#b");
         TUID newTUID = TUID.getInstance("prefix2#a#c");
-        oldTUID.renameOrMoveLastSegment(newTUID);
+        oldTUID.updateTuid(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());
@@ -270,18 +270,18 @@ public class TUIDTest {
     	TUID t2new = TUID.getInstance(s2new);
     	String s3 = prefix + "a" + sep + "b" + sep + "c";
     	TUID t3 = TUID.getInstance(s3);
-    	t2.renameOrMoveLastSegment(t2new);
+    	t2.updateTuid(t2new);
     	assertEquals(t2, t2new);
     	assertEquals(s2new + sep + "c", t3.toString());
-    	t1.renameOrMoveLastSegment(t1new);
+    	t1.updateTuid(t1new);
     	assertEquals(t1, t1new);
     	String s4 = prefix + "f" + sep + "b";
     	TUID t4 = TUID.getInstance(s4);
     	String s4new = prefix + "e" + sep + "b";
     	TUID t4new = TUID.getInstance(s4new);
-    	t4.renameOrMoveLastSegment(t4new);
+    	t4.updateTuid(t4new);
     	assertEquals(t4, t4new);
-    	t1.renameOrMoveLastSegment(t1new2);
+    	t1.updateTuid(t1new2);
     	assertEquals(t1new2, t1new);
     	assertEquals(t1new2, t1);
     	assertEquals(prefix + "e" + sep + "b", t2.toString());
@@ -300,9 +300,9 @@ public class TUIDTest {
     	TUID t1new = TUID.getInstance(s1new);
     	String s1new2 = prefix + "e";
     	TUID t1new2 = TUID.getInstance(s1new2);
-    	t1.renameOrMoveLastSegment(t1new);
+    	t1.updateTuid(t1new);
     	assertEquals(t1, t1new);
-    	t1.renameOrMoveLastSegment(t1new2);
+    	t1.updateTuid(t1new2);
     	assertEquals(t1new2, t1new);
     	assertEquals(t1new2, t1);
     }
@@ -322,10 +322,10 @@ public class TUIDTest {
     	TUID t2new = TUID.getInstance(s2new);
     	String s2new2 = prefix + "b" + sep + "d";
     	TUID t2new2 = TUID.getInstance(s2new2);
-    	t1.renameOrMoveLastSegment(t1new);
+    	t1.updateTuid(t1new);
     	assertEquals(t1, t1new);
     	assertEquals(t2, t2new);
-    	t2new.renameOrMoveLastSegment(t2new2);
+    	t2new.updateTuid(t2new2);
     	assertEquals(t2, t2new2);
     	assertEquals(t2, t2new);
     	assertEquals(prefix + "b" + sep + "d", t2.toString());
