@@ -14,7 +14,6 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree
 import tools.vitruv.framework.util.datatypes.Pair
 
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import java.util.ArrayList
 import java.util.Map
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment
@@ -87,15 +86,6 @@ final class TUID implements Serializable {
 	 * @param tuidString
 	 * @return the unique TUID for the specified tuidString
 	 */
-	def static synchronized List<TUID> getInstance(List<String> tuidStrings) {
-		return tuidStrings.mapFixed[getInstance(it)]
-	}
-
-	/** 
-	 * Returns the unique TUID (instance) for the specified tuidString (key).
-	 * @param tuidString
-	 * @return the unique TUID for the specified tuidString
-	 */
 	def static synchronized TUID getInstance(String tuidString) {
 		return getInstance(tuidString, false)
 	}
@@ -130,14 +120,20 @@ final class TUID implements Serializable {
 			instance = new TUID(splitTUIDString)
 			var lastSegment = instance.getLastSegment()
 			LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegment, instance) // also create TUIDs for all prefixes of the specified tuidString and register them
-			LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(lastSegment, #[instance]);
+			val lastSegmentsMapUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(lastSegment);
+			val lastSegmentsMap = new ArrayList(if (lastSegmentsMapUnmodifiable != null) lastSegmentsMapUnmodifiable else #[]);
+			lastSegmentsMap.add(instance); 
+			LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(lastSegment, lastSegmentsMap);
 			val segmentIterator = lastSegment.iterator()
 			var ForwardHashedBackwardLinkedTree<String>.Segment pivot
 			while (segmentIterator.hasNext()) {
 				pivot = segmentIterator.next()
 				val TUID subInstance = getInstance(pivot.toString(VitruviusConstants.getTUIDSegmentSeperator()), true)
 				LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), subInstance)
-				LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), #[subInstance]);
+				val lastSegmentsMapUnmodifiableSub = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(subInstance.getLastSegment());
+				val lastSegmentsMapSub = new ArrayList(if (lastSegmentsMapUnmodifiableSub != null) lastSegmentsMapUnmodifiableSub else #[]);
+				lastSegmentsMapSub.add(subInstance); 
+				LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), lastSegmentsMapSub);
 			}
 			return instance
 		}
@@ -151,17 +147,20 @@ final class TUID implements Serializable {
 	 */
 	def private static synchronized void updateInstance(TUID tuid, ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
 		val oldSegment = tuid.lastSegment
-		val tuidsForSegment = new ArrayList<TUID>(LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment));
-		tuidsForSegment.add(tuid);
-		for (representant : tuidsForSegment) {
+		val tuidsForNewSegmentUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(newLastSegment);
+		val tuidsForNewSegment = new ArrayList<TUID>(if (tuidsForNewSegmentUnmodifiable != null) tuidsForNewSegmentUnmodifiable else #[]);
+		val tuidsForOldSegment = new ArrayList<TUID>(LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment));
+		tuidsForNewSegment.addAll(tuidsForOldSegment);
+		for (representant : tuidsForOldSegment) {
 			representant.lastSegment = newLastSegment;
 		}
-		LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(newLastSegment, tuidsForSegment);
+		LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(newLastSegment, tuidsForNewSegment);
+		LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment);
 		LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment)
 		LAST_SEGMENT_2_TUID_INSTANCES_MAP.putIfAbsent(newLastSegment, tuid);
 	}
 
-	public static Map<Segment, List<TUID>> LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP = new HashMap<Segment, List<TUID>>();
+	private static Map<Segment, List<TUID>> LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP = new HashMap<Segment, List<TUID>>();
 
 	def private static List<String> split(String tuidString) {
 		val seperator = VitruviusConstants.getTUIDSegmentSeperator()
