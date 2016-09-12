@@ -3,25 +3,28 @@ package tools.vitruv.extensions.dslsruntime.response.effects
 import tools.vitruv.extensions.dslsruntime.response.structure.Loggable
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslsruntime.response.helper.ResponseCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.util.command.TransformationResult
+import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;
 	private final List<Pair<EObject, String>> newCorrespondingElements;
 	private final List<EObject> oldCorrespondingElements;
+	private final TransformationResult transformationResult;
 	protected final CorrespondenceModel correspondenceModel;
 	protected boolean delete;
 	
-	public new(EObject element, CorrespondenceModel correspondenceModel) {
+	public new(EObject element, CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
 		this.element = element;
 		this.correspondenceModel = correspondenceModel;
 		this.newCorrespondingElements = newArrayList;
 		this.oldCorrespondingElements = newArrayList;
 		this.delete = false;
+		this.transformationResult = transformationResult;
 	}
 	
 	public override void preprocess() {
@@ -73,7 +76,7 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 		if (element.eContainer() == null) {
 			if (element.eResource() != null) {
 				logger.debug("Deleting root object: " + element);
-				element.eResource().delete(Collections.EMPTY_MAP);
+				transformationResult.addVURIToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 			} else {
 				logger.warn("The element to delete was already removed: " + element);
 			}
