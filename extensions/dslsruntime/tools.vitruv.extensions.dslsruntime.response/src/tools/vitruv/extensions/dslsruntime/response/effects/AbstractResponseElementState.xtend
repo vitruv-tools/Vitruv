@@ -65,6 +65,8 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 		this.oldCorrespondingElements -= oldCorrespondingElement;
 	}
 	
+	// TODO HK Rename this (also in the RoutineClassGenerator) to indicate that the delete is not performed
+	// immediately
 	public override void delete() {
 		this.delete = true;
 	}
