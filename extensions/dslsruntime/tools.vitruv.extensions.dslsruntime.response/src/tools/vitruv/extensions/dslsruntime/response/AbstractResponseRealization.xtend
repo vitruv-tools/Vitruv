@@ -6,7 +6,7 @@ import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.TuidManager
 
 abstract class AbstractResponseRealization extends CallHierarchyHaving implements IResponseRealization {
 	protected val UserInteracting userInteracting;
@@ -28,7 +28,7 @@ abstract class AbstractResponseRealization extends CallHierarchyHaving implement
 				// The response was completely executed, so remove all objects registered for modification 
 				// by the effects as they are no longer under modification
 				// even if there was an exceptioN!
-				TUID.flushRegisteredObjectsUnderModification();	
+				TuidManager.instance.flushRegisteredObjectsUnderModification();	
 			}
 			
 		}

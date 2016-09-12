@@ -34,6 +34,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.metamodel.ModelInstance
 import tools.vitruv.framework.metamodel.ModelProviding
 import tools.vitruv.framework.tuid.TuidUpdateListener
+import tools.vitruv.framework.tuid.TuidManager
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
@@ -57,7 +58,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.saveCorrespondenceOptions.put(VitruviusConstants::getOptionProcessDanglingHref(),
 			VitruviusConstants::getOptionProcessDanglingHrefDiscard())
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
-		TUID.registerUpdateListener(this);
+		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
 	override void addCorrespondence(Correspondence correspondence) {
@@ -565,7 +566,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 *
 	 * @param removedMapEntries
 	 */
-	override void performPostAction(TUID newTUID) {
+	override void performPostAction(TUID tuid) {
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
 		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |

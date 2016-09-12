@@ -31,6 +31,7 @@ import tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState
 import pcm_mockup.PInterface
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.tuid.TuidManager
 
 class CorrespondenceTest extends VSUMTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -307,7 +308,7 @@ class CorrespondenceTest extends VSUMTest {
 	def private void testCreateRepo2PkgCorrespondenceAndUpdateTUID(Repository repo, UPackage pkg,
 		CorrespondenceModel corresp, Correspondence repo2pkg) {
 		var Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository()
-		TUID.updateTuid(repo, newRepo)
+		TuidManager.instance.updateTuid(repo, newRepo)
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Correspondence uniqueNewRepoCorrespondence = corresp.claimUniqueCorrespondence(newRepo)

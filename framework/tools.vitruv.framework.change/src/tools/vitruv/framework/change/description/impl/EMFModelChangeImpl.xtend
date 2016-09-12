@@ -8,8 +8,8 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
-import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
+import tools.vitruv.framework.tuid.TuidManager
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
@@ -80,26 +80,27 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
 	}
 	
 	private def void registerOldObjectTuidsForUpdate() {
+		val tuidManager = TuidManager.instance;
 		val objects = new ArrayList<EObject>();
         objects.addAll(getChangeDescription().getObjectChanges().keySet());
 		objects.addAll(getChangeDescription().getObjectsToDetach());
         for (EObject object : getChangeDescription().getObjectChanges().keySet()) {
-			TUID.registerObjectUnderModification(object);
+			tuidManager.registerObjectUnderModification(object);
         	for (FeatureChange featureChange : getChangeDescription().getObjectChanges().get(object)) {
-	        	TUID.registerObjectUnderModification(featureChange.getReferenceValue());
+	        	tuidManager.registerObjectUnderModification(featureChange.getReferenceValue());
 			}
         }
         for (EObject object : getChangeDescription().getObjectsToDetach()) {
-        	TUID.registerObjectUnderModification(object);
+        	tuidManager.registerObjectUnderModification(object);
 		}
 		for (EObject object : getChangeDescription().getObjectsToAttach()) {
-        	TUID.registerObjectUnderModification(object);
+        	tuidManager.registerObjectUnderModification(object);
 		}
     }
 
     protected def void updateTuids() {
-        TUID.updateRegisteredObjectsTuids();
-        TUID.flushRegisteredObjectsUnderModification();
+        TuidManager.instance.updateTuidsOfRegisteredObjects();
+        TuidManager.instance.flushRegisteredObjectsUnderModification();
     }
 	
 }

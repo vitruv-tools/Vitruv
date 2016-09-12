@@ -5,7 +5,7 @@ import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TUID
+import tools.vitruv.framework.tuid.TuidManager
 
 class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	private final Map<EObject, AbstractResponseElementState> elementStates;
@@ -50,7 +50,7 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	
 	override postprocessElementStates() {
 		// Modifications are finished, so update the TUIDs
-		TUID.updateRegisteredObjectsTuids();
+		TuidManager.instance.updateTuidsOfRegisteredObjects();
 		
 		for (state : elementStates.values) {
 			state.postprocess();
