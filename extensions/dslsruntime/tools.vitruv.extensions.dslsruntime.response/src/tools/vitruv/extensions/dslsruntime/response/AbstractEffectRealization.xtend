@@ -42,12 +42,13 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	}
 	
 	public override void applyRoutine() {
-		try {
+		// Exception catching should be disabled, as least as long as we do not use the framework productively
+		//try {
 			executeRoutine();
-		} catch (Exception exception) {
+		//} catch (Exception exception) {
 			// If an error occured during execution, avoid an application shutdown and print the error.
-			getLogger().error('''«exception.class.simpleName» during execution of effect «calledByString»: «exception.message»''');
-		}
+			//getLogger().error('''«exception.class.simpleName» during execution of effect «calledByString»: «exception.message»''');
+		//}
 	}
 	
 	protected abstract def void executeRoutine() throws IOException;
