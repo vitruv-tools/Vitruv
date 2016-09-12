@@ -14,7 +14,6 @@ import tools.vitruv.framework.util.VitruviusConstants;
 
 public class TUIDTest {
 
-    @SuppressWarnings("deprecation")
 	@Test
     public void test() {
         String sep = VitruviusConstants.getTUIDSegmentSeperator();
@@ -117,7 +116,7 @@ public class TUIDTest {
         /***********************************************************/
         TUID tuid4prefix = TUID.getInstance(s4prefix);
         TUID tuid5prefix = TUID.getInstance(s5prefix);
-        tuid4prefix.renameSegments(tuid5prefix);
+        tuid4prefix.renameOrMoveLastSegment(tuid5prefix);
         System.out.println("**** BEGIN THIRD OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END THIRD OPERATION ****\n\n\n");
         assertEquals(s5prefix, tuid4prefix.toString());
@@ -168,7 +167,7 @@ public class TUIDTest {
         /***************************************************************/
         String s5prefixrrrrrr = s9 + sep + "u";
         TUID tuid5prefixrrrrrr = TUID.getInstance(s5prefixrrrrrr);
-        tuid5prefix.renameSegments(tuid5prefixrrrrrr);
+        tuid5prefix.renameOrMoveLastSegment(tuid5prefixrrrrrr);
         System.out.println("**** BEGIN SIXTH OPERATION ****\n" + TUID.toStrings()
                 + "\n**** END SIXTH OPERATION ****\n\n");
         assertEquals(s5prefixrrrrrr, tuid5prefix.toString());
@@ -202,7 +201,6 @@ public class TUIDTest {
         testUpdateSegment(input, expected, "prefix#b#c", "prefix#b#c2", useUpdateMultipleSegmentsMethod);
     }
 
-    @SuppressWarnings("deprecation")
 	private void testUpdateSegment(final String[] input, final String[] expected, final String oldTUIDString,
             final String newTUIDString, final boolean updateMultipleSegments) {
         // construct TUIDs
@@ -214,7 +212,7 @@ public class TUIDTest {
         TUID oldTUID = TUID.getInstance(oldTUIDString);
         TUID newTUID = TUID.getInstance(newTUIDString);
         
-        oldTUID.renameSegments(newTUID);
+        oldTUID.renameOrMoveLastSegment(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());
@@ -228,27 +226,6 @@ public class TUIDTest {
 
     }
 
-    @Test
-    public void testMultipleSegmentChange() {
-        String[] input = new String[] { "pre#fix#b#suffix", "pre#fix#b#c#suffix", "pre#fix#b#c#d#suffix",
-        "pre#fix#b#c2#d#suffix" };
-        String[] expected = new String[] { "pre#fix#b2#suffix", "pre#fix#b2#c2#suffix2", "pre#fix#b2#c2#d#suffix",
-        "pre#fix#b2#c2#d#suffix" };
-        boolean updateMultipleSegments = true;
-        testUpdateSegment(input, expected, "pre#fix#b#c#suffix", "pre#fix#b2#c2#suffix2", updateMultipleSegments);
-    }
-    
-    @Test
-    public void testScatteredSegmentChange() {
-        String[] input = new String[] { "pre#a#b#c#d#e#f", "pre#a#b", "pre#a#b#cc", "pre#a#b#c#d#e", 
-        "pre#a#b#c#d#e#ff" };
-        String[] expected = new String[] { "pre#a2#b2#c#d2#e2#f", "pre#a2#b2", "pre#a2#b2#cc", "pre#a2#b2#c#d2#e2",
-                "pre#a2#b2#c#d2#e2#ff" };
-        boolean updateMultipleSegments = true;
-        testUpdateSegment(input, expected, "pre#a#b#c#d#e#f", "pre#a2#b2#c#d2#e2#f", updateMultipleSegments);
-    }
-
-    @SuppressWarnings("deprecation")
 	@Test
     public void testUpdateSingleSegmentTargetContainsNoChildren() {
         String[] input = new String[] { "prefix2#a", "prefix2#a#b", "prefix2#a#c" };
@@ -263,7 +240,7 @@ public class TUIDTest {
         // rename TUIDs
         TUID oldTUID = TUID.getInstance("prefix2#a#b");
         TUID newTUID = TUID.getInstance("prefix2#a#c");
-        oldTUID.renameSegments(newTUID);
+        oldTUID.renameOrMoveLastSegment(newTUID);
 
         // validate TUID
         assertTrue(TUID.validate());

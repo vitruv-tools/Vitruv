@@ -5,14 +5,10 @@ import java.util.Arrays
 import java.util.Collection
 import java.util.HashMap
 import java.util.HashSet
-import java.util.LinkedList
 import java.util.List
 import java.util.Set
-import org.apache.commons.lang.StringUtils
-import com.google.common.base.Strings
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree
-import tools.vitruv.framework.util.datatypes.Pair
 
 import java.util.ArrayList
 import java.util.Map
@@ -186,8 +182,7 @@ final class TUID implements Serializable {
 		if (newLastSegment != null) {
 			renameLastSegment(newLastSegment)
 		} else {
-			// that there are at least two previous segments will be checked in move method
-			moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID)
+			moveLastSegment(anotherTUID)
 		}
 	}
 
@@ -196,25 +191,6 @@ final class TUID implements Serializable {
 
 	def private String getRenameOrMoveExceptionMsgPrefix(
 		TUID anotherTUID) '''To either rename or move the last segment of '«this»' according to '«anotherTUID»' both TUIDs have to'''
-
-	def private boolean haveAtLeastTwoSegments(TUID anotherTUID) {
-		return this.getSegmentCount() > 2 && anotherTUID != null && anotherTUID.getSegmentCount() > 2
-	}
-
-	/** 
-	 * Moves the last segment of this TUID to the second but last segment of the given {@link anotherTUID} and
-	 * merges the children for the last segments of both TUIDs.<br/>
-	 * 
-	 * Both TUIDs must have at least two segments.
-	 * 
-	 * @param anotherTUID
-	 */
-	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(TUID anotherTUID) {
-		if (!haveAtLeastTwoSegments(anotherTUID)) {
-			throw new IllegalArgumentException(getRenameExceptionMsg(anotherTUID))
-		}
-		moveLastSegment(anotherTUID)
-	}
 
 	/** 
 	 * Renames the <b>last</b> segment of this TUID instance to the given {@link newLastSegmentString}. If an instance for the resulting TUID already exists, then all
@@ -293,14 +269,6 @@ final class TUID implements Serializable {
 		}
 	}
 
-	def private static String[] getSegments(TUID tuid) {
-		return tuid.toString().split(VitruviusConstants.getTUIDSegmentSeperator())
-	}
-
-	def private int getSegmentCount() {
-		return getSegments(this).length
-	}
-
 	override String toString() {
 		return this.lastSegment.toString(VitruviusConstants.getTUIDSegmentSeperator())
 	}
@@ -365,79 +333,4 @@ lastSegment2TUIDMap:
 		return true
 	}
 
-	@Deprecated
-	def private int getCommonPrefixSegmentsCount(TUID otherTUID) {
-		val thisTUIDString = toString()
-		val otherTUIDString = otherTUID.toString()
-		val commonPrefix = Strings.commonPrefix(thisTUIDString, otherTUIDString)
-		if ("".equals(commonPrefix)) {
-			return 0
-		} else {
-			val commonPrefixSegments = commonPrefix.split(VitruviusConstants.getTUIDSegmentSeperator())
-			if (commonPrefix.endsWith(VitruviusConstants.getTUIDSegmentSeperator()) ||
-				thisTUIDString.equals(otherTUIDString)) {
-				return commonPrefixSegments.length
-			} else {
-				// the last segment is only partially shared and therefore not common
-				return commonPrefixSegments.length - 1
-			}
-		}
-	}
-
-	@Deprecated
-	def private int getAndEnsureEqualSegmentCount(TUID newTUID) {
-		val int oldSegmentCount = getSegmentCount()
-		val int newSegmentCount = newTUID.getSegmentCount()
-		if (oldSegmentCount !==
-			newSegmentCount) {
-			throw new IllegalArgumentException('''Cannot update the TUID «this» because the new TUID «newTUID» has a different number of segments!''')
-		}
-		return oldSegmentCount
-	}
-
-	@Deprecated
-	def private int getFirstSegmentToChange(TUID newTUID) {
-		val int segmentsCount = getAndEnsureEqualSegmentCount(newTUID)
-		val int commonPrefixSegmentCount = getCommonPrefixSegmentsCount(newTUID)
-		if (commonPrefixSegmentCount === segmentsCount) {
-			return -1
-		}
-		return commonPrefixSegmentCount + 1
-	}
-
-	@Deprecated
-	def private static TUID getTUIDPrefix(TUID tuid, int length) {
-		val String[] segments = getSegments(tuid)
-		val String[] prefixSegments = Arrays.copyOfRange(segments, 0, length)
-		val TUID prefixTUID = TUID.getInstance(
-			StringUtils.join(prefixSegments, VitruviusConstants.getTUIDSegmentSeperator()))
-		return prefixTUID
-	}
-
-	/** 
-	 * Renames a single segment or multiple segments of this TUID instance so that it represents the
-	 * specified new TUID. It is <b>not</b> possible to remove or add segments, i.e. the number of
-	 * segments has to stay unchanged. The position and number of segments that should be changed
-	 * are not restricted. <br/>
-	 * If only the last segment should be changed the {@link renameLastSegment} method can be used.
-	 * @param newTUIDthe TUID according to which the segments shall be renamed
-	 * @returns the pairs of TUID representing all performed individual changes of last segments
-	 * @throws an {@link IllegalArgumentException} if {@link newTUID} has a different number of
-	 * segments
-	 */
-	@Deprecated def List<Pair<String, String>> renameSegments(TUID newTUID) {
-		val List<Pair<String, String>> changedPairs = new LinkedList<Pair<String, String>>()
-		var int firstSegmentToChange = getFirstSegmentToChange(newTUID)
-		while (-1 !== firstSegmentToChange) {
-			val TUID oldPrefixPlusFirstSegmentToChange = TUID.getTUIDPrefix(this, firstSegmentToChange)
-			val TUID newPrefixPlusFirstChangedSegment = TUID.getTUIDPrefix(newTUID, firstSegmentToChange)
-			changedPairs.add(
-				new Pair<String, String>(oldPrefixPlusFirstSegmentToChange.toString(),
-					newPrefixPlusFirstChangedSegment.toString()))
-			oldPrefixPlusFirstSegmentToChange.moveLastSegment(newPrefixPlusFirstChangedSegment) // enjoy the side-effect of TUID: the right segment of this and newTUID will be changed
-			// too
-			firstSegmentToChange = getFirstSegmentToChange(newTUID)
-		}
-		return changedPairs // TODO MK REMOVE CHANGEDPAIRS
-	}
 }
