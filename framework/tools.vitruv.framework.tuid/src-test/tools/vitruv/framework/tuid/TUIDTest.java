@@ -275,4 +275,58 @@ public class TUIDTest {
         }
         assertArrayEquals(expected, actual);
     }
+    
+    
+    @Test
+    public void testRenameHierarchical() {
+    	String sep = VitruviusConstants.getTUIDSegmentSeperator();
+    	String prefix = "prefix" + sep;
+    	String s1 = prefix + "a";
+    	TUID t1 = TUID.getInstance(s1);
+    	String s1new = prefix + "d";
+    	TUID t1new = TUID.getInstance(s1new);
+    	String s1new2 = prefix + "e";
+    	TUID t1new2 = TUID.getInstance(s1new2);
+    	String s2 = prefix + "a" + sep + "b";
+    	TUID t2 = TUID.getInstance(s2);
+    	String s2new = prefix + "d" + sep + "b";
+    	TUID t2new = TUID.getInstance(s2new);
+    	String s3 = prefix + "a" + sep + "b" + sep + "c";
+    	TUID t3 = TUID.getInstance(s3);
+    	t2.renameOrMoveLastSegment(t2new);
+    	assertEquals(t2, t2new);
+    	assertEquals(s2new + sep + "c", t3.toString());
+    	t1.renameOrMoveLastSegment(t1new);
+    	assertEquals(t1, t1new);
+    	String s4 = prefix + "f" + sep + "b";
+    	TUID t4 = TUID.getInstance(s4);
+    	String s4new = prefix + "e" + sep + "b";
+    	TUID t4new = TUID.getInstance(s4new);
+    	t4.renameOrMoveLastSegment(t4new);
+    	assertEquals(t4, t4new);
+    	t1.renameOrMoveLastSegment(t1new2);
+    	assertEquals(t1new2, t1new);
+    	assertEquals(t1new2, t1);
+    	assertEquals(prefix + "e" + sep + "b", t2.toString());
+    	assertEquals(prefix + "e" + sep + "b" + sep + "c", t3.toString());
+    	assertEquals(t2, t4);
+    	assertEquals(t2new, t4);
+    }
+    
+    @Test
+    public void testRenameDuplicateTuidInstance() {
+    	String sep = VitruviusConstants.getTUIDSegmentSeperator();
+    	String prefix = "prefix" + sep;
+    	String s1 = prefix + "a";
+    	TUID t1 = TUID.getInstance(s1);
+    	String s1new = prefix + "d";
+    	TUID t1new = TUID.getInstance(s1new);
+    	String s1new2 = prefix + "e";
+    	TUID t1new2 = TUID.getInstance(s1new2);
+    	t1.renameOrMoveLastSegment(t1new);
+    	assertEquals(t1, t1new);
+    	t1.renameOrMoveLastSegment(t1new2);
+    	assertEquals(t1new2, t1new);
+    	assertEquals(t1new2, t1);
+    }
 }
