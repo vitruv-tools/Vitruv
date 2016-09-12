@@ -7,6 +7,7 @@ import java.util.Collections
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslsruntime.response.helper.ResponseCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.tuid.TuidManager
 
 abstract class AbstractResponseElementState extends Loggable implements ResponseElementState {
 	protected final EObject element;
@@ -80,5 +81,8 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 			logger.debug("Removing non-root object: " + element);
 			EcoreUtil.remove(element);
 		}
+		// If we delete an object, we have to update TUIDs because TUIDs of child elements 
+		// may have to be resolved for removing correspondences as well and must therefore be up-to-date
+		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}		
 }
