@@ -575,34 +575,15 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 		val removedMapEntry = tuidUpdateData;
 		val oldCurrentTUID = removedMapEntry.first
-		val oldCurrentTUIDString = removedMapEntry.second
 		val oldTUIDList2Correspondences = removedMapEntry.third
 		val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
 		for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
 			val oldTUIDList = new ArrayList<TUID>(oldTUIDList2CorrespondencesEntry.first);
 			val correspondences = oldTUIDList2CorrespondencesEntry.second
-			// replace the old tuid in the list with the new tuid
-			// oldCurrentTUID is already the new TUID because this happens after the update
-			//val replacedTUID = 
-			oldTUIDList.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
-//				if (replacedTUID == null) {
-//					throw new RuntimeException("No TUID in the List '" + oldTUIDList + "' is equal to '" + oldCurrentTUIDString)
-//				}
 			// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
 			newSetOfoldTUIDLists.add(oldTUIDList)
 			// re-add the correspondences entry for the current list of tuids with the new hashcode 
 			tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
-			// update the TUID in the correspondence model
-			for (correspondence : correspondences) {
-				val replacedATUID = correspondence.getATUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
-				val replacedBTUID = correspondence.getBTUIDs.replaceFirstStringEqualElement(oldCurrentTUIDString,oldCurrentTUID)
-				if (replacedATUID == null && replacedBTUID == null && !correspondence.getATUIDs.contains(oldCurrentTUID) && !correspondence.getBTUIDs.contains(oldCurrentTUID)) {
-					throw new RuntimeException('''None of the corresponding elements in '«correspondence»' has a TUID equal to '«oldCurrentTUIDString»'!''')
-				} else if (replacedATUID != null && replacedBTUID != null) {
-						throw new RuntimeException('''At least an a element and a b element of the correspondence '«correspondence»' have '«oldCurrentTUID»'!''')
-				}
-				// nothing to do as the TUID in one of the lists was already updated
-			}
 		}
 		// re-add the entry that maps the tuid to the set if tuid lists that contain it
 		tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
