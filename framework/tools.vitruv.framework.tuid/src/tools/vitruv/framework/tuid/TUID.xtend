@@ -17,6 +17,8 @@ import tools.vitruv.framework.util.datatypes.Pair
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
+import java.util.Map
+import tools.vitruv.framework.util.datatypes.ForwardHashedBackwardLinkedTree.Segment
 
 /** 
  * A class for Temporarily Unique IDentifiers (TUIDs) that internally uses a{@link ForwardHashedBackwardLinkedTree} to ensure that depending TUIDs are indirectly changed,
@@ -53,7 +55,7 @@ final class TUID implements Serializable {
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
 	
 	private static List<TuidUpdateListener> updateListener = new ArrayList<TuidUpdateListener>();
-	private static List<TuidUpdater> updater = new ArrayList<TuidUpdater>();
+	private static List<TuidCalculator> updater = new ArrayList<TuidCalculator>();
 	
 	public static def void registerUpdateListener(TuidUpdateListener updateListener) {
 		if (updateListener != null) {
@@ -65,49 +67,79 @@ final class TUID implements Serializable {
 		TUID.updateListener.remove(updateListener);
 	}
 	
-	public static def void registerUpdater(TuidUpdater updater) {
+	public static def void registerUpdater(TuidCalculator updater) {
 		if (updater != null) {
 			TUID.updater += updater;
 		}
 	}
 	
-	public static def unregisterUpdater(TuidUpdater updater) {
+	public static def unregisterUpdater(TuidCalculator updater) {
 		TUID.updater.remove(updater);
 	}
 	
 	public static def reinitialize() {
 		TUID.updateListener.clear();
 		TUID.updater.clear();
+		TUID.flushRegisteredObjectsUnderModification();
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 	
-	def public static registerObjectForUpdate(EObject objectToUpdate) {
+	private static Map<EObject, TUID> tuidUpdateMap = new HashMap<EObject, TUID>();
+	
+	def private static boolean hasTuid(EObject object) {
 		for (potentialUpdater : updater) {
-			if (potentialUpdater.canUpdate(objectToUpdate)) {
-				potentialUpdater.registerObjectForUpdate(objectToUpdate);
-			}
+			if (potentialUpdater.canCalculateTuid(object)) return true;
+		}
+		return false;
+	}
+	
+	def private static TUID calculateTuid(EObject object) {
+		for (potentialUpdater : updater) {
+			if (potentialUpdater.canCalculateTuid(object)) {
+				return potentialUpdater.calculateTuid(object);
+			};
 		}
 	}
 	
-	def public static updateRegisteredObjectsTuids() {
-		for (potentialUpdater : updater) {
-			potentialUpdater.updateRegisteredObjectsTuids();
+	def public static registerObjectUnderModification(EObject objectUnderModification) {
+		if (objectUnderModification.hasTuid)
+		tuidUpdateMap.put(objectUnderModification, objectUnderModification.calculateTuid);
+	}
+	
+	def public static flushRegisteredObjectsUnderModification() {
+		tuidUpdateMap.clear();
+	}
+	
+	private static def updateTuid(TUID oldTuid, TUID newTuid) {
+		var boolean sameTUID = if(oldTuid !== null) oldTuid.equals(newTuid) else newTuid === null
+		if (sameTUID || oldTuid === null) {
+			return;
+		}
+		oldTuid.renameOrMoveLastSegment(newTuid)
+	}
+	
+	public def static updateRegisteredObjectsTuids() {
+		for (object : tuidUpdateMap.keySet) {
+			val oldTuid = tuidUpdateMap.get(object);
+			if (hasTuid(object)) {
+				val newTuid = object.calculateTuid
+				updateTuid(oldTuid, newTuid);
+				tuidUpdateMap.put(object, newTuid);
+			}
 		}
 	}
 	
 	def public static updateTuid(EObject oldObject, EObject newObject) {
-		for (potentialUpdater : updater) {
-			if (potentialUpdater.canUpdate(oldObject) && potentialUpdater.canUpdate(newObject)) {
-				potentialUpdater.updateObjectTuid(oldObject, newObject);
-			}
+		if (oldObject.hasTuid && newObject.hasTuid) {
+			val oldTuid = oldObject.calculateTuid;
+			val newTuid = newObject.calculateTuid;
+			updateTuid(oldTuid, newTuid);
 		}
 	}
 	
 	def public updateTuid(EObject newObject) {
-		for (potentialUpdater : updater) {
-			if (potentialUpdater.canUpdate(newObject)) {
-				potentialUpdater.updateObjectTuid(this, newObject);
-			}
+		if (newObject.hasTuid) {
+			TUID.updateTuid(this, newObject.calculateTuid);
 		}
 	}
 	
@@ -191,7 +223,7 @@ final class TUID implements Serializable {
 	 */
 	def private static synchronized void updateInstance(TUID tuid, ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
 		val oldSegment = tuid.lastSegment
-		tuid.lastSegment = newLastSegment
+		tuid.lastSegment = newLastSegment;
 		LAST_SEGMENT_2_TUID_INSTANCES_MAP.remove(oldSegment)
 	}
 

@@ -9,8 +9,4 @@ class CreateResponseElementState extends AbstractResponseElementState {
 		super(element, correspondenceModel)
 	}
 	
-	override updateTUID() {
-		// Do nothing
-	}
-	
 }

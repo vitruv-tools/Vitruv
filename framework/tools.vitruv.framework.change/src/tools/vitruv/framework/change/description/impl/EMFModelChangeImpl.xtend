@@ -84,24 +84,22 @@ class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> imp
         objects.addAll(getChangeDescription().getObjectChanges().keySet());
 		objects.addAll(getChangeDescription().getObjectsToDetach());
         for (EObject object : getChangeDescription().getObjectChanges().keySet()) {
-			TUID.registerObjectForUpdate(object);
+			TUID.registerObjectUnderModification(object);
         	for (FeatureChange featureChange : getChangeDescription().getObjectChanges().get(object)) {
-	        	TUID.registerObjectForUpdate(featureChange.getReferenceValue());
+	        	TUID.registerObjectUnderModification(featureChange.getReferenceValue());
 			}
         }
         for (EObject object : getChangeDescription().getObjectsToDetach()) {
-        	TUID.registerObjectForUpdate(object);
+        	TUID.registerObjectUnderModification(object);
+		}
+		for (EObject object : getChangeDescription().getObjectsToAttach()) {
+        	TUID.registerObjectUnderModification(object);
 		}
     }
 
     protected def void updateTuids() {
-        // TODO HK There is something wrong with transactions if we have to start a transaction to
-        // update the TUID here.
-        // Possibilities:
-        // 1. There should not be an active transaction when this method is called
-        // 2. The TUID mechanism is refactored so that only the TUID object is modified and no other
-        // resources
         TUID.updateRegisteredObjectsTuids();
+        TUID.flushRegisteredObjectsUnderModification();
     }
 	
 }

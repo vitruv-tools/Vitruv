@@ -11,11 +11,11 @@ import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver
 import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.AbstractURIHaving
-import tools.vitruv.framework.tuid.TuidUpdater
 import tools.vitruv.framework.tuid.TUID
-import java.util.HashMap
+import tools.vitruv.framework.tuid.TuidCalculator
+import tools.vitruv.framework.tuid.TuidUpdateListener
 
-class Metamodel extends AbstractURIHaving implements TuidUpdater {
+class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener {
 	String[] fileExtensions
 	TUIDCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
@@ -77,6 +77,7 @@ class Metamodel extends AbstractURIHaving implements TuidUpdater {
 		this.defaultLoadOptions = defaultLoadOptions
 		this.defaultSaveOptions = defaultSaveOptions
 		TUID.registerUpdater(this);
+		TUID.registerUpdateListener(this);
 	}
 
 	def String[] getFileExtensions() {
@@ -152,53 +153,22 @@ class Metamodel extends AbstractURIHaving implements TuidUpdater {
 		return this.defaultSaveOptions
 	}
 
-	private Map<EObject, TUID> tuidUpdateMap = new HashMap<EObject, TUID>();
-	
-	override canUpdate(EObject objectToUpdate) {
-		return hasMetaclassInstances(#[objectToUpdate]) && hasTUID(objectToUpdate);
+	override canCalculateTuid(EObject object) {
+		return hasMetaclassInstances(#[object]) && hasTUID(object);
 	}
 	
-	override registerObjectForUpdate(EObject objectToUpdate) {
-		if (canUpdate(objectToUpdate)) {
-			tuidUpdateMap.put(objectToUpdate, TUID.getInstance(calculateTUIDFromEObject(objectToUpdate)));
+	override calculateTuid(EObject object) {
+		return TUID.getInstance(calculateTUIDFromEObject(object));
+	}
+	
+	override performPreAction(TUID oldTuid) {
+		if (this.hasTUID(oldTuid.toString)) {
+			removeIfRootAndCached(oldTuid.toString);
 		}
 	}
 	
-	override updateRegisteredObjectsTuids() {
-		for (object : tuidUpdateMap.keySet) {
-			val oldTuid = tuidUpdateMap.get(object);
-			if (canUpdate(object)) {
-				val newTuid = TUID.getInstance(calculateTUIDFromEObject(object));
-				updateTuid(oldTuid, newTuid);
-			}
-		}
-		tuidUpdateMap.clear;
-	}
-	
-	private def updateTuid(TUID oldTuid, TUID newTuid) {
-		var boolean sameTUID = if(oldTuid !== null) oldTuid.equals(newTuid) else newTuid === null
-		if (sameTUID || oldTuid === null) {
-			return;
-		}
-		var String oldTUIDString = oldTuid.toString()
-		
-		oldTuid.renameOrMoveLastSegment(newTuid)
-		removeIfRootAndCached(oldTUIDString)
-	}
-	
-	override updateObjectTuid(EObject oldObject, EObject newObject) {
-		if (canUpdate(oldObject) && canUpdate(newObject)) {
-			val oldTuid = TUID.getInstance(calculateTUIDFromEObject(oldObject));
-			val newTuid = TUID.getInstance(calculateTUIDFromEObject(newObject));
-			updateTuid(oldTuid, newTuid);
-		}
-	}
-	
-	override updateObjectTuid(TUID oldTuid, EObject newObject) {
-		if (canUpdate(newObject)) {
-			val newTuid = TUID.getInstance(calculateTUIDFromEObject(newObject));
-			updateTuid(oldTuid, newTuid);
-		}
+	override performPostAction(TUID newTuid) {
+		// Do nothing
 	}
 	
 }

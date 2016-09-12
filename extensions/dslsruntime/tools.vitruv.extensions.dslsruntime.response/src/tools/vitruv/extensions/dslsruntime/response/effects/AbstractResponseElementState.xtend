@@ -53,8 +53,6 @@ abstract class AbstractResponseElementState extends Loggable implements Response
 		}
 	}
 	
-	public def void updateTUID();
-	
 	public override void addCorrespondingElement(EObject newCorrespondingElement, String tag) {
 		this.newCorrespondingElements += new Pair(newCorrespondingElement, tag);
 	}
