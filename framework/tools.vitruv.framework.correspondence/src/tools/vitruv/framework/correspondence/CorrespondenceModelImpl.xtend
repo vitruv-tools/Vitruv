@@ -9,7 +9,6 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
 import tools.vitruv.framework.util.datatypes.Pair
-import tools.vitruv.framework.util.datatypes.Triple
 import java.io.IOException
 import java.util.ArrayList
 import java.util.HashMap
@@ -534,7 +533,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return new CorrespondenceModelView(correspondenceType, this, correspondenceCreator);
 	}
 	
-	private Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>> tuidUpdateData;
+	private Iterable<Pair<List<TUID>,Set<Correspondence>>> tuidUpdateData;
 		
 	/**
 	 * Removes the current entries in the
@@ -554,11 +553,11 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		// remove the old map entries for the tuid before its hashcode changes
 		val oldTUIDLists = tuid2tuidListsMap.remove(oldCurrentTUID) ?: new HashSet<List<TUID>>()
 		val oldTUIDList2Correspondences = new ArrayList<Pair<List<TUID>,Set<Correspondence>>>(oldTUIDLists.size);
-			for (oldTUIDList : oldTUIDLists) {
+		for (oldTUIDList : oldTUIDLists) {
 			val correspondencesForOldTUIDList = tuid2CorrespondencesMap.remove(oldTUIDList) ?: new HashSet<Correspondence>()
 			oldTUIDList2Correspondences.add(new Pair<List<TUID>,Set<Correspondence>>(oldTUIDList,correspondencesForOldTUIDList))
 		}
-		tuidUpdateData = new Triple<TUID, String, Iterable<Pair<List<TUID>,Set<Correspondence>>>>(oldCurrentTUID, oldCurrentTUID.toString(),oldTUIDList2Correspondences)
+		tuidUpdateData = oldTUIDList2Correspondences
 	}
 		
 	 /**
@@ -570,26 +569,23 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
 		this.modelProviding.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ |
-		if (tuidUpdateData == null) {
-			throw new IllegalStateException("Update was not started before performing post action");
-		}
-		val removedMapEntry = tuidUpdateData;
-		val oldCurrentTUID = removedMapEntry.first
-		val oldTUIDList2Correspondences = removedMapEntry.third
-		val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
-		for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
-			val oldTUIDList = new ArrayList<TUID>(oldTUIDList2CorrespondencesEntry.first);
-			val correspondences = oldTUIDList2CorrespondencesEntry.second
-			// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
-			newSetOfoldTUIDLists.add(oldTUIDList)
-			// re-add the correspondences entry for the current list of tuids with the new hashcode 
-			tuid2CorrespondencesMap.put(oldTUIDList,correspondences)
-		}
-		// re-add the entry that maps the tuid to the set if tuid lists that contain it
-		tuid2tuidListsMap.put(oldCurrentTUID, newSetOfoldTUIDLists)
-		tuidUpdateData = null;
-		return null;
-		 
+			if (tuidUpdateData == null) {
+				throw new IllegalStateException("Update was not started before performing post action");
+			}
+			val oldTUIDList2Correspondences = tuidUpdateData;
+			val newSetOfoldTUIDLists = new HashSet<List<TUID>>()
+			for (oldTUIDList2CorrespondencesEntry : oldTUIDList2Correspondences) {
+				val oldTUIDList = new ArrayList<TUID>(oldTUIDList2CorrespondencesEntry.first);
+				val correspondences = oldTUIDList2CorrespondencesEntry.second
+				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
+				newSetOfoldTUIDLists.add(oldTUIDList)
+				// re-add the correspondences entry for the current list of tuids with the new hashcode 
+				tuid2CorrespondencesMap.put(oldTUIDList, correspondences)
+			}
+			// re-add the entry that maps the tuid to the set if tuid lists that contain it
+			tuid2tuidListsMap.put(tuid, newSetOfoldTUIDLists)
+			tuidUpdateData = null;
+			return null;
 		]);
 	}
 
