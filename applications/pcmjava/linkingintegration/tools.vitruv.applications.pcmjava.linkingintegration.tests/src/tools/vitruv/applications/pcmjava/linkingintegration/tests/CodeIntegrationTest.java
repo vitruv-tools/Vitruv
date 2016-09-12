@@ -151,7 +151,7 @@ public class CodeIntegrationTest {
         Assert.assertNotNull(correspondences);
         Assert.assertFalse(correspondences.isEmpty());
 
-        final TUID frameCodeTuid = TUID.valueOf(
+        final TUID frameCodeTuid = TUID.getInstance(
                 "http://www.emftext.org/java#platform:/resource/eu.fpetersen.cbs.pc/src/eu/fpetersen/cbs/pc/data/Frame.java#classifier-_-Frame");
         final List<TUID> frameCodeTuids = Collections.singletonList(frameCodeTuid);
         final Set<Correspondence> frameCodeCorrs = ci.getCorrespondencesForTUIDs(frameCodeTuids);
@@ -168,7 +168,7 @@ public class CodeIntegrationTest {
 
             final TUID b = bs.get(0);
             Assert.assertEquals(
-                    TUID.valueOf(
+                    TUID.getInstance(
                             "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#id=_auhdcMWvEeWLAeSW2tt_XQ#id=_auwuAMWvEeWLAeSW2tt_XQ"),
                     b);
         } else if (frameCorr.getBTUIDs().contains(frameCodeTuid)) {
@@ -178,7 +178,7 @@ public class CodeIntegrationTest {
 
             final TUID a = as.get(0);
             Assert.assertEquals(
-                    TUID.valueOf(
+                    TUID.getInstance(
                             "http://palladiosimulator.org/PalladioComponentModel/Repository/5.1#platform:/resource/eu.fpetersen.cbs.pc/model/internal_architecture_model.repository#id=_auhdcMWvEeWLAeSW2tt_XQ#id=_auwuAMWvEeWLAeSW2tt_XQ"),
                     a);
         } else {

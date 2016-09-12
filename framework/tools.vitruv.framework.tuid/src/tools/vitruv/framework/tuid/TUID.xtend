@@ -47,31 +47,32 @@ import org.eclipse.emf.ecore.EObject
  * @author kramerm
  */
 final class TUID implements Serializable {
-	
+
 	protected static final long serialVersionUID = 5018494116382201707L
-	
+
 	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
 	static val LAST_SEGMENT_2_TUID_INSTANCES_MAP = new HashMap<ForwardHashedBackwardLinkedTree<String>.Segment, TUID>()
-	
+	static Map<Segment, List<TUID>> LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP = new HashMap<Segment, List<TUID>>();
+
 	package static def reinitialize() {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
-	
+
 	package def updateTuid(TUID newTuid) {
 		if (this.equals(newTuid)) {
 			return;
 		}
 		renameOrMoveLastSegment(newTuid)
 	}
-	
+
 	public def updateTuid(EObject newObject) {
 		TuidManager.instance.updateTuid(this, newObject);
 	}
-	
+
 	def private static generateForwardHashedBackwardLinkedTree() {
 		return new ForwardHashedBackwardLinkedTree<String>()
 	}
-	
+
 	var ForwardHashedBackwardLinkedTree<String>.Segment lastSegment
 
 	/** 
@@ -89,10 +90,6 @@ final class TUID implements Serializable {
 	def static synchronized TUID getInstance(String tuidString) {
 		return getInstance(tuidString, false)
 	}
-	
-	def static valueOf(String tuidString) {
-		return getInstance(tuidString)
-	}
 
 	def private static synchronized TUID getInstance(String tuidString, boolean recursively) {
 		if (tuidString === null) {
@@ -102,12 +99,13 @@ final class TUID implements Serializable {
 			var lastSegmentOrPrefix = SEGMENTS.getMaximalPrefix(splitTUIDString)
 			var TUID instance
 			val lastSegmentOrPrefixString = if (lastSegmentOrPrefix != null) {
-				lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator());
-			}
+					lastSegmentOrPrefix.toString(VitruviusConstants.getTUIDSegmentSeperator());
+				}
 			if (lastSegmentOrPrefixString != null && lastSegmentOrPrefixString.equals(tuidString)) {
 				// the complete specified tuidString was already mapped
 				instance = LAST_SEGMENT_2_TUID_INSTANCES_MAP.get(lastSegmentOrPrefix)
-				if (instance === null) {
+				if (instance ===
+					null) {
 					if (!recursively) {
 						throw new IllegalStateException('''A TUID instance for the last segment '«»«lastSegmentOrPrefix»' should already have been mapped for the tuidString '«»«tuidString»'!''')
 					}
@@ -121,8 +119,9 @@ final class TUID implements Serializable {
 			var lastSegment = instance.getLastSegment()
 			LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(lastSegment, instance) // also create TUIDs for all prefixes of the specified tuidString and register them
 			val lastSegmentsMapUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(lastSegment);
-			val lastSegmentsMap = new ArrayList(if (lastSegmentsMapUnmodifiable != null) lastSegmentsMapUnmodifiable else #[]);
-			lastSegmentsMap.add(instance); 
+			val lastSegmentsMap = new ArrayList(
+				if(lastSegmentsMapUnmodifiable != null) lastSegmentsMapUnmodifiable else #[]);
+			lastSegmentsMap.add(instance);
 			LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(lastSegment, lastSegmentsMap);
 			val segmentIterator = lastSegment.iterator()
 			var ForwardHashedBackwardLinkedTree<String>.Segment pivot
@@ -130,25 +129,29 @@ final class TUID implements Serializable {
 				pivot = segmentIterator.next()
 				val TUID subInstance = getInstance(pivot.toString(VitruviusConstants.getTUIDSegmentSeperator()), true)
 				LAST_SEGMENT_2_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), subInstance)
-				val lastSegmentsMapUnmodifiableSub = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(subInstance.getLastSegment());
-				val lastSegmentsMapSub = new ArrayList(if (lastSegmentsMapUnmodifiableSub != null) lastSegmentsMapUnmodifiableSub else #[]);
-				lastSegmentsMapSub.add(subInstance); 
+				val lastSegmentsMapUnmodifiableSub = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.get(
+					subInstance.getLastSegment());
+				val lastSegmentsMapSub = new ArrayList(
+					if(lastSegmentsMapUnmodifiableSub != null) lastSegmentsMapUnmodifiableSub else #[]);
+				lastSegmentsMapSub.add(subInstance);
 				LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.put(subInstance.getLastSegment(), lastSegmentsMapSub);
 			}
 			return instance
 		}
 	}
-	
+
 	/** 
 	 * Changes the given tuid so that it points to the given newLastSegment.<br/>
 	 * <b>ATTENTION: This changes the hashcode of the given tuid!</b>
 	 * @param tuid
 	 * @param newLastSegment
 	 */
-	def private static synchronized void updateInstance(TUID tuid, ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
+	def private static synchronized void updateInstance(TUID tuid,
+		ForwardHashedBackwardLinkedTree<String>.Segment newLastSegment) {
 		val oldSegment = tuid.lastSegment
 		val tuidsForNewSegmentUnmodifiable = LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(newLastSegment);
-		val tuidsForNewSegment = new ArrayList<TUID>(if (tuidsForNewSegmentUnmodifiable != null) tuidsForNewSegmentUnmodifiable else #[]);
+		val tuidsForNewSegment = new ArrayList<TUID>(
+			if(tuidsForNewSegmentUnmodifiable != null) tuidsForNewSegmentUnmodifiable else #[]);
 		val tuidsForOldSegment = new ArrayList<TUID>(LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP.remove(oldSegment));
 		tuidsForNewSegment.addAll(tuidsForOldSegment);
 		for (representant : tuidsForOldSegment) {
@@ -160,8 +163,6 @@ final class TUID implements Serializable {
 		LAST_SEGMENT_2_TUID_INSTANCES_MAP.putIfAbsent(newLastSegment, tuid);
 	}
 
-	private static Map<Segment, List<TUID>> LAST_SEGMENT_2_ALL_TUID_INSTANCES_MAP = new HashMap<Segment, List<TUID>>();
-
 	def private static List<String> split(String tuidString) {
 		val seperator = VitruviusConstants.getTUIDSegmentSeperator()
 		// TODO replace this possibly ArrayList with a LinkList if performance is not sufficient
@@ -171,7 +172,7 @@ final class TUID implements Serializable {
 	def private ForwardHashedBackwardLinkedTree<String>.Segment getLastSegment() {
 		return this.lastSegment
 	}
-	
+
 	// TODO MK Xtend improvement: define null as default value for before and after using an active annotation in all rename and move methods
 	/**
 	 * Either a) renames the last segment of this TUID to the last segment of the given {@link anotherTUID} 
@@ -189,40 +190,17 @@ final class TUID implements Serializable {
 			moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID)
 		}
 	}
-	
-	def private String getRenameExceptionMsg(TUID anotherTUID) '''«getRenameOrMoveExceptionMsgPrefix(anotherTUID)» have at least two segments!'''
-	
-	def private String getMoveExceptionMsg(TUID anotherTUID) '''«getRenameOrMoveExceptionMsgPrefix(anotherTUID)» end with string equivalent segments!'''
-	
-	def private String getRenameOrMoveExceptionMsgPrefix(TUID anotherTUID) '''To either rename or move the last segment of '«this»' according to '«anotherTUID»' both TUIDs have to'''
-	
-	def private boolean lastSegmentsAreEquivalent(TUID anotherTUID) {
-		val thisLastSegment = this.getLastSegment();
-		val otherLastSegment = anotherTUID.getLastSegment();
-		if (thisLastSegment != null && otherLastSegment != null) {
-			return thisLastSegment.valueString != null && thisLastSegment.valueString.equals(otherLastSegment.valueString);
-		}
-		return false
-	}
-	
+
+	def private String getRenameExceptionMsg(
+		TUID anotherTUID) '''«getRenameOrMoveExceptionMsgPrefix(anotherTUID)» have at least two segments!'''
+
+	def private String getRenameOrMoveExceptionMsgPrefix(
+		TUID anotherTUID) '''To either rename or move the last segment of '«this»' according to '«anotherTUID»' both TUIDs have to'''
+
 	def private boolean haveAtLeastTwoSegments(TUID anotherTUID) {
 		return this.getSegmentCount() > 2 && anotherTUID != null && anotherTUID.getSegmentCount() > 2
 	}
-	
-	/** 
-	 * Moves the last segment of this TUID to the second but last segment of the given {@link anotherTUID} and
-	 * merges the children for the last segments of both TUIDs.<br/>
-	 * 
-	 * Both TUIDs must end with string equivalent segments and must have at least two segments.
-	 * 
-	 * @param anotherTUID
-	 */
-	def void moveLastSegmentToSecondButLastSegmentOfAnotherTUIDWithEquivalentLastSegmentAndMergeChildren(TUID anotherTUID) {
-		if (!lastSegmentsAreEquivalent(anotherTUID)) {
-			throw new IllegalArgumentException(getMoveExceptionMsg(anotherTUID))
-		}
-		moveLastSegmentToSecondButLastSegmentOfAnotherTUIDAndMergeChildren(anotherTUID)
-	}
+
 	/** 
 	 * Moves the last segment of this TUID to the second but last segment of the given {@link anotherTUID} and
 	 * merges the children for the last segments of both TUIDs.<br/>
@@ -250,12 +228,13 @@ final class TUID implements Serializable {
 		val containsSeparator = newLastSegmentString.indexOf(segmentSeperator) !== -1
 		if (!containsSeparator) {
 			val TUID fullDestinationTUID = getTUIDWithNewLastSegment(newLastSegmentString)
-			moveLastSegment(fullDestinationTUID)
+			moveLastSegment(
+				fullDestinationTUID)
 		} else {
 			throw new IllegalArgumentException('''The last segment '«this.lastSegment»' of the TUID '«this»' cannot be renamed to '«newLastSegmentString»' because this String contains the TUID separator '«segmentSeperator»'!''')
 		}
 	}
-	
+
 	def private TUID getTUIDWithNewLastSegment(String newLastSegmentString) {
 		val segmentSeperator = VitruviusConstants.getTUIDSegmentSeperator()
 		val ancestor = this.lastSegment.iterator().next()
@@ -266,7 +245,7 @@ final class TUID implements Serializable {
 		tuidWithNewLastSegmentString += newLastSegmentString
 		return getInstance(tuidWithNewLastSegmentString)
 	}
-	
+
 	/** 
 	 * Renames the <b>last</b> segment of this TUID instance to the last segment of the given {@link anotherTUID} 
 	 * if they differ and all previous segments are the same.<br/>
@@ -283,7 +262,7 @@ final class TUID implements Serializable {
 			throw new IllegalArgumentException(getRenameExceptionMsg(anotherTUID))
 		}
 	}
-	
+
 	def private String getNewLastSegmentIfIdenticalExceptForLastSegment(TUID anotherTUID) {
 		val newLastSegmentString = anotherTUID?.getLastSegment()?.getValueString()
 		val tuidWithNewLastSegment = getTUIDWithNewLastSegment(newLastSegmentString)
@@ -321,8 +300,7 @@ final class TUID implements Serializable {
 	def private int getSegmentCount() {
 		return getSegments(this).length
 	}
-	
-	
+
 	override String toString() {
 		return this.lastSegment.toString(VitruviusConstants.getTUIDSegmentSeperator())
 	}
@@ -353,26 +331,26 @@ lastSegment2TUIDMap:
 			treedTUIDStrings.add(tuidString)
 		}
 		val Collection<TUID> tuids = LAST_SEGMENT_2_TUID_INSTANCES_MAP.values()
-		if (treedTUIDStrings.size() !== tuids.size()) {
+		if (treedTUIDStrings.size() !==	tuids.size()) {
 			throw new IllegalStateException('''«treedTUIDStrings.size()» TUIDs are in the segment tree («treedTUIDStrings») but «tuids.size()» are mapped by their last segments («tuids»)!''')
 		}
 		for (TUID tuid : tuids) {
 			val String tuidString = tuid.toString()
-			if (!treedTUIDStrings.contains(tuidString)) {
+			if (!treedTUIDStrings.contains(
+				tuidString)) {
 				throw new IllegalStateException('''The TUID '«»«tuidString»' is mapped by its last segment but not in the tree!''')
 			}
-
 		}
 		return true
 	}
 
 	override int hashCode() {
-		return 31 + (if (this.lastSegment === null) 0 else this.lastSegment.hashCode())
+		return 31 + (if(this.lastSegment === null) 0 else this.lastSegment.hashCode())
 	}
 
 	override boolean equals(Object obj) {
-		if (this === obj) return true
-		if (obj === null) return false
+		if(this === obj) return true
+		if(obj === null) return false
 		if (getClass() !== obj.getClass()) {
 			return false
 		}
@@ -382,7 +360,7 @@ lastSegment2TUIDMap:
 				return false
 			}
 		} else if (!this.lastSegment.equals(other.lastSegment)) {
-			return false	
+			return false
 		}
 		return true
 	}
@@ -410,7 +388,8 @@ lastSegment2TUIDMap:
 	def private int getAndEnsureEqualSegmentCount(TUID newTUID) {
 		val int oldSegmentCount = getSegmentCount()
 		val int newSegmentCount = newTUID.getSegmentCount()
-		if (oldSegmentCount !== newSegmentCount) {
+		if (oldSegmentCount !==
+			newSegmentCount) {
 			throw new IllegalArgumentException('''Cannot update the TUID «this» because the new TUID «newTUID» has a different number of segments!''')
 		}
 		return oldSegmentCount
