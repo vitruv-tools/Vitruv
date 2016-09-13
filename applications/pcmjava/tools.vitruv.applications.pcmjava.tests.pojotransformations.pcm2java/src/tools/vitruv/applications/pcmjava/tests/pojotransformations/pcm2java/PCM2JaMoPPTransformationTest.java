@@ -603,16 +603,31 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 
     protected void assertCompilationUnitForBasicComponentDeleted(final BasicComponent basicComponent) throws Throwable {
         final String expectedClassName = basicComponent.getEntityName() + "Impl";
+        if (existsClass(expectedClassName)) {
+        	fail("CompilationUnit with name " + expectedClassName + " for component "
+                    + basicComponent.getEntityName() + " still exists.");
+        }
+    }
+    
+    protected void assertCompilationUnitForSystemDeleted(final System system) throws Throwable {
+        final String expectedClassName = system.getEntityName() + "Impl";
+        if (existsClass(expectedClassName)) {
+        	fail("CompilationUnit with name " + expectedClassName + " for component "
+                    + system.getEntityName() + " still exists.");
+        }
+    }
+    
+    protected boolean existsClass(final String expectedClassName) throws Throwable {
         final IProject testProject = TestUtil.getProjectByName(this.currentTestProjectName);
         final IJavaProject javaProject = JavaCore.create(testProject);
         for (final IPackageFragment pkg : javaProject.getPackageFragments()) {
             for (final ICompilationUnit unit : pkg.getCompilationUnits()) {
                 if (unit.getElementName().contains(expectedClassName)) {
-                    fail("CompilationUnit with name " + expectedClassName + " for component "
-                            + basicComponent.getEntityName() + " still exists.");
+                    return true;
                 }
             }
         }
+        return false;
     }
     
 	protected CollectionDataType addCollectionDatatypeAndSync(final Repository repo, final String name, final DataType innerType) throws IOException {
