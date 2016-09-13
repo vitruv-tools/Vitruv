@@ -1,8 +1,5 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -15,6 +12,9 @@ import org.emftext.language.java.members.Method;
 import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization {

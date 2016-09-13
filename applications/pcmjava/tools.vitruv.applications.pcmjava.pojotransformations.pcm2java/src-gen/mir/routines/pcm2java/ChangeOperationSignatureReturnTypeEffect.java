@@ -1,10 +1,5 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +7,10 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.OperationSignature;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 
 @SuppressWarnings("all")
 public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectRealization {
@@ -58,7 +57,7 @@ public class ChangeOperationSignatureReturnTypeEffect extends AbstractEffectReal
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationSignature, DataType> change, final InterfaceMethod interfaceMethod) {
       OperationSignature _affectedEObject = change.getAffectedEObject();
-      DataType _returnType__OperationSignature = ((OperationSignature) _affectedEObject).getReturnType__OperationSignature();
+      DataType _returnType__OperationSignature = _affectedEObject.getReturnType__OperationSignature();
       this.effectFacade.callChangeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
     }
   }

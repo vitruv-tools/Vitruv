@@ -2,9 +2,6 @@ package mir.routines.pcm2java;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +14,7 @@ import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
+import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.references.IdentifierReference;
 import org.emftext.language.java.references.Reference;
 import org.emftext.language.java.references.ReferenceableElement;
@@ -25,6 +23,9 @@ import org.emftext.language.java.statements.ExpressionStatement;
 import org.emftext.language.java.statements.Statement;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.RequiredRole;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
@@ -67,18 +68,27 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     	ClassifierImport.class,
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	null);
+    if (requiredInterfaceImport == null) {
+    	return;
+    }
     initializeRetrieveElementState(requiredInterfaceImport);
     Field requiredInterfaceField = getCorrespondingElement(
     	getCorrepondenceSourceRequiredInterfaceField(requiredRole, requiringEntity), // correspondence source supplier
     	Field.class,
     	(Field _element) -> true, // correspondence precondition checker
     	null);
+    if (requiredInterfaceField == null) {
+    	return;
+    }
     initializeRetrieveElementState(requiredInterfaceField);
     org.emftext.language.java.classifiers.Class javaClass = getCorrespondingElement(
     	getCorrepondenceSourceJavaClass(requiredRole, requiringEntity), // correspondence source supplier
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
+    if (javaClass == null) {
+    	return;
+    }
     initializeRetrieveElementState(javaClass);
     deleteObject(getElement0(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     deleteObject(getElement1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
@@ -99,10 +109,6 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
-      boolean _equals = Objects.equal(javaClass, null);
-      if (_equals) {
-        return;
-      }
       EList<Member> _members = javaClass.getMembers();
       Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
       for (final Constructor ctor : _filter) {
@@ -122,8 +128,8 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
                     if ((field instanceof Field)) {
                       String _name = ((Field)field).getName();
                       String _entityName = requiredRole.getEntityName();
-                      boolean _equals_1 = _name.equals(_entityName);
-                      if (_equals_1) {
+                      boolean _equals = _name.equals(_entityName);
+                      if (_equals) {
                         statementToRemove = statement;
                       }
                     }
@@ -132,10 +138,25 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
               }
             }
           }
+          Parameter parameterToRemove = null;
+          EList<Parameter> _parameters = ctor.getParameters();
+          for (final Parameter parameter : _parameters) {
+            String _name_1 = parameter.getName();
+            String _entityName_1 = requiredRole.getEntityName();
+            boolean _equals_1 = _name_1.equals(_entityName_1);
+            if (_equals_1) {
+              parameterToRemove = parameter;
+            }
+          }
           boolean _notEquals = (!Objects.equal(statementToRemove, null));
           if (_notEquals) {
             EList<Statement> _statements_1 = ctor.getStatements();
             _statements_1.remove(statementToRemove);
+          }
+          boolean _notEquals_1 = (!Objects.equal(parameterToRemove, null));
+          if (_notEquals_1) {
+            EList<Parameter> _parameters_1 = ctor.getParameters();
+            _parameters_1.remove(parameterToRemove);
           }
         }
       }

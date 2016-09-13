@@ -3,11 +3,6 @@ package mir.routines.pcm2java;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.function.Consumer;
@@ -27,6 +22,10 @@ import org.palladiosimulator.pcm.repository.ProvidedRole;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class RenameOperationSignatureEffect extends AbstractEffectRealization {
@@ -72,8 +71,7 @@ public class RenameOperationSignatureEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<OperationSignature, String> change, final InterfaceMethod interfaceMethod) {
-      OperationSignature _affectedEObject = change.getAffectedEObject();
-      final OperationSignature operationSignature = ((OperationSignature) _affectedEObject);
+      final OperationSignature operationSignature = change.getAffectedEObject();
       final OperationInterface operationInterface = operationSignature.getInterface__OperationSignature();
       String _newValue = change.getNewValue();
       interfaceMethod.setName(_newValue);

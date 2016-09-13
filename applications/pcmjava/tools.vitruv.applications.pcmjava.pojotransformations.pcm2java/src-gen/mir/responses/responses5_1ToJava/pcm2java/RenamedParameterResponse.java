@@ -1,12 +1,11 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.pcm.repository.Parameter;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.pcm.repository.Parameter;
 
 @SuppressWarnings("all")
 class RenamedParameterResponse extends AbstractResponseRealization {

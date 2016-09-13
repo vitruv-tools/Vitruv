@@ -1,10 +1,5 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -16,6 +11,10 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.parameters.Parameter;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class RenameInnerDeclarationEffect extends AbstractEffectRealization {

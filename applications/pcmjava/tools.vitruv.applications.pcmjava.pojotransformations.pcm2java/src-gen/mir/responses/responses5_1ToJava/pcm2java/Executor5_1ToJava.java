@@ -13,6 +13,7 @@ public class Executor5_1ToJava extends AbstractResponseExecutor {
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse(userInteracting));
+    this.addResponse(mir.responses.responses5_1ToJava.pcm2java.DeletedSystemResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.DeletedSystemResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.ChangedSystemNameResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.ChangedSystemNameResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextToComposedStructureResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.AddedAssemblyContextToComposedStructureResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedComponentResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.CreatedComponentResponse(userInteracting));

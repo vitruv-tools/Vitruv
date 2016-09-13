@@ -2,17 +2,9 @@ package mir.routines.pcm2java;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
-import tools.vitruv.framework.userinteraction.UserInteractionType;
-
 import java.io.IOException;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -30,6 +22,12 @@ import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.Repository;
+import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
@@ -102,18 +100,18 @@ public class CreatedCollectionDataTypeEffect extends AbstractEffectRealization {
         TypeReference _wrapperTypeReferenceForPrimitiveType = Pcm2JavaHelper.getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
         innerTypeClassOrWrapper = _wrapperTypeReferenceForPrimitiveType;
       }
-      Set<Class<? extends Collection>> collectionDataTypes = new HashSet<Class<? extends Collection>>();
-      Iterables.<Class<? extends Collection>>addAll(collectionDataTypes, Collections.<Class<? extends AbstractCollection>>unmodifiableList(CollectionLiterals.<Class<? extends AbstractCollection>>newArrayList(ArrayList.class, LinkedList.class, Vector.class, Stack.class, HashSet.class)));
+      Set<Class<?>> collectionDataTypes = new HashSet<Class<?>>();
+      Iterables.<Class<?>>addAll(collectionDataTypes, Collections.<Class<? extends AbstractCollection>>unmodifiableList(CollectionLiterals.<Class<? extends AbstractCollection>>newArrayList(ArrayList.class, LinkedList.class, Vector.class, Stack.class, HashSet.class)));
       int _size = collectionDataTypes.size();
       final List<String> collectionDataTypeNames = new ArrayList<String>(_size);
-      for (final Class<? extends Collection> collectionDataType : collectionDataTypes) {
+      for (final Class<?> collectionDataType : collectionDataTypes) {
         String _name = collectionDataType.getName();
         collectionDataTypeNames.add(_name);
       }
       final String selectTypeMsg = "Please select type (or interface) that should be used for the type";
       final int selectedType = this.userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg, ((String[])Conversions.unwrapArray(collectionDataTypeNames, String.class)));
-      final Set<Class<? extends Collection>> _converted_collectionDataTypes = (Set<Class<? extends Collection>>)collectionDataTypes;
-      final Class<? extends Collection> selectedClass = ((Class<? extends Collection>[])Conversions.unwrapArray(_converted_collectionDataTypes, Class.class))[selectedType];
+      final Set<Class<?>> _converted_collectionDataTypes = (Set<Class<?>>)collectionDataTypes;
+      final Class<?> selectedClass = ((Class<?>[])Conversions.unwrapArray(_converted_collectionDataTypes, Class.class))[selectedType];
       String _entityName = dataType.getEntityName();
       this.effectFacade.callCreateJavaClass(dataType, datatypesPackage, _entityName);
       String _name_1 = selectedClass.getName();

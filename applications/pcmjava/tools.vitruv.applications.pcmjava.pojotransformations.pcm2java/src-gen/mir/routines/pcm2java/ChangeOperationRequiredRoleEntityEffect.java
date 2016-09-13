@@ -1,15 +1,14 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 
 @SuppressWarnings("all")
 public class ChangeOperationRequiredRoleEntityEffect extends AbstractEffectRealization {
@@ -41,8 +40,7 @@ public class ChangeOperationRequiredRoleEntityEffect extends AbstractEffectReali
     }
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationRequiredRole, InterfaceRequiringEntity> change) {
-      OperationRequiredRole _affectedEObject = change.getAffectedEObject();
-      final OperationRequiredRole requiredRole = ((OperationRequiredRole) _affectedEObject);
+      final OperationRequiredRole requiredRole = change.getAffectedEObject();
       InterfaceRequiringEntity _oldValue = change.getOldValue();
       this.effectFacade.callRemoveRequiredRole(requiredRole, _oldValue);
       this.effectFacade.callAddRequiredRole(requiredRole);

@@ -1,14 +1,13 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
-import tools.vitruv.framework.userinteraction.UserInteracting;
-
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
+import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 class CreatedProvidedRoleResponse extends AbstractResponseRealization {

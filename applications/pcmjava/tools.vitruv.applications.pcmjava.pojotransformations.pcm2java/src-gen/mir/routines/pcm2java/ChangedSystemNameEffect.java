@@ -1,14 +1,13 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class ChangedSystemNameEffect extends AbstractEffectRealization {
@@ -54,8 +53,7 @@ public class ChangedSystemNameEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.system.System, String> change, final org.emftext.language.java.containers.Package systemPackage) {
-      org.palladiosimulator.pcm.system.System _affectedEObject = change.getAffectedEObject();
-      final org.palladiosimulator.pcm.system.System system = ((org.palladiosimulator.pcm.system.System) _affectedEObject);
+      final org.palladiosimulator.pcm.system.System system = change.getAffectedEObject();
       String _entityName = system.getEntityName();
       this.effectFacade.callRenameJavaPackage(system, null, _entityName, null);
       String _entityName_1 = system.getEntityName();
