@@ -258,18 +258,13 @@ public final class EcoreResourceBridge {
 		Resource resource = null;
 		try {
 			try {
-				resource = resourceSet.getResource(resourceURI, true);
+				//if (EMFBridge.existsResourceAtUri(resourceURI)) {
+					resource = resourceSet.getResource(resourceURI, true);	
+				//}
 			} catch (org.eclipse.emf.common.util.WrappedException e) {
-				// If there is an exception, the resource is added to the
-				// resourceSet nevertheless.
-				// We have to remove it because it is not correctly added before
-				// creating the resource
-				// to avoid duplicates
-//				Resource potentiallyNotCompletelyLoadedResource = resourceSet.getResources()
-//						.get(resourceSet.getResources().size() - 1);
-//				if (potentiallyNotCompletelyLoadedResource.getURI().equals(resourceURI)) {
-//					resourceSet.getResources().remove(potentiallyNotCompletelyLoadedResource);
-//				}
+				// FIXME Exceptions are thrown here. We have to do something to 
+				// avoid them or handle them. Nevertheless, trying to handle them
+				// results in errors loading JaMoPP models.
 			}
 			if (resource == null) {
 				resource = resourceSet.createResource(resourceURI);
