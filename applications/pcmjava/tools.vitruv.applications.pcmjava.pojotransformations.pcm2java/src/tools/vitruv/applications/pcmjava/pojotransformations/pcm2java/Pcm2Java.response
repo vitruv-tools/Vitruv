@@ -106,6 +106,14 @@ match:
 effect: 
 	execute: callCreateJavaClass(system, systemPackage, system.entityName + "Impl")
 
+response: DeletedSystem
+trigger: remove root pcm.System
+effect: execute: {
+	val system = change.oldValue;
+	callDeleteJavaPackage(system, system.entityName, "root_system");
+	callDeleteJavaClassifier(system);
+}
+
 response: ChangedSystemName
 trigger: replace value pcm.System[entityName]
 match:
