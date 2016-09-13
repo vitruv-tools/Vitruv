@@ -36,9 +36,9 @@ public class CompilationUnitManipulatorHelper {
         for (final TextEdit edit : edits) {
             cu.applyTextEdit(edit, null);
         }
-        cu.save(new NullProgressMonitor(), true);
+        cu.reconcile(ICompilationUnit.NO_AST, false, null, null);
         cu.commitWorkingCopy(true, new NullProgressMonitor());
-        cu.save(new NullProgressMonitor(), true);
+        cu.discardWorkingCopy();
     }
 
     public static ICompilationUnit findICompilationUnitWithClassName(String entityName,
