@@ -68,7 +68,12 @@ public final class EMFBridge {
 	 * @return a new Eclipse path for the given URI
 	 */
 	public static IPath getIPathForEMFUri(final URI uri) {
-		return new Path(uri.toPlatformString(true));
+		if (uri.isPlatform()) {
+			return new Path(uri.toPlatformString(true));
+		} else if (uri.isFile()) {
+			return new Path(uri.toFileString());
+		}
+		throw new UnsupportedOperationException("Getting the path is currently only implemented for file and platform URIs.");
 	}
 
 	/**
@@ -79,8 +84,26 @@ public final class EMFBridge {
 	 * @return an Eclipse file for the given URI
 	 */
 	public static IFile getIFileForEMFUri(final URI uri) {
-		IPath path = getIPathForEMFUri(uri);
-		return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		if (uri.isPlatform()) {
+			IPath path = getIPathForEMFUri(uri);
+			return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		}
+		throw new UnsupportedOperationException("Getting the IFile is currently only implemented for platform URIs.");
+	}
+	
+	/**
+	 * Return whether a resource exists at the specified {@link URI}.
+	 * 
+	 * @param uri an EMF URI
+	 * @return true if a resource exists at the {@link URI}, false otherwise
+	 */
+	public static boolean existsResourceAtUri(final URI uri) {
+		if (uri.isPlatform()) {
+			return getIFileForEMFUri(uri).exists();
+		} else if (uri.isFile()) {
+			return new File(uri.toFileString()).exists();
+		}
+		throw new UnsupportedOperationException("Checking if a resource at an URI exists is currently only implemented for file and platform URIs.");
 	}
 
 	/**
