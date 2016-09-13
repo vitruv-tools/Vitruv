@@ -25,6 +25,7 @@ import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.monitorededitor.AbstractMonitoredEditor;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
@@ -109,11 +110,18 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 
     public MonitoredEditor() {
         this(new ChangeSynchronizing() {
-
             @Override
             public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange changes) {
                 return null;
             }
+
+			@Override
+			public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+			}
+
+			@Override
+			public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+			}
 
         }, null, MY_MONITORED_PROJECT);
         this.reportChanges = true;

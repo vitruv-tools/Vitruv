@@ -14,4 +14,7 @@ public interface ChangeSynchronizing {
      */
     List<List<VitruviusChange>> synchronizeChange(VitruviusChange change);
 
+    void addSynchronizationListener(SynchronisationListener synchronizationListener);
+
+    void removeSynchronizationListener(SynchronisationListener synchronizationListener);
 }

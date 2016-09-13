@@ -107,6 +107,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -233,7 +234,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		if (null == ci) {
 			throw new RuntimeException("Could not get correspondence instance.");
 		}
-		TestUtil.waitForSynchronization();
 		final Repository repo = CollectionBridge.claimOne(
 				CorrespondenceModelUtil.getCorrespondingEObjectsByType(ci, this.mainPackage, Repository.class));
 		return repo;
@@ -762,7 +762,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				+ iMethod.getSourceRange().toString().indexOf(oldTypeName);
 		final ReplaceEdit replaceEdit = new ReplaceEdit(offset + 1, oldTypeName.length() + 1, retTypeStr);
 		CompilationUnitManipulatorHelper.editCompilationUnit(icu, replaceEdit);
-		TestUtil.waitForSynchronization();
 		final ConcreteClassifier concreateClassifier = this
 				.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
 		final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
@@ -883,7 +882,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final String fieldStr = "private " + fieldType + " " + fieldName + ";";
 		final InsertEdit insertEdit = new InsertEdit(offset, fieldStr);
 		CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
-		TestUtil.waitForSynchronization();
 		final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
 		if (correspondingType == null) {
 			return null;
@@ -938,7 +936,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToClass(type);
 		final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName);
 		CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
-		TestUtil.waitForSynchronization();
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), annotable, classOfCorrespondingObject);
 		return CollectionBridge.claimOne(eObjectsByType);
@@ -953,7 +950,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToField(type, fieldName);
 		final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName + " ");
 		CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
-		TestUtil.waitForSynchronization();
 		final Field jaMoPPField = this.getJaMoPPFieldFromClass(cu, fieldName);
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPField, classOfCorrespondingObject);
@@ -976,13 +972,20 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	private void deactivateEMFMonitor() throws Throwable {
 		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
 		final ChangeSynchronizing dummyChangeSynchronizing = new ChangeSynchronizing() {
-
 			@Override
 			public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
 				final StringBuilder changeMessage = new StringBuilder();
 				change.getEChanges().forEach(eChange -> changeMessage.append(eChange).append(", "));
 				logger.info("Detected (but ignored) changes: " + changeMessage);
 				return null;
+			}
+
+			@Override
+			public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+			}
+
+			@Override
+			public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
 			}
 
 		};
