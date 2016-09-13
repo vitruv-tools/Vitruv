@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 
 @SuiteClasses({ AssemblyContextMappingTransformationTest.class,
-	RequiredDelegationConnectorMappingTransformationTest.class, SystemMappingTransformationTest.class })
+	SystemMappingTransformationTest.class })
 public class PCM2JavaSystemTestSuite {
 
 }
