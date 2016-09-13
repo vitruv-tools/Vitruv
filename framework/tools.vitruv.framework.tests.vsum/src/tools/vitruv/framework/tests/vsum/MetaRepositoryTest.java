@@ -6,13 +6,14 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pcm_mockup.Pcm_mockupPackage;
 import tools.vitruv.framework.metamodel.Mapping;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.framework.util.datatypes.VURI;
-import pcm_mockup.Pcm_mockupPackage;
 import uml_mockup.Uml_mockupPackage;
 
 public class MetaRepositoryTest {
@@ -40,13 +41,14 @@ public class MetaRepositoryTest {
     @Before
     public void beforeTest() {
         this.currentProjectFolderName = TestUtil.createProjectFolderWithTimestamp(PROJECT_FOLDER_NAME);
+        TuidManager.getInstance().reinitialize();
     }
 
     public void testAll() {
         testAddMapping(PCM_MM_URI, PCM_FILE_EXT, UML_MM_URI, UML_FILE_EXT);
     }
 
-    public MetaRepositoryImpl testMetaRepository() {
+    public MetaRepositoryImpl createMetaRepository() {
         MetaRepositoryImpl metaRepository = new MetaRepositoryImpl();
         assertNotNull(metaRepository);
         return metaRepository;
@@ -61,7 +63,7 @@ public class MetaRepositoryTest {
 
     public void testAddMapping(final String uri1String, final String fileExt1, final String uri2String,
             final String fileExt2) {
-        MetaRepositoryImpl metaRepository = testMetaRepository();
+        MetaRepositoryImpl metaRepository = createMetaRepository();
         addMapping(metaRepository, uri1String, fileExt1, uri2String, fileExt2);
     }
 

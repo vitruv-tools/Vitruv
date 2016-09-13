@@ -16,13 +16,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
-import tools.vitruv.framework.metamodel.ModelInstance;
-import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
 import pcm_mockup.Component;
 import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
+import tools.vitruv.framework.metamodel.ModelInstance;
+import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VSUMImpl;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
@@ -80,9 +80,6 @@ public class VSUMTest extends AbstractVSUMTest {
         assertTrue("Resource of component is null", null != component.eResource());
         // causes a unload and a load of the model
         vsum.forceReloadModelInstanceOriginalIfExisting(vuri);
-        mi = vsum.getAndLoadModelInstanceOriginal(vuri);
-        mi = vsum.getAndLoadModelInstanceOriginal(vuri);
-        mi = vsum.getAndLoadModelInstanceOriginal(vuri);
         mi = vsum.getAndLoadModelInstanceOriginal(vuri);
 
         // not fine anymore: component is not contained in the resource and it is a proxy
