@@ -7,7 +7,6 @@ import org.emftext.language.java.expressions.AssignmentExpression
 import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.statements.Statement
-import java.util.Collection
 import java.util.Set
 import java.util.HashSet
 import java.util.ArrayList
@@ -284,7 +283,7 @@ effect:
 		}
 		
 		// Let user select the class to map the collection type to
-		var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
+		var Set<Class<?>> collectionDataTypes = new HashSet
 		collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
 		val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
 		for (collectionDataType : collectionDataTypes) {
@@ -293,7 +292,7 @@ effect:
 		val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
 		val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
 			collectionDataTypeNames)
-		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
+		val Class<?> selectedClass = collectionDataTypes.get(selectedType)
 	
 		callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
 		callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
