@@ -30,6 +30,7 @@ import org.palladiosimulator.pcm.repository.CollectionDataType
 import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.TypesFactory
 import org.emftext.language.java.members.Field
+import org.emftext.language.java.parameters.Parameter
 
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
@@ -562,9 +563,7 @@ trigger: replace value pcm.OperationProvidedRole[providingEntity_ProvidedRole]
 effect: 
 	execute: {
 		val operationProvidedRole = change.affectedEObject;	
-		// TODO HK Reenable with the new change MM when we can remove the provided role because the TUID 
-		// of the containing component will get updated then and so the provided role correspondences can be resolved
-		// callRemoveProvidedRole(operationProvidedRole);
+		callRemoveProvidedRole(operationProvidedRole);
 		callAddProvidedRole(operationProvidedRole);
 	}
 
@@ -578,22 +577,17 @@ trigger: remove from list pcm.RepositoryComponent[providedRoles_InterfaceProvidi
 effect: 
 	execute: callRemoveProvidedRole(change.oldValue)
 
-// TODO HK Remove optional with the new change MM and correct TUID update. If the providingEntity is changed
-// and thus remove is called, the correspondences cannot be resolved because of faulty correspondences 
 routine: RemoveProvidedRole
 input: pcm.ProvidedRole as providedRole
 match:
-	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
-	retrieve optional element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
+	retrieve required element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
+	retrieve required element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
 effect: 
 	delete element: requiredInterfaceImport
 	delete element: namespaceClassifierReference
 
 // ####################################################
 // ################ REQUIRED ROLES ####################
-
-// TODO HK Check again with new Change MM. When replacing the requiringEntity, the oldValue cannot be retrieved in the old 
-// changes. So the requiredRole cannot be reinitialized correctly.
 
 // TODO HK implement ctor statement as correspondence (dynamic in explicit effect for each ctor) to remove them easily
 // Use as example for responses best practices chapter
@@ -650,22 +644,16 @@ effect:
 		callRemoveRequiredRole(change.oldValue, change.affectedEObject as RepositoryComponent);
 	}
 
-// TODO HK Remove the optionals and the null check in the execute block. 
-// They are just there because after a rename they can potentially not be resolved
-// but correspondences shall be removed
 routine: RemoveRequiredRole
 input: pcm.RequiredRole as requiredRole, pcm.InterfaceRequiringEntity as requiringEntity
 match:
-	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
-	retrieve optional element: java.Field as requiredInterfaceField corresponding to requiredRole
-	retrieve optional element: java.Class as javaClass corresponding to requiringEntity
+	retrieve required element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
+	retrieve required element: java.Field as requiredInterfaceField corresponding to requiredRole
+	retrieve required element: java.Class as javaClass corresponding to requiringEntity
 effect: 
 	delete element: requiredInterfaceImport
 	delete element: requiredInterfaceField
 	execute: {
-		if (javaClass == null) {
-			return
-		}
 		for (ctor : javaClass.members.filter(typeof(Constructor))) {
 			callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
 			var Statement statementToRemove = null;
@@ -689,18 +677,18 @@ effect:
 					}
 				}
 			}
-//			var Parameter parameterToRemove = null;
-//			for (parameter : ctor.parameters) {
-//				if (parameter.name.equals(requiredRole.entityName)) {
-//					parameterToRemove = parameter;
-//				}
-//			}
+			var Parameter parameterToRemove = null;
+			for (parameter : ctor.parameters) {
+				if (parameter.name.equals(requiredRole.entityName)) {
+					parameterToRemove = parameter;
+				}
+			}
 			if (statementToRemove != null) {
 				ctor.statements.remove(statementToRemove);
 			}
-//			if (parameterToRemove != null) {
-//				ctor.parameters.remove(parameterToRemove);
-//			}
+			if (parameterToRemove != null) {
+				ctor.parameters.remove(parameterToRemove);
+			}
 		}
 	}
 
