@@ -108,6 +108,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
+import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -125,7 +126,7 @@ import tools.vitruv.framework.vsum.VSUMImpl;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest {
+public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest implements SynchronisationListener {
 
 	private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
@@ -136,7 +137,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	protected Package mainPackage;
 	protected Package secondPackage;
-
+	
 	@Override
 	protected void beforeTest(final Description description) throws Throwable {
 		super.beforeTest(description);
@@ -168,6 +169,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "transformingProviding", builder, transformingProviding);
 		ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
 				"changeSynchronizing", builder);
+		changeSynchronizing.addSynchronizationListener(this);
 		JavaBridge.setFieldInClass(ChangeSynchronizerImpl.class, "change2CommandTransformingProviding",
 				changeSynchronizing, transformingProviding);
 	}
@@ -225,7 +227,38 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		logger.warn("Could not find any PCMJavaBuilder");
 		return null;
 	}
+	
+	private boolean syncRunning;
+	
+	protected boolean isSyncRunning() {
+		return syncRunning;
+	}
+	
+	@Override
+	public void syncStarted() {
+		if (syncRunning == true) {
+			throw new IllegalStateException("Sync started although already running");
+		}
+		this.syncRunning = true;
+	}
+	
+	@Override
+	public void syncFinished() {
+		if (syncRunning == true) {
+			throw new IllegalStateException("Sync finished although never started");
+		}
+		this.syncRunning = false;
+		
+	}
 
+	@Override
+	public void syncAborted(TransformationAbortCause cause) {
+		if (syncRunning == true) {
+			throw new IllegalStateException("Sync finished although never started");
+		}
+		this.syncRunning = false;
+	}
+	
 	protected Repository addRepoContractsAndDatatypesPackage() throws Throwable {
 		this.mainPackage = this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME });
 		this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });

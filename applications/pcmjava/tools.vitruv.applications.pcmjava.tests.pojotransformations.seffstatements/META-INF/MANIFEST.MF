@@ -13,6 +13,7 @@ Require-Bundle: org.junit,
  org.somox.test.gast2seff,
  tools.vitruv.framework.tests.util,
  tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.modelsynchronization,
  tools.vitruv.applications.pcmjava.tests.util,
  tools.vitruv.applications.pcmjava.seffstatements.pojotransformations,
  tools.vitruv.applications.pcmjava.pojotransformations.java2pcm
