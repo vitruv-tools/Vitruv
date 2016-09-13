@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java POJO Transformations PCM -> Java
 Bundle-SymbolicName: tools.vitruv.applications.pcmjava.pojotransformations.pcm2java;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Export-Package: tools.vitruv.applications.pcmjava.pojotransformations.pcm2java
 Require-Bundle: org.eclipse.emf.ecore,
  com.google.guava,
  org.apache.log4j,
@@ -18,11 +19,11 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.palladiosimulator.pcm,
  tools.vitruv.framework.util,
  tools.vitruv.framework.userinteraction,
+ tools.vitruv.framework.correspondence,
  tools.vitruv.extensions.dslsruntime.mapping,
  tools.vitruv.extensions.dslsruntime.response,
  tools.vitruv.framework.change,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing,
- tools.vitruv.domains.java.util.jamoppparser 
-Export-Package: tools.vitruv.applications.pcmjava.pojotransformations.pcm2java
+ tools.vitruv.domains.java.util.jamoppparser
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
