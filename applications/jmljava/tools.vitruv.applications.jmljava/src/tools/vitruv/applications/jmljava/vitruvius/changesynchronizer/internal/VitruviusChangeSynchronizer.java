@@ -188,7 +188,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
         LOGGER.info("Constructing sync manager.");
 
         final ChangeSynchronizerImpl result = new ChangeSynchronizerImpl(modelProviding,
-                change2CommandTransformingProviding, correspondenceProviding, null);
+                change2CommandTransformingProviding, correspondenceProviding);
 
         return result;
     }

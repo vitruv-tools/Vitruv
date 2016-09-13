@@ -31,28 +31,33 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
     private static final int BLACKBOARD_HITORY_SIZE = 2;
 
     private static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.class.getSimpleName());
-
     private final ModelProviding modelProviding;
     private final Change2CommandTransformingProviding change2CommandTransformingProviding;
     private final CorrespondenceProviding correspondenceProviding;
     private final CommandExecuting commandExecuting;
 
-    private Set<SynchronisationListener> synchronisationListeners;
+    private Set<SynchronisationListener> synchronizationListeners;
     private Queue<Blackboard> blackboardHistory;
 
     public ChangeSynchronizerImpl(final ModelProviding modelProviding,
             final Change2CommandTransformingProviding change2CommandTransformingProviding,
-            final CorrespondenceProviding correspondenceProviding,
-            final SynchronisationListener synchronisationListener) {
+            final CorrespondenceProviding correspondenceProviding) {
         this.modelProviding = modelProviding;
         this.change2CommandTransformingProviding = change2CommandTransformingProviding;
         this.correspondenceProviding = correspondenceProviding;
-        this.synchronisationListeners = new HashSet<SynchronisationListener>();
-        if (null != synchronisationListener) {
-            this.synchronisationListeners.add(synchronisationListener);
-        }
+        this.synchronizationListeners = new HashSet<SynchronisationListener>();
         this.commandExecuting = new CommandExecutingImpl();
         this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE);
+    }
+
+    public void addSynchronizationListener(final SynchronisationListener synchronizationListener) {
+        if (synchronizationListener != null) {
+            this.synchronizationListeners.add(synchronizationListener);
+        }
+    }
+
+    public void removeSynchronizationListener(final SynchronisationListener synchronizationListener) {
+        this.synchronizationListeners.remove(synchronizationListener);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
             logger.error("Change contains changes from different models." + change);
             return Collections.emptyList();
         }
-        for (SynchronisationListener syncListener : this.synchronisationListeners) {
+        for (SynchronisationListener syncListener : this.synchronizationListeners) {
             syncListener.syncStarted();
         }
 
@@ -82,7 +87,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
 
         // TODO: check invariants and execute undo if necessary
 
-        for (SynchronisationListener syncListener : this.synchronisationListeners) {
+        for (SynchronisationListener syncListener : this.synchronizationListeners) {
             syncListener.syncFinished();
         }
         return commandExecutionChanges;

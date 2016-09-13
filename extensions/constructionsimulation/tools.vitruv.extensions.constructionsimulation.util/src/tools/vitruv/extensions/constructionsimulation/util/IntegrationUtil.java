@@ -17,7 +17,7 @@ public class IntegrationUtil {
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
 
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(vsum,
-                change2CommandTransformingProviding, vsum, null);
+                change2CommandTransformingProviding, vsum);
 
         return changeSynchronizerImpl;
     }
