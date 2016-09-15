@@ -15,7 +15,6 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
-import tools.vitruv.framework.tests.util.TestUtil;
 
 /**
  * Helper class that allows the manipulation of compilation units that causes a notification of the
@@ -30,19 +29,22 @@ public class CompilationUnitManipulatorHelper {
 
     }
 
-    public static void editCompilationUnit(final ICompilationUnit cu, final TextEdit... edits)
-            throws JavaModelException {
-        cu.becomeWorkingCopy(new NullProgressMonitor());
+    public static void editCompilationUnit(final ICompilationUnit cu, SynchronizationAwaitCallback synchronizationCallback, 
+    		final TextEdit... edits) throws JavaModelException {
+    	cu.becomeWorkingCopy(new NullProgressMonitor());
         for (final TextEdit edit : edits) {
             cu.applyTextEdit(edit, null);
         }
         cu.reconcile(ICompilationUnit.NO_AST, false, null, null);
+        // Wait for synchronization before commiting the working copy, because
+        // JaMoPP overwrites the compilation unit during reconcile
+        synchronizationCallback.waitForSynchronization(1);
         cu.commitWorkingCopy(true, new NullProgressMonitor());
         cu.discardWorkingCopy();
     }
 
     public static ICompilationUnit findICompilationUnitWithClassName(String entityName,
-            final IProject currentTestProject) throws Throwable {
+            final IProject currentTestProject) throws JavaModelException {
         entityName = CompilationUnitManipulatorHelper.ensureJavaFileExtension(entityName);
         final IJavaProject javaProject = JavaCore.create(currentTestProject);
         for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
@@ -65,23 +67,23 @@ public class CompilationUnitManipulatorHelper {
         }
         throw new RuntimeException("Could not find a compilation unit with name " + entityName);
     }
+    
+    public static ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName,
+            final String methodString, final IProject currentTestProject, SynchronizationAwaitCallback synchronizerCallback) 
+            		throws JavaModelException {
+        final ICompilationUnit cu = findICompilationUnitWithClassName(compilationUnitName, currentTestProject);
+        final IType firstType = cu.getAllTypes()[0];
+        final int offset = CompilationUnitManipulatorHelper.getOffsetForClassifierManipulation(firstType);
+        final InsertEdit insertEdit = new InsertEdit(offset, methodString);
+        editCompilationUnit(cu, synchronizerCallback, insertEdit);
+        return cu;
+    }
 
     public static String ensureJavaFileExtension(String entityName) {
         if (!entityName.endsWith("." + JaMoPPNamespace.JAVA_FILE_EXTENSION)) {
             entityName = entityName + "." + JaMoPPNamespace.JAVA_FILE_EXTENSION;
         }
         return entityName;
-    }
-
-    public static ICompilationUnit addMethodToCompilationUnit(final String compilationUnitName,
-            final String methodString, final IProject currentTestProject) throws Throwable, JavaModelException {
-        final ICompilationUnit cu = findICompilationUnitWithClassName(compilationUnitName, currentTestProject);
-        final IType firstType = cu.getAllTypes()[0];
-        final int offset = CompilationUnitManipulatorHelper.getOffsetForClassifierManipulation(firstType);
-        final InsertEdit insertEdit = new InsertEdit(offset, methodString);
-        editCompilationUnit(cu, insertEdit);
-        TestUtil.waitForSynchronization();
-        return cu;
     }
 
     public static int getOffsetForClassifierManipulation(final IType firstType) throws JavaModelException {
@@ -95,7 +97,7 @@ public class CompilationUnitManipulatorHelper {
     }
 
     public static int getOffsetToInsertInMethodInCompilationUnit(final ICompilationUnit compUnit,
-            final String methodName) throws Throwable {
+            final String methodName) throws JavaModelException {
         final IType firstType = compUnit.getAllTypes()[0];
         final String source = firstType.getCompilationUnit().getSource();
         final int methodOffset = source.indexOf(methodName);
@@ -105,7 +107,7 @@ public class CompilationUnitManipulatorHelper {
         return offset;
     }
 
-    public static int getOffsetForAddingAnntationToField(final IType type, final String fieldName) throws Throwable {
+    public static int getOffsetForAddingAnntationToField(final IType type, final String fieldName) throws JavaModelException  {
         for (final IField iField : type.getFields()) {
             if (iField.getElementName().equals(fieldName)) {
                 return iField.getSourceRange().getOffset();

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -46,8 +47,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.refactoring.IJavaRefactorings;
 import org.eclipse.jdt.core.refactoring.descriptors.RenameJavaElementDescriptor;
-import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
-import org.eclipse.jdt.ui.wizards.NewInterfaceWizardPage;
+import org.eclipse.jdt.internal.corext.codemanipulation.StubUtility;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringContribution;
@@ -55,6 +55,7 @@ import org.eclipse.ltk.core.refactoring.RefactoringCore;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.text.edits.TextEdit;
 import org.emftext.language.java.annotations.AnnotationInstance;
 import org.emftext.language.java.annotations.AnnotationsFactory;
 import org.emftext.language.java.classifiers.Classifier;
@@ -126,7 +127,7 @@ import tools.vitruv.framework.vsum.VSUMImpl;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest implements SynchronisationListener {
+public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest implements SynchronisationListener, SynchronizationAwaitCallback {
 
 	private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
@@ -193,7 +194,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	@Override
-	protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
+	protected CorrespondenceModel getCorrespondenceModel() throws CoreException  {
 		final VSUMImpl vsum = this.getVSUM();
 		final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
 		final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
@@ -201,7 +202,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return corresponcenceInstance;
 	}
 
-	protected VSUMImpl getVSUM() throws Throwable {
+	protected VSUMImpl getVSUM() throws CoreException  {
 		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
 		if (null == pcmJavaBuilder) {
 			return null;
@@ -210,7 +211,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return vsum;
 	}
 
-	private PCMJavaBuilder getPCMJavaBuilderFromProject() throws Throwable {
+	private PCMJavaBuilder getPCMJavaBuilderFromProject() throws CoreException  {
 		final Project project = (Project) this.currentTestProject;
 		final ResourceInfo info = project.getResourceInfo(false, false);
 		final ProjectDescription description = ((ProjectInfo) info).getDescription();
@@ -228,38 +229,52 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return null;
 	}
 	
-	private boolean syncRunning;
+	public void editCompilationUnit(final ICompilationUnit cu, final TextEdit... edits)
+            throws JavaModelException {
+		CompilationUnitManipulatorHelper.editCompilationUnit(cu, this, edits);
+    }
 	
-	protected boolean isSyncRunning() {
-		return syncRunning;
+	private int expectedNumberOfSyncs = 0;
+	private static int MAXIMUM_SYNC_WAITING_TIME = 15000;
+	
+	public synchronized void waitForSynchronization(int numberOfExpectedSynchronizationCalls) {
+		expectedNumberOfSyncs += numberOfExpectedSynchronizationCalls;
+		logger.debug("Starting to wait for finished synchronization");
+		try {
+			int wakeups = 0;
+			while (expectedNumberOfSyncs > 0) {
+				wait(MAXIMUM_SYNC_WAITING_TIME);
+				wakeups++;
+				// If we had more wakeups than expected sync calls, we had a timeout
+				// and so the synchronization was not finished as expected
+				if (wakeups > numberOfExpectedSynchronizationCalls) {
+					fail("Waiting for synchronization timed out");
+				}
+			}
+		} catch (InterruptedException e) {
+		} finally {
+			expectedNumberOfSyncs = 0;
+			logger.debug("Finished waiting for synchronization");
+		}
 	}
 	
 	@Override
-	public void syncStarted() {
-		if (syncRunning == true) {
-			throw new IllegalStateException("Sync started although already running");
-		}
-		this.syncRunning = true;
+	public synchronized void syncStarted() {
 	}
 	
 	@Override
-	public void syncFinished() {
-		if (syncRunning == true) {
-			throw new IllegalStateException("Sync finished although never started");
-		}
-		this.syncRunning = false;
-		
+	public synchronized void syncFinished() {
+		expectedNumberOfSyncs--;
+		this.notifyAll();
 	}
 
 	@Override
-	public void syncAborted(TransformationAbortCause cause) {
-		if (syncRunning == true) {
-			throw new IllegalStateException("Sync finished although never started");
-		}
-		this.syncRunning = false;
+	public synchronized void syncAborted(TransformationAbortCause cause) {
+		expectedNumberOfSyncs--;
+		this.notifyAll();
 	}
 	
-	protected Repository addRepoContractsAndDatatypesPackage() throws Throwable {
+	protected Repository addRepoContractsAndDatatypesPackage() throws IOException, CoreException {
 		this.mainPackage = this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME });
 		this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "contracts" });
 		this.createPackageWithPackageInfo(new String[] { PCM2JaMoPPTestUtils.REPOSITORY_NAME, "datatypes" });
@@ -280,14 +295,12 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	protected <T> T createSecondPackage(final Class<T> correspondingType, final String... namespace) throws Throwable {
 		this.secondPackage = this.createPackageWithPackageInfo(namespace);
-		TestUtil.waitForSynchronization();
 		return CollectionBridge.claimOne(CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), this.secondPackage, correspondingType));
 	}
 
 	private void createSecondPackageWithoutCorrespondence(final String... namespace) throws Throwable {
 		this.secondPackage = this.createPackageWithPackageInfo(namespace);
-		TestUtil.waitForSynchronization();
 	}
 
 	protected void createPackage(final String[] namespace) throws Throwable {
@@ -295,10 +308,10 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final String namespaceDotted = StringUtils.join(namespace, ".");
 		final boolean force = true;
 		packageRoot.createPackageFragment(namespaceDotted, force, new NullProgressMonitor());
-		TestUtil.waitForSynchronization();
+		waitForSynchronization(1);
 	}
 
-	protected Package createPackageWithPackageInfo(final String... namespace) throws Throwable {
+	protected Package createPackageWithPackageInfo(final String... namespace) throws IOException  {
 		String packageFile = StringUtils.join(namespace, "/");
 		packageFile = packageFile + "/package-info.java";
 		final Package jaMoPPPackage = ContainersFactory.eINSTANCE.createPackage();
@@ -308,11 +321,11 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final VURI packageVURI = this.createVURIForSrcFile(packageFile);
 		final Resource resource = this.resourceSet.createResource(packageVURI.getEMFUri());
 		EcoreResourceBridge.saveEObjectAsOnlyContent(jaMoPPPackage, resource);
-		TestUtil.waitForSynchronization();
+		waitForSynchronization(1);
 		return jaMoPPPackage;
 	}
 
-	protected Package renamePackage(final Package packageToRename, String newName) throws Throwable {
+	protected Package renamePackage(final Package packageToRename, String newName) throws CoreException  {
 		final Resource resource = packageToRename.eResource();
 		final IFile iFile = EMFBridge.getIFileForEMFUri(resource.getURI());
 		IPath iPath = iFile.getProjectRelativePath();
@@ -355,8 +368,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				logger.info(cu.getBuffer());
 			}
 			final ReplaceEdit edit = new ReplaceEdit(offset, entityName.length(), newName);
-			CompilationUnitManipulatorHelper.editCompilationUnit(cu, edit);
-			TestUtil.waitForSynchronization();
+			editCompilationUnit(cu, edit);
 			final VURI vuri = VURI.getInstance(cu.getResource());
 			final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
 			return CollectionBridge.claimOne(CorrespondenceModelUtil
@@ -368,7 +380,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	}
 
-	private Package findJaMoPPPackageWithName(final String newName) throws Throwable {
+	private Package findJaMoPPPackageWithName(final String newName) throws JavaModelException  {
 		final IJavaProject javaProject = JavaCore.create(this.currentTestProject);
 		for (final IPackageFragmentRoot packageFragmentRoot : javaProject.getPackageFragmentRoots()) {
 			final IJavaElement[] children = packageFragmentRoot.getChildren();
@@ -404,7 +416,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		throw new RuntimeException("Could not find a compilation unit with name " + newName);
 	}
 
-	private IPackageFragmentRoot getIJavaProject() throws Throwable {
+	private IPackageFragmentRoot getIJavaProject() throws CoreException  {
 		final IProject project = this.currentTestProject;
 		final IJavaProject javaProject = JavaCore.create(project);
 		final IFolder sourceFolder = project.getFolder(TestUtil.SOURCE_FOLDER);
@@ -434,7 +446,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	protected <T> T addClassInPackage(final Package packageForClass, final Class<T> classOfCorrespondingObject,
-			final String implementingClassName) throws Throwable, CoreException, InterruptedException {
+			final String implementingClassName) throws CoreException, InterruptedException {
 		final Classifier jaMoPPClass = this.createClassInPackage(packageForClass, implementingClassName);
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPClass, classOfCorrespondingObject);
@@ -442,25 +454,17 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	protected Classifier createClassInPackage(final Package packageForClass, final String implementingClassName)
-			throws Throwable, CoreException, InterruptedException {
+			throws CoreException {
 		String packageName = packageForClass.getName();
 		String packageNamespace = packageForClass.getNamespacesAsString() + packageName;
 		return createClassInPackage(implementingClassName, packageNamespace);
 	}
 
-	protected Classifier createClassInPackage(final String implementingClassName, String packageNamespace)
-			throws Throwable, CoreException, InterruptedException {
-		final IPackageFragmentRoot packageRoot = this.getIJavaProject();
+	protected Classifier createClassInPackage(final String implementingClassName, String packageNamespace) throws CoreException {
 		final IPackageFragment packageFragment = this.getPackageFragment(packageNamespace);
-		final NewClassWizardPage classWizard = new NewClassWizardPage();
-		classWizard.setPackageFragment(packageFragment, false);
-		classWizard.setPackageFragmentRoot(packageRoot, false);
-		classWizard.setTypeName(implementingClassName, true);
-		classWizard.createType(new NullProgressMonitor());
-
+		createEmptyClass(packageFragment, implementingClassName);
 		final VURI vuri = this.getVURIForElementInPackage(packageFragment, implementingClassName);
 		final Classifier jaMoPPClass = this.getJaMoPPClassifierForVURI(vuri);
-		TestUtil.waitForSynchronization();
 		return jaMoPPClass;
 	}
 
@@ -474,7 +478,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return vuri;
 	}
 
-	private IPackageFragment getPackageFragment(String packageNamespace) throws Throwable {
+	private IPackageFragment getPackageFragment(String packageNamespace) throws CoreException  {
 		final IPackageFragmentRoot packageRoot = this.getIJavaProject();
 		for (final IJavaElement javaElement : packageRoot.getChildren()) {
 			if (javaElement instanceof IPackageFragment && javaElement.getElementName().equals(packageNamespace)) {
@@ -600,8 +604,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	protected OperationInterface createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence(
-			final String packageName, final String interfaceName)
-					throws Throwable, CoreException, InterruptedException {
+			final String packageName, final String interfaceName) throws CoreException {
 		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
 		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(),
 				interfaceName, true);
@@ -613,8 +616,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return this.createJaMoPPInterfaceInPackage(jaMoPPPackage.getNamespacesAsString(), interfaceName);
 	}
 
-	protected OperationInterface createInterfaceInPackage(String packageNamespace, final String interfaceName, boolean claimOne)
-			throws Throwable, CoreException, InterruptedException {
+	protected OperationInterface createInterfaceInPackage(String packageNamespace, final String interfaceName, boolean claimOne) throws CoreException {
 		final Classifier jaMoPPIf = createJaMoPPInterfaceInPackage(packageNamespace, interfaceName);
 		Set<OperationInterface> correspondingOpInterfaces = CorrespondenceModelUtil.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPIf, OperationInterface.class);
 		if(claimOne){
@@ -627,18 +629,30 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return correspondingOpInterfaces.iterator().next();
 	}
 
-	protected ConcreteClassifier createJaMoPPInterfaceInPackage(String packageNamespace, final String interfaceName)
-			throws Throwable, CoreException, InterruptedException {
+	protected ConcreteClassifier createJaMoPPInterfaceInPackage(String packageNamespace, final String interfaceName) throws CoreException {
 		final IPackageFragment packageFragment = this.getPackageFragment(packageNamespace);
-		final NewInterfaceWizardPage interfaceWizard = new NewInterfaceWizardPage();
-		interfaceWizard.setPackageFragment(packageFragment, false);
-		interfaceWizard.setPackageFragmentRoot(this.getIJavaProject(), false);
-		interfaceWizard.setTypeName(interfaceName, true);
-		interfaceWizard.createType(new NullProgressMonitor());
+		createEmptyInterface(packageFragment, interfaceName);
 		final VURI vuri = this.getVURIForElementInPackage(packageFragment, interfaceName);
-		TestUtil.waitForSynchronization();
 		final ConcreteClassifier jaMoPPIf = this.getJaMoPPClassifierForVURI(vuri);
+		
 		return jaMoPPIf;
+	}
+	
+	private void createEmptyCompilationUnit(IPackageFragment packageFragment, String typeName, String cuName) throws JavaModelException {
+		String lineDelimiter= null;
+		lineDelimiter= StubUtility.getLineDelimiterUsed(packageFragment.getJavaProject());
+		ICompilationUnit compilationUnit = packageFragment.createCompilationUnit(cuName + ".java", "", false, null);
+		InsertEdit edit = new InsertEdit(0, "package " + packageFragment.getElementName() + ";" + lineDelimiter + lineDelimiter + 
+				"public " + typeName + " " + cuName + " { }");
+		editCompilationUnit(compilationUnit, edit);
+	}
+	
+	protected void createEmptyInterface(IPackageFragment packageFragment, String interfaceName) throws JavaModelException {
+		createEmptyCompilationUnit(packageFragment, "interface", interfaceName);
+	}
+	
+	protected void createEmptyClass(IPackageFragment packageFragment, String className) throws JavaModelException {
+		createEmptyCompilationUnit(packageFragment, "class", className);
 	}
 
 	protected OperationInterface addInterfaceInSecondPackageWithCorrespondence(final String packageName)
@@ -653,7 +667,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(), "I" + packageName, false);
 	}
 
-	protected Package getPackageWithNameFromCorrespondenceModel(final String name) throws Throwable {
+	protected Package getPackageWithNameFromCorrespondenceModel(final String name) throws CoreException {
 		final Set<Package> packages = CorrespondenceModelUtil
 				.getAllEObjectsOfTypeInCorrespondences(this.getCorrespondenceModel(), Package.class);
 		for (final Package currentPackage : packages) {
@@ -673,7 +687,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 			final String methodName) throws Throwable, JavaModelException {
 		final String methodString = "\nvoid " + methodName + "();\n";
 		final ICompilationUnit cu = CompilationUnitManipulatorHelper.addMethodToCompilationUnit(interfaceName,
-				methodString, this.currentTestProject);
+				methodString, this.currentTestProject, this);
 		return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, interfaceName, cu);
 	}
 
@@ -681,7 +695,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 			final String methodName) throws Throwable {
 		final String methodString = "\n\tpublic void " + methodName + " () {\n\t}\n";
 		final ICompilationUnit icu = CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className,
-				methodString, this.currentTestProject);
+				methodString, this.currentTestProject, this);
 		final Method jaMoPPMethod = this.findJaMoPPMethodInICU(icu, methodName);
 		final ClassMethod classMethod = (ClassMethod) jaMoPPMethod;
 		return CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
@@ -712,8 +726,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final int length = iMethod.getNameRange().getLength();
 		final String newMethodName = methodName + PCM2JaMoPPTestUtils.RENAME;
 		final ReplaceEdit replaceEdit = new ReplaceEdit(offset, length, newMethodName);
-		CompilationUnitManipulatorHelper.editCompilationUnit(cu, replaceEdit);
-		TestUtil.waitForSynchronization();
+		editCompilationUnit(cu, replaceEdit);
 		return this.findOperationSignatureForJaMoPPMethodInCompilationUnit(newMethodName, className, cu);
 	}
 
@@ -771,8 +784,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 					throws JavaModelException, Throwable {
 		final int offset = iMethod.getSourceRange().getOffset() + iMethod.getSourceRange().getLength() - 2;
 		final InsertEdit insertEdit = new InsertEdit(offset, parameterStr);
-		CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
-		TestUtil.waitForSynchronization();
+		editCompilationUnit(icu, insertEdit);
 		final ConcreteClassifier concreateClassifier = this
 				.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
 		final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
@@ -794,7 +806,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final int offset = iMethod.getSourceRange().getOffset()
 				+ iMethod.getSourceRange().toString().indexOf(oldTypeName);
 		final ReplaceEdit replaceEdit = new ReplaceEdit(offset + 1, oldTypeName.length() + 1, retTypeStr);
-		CompilationUnitManipulatorHelper.editCompilationUnit(icu, replaceEdit);
+		editCompilationUnit(icu, replaceEdit);
 		final ConcreteClassifier concreateClassifier = this
 				.getJaMoPPClassifierForVURI(VURI.getInstance(icu.getResource()));
 		final Method jaMoPPMethod = (Method) concreateClassifier.getMembersByName(methodName).get(0);
@@ -857,7 +869,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	protected String addPackageAndImplementingClass(final String componentName)
-			throws Throwable, CoreException, InterruptedException {
+			throws CoreException, IOException, InterruptedException {
 		this.testUserInteractor.addNextSelections(SELECT_BASIC_COMPONENT);
 		final Package mediaStorePackage = this.createPackageWithPackageInfo(PCM2JaMoPPTestUtils.REPOSITORY_NAME,
 				componentName);
@@ -869,21 +881,31 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	protected OperationProvidedRole addImplementsCorrespondingToOperationProvidedRoleToClass(final String className,
-			final String implementingInterfaceName) throws Throwable {
+			final String implementingInterfaceName) throws CoreException {
+		// TODO Somehow, we have to wait some time here.
+		// If we do not wait, some effect of the previous interface creation has not finished and thus
+		// adding the implements statement to the class will result in an unsuccessful proxy resolution
+		// for the implemented interface, which means that no correspondence gets created.
+		// Even forcing a reload of the interface and class models in the VSUM does not have any positive effect.
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		}
 		final ICompilationUnit classCompilationUnit = CompilationUnitManipulatorHelper
 				.findICompilationUnitWithClassName(className, this.currentTestProject);
 		this.importCompilationUnitWithName(implementingInterfaceName, classCompilationUnit);
+		
 		final IType classType = classCompilationUnit.getType(className);
 		final String newSource = " implements " + implementingInterfaceName;
 		int offset = classType.getSourceRange().getOffset();
 		final int firstBracket = classType.getSource().indexOf("{");
 		offset = offset + firstBracket - 1;
 		final InsertEdit insertEdit = new InsertEdit(offset, newSource);
-		CompilationUnitManipulatorHelper.editCompilationUnit(classCompilationUnit, insertEdit);
-		TestUtil.waitForSynchronization(3 * TestUtil.WAITING_TIME_FOR_SYNCHRONIZATION);
+		editCompilationUnit(classCompilationUnit, insertEdit);
 		final org.emftext.language.java.classifiers.Class jaMoPPClass = (org.emftext.language.java.classifiers.Class) this
 				.getJaMoPPClassifierForVURI(VURI.getInstance(classCompilationUnit.getResource()));
 		final EList<TypeReference> classImplements = jaMoPPClass.getImplements();
+		
 		for (final TypeReference implementsReference : classImplements) {
 			final Set<OperationProvidedRole> correspondingEObjects = CorrespondenceModelUtil
 					.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), implementsReference,
@@ -892,11 +914,13 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				return correspondingEObjects.iterator().next();
 			}
 		}
-		throw new RuntimeException("Could not find a operation provided role for the newly created implmenets");
+		
+		getCorrespondenceModel().saveModel();
+		throw new RuntimeException("Could not find an operation provided role for the newly created implements");
 	}
 
 	protected void importCompilationUnitWithName(final String implementingInterfaceName,
-			final ICompilationUnit classCompilationUnit) throws Throwable, JavaModelException {
+			final ICompilationUnit classCompilationUnit) throws JavaModelException {
 		final ICompilationUnit interfaceCompilationUnit = CompilationUnitManipulatorHelper
 				.findICompilationUnitWithClassName(implementingInterfaceName, this.currentTestProject);
 		final String namespace = interfaceCompilationUnit.getType(implementingInterfaceName).getFullyQualifiedName();
@@ -914,7 +938,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final int offset = CompilationUnitManipulatorHelper.getOffsetForClassifierManipulation(iClass);
 		final String fieldStr = "private " + fieldType + " " + fieldName + ";";
 		final InsertEdit insertEdit = new InsertEdit(offset, fieldStr);
-		CompilationUnitManipulatorHelper.editCompilationUnit(icu, insertEdit);
+		editCompilationUnit(icu, insertEdit);
 		final Field jaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
 		if (correspondingType == null) {
 			return null;
@@ -968,7 +992,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final IType type = cu.getType(className);
 		final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToClass(type);
 		final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName);
-		CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
+		editCompilationUnit(cu, insertEdit);
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), annotable, classOfCorrespondingObject);
 		return CollectionBridge.claimOne(eObjectsByType);
@@ -982,7 +1006,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final IType type = cu.getType(className);
 		final int offset = CompilationUnitManipulatorHelper.getOffsetForAddingAnntationToField(type, fieldName);
 		final InsertEdit insertEdit = new InsertEdit(offset, "@" + annotationName + " ");
-		CompilationUnitManipulatorHelper.editCompilationUnit(cu, insertEdit);
+		editCompilationUnit(cu, insertEdit);
 		final Field jaMoPPField = this.getJaMoPPFieldFromClass(cu, fieldName);
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPField, classOfCorrespondingObject);

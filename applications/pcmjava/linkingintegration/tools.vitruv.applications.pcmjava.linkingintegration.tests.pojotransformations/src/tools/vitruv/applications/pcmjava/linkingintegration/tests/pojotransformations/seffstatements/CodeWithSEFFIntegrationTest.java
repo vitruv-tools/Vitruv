@@ -22,10 +22,11 @@ import org.palladiosimulator.pcm.seff.StopAction;
 
 import tools.vitruv.applications.pcmjava.linkingintegration.tests.CodeIntegrationTest;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
+import tools.vitruv.applications.pcmjava.tests.util.SynchronizationAwaitCallback;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 
-public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
+public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest implements SynchronizationAwaitCallback {
 
     private static final String TEST_BUNDLE_NAME_JSCIENCE = "tools.vitruv.applications.pcmjava.linkingintegration.tests.pojotransformations.seffstatements";
     private static final String TEST_PROJECT_NAME_JSCIENCE = "Calculator-JScience";
@@ -68,7 +69,7 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
         final String dummyStatements = "int j = 0;\nfor(int i =0; i < 10; i++)\n{\nj +=i;\n}\n";
         final String methodCode = "private void testMethod(){ \n" + dummyStatements + "\n}";
         CompilationUnitManipulatorHelper.addMethodToCompilationUnit("CalculatorTool", methodCode,
-                this.getTestProject());
+                this.getTestProject(), this);
 
         // call the new method from the main method
         final ICompilationUnit compUnit = CompilationUnitManipulatorHelper
@@ -77,9 +78,8 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
                 "main");
         final String code = "testMethod();";
         final InsertEdit insertEdit = new InsertEdit(offset, code);
-        CompilationUnitManipulatorHelper.editCompilationUnit(compUnit, insertEdit);
-        Thread.sleep(2500);
-
+        CompilationUnitManipulatorHelper.editCompilationUnit(compUnit, this, insertEdit);
+        
         // assert that we got one new InternalCallAction and the remainder stayed the same
         final CorrespondenceModel ci = this.getCorrespondenceModel();
         final Repository repo = this.getRepository(ci);
@@ -128,5 +128,14 @@ public class CodeWithSEFFIntegrationTest extends CodeIntegrationTest {
         Assert.assertTrue("unique corresponding object should be a method", eObject instanceof Method);
 
     }
+
+	@Override
+	public void waitForSynchronization(int numberOfExpectedSynchronizationCalls) {
+		try {
+			Thread.sleep(2500);
+		} catch (InterruptedException e) {
+			
+		}
+	}
 
 }

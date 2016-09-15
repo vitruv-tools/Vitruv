@@ -36,7 +36,6 @@ import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.tests.util.TestUtil;
 
 public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationTest {
 
@@ -260,7 +259,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         final String downloadHelperCode = "\npublic void " + methodName + "( " + parameterCode + "){\n}\n";
         this.createClassInPackage(this.getPackageWithNameFromCorrespondenceModel(packageName), className);
         CompilationUnitManipulatorHelper.addMethodToCompilationUnit(className, downloadHelperCode,
-                this.currentTestProject);
+                this.currentTestProject, this);
         this.editMethod(codeForHelper, className, methodName, false);
     }
 
@@ -281,7 +280,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         final String compilationUnitName = WEBGUI + "Impl";
         final String methodHeader = "private void " + methodName + "(){\n}";
         CompilationUnitManipulatorHelper.addMethodToCompilationUnit(compilationUnitName, methodHeader,
-                this.currentTestProject);
+                this.currentTestProject, this);
         this.editMethod(methodContent, compilationUnitName, methodName, false);
 
     }
@@ -323,8 +322,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
         int offset = iMethod.getSourceRange().getOffset();
         offset += iMethod.getSource().length() - 2;
         final InsertEdit insertEdit = new InsertEdit(offset, code);
-        CompilationUnitManipulatorHelper.editCompilationUnit(iCu, insertEdit);
-        TestUtil.waitForSynchronization(3 * 1000);
+        CompilationUnitManipulatorHelper.editCompilationUnit(iCu, this, insertEdit);
         final CorrespondenceModel ci = this.getCorrespondenceModel();
         final Method method = super.findJaMoPPMethodInICU(iCu, methodName);
         final Set<ResourceDemandingSEFF> seffs = CorrespondenceModelUtil.getCorrespondingEObjectsByType(ci, method,
