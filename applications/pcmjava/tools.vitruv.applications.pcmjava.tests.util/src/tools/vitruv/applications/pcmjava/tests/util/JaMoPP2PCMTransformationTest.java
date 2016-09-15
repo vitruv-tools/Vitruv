@@ -356,6 +356,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		refactoring.checkFinalConditions(monitor);
 		final Change change = refactoring.createChange(monitor);
 		change.perform(monitor);
+		waitForSynchronization(1);
 	}
 
 	protected <T> T renameClassifierWithName(final String entityName, final String newName, final Class<T> type)
