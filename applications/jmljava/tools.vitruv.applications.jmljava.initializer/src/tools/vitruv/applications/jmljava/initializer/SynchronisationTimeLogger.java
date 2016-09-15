@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import com.google.common.base.Stopwatch;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.JmlSynchronizationListener;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 
 public final class SynchronisationTimeLogger implements JmlSynchronizationListener {
@@ -34,7 +34,7 @@ public final class SynchronisationTimeLogger implements JmlSynchronizationListen
 	}
 
 	@Override
-	public void syncAborted(GeneralChange abortedChange) {
+	public void syncAborted(TransactionalChange abortedChange) {
 	}
 
 	@Override

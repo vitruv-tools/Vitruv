@@ -4,10 +4,8 @@ import tools.vitruv.domains.jml.language.jML.Modifiable
 import tools.vitruv.domains.jml.language.jML.RegularModifier
 import tools.vitruv.domains.jml.language.jML.Typed
 import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceAdder
-import tools.vitruv.applications.jmljava.helper.Utilities
 import tools.vitruv.applications.jmljava.synchronizers.helpers.CorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TUID
 import java.util.ArrayList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -45,7 +43,7 @@ class CommonSynchronizerTransformations {
 			jmlModifiable.modifiers.add(oldIndex, newJmlModifier)
 			
 			Java2JMLCorrespondenceAdder.addCorrespondences(javaNewValue, newJmlModifier, ci)
-			ci.updateTUID(jmlModifiableTUIDOld, jmlModifiable)
+			jmlModifiableTUIDOld.updateTuid(jmlModifiable)
 			
 			changedObjects.add(jmlModifiable)
 		}
@@ -79,7 +77,7 @@ class CommonSynchronizerTransformations {
 			val jmlTypedTUIDOld = ci.calculateTUIDFromEObject(jmlTyped)
 			val typeArrayDimensions = getArrayDimensions(affectedJavaObject as Commentable)
 			jmlTyped.type = CommonSynchronizerTasks.createJMLType(javaNewValue, typeArrayDimensions)
-			ci.updateTUID(jmlTypedTUIDOld, jmlTyped)
+			jmlTypedTUIDOld.updateTuid(jmlTyped)
 			changedObjects.add(jmlTyped)
 		}
 	}

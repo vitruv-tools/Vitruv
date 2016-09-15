@@ -61,10 +61,10 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
+import tools.vitruv.applications.jmljava.changesynchronizer.JmlSynchronizationListener;
 import tools.vitruv.applications.jmljava.initializer.ActivateHandler;
 import tools.vitruv.applications.jmljava.initializer.DeactivateHandler;
-import tools.vitruv.framework.change.description.GeneralChange;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.plugintests.util.CodeElementUtil;
@@ -145,7 +145,8 @@ public abstract class FrameworkTestBase {
         }
 
         activator.activate(this.project.getName());
-        ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().register(new SynchronisationListener() {
+        ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().register(new JmlSynchronizationListener() {
+			
             @Override
             public void syncStarted() {
                 synchronized (FrameworkTestBase.this.synchronisationInProgress) {
@@ -169,7 +170,7 @@ public abstract class FrameworkTestBase {
             }
 
             @Override
-            public void syncAborted(final EMFModelChange abortedChange) {
+            public void syncAborted(final TransactionalChange abortedChange) {
                 FrameworkTestBase.this.synchronisationAborted = true;
             }
         });

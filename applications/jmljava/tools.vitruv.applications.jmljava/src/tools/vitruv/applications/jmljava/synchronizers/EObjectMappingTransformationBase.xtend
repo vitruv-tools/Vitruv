@@ -4,14 +4,13 @@ import tools.vitruv.applications.jmljava.helper.Utilities
 import tools.vitruv.applications.jmljava.synchronizers.helpers.CorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.TransformationResult
-import tools.vitruv.framework.tuid.TUID
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EObjectMappingTransformation
 
 /**
  * Base class for all EObject mapping transformations, which provides default

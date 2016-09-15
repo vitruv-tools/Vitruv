@@ -6,7 +6,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.applications.jmljava.helper.java.shadowcopy.ShadowCopyFactory;
 import tools.vitruv.applications.jmljava.synchronizers.CustomTransformation;
 import tools.vitruv.applications.jmljava.synchronizers.SynchronisationAbortedListener;
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EObjectMappingTransformation;
 
 /**
  * Base class for custom transformations, which are not inherited from

@@ -11,7 +11,7 @@ import tools.vitruv.applications.jmljava.models.JavaModelURIProvider;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
 import tools.vitruv.applications.jmljava.vitruvius.utils.EclipseUtilities;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
@@ -28,7 +28,7 @@ public class CSSynchronizerModule extends AbstractModule {
         bind(ModelURIProvider.class).annotatedWith(Names.named("JavaModelUriProvider")).to(JavaModelURIProvider.class);
         bind(SynchronisationAbortedListener.class).toInstance(new SynchronisationAbortedListener() {
             @Override
-            public void synchronisationAborted(GeneralChange abortedChange) {
+            public void synchronisationAborted(TransactionalChange abortedChange) {
                 ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronisationAborted(abortedChange);
             }
 

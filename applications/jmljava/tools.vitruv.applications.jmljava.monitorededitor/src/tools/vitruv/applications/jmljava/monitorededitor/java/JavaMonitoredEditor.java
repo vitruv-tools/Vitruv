@@ -30,7 +30,7 @@ import tools.vitruv.applications.jmljava.extensions.SourceDirProvider;
 import tools.vitruv.domains.java.echange.feature.JavaFeatureEChange;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
@@ -126,7 +126,7 @@ public class JavaMonitoredEditor extends MonitoredEditor implements JmlSynchroni
     }
 
     @Override
-    public void syncAborted(final GeneralChange abortedChange) {
+    public void syncAborted(final TransactionalChange abortedChange) {
         final JavaFeatureEChange<?,?> featureChange = (JavaFeatureEChange<?,?>) abortedChange.getEChanges().get(0);
         EObject affectedObject = featureChange.getAffectedEObject();
         if (affectedObject == null) {

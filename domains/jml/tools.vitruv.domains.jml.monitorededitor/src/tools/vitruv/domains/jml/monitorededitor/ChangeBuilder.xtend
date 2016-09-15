@@ -7,10 +7,9 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.domains.java.echange.feature.attribute.AttributeFactory
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory
-import tools.vitruv.framework.change.description.GeneralChange
-import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.ConcreteChange
 
 /**
  * Constructor for various change types. Usually the changed elements and some
@@ -32,7 +31,7 @@ class ChangeBuilder {
 		return createReplaceNonContainmentEReference(original, changed, feature, newValue, oldValue)
 	}
 
-	public static def dispatch GeneralChange createUpdateChange(EObject original, EObject changed, EReference feature) {
+	public static def dispatch ConcreteChange createUpdateChange(EObject original, EObject changed, EReference feature) {
 		if (feature.upperBound == 1) {
 			return ChangeBuilder.createReplaceSingleValuedEReference(original, changed, feature)
 		}
@@ -41,7 +40,7 @@ class ChangeBuilder {
 			"EReferences with cardinality greater than 1 are not supported at the moment.")
 	}
 
-	public static def dispatch GeneralChange createUpdateChange(EObject original, EObject changed, EAttribute feature) {
+	public static def dispatch ConcreteChange createUpdateChange(EObject original, EObject changed, EAttribute feature) {
 		if (feature.upperBound == 1) {
 			val newValue = changed.eGet(feature)
 			if (newValue == null) {
@@ -54,7 +53,7 @@ class ChangeBuilder {
 			"EAttributes with cardinality greater than 1 are not supported at the moment.")
 	}
 
-	public static def EMFModelChange createCreateChange(EObject createdEObject, EObject oldParent) {
+	public static def ConcreteChange createCreateChange(EObject createdEObject, EObject oldParent) {
 		if (createdEObject.eContainingFeature.upperBound == 1) {
 			return ChangeBuilder.createCreateNonRootEObjectSingle(createdEObject, oldParent)
 		} else {
@@ -62,7 +61,7 @@ class ChangeBuilder {
 		}
 	}
 
-	public static def EMFModelChange createDeleteChange(EObject deletedEObject, EObject changedParent) {
+	public static def ConcreteChange createDeleteChange(EObject deletedEObject, EObject changedParent) {
 		if (deletedEObject.eContainingFeature.upperBound == 1) {
 			return ChangeBuilder.createDeleteNonRootEObjectSingle(deletedEObject, changedParent)
 		} else {
@@ -70,19 +69,19 @@ class ChangeBuilder {
 		}
 	}
 
-//	private static def createReplaceEAttributeValue(EObject original, EObject changed, EAttribute feature,
-//		Object newValue, Object oldValue) {
-//		val change = AttributeFactory.eINSTANCE.createJavaReplaceSingleValuedEAttribute();
-//		change.oldAffectedEObject = original
-//		change.affectedEObject = changed
-//		change.affectedFeature = feature
-//		change.index = (original.eGet(feature) as EList<Object>).indexOf(oldValue)
-//		change.newValue = newValue
-//		change.oldValue = oldValue
-//		return new EMFModelChange(change, VURI.getInstance(original.eResource))
-//	}
+	private static def ConcreteChange createReplaceEAttributeValue(EObject original, EObject changed, EAttribute feature,
+		Object newValue, Object oldValue) {
+		val change = AttributeFactory.eINSTANCE.createJavaReplaceSingleValuedEAttribute();
+		change.oldAffectedEObject = original
+		change.affectedEObject = changed
+		change.affectedFeature = feature
+		change.index = (original.eGet(feature) as EList<Object>).indexOf(oldValue)
+		change.newValue = newValue
+		change.oldValue = oldValue
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
+	}
 
-	private static def createReplaceNonRootEObjectInList(EObject original, EObject changed, EReference feature,
+	private static def ConcreteChange createReplaceNonRootEObjectInList(EObject original, EObject changed, EReference feature,
 		EObject newValue, EObject oldValue) {
 		val change = ReferenceFactory.eINSTANCE.createReplaceNonRootEObjectInList()
 		change.oldAffectedEObject = original
@@ -91,10 +90,10 @@ class ChangeBuilder {
 		change.index = (original.eGet(feature) as EList<EObject>).indexOf(oldValue)
 		change.newValue = newValue
 		change.oldValue = oldValue
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createReplaceNonContainmentEReference(EObject original, EObject changed, EReference feature,
+	private static def ConcreteChange createReplaceNonContainmentEReference(EObject original, EObject changed, EReference feature,
 		EObject newValue, EObject oldValue) {
 		val change = ReferenceFactory.eINSTANCE.createReplaceNonContainmentEReference()
 		change.oldAffectedEObject = original
@@ -103,26 +102,26 @@ class ChangeBuilder {
 		change.index = (original.eGet(feature) as EList<EObject>).indexOf(oldValue)
 		change.newValue = newValue
 		change.oldValue = oldValue
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createUnsetEReference(EObject original, EObject changed, EReference feature) {
+	private static def ConcreteChange createUnsetEReference(EObject original, EObject changed, EReference feature) {
 		if (feature.containment) {
 			val change = FeatureFactory.eINSTANCE.createUnsetContainmentEReference
 			change.oldAffectedEObject = original
 			change.newAffectedEObject = changed
 			change.affectedFeature = feature
-			return new EMFModelChange(change, VURI.getInstance(original.eResource))
+			return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 		}
 		val change = FeatureFactory.eINSTANCE.createUnsetNonContainmentEReference
 		change.oldAffectedEObject = original
 		change.newAffectedEObject = changed
 		change.affectedFeature = feature
 		change.oldValue = original.eGet(feature) as EObject
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createUpdateSingleValuedEAttribute(EObject original, EObject changed, EAttribute feature,
+	private static def ConcreteChange createUpdateSingleValuedEAttribute(EObject original, EObject changed, EAttribute feature,
 		Object newValue) {
 		val change = AttributeFactory.eINSTANCE.createUpdateSingleValuedEAttribute()
 		change.oldAffectedEObject = original
@@ -130,29 +129,29 @@ class ChangeBuilder {
 		change.affectedFeature = feature
 		change.oldValue = original.eGet(feature)
 		change.newValue = newValue
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createUnsetEAttribute(EObject original, EObject changed, EAttribute feature) {
+	private static def ConcreteChange createUnsetEAttribute(EObject original, EObject changed, EAttribute feature) {
 		val change = FeatureFactory.eINSTANCE.createUnsetEAttribute()
 		change.oldAffectedEObject = original
 		change.newAffectedEObject = changed
 		change.affectedFeature = feature
 		change.oldValue = original.eGet(feature)
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createReplaceNonRootEObjectSingle(EObject original, EObject changed, EReference feature) {
+	private static def ConcreteChange createReplaceNonRootEObjectSingle(EObject original, EObject changed, EReference feature) {
 		val change = ContainmentFactory.eINSTANCE.createReplaceNonRootEObjectSingle()
 		change.oldAffectedEObject = original
 		change.newAffectedEObject = changed
 		change.affectedFeature = feature
 		change.oldValue = original.eGet(feature) as EObject
 		change.newValue = changed.eGet(feature) as EObject
-		return new EMFModelChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createReplaceSingleValuedEReference(EObject original, EObject changed,
+	private static def ConcreteChange createReplaceSingleValuedEReference(EObject original, EObject changed,
 		EReference feature) {
 		val change = ReferenceFactory.eINSTANCE.createJavaReplaceSingleValuedEReference()
 		change.oldAffectedEObject = original
@@ -160,10 +159,10 @@ class ChangeBuilder {
 		change.affectedFeature = feature
 		change.oldValue = original.eGet(feature) as EObject
 		change.newValue = changed.eGet(feature) as EObject
-		return VitruviusChangeFactory.instance.createGeneralChange(change, VURI.getInstance(original.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(original.eResource))
 	}
 
-	private static def createCreateNonRootEObjectInList(EObject createEObject, EObject oldParent) {
+	private static def ConcreteChange createCreateNonRootEObjectInList(EObject createEObject, EObject oldParent) {
 		val change = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList()
 		change.newAffectedEObject = createEObject.eContainer();
 		change.oldAffectedEObject = oldParent;
@@ -171,19 +170,19 @@ class ChangeBuilder {
 		change.setNewValue(createEObject);
 		change.index = (createEObject.eContainer.eGet(createEObject.eContainingFeature) as EList<EObject>).
 			indexOf(createEObject)
-		return new EMFModelChange(change, VURI.getInstance(createEObject.eResource));
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(createEObject.eResource));
 	}
 
-	private static def createCreateNonRootEObjectSingle(EObject createEObject, EObject oldParent) {
+	private static def ConcreteChange createCreateNonRootEObjectSingle(EObject createEObject, EObject oldParent) {
 		val change = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectSingle()
 		change.newAffectedEObject = createEObject.eContainer();
 		change.oldAffectedEObject = oldParent;
 		change.setAffectedFeature(createEObject.eContainingFeature() as EReference);
 		change.newValue = createEObject
-		return new EMFModelChange(change, VURI.getInstance(createEObject.eResource));
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(createEObject.eResource));
 	}
 
-	private static def createDeleteNonRootEObjectInList(EObject deletedEObject, EObject changedParent) {
+	private static def ConcreteChange createDeleteNonRootEObjectInList(EObject deletedEObject, EObject changedParent) {
 		val change = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList()
 		change.oldAffectedEObject = deletedEObject.eContainer
 		change.newAffectedEObject = changedParent
@@ -191,16 +190,16 @@ class ChangeBuilder {
 		change.oldValue = deletedEObject
 		change.index = (deletedEObject.eContainer.eGet(deletedEObject.eContainingFeature) as EList<EObject>).
 			indexOf(deletedEObject)
-		return new EMFModelChange(change, VURI.getInstance(deletedEObject.eResource));
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(deletedEObject.eResource));
 	}
 
-	private static def createDeleteNonRootEObjectSingle(EObject deletedEObject, EObject changedParent) {
+	private static def ConcreteChange createDeleteNonRootEObjectSingle(EObject deletedEObject, EObject changedParent) {
 		val change = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectSingle()
 		change.oldAffectedEObject = deletedEObject.eContainer
 		change.newAffectedEObject = changedParent
 		change.affectedFeature = deletedEObject.eContainingFeature() as EReference
 		change.oldValue = deletedEObject
-		return new EMFModelChange(change, VURI.getInstance(deletedEObject.eResource));
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(deletedEObject.eResource));
 	}
 
 }

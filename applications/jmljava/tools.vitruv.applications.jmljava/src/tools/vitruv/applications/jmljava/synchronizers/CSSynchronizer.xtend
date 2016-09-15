@@ -26,21 +26,18 @@ import tools.vitruv.applications.jmljava.synchronizers.jml.JMLInvariantExpressio
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMemberDeclarationWithModifierTransformations
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMethodDeclarationTransformations
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLVariableDeclarationTransformations
-import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
+import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.processing.Change2CommandTransforming 
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.TransformationExecutor
 import tools.vitruv.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.List
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.command.Command
 import org.emftext.language.java.imports.Import
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.statements.Statement
@@ -48,9 +45,9 @@ import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.TransformationResult
-import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.TransformationExecutor
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
@@ -119,18 +116,18 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		if (change instanceof CompositeChange) {
 			commands.addAll(executeTransformation(change as CompositeChange, correspondenceModel))
 		} else {
-			commands.add(transformEMFModelChange2Command(change as GeneralChange, correspondenceModel))
+			commands.add(transformEMFModelChange2Command(change as ConcreteChange, correspondenceModel))
 		}
 		return commands
 	}
 
-	def transformEMFModelChange2Command(GeneralChange change, CorrespondenceModel correspondenceModel) {
+	def transformEMFModelChange2Command(ConcreteChange change, CorrespondenceModel correspondenceModel) {
 		LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
 
 		this.correspondenceModel = correspondenceModel
 
-		val modelChange = (change as GeneralChange).EChanges.get(0)
-		this.setSyncAbortChange(change as GeneralChange)
+		val modelChange = (change as ConcreteChange).EChanges.get(0)
+		this.setSyncAbortChange(change as ConcreteChange)
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
 			override call() {
 				val res = executeTransformationForChange(modelChange)
@@ -140,7 +137,7 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		return command
 	}
 
-	def void setSyncAbortChange(GeneralChange change) {
+	def void setSyncAbortChange(ConcreteChange change) {
 		this.mappingTransformations.values.filter(AbortableEObjectMappingTransformationBase).forEach [
 			setSyncAbortChange(change)
 		]
@@ -170,13 +167,13 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 	}
 
 	private static def getAllChanges(CompositeChange compositeChange) {
-		val changes = new ArrayList<GeneralChange>()
+		val changes = new ArrayList<ConcreteChange>()
 		val queue = new LinkedList<VitruviusChange>()
 		queue.add(compositeChange)
 		while (!queue.empty) {
 			val change = queue.pop()
-			if (change instanceof GeneralChange) {
-				changes.add(change as GeneralChange)
+			if (change instanceof ConcreteChange) {
+				changes.add(change as ConcreteChange)
 			} else if (change instanceof CompositeChange) {
 				queue.addAll((change as CompositeChange).changes)
 			} else {

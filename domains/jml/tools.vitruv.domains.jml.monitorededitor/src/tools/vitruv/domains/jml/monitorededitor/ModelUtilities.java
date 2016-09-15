@@ -4,8 +4,6 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.casestudies.jml.run.monitorededitor.Utilities;
-
 /**
  * Utility class for general model handling tools.
  */

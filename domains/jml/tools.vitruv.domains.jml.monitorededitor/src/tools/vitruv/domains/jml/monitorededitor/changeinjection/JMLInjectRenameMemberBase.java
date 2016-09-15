@@ -12,8 +12,8 @@ import tools.vitruv.domains.jml.language.jML.MemberDeclWithModifier;
 import tools.vitruv.domains.jml.language.jML.MemberDeclaration;
 import tools.vitruv.domains.jml.language.jML.MethodDeclaration;
 import tools.vitruv.domains.jml.language.jML.VariableDeclarator;
+import tools.vitruv.domains.jml.monitorededitor.ChangeBuilder;
 import tools.vitruv.domains.jml.monitorededitor.ModelUtilities;
-import tools.vitruv.casestudies.jml.run.monitorededitor.ChangeBuilder;
 
 /**
  * Base class for rename operations on member elements in JML.

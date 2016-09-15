@@ -3,18 +3,16 @@ package tools.vitruv.applications.jmljava.synchronizers.java.compositerefiners
 import tools.vitruv.applications.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import tools.vitruv.applications.jmljava.synchronizers.CompositeChangeRefiner
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.domains.java.echange.feature.JavaFeatureEChange
-import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.domains.java.echange.feature.reference.JavaRemoveEReference
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference
+import tools.vitruv.framework.change.description.TransactionalChange
 
 abstract class CompositeChangeRefinerBase implements CompositeChangeRefiner {
 	
@@ -47,7 +45,7 @@ abstract class CompositeChangeRefinerBase implements CompositeChangeRefiner {
 	}
 	
 	protected static def getAddAndDeleteChanges (CompositeChange change, boolean addAndDeleteAreAllowedOnly) {
-		val modelChanges = change.changes.filter(GeneralChange)
+		val modelChanges = change.changes.filter(TransactionalChange)
 		if (modelChanges.size != change.changes.size && addAndDeleteAreAllowedOnly) {
 			throw new IllegalArgumentException("Only emd model changes changes are allowed.")
 		}
@@ -69,14 +67,14 @@ abstract class CompositeChangeRefinerBase implements CompositeChangeRefiner {
 		if (anyEObject == null) {
 			anyEObject = change.affectedEObject
 		}
-		return VitruviusChangeFactory.instance.createGeneralChange(change, VURI.getInstance(anyEObject.eResource))
+		return VitruviusChangeFactory.instance.createConcreteChange(change, VURI.getInstance(anyEObject.eResource))
 	}
 	
-	protected static def dispatch typeCheck (JavaRemoveEReference<?,?> change, Class<?> oldAffectedType, Class<?> oldValueType) {
-		return oldAffectedType.isAssignableFrom(change.oldAffectedEObject.class) &&  oldValueType.isAssignableFrom(change.oldValue.class)
-	}
-	
-	protected static def dispatch typeCheck (JavaInsertEReference<?,?> change, Class<?> newAffectedType, Class<?> newValueType) {
-		return newAffectedType.isAssignableFrom(change.affectedEObject.class) &&  newValueType.isAssignableFrom(change.newValue.class)
-	}
+//	protected static def dispatch boolean typeCheck(JavaRemoveEReference<?,?> change, Class<?> oldAffectedType, Class<?> oldValueType) {
+//		return oldAffectedType.isAssignableFrom(change.oldAffectedEObject.class) &&  oldValueType.isAssignableFrom(change.oldValue.class)
+//	}
+//	
+//	protected static def dispatch boolean typeCheck(JavaInsertEReference<?,?> change, Class<?> newAffectedType, Class<?> newValueType) {
+//		return newAffectedType.isAssignableFrom(change.affectedEObject.class) &&  newValueType.isAssignableFrom(change.newValue.class)
+//	}
 }

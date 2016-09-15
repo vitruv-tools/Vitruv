@@ -2,7 +2,6 @@ package tools.vitruv.applications.jmljava.synchronizers.java.compositerefiners
 
 import tools.vitruv.applications.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.meta.change.feature.EFeatureChange
 import org.emftext.language.java.members.Method
@@ -53,7 +52,7 @@ class JavaMethodParameterNumberChangedByOneCompositeChangeRefiner extends Compos
 			refinedChange = addAndDeleteChanges.deleteChanges.findFirst[deleteChange | !addAndDeleteChanges.addChanges.exists[(newValue as Parameter).name.equals((deleteChange.oldValue as Parameter).name)]]
 		}
 		
-		return new CompositeChangeRefinerResultAtomicTransformations(#[VitruviusChangeFactory.instance.createGeneralChange(refinedChange, VURI.getInstance(refinedChange.oldAffectedEObject.eResource))]);
+		return new CompositeChangeRefinerResultAtomicTransformations(#[VitruviusChangeFactory.instance.createConcreteChange(refinedChange, VURI.getInstance(refinedChange.oldAffectedEObject.eResource))]);
 	}
 	
 }

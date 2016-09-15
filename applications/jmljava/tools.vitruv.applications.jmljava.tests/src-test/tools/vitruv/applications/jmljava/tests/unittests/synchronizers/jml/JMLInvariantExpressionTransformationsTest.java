@@ -2,15 +2,15 @@ package tools.vitruv.applications.jmljava.tests.unittests.synchronizers.jml;
 
 import org.junit.Test;
 
+import tools.vitruv.domains.jml.language.ConcreteSyntaxHelper;
 import tools.vitruv.domains.jml.language.jML.Expression;
 import tools.vitruv.domains.jml.language.jML.JMLInvariantExpression;
 import tools.vitruv.domains.jml.language.jML.JMLPackage;
 import tools.vitruv.domains.jml.language.jML.JMLSpecifiedElement;
 import tools.vitruv.domains.jml.language.jML.NormalClassDeclaration;
-import tools.vitruv.casestudies.jml.language.ConcreteSyntaxHelper;
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
@@ -61,7 +61,7 @@ public class JMLInvariantExpressionTransformationsTest extends TransformationTes
         Expression newExpression = ConcreteSyntaxHelper.convertFromConcreteSyntax("calledMethod2()", Expression.class);
         invariant.changed().setExpr(newExpression);
 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
+        ConcreteChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         callSynchronizer(change);
@@ -79,7 +79,7 @@ public class JMLInvariantExpressionTransformationsTest extends TransformationTes
         Expression newExpression = ConcreteSyntaxHelper.convertFromConcreteSyntax("calledMethod3()", Expression.class);
         invariant.changed().setExpr(newExpression);
 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
+        ConcreteChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         callSynchronizer(change);
@@ -96,7 +96,7 @@ public class JMLInvariantExpressionTransformationsTest extends TransformationTes
         Expression newExpression = ConcreteSyntaxHelper.convertFromConcreteSyntax("calledMethod3()", Expression.class);
         invariant.changed().setExpr(newExpression);
 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
+        ConcreteChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         callSynchronizer(change);
@@ -114,7 +114,7 @@ public class JMLInvariantExpressionTransformationsTest extends TransformationTes
         Expression newExpression = ConcreteSyntaxHelper.convertFromConcreteSyntax("3 == 3 && calledMethod()", Expression.class);
         invariant.changed().setExpr(newExpression);
 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
+        ConcreteChange change = ChangeBuilder.createUpdateChange(invariant.original(), invariant.changed(),
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         callSynchronizer(change);

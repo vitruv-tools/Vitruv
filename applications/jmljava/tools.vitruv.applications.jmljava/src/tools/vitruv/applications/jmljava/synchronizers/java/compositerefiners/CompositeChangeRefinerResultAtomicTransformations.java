@@ -5,7 +5,7 @@ import java.util.List;
 
 import tools.vitruv.applications.jmljava.synchronizers.SynchronisationAbortedListener;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
@@ -19,7 +19,7 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
  */
 public class CompositeChangeRefinerResultAtomicTransformations implements CompositeChangeRefinerResult {
 
-    private final List<GeneralChange> changes;
+    private final List<ConcreteChange> changes;
 
     /**
      * Constructor.
@@ -27,7 +27,7 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
      * @param changes
      *            The atomic changes.
      */
-    public CompositeChangeRefinerResultAtomicTransformations(final List<GeneralChange> changes) {
+    public CompositeChangeRefinerResultAtomicTransformations(final List<ConcreteChange> changes) {
         this.changes = changes;
     }
 
@@ -35,7 +35,7 @@ public class CompositeChangeRefinerResultAtomicTransformations implements Compos
     public List<VitruviusRecordingCommand> apply(final CSSynchronizer transformationExecuting, final CorrespondenceModel correspondenceModel,
             final UserInteracting ui, final SynchronisationAbortedListener abortListener) {
         final List<VitruviusRecordingCommand> commands = new ArrayList<VitruviusRecordingCommand>(this.changes.size());
-        for (final GeneralChange change : this.changes) {
+        for (final ConcreteChange change : this.changes) {
             final VitruviusRecordingCommand command = transformationExecuting.transformEMFModelChange2Command(change, correspondenceModel);
             commands.add(command);
         }

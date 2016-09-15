@@ -4,9 +4,6 @@ import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.isA;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.members.ClassMethod;
@@ -20,16 +17,17 @@ import tools.vitruv.applications.jmljava.helper.JaMoPPConcreteSyntax;
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.custom.JavaMethodBodyChangedTransformation;
 import tools.vitruv.framework.change.description.CompositeChange;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.CompositeTransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.meta.change.feature.reference.containment.ContainmentFactory;
-import tools.vitruv.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList;
-import tools.vitruv.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader.IResourceFiles;
+import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
+import tools.vitruv.domains.java.echange.feature.reference.JavaRemoveEReference;
+import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 
 public class JavaMethodBodyChangesTransformationTest extends TransformationTestsBase {
     
@@ -81,29 +79,30 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
     }
     
     private CompositeChange createCompositeChange(ClassMethod oldMethod, ClassMethod newMethod) {
-        List<EMFModelChange> changes = new ArrayList<EMFModelChange>();
+        CompositeTransactionalChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeTransactionalChange();
         
         for (Statement stmt : oldMethod.getStatements()) {
-            DeleteNonRootEObjectInList<EObject> change = ContainmentFactory.eINSTANCE.createDeleteNonRootEObjectInList();
+            JavaRemoveEReference<EObject, EObject> change = ReferenceFactory.eINSTANCE.createJavaRemoveEReference();
+            change.setIsDelete(true);
             change.setAffectedFeature(StatementsPackage.eINSTANCE.getStatementListContainer_Statements());
             change.setIndex(oldMethod.getStatements().indexOf(stmt));
-            change.setNewAffectedEObject(newMethod);
+            change.setAffectedEObject(newMethod);
             change.setOldAffectedEObject(oldMethod);
             change.setOldValue(stmt);
-            changes.add(new EMFModelChange(change, VURI.getInstance(stmt.eResource())));
+            compositeChange.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(change, VURI.getInstance(stmt.eResource())));
         }
         
         for (Statement stmt : newMethod.getStatements()) {
-            CreateNonRootEObjectInList<EObject> change = ContainmentFactory.eINSTANCE.createCreateNonRootEObjectInList();
+            JavaInsertEReference<EObject, EObject> change = ReferenceFactory.eINSTANCE.createJavaInsertEReference();
             change.setAffectedFeature(StatementsPackage.eINSTANCE.getStatementListContainer_Statements());
             change.setIndex(oldMethod.getStatements().indexOf(stmt));
-            change.setNewAffectedEObject(newMethod);
+            change.setAffectedEObject(newMethod);
             change.setOldAffectedEObject(oldMethod);
             change.setNewValue(stmt);
-            changes.add(new EMFModelChange(change, VURI.getInstance(stmt.eResource())));
+            compositeChange.addChange(VitruviusChangeFactory.getInstance().createConcreteChange(change, VURI.getInstance(stmt.eResource())));
         }
         
-        return new CompositeChange(changes.toArray(new EMFModelChange[0]));
+        return compositeChange;
     }
     
     @Test

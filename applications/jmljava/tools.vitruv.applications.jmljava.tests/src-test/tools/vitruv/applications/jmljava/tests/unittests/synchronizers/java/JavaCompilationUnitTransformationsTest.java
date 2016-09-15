@@ -11,12 +11,11 @@ import org.junit.Test;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
-import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase.CloneContainer;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader.IResourceFiles;
 
 public class JavaCompilationUnitTransformationsTest extends TransformationTestsBase {
@@ -70,7 +69,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         Import newImport = helperCu.getImports().get(0);
         cu.changed().getImports().add(0, newImport);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
 
         callSynchronizer(change);
 
@@ -87,7 +86,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         Import newImport = helperCu.getImports().get(1);
         cu.changed().getImports().add(0, newImport);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
 
         callSynchronizer(change);
 
@@ -104,7 +103,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         Import newImport = helperCu.getImports().get(2);
         cu.changed().getImports().add(0, newImport);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
 
         callSynchronizer(change);
 
@@ -121,7 +120,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         Import newImport = helperCu.getImports().get(3);
         cu.changed().getImports().add(0, newImport);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newImport, cu.original());
 
         callSynchronizer(change);
 
@@ -136,7 +135,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         cu.changed().getImports().remove(1);
         Import deletedImport = cu.original().getImports().get(1);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
         
         callSynchronizer(change);
         
@@ -151,7 +150,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         cu.changed().getImports().remove(0);
         Import deletedImport = cu.original().getImports().get(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
         
         callSynchronizer(change);
         
@@ -166,7 +165,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         cu.changed().getImports().remove(2);
         Import deletedImport = cu.original().getImports().get(2);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
         
         callSynchronizer(change);
         
@@ -181,7 +180,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         cu.changed().getImports().remove(3);
         Import deletedImport = cu.original().getImports().get(3);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(deletedImport, cu.changed());
         
         callSynchronizer(change);
         
@@ -199,7 +198,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         
         cu.changed().getClassifiers().add(1, newClassifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newClassifier, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newClassifier, cu.original());
         
         callSynchronizer(change);
         
@@ -216,7 +215,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         ConcreteClassifier deletedClassifier = cu.original().getClassifiers().get(1);
         cu.changed().getClassifiers().remove(1);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(deletedClassifier, cu.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(deletedClassifier, cu.changed());
         
         callSynchronizer(change);
         
@@ -234,7 +233,7 @@ public class JavaCompilationUnitTransformationsTest extends TransformationTestsB
         
         cu.changed().getClassifiers().add(1, newClassifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newClassifier, cu.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newClassifier, cu.original());
         
         EObject expected = Utilities.clone(cuJML);
         userInteracting.showMessage(eq(UserInteractionType.MODAL), notNull(String.class));

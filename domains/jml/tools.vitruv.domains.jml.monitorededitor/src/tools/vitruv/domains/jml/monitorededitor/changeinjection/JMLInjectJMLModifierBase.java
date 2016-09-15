@@ -21,10 +21,8 @@ import tools.vitruv.domains.java.echange.feature.JavaFeatureEChange;
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.JavaRemoveEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
-import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -59,7 +57,7 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
             return false;
         }
 
-        GeneralChange change = createChange(chosenMemberDecl, addMofifier);
+        ConcreteChange change = createChange(chosenMemberDecl, addMofifier);
 
         submitChange(change);
 
@@ -131,7 +129,7 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
      *            Flag to indicate whether the modifier shall be added (true) or deleted (false).
      * @return The constructed change.
      */
-    private GeneralChange createChange(MemberDeclWithModifier chosenMemberDecl, boolean addModifier) {
+    private ConcreteChange createChange(MemberDeclWithModifier chosenMemberDecl, boolean addModifier) {
         MemberDeclWithModifier oldMemberDecl = ModelUtilities.clone(chosenMemberDecl);
         MemberDeclWithModifier newMemberDecl = ModelUtilities.clone(chosenMemberDecl);
 
@@ -160,7 +158,7 @@ public abstract class JMLInjectJMLModifierBase extends JMLInjectionHandler {
         change.setOldAffectedEObject(oldMemberDecl);
         change.setAffectedEObject(newMemberDecl);
 
-        return VitruviusChangeFactory.getInstance().createGeneralChange(change, VURI.getInstance(oldMemberDecl.eResource()));
+        return VitruviusChangeFactory.getInstance().createConcreteChange(change, VURI.getInstance(oldMemberDecl.eResource()));
     }
 
 }

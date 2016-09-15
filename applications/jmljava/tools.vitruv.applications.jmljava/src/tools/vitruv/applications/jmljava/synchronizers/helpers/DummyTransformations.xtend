@@ -1,11 +1,11 @@
 package tools.vitruv.applications.jmljava.synchronizers.helpers
 
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.EObjectMappingTransformation
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EObjectMappingTransformation
 
 class DummyTransformations extends EObjectMappingTransformation {
 

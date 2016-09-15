@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
@@ -55,7 +55,7 @@ public class JavaParameterTransformationsTest extends TransformationTestsBase {
         CloneContainer<Parameter> param = createClones(cuJava.getClassifiers().get(0).getMethods().get(0).getParameters().get(0));
         param.changed().setName("d");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -70,7 +70,7 @@ public class JavaParameterTransformationsTest extends TransformationTestsBase {
         CloneContainer<Parameter> param = createClones(cuJava.getClassifiers().get(0).getMethods().get(2).getParameters().get(1));
         param.changed().setName("b");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -85,7 +85,7 @@ public class JavaParameterTransformationsTest extends TransformationTestsBase {
         CloneContainer<Parameter> param = createClones(cuJava.getClassifiers().get(0).getMethods().get(0).getParameters().get(0));
         param.changed().setTypeReference(Utilities.clone(cuJava.getClassifiers().get(0).getMethods().get(2).getParameters().get(0).getTypeReference()));
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(param.original(), param.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
         
         callSynchronizer(change);
         

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
@@ -61,7 +61,7 @@ public class JavaFieldTransformationsTest extends TransformationTestsBase {
         CloneContainer<Field> field = createClones(cuJava.getClassifiers().get(0).getFields().get(1));
         field.changed().setName("otherName");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -76,7 +76,7 @@ public class JavaFieldTransformationsTest extends TransformationTestsBase {
         CloneContainer<Field> field = createClones(cuJava.getClassifiers().get(0).getFields().get(0));
         field.changed().setName("otherName");
 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -94,7 +94,7 @@ public class JavaFieldTransformationsTest extends TransformationTestsBase {
         field.changed().getAnnotationsAndModifiers().add(0, newModifier);
         Modifier oldModifier = field.original().getModifiers().get(0);
         
-        EMFModelChange change = ChangeBuilder.createReplaceChangeInList(field.original(), field.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, oldModifier);
+        ConcreteChange change = ChangeBuilder.createReplaceChangeInList(field.original(), field.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, oldModifier);
         
         callSynchronizer(change);
 
@@ -110,7 +110,7 @@ public class JavaFieldTransformationsTest extends TransformationTestsBase {
         TypeReference newType = Utilities.clone(cuJava.getClassifiers().get(0).getMethods().get(2).getTypeReference());
         field.changed().setTypeReference(newType);
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(field.original(), field.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
         
         callSynchronizer(change);
         

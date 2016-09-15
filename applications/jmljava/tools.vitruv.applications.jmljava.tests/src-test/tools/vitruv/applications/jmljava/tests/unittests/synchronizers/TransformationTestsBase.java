@@ -44,15 +44,17 @@ import tools.vitruv.applications.jmljava.metamodels.JMLMetaModelProvider;
 import tools.vitruv.applications.jmljava.metamodels.JaMoPPMetaModelProvider;
 import tools.vitruv.applications.jmljava.synchronizers.SynchronisationAbortedListener;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.TransformationExecutor;
 import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceAdder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
-import tools.vitruv.framework.change.description.GeneralChange;
 import tools.vitruv.framework.metamodel.Mapping;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.ModelInstance;
@@ -260,7 +262,7 @@ public abstract class TransformationTestsBase {
     }
 
     private void callSynchronizerInternal(final VitruviusChange change) {
-        if (change instanceof GeneralChange) {
+        if (change instanceof TransactionalChange) {
             this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
             return;
         }
