@@ -50,12 +50,14 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE);
     }
 
+    @Override
     public void addSynchronizationListener(final SynchronisationListener synchronizationListener) {
         if (synchronizationListener != null) {
             this.synchronizationListeners.add(synchronizationListener);
         }
     }
 
+    @Override
     public void removeSynchronizationListener(final SynchronisationListener synchronizationListener) {
         this.synchronizationListeners.remove(synchronizationListener);
     }
@@ -73,6 +75,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         for (SynchronisationListener syncListener : this.synchronizationListeners) {
             syncListener.syncStarted();
         }
+        logger.debug("Synchronizing change: " + change);
 
         VURI sourceModelVURI = change.getURI();
 
@@ -90,6 +93,7 @@ public class ChangeSynchronizerImpl implements ChangeSynchronizing {
         for (SynchronisationListener syncListener : this.synchronizationListeners) {
             syncListener.syncFinished();
         }
+        logger.debug("Finished synchronizing change: " + change);
         return commandExecutionChanges;
     }
 
