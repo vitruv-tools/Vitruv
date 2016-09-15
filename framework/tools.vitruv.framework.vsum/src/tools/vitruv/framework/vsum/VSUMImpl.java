@@ -27,6 +27,7 @@ import tools.vitruv.framework.metamodel.MetamodelManaging;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
@@ -74,20 +75,16 @@ public class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     private ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI,
             final boolean forceLoadByDoingUnloadBeforeLoad) {
         final ModelInstance modelInstance = getModelInstanceOriginal(modelURI);
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
-            @Override
-            public Void call() {
-                try {
-                    modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
-                            forceLoadByDoingUnloadBeforeLoad);
-                } catch (RuntimeException re) {
-                    // could not load model instance --> this should only be the case when the
-                    // model is not existing yet
-                    logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
-                }
-                return null;
+        try {
+            if (EMFBridge.existsResourceAtUri(modelURI.getEMFUri())) {
+                modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
+                        forceLoadByDoingUnloadBeforeLoad);
             }
-        });
+        } catch (RuntimeException re) {
+            // could not load model instance --> this should only be the case when the
+            // model is not existing yet
+            logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
+        }
 
         return modelInstance;
     }
