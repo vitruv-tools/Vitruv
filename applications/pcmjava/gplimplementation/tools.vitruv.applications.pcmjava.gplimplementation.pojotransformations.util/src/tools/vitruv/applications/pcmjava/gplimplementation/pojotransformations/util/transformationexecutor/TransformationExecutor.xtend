@@ -27,7 +27,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 
-package class TransformationExecutor {
+public class TransformationExecutor {
 
 	val private static final Logger logger = Logger.getLogger(TransformationExecutor.simpleName)
 
