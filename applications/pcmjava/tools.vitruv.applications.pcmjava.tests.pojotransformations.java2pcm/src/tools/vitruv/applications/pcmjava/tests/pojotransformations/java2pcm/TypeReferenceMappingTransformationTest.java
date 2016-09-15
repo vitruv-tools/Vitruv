@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
-import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations.ClassMappingTransformation;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
@@ -16,12 +15,11 @@ public class TypeReferenceMappingTransformationTest extends Java2PCMPackageMappi
     @Test
     public void testAddImplementsToClassWithCorrespondingComponent() throws Throwable {
         // crete repo
-        final Repository repo = this.addRepoContractsAndDatatypesPackage();
+        this.addRepoContractsAndDatatypesPackage();
         // create class
         this.addSecondPackageCorrespondsWithoutCorrespondences();
         this.testUserInteractor.addNextSelections(ClassMappingTransformation.SELECT_CREATE_BASIC_COMPONENT);
         final BasicComponent basicComponent = this.addClassInSecondPackage(BasicComponent.class);
-        this.createPackageWithPackageInfo(repo.getEntityName(), "contracts");
         // create interface
         final OperationInterface opInterface = this.createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence("contracts",
                 PCM2JaMoPPTestUtils.INTERFACE_NAME);
