@@ -18,7 +18,7 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 			state.addObjectForTuidUpdate(objectToCreateContainmentFor);
 			
 			VURI userChosenVuri = null;
-			while ((userChosenVuri == null) || (EMFBridge.doesResourceExist(userChosenVuri.getEMFUri()))) {
+			while ((userChosenVuri == null) || (EMFBridge.existsResourceAtUri(userChosenVuri.getEMFUri()))) {
 				final URI userChosenUri = state.getUserInteracting().selectURI(EcoreBridge.createSensibleString(objectToCreateContainmentFor));
 				if (userChosenUri != null) {
 					userChosenVuri = VURI.getInstance(userChosenUri);

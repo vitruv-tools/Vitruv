@@ -179,7 +179,4 @@ public final class EMFBridge {
 		return folder;
 	}
 	
-	public static boolean doesResourceExist(final URI resourceURI) {
-		return getIFileForEMFUri(resourceURI).exists();
-	}
 }
