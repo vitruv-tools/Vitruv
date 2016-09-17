@@ -12,6 +12,8 @@ import tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformation
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBClassMappingTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBJaMoPP2PCMTransformationTest
 import tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations.Change2CommandTransformingEjbJavaToPcmWithSeffstatements
+import org.junit.Test
+import org.junit.Ignore
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
@@ -25,6 +27,16 @@ class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstruction
 		super.beforeTest(description)
 		super.setWebGUIPackageName = PCM2JaMoPPTestUtils.REPOSITORY_NAME
 	}
+
+	@Ignore
+	@Test
+    public override void testComponentInternalCallInSameComponent() throws Throwable {
+    }
+    
+    @Ignore
+    @Test
+    public override void testComponentInternalCallWithExternalCallInSameComponent() throws Throwable {
+    }
 
 	@Override
 	override protected createMediaStoreViaCode() {
