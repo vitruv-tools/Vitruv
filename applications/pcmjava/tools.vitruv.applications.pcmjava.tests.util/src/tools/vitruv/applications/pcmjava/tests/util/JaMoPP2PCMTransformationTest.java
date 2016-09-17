@@ -607,14 +607,14 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	protected OperationInterface createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence(
 			final String packageName, final String interfaceName) throws CoreException {
 		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
-		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(),
+		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + "." + jaMoPPPackage.getName(),
 				interfaceName, true);
 	}
 
 	protected ConcreteClassifier createInterfaceInPackageBasedOnJaMoPPPackageWithoutCorrespondence(final String packageName,
 			final String interfaceName) throws Throwable, CoreException, InterruptedException {
 		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
-		return this.createJaMoPPInterfaceInPackage(jaMoPPPackage.getNamespacesAsString(), interfaceName);
+		return this.createJaMoPPInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(), interfaceName);
 	}
 
 	protected OperationInterface createInterfaceInPackage(String packageNamespace, final String interfaceName, boolean claimOne) throws CoreException {
