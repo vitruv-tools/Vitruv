@@ -607,7 +607,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	protected OperationInterface createInterfaceInPackageBasedOnJaMoPPPackageWithCorrespondence(
 			final String packageName, final String interfaceName) throws CoreException {
 		Package jaMoPPPackage = this.getPackageWithNameFromCorrespondenceModel(packageName);
-		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + "." + jaMoPPPackage.getName(),
+		return this.createInterfaceInPackage(jaMoPPPackage.getNamespacesAsString() + jaMoPPPackage.getName(),
 				interfaceName, true);
 	}
 
