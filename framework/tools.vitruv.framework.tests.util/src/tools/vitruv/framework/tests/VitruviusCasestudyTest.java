@@ -36,6 +36,8 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
  */
 public abstract class VitruviusCasestudyTest {
 
+	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
+	
 	protected ResourceSet resourceSet;
 
     protected TestUserInteractor testUserInteractor;
@@ -58,6 +60,9 @@ public abstract class VitruviusCasestudyTest {
     // ensure that MockupProject is existing
 	protected void createTestProject(final Description description) throws CoreException {
 		this.currentTestProjectName = TestUtil.PROJECT_URI + "_" + description.getMethodName();
+		if (ADD_TIMESTAMP_TO_PROJECT_NAMES) {
+			this.currentTestProjectName = TestUtil.getStringWithTimestamp(this.currentTestProjectName);
+		}
         this.currentTestProject = TestUtil.getProjectByName(this.currentTestProjectName);
         if (!this.currentTestProject.exists()) {
             this.createProject(this.currentTestProject);
