@@ -22,6 +22,8 @@ import tools.vitruv.framework.modelsynchronization.blackboard.impl.BlackboardImp
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecuting
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecutingImpl
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.metamodel.Mapping
 
 class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	static final int BLACKBOARD_HITORY_SIZE = 2
@@ -54,67 +56,91 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	}
 
 	override synchronized List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
-		if (change === null || !change.containsConcreteChange()) {
-			logger.warn('''The change does not contain any changes to synchronize.«change»''')
+		if (change == null || !change.validate()) {
+			throw new IllegalArgumentException('''Change is null or contains changes from different models: «change»''')
+		}
+		if (!change.containsConcreteChange()) {
+			logger.info('''The change does not contain any changes to synchronize.«change»''')
 			return Collections.emptyList()
 		}
-		if (!change.validate()) {
-			logger.error('''Change contains changes from different models.«change»''')
-			return Collections.emptyList()
-		}
+		startSynchronization(change);
+		change.applyBackward()
+		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
+		synchronizeSingleChange(change, result)
+		finishSynchronization(change)
+		return result
+	}
+
+	private def void startSynchronization(VitruviusChange change) {
+		logger.info('''Started synchronizing change: «change»''')
 		for (SynchronisationListener syncListener : this.synchronizationListeners) {
 			syncListener.syncStarted()
-		}
-		logger.debug('''Synchronizing change: «change»''')
-		var VURI sourceModelVURI = change.getURI()
-		// FIXME HK: This is all strange: the sourceModelVURI is taken from the first change,
-		// although they can be from different ones. Why not make it for each change independently?
-		var Set<CorrespondenceModel> correspondenceModels = this.correspondenceProviding.
-			getOrCreateAllCorrespondenceModels(sourceModelVURI)
-		change.applyBackward()
-		var List<List<VitruviusChange>> commandExecutionChanges = new ArrayList<List<VitruviusChange>>()
-		synchronizeSingleChange(change, correspondenceModels, commandExecutionChanges)
-		// TODO: check invariants and execute undo if necessary
+		}	
+	}
+
+	private def void finishSynchronization(VitruviusChange change) {
 		for (SynchronisationListener syncListener : this.synchronizationListeners) {
 			syncListener.syncFinished()
 		}
-		logger.debug('''Finished synchronizing change: «change»''')
-		return commandExecutionChanges
+		logger.info('''Finished synchronizing change: «change»''')
 	}
 
-	def private void synchronizeSingleChange(VitruviusChange change, Set<CorrespondenceModel> correspondenceModels,
-		List<List<VitruviusChange>> commandExecutionChanges) {
-		if (change instanceof CompositeContainerChange) {
-			for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
-				synchronizeSingleChange(innerChange, correspondenceModels, commandExecutionChanges)
-			}
-		} else {
-			change.applyForward()
-			for (CorrespondenceModel correspondenceModel : correspondenceModels) {
-				var Metamodel mmA = correspondenceModel.getMapping().getMetamodelA()
-				var Metamodel mmB = correspondenceModel.getMapping().getMetamodelB()
-				// assume mmaA is source metamodel
-				var VURI sourceMMURI = mmA.getURI()
-				var VURI targetMMURI = mmB.getURI()
-				if (!Arrays.asList(mmA.getFileExtensions()).contains(change.getURI().getFileExtension())) {
-					var VURI tmpURI = sourceMMURI
-					sourceMMURI = targetMMURI
-					targetMMURI = tmpURI
-				}
-				var Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding.
-					getChange2CommandTransforming(sourceMMURI, targetMMURI)
-				var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding,
-					this.correspondenceProviding)
-				// TODO HK: Clone the changes for each synchronization! Should even be cloned for
-				// each response that uses it,
-				// or: make them read only, i.e. give them a read-only interface!
-				blackboard.pushChanges(Collections.singletonList(change))
-				this.blackboardHistory.add(blackboard)
-				blackboard.pushCommands(
-					change2CommandTransforming.transformChange2Commands(
-						blackboard.getAndArchiveChangesForTransformation().get(0), correspondenceModel))
-				commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))
-			}
+	private def dispatch void synchronizeSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges) {
+		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
+			synchronizeSingleChange(innerChange, commandExecutionChanges)
 		}
+	}
+
+	private def dispatch void synchronizeSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges) {
+		change.applyForward()
+		for (CorrespondenceModel correspondenceModel : change.URI.correspondenceModels) {
+			synchronizeChangeForCorrespondenceModel(change, correspondenceModel, commandExecutionChanges);
+		}
+	}
+	
+	private def void synchronizeChangeForCorrespondenceModel(TransactionalChange change, CorrespondenceModel correspondenceModel,
+			List<List<VitruviusChange>> commandExecutionChanges) {
+		val mapping = correspondenceModel.mapping;
+		var Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding.
+			getChange2CommandTransforming(change.getSourceMetamodel(mapping).URI, change.getTargetMetamodel(mapping).URI)
+		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding,
+			this.correspondenceProviding)
+		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
+		// each response that uses it,
+		// or: make them read only, i.e. give them a read-only interface!
+		blackboard.pushChanges(Collections.singletonList(change))
+		this.blackboardHistory.add(blackboard)
+		blackboard.pushCommands(
+			change2CommandTransforming.transformChange2Commands(
+				blackboard.getAndArchiveChangesForTransformation().get(0), correspondenceModel))
+		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))		
+	}
+	
+	private def Iterable<CorrespondenceModel> getCorrespondenceModels(VURI vuri) {
+		return this.correspondenceProviding.getOrCreateAllCorrespondenceModels(vuri)
+	}
+		
+	private def Metamodel getSourceMetamodel(VitruviusChange change, Mapping mapping) {
+		if (mapping.metamodelA.isChangeSourceMetamodel(change)) {
+			return mapping.metamodelA
+		} else if (mapping.metamodelB.isChangeSourceMetamodel(change)) {
+			return mapping.metamodelB
+		} else {
+			throw new IllegalStateException('''None if the metamodels of mapping «mapping» is the metamodel of the model changed in: «change»''')
+		}
+	}
+	
+	private def Metamodel getTargetMetamodel(VitruviusChange change, Mapping mapping) {
+		if (!mapping.metamodelA.isChangeSourceMetamodel(change)) {
+			return mapping.metamodelA
+		} else {
+			// Even if metamodelB is the metamodel of the changed model (i.e. metamodelA and metamodelB are the same)
+			// we return it, as we have transformations within one metamodel then.
+			return mapping.metamodelB
+		}
+	}
+	
+	private def boolean isChangeSourceMetamodel(Metamodel metamodel, VitruviusChange change) {
+		return Arrays.asList(metamodel.getFileExtensions()).contains(change.getURI().getFileExtension());
 	}
 }
