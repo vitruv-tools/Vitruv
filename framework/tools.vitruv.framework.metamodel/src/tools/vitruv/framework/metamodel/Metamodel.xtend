@@ -15,9 +15,10 @@ import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.tuid.TuidCalculator
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
+import java.util.ArrayList
 
 class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateListener {
-	String[] fileExtensions
+	List<String> fileExtensions
 	TUIDCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
 	Map<Object, Object> defaultLoadOptions
@@ -81,8 +82,8 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
-	def String[] getFileExtensions() {
-		return this.fileExtensions
+	def List<String> getFileExtensions() {
+		return new ArrayList<String>(this.fileExtensions);
 	}
 
 	def boolean hasTUID(EObject eObject) {

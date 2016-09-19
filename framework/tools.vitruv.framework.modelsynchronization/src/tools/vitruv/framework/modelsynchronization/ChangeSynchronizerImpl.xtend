@@ -1,7 +1,6 @@
 package tools.vitruv.framework.modelsynchronization
 
 import java.util.ArrayList
-import java.util.Arrays
 import java.util.Collections
 import java.util.HashSet
 import java.util.List
@@ -137,6 +136,6 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	}
 	
 	private def boolean isChangeSourceMetamodel(Metamodel metamodel, VitruviusChange change) {
-		return Arrays.asList(metamodel.getFileExtensions()).contains(change.getURI().getFileExtension());
+		return metamodel.getFileExtensions().contains(change.getURI().getFileExtension());
 	}
 }

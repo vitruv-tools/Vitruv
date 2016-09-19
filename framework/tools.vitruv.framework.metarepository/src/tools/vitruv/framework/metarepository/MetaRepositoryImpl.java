@@ -46,8 +46,7 @@ public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
             VURI nsVURI = VURI.getInstance(nsURI);
             this.uri2MetamodelMap.put(nsVURI, metamodel);
         }
-        String[] fileExtensions = metamodel.getFileExtensions();
-        for (String fileExtension : fileExtensions) {
+        for (String fileExtension : metamodel.getFileExtensions()) {
             Metamodel mappedMetamodel = this.fileExtension2MetamodelMap.get(fileExtension);
             if (mappedMetamodel != null) {
                 throw new RuntimeException("The metamodel '" + metamodel

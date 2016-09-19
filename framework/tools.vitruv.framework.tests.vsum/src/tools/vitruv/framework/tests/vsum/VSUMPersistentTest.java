@@ -11,6 +11,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import pcm_mockup.Pcm_mockupFactory;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.metamodel.Mapping;
@@ -19,7 +20,6 @@ import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VSUMImpl;
-import pcm_mockup.Pcm_mockupFactory;
 
 public class VSUMPersistentTest extends VSUMTest {
 
@@ -93,8 +93,8 @@ public class VSUMPersistentTest extends VSUMTest {
     }
 
     private boolean metamodelEquals(final Metamodel mmA, final Metamodel mmB) {
-        return Arrays.equals(mmA.getFileExtensions(), mmB.getFileExtensions()) && mmA.getURI().equals(mmB.getURI())
-                && mmA.getNsURIs().equals(mmB.getNsURIs());
+        return Arrays.equals(mmA.getFileExtensions().toArray(), mmB.getFileExtensions().toArray())
+                && mmA.getURI().equals(mmB.getURI()) && mmA.getNsURIs().equals(mmB.getNsURIs());
     }
 
     private boolean mappingEquals(final Mapping mappingA, final Mapping mappingB) {
