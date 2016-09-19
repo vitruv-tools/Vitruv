@@ -9,7 +9,6 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.PCM2JaMoPPTransformationTest;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public class OperationInterfaceMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -29,7 +28,6 @@ public class OperationInterfaceMappingTransformationTest extends PCM2JaMoPPTrans
         OperationInterface opInterface = this.addInterfaceToReposiotryAndSync(repo, PCM2JaMoPPTestUtils.INTERFACE_NAME);
 
         opInterface = this.renameInterfaceAndSync(opInterface);
-        super.triggerSynchronization(VURI.getInstance(opInterface.eResource()));
 
         this.assertOperationInterfaceCorrespondences(opInterface);
     }
