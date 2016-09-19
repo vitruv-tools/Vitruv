@@ -27,7 +27,6 @@ import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMemberDeclarationW
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMethodDeclarationTransformations
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLVariableDeclarationTransformations
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.processing.Change2CommandTransforming 
@@ -48,6 +47,8 @@ import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.TransformationExecutor
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
@@ -111,14 +112,8 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		return result;
 	}
 
-	override transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
-		val List<VitruviusRecordingCommand> commands = new ArrayList<VitruviusRecordingCommand>()
-		if (change instanceof CompositeChange) {
-			commands.addAll(executeTransformation(change as CompositeChange, correspondenceModel))
-		} else {
-			commands.add(transformEMFModelChange2Command(change as ConcreteChange, correspondenceModel))
-		}
-		return commands
+	override transformChange2Commands(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		return #[transformEMFModelChange2Command(change as ConcreteChange, correspondenceModel)];
 	}
 
 	def transformEMFModelChange2Command(ConcreteChange change, CorrespondenceModel correspondenceModel) {
@@ -143,8 +138,8 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		]
 	}
 
-	def List<VitruviusRecordingCommand> executeTransformation(CompositeChange compositeChange, CorrespondenceModel correspondenceModel) {
-		LOGGER.info("Synchronization of composite change (" + compositeChange.allChanges.size +
+	def List<VitruviusRecordingCommand> executeTransformation(CompositeTransactionalChange compositeChange, CorrespondenceModel correspondenceModel) {
+		LOGGER.info("Synchronization of composite change (" + compositeChange.EChanges.size +
 			" changes included) started.")
 
 		this.correspondenceModel = correspondenceModel;
@@ -166,7 +161,7 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		compositeChangeRefiners.add(refiner)
 	}
 
-	private static def getAllChanges(CompositeChange compositeChange) {
+	private static def getAllChanges(CompositeTransactionalChange compositeChange) {
 		val changes = new ArrayList<ConcreteChange>()
 		val queue = new LinkedList<VitruviusChange>()
 		queue.add(compositeChange)
@@ -174,8 +169,8 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 			val change = queue.pop()
 			if (change instanceof ConcreteChange) {
 				changes.add(change as ConcreteChange)
-			} else if (change instanceof CompositeChange) {
-				queue.addAll((change as CompositeChange).changes)
+			} else if (change instanceof CompositeTransactionalChange) {
+				queue.addAll((change as CompositeTransactionalChange).changes)
 			} else {
 				// not supported
 				LOGGER.warn("The composite change contains an invalid change type " + change.class + ". It is skipped.")

@@ -48,8 +48,8 @@ import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceA
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
-import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.CompositeTransactionalChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
@@ -249,7 +249,7 @@ public abstract class TransformationTestsBase {
 
     abstract protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception;
 
-    protected void callSynchronizer(final VitruviusChange change) {
+    protected void callSynchronizer(final TransactionalChange change) {
         replay(this.userInteracting);
         replay(this.syncAbortedListener);
         this.callSynchronizerInternal(change);
@@ -257,15 +257,12 @@ public abstract class TransformationTestsBase {
         verify(this.syncAbortedListener);
     }
 
-    private void callSynchronizerInternal(final VitruviusChange change) {
-        if (change instanceof TransactionalChange) {
-            this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
-            return;
-        }
-        if (change instanceof CompositeContainerChange) {
-            this.synchronizer.executeTransformation((CompositeContainerChange) change, this.blackboard.getCorrespondenceModel());
-            return;
-        }
+    private void callSynchronizerInternal(final TransactionalChange change) {
+    	this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
+    	if (change instanceof CompositeTransactionalChange) {
+    		this.synchronizer.executeTransformation((CompositeTransactionalChange) change, this.blackboard.getCorrespondenceModel());
+    		return;
+    	} 
         throw new IllegalArgumentException(
                 "The synchronizer can only be called with EMFModelChanges or with CompositeChanges!");
     }
