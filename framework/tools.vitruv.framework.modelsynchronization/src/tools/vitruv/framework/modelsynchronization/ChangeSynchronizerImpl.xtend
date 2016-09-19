@@ -103,16 +103,12 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 		val mapping = correspondenceModel.mapping;
 		var Change2CommandTransforming change2CommandTransforming = this.change2CommandTransformingProviding.
 			getChange2CommandTransforming(change.getSourceMetamodel(mapping).URI, change.getTargetMetamodel(mapping).URI)
-		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding,
-			this.correspondenceProviding)
+		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding)
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each response that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		blackboard.pushChanges(Collections.singletonList(change))
 		this.blackboardHistory.add(blackboard)
-		blackboard.pushCommands(
-			change2CommandTransforming.transformChange2Commands(
-				blackboard.getAndArchiveChangesForTransformation().get(0), correspondenceModel))
+		blackboard.pushCommands(change2CommandTransforming.transformChange2Commands(change, correspondenceModel))
 		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))		
 	}
 	

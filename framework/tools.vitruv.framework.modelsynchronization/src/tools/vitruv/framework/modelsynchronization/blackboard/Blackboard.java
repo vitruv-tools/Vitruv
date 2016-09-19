@@ -2,12 +2,9 @@ package tools.vitruv.framework.modelsynchronization.blackboard;
 
 import java.util.List;
 
-import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
-import tools.vitruv.framework.util.datatypes.Pair;
 
 /*
  * @startuml doc-files/Blackboard.png
@@ -60,20 +57,8 @@ public interface Blackboard {
 
     ModelProviding getModelProviding();
 
-    CorrespondenceProviding getCorrespondenceProviding();
-
-    void pushChanges(List<VitruviusChange> changes);
-
-    List<VitruviusChange> popChangesForPreparation();
-
-    List<VitruviusChange> getAndArchiveChangesForTransformation();
-
     void pushCommands(List<VitruviusRecordingCommand> commands);
 
     List<VitruviusRecordingCommand> getAndArchiveCommandsForExecution();
-
-    Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>> getArchivedChangesAndCommandsForUndo();
-
-    void unarchiveChangesAndCommandsForRedo();
 
 }

@@ -7,6 +7,4 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
 
 public interface CommandExecuting {
     List<VitruviusChange> executeCommands(Blackboard blackboard);
-
-    void rollbackCommands(Blackboard blackboard);
 }
