@@ -44,14 +44,12 @@ import tools.vitruv.applications.jmljava.metamodels.JMLMetaModelProvider;
 import tools.vitruv.applications.jmljava.metamodels.JaMoPPMetaModelProvider;
 import tools.vitruv.applications.jmljava.synchronizers.SynchronisationAbortedListener;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
-import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.TransformationExecutor;
 import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceAdder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.description.CompositeChange;
-import tools.vitruv.framework.change.description.ConcreteChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
@@ -65,7 +63,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.Pair;
-import tools.vitruv.applications.jmljava.tests.unittests.utils.CorrespondingProvidingMock;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.Initializer;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader.IResourceFiles;
@@ -146,7 +143,6 @@ public abstract class TransformationTestsBase {
 
     private static final Mapping MAPPING_JAVA2JML = constructMapping();
     private ModelProvidingMock modelProviding;
-    private CorrespondingProvidingMock correspondingProding;
     private CorrespondenceModelProxy correspondenceInstanceUpdateRecorder;
     protected CSSynchronizer synchronizer;
     protected CorrespondenceModel correspondenceInstance;
@@ -266,8 +262,8 @@ public abstract class TransformationTestsBase {
             this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
             return;
         }
-        if (change instanceof CompositeChange) {
-            this.synchronizer.executeTransformation((CompositeChange) change, this.blackboard.getCorrespondenceModel());
+        if (change instanceof CompositeContainerChange) {
+            this.synchronizer.executeTransformation((CompositeContainerChange) change, this.blackboard.getCorrespondenceModel());
             return;
         }
         throw new IllegalArgumentException(

@@ -16,7 +16,6 @@ import org.junit.Test;
 import tools.vitruv.applications.jmljava.helper.JaMoPPConcreteSyntax;
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.custom.JavaMethodBodyChangedTransformation;
-import tools.vitruv.framework.change.description.CompositeChange;
 import tools.vitruv.framework.change.description.CompositeTransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.metamodel.ModelInstance;
@@ -74,11 +73,11 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         return JaMoPPConcreteSyntax.convertFromConcreteSyntax(stmt, StatementsPackage.eINSTANCE.getExpressionStatement(), ExpressionStatement.class, newParent.eResource().getURI());
     }
     
-    private CompositeChange createCompositeChange(CloneContainer<ClassMethod> clones) {
+    private CompositeTransactionalChange createCompositeChange(CloneContainer<ClassMethod> clones) {
         return createCompositeChange(clones.original(), clones.changed());
     }
     
-    private CompositeChange createCompositeChange(ClassMethod oldMethod, ClassMethod newMethod) {
+    private CompositeTransactionalChange createCompositeChange(ClassMethod oldMethod, ClassMethod newMethod) {
         CompositeTransactionalChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeTransactionalChange();
         
         for (Statement stmt : oldMethod.getStatements()) {
@@ -114,7 +113,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         
         EObject expectedJMLCu = Utilities.clone(cuJML);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
 
@@ -129,7 +128,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         Statement newStatement = convertToStatement("Object a = nonPureMethodCalled();", method.changed());
         method.changed().getStatements().add(0, newStatement);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
         
@@ -147,7 +146,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         
         EObject expectedJMLCu = Utilities.clone(cuJML);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(isA(JavaMethodBodyChangedTransformation.class));
         
@@ -165,7 +164,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         Statement newStatement = convertToStatement("Object a = nonPureMethodCalled();", method.changed());
         method.changed().getStatements().add(0, newStatement);
 
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
         
@@ -183,7 +182,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         
         EObject expectedJMLCu = Utilities.clone(cuJML);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(isA(JavaMethodBodyChangedTransformation.class));
         
@@ -202,7 +201,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         
         EObject expectedJMLCu = Utilities.clone(cuJML);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
 
@@ -217,7 +216,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         CloneContainer<ClassMethod> method = createClones((ClassMethod)cuJava.getClassifiers().get(0).getMethods().get(3));
         method.changed().getStatements().remove(0);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
 
@@ -232,7 +231,7 @@ public class JavaMethodBodyChangesTransformationTest extends TransformationTests
         CloneContainer<ClassMethod> method = createClones((ClassMethod)cuJava.getClassifiers().get(0).getMethods().get(10));
         method.changed().getStatements().remove(0);
         
-        CompositeChange change = createCompositeChange(method);
+        CompositeTransactionalChange change = createCompositeChange(method);
 
         callSynchronizer(change);
 
