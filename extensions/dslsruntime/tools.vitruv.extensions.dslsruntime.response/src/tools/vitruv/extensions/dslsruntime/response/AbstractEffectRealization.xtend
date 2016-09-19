@@ -30,6 +30,14 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 		return executionState;
 	}
 	
+	protected def UserInteracting getUserInteracting() {
+		return executionState.userInteracting;
+	}
+	
+	protected def CorrespondenceModel getCorrespondenceModel() {
+		return executionState.correspondenceModel;
+	}
+	
 	protected def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Class<T> elementClass, 
 		Function<T, Boolean> correspondencePreconditionMethod, String tag
 	) {
