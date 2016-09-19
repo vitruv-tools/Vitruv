@@ -915,8 +915,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				return correspondingEObjects.iterator().next();
 			}
 		}
-		
-		getCorrespondenceModel().saveModel();
 		throw new RuntimeException("Could not find an operation provided role for the newly created implements");
 	}
 
