@@ -3,6 +3,6 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 
-class CompositeTransactionalChangeImpl extends GenericCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
+class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	
 }

@@ -2,12 +2,12 @@ package tools.vitruv.framework.change.description.impl
 
 import java.util.List
 import java.util.LinkedList
-import tools.vitruv.framework.change.description.GenericCompositeChange
 import tools.vitruv.framework.change.echange.EChange
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.CompositeChange
 
-abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements GenericCompositeChange<C> {
+abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
     List<C> changes;
 
     new() {
@@ -29,7 +29,7 @@ abstract class GenericCompositeChangeImpl<C extends VitruviusChange> implements 
 	override containsConcreteChange() {
 		var containsConcreteChange = false;
 		for (change : changes) {
-			if (change instanceof GenericCompositeChange<?>) {
+			if (change instanceof CompositeChange<?>) {
 				containsConcreteChange = containsConcreteChange || change.containsConcreteChange();
 			} else {
 				containsConcreteChange = containsConcreteChange || true;

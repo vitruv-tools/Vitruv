@@ -15,7 +15,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
-class EMFModelChangeImpl extends GenericCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
+class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	private final ChangeDescription changeDescription;
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;
