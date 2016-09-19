@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.processing.impl
 
 import tools.vitruv.framework.userinteraction.UserInteracting
 import java.util.ArrayList
-import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.List
 import org.apache.log4j.Logger
 import tools.vitruv.framework.correspondence.CorrespondenceModel
@@ -11,7 +10,6 @@ import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.change.processing.Change2CommandTransforming
-import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.TransactionalChange
 
 abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
@@ -52,30 +50,16 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		this.changeMainprocessors += changeProcessor;
 	}
 	
-	override List<VitruviusRecordingCommand> transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
+	override List<VitruviusRecordingCommand> transformChange2Commands(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		val commands = new ArrayList<VitruviusRecordingCommand>();
-		this.processChange(change, correspondenceModel, commands);
-		return commands;
-	}
-
-	private def dispatch void processChange(VitruviusChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
-		throw new IllegalArgumentException("Change subtype " + change.getClass().getName() + " not handled");
-	}
-
-	private def dispatch void processChange(CompositeContainerChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
-		for (containedChange : change.changes) {
-			processChange(containedChange, correspondenceModel, commandList);
-		}
-	}
-
-	private def dispatch void processChange(TransactionalChange change, CorrespondenceModel correspondenceModel, List<VitruviusRecordingCommand> commandList) {
 		var currentChange = change;
 		for (changeProcessor : changePreprocessors + changeMainprocessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');
 			val processingResult = changeProcessor.transformChange(currentChange, correspondenceModel);
 			currentChange = processingResult.resultingChange;
-			commandList += processingResult.generatedCommands;
+			commands += processingResult.generatedCommands;
 		}
+		return commands;
 	}
 	
 	override setUserInteracting(UserInteracting userInteracting) {
