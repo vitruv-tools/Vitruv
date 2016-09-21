@@ -3,21 +3,27 @@
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
+
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
@@ -161,15 +167,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 */
 	public boolean isToNonDefaultValue() {
 		return getNewValue() != getAffectedFeature().getDefaultValue();
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-    public boolean isContainment() {
-		return affectedFeature.isContainment();
 	}
 
 	/**

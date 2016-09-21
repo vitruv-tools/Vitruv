@@ -159,9 +159,7 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 * @generated
 	 */
     public boolean isContainment() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return getAffectedFeature().isContainment();
 	}
 
     /**

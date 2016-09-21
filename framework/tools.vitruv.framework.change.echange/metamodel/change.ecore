@@ -307,7 +307,11 @@
         <eTypeParameters name="A">
           <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
         </eTypeParameters>
-        <eOperations name="isContainment" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+        <eOperations name="isContainment" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="body" value="return getAffectedFeature().isContainment();"/>
+          </eAnnotations>
+        </eOperations>
         <eGenericSuperTypes eClassifier="#//feature/FeatureEChange">
           <eTypeArguments eTypeParameter="#//feature/reference/UpdateReferenceEChange/A"/>
           <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
