@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import java.util.ArrayList
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
+import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
@@ -149,10 +150,9 @@ package class EMFModelChangeTransformationUtil {
 	
 	def static ReplaceSingleValuedEReference<?,?> createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue) {
 		val isContainment = affectedReference.containment
-		val container = affectedEObject;
-		val resource = if (oldReferenceValue != null) oldReferenceValue.eResource else newReferenceValue.eResource;
-		val isCreate = isContainment && isCreate(container, resource)
-		return createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, isCreate, isCreate)
+		val isCreate = newReferenceValue != null && isContainment && isCreate(newReferenceValue.eContainer, newReferenceValue.eResource)
+		val isDelete = oldReferenceValue != null && isContainment && oldReferenceValue.eResource == null //isDelete(container, resource)
+		return createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, isCreate, isDelete)
 	}
 	
 	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
@@ -162,8 +162,9 @@ package class EMFModelChangeTransformationUtil {
 	def static EChange createRemoveAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object oldValue) {
 		return TypeInferringAtomicEChangeFactory.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValue)
 	}
-		
-	def static EChange createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
+	
+	def static UpdateAttributeEChange<?> createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
 		return TypeInferringAtomicEChangeFactory.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
 	}
+	
 }
