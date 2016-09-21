@@ -156,7 +156,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int MOVE_EOBJECT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+    int MOVE_EOBJECT___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
 
     /**
 	 * The number of operations of the '<em>Move EObject</em>' class.
@@ -165,7 +165,7 @@ public interface CompoundPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+    int MOVE_EOBJECT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
@@ -289,6 +289,16 @@ public interface CompoundPackage extends EPackage {
     EReference getMoveEObject_AddWhatChange();
 
     /**
+	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges() <em>Get Atomic Changes</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Atomic Changes</em>' operation.
+	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges()
+	 * @generated
+	 */
+	EOperation getMoveEObject__GetAtomicChanges_1();
+
+				/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -393,6 +403,14 @@ public interface CompoundPackage extends EPackage {
         EReference MOVE_EOBJECT__ADD_WHAT_CHANGE = eINSTANCE.getMoveEObject_AddWhatChange();
 
         /**
+		 * The meta object literal for the '<em><b>Get Atomic Changes</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges_1();
+
+								/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
 		 * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
