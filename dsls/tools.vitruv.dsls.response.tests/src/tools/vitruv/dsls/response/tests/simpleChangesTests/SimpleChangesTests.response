@@ -9,7 +9,7 @@ called simpleChangesTests
 /*
  * UpdateSingleValuedEAttribute
  */
-response: UpdateSingleValuedEAttribute
+response: SetSingleValuedEAttribute
 trigger: replace value minimal.Root[singleValuedEAttribute]
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
@@ -17,7 +17,6 @@ effect: execute: {
 	targetElement.singleValuedEAttribute = change.newValue;
 	SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedEAttribute);
 }
-
 
 /*
  * UpdateSingleValuedEAttribute
@@ -76,35 +75,40 @@ effect:
 	}
 
 /*
- * CreateNonRootEObjectSingle
+ * ReplaceNonRootEObjectSingle
  */
-response: ReplaceOrCreateNonRootEObjectSingleResponse
+response: ReplacedNonRootEObjectSingleResponse
 trigger: replace value minimal.Root[singleValuedContainmentEReference]
-check: change.newValue != null
+effect: execute: {
+	if (change.fromNonDefaultValue) {
+		callDeleteNonRootEObjectSingle(change.oldValue);
+	}
+	if (change.toNonDefaultValue) {
+		callCreateNonRootEObjectSingle(change.affectedEObject, change.newValue);
+	}
+}
+
+routine: DeleteNonRootEObjectSingle
+input: minimal.NonRoot as containedObject
 match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
+	retrieve required element: minimal.NonRoot as targetElement corresponding to containedObject
 effect:
-	create element: minimal.NonRoot as newNonRoot
-	add correspondence: newNonRoot, change.newValue
+	delete element: targetElement
 	execute: {
-		newNonRoot.id = change.newValue.id;
-		targetElement.singleValuedContainmentEReference = newNonRoot;
-		SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectSingle);
-		if (change.oldValue != null) SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
+		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
 	}
 
-/*
- * DeleteNonRootEObjectSingle
- */
-response: DeleteNonRootEObjectSingleResponse
-trigger: replace value minimal.Root[singleValuedContainmentEReference]
-check: change.newValue == null 
+routine: CreateNonRootEObjectSingle
+input: minimal.Root as sourceRoot, minimal.NonRoot as containedObject
 match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
+	retrieve required element: minimal.Root as targetElement corresponding to sourceRoot
 effect:
+	create element: minimal.NonRoot as newNonRoot
+	add correspondence: newNonRoot, containedObject
 	execute: {
-		targetElement.singleValuedContainmentEReference = null;
-		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
+		newNonRoot.id = containedObject.id;
+		targetElement.singleValuedContainmentEReference = newNonRoot;
+		SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectSingle);
 	}
 
 /*
@@ -276,9 +280,7 @@ effect:
  */
 response: HelperResponseForNonRootObjectContainerInitialization
 trigger: replace value minimal.Root[nonRootObjectContainerHelper]
-check: {
-	change.newValue != null
-}
+check: change.isToNonDefaultValue
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect:

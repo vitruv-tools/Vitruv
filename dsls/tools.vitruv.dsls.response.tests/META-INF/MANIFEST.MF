@@ -29,8 +29,14 @@ Require-Bundle: org.junit,
  tools.vitruv.dsls.response,
  tools.vitruv.dsls.response.ui,
  tools.vitruv.extensions.dslsruntime.response,
- tools.vitruv.extensions.dslsruntime.mapping
+ tools.vitruv.extensions.dslsruntime.mapping,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.junit;version="4.5.0",
- org.junit.runner;version="4.5.0"
+ org.junit.runner;version="4.5.0",
+ org.hamcrest.core,
+ org.junit.runners.model;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runner.manipulation;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0"
 Bundle-ActivationPolicy: lazy
