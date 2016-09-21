@@ -45,9 +45,9 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		if (variable?.element != null) {
 			val changeType = variable.eContainer;
 			val filterFunction = if (changeType instanceof AtomicMultiValuedFeatureChange) {
-				[EStructuralFeature feat | feat.upperBound != 1];
+				[EStructuralFeature feat | feat.many];
 			} else if (changeType instanceof AtomicSingleValuedFeatureChange) {
-				[EStructuralFeature feat | feat.upperBound == 1];
+				[EStructuralFeature feat | !feat.many];
 			} else {
 				[EStructuralFeature feat | true];
 			}
