@@ -3,19 +3,25 @@
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
+
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
+
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
 
@@ -42,6 +48,7 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @ordered
 	 */
 	protected T oldValue;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
