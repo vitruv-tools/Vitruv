@@ -55,13 +55,14 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	}
 
 	override synchronized List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
-		if (change == null || !change.validate()) {
-			throw new IllegalArgumentException('''Change is null or contains changes from different models: «change»''')
-		}
-		if (!change.containsConcreteChange()) {
-			logger.info('''The change does not contain any changes to synchronize.«change»''')
+		if (change == null || !change.containsConcreteChange()) {
+			logger.info('''The change does not contain any changes to synchronize: «change»''')
 			return Collections.emptyList()
 		}
+		if (!change.validate()) {
+			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
+		}
+		
 		startSynchronization(change);
 		change.applyBackward()
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
