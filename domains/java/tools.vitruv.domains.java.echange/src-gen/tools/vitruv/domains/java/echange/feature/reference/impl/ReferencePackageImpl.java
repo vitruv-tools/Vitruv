@@ -11,8 +11,7 @@ import tools.vitruv.domains.java.echange.feature.reference.JavaRemoveEReference;
 import tools.vitruv.domains.java.echange.feature.reference.JavaReplaceSingleValuedEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.domains.java.echange.feature.reference.ReferencePackage;
-import tools.vitruv.framework.change.echange.ChangePackage;
-
+import tools.vitruv.framework.change.echange.EChangePackage;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -95,21 +94,24 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		isInited = true;
 
 		// Initialize simple dependencies
-		ChangePackage.eINSTANCE.eClass();
+		EChangePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
+		AttributePackageImpl theAttributePackage_1 = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theReferencePackage.createPackageContents();
 		theFeaturePackage.createPackageContents();
 		theAttributePackage.createPackageContents();
+		theAttributePackage_1.createPackageContents();
 
 		// Initialize created meta-data
 		theReferencePackage.initializePackageContents();
 		theFeaturePackage.initializePackageContents();
 		theAttributePackage.initializePackageContents();
+		theAttributePackage_1.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theReferencePackage.freeze();

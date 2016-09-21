@@ -56,10 +56,10 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
     @Override
     public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: return createReplaceSingleValuedEReference();
 			case ReferencePackage.INSERT_EREFERENCE: return createInsertEReference();
 			case ReferencePackage.REMOVE_EREFERENCE: return createRemoveEReference();
 			case ReferencePackage.PERMUTE_EREFERENCES: return createPermuteEReferences();
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: return createReplaceSingleValuedEReference();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -71,7 +71,7 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	 * @generated
 	 */
     public <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleValuedEReference() {
-		tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl<A, T> replaceSingleValuedEReference = new tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl<A, T>();
+		ReplaceSingleValuedEReferenceImpl<A, T> replaceSingleValuedEReference = new ReplaceSingleValuedEReferenceImpl<A, T>();
 		return replaceSingleValuedEReference;
 	}
 
@@ -81,7 +81,7 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	 * @generated
 	 */
     public <A extends EObject, T extends EObject> InsertEReference<A, T> createInsertEReference() {
-		tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl<A, T> insertEReference = new tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl<A, T>();
+		InsertEReferenceImpl<A, T> insertEReference = new InsertEReferenceImpl<A, T>();
 		return insertEReference;
 	}
 
@@ -91,7 +91,7 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	 * @generated
 	 */
     public <A extends EObject, T extends EObject> RemoveEReference<A, T> createRemoveEReference() {
-		tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl<A, T> removeEReference = new tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl<A, T>();
+		RemoveEReferenceImpl<A, T> removeEReference = new RemoveEReferenceImpl<A, T>();
 		return removeEReference;
 	}
 
@@ -101,7 +101,7 @@ public class ReferenceFactoryImpl extends EFactoryImpl implements ReferenceFacto
 	 * @generated
 	 */
     public <A extends EObject> PermuteEReferences<A> createPermuteEReferences() {
-		tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl<A> permuteEReferences = new tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl<A>();
+		PermuteEReferencesImpl<A> permuteEReferences = new PermuteEReferencesImpl<A>();
 		return permuteEReferences;
 	}
 

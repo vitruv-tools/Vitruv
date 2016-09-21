@@ -25,6 +25,15 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated JavaChange -->
       <package
+            uri="http://tools.vitruv/EChange/Java/Feature/Attribute/1.0"
+            class="tools.vitruv.domains.java.echange.feature.attribute.AttributePackage"
+            genModel="metamodel/JavaChange.genmodel"/>
+   </extension>
+
+null
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated JavaChange -->
+      <package
             uri="http://tools.vitruv/EChange/Java/Feature/Reference/1.0"
             class="tools.vitruv.domains.java.echange.feature.reference.ReferencePackage"
             genModel="metamodel/JavaChange.genmodel"/>

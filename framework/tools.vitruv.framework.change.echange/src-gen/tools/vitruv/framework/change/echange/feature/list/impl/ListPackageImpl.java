@@ -17,6 +17,8 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
 import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
@@ -113,6 +115,7 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		// Obtain or create and register interdependencies
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
@@ -122,6 +125,7 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		theListPackage.createPackageContents();
 		theEChangePackage.createPackageContents();
 		theFeaturePackage.createPackageContents();
+		theSinglePackage.createPackageContents();
 		theAttributePackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theRootPackage.createPackageContents();
@@ -131,6 +135,7 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		theListPackage.initializePackageContents();
 		theEChangePackage.initializePackageContents();
 		theFeaturePackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
 		theAttributePackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
@@ -263,14 +268,17 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 
 		// Obtain other dependent packages
 		FeaturePackage theFeaturePackage = (FeaturePackage)EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI);
+		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter updateSingleListEntryEChangeEClass_A = addETypeParameter(updateSingleListEntryEChangeEClass, "A");
 		ETypeParameter updateSingleListEntryEChangeEClass_F = addETypeParameter(updateSingleListEntryEChangeEClass, "F");
 		ETypeParameter insertInListEChangeEClass_A = addETypeParameter(insertInListEChangeEClass, "A");
 		ETypeParameter insertInListEChangeEClass_F = addETypeParameter(insertInListEChangeEClass, "F");
+		ETypeParameter insertInListEChangeEClass_T = addETypeParameter(insertInListEChangeEClass, "T");
 		ETypeParameter removeFromListEChangeEClass_A = addETypeParameter(removeFromListEChangeEClass, "A");
 		ETypeParameter removeFromListEChangeEClass_F = addETypeParameter(removeFromListEChangeEClass, "F");
+		ETypeParameter removeFromListEChangeEClass_T = addETypeParameter(removeFromListEChangeEClass, "T");
 		ETypeParameter permuteListEChangeEClass_A = addETypeParameter(permuteListEChangeEClass, "A");
 		ETypeParameter permuteListEChangeEClass_F = addETypeParameter(permuteListEChangeEClass, "F");
 
@@ -283,10 +291,14 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		insertInListEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
 		insertInListEChangeEClass_F.getEBounds().add(g1);
+		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		insertInListEChangeEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEObject());
 		removeFromListEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
 		removeFromListEChangeEClass_F.getEBounds().add(g1);
+		g1 = createEGenericType(ecorePackage.getEJavaObject());
+		removeFromListEChangeEClass_T.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEObject());
 		permuteListEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(ecorePackage.getEStructuralFeature());
@@ -305,10 +317,18 @@ public class ListPackageImpl extends EPackageImpl implements ListPackage {
 		g2 = createEGenericType(insertInListEChangeEClass_F);
 		g1.getETypeArguments().add(g2);
 		insertInListEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theEChangePackage.getAdditiveEChange());
+		g2 = createEGenericType(insertInListEChangeEClass_T);
+		g1.getETypeArguments().add(g2);
+		insertInListEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getUpdateSingleListEntryEChange());
 		g2 = createEGenericType(removeFromListEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(removeFromListEChangeEClass_F);
+		g1.getETypeArguments().add(g2);
+		removeFromListEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(theEChangePackage.getSubtractiveEChange());
+		g2 = createEGenericType(removeFromListEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		removeFromListEChangeEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theFeaturePackage.getUpdateMultiValuedFeatureEChange());

@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model abstract="true"
  * @generated
  */
-public interface AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<A> {
+public interface AdditiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectAddedEChange<T>, UpdateReferenceEChange<A> {
 } // AdditiveReferenceEChange

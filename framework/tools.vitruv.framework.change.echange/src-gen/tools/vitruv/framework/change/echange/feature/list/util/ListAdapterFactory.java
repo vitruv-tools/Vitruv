@@ -4,6 +4,7 @@ package tools.vitruv.framework.change.echange.feature.list.util;
 
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.SubtractiveEChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.list.*;
@@ -15,6 +16,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import tools.vitruv.framework.change.echange.AdditiveEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,11 +79,11 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 				return createUpdateSingleListEntryEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseInsertInListEChange(InsertInListEChange<A, F> object) {
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 				return createInsertInListEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 				return createRemoveFromListEChangeAdapter();
 			}
 			@Override
@@ -103,6 +105,14 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
 				return createUpdateMultiValuedFeatureEChangeAdapter();
+			}
+			@Override
+			public <T extends Object> Adapter caseAdditiveEChange(AdditiveEChange<T> object) {
+				return createAdditiveEChangeAdapter();
+			}
+			@Override
+			public <T extends Object> Adapter caseSubtractiveEChange(SubtractiveEChange<T> object) {
+				return createSubtractiveEChangeAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -237,6 +247,34 @@ public class ListAdapterFactory extends AdapterFactoryImpl {
 	}
 
     /**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.AdditiveEChange <em>Additive EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.AdditiveEChange
+	 * @generated
+	 */
+	public Adapter createAdditiveEChangeAdapter() {
+		return null;
+	}
+
+				/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.SubtractiveEChange <em>Subtractive EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.SubtractiveEChange
+	 * @generated
+	 */
+	public Adapter createSubtractiveEChangeAdapter() {
+		return null;
+	}
+
+				/**
 	 * Creates a new adapter for the default case.
 	 * <!-- begin-user-doc -->
      * This default implementation returns null.

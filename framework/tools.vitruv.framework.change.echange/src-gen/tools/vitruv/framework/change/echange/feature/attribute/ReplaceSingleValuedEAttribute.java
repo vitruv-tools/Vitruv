@@ -4,8 +4,7 @@ package tools.vitruv.framework.change.echange.feature.attribute;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,5 +16,5 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * @model TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends UpdateSingleValuedFeatureEChange<A, EAttribute>, SubtractiveAttributeEChange<A, T>, AdditiveAttributeEChange<A, T> {
+public interface ReplaceSingleValuedEAttribute<A extends EObject, T extends Object> extends AdditiveAttributeEChange<A, T>, SubtractiveAttributeEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EAttribute, T> {
 } // ReplaceSingleValuedEAttribute

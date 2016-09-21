@@ -2,7 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import tools.vitruv.framework.change.echange.SubtractiveEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue;
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange;
@@ -30,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> extends RemoveFromListEChangeImpl<A, EAttribute> implements RemoveEAttributeValue<A, T> {
+public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> extends RemoveFromListEChangeImpl<A, EAttribute, T> implements RemoveEAttributeValue<A, T> {
     /**
 	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -147,11 +146,6 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
 		if (baseClass == UpdateAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				default: return -1;
@@ -173,11 +167,6 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == SubtractiveEChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
 		if (baseClass == UpdateAttributeEChange.class) {
 			switch (baseFeatureID) {
 				default: return -1;

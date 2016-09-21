@@ -241,79 +241,7 @@ public interface AttributePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getReplaceSingleValuedEAttribute()
 	 * @generated
 	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE = 3;
-
-    /**
-	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
-
-    /**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
-
-    /**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-	 * The feature id for the '<em><b>New Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
-	 * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
-
-    /**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
-
-    /**
-	 * The operation id for the '<em>Get New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
-
-    /**
-	 * The number of operations of the '<em>Replace Single Valued EAttribute</em>' class.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE = 6;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.
@@ -323,7 +251,7 @@ public interface AttributePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getInsertEAttributeValue()
 	 * @generated
 	 */
-    int INSERT_EATTRIBUTE_VALUE = 4;
+    int INSERT_EATTRIBUTE_VALUE = 3;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -377,7 +305,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
+    int INSERT_EATTRIBUTE_VALUE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE___GET_NEW_VALUE;
 
     /**
 	 * The number of operations of the '<em>Insert EAttribute Value</em>' class.
@@ -386,7 +314,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
+    int INSERT_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl <em>Remove EAttribute Value</em>}' class.
@@ -396,7 +324,7 @@ public interface AttributePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getRemoveEAttributeValue()
 	 * @generated
 	 */
-    int REMOVE_EATTRIBUTE_VALUE = 5;
+    int REMOVE_EATTRIBUTE_VALUE = 4;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -450,7 +378,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
+    int REMOVE_EATTRIBUTE_VALUE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_OLD_VALUE;
 
     /**
 	 * The number of operations of the '<em>Remove EAttribute Value</em>' class.
@@ -459,7 +387,7 @@ public interface AttributePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
+    int REMOVE_EATTRIBUTE_VALUE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.PermuteEAttributeValuesImpl <em>Permute EAttribute Values</em>}' class.
@@ -469,7 +397,7 @@ public interface AttributePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl#getPermuteEAttributeValues()
 	 * @generated
 	 */
-    int PERMUTE_EATTRIBUTE_VALUES = 6;
+    int PERMUTE_EATTRIBUTE_VALUES = 5;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -515,6 +443,96 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
     int PERMUTE_EATTRIBUTE_VALUES_OPERATION_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 0;
+
+				/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_FEATURE = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_FEATURE;
+
+				/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
+
+				/**
+	 * The feature id for the '<em><b>New Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
+
+				/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
+
+				/**
+	 * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
+
+				/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE___GET_NEW_VALUE;
+
+				/**
+	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 0;
+
+				/**
+	 * The operation id for the '<em>Is From Non Default Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 1;
+
+				/**
+	 * The operation id for the '<em>Is To Non Default Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 2;
+
+				/**
+	 * The number of operations of the '<em>Replace Single Valued EAttribute</em>' class.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EATTRIBUTE_OPERATION_COUNT = ADDITIVE_ATTRIBUTE_ECHANGE_OPERATION_COUNT + 3;
 
 
     /**

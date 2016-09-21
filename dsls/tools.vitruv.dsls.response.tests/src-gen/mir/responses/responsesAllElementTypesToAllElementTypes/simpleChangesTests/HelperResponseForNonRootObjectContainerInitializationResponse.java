@@ -2,7 +2,6 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
-import com.google.common.base.Objects;
 import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.framework.change.echange.EChange;
@@ -16,8 +15,8 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   }
   
   private boolean checkTriggerPrecondition(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
-    NonRootObjectContainerHelper _newValue = change.getNewValue();
-    return (!Objects.equal(_newValue, null));
+    boolean _isToNonDefaultValue = change.isToNonDefaultValue();
+    return _isToNonDefaultValue;
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {

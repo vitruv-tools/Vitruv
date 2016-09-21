@@ -1,8 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Domain Java EChange Metamodel Extension
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.domains.java.echange;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.domains.java.echange.feature,
  tools.vitruv.domains.java.echange.feature.attribute,
@@ -14,7 +17,7 @@ Export-Package: tools.vitruv.domains.java.echange.feature,
  tools.vitruv.domains.java.echange.feature.reference.util,
  tools.vitruv.domains.java.echange.feature.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore;visibility:=reexport,
  tools.vitruv.framework.change.echange;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 

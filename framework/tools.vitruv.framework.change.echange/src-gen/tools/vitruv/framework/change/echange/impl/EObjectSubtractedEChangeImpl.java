@@ -26,7 +26,7 @@ import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
  *
  * @generated
  */
-public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl<T> implements EObjectSubtractedEChange<T> {
+public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends SubtractiveEChangeImpl<T> implements EObjectSubtractedEChange<T> {
     /**
 	 * The cached value of the '{@link #getOldValue() <em>Old Value</em>}' reference.
 	 * <!-- begin-user-doc -->

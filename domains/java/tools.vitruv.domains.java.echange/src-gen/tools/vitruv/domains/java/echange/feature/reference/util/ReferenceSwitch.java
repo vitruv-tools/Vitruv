@@ -23,6 +23,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -127,15 +128,16 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				T1 result = caseJavaReplaceSingleValuedEReference(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseReplaceSingleValuedEReference(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseJavaFeatureEChange(javaReplaceSingleValuedEReference);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(javaReplaceSingleValuedEReference);
-				if (result == null) result = caseSubtractiveReferenceEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseAdditiveReferenceEChange(javaReplaceSingleValuedEReference);
-				if (result == null) result = caseEObjectSubtractedEChange(javaReplaceSingleValuedEReference);
-				if (result == null) result = caseUpdateReferenceEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseSubtractiveReferenceEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseEObjectAddedEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseUpdateReferenceEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseEObjectSubtractedEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(javaReplaceSingleValuedEReference);
+				if (result == null) result = caseAdditiveEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseFeatureEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseSubtractiveEChange(javaReplaceSingleValuedEReference);
-				if (result == null) result = caseAdditiveEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseAtomicEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = caseEChange(javaReplaceSingleValuedEReference);
 				if (result == null) result = defaultCase(theEObject);
@@ -276,7 +278,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 caseInsertInListEChange(InsertInListEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -381,7 +383,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -457,6 +459,21 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
 		return null;
 	}
 

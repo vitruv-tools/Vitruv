@@ -2,7 +2,6 @@
  */
 package tools.vitruv.framework.change.echange.feature.attribute.impl;
 
-import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange;
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue;
@@ -30,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class InsertEAttributeValueImpl<A extends EObject, T extends Object> extends InsertInListEChangeImpl<A, EAttribute> implements InsertEAttributeValue<A, T> {
+public class InsertEAttributeValueImpl<A extends EObject, T extends Object> extends InsertInListEChangeImpl<A, EAttribute, T> implements InsertEAttributeValue<A, T> {
     /**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -147,11 +146,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == AdditiveEChange.class) {
-			switch (derivedFeatureID) {
-				default: return -1;
-			}
-		}
 		if (baseClass == UpdateAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				default: return -1;
@@ -173,11 +167,6 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == AdditiveEChange.class) {
-			switch (baseFeatureID) {
-				default: return -1;
-			}
-		}
 		if (baseClass == UpdateAttributeEChange.class) {
 			switch (baseFeatureID) {
 				default: return -1;

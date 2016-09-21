@@ -5,16 +5,12 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.MoveEObject
-import tools.vitruv.framework.change.echange.compound.ReplaceInEList
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import tools.vitruv.framework.util.datatypes.Pair
 import tools.vitruv.framework.util.datatypes.Quadruple
 import java.util.List
 import org.eclipse.emf.ecore.EObject
@@ -29,10 +25,13 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange
-import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.EObjectSubtractedEChange
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import static org.junit.Assert.*;
+
 
 class ChangeAssertHelper {
 
@@ -130,26 +129,64 @@ class ChangeAssertHelper {
 				expectedValue, rootChange.uri)
 		}
 
-		def static void assertReplaceSingleValuedEReference(List<? extends EChange> changes, Object expectedOldValue,
+		def static void assertReplaceSingleValuedEReference(EChange change, Object expectedOldValue,
 			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
 			boolean isCreate, boolean isDelete) {
-			val change = changes.assertSingleChangeWithType(ReplaceSingleValuedEReference)
-			change.assertOldAndNewValue(expectedOldValue, expectedNewValue)
-			change.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
-			change.assertAffectedEObject(affectedEObject)
-			change.assertContainment(isContainment)
+			val rsve = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			rsve.assertOldAndNewValue(expectedOldValue, expectedNewValue)
+			rsve.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
+			rsve.assertAffectedEObject(affectedEObject)
+			rsve.assertContainment(isContainment)
+			rsve.assertIsCreate(isCreate)
+			rsve.assertIsDelete(isDelete)
+		}
+
+		def static void assertSetSingleValuedEReference(EChange change,
+			Object expectedNewValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
+			boolean isCreate) {
+			val rsve = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			rsve.assertOldAndNewValue(null, expectedNewValue)
+			assertFalse(rsve.isFromNonDefaultValue);
+			assertTrue(rsve.isToNonDefaultValue);
+			rsve.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
+			rsve.assertAffectedEObject(affectedEObject)
+			rsve.assertContainment(isContainment)
+			rsve.assertIsCreate(isCreate)
+			rsve.assertIsDelete(false);
+		}
+		
+		def static void assertUnsetSingleValuedEReference(EChange change,
+			Object expectedOldValue, String affectedEFeatureName, EObject affectedEObject, boolean isContainment,
+			boolean isDelete) {
+			val rsve = change.assertObjectInstanceOf(ReplaceSingleValuedEReference)
+			rsve.assertOldAndNewValue(expectedOldValue, null)
+			assertTrue(rsve.isFromNonDefaultValue);
+			assertFalse(rsve.isToNonDefaultValue);
+			rsve.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedEFeatureName))
+			rsve.assertAffectedEObject(affectedEObject)
+			rsve.assertContainment(isContainment)
+			rsve.assertIsCreate(false);
+			rsve.assertIsDelete(isDelete)
 		}
 		
 		def static void assertReplaceSingleValueEAttribute(EChange eChange, Object oldValue, Object newValue) {
 			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
 			rsve.assertOldAndNewValue(oldValue,newValue)
 		}
-
-		def static void assertReplaceSingleValueEReference(EChange eChange, EObject oldValue, EObject newValue) {
-			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEReference)
-			rsve.assertOldAndNewValue(oldValue,newValue)
+		
+		def static void assertSetSingleValueEAttribute(EChange eChange, Object newValue) {
+			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
+			rsve.assertOldAndNewValue(rsve.affectedFeature.defaultValue, newValue)
+			assertFalse(rsve.isFromNonDefaultValue);
+			assertTrue(rsve.isToNonDefaultValue);
 		}
-
+		
+		def static void assertUnsetSingleValueEAttribute(EChange eChange, Object oldValue) {
+			val rsve = eChange.assertObjectInstanceOf(ReplaceSingleValuedEAttribute)
+			rsve.assertOldAndNewValue(oldValue, rsve.affectedFeature.defaultValue)
+			assertTrue(rsve.isFromNonDefaultValue);
+			assertFalse(rsve.isToNonDefaultValue);
+		}
 
 		def static void assertIndex(UpdateSingleListEntryEChange<?,?> change, int expectedIndex) {
 			Assert.assertEquals("The value is not at the correct index", change.index, expectedIndex)
@@ -161,7 +198,7 @@ class ChangeAssertHelper {
 			subtractiveChange.assertAffectedEFeature(affectedEObject.getFeatureByName(affectedFeatureName))
 			subtractiveChange.assertAffectedEObject(affectedEObject)
 			subtractiveChange.assertOldValue(oldValue)
-			if (subtractiveChange instanceof RemoveFromListEChange<?,?>) {
+			if (subtractiveChange instanceof RemoveFromListEChange<?,?,?>) {
 				subtractiveChange.assertIndex(expectedOldIndex)
 			}
 			subtractiveChange.assertContainment(isContainment)
@@ -169,12 +206,12 @@ class ChangeAssertHelper {
 			return subtractiveChange
 		}
 
-		def public static assertRemoveEAttribute(List<?> changes, EObject affecteEObject, String featureName,
+		def public static assertRemoveEAttribute(List<?> changes, EObject affectedEObject, String featureName,
 			Object oldValue, int expectedOldIndex) {
 			changes.assertSingleChangeWithType(RemoveEAttributeValue)
 			val removeEAttributeValue = changes.get(0) as RemoveEAttributeValue<?, ?>
-			removeEAttributeValue.assertAffectedEObject(affecteEObject)
-			removeEAttributeValue.assertAffectedEFeature(affecteEObject.getFeatureByName(featureName))
+			removeEAttributeValue.assertAffectedEObject(affectedEObject)
+			removeEAttributeValue.assertAffectedEFeature(affectedEObject.getFeatureByName(featureName))
 			removeEAttributeValue.assertOldValue(oldValue)
 			removeEAttributeValue.assertIndex(expectedOldIndex)
 		}
@@ -212,14 +249,6 @@ class ChangeAssertHelper {
 				subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange,
 				addUpdateEReferenceChange)
 
-			}
-
-			def public static assertReplaceInEList(List<?> changes, int atomicChanges) {
-				val replaceInEList = changes.assertSingleChangeWithType(ReplaceInEList)
-				replaceInEList.assertAtomicChanges(atomicChanges)
-				val removeChange = replaceInEList.removeChange
-				val insertInEList = replaceInEList.insertChange
-				return new Pair<RemoveFromListEChange<?,?>, InsertInListEChange<?,?>>(removeChange, insertInEList)
 			}
 
 			def public static assertAtomicChanges(CompoundEChange eCompoundChange, int atomicChanges) {

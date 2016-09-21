@@ -15,5 +15,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model abstract="true"
  * @generated
  */
-public interface SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<A> {
+public interface SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends EObjectSubtractedEChange<T>, UpdateReferenceEChange<A> {
 } // SubtractiveReferenceEChange

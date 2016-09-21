@@ -4,8 +4,7 @@ package tools.vitruv.framework.change.echange.feature.reference;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-
-import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,5 +16,5 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * @model
  * @generated
  */
-public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends UpdateSingleValuedFeatureEChange<A, EReference>, SubtractiveReferenceEChange<A, T>, AdditiveReferenceEChange<A, T> {
+public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T>, ReplaceSingleValuedFeatureEChange<A, EReference, T> {
 } // ReplaceSingleValuedEReference

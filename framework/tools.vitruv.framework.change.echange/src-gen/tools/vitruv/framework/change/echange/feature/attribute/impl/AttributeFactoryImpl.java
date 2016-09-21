@@ -56,10 +56,10 @@ public class AttributeFactoryImpl extends EFactoryImpl implements AttributeFacto
     @Override
     public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: return createReplaceSingleValuedEAttribute();
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE: return createInsertEAttributeValue();
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE: return createRemoveEAttributeValue();
 			case AttributePackage.PERMUTE_EATTRIBUTE_VALUES: return createPermuteEAttributeValues();
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: return createReplaceSingleValuedEAttribute();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
