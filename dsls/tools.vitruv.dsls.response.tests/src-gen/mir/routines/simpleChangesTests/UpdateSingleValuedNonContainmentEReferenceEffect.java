@@ -21,6 +21,28 @@ public class UpdateSingleValuedNonContainmentEReferenceEffect extends AbstractEf
   
   private ReplaceSingleValuedEReference<Root, NonRoot> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change, final Root targetContainer, final NonRoot targetElement) {
+      targetContainer.setSingleValuedNonContainmentEReference(targetElement);
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedNonContainmentEReference);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
     NonRoot _newValue = change.getNewValue();
     return _newValue;
@@ -58,21 +80,5 @@ public class UpdateSingleValuedNonContainmentEReferenceEffect extends AbstractEf
   private EObject getCorrepondenceSourceTargetContainer(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
     Root _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change, final Root targetContainer, final NonRoot targetElement) {
-      targetContainer.setSingleValuedNonContainmentEReference(targetElement);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedNonContainmentEReference);
-    }
   }
 }

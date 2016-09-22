@@ -50,6 +50,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
@@ -245,6 +246,13 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass removeCorrespondenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass routineCallBlockEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -816,6 +824,16 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getEffect_CallRoutine()
+  {
+    return (EReference)effectEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getExplicitRoutine()
   {
     return explicitRoutineEClass;
@@ -1086,6 +1104,16 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getRoutineCallBlock()
+  {
+    return routineCallBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getTagCodeBlock()
   {
     return tagCodeBlockEClass;
@@ -1289,6 +1317,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(effectEClass, EFFECT__CORRESPONDENCE_CREATION);
     createEReference(effectEClass, EFFECT__CORRESPONDENCE_DELETION);
     createEReference(effectEClass, EFFECT__CODE_BLOCK);
+    createEReference(effectEClass, EFFECT__CALL_ROUTINE);
 
     explicitRoutineEClass = createEClass(EXPLICIT_ROUTINE);
     createEAttribute(explicitRoutineEClass, EXPLICIT_ROUTINE__NAME);
@@ -1325,6 +1354,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     removeCorrespondenceEClass = createEClass(REMOVE_CORRESPONDENCE);
     createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__FIRST_ELEMENT);
     createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__SECOND_ELEMENT);
+
+    routineCallBlockEClass = createEClass(ROUTINE_CALL_BLOCK);
 
     tagCodeBlockEClass = createEClass(TAG_CODE_BLOCK);
 
@@ -1399,6 +1430,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
     existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
     createCorrespondenceEClass.getESuperTypes().add(this.getTaggable());
+    routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
     tagCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     preconditionCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     correspondingObjectCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
@@ -1469,6 +1501,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getEffect_CorrespondenceCreation(), this.getCreateCorrespondence(), null, "correspondenceCreation", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEffect_CorrespondenceDeletion(), this.getRemoveCorrespondence(), null, "correspondenceDeletion", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEffect_CodeBlock(), this.getExecutionCodeBlock(), null, "codeBlock", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEffect_CallRoutine(), this.getRoutineCallBlock(), null, "callRoutine", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(explicitRoutineEClass, ExplicitRoutine.class, "ExplicitRoutine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getExplicitRoutine_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExplicitRoutine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1505,6 +1538,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(removeCorrespondenceEClass, RemoveCorrespondence.class, "RemoveCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRemoveCorrespondence_FirstElement(), this.getExistingElementReference(), null, "firstElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRemoveCorrespondence_SecondElement(), this.getExistingElementReference(), null, "secondElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(routineCallBlockEClass, RoutineCallBlock.class, "RoutineCallBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(tagCodeBlockEClass, TagCodeBlock.class, "TagCodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

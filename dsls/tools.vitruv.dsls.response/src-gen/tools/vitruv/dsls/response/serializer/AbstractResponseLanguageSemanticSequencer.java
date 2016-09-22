@@ -90,6 +90,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
@@ -286,6 +287,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				return; 
 			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
 				sequence_RetrieveModelElement_Taggable(context, (RetrieveModelElement) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
+				sequence_CodeBlock_RoutineCallBlock(context, (RoutineCallBlock) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.ROUTINE_INPUT:
 				sequence_RoutineInput(context, (RoutineInput) semanticObject); 
@@ -899,6 +903,24 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     RoutineCallBlock returns RoutineCallBlock
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_RoutineCallBlock(ISerializationContext context, RoutineCallBlock semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     TagCodeBlock returns TagCodeBlock
 	 *
 	 * Constraint:
@@ -969,10 +991,14 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *
 	 * Constraint:
 	 *     (
-	 *         (elementCreation+=CreateElement | elementDeletion+=DeleteElement)* 
-	 *         correspondenceCreation+=CreateCorrespondence? 
-	 *         (correspondenceDeletion+=RemoveCorrespondence? correspondenceCreation+=CreateCorrespondence?)* 
-	 *         codeBlock=ExecutionCodeBlock?
+	 *         (
+	 *             elementCreation+=CreateElement | 
+	 *             elementDeletion+=DeleteElement | 
+	 *             correspondenceCreation+=CreateCorrespondence | 
+	 *             correspondenceDeletion+=RemoveCorrespondence
+	 *         )* 
+	 *         codeBlock=ExecutionCodeBlock? 
+	 *         callRoutine=RoutineCallBlock?
 	 *     )
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {

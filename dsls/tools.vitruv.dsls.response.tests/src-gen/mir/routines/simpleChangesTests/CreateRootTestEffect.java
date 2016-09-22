@@ -20,6 +20,30 @@ public class CreateRootTestEffect extends AbstractEffectRealization {
   
   private InsertRootEObject<Root> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InsertRootEObject<Root> change, final Root newRoot) {
+      Root _newValue = change.getNewValue();
+      String _id = _newValue.getId();
+      newRoot.setId(_id);
+      Root _newValue_1 = change.getNewValue();
+      this.persistProjectRelative(_newValue_1, newRoot, "model/Further_Target_Test_Model");
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final InsertRootEObject<Root> change, final Root newRoot) {
     return newRoot;
   }
@@ -41,23 +65,5 @@ public class CreateRootTestEffect extends AbstractEffectRealization {
     new mir.routines.simpleChangesTests.CreateRootTestEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, newRoot);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InsertRootEObject<Root> change, final Root newRoot) {
-      Root _newValue = change.getNewValue();
-      String _id = _newValue.getId();
-      newRoot.setId(_id);
-      Root _newValue_1 = change.getNewValue();
-      this.persistProjectRelative(_newValue_1, newRoot, "model/Further_Target_Test_Model");
-    }
   }
 }

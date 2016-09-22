@@ -19,25 +19,20 @@ public class ReplacedNonRootEObjectSingleResponseEffect extends AbstractEffectRe
   
   private ReplaceSingleValuedEReference<Root, NonRoot> change;
   
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine ReplacedNonRootEObjectSingleResponseEffect with input:");
-    getLogger().debug("   ReplaceSingleValuedEReference: " + this.change);
-    
-    
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.ReplacedNonRootEObjectSingleResponseEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change);
-    postprocessElementStates();
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
   }
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
       boolean _isFromNonDefaultValue = change.isFromNonDefaultValue();
@@ -52,5 +47,16 @@ public class ReplacedNonRootEObjectSingleResponseEffect extends AbstractEffectRe
         this.effectFacade.callCreateNonRootEObjectSingle(_affectedEObject, _newValue);
       }
     }
+  }
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ReplacedNonRootEObjectSingleResponseEffect with input:");
+    getLogger().debug("   ReplaceSingleValuedEReference: " + this.change);
+    
+    
+    preprocessElementStates();
+    new mir.routines.simpleChangesTests.ReplacedNonRootEObjectSingleResponseEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	change);
+    postprocessElementStates();
   }
 }

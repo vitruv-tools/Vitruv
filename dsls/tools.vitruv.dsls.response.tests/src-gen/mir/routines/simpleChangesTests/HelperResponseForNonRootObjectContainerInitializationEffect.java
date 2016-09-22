@@ -21,6 +21,29 @@ public class HelperResponseForNonRootObjectContainerInitializationEffect extends
   
   private ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
+      NonRootObjectContainerHelper _newValue = change.getNewValue();
+      String _id = _newValue.getId();
+      newNonRootContainer.setId(_id);
+      targetElement.setNonRootObjectContainerHelper(newNonRootContainer);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
     return newNonRootContainer;
   }
@@ -56,22 +79,5 @@ public class HelperResponseForNonRootObjectContainerInitializationEffect extends
     new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement, newNonRootContainer);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, final Root targetElement, final NonRootObjectContainerHelper newNonRootContainer) {
-      NonRootObjectContainerHelper _newValue = change.getNewValue();
-      String _id = _newValue.getId();
-      newNonRootContainer.setId(_id);
-      targetElement.setNonRootObjectContainerHelper(newNonRootContainer);
-    }
   }
 }

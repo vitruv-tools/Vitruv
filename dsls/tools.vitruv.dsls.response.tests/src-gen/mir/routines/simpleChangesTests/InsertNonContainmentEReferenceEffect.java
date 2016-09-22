@@ -26,6 +26,38 @@ public class InsertNonContainmentEReferenceEffect extends AbstractEffectRealizat
   
   private InsertEReference<Root, NonRoot> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement) {
+      NonRootObjectContainerHelper _nonRootObjectContainerHelper = targetElement.getNonRootObjectContainerHelper();
+      EList<NonRoot> _nonRootObjectsContainment = _nonRootObjectContainerHelper.getNonRootObjectsContainment();
+      final Function1<NonRoot, Boolean> _function = (NonRoot it) -> {
+        String _id = it.getId();
+        NonRoot _newValue = change.getNewValue();
+        String _id_1 = _newValue.getId();
+        return Boolean.valueOf(Objects.equal(_id, _id_1));
+      };
+      final NonRoot addedNonRoot = IterableExtensions.<NonRoot>findFirst(_nonRootObjectsContainment, _function);
+      EList<NonRoot> _multiValuedNonContainmentEReference = targetElement.getMultiValuedNonContainmentEReference();
+      _multiValuedNonContainmentEReference.add(addedNonRoot);
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertNonContainmentEReference);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getCorrepondenceSourceTargetElement(final InsertEReference<Root, NonRoot> change) {
     Root _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
@@ -49,31 +81,5 @@ public class InsertNonContainmentEReferenceEffect extends AbstractEffectRealizat
     new mir.routines.simpleChangesTests.InsertNonContainmentEReferenceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement) {
-      NonRootObjectContainerHelper _nonRootObjectContainerHelper = targetElement.getNonRootObjectContainerHelper();
-      EList<NonRoot> _nonRootObjectsContainment = _nonRootObjectContainerHelper.getNonRootObjectsContainment();
-      final Function1<NonRoot, Boolean> _function = (NonRoot it) -> {
-        String _id = it.getId();
-        NonRoot _newValue = change.getNewValue();
-        String _id_1 = _newValue.getId();
-        return Boolean.valueOf(Objects.equal(_id, _id_1));
-      };
-      final NonRoot addedNonRoot = IterableExtensions.<NonRoot>findFirst(_nonRootObjectsContainment, _function);
-      EList<NonRoot> _multiValuedNonContainmentEReference = targetElement.getMultiValuedNonContainmentEReference();
-      _multiValuedNonContainmentEReference.add(addedNonRoot);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertNonContainmentEReference);
-    }
   }
 }

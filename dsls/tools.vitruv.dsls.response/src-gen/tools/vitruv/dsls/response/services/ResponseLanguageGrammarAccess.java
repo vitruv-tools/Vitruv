@@ -555,25 +555,26 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cElementCreationCreateElementParserRuleCall_2_0_0 = (RuleCall)cElementCreationAssignment_2_0.eContents().get(0);
 		private final Assignment cElementDeletionAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
 		private final RuleCall cElementDeletionDeleteElementParserRuleCall_2_1_0 = (RuleCall)cElementDeletionAssignment_2_1.eContents().get(0);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Assignment cCorrespondenceCreationAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
-		private final RuleCall cCorrespondenceCreationCreateCorrespondenceParserRuleCall_3_0_0 = (RuleCall)cCorrespondenceCreationAssignment_3_0.eContents().get(0);
-		private final Assignment cCorrespondenceDeletionAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
-		private final RuleCall cCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_3_1_0 = (RuleCall)cCorrespondenceDeletionAssignment_3_1.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cExecuteKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cCodeBlockAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cCodeBlockExecutionCodeBlockParserRuleCall_4_1_0 = (RuleCall)cCodeBlockAssignment_4_1.eContents().get(0);
+		private final Assignment cCorrespondenceCreationAssignment_2_2 = (Assignment)cAlternatives_2.eContents().get(2);
+		private final RuleCall cCorrespondenceCreationCreateCorrespondenceParserRuleCall_2_2_0 = (RuleCall)cCorrespondenceCreationAssignment_2_2.eContents().get(0);
+		private final Assignment cCorrespondenceDeletionAssignment_2_3 = (Assignment)cAlternatives_2.eContents().get(3);
+		private final RuleCall cCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_2_3_0 = (RuleCall)cCorrespondenceDeletionAssignment_2_3.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cExecuteKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cCodeBlockAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cCodeBlockExecutionCodeBlockParserRuleCall_3_1_0 = (RuleCall)cCodeBlockAssignment_3_1.eContents().get(0);
+		private final Assignment cCallRoutineAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cCallRoutineRoutineCallBlockParserRuleCall_4_0 = (RuleCall)cCallRoutineAssignment_4.eContents().get(0);
 		
 		//Effect:
-		//	{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement)*
-		//	(correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
-		//	codeBlock=ExecutionCodeBlock)?;
+		//	{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement |
+		//	correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
+		//	codeBlock=ExecutionCodeBlock)? callRoutine=RoutineCallBlock?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement)*
-		//(correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
-		//codeBlock=ExecutionCodeBlock)?
+		//{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement |
+		//correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
+		//codeBlock=ExecutionCodeBlock)? callRoutine=RoutineCallBlock?
 		public Group getGroup() { return cGroup; }
 		
 		//{Effect}
@@ -582,7 +583,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//'effect:'
 		public Keyword getEffectKeyword_1() { return cEffectKeyword_1; }
 		
-		//(elementCreation+=CreateElement | elementDeletion+=DeleteElement)*
+		//(elementCreation+=CreateElement | elementDeletion+=DeleteElement | correspondenceCreation+=CreateCorrespondence |
+		//correspondenceDeletion+=RemoveCorrespondence)*
 		public Alternatives getAlternatives_2() { return cAlternatives_2; }
 		
 		//elementCreation+=CreateElement
@@ -597,32 +599,35 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//DeleteElement
 		public RuleCall getElementDeletionDeleteElementParserRuleCall_2_1_0() { return cElementDeletionDeleteElementParserRuleCall_2_1_0; }
 		
-		//(correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)*
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
-		
 		//correspondenceCreation+=CreateCorrespondence
-		public Assignment getCorrespondenceCreationAssignment_3_0() { return cCorrespondenceCreationAssignment_3_0; }
+		public Assignment getCorrespondenceCreationAssignment_2_2() { return cCorrespondenceCreationAssignment_2_2; }
 		
 		//CreateCorrespondence
-		public RuleCall getCorrespondenceCreationCreateCorrespondenceParserRuleCall_3_0_0() { return cCorrespondenceCreationCreateCorrespondenceParserRuleCall_3_0_0; }
+		public RuleCall getCorrespondenceCreationCreateCorrespondenceParserRuleCall_2_2_0() { return cCorrespondenceCreationCreateCorrespondenceParserRuleCall_2_2_0; }
 		
 		//correspondenceDeletion+=RemoveCorrespondence
-		public Assignment getCorrespondenceDeletionAssignment_3_1() { return cCorrespondenceDeletionAssignment_3_1; }
+		public Assignment getCorrespondenceDeletionAssignment_2_3() { return cCorrespondenceDeletionAssignment_2_3; }
 		
 		//RemoveCorrespondence
-		public RuleCall getCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_3_1_0() { return cCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_3_1_0; }
+		public RuleCall getCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_2_3_0() { return cCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_2_3_0; }
 		
 		//('execute:' codeBlock=ExecutionCodeBlock)?
-		public Group getGroup_4() { return cGroup_4; }
+		public Group getGroup_3() { return cGroup_3; }
 		
 		//'execute:'
-		public Keyword getExecuteKeyword_4_0() { return cExecuteKeyword_4_0; }
+		public Keyword getExecuteKeyword_3_0() { return cExecuteKeyword_3_0; }
 		
 		//codeBlock=ExecutionCodeBlock
-		public Assignment getCodeBlockAssignment_4_1() { return cCodeBlockAssignment_4_1; }
+		public Assignment getCodeBlockAssignment_3_1() { return cCodeBlockAssignment_3_1; }
 		
 		//ExecutionCodeBlock
-		public RuleCall getCodeBlockExecutionCodeBlockParserRuleCall_4_1_0() { return cCodeBlockExecutionCodeBlockParserRuleCall_4_1_0; }
+		public RuleCall getCodeBlockExecutionCodeBlockParserRuleCall_3_1_0() { return cCodeBlockExecutionCodeBlockParserRuleCall_3_1_0; }
+		
+		//callRoutine=RoutineCallBlock?
+		public Assignment getCallRoutineAssignment_4() { return cCallRoutineAssignment_4; }
+		
+		//RoutineCallBlock
+		public RuleCall getCallRoutineRoutineCallBlockParserRuleCall_4_0() { return cCallRoutineRoutineCallBlockParserRuleCall_4_0; }
 	}
 	public class ExplicitRoutineElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ExplicitRoutine");
@@ -630,15 +635,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cRoutineKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Assignment cInputAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cInputRoutineInputParserRuleCall_2_0 = (RuleCall)cInputAssignment_2.eContents().get(0);
-		private final RuleCall cRoutineParserRuleCall_3 = (RuleCall)cGroup.eContents().get(3);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cInputAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cInputRoutineInputParserRuleCall_3_0 = (RuleCall)cInputAssignment_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final RuleCall cRoutineParserRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
 		
 		//ExplicitRoutine:
-		//	'routine:' name=ValidID input=RoutineInput Routine;
+		//	'routine:' name=ValidID '(' input=RoutineInput ')' Routine;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'routine:' name=ValidID input=RoutineInput Routine
+		//'routine:' name=ValidID '(' input=RoutineInput ')' Routine
 		public Group getGroup() { return cGroup; }
 		
 		//'routine:'
@@ -650,108 +657,106 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
 		//input=RoutineInput
-		public Assignment getInputAssignment_2() { return cInputAssignment_2; }
+		public Assignment getInputAssignment_3() { return cInputAssignment_3; }
 		
 		//RoutineInput
-		public RuleCall getInputRoutineInputParserRuleCall_2_0() { return cInputRoutineInputParserRuleCall_2_0; }
+		public RuleCall getInputRoutineInputParserRuleCall_3_0() { return cInputRoutineInputParserRuleCall_3_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
 		
 		//Routine
-		public RuleCall getRoutineParserRuleCall_3() { return cRoutineParserRuleCall_3; }
+		public RuleCall getRoutineParserRuleCall_5() { return cRoutineParserRuleCall_5; }
 	}
 	public class RoutineInputElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineInput");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cRoutineInputAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Alternatives cAlternatives_2_0 = (Alternatives)cGroup_2.eContents().get(0);
-		private final Assignment cModelInputElementsAssignment_2_0_0 = (Assignment)cAlternatives_2_0.eContents().get(0);
-		private final RuleCall cModelInputElementsClassicallyNamedModelElementParserRuleCall_2_0_0_0 = (RuleCall)cModelInputElementsAssignment_2_0_0.eContents().get(0);
-		private final Group cGroup_2_0_1 = (Group)cAlternatives_2_0.eContents().get(1);
-		private final Keyword cPlainKeyword_2_0_1_0 = (Keyword)cGroup_2_0_1.eContents().get(0);
-		private final Assignment cJavaInputElementsAssignment_2_0_1_1 = (Assignment)cGroup_2_0_1.eContents().get(1);
-		private final RuleCall cJavaInputElementsNamedJavaElementParserRuleCall_2_0_1_1_0 = (RuleCall)cJavaInputElementsAssignment_2_0_1_1.eContents().get(0);
-		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
-		private final Keyword cCommaKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
-		private final Alternatives cAlternatives_2_1_1 = (Alternatives)cGroup_2_1.eContents().get(1);
-		private final Assignment cModelInputElementsAssignment_2_1_1_0 = (Assignment)cAlternatives_2_1_1.eContents().get(0);
-		private final RuleCall cModelInputElementsClassicallyNamedModelElementParserRuleCall_2_1_1_0_0 = (RuleCall)cModelInputElementsAssignment_2_1_1_0.eContents().get(0);
-		private final Group cGroup_2_1_1_1 = (Group)cAlternatives_2_1_1.eContents().get(1);
-		private final Keyword cPlainKeyword_2_1_1_1_0 = (Keyword)cGroup_2_1_1_1.eContents().get(0);
-		private final Assignment cJavaInputElementsAssignment_2_1_1_1_1 = (Assignment)cGroup_2_1_1_1.eContents().get(1);
-		private final RuleCall cJavaInputElementsNamedJavaElementParserRuleCall_2_1_1_1_1_0 = (RuleCall)cJavaInputElementsAssignment_2_1_1_1_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Alternatives cAlternatives_1_0 = (Alternatives)cGroup_1.eContents().get(0);
+		private final Assignment cModelInputElementsAssignment_1_0_0 = (Assignment)cAlternatives_1_0.eContents().get(0);
+		private final RuleCall cModelInputElementsClassicallyNamedModelElementParserRuleCall_1_0_0_0 = (RuleCall)cModelInputElementsAssignment_1_0_0.eContents().get(0);
+		private final Group cGroup_1_0_1 = (Group)cAlternatives_1_0.eContents().get(1);
+		private final Keyword cPlainKeyword_1_0_1_0 = (Keyword)cGroup_1_0_1.eContents().get(0);
+		private final Assignment cJavaInputElementsAssignment_1_0_1_1 = (Assignment)cGroup_1_0_1.eContents().get(1);
+		private final RuleCall cJavaInputElementsNamedJavaElementParserRuleCall_1_0_1_1_0 = (RuleCall)cJavaInputElementsAssignment_1_0_1_1.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
+		private final Keyword cCommaKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
+		private final Alternatives cAlternatives_1_1_1 = (Alternatives)cGroup_1_1.eContents().get(1);
+		private final Assignment cModelInputElementsAssignment_1_1_1_0 = (Assignment)cAlternatives_1_1_1.eContents().get(0);
+		private final RuleCall cModelInputElementsClassicallyNamedModelElementParserRuleCall_1_1_1_0_0 = (RuleCall)cModelInputElementsAssignment_1_1_1_0.eContents().get(0);
+		private final Group cGroup_1_1_1_1 = (Group)cAlternatives_1_1_1.eContents().get(1);
+		private final Keyword cPlainKeyword_1_1_1_1_0 = (Keyword)cGroup_1_1_1_1.eContents().get(0);
+		private final Assignment cJavaInputElementsAssignment_1_1_1_1_1 = (Assignment)cGroup_1_1_1_1.eContents().get(1);
+		private final RuleCall cJavaInputElementsNamedJavaElementParserRuleCall_1_1_1_1_1_0 = (RuleCall)cJavaInputElementsAssignment_1_1_1_1_1.eContents().get(0);
 		
 		//RoutineInput:
-		//	{RoutineInput} '(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		//	(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')';
+		//	{RoutineInput} ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
+		//	(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{RoutineInput} '(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		//(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')'
+		//{RoutineInput} ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement) (','
+		//(modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?
 		public Group getGroup() { return cGroup; }
 		
 		//{RoutineInput}
 		public Action getRoutineInputAction_0() { return cRoutineInputAction_0; }
 		
-		//'('
-		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
-		
 		//((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement) (','
 		//(modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?
-		public Group getGroup_2() { return cGroup_2; }
+		public Group getGroup_1() { return cGroup_1; }
 		
 		//(modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		public Alternatives getAlternatives_2_0() { return cAlternatives_2_0; }
+		public Alternatives getAlternatives_1_0() { return cAlternatives_1_0; }
 		
 		//modelInputElements+=ClassicallyNamedModelElement
-		public Assignment getModelInputElementsAssignment_2_0_0() { return cModelInputElementsAssignment_2_0_0; }
+		public Assignment getModelInputElementsAssignment_1_0_0() { return cModelInputElementsAssignment_1_0_0; }
 		
 		//ClassicallyNamedModelElement
-		public RuleCall getModelInputElementsClassicallyNamedModelElementParserRuleCall_2_0_0_0() { return cModelInputElementsClassicallyNamedModelElementParserRuleCall_2_0_0_0; }
+		public RuleCall getModelInputElementsClassicallyNamedModelElementParserRuleCall_1_0_0_0() { return cModelInputElementsClassicallyNamedModelElementParserRuleCall_1_0_0_0; }
 		
 		//"plain:" javaInputElements+=NamedJavaElement
-		public Group getGroup_2_0_1() { return cGroup_2_0_1; }
+		public Group getGroup_1_0_1() { return cGroup_1_0_1; }
 		
 		//"plain:"
-		public Keyword getPlainKeyword_2_0_1_0() { return cPlainKeyword_2_0_1_0; }
+		public Keyword getPlainKeyword_1_0_1_0() { return cPlainKeyword_1_0_1_0; }
 		
 		//javaInputElements+=NamedJavaElement
-		public Assignment getJavaInputElementsAssignment_2_0_1_1() { return cJavaInputElementsAssignment_2_0_1_1; }
+		public Assignment getJavaInputElementsAssignment_1_0_1_1() { return cJavaInputElementsAssignment_1_0_1_1; }
 		
 		//NamedJavaElement
-		public RuleCall getJavaInputElementsNamedJavaElementParserRuleCall_2_0_1_1_0() { return cJavaInputElementsNamedJavaElementParserRuleCall_2_0_1_1_0; }
+		public RuleCall getJavaInputElementsNamedJavaElementParserRuleCall_1_0_1_1_0() { return cJavaInputElementsNamedJavaElementParserRuleCall_1_0_1_1_0; }
 		
 		//(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*
-		public Group getGroup_2_1() { return cGroup_2_1; }
+		public Group getGroup_1_1() { return cGroup_1_1; }
 		
 		//','
-		public Keyword getCommaKeyword_2_1_0() { return cCommaKeyword_2_1_0; }
+		public Keyword getCommaKeyword_1_1_0() { return cCommaKeyword_1_1_0; }
 		
 		//(modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		public Alternatives getAlternatives_2_1_1() { return cAlternatives_2_1_1; }
+		public Alternatives getAlternatives_1_1_1() { return cAlternatives_1_1_1; }
 		
 		//modelInputElements+=ClassicallyNamedModelElement
-		public Assignment getModelInputElementsAssignment_2_1_1_0() { return cModelInputElementsAssignment_2_1_1_0; }
+		public Assignment getModelInputElementsAssignment_1_1_1_0() { return cModelInputElementsAssignment_1_1_1_0; }
 		
 		//ClassicallyNamedModelElement
-		public RuleCall getModelInputElementsClassicallyNamedModelElementParserRuleCall_2_1_1_0_0() { return cModelInputElementsClassicallyNamedModelElementParserRuleCall_2_1_1_0_0; }
+		public RuleCall getModelInputElementsClassicallyNamedModelElementParserRuleCall_1_1_1_0_0() { return cModelInputElementsClassicallyNamedModelElementParserRuleCall_1_1_1_0_0; }
 		
 		//"plain:" javaInputElements+=NamedJavaElement
-		public Group getGroup_2_1_1_1() { return cGroup_2_1_1_1; }
+		public Group getGroup_1_1_1_1() { return cGroup_1_1_1_1; }
 		
 		//"plain:"
-		public Keyword getPlainKeyword_2_1_1_1_0() { return cPlainKeyword_2_1_1_1_0; }
+		public Keyword getPlainKeyword_1_1_1_1_0() { return cPlainKeyword_1_1_1_1_0; }
 		
 		//javaInputElements+=NamedJavaElement
-		public Assignment getJavaInputElementsAssignment_2_1_1_1_1() { return cJavaInputElementsAssignment_2_1_1_1_1; }
+		public Assignment getJavaInputElementsAssignment_1_1_1_1_1() { return cJavaInputElementsAssignment_1_1_1_1_1; }
 		
 		//NamedJavaElement
-		public RuleCall getJavaInputElementsNamedJavaElementParserRuleCall_2_1_1_1_1_0() { return cJavaInputElementsNamedJavaElementParserRuleCall_2_1_1_1_1_0; }
-		
-		//')'
-		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+		public RuleCall getJavaInputElementsNamedJavaElementParserRuleCall_1_1_1_1_1_0() { return cJavaInputElementsNamedJavaElementParserRuleCall_1_1_1_1_1_0; }
 	}
 	public class TaggableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Taggable");
@@ -1004,14 +1009,37 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ExistingElementReference
 		public RuleCall getSecondElementExistingElementReferenceParserRuleCall_3_0() { return cSecondElementExistingElementReferenceParserRuleCall_3_0; }
 	}
+	public class RoutineCallBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cRoutineCallBlockAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cCallKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final RuleCall cCodeBlockParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		
+		//// ****** CODE BLOCKS ******
+		// RoutineCallBlock:
+		//	{RoutineCallBlock} 'call' CodeBlock;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{RoutineCallBlock} 'call' CodeBlock
+		public Group getGroup() { return cGroup; }
+		
+		//{RoutineCallBlock}
+		public Action getRoutineCallBlockAction_0() { return cRoutineCallBlockAction_0; }
+		
+		//'call'
+		public Keyword getCallKeyword_1() { return cCallKeyword_1; }
+		
+		//CodeBlock
+		public RuleCall getCodeBlockParserRuleCall_2() { return cCodeBlockParserRuleCall_2; }
+	}
 	public class TagCodeBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.TagCodeBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cTagCodeBlockAction_0 = (Action)cGroup.eContents().get(0);
 		private final RuleCall cCodeBlockParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//// ****** CODE BLOCKS ******
-		// TagCodeBlock:
+		//TagCodeBlock:
 		//	{TagCodeBlock} CodeBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1124,6 +1152,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final DeleteElementElements pDeleteElement;
 	private final CreateCorrespondenceElements pCreateCorrespondence;
 	private final RemoveCorrespondenceElements pRemoveCorrespondence;
+	private final RoutineCallBlockElements pRoutineCallBlock;
 	private final TagCodeBlockElements pTagCodeBlock;
 	private final PreconditionCodeBlockElements pPreconditionCodeBlock;
 	private final CorrespondingObjectCodeBlockElements pCorrespondingObjectCodeBlock;
@@ -1173,6 +1202,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pDeleteElement = new DeleteElementElements();
 		this.pCreateCorrespondence = new CreateCorrespondenceElements();
 		this.pRemoveCorrespondence = new RemoveCorrespondenceElements();
+		this.pRoutineCallBlock = new RoutineCallBlockElements();
 		this.pTagCodeBlock = new TagCodeBlockElements();
 		this.pPreconditionCodeBlock = new PreconditionCodeBlockElements();
 		this.pCorrespondingObjectCodeBlock = new CorrespondingObjectCodeBlockElements();
@@ -1382,9 +1412,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//Effect:
-	//	{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement)*
-	//	(correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
-	//	codeBlock=ExecutionCodeBlock)?;
+	//	{Effect} 'effect:' (elementCreation+=CreateElement | elementDeletion+=DeleteElement |
+	//	correspondenceCreation+=CreateCorrespondence | correspondenceDeletion+=RemoveCorrespondence)* ('execute:'
+	//	codeBlock=ExecutionCodeBlock)? callRoutine=RoutineCallBlock?;
 	public EffectElements getEffectAccess() {
 		return pEffect;
 	}
@@ -1394,7 +1424,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//ExplicitRoutine:
-	//	'routine:' name=ValidID input=RoutineInput Routine;
+	//	'routine:' name=ValidID '(' input=RoutineInput ')' Routine;
 	public ExplicitRoutineElements getExplicitRoutineAccess() {
 		return pExplicitRoutine;
 	}
@@ -1404,8 +1434,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//RoutineInput:
-	//	{RoutineInput} '(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-	//	(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')';
+	//	{RoutineInput} ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
+	//	(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?;
 	public RoutineInputElements getRoutineInputAccess() {
 		return pRoutineInput;
 	}
@@ -1490,7 +1520,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//// ****** CODE BLOCKS ******
-	// TagCodeBlock:
+	// RoutineCallBlock:
+	//	{RoutineCallBlock} 'call' CodeBlock;
+	public RoutineCallBlockElements getRoutineCallBlockAccess() {
+		return pRoutineCallBlock;
+	}
+	
+	public ParserRule getRoutineCallBlockRule() {
+		return getRoutineCallBlockAccess().getRule();
+	}
+	
+	//TagCodeBlock:
 	//	{TagCodeBlock} CodeBlock;
 	public TagCodeBlockElements getTagCodeBlockAccess() {
 		return pTagCodeBlock;

@@ -19,6 +19,22 @@ public class HelperResponseForDeleteSecondTestModelEffect extends AbstractEffect
   
   private RemoveRootEObject<Root> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final RemoveRootEObject<Root> change, final Root oldModel) {
     return oldModel;
   }
@@ -45,15 +61,5 @@ public class HelperResponseForDeleteSecondTestModelEffect extends AbstractEffect
   private EObject getCorrepondenceSourceOldModel(final RemoveRootEObject<Root> change) {
     Root _oldValue = change.getOldValue();
     return _oldValue;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
   }
 }

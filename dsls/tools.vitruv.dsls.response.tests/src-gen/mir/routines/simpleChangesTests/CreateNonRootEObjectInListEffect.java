@@ -23,6 +23,32 @@ public class CreateNonRootEObjectInListEffect extends AbstractEffectRealization 
   
   private InsertEReference<Root, NonRoot> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
+      NonRoot _newValue = change.getNewValue();
+      String _id = _newValue.getId();
+      newNonRoot.setId(_id);
+      EList<NonRoot> _multiValuedContainmentEReference = targetElement.getMultiValuedContainmentEReference();
+      _multiValuedContainmentEReference.add(newNonRoot);
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectInList);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
     return newNonRoot;
   }
@@ -58,25 +84,5 @@ public class CreateNonRootEObjectInListEffect extends AbstractEffectRealization 
     new mir.routines.simpleChangesTests.CreateNonRootEObjectInListEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement, newNonRoot);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InsertEReference<Root, NonRoot> change, final Root targetElement, final NonRoot newNonRoot) {
-      NonRoot _newValue = change.getNewValue();
-      String _id = _newValue.getId();
-      newNonRoot.setId(_id);
-      EList<NonRoot> _multiValuedContainmentEReference = targetElement.getMultiValuedContainmentEReference();
-      _multiValuedContainmentEReference.add(newNonRoot);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectInList);
-    }
   }
 }

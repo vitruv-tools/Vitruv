@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCorrespondenceCreation <em>Correspondence Creation</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCorrespondenceDeletion <em>Correspondence Deletion</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCodeBlock <em>Code Block</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCallRoutine <em>Call Routine</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect()
@@ -118,5 +119,31 @@ public interface Effect extends EObject
    * @generated
    */
   void setCodeBlock(ExecutionCodeBlock value);
+
+  /**
+   * Returns the value of the '<em><b>Call Routine</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Call Routine</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Call Routine</em>' containment reference.
+   * @see #setCallRoutine(RoutineCallBlock)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_CallRoutine()
+   * @model containment="true"
+   * @generated
+   */
+  RoutineCallBlock getCallRoutine();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCallRoutine <em>Call Routine</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Call Routine</em>' containment reference.
+   * @see #getCallRoutine()
+   * @generated
+   */
+  void setCallRoutine(RoutineCallBlock value);
 
 } // Effect

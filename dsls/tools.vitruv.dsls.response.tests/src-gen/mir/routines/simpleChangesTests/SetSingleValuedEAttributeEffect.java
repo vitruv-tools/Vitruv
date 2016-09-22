@@ -20,6 +20,29 @@ public class SetSingleValuedEAttributeEffect extends AbstractEffectRealization {
   
   private ReplaceSingleValuedEAttribute<Root, Integer> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Root, Integer> change, final Root targetElement) {
+      Integer _newValue = change.getNewValue();
+      targetElement.setSingleValuedEAttribute(_newValue);
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedEAttribute);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
     Root _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
@@ -43,22 +66,5 @@ public class SetSingleValuedEAttributeEffect extends AbstractEffectRealization {
     new mir.routines.simpleChangesTests.SetSingleValuedEAttributeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Root, Integer> change, final Root targetElement) {
-      Integer _newValue = change.getNewValue();
-      targetElement.setSingleValuedEAttribute(_newValue);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedEAttribute);
-    }
   }
 }

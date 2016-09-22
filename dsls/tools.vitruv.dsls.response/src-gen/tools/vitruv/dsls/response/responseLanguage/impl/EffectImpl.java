@@ -26,6 +26,7 @@ import tools.vitruv.dsls.response.responseLanguage.Effect;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,6 +41,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCorrespondenceCreation <em>Correspondence Creation</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCorrespondenceDeletion <em>Correspondence Deletion</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCodeBlock <em>Code Block</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCallRoutine <em>Call Routine</em>}</li>
  * </ul>
  *
  * @generated
@@ -95,6 +97,16 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * @ordered
    */
   protected ExecutionCodeBlock codeBlock;
+
+  /**
+   * The cached value of the '{@link #getCallRoutine() <em>Call Routine</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getCallRoutine()
+   * @generated
+   * @ordered
+   */
+  protected RoutineCallBlock callRoutine;
 
   /**
    * <!-- begin-user-doc -->
@@ -226,6 +238,54 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
+  public RoutineCallBlock getCallRoutine()
+  {
+    return callRoutine;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetCallRoutine(RoutineCallBlock newCallRoutine, NotificationChain msgs)
+  {
+    RoutineCallBlock oldCallRoutine = callRoutine;
+    callRoutine = newCallRoutine;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.EFFECT__CALL_ROUTINE, oldCallRoutine, newCallRoutine);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setCallRoutine(RoutineCallBlock newCallRoutine)
+  {
+    if (newCallRoutine != callRoutine)
+    {
+      NotificationChain msgs = null;
+      if (callRoutine != null)
+        msgs = ((InternalEObject)callRoutine).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.EFFECT__CALL_ROUTINE, null, msgs);
+      if (newCallRoutine != null)
+        msgs = ((InternalEObject)newCallRoutine).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.EFFECT__CALL_ROUTINE, null, msgs);
+      msgs = basicSetCallRoutine(newCallRoutine, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.EFFECT__CALL_ROUTINE, newCallRoutine, newCallRoutine));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -241,6 +301,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
         return ((InternalEList<?>)getCorrespondenceDeletion()).basicRemove(otherEnd, msgs);
       case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
         return basicSetCodeBlock(null, msgs);
+      case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
+        return basicSetCallRoutine(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -265,6 +327,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
         return getCorrespondenceDeletion();
       case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
         return getCodeBlock();
+      case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
+        return getCallRoutine();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -299,6 +363,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
       case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
         setCodeBlock((ExecutionCodeBlock)newValue);
         return;
+      case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
+        setCallRoutine((RoutineCallBlock)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -328,6 +395,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
       case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
         setCodeBlock((ExecutionCodeBlock)null);
         return;
+      case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
+        setCallRoutine((RoutineCallBlock)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -352,6 +422,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
         return correspondenceDeletion != null && !correspondenceDeletion.isEmpty();
       case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
         return codeBlock != null;
+      case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
+        return callRoutine != null;
     }
     return super.eIsSet(featureID);
   }

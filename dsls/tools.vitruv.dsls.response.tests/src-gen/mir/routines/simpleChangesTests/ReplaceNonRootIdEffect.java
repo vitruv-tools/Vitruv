@@ -19,6 +19,27 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
   
   private ReplaceSingleValuedEAttribute<NonRoot, String> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<NonRoot, String> change, final NonRoot targetElement) {
+      String _newValue = change.getNewValue();
+      targetElement.setId(_newValue);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEAttribute<NonRoot, String> change) {
     NonRoot _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
@@ -42,20 +63,5 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
     new mir.routines.simpleChangesTests.ReplaceNonRootIdEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<NonRoot, String> change, final NonRoot targetElement) {
-      String _newValue = change.getNewValue();
-      targetElement.setId(_newValue);
-    }
   }
 }

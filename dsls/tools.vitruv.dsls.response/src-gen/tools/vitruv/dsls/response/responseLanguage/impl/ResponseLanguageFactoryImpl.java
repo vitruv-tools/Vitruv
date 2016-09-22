@@ -91,6 +91,7 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.DELETE_ELEMENT: return createDeleteElement();
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE: return createCreateCorrespondence();
       case ResponseLanguagePackage.REMOVE_CORRESPONDENCE: return createRemoveCorrespondence();
+      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAG_CODE_BLOCK: return createTagCodeBlock();
       case ResponseLanguagePackage.PRECONDITION_CODE_BLOCK: return createPreconditionCodeBlock();
       case ResponseLanguagePackage.CORRESPONDING_OBJECT_CODE_BLOCK: return createCorrespondingObjectCodeBlock();
@@ -391,6 +392,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     RemoveCorrespondenceImpl removeCorrespondence = new RemoveCorrespondenceImpl();
     return removeCorrespondence;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoutineCallBlock createRoutineCallBlock()
+  {
+    RoutineCallBlockImpl routineCallBlock = new RoutineCallBlockImpl();
+    return routineCallBlock;
   }
 
   /**

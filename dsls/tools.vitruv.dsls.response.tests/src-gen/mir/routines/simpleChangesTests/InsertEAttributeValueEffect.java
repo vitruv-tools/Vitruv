@@ -21,6 +21,30 @@ public class InsertEAttributeValueEffect extends AbstractEffectRealization {
   
   private InsertEAttributeValue<Root, Integer> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InsertEAttributeValue<Root, Integer> change, final Root targetElement) {
+      EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
+      Integer _newValue = change.getNewValue();
+      _multiValuedEAttribute.add(_newValue);
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getCorrepondenceSourceTargetElement(final InsertEAttributeValue<Root, Integer> change) {
     Root _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
@@ -44,23 +68,5 @@ public class InsertEAttributeValueEffect extends AbstractEffectRealization {
     new mir.routines.simpleChangesTests.InsertEAttributeValueEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	change, targetElement);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InsertEAttributeValue<Root, Integer> change, final Root targetElement) {
-      EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
-      Integer _newValue = change.getNewValue();
-      _multiValuedEAttribute.add(_newValue);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
-    }
   }
 }

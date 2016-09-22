@@ -57,6 +57,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/correspondenceCreation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/correspondenceDeletion"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/codeBlock"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/callRoutine"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//ExplicitRoutine">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//ExplicitRoutine/name"/>
@@ -93,6 +94,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/firstElement"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/secondElement"/>
     </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//RoutineCallBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//TagCodeBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//PreconditionCodeBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//CorrespondingObjectCodeBlock"/>

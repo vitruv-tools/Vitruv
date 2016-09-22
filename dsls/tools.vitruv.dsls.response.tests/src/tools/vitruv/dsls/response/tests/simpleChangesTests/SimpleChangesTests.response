@@ -79,14 +79,15 @@ effect:
  */
 response: ReplacedNonRootEObjectSingleResponse
 trigger: replaced value minimal.Root[singleValuedContainmentEReference]
-effect: execute: {
+effect:
+call {
 	if (change.fromNonDefaultValue) {
 		callDeleteNonRootEObjectSingle(change.oldValue);
 	}
 	if (change.toNonDefaultValue) {
 		callCreateNonRootEObjectSingle(change.affectedEObject, change.newValue);
 	}
-}
+} 
 
 routine: DeleteNonRootEObjectSingle(minimal.NonRoot containedObject)
 match:

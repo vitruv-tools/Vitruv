@@ -258,6 +258,15 @@ public interface ResponseLanguageFactory extends EFactory
   RemoveCorrespondence createRemoveCorrespondence();
 
   /**
+   * Returns a new object of class '<em>Routine Call Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Routine Call Block</em>'.
+   * @generated
+   */
+  RoutineCallBlock createRoutineCallBlock();
+
+  /**
    * Returns a new object of class '<em>Tag Code Block</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

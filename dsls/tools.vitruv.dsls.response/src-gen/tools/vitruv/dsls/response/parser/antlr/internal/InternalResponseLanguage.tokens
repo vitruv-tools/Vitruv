@@ -1,77 +1,78 @@
-'!'=79
-'!='=63
-'!=='=65
-'#'=85
-'%'=78
-'%='=56
-'&&'=61
-'&'=117
+'!'=80
+'!='=64
+'!=='=66
+'#'=86
+'%'=79
+'%='=57
+'&&'=62
+'&'=118
 '('=31
-')'=34
-'*'=75
-'**'=76
-'*='=54
-'+'=73
-'++'=80
-'+='=52
-','=33
-'-'=74
-'--'=81
-'-='=53
-'->'=67
-'.'=82
-'..'=69
-'..<'=68
-'/'=77
-'/='=55
-':'=93
-'::'=83
-';'=89
-'<'=57
-'<>'=71
-'='=51
-'=='=62
-'==='=64
-'=>'=70
-'>'=58
-'>='=59
-'?'=116
-'?.'=84
-'?:'=72
-'['=49
-']'=50
+')'=32
+'*'=76
+'**'=77
+'*='=55
+'+'=74
+'++'=81
+'+='=53
+','=34
+'-'=75
+'--'=82
+'-='=54
+'->'=68
+'.'=83
+'..'=70
+'..<'=69
+'/'=78
+'/='=56
+':'=94
+'::'=84
+';'=90
+'<'=58
+'<>'=72
+'='=52
+'=='=63
+'==='=65
+'=>'=71
+'>'=59
+'>='=60
+'?'=117
+'?.'=85
+'?:'=73
+'['=50
+']'=51
 'add correspondence:'=43
 'any change'=26
-'as'=47
+'as'=48
+'call'=46
 'called'=15
-'case'=95
-'catch'=115
+'case'=96
+'catch'=116
 'check:'=19
 'corresponding to'=38
 'create element:'=41
 'created root'=20
-'default'=94
+'default'=95
 'delete element:'=42
 'deleted root'=21
-'do'=98
+'do'=99
 'effect:'=28
-'else'=91
+'else'=92
 'execute:'=29
-'extends'=101
-'extension'=103
-'false'=106
-'finally'=113
-'for'=96
-'if'=90
-'import'=46
+'extends'=102
+'extension'=104
+'false'=107
+'finally'=114
+'for'=97
+'if'=91
+'import'=47
 'inserted into list'=22
-'instanceof'=66
+'instanceof'=67
 'invariant'=17
 'match:'=27
-'new'=105
-'null'=108
+'new'=106
+'null'=109
 'permuted list'=24
-'plain:'=32
+'plain:'=33
 'remove correspondence:'=45
 'removed from list'=23
 'replaced value'=25
@@ -80,29 +81,29 @@
 'responses from metamodel'=13
 'retrieve optional element:'=36
 'retrieve required element:'=35
-'return'=111
+'return'=112
 'routine:'=30
-'static'=102
-'super'=104
-'switch'=92
-'synchronized'=114
+'static'=103
+'super'=105
+'switch'=93
+'synchronized'=115
 'tag with'=44
 'tagged with'=39
-'throw'=110
+'throw'=111
 'to metamodel'=14
 'trigger:'=18
-'true'=107
-'try'=112
-'typeof'=109
-'using simple names'=48
-'val'=100
-'var'=99
-'while'=97
+'true'=108
+'try'=113
+'typeof'=110
+'using simple names'=49
+'val'=101
+'var'=100
+'while'=98
 'with'=40
-'{'=86
-'|'=88
-'||'=60
-'}'=87
+'{'=87
+'|'=89
+'||'=61
+'}'=88
 RULE_ANY_OTHER=12
 RULE_DECIMAL=9
 RULE_HEX=7
@@ -130,6 +131,7 @@ T__114=114
 T__115=115
 T__116=116
 T__117=117
+T__118=118
 T__13=13
 T__14=14
 T__15=15

@@ -22,6 +22,30 @@ public class HelperResponseForNonRootObjectContainerContentsInitializationEffect
   
   private InsertEReference<NonRootObjectContainerHelper, NonRoot> change;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      NonRoot _newValue = change.getNewValue();
+      String _id = _newValue.getId();
+      newNonRoot.setId(_id);
+      EList<NonRoot> _nonRootObjectsContainment = nonRootContainer.getNonRootObjectsContainment();
+      _nonRootObjectsContainment.add(newNonRoot);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
     return newNonRoot;
   }
@@ -57,23 +81,5 @@ public class HelperResponseForNonRootObjectContainerContentsInitializationEffect
   private EObject getCorrepondenceSourceNonRootContainer(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change) {
     NonRootObjectContainerHelper _affectedEObject = change.getAffectedEObject();
     return _affectedEObject;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
-      NonRoot _newValue = change.getNewValue();
-      String _id = _newValue.getId();
-      newNonRoot.setId(_id);
-      EList<NonRoot> _nonRootObjectsContainment = nonRootContainer.getNonRootObjectsContainment();
-      _nonRootObjectsContainment.add(newNonRoot);
-    }
   }
 }

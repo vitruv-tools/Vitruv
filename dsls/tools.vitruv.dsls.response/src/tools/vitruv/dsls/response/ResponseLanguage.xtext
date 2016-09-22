@@ -85,10 +85,11 @@ Effect:
 	{Effect}
 	'effect:'
 	(elementCreation += CreateElement |
-		elementDeletion += DeleteElement)*
-	(correspondenceCreation += CreateCorrespondence | 
+		elementDeletion += DeleteElement |
+		correspondenceCreation += CreateCorrespondence | 
 		correspondenceDeletion += RemoveCorrespondence)*
-	('execute:' codeBlock=ExecutionCodeBlock)?;
+	('execute:' codeBlock=ExecutionCodeBlock)?
+	callRoutine=RoutineCallBlock?;
 
 ExplicitRoutine:
 	'routine:' name=ValidID '('	input=RoutineInput ')'
@@ -128,6 +129,10 @@ RemoveCorrespondence:
 
 // ****** CODE BLOCKS ******
 
+RoutineCallBlock returns RoutineCallBlock:
+	{RoutineCallBlock}
+	'call' CodeBlock;
+
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
 	CodeBlock;
@@ -146,4 +151,3 @@ ExecutionCodeBlock returns ExecutionCodeBlock:
 
 fragment CodeBlock:
 	code=XExpression;
-
