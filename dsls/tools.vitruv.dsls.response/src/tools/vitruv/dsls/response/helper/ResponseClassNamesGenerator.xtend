@@ -128,7 +128,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«response.name»Response'''
+			«response.name.toFirstUpper»Response'''
 		
 		public override String getPackageName() '''
 			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name.toFirstLower»'''		
@@ -141,7 +141,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«routine.name»Effect'''
+			«routine.name.toFirstUpper»Effect'''
 		
 		public override String getPackageName() '''
 			«basicEffectsPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''

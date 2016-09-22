@@ -37,7 +37,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	
 	private def JvmOperation generateCallMethod(Routine routine) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
-		return routine.toMethod("call" + routine.name, typeRef(Void.TYPE)) [
+		return routine.toMethod(routine.name, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			parameters += generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
