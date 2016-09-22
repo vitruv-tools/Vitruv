@@ -91,14 +91,13 @@ Effect:
 	('execute:' codeBlock=ExecutionCodeBlock)?;
 
 ExplicitRoutine:
-	'routine:' name=ValidID
-	input=RoutineInput
+	'routine:' name=ValidID '('	input=RoutineInput ')'
 	Routine;
 
 RoutineInput:
 	{RoutineInput}
-	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')';
+	 ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?;
 	
 // ****** CORRESPONDENCE SPECIFICATION ******	
 
