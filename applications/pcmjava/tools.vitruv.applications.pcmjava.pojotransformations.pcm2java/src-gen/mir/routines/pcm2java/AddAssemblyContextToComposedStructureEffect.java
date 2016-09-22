@@ -51,13 +51,13 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
   }
   
   private EObject getElement0(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {

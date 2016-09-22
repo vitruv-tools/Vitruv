@@ -9,16 +9,16 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
+import tools.vitruv.dsls.response.responseLanguage.Routine
 
 public class ResponseBuilder implements IResponseBuilder {
 	private ResponsesSegment responsesSegment;
-	private ExplicitRoutine routine;
+	private Routine routine;
 	private Response response;
 	
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
-		this.routine = ResponseLanguageFactory.eINSTANCE.createExplicitRoutine();
+		this.routine = ResponseLanguageFactory.eINSTANCE.createRoutine();
 		this.response.callRoutine = ResponseLanguageFactory.eINSTANCE.createRoutineCallBlock();
 		this.responsesSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
 		responsesSegment.responses += this.response;

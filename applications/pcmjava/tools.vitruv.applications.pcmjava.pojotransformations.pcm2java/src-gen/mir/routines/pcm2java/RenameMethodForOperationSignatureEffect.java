@@ -47,13 +47,13 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
     
     private void executeUserOperations(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
       final OperationInterface operationInterface = operationSignature.getInterface__OperationSignature();

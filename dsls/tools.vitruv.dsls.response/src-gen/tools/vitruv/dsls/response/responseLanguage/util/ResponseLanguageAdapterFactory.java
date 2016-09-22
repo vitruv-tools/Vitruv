@@ -143,16 +143,6 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createArbitraryModelElementChangeAdapter();
       }
       @Override
-      public Adapter caseRoutine(Routine object)
-      {
-        return createRoutineAdapter();
-      }
-      @Override
-      public Adapter caseImplicitRoutine(ImplicitRoutine object)
-      {
-        return createImplicitRoutineAdapter();
-      }
-      @Override
       public Adapter caseMatching(Matching object)
       {
         return createMatchingAdapter();
@@ -163,9 +153,9 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createEffectAdapter();
       }
       @Override
-      public Adapter caseExplicitRoutine(ExplicitRoutine object)
+      public Adapter caseRoutine(Routine object)
       {
-        return createExplicitRoutineAdapter();
+        return createRoutineAdapter();
       }
       @Override
       public Adapter caseRoutineInput(RoutineInput object)
@@ -490,36 +480,6 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.Routine <em>Routine</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.Routine
-   * @generated
-   */
-  public Adapter createRoutineAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine <em>Implicit Routine</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine
-   * @generated
-   */
-  public Adapter createImplicitRoutineAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.Matching <em>Matching</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -550,16 +510,16 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine <em>Explicit Routine</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.Routine <em>Routine</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine
    * @generated
    */
-  public Adapter createExplicitRoutineAdapter()
+  public Adapter createRoutineAdapter()
   {
     return null;
   }

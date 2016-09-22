@@ -74,8 +74,6 @@ import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
 import tools.vitruv.dsls.response.responseLanguage.Matching;
@@ -90,6 +88,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.Routine;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
@@ -173,12 +172,6 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				return; 
 			case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE:
 				sequence_CodeBlock(context, (ExistingElementReference) semanticObject); 
-				return; 
-			case ResponseLanguagePackage.EXPLICIT_ROUTINE:
-				sequence_ExplicitRoutine_Routine(context, (ExplicitRoutine) semanticObject); 
-				return; 
-			case ResponseLanguagePackage.IMPLICIT_ROUTINE:
-				sequence_Routine(context, (ImplicitRoutine) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.INSERT_ROOT_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
@@ -287,6 +280,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				return; 
 			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
 				sequence_RetrieveModelElement_Taggable(context, (RetrieveModelElement) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.ROUTINE:
+				sequence_Routine(context, (Routine) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
 				sequence_CodeBlock_RoutineCallBlock(context, (RoutineCallBlock) semanticObject); 
@@ -1008,18 +1004,6 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     ExplicitRoutine returns ExplicitRoutine
-	 *
-	 * Constraint:
-	 *     (name=ValidID input=RoutineInput matching=Matching? effect=Effect)
-	 */
-	protected void sequence_ExplicitRoutine_Routine(ISerializationContext context, ExplicitRoutine semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     InvariantViolationEvent returns InvariantViolationEvent
 	 *
 	 * Constraint:
@@ -1110,7 +1094,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     ResponsesSegment returns ResponsesSegment
 	 *
 	 * Constraint:
-	 *     (fromMetamodel=MetamodelReference toMetamodel=MetamodelReference name=ValidID (responses+=Response | routines+=ExplicitRoutine)*)
+	 *     (fromMetamodel=MetamodelReference toMetamodel=MetamodelReference name=ValidID (responses+=Response | routines+=Routine)*)
 	 */
 	protected void sequence_ResponsesSegment(ISerializationContext context, ResponsesSegment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1153,12 +1137,12 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     ImplicitRoutine returns ImplicitRoutine
+	 *     Routine returns Routine
 	 *
 	 * Constraint:
-	 *     (matching=Matching? effect=Effect)
+	 *     (name=ValidID input=RoutineInput matching=Matching? effect=Effect)
 	 */
-	protected void sequence_Routine(ISerializationContext context, ImplicitRoutine semanticObject) {
+	protected void sequence_Routine(ISerializationContext context, Routine semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

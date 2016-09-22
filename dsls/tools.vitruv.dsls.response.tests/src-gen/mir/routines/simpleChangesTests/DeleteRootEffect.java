@@ -25,13 +25,13 @@ public class DeleteRootEffect extends AbstractEffectRealization {
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
   }
   
   private EObject getElement0(final Root root, final Root oldModel) {

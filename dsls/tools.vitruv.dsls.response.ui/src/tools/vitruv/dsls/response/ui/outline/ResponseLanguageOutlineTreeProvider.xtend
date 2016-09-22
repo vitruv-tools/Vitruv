@@ -22,7 +22,6 @@ import tools.vitruv.dsls.response.responseLanguage.Effect
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 
@@ -141,7 +140,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "response: " + response.name;
 	}
 	
-	protected def Object _text(ExplicitRoutine routine) {
+	protected def Object _text(Routine routine) {
 		return "effect: " + routine.name;
 	}
 	

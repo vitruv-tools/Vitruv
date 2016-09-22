@@ -73,15 +73,15 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cResponsesAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
 		private final RuleCall cResponsesResponseParserRuleCall_6_0_0 = (RuleCall)cResponsesAssignment_6_0.eContents().get(0);
 		private final Assignment cRoutinesAssignment_6_1 = (Assignment)cAlternatives_6.eContents().get(1);
-		private final RuleCall cRoutinesExplicitRoutineParserRuleCall_6_1_0 = (RuleCall)cRoutinesAssignment_6_1.eContents().get(0);
+		private final RuleCall cRoutinesRoutineParserRuleCall_6_1_0 = (RuleCall)cRoutinesAssignment_6_1.eContents().get(0);
 		
 		//ResponsesSegment:
 		//	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference 'called'
-		//	name=ValidID (responses+=Response | routines+=ExplicitRoutine)*;
+		//	name=ValidID (responses+=Response | routines+=Routine)*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference 'called'
-		//name=ValidID (responses+=Response | routines+=ExplicitRoutine)*
+		//name=ValidID (responses+=Response | routines+=Routine)*
 		public Group getGroup() { return cGroup; }
 		
 		//'responses from metamodel'
@@ -111,7 +111,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_5_0() { return cNameValidIDParserRuleCall_5_0; }
 		
-		//(responses+=Response | routines+=ExplicitRoutine)*
+		//(responses+=Response | routines+=Routine)*
 		public Alternatives getAlternatives_6() { return cAlternatives_6; }
 		
 		//responses+=Response
@@ -120,11 +120,11 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Response
 		public RuleCall getResponsesResponseParserRuleCall_6_0_0() { return cResponsesResponseParserRuleCall_6_0_0; }
 		
-		//routines+=ExplicitRoutine
+		//routines+=Routine
 		public Assignment getRoutinesAssignment_6_1() { return cRoutinesAssignment_6_1; }
 		
-		//ExplicitRoutine
-		public RuleCall getRoutinesExplicitRoutineParserRuleCall_6_1_0() { return cRoutinesExplicitRoutineParserRuleCall_6_1_0; }
+		//Routine
+		public RuleCall getRoutinesRoutineParserRuleCall_6_1_0() { return cRoutinesRoutineParserRuleCall_6_1_0; }
 	}
 	public class ResponseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Response");
@@ -463,45 +463,6 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//'any change'
 		public Keyword getAnyChangeKeyword_1() { return cAnyChangeKeyword_1; }
 	}
-	public class RoutineElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Routine");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cMatchingAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cMatchingMatchingParserRuleCall_0_0 = (RuleCall)cMatchingAssignment_0.eContents().get(0);
-		private final Assignment cEffectAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cEffectEffectParserRuleCall_1_0 = (RuleCall)cEffectAssignment_1.eContents().get(0);
-		
-		//// ****** EFFECTS ******
-		// fragment Routine:
-		//	matching=Matching? effect=Effect;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//matching=Matching? effect=Effect
-		public Group getGroup() { return cGroup; }
-		
-		//matching=Matching?
-		public Assignment getMatchingAssignment_0() { return cMatchingAssignment_0; }
-		
-		//Matching
-		public RuleCall getMatchingMatchingParserRuleCall_0_0() { return cMatchingMatchingParserRuleCall_0_0; }
-		
-		//effect=Effect
-		public Assignment getEffectAssignment_1() { return cEffectAssignment_1; }
-		
-		//Effect
-		public RuleCall getEffectEffectParserRuleCall_1_0() { return cEffectEffectParserRuleCall_1_0; }
-	}
-	public class ImplicitRoutineElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ImplicitRoutine");
-		private final RuleCall cRoutineParserRuleCall = (RuleCall)rule.eContents().get(1);
-		
-		//ImplicitRoutine:
-		//	Routine;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//Routine
-		public RuleCall getRoutineParserRuleCall() { return cRoutineParserRuleCall; }
-	}
 	public class MatchingElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Matching");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -514,7 +475,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cConditionAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
 		private final RuleCall cConditionPreconditionCodeBlockParserRuleCall_3_1_0 = (RuleCall)cConditionAssignment_3_1.eContents().get(0);
 		
-		//Matching:
+		//// ****** EFFECTS ******
+		// Matching:
 		//	{Matching} 'match:' retrievedElements+=RetrieveModelElement* ('check:' condition=PreconditionCodeBlock)?;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -629,8 +591,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//RoutineCallBlock
 		public RuleCall getCallRoutineRoutineCallBlockParserRuleCall_4_0() { return cCallRoutineRoutineCallBlockParserRuleCall_4_0; }
 	}
-	public class ExplicitRoutineElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ExplicitRoutine");
+	public class RoutineElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Routine");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cRoutineKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
@@ -639,13 +601,16 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cInputAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cInputRoutineInputParserRuleCall_3_0 = (RuleCall)cInputAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final RuleCall cRoutineParserRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
+		private final Assignment cMatchingAssignment_5 = (Assignment)cGroup.eContents().get(5);
+		private final RuleCall cMatchingMatchingParserRuleCall_5_0 = (RuleCall)cMatchingAssignment_5.eContents().get(0);
+		private final Assignment cEffectAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cEffectEffectParserRuleCall_6_0 = (RuleCall)cEffectAssignment_6.eContents().get(0);
 		
-		//ExplicitRoutine:
-		//	'routine:' name=ValidID '(' input=RoutineInput ')' Routine;
+		//Routine:
+		//	'routine:' name=ValidID '(' input=RoutineInput ')' matching=Matching? effect=Effect;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'routine:' name=ValidID '(' input=RoutineInput ')' Routine
+		//'routine:' name=ValidID '(' input=RoutineInput ')' matching=Matching? effect=Effect
 		public Group getGroup() { return cGroup; }
 		
 		//'routine:'
@@ -669,8 +634,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//')'
 		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
 		
-		//Routine
-		public RuleCall getRoutineParserRuleCall_5() { return cRoutineParserRuleCall_5; }
+		//matching=Matching?
+		public Assignment getMatchingAssignment_5() { return cMatchingAssignment_5; }
+		
+		//Matching
+		public RuleCall getMatchingMatchingParserRuleCall_5_0() { return cMatchingMatchingParserRuleCall_5_0; }
+		
+		//effect=Effect
+		public Assignment getEffectAssignment_6() { return cEffectAssignment_6; }
+		
+		//Effect
+		public RuleCall getEffectEffectParserRuleCall_6_0() { return cEffectEffectParserRuleCall_6_0; }
 	}
 	public class RoutineInputElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineInput");
@@ -1139,11 +1113,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final AtomicMultiValuedFeatureChangeElements pAtomicMultiValuedFeatureChange;
 	private final AtomicSingleValuedFeatureChangeElements pAtomicSingleValuedFeatureChange;
 	private final ArbitraryModelElementChangeElements pArbitraryModelElementChange;
-	private final RoutineElements pRoutine;
-	private final ImplicitRoutineElements pImplicitRoutine;
 	private final MatchingElements pMatching;
 	private final EffectElements pEffect;
-	private final ExplicitRoutineElements pExplicitRoutine;
+	private final RoutineElements pRoutine;
 	private final RoutineInputElements pRoutineInput;
 	private final TaggableElements pTaggable;
 	private final RetrieveModelElementElements pRetrieveModelElement;
@@ -1189,11 +1161,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pAtomicMultiValuedFeatureChange = new AtomicMultiValuedFeatureChangeElements();
 		this.pAtomicSingleValuedFeatureChange = new AtomicSingleValuedFeatureChangeElements();
 		this.pArbitraryModelElementChange = new ArbitraryModelElementChangeElements();
-		this.pRoutine = new RoutineElements();
-		this.pImplicitRoutine = new ImplicitRoutineElements();
 		this.pMatching = new MatchingElements();
 		this.pEffect = new EffectElements();
-		this.pExplicitRoutine = new ExplicitRoutineElements();
+		this.pRoutine = new RoutineElements();
 		this.pRoutineInput = new RoutineInputElements();
 		this.pTaggable = new TaggableElements();
 		this.pRetrieveModelElement = new RetrieveModelElementElements();
@@ -1257,7 +1227,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	
 	//ResponsesSegment:
 	//	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference 'called'
-	//	name=ValidID (responses+=Response | routines+=ExplicitRoutine)*;
+	//	name=ValidID (responses+=Response | routines+=Routine)*;
 	public ResponsesSegmentElements getResponsesSegmentAccess() {
 		return pResponsesSegment;
 	}
@@ -1381,27 +1351,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//// ****** EFFECTS ******
-	// fragment Routine:
-	//	matching=Matching? effect=Effect;
-	public RoutineElements getRoutineAccess() {
-		return pRoutine;
-	}
-	
-	public ParserRule getRoutineRule() {
-		return getRoutineAccess().getRule();
-	}
-	
-	//ImplicitRoutine:
-	//	Routine;
-	public ImplicitRoutineElements getImplicitRoutineAccess() {
-		return pImplicitRoutine;
-	}
-	
-	public ParserRule getImplicitRoutineRule() {
-		return getImplicitRoutineAccess().getRule();
-	}
-	
-	//Matching:
+	// Matching:
 	//	{Matching} 'match:' retrievedElements+=RetrieveModelElement* ('check:' condition=PreconditionCodeBlock)?;
 	public MatchingElements getMatchingAccess() {
 		return pMatching;
@@ -1423,14 +1373,14 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getEffectAccess().getRule();
 	}
 	
-	//ExplicitRoutine:
-	//	'routine:' name=ValidID '(' input=RoutineInput ')' Routine;
-	public ExplicitRoutineElements getExplicitRoutineAccess() {
-		return pExplicitRoutine;
+	//Routine:
+	//	'routine:' name=ValidID '(' input=RoutineInput ')' matching=Matching? effect=Effect;
+	public RoutineElements getRoutineAccess() {
+		return pRoutine;
 	}
 	
-	public ParserRule getExplicitRoutineRule() {
-		return getExplicitRoutineAccess().getRule();
+	public ParserRule getRoutineRule() {
+		return getRoutineAccess().getRule();
 	}
 	
 	//RoutineInput:

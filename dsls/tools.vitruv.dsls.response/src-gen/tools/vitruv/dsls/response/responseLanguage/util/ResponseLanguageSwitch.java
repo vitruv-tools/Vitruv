@@ -194,21 +194,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.ROUTINE:
-      {
-        Routine routine = (Routine)theEObject;
-        T result = caseRoutine(routine);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.IMPLICIT_ROUTINE:
-      {
-        ImplicitRoutine implicitRoutine = (ImplicitRoutine)theEObject;
-        T result = caseImplicitRoutine(implicitRoutine);
-        if (result == null) result = caseRoutine(implicitRoutine);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case ResponseLanguagePackage.MATCHING:
       {
         Matching matching = (Matching)theEObject;
@@ -223,11 +208,10 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.EXPLICIT_ROUTINE:
+      case ResponseLanguagePackage.ROUTINE:
       {
-        ExplicitRoutine explicitRoutine = (ExplicitRoutine)theEObject;
-        T result = caseExplicitRoutine(explicitRoutine);
-        if (result == null) result = caseRoutine(explicitRoutine);
+        Routine routine = (Routine)theEObject;
+        T result = caseRoutine(routine);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -626,38 +610,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Routine</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Routine</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRoutine(Routine object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Implicit Routine</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Implicit Routine</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseImplicitRoutine(ImplicitRoutine object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Matching</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -690,17 +642,17 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Explicit Routine</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Routine</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Explicit Routine</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Routine</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseExplicitRoutine(ExplicitRoutine object)
+  public T caseRoutine(Routine object)
   {
     return null;
   }

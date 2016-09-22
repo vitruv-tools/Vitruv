@@ -8,8 +8,6 @@ import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper
 import tools.vitruv.dsls.response.helper.XtendImportHelper
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
@@ -143,15 +141,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«routine.routineName»Effect'''
-		
-		private static def dispatch String getRoutineName(ImplicitRoutine routine) {
-			return routine.containingResponse.name
-		}
-		
-		private static def dispatch String getRoutineName(ExplicitRoutine routine) {
-			return routine.name
-		}
+			«routine.name»Effect'''
 		
 		public override String getPackageName() '''
 			«basicEffectsPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''

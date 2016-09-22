@@ -78,11 +78,9 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ATOMIC_MULTI_VALUED_FEATURE_CHANGE: return createAtomicMultiValuedFeatureChange();
       case ResponseLanguagePackage.ATOMIC_SINGLE_VALUED_FEATURE_CHANGE: return createAtomicSingleValuedFeatureChange();
       case ResponseLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE: return createArbitraryModelElementChange();
-      case ResponseLanguagePackage.ROUTINE: return createRoutine();
-      case ResponseLanguagePackage.IMPLICIT_ROUTINE: return createImplicitRoutine();
       case ResponseLanguagePackage.MATCHING: return createMatching();
       case ResponseLanguagePackage.EFFECT: return createEffect();
-      case ResponseLanguagePackage.EXPLICIT_ROUTINE: return createExplicitRoutine();
+      case ResponseLanguagePackage.ROUTINE: return createRoutine();
       case ResponseLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
@@ -256,28 +254,6 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public Routine createRoutine()
-  {
-    RoutineImpl routine = new RoutineImpl();
-    return routine;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ImplicitRoutine createImplicitRoutine()
-  {
-    ImplicitRoutineImpl implicitRoutine = new ImplicitRoutineImpl();
-    return implicitRoutine;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public Matching createMatching()
   {
     MatchingImpl matching = new MatchingImpl();
@@ -300,10 +276,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public ExplicitRoutine createExplicitRoutine()
+  public Routine createRoutine()
   {
-    ExplicitRoutineImpl explicitRoutine = new ExplicitRoutineImpl();
-    return explicitRoutine;
+    RoutineImpl routine = new RoutineImpl();
+    return routine;
   }
 
   /**

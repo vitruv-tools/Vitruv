@@ -7,14 +7,11 @@ import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage
 import java.util.HashMap
 import tools.vitruv.dsls.response.responseLanguage.Response
-import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.response.responseLanguage.Routine
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput
 
 /**
@@ -48,14 +45,9 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 			val routineName = routine.routineClassNameGenerator.simpleName
 			if (alreadyCheckedEffects.containsKey(routineName)) {
 				val errorMessage = "Duplicate effect name: " + routineName;
-				error(errorMessage, routine, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
+				error(errorMessage, routine, ResponseLanguagePackage.Literals.ROUTINE__NAME);
 				val duplicateNameEffect = alreadyCheckedEffects.get(routineName);
-				if (duplicateNameEffect instanceof ImplicitRoutine) {
-					error(errorMessage, duplicateNameEffect.containingResponse,
-						ResponseLanguagePackage.Literals.RESPONSE__NAME);
-				} else if (duplicateNameEffect instanceof ExplicitRoutine) {
-					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
-				}
+				error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.ROUTINE__NAME);
 			}
 			alreadyCheckedEffects.put(routineName, routine);
 		}

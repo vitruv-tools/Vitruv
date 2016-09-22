@@ -44,13 +44,13 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
   }
   
   private EObject getCorrepondenceSourceTargetRoot(final Root root, final NonRoot removedNonRoot) {

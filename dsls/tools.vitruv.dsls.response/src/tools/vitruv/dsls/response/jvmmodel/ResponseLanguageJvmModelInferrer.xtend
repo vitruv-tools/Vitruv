@@ -11,10 +11,9 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseFile
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.ExecutorClassGenerator
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
-import tools.vitruv.dsls.response.jvmmodel.classgenerators.ImplicitRoutineClassGenerator
-import tools.vitruv.dsls.response.jvmmodel.classgenerators.ExplicitRoutineClassGenerator
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.RoutineFacadeClassGenerator
+import tools.vitruv.dsls.response.jvmmodel.classgenerators.RoutineClassGenerator
+import tools.vitruv.dsls.response.responseLanguage.Routine
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -43,12 +42,12 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
-	def dispatch void generate(ExplicitRoutine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void generate(Routine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
-		acceptor.accept(new ExplicitRoutineClassGenerator(routine, typesBuilderExtensionProvider).generateClass());
+		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider).generateClass());
 	}
 	
 	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {

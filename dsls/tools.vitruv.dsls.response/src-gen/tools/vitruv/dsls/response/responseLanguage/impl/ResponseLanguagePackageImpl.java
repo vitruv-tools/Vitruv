@@ -31,8 +31,6 @@ import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
 import tools.vitruv.dsls.response.responseLanguage.Matching;
@@ -161,20 +159,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass routineEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass implicitRoutineEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass matchingEClass = null;
 
   /**
@@ -189,7 +173,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass explicitRoutineEClass = null;
+  private EClass routineEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -694,46 +678,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRoutine()
-  {
-    return routineEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getRoutine_Matching()
-  {
-    return (EReference)routineEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getRoutine_Effect()
-  {
-    return (EReference)routineEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getImplicitRoutine()
-  {
-    return implicitRoutineEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getMatching()
   {
     return matchingEClass;
@@ -834,9 +778,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExplicitRoutine()
+  public EClass getRoutine()
   {
-    return explicitRoutineEClass;
+    return routineEClass;
   }
 
   /**
@@ -844,9 +788,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExplicitRoutine_Name()
+  public EAttribute getRoutine_Name()
   {
-    return (EAttribute)explicitRoutineEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)routineEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -854,9 +798,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getExplicitRoutine_Input()
+  public EReference getRoutine_Input()
   {
-    return (EReference)explicitRoutineEClass.getEStructuralFeatures().get(1);
+    return (EReference)routineEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -864,9 +808,29 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getExplicitRoutine_ResponsesSegment()
+  public EReference getRoutine_Matching()
   {
-    return (EReference)explicitRoutineEClass.getEStructuralFeatures().get(2);
+    return (EReference)routineEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRoutine_Effect()
+  {
+    return (EReference)routineEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRoutine_ResponsesSegment()
+  {
+    return (EReference)routineEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1301,12 +1265,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     arbitraryModelElementChangeEClass = createEClass(ARBITRARY_MODEL_ELEMENT_CHANGE);
 
-    routineEClass = createEClass(ROUTINE);
-    createEReference(routineEClass, ROUTINE__MATCHING);
-    createEReference(routineEClass, ROUTINE__EFFECT);
-
-    implicitRoutineEClass = createEClass(IMPLICIT_ROUTINE);
-
     matchingEClass = createEClass(MATCHING);
     createEReference(matchingEClass, MATCHING__RETRIEVED_ELEMENTS);
     createEReference(matchingEClass, MATCHING__CONDITION);
@@ -1319,10 +1277,12 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(effectEClass, EFFECT__CODE_BLOCK);
     createEReference(effectEClass, EFFECT__CALL_ROUTINE);
 
-    explicitRoutineEClass = createEClass(EXPLICIT_ROUTINE);
-    createEAttribute(explicitRoutineEClass, EXPLICIT_ROUTINE__NAME);
-    createEReference(explicitRoutineEClass, EXPLICIT_ROUTINE__INPUT);
-    createEReference(explicitRoutineEClass, EXPLICIT_ROUTINE__RESPONSES_SEGMENT);
+    routineEClass = createEClass(ROUTINE);
+    createEAttribute(routineEClass, ROUTINE__NAME);
+    createEReference(routineEClass, ROUTINE__INPUT);
+    createEReference(routineEClass, ROUTINE__MATCHING);
+    createEReference(routineEClass, ROUTINE__EFFECT);
+    createEReference(routineEClass, ROUTINE__RESPONSES_SEGMENT);
 
     routineInputEClass = createEClass(ROUTINE_INPUT);
     createEReference(routineInputEClass, ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
@@ -1425,8 +1385,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     atomicMultiValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     atomicSingleValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
-    implicitRoutineEClass.getESuperTypes().add(this.getRoutine());
-    explicitRoutineEClass.getESuperTypes().add(this.getRoutine());
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
     existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
     createCorrespondenceEClass.getESuperTypes().add(this.getTaggable());
@@ -1452,7 +1410,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getResponsesSegment_ToMetamodel(), theMirBasePackage.getMetamodelReference(), null, "toMetamodel", null, 0, 1, ResponsesSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getResponsesSegment_Name(), ecorePackage.getEString(), "name", null, 0, 1, ResponsesSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponsesSegment_Responses(), this.getResponse(), this.getResponse_ResponsesSegment(), "responses", null, 0, -1, ResponsesSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getResponsesSegment_Routines(), this.getExplicitRoutine(), this.getExplicitRoutine_ResponsesSegment(), "routines", null, 0, -1, ResponsesSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResponsesSegment_Routines(), this.getRoutine(), this.getRoutine_ResponsesSegment(), "routines", null, 0, -1, ResponsesSegment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(responseEClass, Response.class, "Response", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getResponse_Documentation(), ecorePackage.getEString(), "documentation", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1485,12 +1443,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     initEClass(arbitraryModelElementChangeEClass, ArbitraryModelElementChange.class, "ArbitraryModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(routineEClass, Routine.class, "Routine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRoutine_Matching(), this.getMatching(), null, "matching", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRoutine_Effect(), this.getEffect(), null, "effect", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(implicitRoutineEClass, ImplicitRoutine.class, "ImplicitRoutine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
     initEClass(matchingEClass, Matching.class, "Matching", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMatching_RetrievedElements(), this.getRetrieveModelElement(), null, "retrievedElements", null, 0, -1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMatching_Condition(), this.getPreconditionCodeBlock(), null, "condition", null, 0, 1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1503,10 +1455,12 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getEffect_CodeBlock(), this.getExecutionCodeBlock(), null, "codeBlock", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEffect_CallRoutine(), this.getRoutineCallBlock(), null, "callRoutine", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(explicitRoutineEClass, ExplicitRoutine.class, "ExplicitRoutine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getExplicitRoutine_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExplicitRoutine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getExplicitRoutine_Input(), this.getRoutineInput(), null, "input", null, 0, 1, ExplicitRoutine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getExplicitRoutine_ResponsesSegment(), this.getResponsesSegment(), this.getResponsesSegment_Routines(), "responsesSegment", null, 1, 1, ExplicitRoutine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(routineEClass, Routine.class, "Routine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRoutine_Name(), ecorePackage.getEString(), "name", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutine_Input(), this.getRoutineInput(), null, "input", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutine_Matching(), this.getMatching(), null, "matching", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutine_Effect(), this.getEffect(), null, "effect", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutine_ResponsesSegment(), this.getResponsesSegment(), this.getResponsesSegment_Routines(), "responsesSegment", null, 1, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(routineInputEClass, RoutineInput.class, "RoutineInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRoutineInput_ModelInputElements(), theMirBasePackage.getModelElement(), null, "modelInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -16,7 +16,7 @@ ResponsesSegment:
 	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
 	'called' name=ValidID
 	(responses+=Response |
-		routines+=ExplicitRoutine)*;
+		routines+=Routine)*;
 
 Response:
 	(documentation=ML_COMMENT)?
@@ -67,14 +67,6 @@ ArbitraryModelElementChange:
 
 // ****** EFFECTS ******
 
-
-fragment Routine:
-	matching=Matching?
-	effect=Effect;
-
-ImplicitRoutine:
-	Routine;	
-
 Matching:
 	{Matching}
 	'match:'
@@ -91,9 +83,10 @@ Effect:
 	('execute:' codeBlock=ExecutionCodeBlock)?
 	callRoutine=RoutineCallBlock?;
 
-ExplicitRoutine:
+Routine:
 	'routine:' name=ValidID '('	input=RoutineInput ')'
-	Routine;
+	matching=Matching?
+	effect=Effect;
 
 RoutineInput:
 	{RoutineInput}

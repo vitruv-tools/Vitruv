@@ -9,10 +9,10 @@ import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.response.AbstractEffectsFacade
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
+import tools.vitruv.dsls.response.responseLanguage.Routine
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
-	private val List<ExplicitRoutine> routines;
+	private val List<Routine> routines;
 	private val ClassNameGenerator routinesFacadeNameGenerator;
 	
 	new(ResponsesSegment responsesSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
@@ -35,7 +35,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		]
 	}
 	
-	private def JvmOperation generateCallMethod(ExplicitRoutine routine) {
+	private def JvmOperation generateCallMethod(Routine routine) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
 		return routine.toMethod("call" + routine.name, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;

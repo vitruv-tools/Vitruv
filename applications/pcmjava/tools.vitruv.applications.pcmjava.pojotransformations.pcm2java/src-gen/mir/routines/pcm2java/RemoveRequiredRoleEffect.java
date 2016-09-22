@@ -82,13 +82,13 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
     
     private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
       EList<Member> _members = javaClass.getMembers();

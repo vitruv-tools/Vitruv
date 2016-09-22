@@ -57,13 +57,13 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-    
-    @Extension
-    private RoutinesFacade effectFacade;
   }
   
   private EObject getElement0(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {

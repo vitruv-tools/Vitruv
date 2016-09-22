@@ -129,8 +129,8 @@ public interface ResponsesSegment extends EObject
 
   /**
    * Returns the value of the '<em><b>Routines</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine}.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine#getResponsesSegment <em>Responses Segment</em>}'.
+   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.Routine}.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}'.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Routines</em>' containment reference list isn't clear,
@@ -139,10 +139,10 @@ public interface ResponsesSegment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Routines</em>' containment reference list.
    * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Routines()
-   * @see tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine#getResponsesSegment
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment
    * @model opposite="responsesSegment" containment="true"
    * @generated
    */
-  EList<ExplicitRoutine> getRoutines();
+  EList<Routine> getRoutines();
 
 } // ResponsesSegment

@@ -17,7 +17,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="responses" upperBound="-1"
         eType="#//Response" containment="true" eOpposite="#//Response/responsesSegment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="routines" upperBound="-1"
-        eType="#//ExplicitRoutine" containment="true" eOpposite="#//ExplicitRoutine/responsesSegment"/>
+        eType="#//Routine" containment="true" eOpposite="#//Routine/responsesSegment"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Response">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -50,13 +50,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="AtomicMultiValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicSingleValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArbitraryModelElementChange" eSuperTypes="#//ModelChange"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Routine">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="matching" eType="#//Matching"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ImplicitRoutine" eSuperTypes="#//Routine"/>
   <eClassifiers xsi:type="ecore:EClass" name="Matching">
     <eStructuralFeatures xsi:type="ecore:EReference" name="retrievedElements" upperBound="-1"
         eType="#//RetrieveModelElement" containment="true"/>
@@ -77,9 +70,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ExplicitRoutine" eSuperTypes="#//Routine">
+  <eClassifiers xsi:type="ecore:EClass" name="Routine">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//RoutineInput"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matching" eType="#//Matching"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
         eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/routines"/>

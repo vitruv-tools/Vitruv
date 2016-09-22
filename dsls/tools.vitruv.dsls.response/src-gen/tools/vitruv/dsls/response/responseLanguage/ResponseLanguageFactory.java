@@ -141,24 +141,6 @@ public interface ResponseLanguageFactory extends EFactory
   ArbitraryModelElementChange createArbitraryModelElementChange();
 
   /**
-   * Returns a new object of class '<em>Routine</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Routine</em>'.
-   * @generated
-   */
-  Routine createRoutine();
-
-  /**
-   * Returns a new object of class '<em>Implicit Routine</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Implicit Routine</em>'.
-   * @generated
-   */
-  ImplicitRoutine createImplicitRoutine();
-
-  /**
    * Returns a new object of class '<em>Matching</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -177,13 +159,13 @@ public interface ResponseLanguageFactory extends EFactory
   Effect createEffect();
 
   /**
-   * Returns a new object of class '<em>Explicit Routine</em>'.
+   * Returns a new object of class '<em>Routine</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Explicit Routine</em>'.
+   * @return a new object of class '<em>Routine</em>'.
    * @generated
    */
-  ExplicitRoutine createExplicitRoutine();
+  Routine createRoutine();
 
   /**
    * Returns a new object of class '<em>Routine Input</em>'.

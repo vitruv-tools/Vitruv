@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
 import tools.vitruv.dsls.response.responseLanguage.Response;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
+import tools.vitruv.dsls.response.responseLanguage.Routine;
 
 /**
  * <!-- begin-user-doc -->
@@ -103,7 +103,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * @generated
    * @ordered
    */
-  protected EList<ExplicitRoutine> routines;
+  protected EList<Routine> routines;
 
   /**
    * <!-- begin-user-doc -->
@@ -264,11 +264,11 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ExplicitRoutine> getRoutines()
+  public EList<Routine> getRoutines()
   {
     if (routines == null)
     {
-      routines = new EObjectContainmentWithInverseEList<ExplicitRoutine>(ExplicitRoutine.class, this, ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES, ResponseLanguagePackage.EXPLICIT_ROUTINE__RESPONSES_SEGMENT);
+      routines = new EObjectContainmentWithInverseEList<Routine>(Routine.class, this, ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES, ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT);
     }
     return routines;
   }
@@ -364,7 +364,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
         return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
         getRoutines().clear();
-        getRoutines().addAll((Collection<? extends ExplicitRoutine>)newValue);
+        getRoutines().addAll((Collection<? extends Routine>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

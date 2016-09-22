@@ -21,14 +21,17 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.Taggable
-import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 import tools.vitruv.dsls.response.responseLanguage.CreateElement
 import tools.vitruv.dsls.response.responseLanguage.DeleteElement
 import tools.vitruv.dsls.response.responseLanguage.Matching
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
+import java.util.List
+import tools.vitruv.dsls.mirbase.mirBase.ModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
+import tools.vitruv.dsls.response.responseLanguage.Routine
 
-abstract class RoutineClassGenerator extends ClassGenerator {
+class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
 	protected final boolean hasExecutionBlock;
 	protected final boolean hasRoutineCallBlock;
@@ -40,6 +43,8 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 	private final ClassNameGenerator routineClassNameGenerator;
 	private final CallRoutineClassGenerator callRoutineClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
+	private final List<ModelElement> modelInputElements;
+	private final List<NamedJavaElement> javaInputElements;
 	
 	private int elementMethodCounter;
 	private int tagMethodCounter;
@@ -58,11 +63,19 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 		this.callRoutineClassGenerator = new CallRoutineClassGenerator(typesBuilderExtensionProvider, routine, 
 			routineClassNameGenerator.qualifiedName + "." + EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME, routinesFacadeClassNameGenerator);
+		this.modelInputElements = routine.input.modelInputElements;
+		this.javaInputElements = routine.input.javaInputElements;
 		this.elementMethodCounter = 0;
 		this.tagMethodCounter = 0;
 	}
 	
-	protected abstract def Iterable<JvmFormalParameter> generateInputParameters(EObject sourceObject);
+	private def Iterable<JvmFormalParameter> generateInputParameters(EObject contextObject) {
+		return generateMethodInputParameters(contextObject, modelInputElements, javaInputElements);
+	}
+	
+	def private getInputParameterNames() {
+		return modelInputElements.map[name]+ javaInputElements.map[name];
+	}
 	
 	protected def Iterable<JvmFormalParameter> generateInputAndRetrievedElementsParameters(EObject sourceObject) {
 		return generateInputParameters(sourceObject) + retrievedElements.map[if (it.element != null) sourceObject.generateModelElementParameter(it.element) else null].filterNull;
@@ -79,8 +92,6 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 	protected def Iterable<String> getAccessibleElementsParameterNames() {
 		return inputAndRetrievedElementsParameterNames + createElements.map[it.element.name];
 	}
-	
-	protected abstract def Iterable<String> getInputParameterNames();
 	
 	protected def getParameterCallListWithModelInputAndAccesibleElements(String... parameterStrings) {
 		getParameterCallList(accessibleElementsParameterNames + parameterStrings);
