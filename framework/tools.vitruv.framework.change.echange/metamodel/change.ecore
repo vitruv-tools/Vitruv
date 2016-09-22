@@ -101,12 +101,12 @@
         </eTypeParameters>
         <eOperations name="isFromNonDefaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
           <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="return getOldValue() != getAffectedFeature().getDefaultValue();"/>
+            <details key="body" value="return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());"/>
           </eAnnotations>
         </eOperations>
         <eOperations name="isToNonDefaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
           <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-            <details key="body" value="return getNewValue() != getAffectedFeature().getDefaultValue();"/>
+            <details key="body" value="return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());"/>
           </eAnnotations>
         </eOperations>
         <eGenericSuperTypes eClassifier="#//feature/UpdateSingleValuedFeatureEChange">

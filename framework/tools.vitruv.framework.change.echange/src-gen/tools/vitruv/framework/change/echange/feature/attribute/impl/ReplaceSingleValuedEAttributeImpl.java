@@ -95,7 +95,7 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @generated
 	 */
 	public boolean isFromNonDefaultValue() {
-		return getOldValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @generated
 	 */
 	public boolean isToNonDefaultValue() {
-		return getNewValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**

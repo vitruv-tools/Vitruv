@@ -52,7 +52,7 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isFromNonDefaultValue() {
-		return getOldValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**
@@ -61,7 +61,7 @@ public abstract class ReplaceSingleValuedFeatureEChangeImpl<A extends EObject, F
 	 * @generated
 	 */
 	public boolean isToNonDefaultValue() {
-		return getNewValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**

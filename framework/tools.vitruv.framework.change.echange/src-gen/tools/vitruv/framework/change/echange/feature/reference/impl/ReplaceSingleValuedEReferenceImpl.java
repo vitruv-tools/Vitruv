@@ -157,7 +157,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public boolean isFromNonDefaultValue() {
-		return getOldValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getOldValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @generated
 	 */
 	public boolean isToNonDefaultValue() {
-		return getNewValue() != getAffectedFeature().getDefaultValue();
+		return !java.util.Objects.equals(getNewValue(), getAffectedFeature().getDefaultValue());
 	}
 
 	/**
