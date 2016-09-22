@@ -44,6 +44,8 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getAlternatives(), "rule__AtomicMultiValuedFeatureChange__Alternatives");
 					put(grammarAccess.getEffectAccess().getAlternatives_2(), "rule__Effect__Alternatives_2");
 					put(grammarAccess.getEffectAccess().getAlternatives_3(), "rule__Effect__Alternatives_3");
+					put(grammarAccess.getRoutineInputAccess().getAlternatives_2_0(), "rule__RoutineInput__Alternatives_2_0");
+					put(grammarAccess.getRoutineInputAccess().getAlternatives_2_1_1(), "rule__RoutineInput__Alternatives_2_1_1");
 					put(grammarAccess.getRetrieveModelElementAccess().getAlternatives_0(), "rule__RetrieveModelElement__Alternatives_0");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives(), "rule__XAssignment__Alternatives");
 					put(grammarAccess.getOpMultiAssignAccess().getAlternatives(), "rule__OpMultiAssign__Alternatives");
@@ -106,10 +108,10 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getEffectAccess().getGroup_4(), "rule__Effect__Group_4__0");
 					put(grammarAccess.getExplicitRoutineAccess().getGroup(), "rule__ExplicitRoutine__Group__0");
 					put(grammarAccess.getRoutineInputAccess().getGroup(), "rule__RoutineInput__Group__0");
-					put(grammarAccess.getRoutineInputAccess().getGroup_1(), "rule__RoutineInput__Group_1__0");
-					put(grammarAccess.getRoutineInputAccess().getGroup_1_2(), "rule__RoutineInput__Group_1_2__0");
 					put(grammarAccess.getRoutineInputAccess().getGroup_2(), "rule__RoutineInput__Group_2__0");
-					put(grammarAccess.getRoutineInputAccess().getGroup_2_2(), "rule__RoutineInput__Group_2_2__0");
+					put(grammarAccess.getRoutineInputAccess().getGroup_2_0_1(), "rule__RoutineInput__Group_2_0_1__0");
+					put(grammarAccess.getRoutineInputAccess().getGroup_2_1(), "rule__RoutineInput__Group_2_1__0");
+					put(grammarAccess.getRoutineInputAccess().getGroup_2_1_1_1(), "rule__RoutineInput__Group_2_1_1_1__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup(), "rule__RetrieveModelElement__Group__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_4(), "rule__RetrieveModelElement__Group_4__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_5(), "rule__RetrieveModelElement__Group_5__0");
@@ -126,6 +128,7 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup_1(), "rule__NamedModelElement__Group_1__0");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getGroup(), "rule__ClassicallyNamedModelElement__Group__0");
 					put(grammarAccess.getFeatureOfElementAccess().getGroup(), "rule__FeatureOfElement__Group__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_0(), "rule__XAssignment__Group_0__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1(), "rule__XAssignment__Group_1__0");
@@ -332,10 +335,10 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getEffectAccess().getCodeBlockAssignment_4_1(), "rule__Effect__CodeBlockAssignment_4_1");
 					put(grammarAccess.getExplicitRoutineAccess().getNameAssignment_1(), "rule__ExplicitRoutine__NameAssignment_1");
 					put(grammarAccess.getExplicitRoutineAccess().getInputAssignment_2(), "rule__ExplicitRoutine__InputAssignment_2");
-					put(grammarAccess.getRoutineInputAccess().getModelInputElementsAssignment_1_1(), "rule__RoutineInput__ModelInputElementsAssignment_1_1");
-					put(grammarAccess.getRoutineInputAccess().getModelInputElementsAssignment_1_2_1(), "rule__RoutineInput__ModelInputElementsAssignment_1_2_1");
-					put(grammarAccess.getRoutineInputAccess().getJavaInputElementsAssignment_2_1(), "rule__RoutineInput__JavaInputElementsAssignment_2_1");
-					put(grammarAccess.getRoutineInputAccess().getJavaInputElementsAssignment_2_2_1(), "rule__RoutineInput__JavaInputElementsAssignment_2_2_1");
+					put(grammarAccess.getRoutineInputAccess().getModelInputElementsAssignment_2_0_0(), "rule__RoutineInput__ModelInputElementsAssignment_2_0_0");
+					put(grammarAccess.getRoutineInputAccess().getJavaInputElementsAssignment_2_0_1_1(), "rule__RoutineInput__JavaInputElementsAssignment_2_0_1_1");
+					put(grammarAccess.getRoutineInputAccess().getModelInputElementsAssignment_2_1_1_0(), "rule__RoutineInput__ModelInputElementsAssignment_2_1_1_0");
+					put(grammarAccess.getRoutineInputAccess().getJavaInputElementsAssignment_2_1_1_1_1(), "rule__RoutineInput__JavaInputElementsAssignment_2_1_1_1_1");
 					put(grammarAccess.getTaggableAccess().getTagAssignment(), "rule__Taggable__TagAssignment");
 					put(grammarAccess.getRetrieveModelElementAccess().getRequiredAssignment_0_0(), "rule__RetrieveModelElement__RequiredAssignment_0_0");
 					put(grammarAccess.getRetrieveModelElementAccess().getOptionalAssignment_0_1(), "rule__RetrieveModelElement__OptionalAssignment_0_1");
@@ -359,6 +362,8 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelElementAccess().getElementAssignment(), "rule__ModelElement__ElementAssignment");
 					put(grammarAccess.getNamedModelElementAccess().getElementAssignment_0(), "rule__NamedModelElement__ElementAssignment_0");
 					put(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1(), "rule__NamedModelElement__NameAssignment_1_1");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getElementAssignment_0(), "rule__ClassicallyNamedModelElement__ElementAssignment_0");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getNameAssignment_1(), "rule__ClassicallyNamedModelElement__NameAssignment_1");
 					put(grammarAccess.getFeatureOfElementAccess().getElementAssignment_0(), "rule__FeatureOfElement__ElementAssignment_0");
 					put(grammarAccess.getFeatureOfElementAccess().getFeatureAssignment_2(), "rule__FeatureOfElement__FeatureAssignment_2");
 					put(grammarAccess.getMetamodelReferenceAccess().getModelAssignment(), "rule__MetamodelReference__ModelAssignment");

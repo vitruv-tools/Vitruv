@@ -1187,41 +1187,18 @@ ruleRoutineInput returns [EObject current=null]
 					$current);
 			}
 		)
+		otherlv_1='('
+		{
+			newLeafNode(otherlv_1, grammarAccess.getRoutineInputAccess().getLeftParenthesisKeyword_1());
+		}
 		(
-			otherlv_1='input:'
-			{
-				newLeafNode(otherlv_1, grammarAccess.getRoutineInputAccess().getInputKeyword_1_0());
-			}
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getRoutineInputAccess().getModelInputElementsNamedModelElementParserRuleCall_1_1_0());
-					}
-					lv_modelInputElements_2_0=ruleNamedModelElement
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
-						}
-						add(
-							$current,
-							"modelInputElements",
-							lv_modelInputElements_2_0,
-							"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			(
-				otherlv_3=','
-				{
-					newLeafNode(otherlv_3, grammarAccess.getRoutineInputAccess().getCommaKeyword_1_2_0());
-				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getRoutineInputAccess().getModelInputElementsNamedModelElementParserRuleCall_1_2_1_0());
+							newCompositeNode(grammarAccess.getRoutineInputAccess().getModelInputElementsClassicallyNamedModelElementParserRuleCall_2_0_0_0());
 						}
-						lv_modelInputElements_4_0=ruleNamedModelElement
+						lv_modelInputElements_2_0=ruleClassicallyNamedModelElement
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
@@ -1229,64 +1206,97 @@ ruleRoutineInput returns [EObject current=null]
 							add(
 								$current,
 								"modelInputElements",
-								lv_modelInputElements_4_0,
-								"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
+								lv_modelInputElements_2_0,
+								"tools.vitruv.dsls.mirbase.MirBase.ClassicallyNamedModelElement");
 							afterParserOrEnumRuleCall();
 						}
 					)
 				)
-			)*
-		)?
-		(
-			otherlv_5='plain java input:'
-			{
-				newLeafNode(otherlv_5, grammarAccess.getRoutineInputAccess().getPlainJavaInputKeyword_2_0());
-			}
-			(
+				    |
 				(
+					otherlv_3='plain:'
 					{
-						newCompositeNode(grammarAccess.getRoutineInputAccess().getJavaInputElementsNamedJavaElementParserRuleCall_2_1_0());
+						newLeafNode(otherlv_3, grammarAccess.getRoutineInputAccess().getPlainKeyword_2_0_1_0());
 					}
-					lv_javaInputElements_6_0=ruleNamedJavaElement
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
-						}
-						add(
-							$current,
-							"javaInputElements",
-							lv_javaInputElements_6_0,
-							"tools.vitruv.dsls.mirbase.MirBase.NamedJavaElement");
-						afterParserOrEnumRuleCall();
-					}
+					(
+						(
+							{
+								newCompositeNode(grammarAccess.getRoutineInputAccess().getJavaInputElementsNamedJavaElementParserRuleCall_2_0_1_1_0());
+							}
+							lv_javaInputElements_4_0=ruleNamedJavaElement
+							{
+								if ($current==null) {
+									$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
+								}
+								add(
+									$current,
+									"javaInputElements",
+									lv_javaInputElements_4_0,
+									"tools.vitruv.dsls.mirbase.MirBase.NamedJavaElement");
+								afterParserOrEnumRuleCall();
+							}
+						)
+					)
 				)
 			)
 			(
-				otherlv_7=','
+				otherlv_5=','
 				{
-					newLeafNode(otherlv_7, grammarAccess.getRoutineInputAccess().getCommaKeyword_2_2_0());
+					newLeafNode(otherlv_5, grammarAccess.getRoutineInputAccess().getCommaKeyword_2_1_0());
 				}
 				(
 					(
-						{
-							newCompositeNode(grammarAccess.getRoutineInputAccess().getJavaInputElementsNamedJavaElementParserRuleCall_2_2_1_0());
-						}
-						lv_javaInputElements_8_0=ruleNamedJavaElement
-						{
-							if ($current==null) {
-								$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
+						(
+							{
+								newCompositeNode(grammarAccess.getRoutineInputAccess().getModelInputElementsClassicallyNamedModelElementParserRuleCall_2_1_1_0_0());
 							}
-							add(
-								$current,
-								"javaInputElements",
-								lv_javaInputElements_8_0,
-								"tools.vitruv.dsls.mirbase.MirBase.NamedJavaElement");
-							afterParserOrEnumRuleCall();
+							lv_modelInputElements_6_0=ruleClassicallyNamedModelElement
+							{
+								if ($current==null) {
+									$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
+								}
+								add(
+									$current,
+									"modelInputElements",
+									lv_modelInputElements_6_0,
+									"tools.vitruv.dsls.mirbase.MirBase.ClassicallyNamedModelElement");
+								afterParserOrEnumRuleCall();
+							}
+						)
+					)
+					    |
+					(
+						otherlv_7='plain:'
+						{
+							newLeafNode(otherlv_7, grammarAccess.getRoutineInputAccess().getPlainKeyword_2_1_1_1_0());
 						}
+						(
+							(
+								{
+									newCompositeNode(grammarAccess.getRoutineInputAccess().getJavaInputElementsNamedJavaElementParserRuleCall_2_1_1_1_1_0());
+								}
+								lv_javaInputElements_8_0=ruleNamedJavaElement
+								{
+									if ($current==null) {
+										$current = createModelElementForParent(grammarAccess.getRoutineInputRule());
+									}
+									add(
+										$current,
+										"javaInputElements",
+										lv_javaInputElements_8_0,
+										"tools.vitruv.dsls.mirbase.MirBase.NamedJavaElement");
+									afterParserOrEnumRuleCall();
+								}
+							)
+						)
 					)
 				)
 			)*
 		)?
+		otherlv_9=')'
+		{
+			newLeafNode(otherlv_9, grammarAccess.getRoutineInputAccess().getRightParenthesisKeyword_3());
+		}
 	)
 ;
 
@@ -2158,6 +2168,60 @@ ruleNamedModelElement returns [EObject current=null]
 						afterParserOrEnumRuleCall();
 					}
 				)
+			)
+		)?
+	)
+;
+
+// Entry rule entryRuleClassicallyNamedModelElement
+entryRuleClassicallyNamedModelElement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getClassicallyNamedModelElementRule()); }
+	iv_ruleClassicallyNamedModelElement=ruleClassicallyNamedModelElement
+	{ $current=$iv_ruleClassicallyNamedModelElement.current; }
+	EOF;
+
+// Rule ClassicallyNamedModelElement
+ruleClassicallyNamedModelElement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getClassicallyNamedModelElementRule());
+					}
+				}
+				{
+					newCompositeNode(grammarAccess.getClassicallyNamedModelElementAccess().getElementEClassCrossReference_0_0());
+				}
+				ruleQualifiedName
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getClassicallyNamedModelElementAccess().getNameValidIDParserRuleCall_1_0());
+				}
+				lv_name_1_0=ruleValidID
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getClassicallyNamedModelElementRule());
+					}
+					set(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.xbase.Xtype.ValidID");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)?
 	)

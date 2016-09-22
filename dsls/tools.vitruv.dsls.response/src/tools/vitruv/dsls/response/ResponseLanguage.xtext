@@ -94,14 +94,12 @@ ExplicitRoutine:
 	'routine:' name=ValidID
 	input=RoutineInput
 	Routine;
-	
+
 RoutineInput:
 	{RoutineInput}
-	('input:' modelInputElements+=NamedModelElement (',' modelInputElements+=NamedModelElement)*)?
-	('plain java input:' javaInputElements+=NamedJavaElement (',' javaInputElements+=NamedJavaElement)*)?;
-
-
-
+	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')';
+	
 // ****** CORRESPONDENCE SPECIFICATION ******	
 
 fragment Taggable:

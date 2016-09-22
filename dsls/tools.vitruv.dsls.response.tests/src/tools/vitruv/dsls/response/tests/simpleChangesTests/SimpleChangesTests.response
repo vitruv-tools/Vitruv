@@ -88,8 +88,7 @@ effect: execute: {
 	}
 }
 
-routine: DeleteNonRootEObjectSingle
-input: minimal.NonRoot as containedObject
+routine: DeleteNonRootEObjectSingle(minimal.NonRoot containedObject)
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to containedObject
 effect:
@@ -98,8 +97,7 @@ effect:
 		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
 	}
 
-routine: CreateNonRootEObjectSingle
-input: minimal.Root as sourceRoot, minimal.NonRoot as containedObject
+routine: CreateNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to sourceRoot
 effect:
