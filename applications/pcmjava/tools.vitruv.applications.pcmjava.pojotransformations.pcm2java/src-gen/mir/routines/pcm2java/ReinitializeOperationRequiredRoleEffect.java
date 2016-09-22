@@ -35,8 +35,8 @@ public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectReali
     
     private void executeUserOperations(final OperationRequiredRole requiredRole) {
       InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
-      this.effectFacade.callRemoveRequiredRole(requiredRole, _requiringEntity_RequiredRole);
-      this.effectFacade.callAddRequiredRole(requiredRole);
+      this.effectFacade.removeRequiredRole(requiredRole, _requiringEntity_RequiredRole);
+      this.effectFacade.addRequiredRole(requiredRole);
     }
   }
   

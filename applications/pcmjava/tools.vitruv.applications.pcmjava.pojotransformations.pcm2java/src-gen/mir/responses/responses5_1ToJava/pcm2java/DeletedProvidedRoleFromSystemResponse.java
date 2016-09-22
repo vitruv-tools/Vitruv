@@ -64,7 +64,7 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
     
     private void executeUserOperations(final RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> change) {
       ProvidedRole _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveProvidedRole(_oldValue);
+      this.effectFacade.removeProvidedRole(_oldValue);
     }
   }
 }

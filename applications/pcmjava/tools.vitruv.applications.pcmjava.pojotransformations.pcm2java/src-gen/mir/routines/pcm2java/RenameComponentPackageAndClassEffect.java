@@ -36,8 +36,8 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     
     private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
       String _entityName = component.getEntityName();
-      this.effectFacade.callRenameJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.callRenameComponentClass(component);
+      this.effectFacade.renameJavaPackage(component, repositoryPackage, _entityName, null);
+      this.effectFacade.renameComponentClass(component);
     }
   }
   

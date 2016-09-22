@@ -94,7 +94,7 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
       EList<Member> _members = javaClass.getMembers();
       Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
       for (final Constructor ctor : _filter) {
-        this.effectFacade.callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
+        this.effectFacade.removeCorrespondingParameterFromConstructor(ctor, requiredRole);
       }
     }
   }

@@ -65,7 +65,7 @@ class DeletedSeffResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final RemoveEReference<BasicComponent, ServiceEffectSpecification> change) {
       ServiceEffectSpecification _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteMethodForSeff(_oldValue);
+      this.effectFacade.deleteMethodForSeff(_oldValue);
     }
   }
 }

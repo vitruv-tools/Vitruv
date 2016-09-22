@@ -39,7 +39,7 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
     private void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class newJavaDataType) {
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       final TypeReference newDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, newJavaDataType);
-      this.effectFacade.callChangeInnerDeclarationType(innerDeclaration, newDataTypeReference);
+      this.effectFacade.changeInnerDeclarationType(innerDeclaration, newDataTypeReference);
     }
   }
   

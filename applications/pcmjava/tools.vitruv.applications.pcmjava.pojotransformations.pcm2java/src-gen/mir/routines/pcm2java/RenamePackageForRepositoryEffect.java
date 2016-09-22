@@ -49,27 +49,27 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     }
     
     private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
-      this.effectFacade.callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
-      this.effectFacade.callRenameJavaPackage(repository, rootPackage, "datatypes", "datatypes");
+      this.effectFacade.renameJavaPackage(repository, rootPackage, "contracts", "contracts");
+      this.effectFacade.renameJavaPackage(repository, rootPackage, "datatypes", "datatypes");
       EList<RepositoryComponent> _components__Repository = repository.getComponents__Repository();
       Iterable<BasicComponent> _filter = Iterables.<BasicComponent>filter(_components__Repository, BasicComponent.class);
       for (final BasicComponent component : _filter) {
-        this.effectFacade.callRenameComponentPackageAndClass(component);
+        this.effectFacade.renameComponentPackageAndClass(component);
       }
       EList<Interface> _interfaces__Repository = repository.getInterfaces__Repository();
       Iterable<OperationInterface> _filter_1 = Iterables.<OperationInterface>filter(_interfaces__Repository, OperationInterface.class);
       for (final OperationInterface interface_ : _filter_1) {
-        this.effectFacade.callRenameInterface(interface_);
+        this.effectFacade.renameInterface(interface_);
       }
       EList<DataType> _dataTypes__Repository = repository.getDataTypes__Repository();
       Iterable<CompositeDataType> _filter_2 = Iterables.<CompositeDataType>filter(_dataTypes__Repository, CompositeDataType.class);
       for (final CompositeDataType dataType : _filter_2) {
-        this.effectFacade.callRenameCompositeDataType(dataType);
+        this.effectFacade.renameCompositeDataType(dataType);
       }
       EList<DataType> _dataTypes__Repository_1 = repository.getDataTypes__Repository();
       Iterable<CollectionDataType> _filter_3 = Iterables.<CollectionDataType>filter(_dataTypes__Repository_1, CollectionDataType.class);
       for (final CollectionDataType dataType_1 : _filter_3) {
-        this.effectFacade.callRenameCollectionDataType(dataType_1);
+        this.effectFacade.renameCollectionDataType(dataType_1);
       }
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
       this.persistProjectRelative(repository, rootPackage, _buildJavaFilePath);

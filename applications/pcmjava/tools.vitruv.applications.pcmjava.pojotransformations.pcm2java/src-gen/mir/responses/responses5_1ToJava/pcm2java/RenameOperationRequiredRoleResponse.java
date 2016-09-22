@@ -64,7 +64,7 @@ class RenameOperationRequiredRoleResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<OperationRequiredRole, String> change) {
       OperationRequiredRole _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callReinitializeOperationRequiredRole(_affectedEObject);
+      this.effectFacade.reinitializeOperationRequiredRole(_affectedEObject);
     }
   }
 }

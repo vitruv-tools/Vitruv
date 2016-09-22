@@ -44,7 +44,7 @@ public class CreateMethodForOperationSignatureEffect extends AbstractEffectReali
       String _entityName = operationSignature.getEntityName();
       interfaceMethod.setName(_entityName);
       DataType _returnType__OperationSignature = operationSignature.getReturnType__OperationSignature();
-      this.effectFacade.callChangeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
+      this.effectFacade.changeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
       EList<Member> _members = javaInterface.getMembers();
       _members.add(interfaceMethod);
     }

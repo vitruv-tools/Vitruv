@@ -60,8 +60,8 @@ class CreatedSystemResponse extends AbstractResponseRealization {
     private void executeUserOperations(final InsertRootEObject<org.palladiosimulator.pcm.system.System> change) {
       final org.palladiosimulator.pcm.system.System system = change.getNewValue();
       String _entityName = system.getEntityName();
-      this.effectFacade.callCreateJavaPackage(system, null, _entityName, "root_system");
-      this.effectFacade.callCreateImplementationForSystem(system);
+      this.effectFacade.createJavaPackage(system, null, _entityName, "root_system");
+      this.effectFacade.createImplementationForSystem(system);
     }
   }
 }

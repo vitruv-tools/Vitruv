@@ -65,7 +65,7 @@ class DeletedDemandingInternalBehaviorResponse extends AbstractResponseRealizati
     
     private void executeUserOperations(final RemoveEReference<BasicComponent, ResourceDemandingInternalBehaviour> change) {
       ResourceDemandingInternalBehaviour _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteMethodForResourceDemandingBehavior(_oldValue);
+      this.effectFacade.deleteMethodForResourceDemandingBehavior(_oldValue);
     }
   }
 }

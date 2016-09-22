@@ -76,7 +76,7 @@ class DeletedRequiredRoleResponse extends AbstractResponseRealization {
     private void executeUserOperations(final RemoveEReference<InterfaceRequiringEntity, RequiredRole> change) {
       RequiredRole _oldValue = change.getOldValue();
       InterfaceRequiringEntity _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRemoveRequiredRole(_oldValue, ((RepositoryComponent) _affectedEObject));
+      this.effectFacade.removeRequiredRole(_oldValue, ((RepositoryComponent) _affectedEObject));
     }
   }
 }

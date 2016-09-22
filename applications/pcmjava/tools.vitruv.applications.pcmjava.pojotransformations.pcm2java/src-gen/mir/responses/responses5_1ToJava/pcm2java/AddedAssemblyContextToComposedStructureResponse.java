@@ -66,7 +66,7 @@ class AddedAssemblyContextToComposedStructureResponse extends AbstractResponseRe
     private void executeUserOperations(final InsertEReference<ComposedStructure, AssemblyContext> change) {
       ComposedStructure _affectedEObject = change.getAffectedEObject();
       AssemblyContext _newValue = change.getNewValue();
-      this.effectFacade.callAddAssemblyContextToComposedStructure(_affectedEObject, _newValue);
+      this.effectFacade.addAssemblyContextToComposedStructure(_affectedEObject, _newValue);
     }
   }
 }

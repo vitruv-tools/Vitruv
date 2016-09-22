@@ -60,8 +60,8 @@ class DeletedSystemResponse extends AbstractResponseRealization {
     private void executeUserOperations(final RemoveRootEObject<org.palladiosimulator.pcm.system.System> change) {
       final org.palladiosimulator.pcm.system.System system = change.getOldValue();
       String _entityName = system.getEntityName();
-      this.effectFacade.callDeleteJavaPackage(system, _entityName, "root_system");
-      this.effectFacade.callDeleteJavaClassifier(system);
+      this.effectFacade.deleteJavaPackage(system, _entityName, "root_system");
+      this.effectFacade.deleteJavaClassifier(system);
     }
   }
 }

@@ -65,7 +65,7 @@ class DeletedProvidedRoleFromComponentResponse extends AbstractResponseRealizati
     
     private void executeUserOperations(final RemoveEReference<RepositoryComponent, ProvidedRole> change) {
       ProvidedRole _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveProvidedRole(_oldValue);
+      this.effectFacade.removeProvidedRole(_oldValue);
     }
   }
 }

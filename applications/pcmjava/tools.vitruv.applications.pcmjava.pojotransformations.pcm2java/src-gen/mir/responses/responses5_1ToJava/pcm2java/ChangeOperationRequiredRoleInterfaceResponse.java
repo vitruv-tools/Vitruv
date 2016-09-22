@@ -65,7 +65,7 @@ class ChangeOperationRequiredRoleInterfaceResponse extends AbstractResponseReali
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationRequiredRole, OperationInterface> change) {
       OperationRequiredRole _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callReinitializeOperationRequiredRole(_affectedEObject);
+      this.effectFacade.reinitializeOperationRequiredRole(_affectedEObject);
     }
   }
 }

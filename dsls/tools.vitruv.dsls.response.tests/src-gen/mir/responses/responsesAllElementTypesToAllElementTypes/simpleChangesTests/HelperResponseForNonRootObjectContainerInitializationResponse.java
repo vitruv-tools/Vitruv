@@ -74,7 +74,7 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
     private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRootObjectContainerHelper _newValue = change.getNewValue();
-      this.effectFacade.callCreateNonRootObjectContainer(_affectedEObject, _newValue);
+      this.effectFacade.createNonRootObjectContainer(_affectedEObject, _newValue);
     }
   }
 }

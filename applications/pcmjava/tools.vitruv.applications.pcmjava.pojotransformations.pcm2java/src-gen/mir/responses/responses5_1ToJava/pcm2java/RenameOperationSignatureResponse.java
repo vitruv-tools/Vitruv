@@ -64,7 +64,7 @@ class RenameOperationSignatureResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<OperationSignature, String> change) {
       OperationSignature _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameMethodForOperationSignature(_affectedEObject);
+      this.effectFacade.renameMethodForOperationSignature(_affectedEObject);
     }
   }
 }

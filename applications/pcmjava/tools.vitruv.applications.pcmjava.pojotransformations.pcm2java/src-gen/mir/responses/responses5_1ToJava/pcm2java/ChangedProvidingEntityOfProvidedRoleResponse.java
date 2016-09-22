@@ -65,8 +65,8 @@ class ChangedProvidingEntityOfProvidedRoleResponse extends AbstractResponseReali
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationProvidedRole, InterfaceProvidingEntity> change) {
       final OperationProvidedRole operationProvidedRole = change.getAffectedEObject();
-      this.effectFacade.callRemoveProvidedRole(operationProvidedRole);
-      this.effectFacade.callAddProvidedRole(operationProvidedRole);
+      this.effectFacade.removeProvidedRole(operationProvidedRole);
+      this.effectFacade.addProvidedRole(operationProvidedRole);
     }
   }
 }

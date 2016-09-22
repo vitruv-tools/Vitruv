@@ -66,8 +66,8 @@ class ChangeOperationRequiredRoleEntityResponse extends AbstractResponseRealizat
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationRequiredRole, InterfaceRequiringEntity> change) {
       final OperationRequiredRole requiredRole = change.getAffectedEObject();
       InterfaceRequiringEntity _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveRequiredRole(requiredRole, _oldValue);
-      this.effectFacade.callAddRequiredRole(requiredRole);
+      this.effectFacade.removeRequiredRole(requiredRole, _oldValue);
+      this.effectFacade.addRequiredRole(requiredRole);
     }
   }
 }

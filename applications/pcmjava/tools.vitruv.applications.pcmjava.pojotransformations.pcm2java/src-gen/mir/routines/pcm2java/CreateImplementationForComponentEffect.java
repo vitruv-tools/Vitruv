@@ -36,7 +36,7 @@ public class CreateImplementationForComponentEffect extends AbstractEffectRealiz
     private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package componentPackage) {
       String _entityName = component.getEntityName();
       String _plus = (_entityName + "Impl");
-      this.effectFacade.callCreateJavaClass(component, componentPackage, _plus);
+      this.effectFacade.createJavaClass(component, componentPackage, _plus);
     }
   }
   

@@ -37,7 +37,7 @@ public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectR
     
     private void executeUserOperations(final CompositeDataType dataType, final org.emftext.language.java.containers.Package datatypesPackage) {
       String _entityName = dataType.getEntityName();
-      this.effectFacade.callCreateJavaClass(dataType, datatypesPackage, _entityName);
+      this.effectFacade.createJavaClass(dataType, datatypesPackage, _entityName);
     }
   }
   

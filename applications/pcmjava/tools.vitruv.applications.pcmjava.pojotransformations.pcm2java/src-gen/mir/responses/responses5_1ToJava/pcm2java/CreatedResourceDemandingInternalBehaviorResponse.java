@@ -65,7 +65,7 @@ class CreatedResourceDemandingInternalBehaviorResponse extends AbstractResponseR
     
     private void executeUserOperations(final InsertEReference<BasicComponent, ResourceDemandingInternalBehaviour> change) {
       ResourceDemandingInternalBehaviour _newValue = change.getNewValue();
-      this.effectFacade.callCreateMethodForResourceDemandingBehavior(_newValue);
+      this.effectFacade.createMethodForResourceDemandingBehavior(_newValue);
     }
   }
 }

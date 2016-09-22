@@ -34,10 +34,10 @@ public class ChangeSystemImplementationNameEffect extends AbstractEffectRealizat
     
     private void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
       String _entityName = system.getEntityName();
-      this.effectFacade.callRenameJavaPackage(system, null, _entityName, null);
+      this.effectFacade.renameJavaPackage(system, null, _entityName, null);
       String _entityName_1 = system.getEntityName();
       String _plus = (_entityName_1 + "Impl");
-      this.effectFacade.callRenameJavaClassifier(system, systemPackage, _plus);
+      this.effectFacade.renameJavaClassifier(system, systemPackage, _plus);
     }
   }
   

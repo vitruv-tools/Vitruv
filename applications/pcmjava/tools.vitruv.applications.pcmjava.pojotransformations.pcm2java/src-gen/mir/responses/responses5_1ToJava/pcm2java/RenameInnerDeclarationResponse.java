@@ -64,7 +64,7 @@ class RenameInnerDeclarationResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<InnerDeclaration, String> change) {
       InnerDeclaration _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameInnerDeclarationImplementation(_affectedEObject);
+      this.effectFacade.renameInnerDeclarationImplementation(_affectedEObject);
     }
   }
 }

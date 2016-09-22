@@ -65,7 +65,7 @@ class ReplacedNonRootIdResponse extends AbstractResponseRealization {
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<NonRoot, String> change) {
       NonRoot _affectedEObject = change.getAffectedEObject();
       String _newValue = change.getNewValue();
-      this.effectFacade.callReplaceNonRootId(_affectedEObject, _newValue);
+      this.effectFacade.replaceNonRootId(_affectedEObject, _newValue);
     }
   }
 }

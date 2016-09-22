@@ -65,7 +65,7 @@ class CreatedParameterResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<OperationSignature, Parameter> change) {
       Parameter _newValue = change.getNewValue();
-      this.effectFacade.callCreateParameter(_newValue);
+      this.effectFacade.createParameter(_newValue);
     }
   }
 }

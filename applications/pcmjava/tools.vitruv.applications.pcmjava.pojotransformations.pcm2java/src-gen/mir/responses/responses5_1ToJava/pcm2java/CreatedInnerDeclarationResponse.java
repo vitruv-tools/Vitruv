@@ -65,7 +65,7 @@ class CreatedInnerDeclarationResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<CompositeDataType, InnerDeclaration> change) {
       InnerDeclaration _newValue = change.getNewValue();
-      this.effectFacade.callCreateInnerDeclarationImplementation(_newValue);
+      this.effectFacade.createInnerDeclarationImplementation(_newValue);
     }
   }
 }

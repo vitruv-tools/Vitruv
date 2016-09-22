@@ -74,7 +74,7 @@ class DeletedCollectionDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final RemoveEReference<Repository, DataType> change) {
       DataType _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteJavaClassifier(((CollectionDataType) _oldValue));
+      this.effectFacade.deleteJavaClassifier(((CollectionDataType) _oldValue));
     }
   }
 }

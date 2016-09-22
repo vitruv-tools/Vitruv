@@ -36,7 +36,7 @@ public class RenameComponentClassEffect extends AbstractEffectRealization {
     private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package componentPackage) {
       String _entityName = component.getEntityName();
       String _plus = (_entityName + "Impl");
-      this.effectFacade.callRenameJavaClassifier(component, componentPackage, _plus);
+      this.effectFacade.renameJavaClassifier(component, componentPackage, _plus);
     }
   }
   

@@ -65,7 +65,7 @@ class ChangeTypeOfInnerDeclarationResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<InnerDeclaration, DataType> change) {
       InnerDeclaration _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callChangeTypeOfInnerDeclarationImplementation(_affectedEObject);
+      this.effectFacade.changeTypeOfInnerDeclarationImplementation(_affectedEObject);
     }
   }
 }

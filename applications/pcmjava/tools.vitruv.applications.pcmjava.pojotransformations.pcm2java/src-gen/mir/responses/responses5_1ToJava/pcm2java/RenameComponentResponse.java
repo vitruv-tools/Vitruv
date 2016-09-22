@@ -64,7 +64,7 @@ class RenameComponentResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<RepositoryComponent, String> change) {
       final RepositoryComponent component = change.getAffectedEObject();
-      this.effectFacade.callRenameComponentPackageAndClass(component);
+      this.effectFacade.renameComponentPackageAndClass(component);
     }
   }
 }

@@ -1,7 +1,6 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.Root;
-import com.google.common.base.Objects;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -10,45 +9,39 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.root.InsertRootEObject;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRealization {
-  public HelperResponseForCreateSecondTestModelResponse(final UserInteracting userInteracting) {
+class ReplacedSingleValuedEAttributeResponse extends AbstractResponseRealization {
+  public ReplacedSingleValuedEAttributeResponse(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
-  private boolean checkTriggerPrecondition(final InsertRootEObject<Root> change) {
-    Root _newValue = change.getNewValue();
-    String _id = _newValue.getId();
-    boolean _equals = Objects.equal(_id, "EachTestModelSource");
-    return _equals;
-  }
-  
   public static Class<? extends EChange> getExpectedChangeType() {
-    return InsertRootEObject.class;
+    return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final InsertRootEObject<Root> change) {
-    EObject changedElement = change.getNewValue();
+  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
+    EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
     }
     
+    // Check feature
+    if (!change.getAffectedFeature().getName().equals("singleValuedEAttribute")) {
+    	return false;
+    }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertRootEObject<?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    InsertRootEObject typedChange = (InsertRootEObject)change;
+    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
     if (!checkChangeProperties(typedChange)) {
-    	return false;
-    }
-    if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
@@ -56,8 +49,8 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
   }
   
   public void executeResponse(final EChange change) {
-    InsertRootEObject<Root> typedChange = (InsertRootEObject<Root>)change;
-    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForCreateSecondTestModelResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
+    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -69,9 +62,10 @@ class HelperResponseForCreateSecondTestModelResponse extends AbstractResponseRea
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertRootEObject<Root> change) {
-      Root _newValue = change.getNewValue();
-      this.effectFacade.createRoot(_newValue);
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
+      Root _affectedEObject = change.getAffectedEObject();
+      Integer _newValue = change.getNewValue();
+      this.effectFacade.replaceSingleValuedEAttribute(_affectedEObject, _newValue);
     }
   }
 }

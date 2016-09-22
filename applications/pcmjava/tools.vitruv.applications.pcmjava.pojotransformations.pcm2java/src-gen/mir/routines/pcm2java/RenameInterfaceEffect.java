@@ -37,7 +37,7 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
     
     private void executeUserOperations(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {
       String _entityName = interf.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(interf, contractsPackage, _entityName);
+      this.effectFacade.renameJavaClassifier(interf, contractsPackage, _entityName);
     }
   }
   

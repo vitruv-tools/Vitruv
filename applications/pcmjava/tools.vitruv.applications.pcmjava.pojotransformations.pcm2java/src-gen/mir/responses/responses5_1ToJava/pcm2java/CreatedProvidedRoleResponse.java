@@ -74,7 +74,7 @@ class CreatedProvidedRoleResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<InterfaceProvidingEntity, ProvidedRole> change) {
       ProvidedRole _newValue = change.getNewValue();
-      this.effectFacade.callAddProvidedRole(((OperationProvidedRole) _newValue));
+      this.effectFacade.addProvidedRole(((OperationProvidedRole) _newValue));
     }
   }
 }

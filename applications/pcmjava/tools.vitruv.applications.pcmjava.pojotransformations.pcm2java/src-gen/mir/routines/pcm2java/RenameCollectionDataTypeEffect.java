@@ -37,7 +37,7 @@ public class RenameCollectionDataTypeEffect extends AbstractEffectRealization {
     
     private void executeUserOperations(final CollectionDataType collectionDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
       String _entityName = collectionDataType.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(collectionDataType, datatypesPackage, _entityName);
+      this.effectFacade.renameJavaClassifier(collectionDataType, datatypesPackage, _entityName);
     }
   }
   

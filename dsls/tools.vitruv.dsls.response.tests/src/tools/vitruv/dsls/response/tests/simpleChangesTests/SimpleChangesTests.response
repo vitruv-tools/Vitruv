@@ -11,9 +11,9 @@ called simpleChangesTests
  */
 response: ReplacedSingleValuedEAttribute
 trigger: replaced value minimal.Root[singleValuedEAttribute]
-call callReplaceSingleValuedEAttribute(change.affectedEObject, change.newValue)
+call replaceSingleValuedEAttribute(change.affectedEObject, change.newValue)
 
-routine: ReplaceSingleValuedEAttribute(minimal.Root root, Int value)
+routine: replaceSingleValuedEAttribute(minimal.Root root, Int value)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect: execute: {
@@ -26,9 +26,9 @@ effect: execute: {
  */
 response: ReplacedNonRootId
 trigger: replaced value minimal.NonRoot[id]
-call callReplaceNonRootId(change.affectedEObject, change.newValue)
+call replaceNonRootId(change.affectedEObject, change.newValue)
 
-routine: ReplaceNonRootId(minimal.NonRoot nonRoot, String value)
+routine: replaceNonRootId(minimal.NonRoot nonRoot, String value)
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to nonRoot
 effect: execute: {
@@ -54,9 +54,9 @@ effect: execute: {
  */
 response: CreatedNonRootEObjectInList
 trigger: inserted into list minimal.Root[multiValuedContainmentEReference]
-call callInsertNonRoot(change.affectedEObject, change.newValue)
+call insertNonRoot(change.affectedEObject, change.newValue)
 
-routine: InsertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot)
+routine: insertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect:
@@ -73,9 +73,9 @@ effect:
  */
 response: DeletedNonRootEObjectInList
 trigger: removed from list minimal.Root[multiValuedContainmentEReference]
-call callRemoveNonRoot(change.oldValue)
+call removeNonRoot(change.oldValue)
 
-routine: RemoveNonRoot(minimal.NonRoot removedNonRoot)
+routine: removeNonRoot(minimal.NonRoot removedNonRoot)
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to removedNonRoot
 effect:
@@ -93,14 +93,14 @@ response: ReplacedNonRootEObjectSingleResponse
 trigger: replaced value minimal.Root[singleValuedContainmentEReference]
 call {
 	if (change.fromNonDefaultValue) {
-		callDeleteNonRootEObjectSingle(change.oldValue);
+		deleteNonRootEObjectSingle(change.oldValue);
 	}
 	if (change.toNonDefaultValue) {
-		callCreateNonRootEObjectSingle(change.affectedEObject, change.newValue);
+		createNonRootEObjectSingle(change.affectedEObject, change.newValue);
 	}
 } 
 
-routine: DeleteNonRootEObjectSingle(minimal.NonRoot containedObject)
+routine: deleteNonRootEObjectSingle(minimal.NonRoot containedObject)
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to containedObject
 effect:
@@ -109,7 +109,7 @@ effect:
 		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
 	}
 
-routine: CreateNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject)
+routine: createNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to sourceRoot
 effect:
@@ -126,9 +126,9 @@ effect:
  */
 response: ReplacedSingleValuedNonContainmentEReference
 trigger: replaced value minimal.Root[singleValuedNonContainmentEReference]
-call callReplaceSingleValuedNonContainmentReference(change.affectedEObject, change.newValue)
+call replaceSingleValuedNonContainmentReference(change.affectedEObject, change.newValue)
 
-routine: ReplaceSingleValuedNonContainmentReference(minimal.Root root, minimal.NonRoot newReferencedElement)
+routine: replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.NonRoot newReferencedElement)
 match:
 	retrieve required element: minimal.Root as targetContainer corresponding to root
 	retrieve required element: minimal.NonRoot as targetElement corresponding to newReferencedElement
@@ -158,9 +158,9 @@ effect:
  */
 response: InsertedEAttributeValue
 trigger: inserted into list minimal.Root[multiValuedEAttribute] 
-call callInsertEAttribute(change.affectedEObject, change.newValue)
+call insertEAttribute(change.affectedEObject, change.newValue)
 
-routine: InsertEAttribute(minimal.Root root, Int attributeValue)
+routine: insertEAttribute(minimal.Root root, Int attributeValue)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect:
@@ -174,9 +174,9 @@ effect:
  */
 response: RemovedEAttributeValue
 trigger: removed from list minimal.Root[multiValuedEAttribute] 
-call callRemoveEAttribute(change.affectedEObject, change.oldValue)
+call removeEAttribute(change.affectedEObject, change.oldValue)
 
-routine: RemoveEAttribute(minimal.Root root, Int removedAttributeValue)
+routine: removeEAttribute(minimal.Root root, Int removedAttributeValue)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect:
@@ -191,9 +191,9 @@ effect:
  */
 response: InsertedNonContainmentEReference
 trigger: inserted into list minimal.Root[multiValuedNonContainmentEReference] 
-call callInsertNonContainmentReference(change.affectedEObject, change.newValue)
+call insertNonContainmentReference(change.affectedEObject, change.newValue)
 
-routine: InsertNonContainmentReference(minimal.Root root, minimal.NonRoot insertedNonRoot)
+routine: insertNonContainmentReference(minimal.Root root, minimal.NonRoot insertedNonRoot)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect:
@@ -208,9 +208,9 @@ effect:
  */
 response: RemoveedNonContainmentEReference
 trigger: removed from list minimal.Root[multiValuedNonContainmentEReference] 
-call callRemoveNonContainmentReference(change.affectedEObject, change.oldValue)
+call removeNonContainmentReference(change.affectedEObject, change.oldValue)
 
-routine: RemoveNonContainmentReference(minimal.Root root, minimal.NonRoot removedNonRoot)
+routine: removeNonContainmentReference(minimal.Root root, minimal.NonRoot removedNonRoot)
 match:
 	retrieve required element: minimal.Root as targetRoot corresponding to root
 effect:
@@ -252,9 +252,9 @@ effect:
 response: HelperResponseForCreateSecondTestModel
 trigger: created root minimal.Root
 check: change.newValue.id == "EachTestModelSource"
-call callCreateRoot(change.newValue)
+call createRoot(change.newValue)
 
-routine: CreateRoot(minimal.Root root)
+routine: createRoot(minimal.Root root)
 effect:
 	create element: minimal.Root as newRoot
 	add correspondence: newRoot, root
@@ -267,9 +267,9 @@ effect:
 response: HelperResponseForDeleteSecondTestModel
 trigger: deleted root minimal.Root
 check: change.oldValue.id == "EachTestModelSource"
-call callDeleteRoot(change.oldValue)
+call deleteRoot(change.oldValue)
 
-routine: DeleteRoot(minimal.Root root)
+routine: deleteRoot(minimal.Root root)
 match:
 	retrieve required element: minimal.Root as oldModel corresponding to root
 effect:
@@ -281,14 +281,14 @@ effect:
 response: CreateRootTest
 trigger: created root minimal.Root
 check: change.newValue.id == "Further_Source_Test_Model"
-call callCreateRoot(change.newValue)
+call createRoot(change.newValue)
 
 //effect: create root minimal.Root at "Further_Target_Test_Model" auto-delete corresponding to change.newValue
 
 response: DeleteRootTest
 trigger: deleted root minimal.Root
 check: change.oldValue.id == "Further_Source_Test_Model"
-call callDeleteRoot(change.oldValue)
+call deleteRoot(change.oldValue)
 
 
 //response: DuplicateRootDelete
@@ -302,9 +302,9 @@ call callDeleteRoot(change.oldValue)
 response: HelperResponseForNonRootObjectContainerInitialization
 trigger: replaced value minimal.Root[nonRootObjectContainerHelper]
 check: change.isToNonDefaultValue
-call callCreateNonRootObjectContainer(change.affectedEObject, change.newValue)
+call createNonRootObjectContainer(change.affectedEObject, change.newValue)
 
-routine: CreateNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectContainerHelper nonRootObjectContainer)
+routine: createNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectContainerHelper nonRootObjectContainer)
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to root
 effect:
@@ -320,9 +320,9 @@ effect:
  */
 response: HelperResponseForNonRootObjectContainerContentsInitialization
 trigger: inserted into list minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
-call callCreateNonRootInContainer(change.affectedEObject, change.newValue)
+call createNonRootInContainer(change.affectedEObject, change.newValue)
 
-routine: CreateNonRootInContainer(minimal.NonRootObjectContainerHelper container, minimal.NonRoot insertedNonRoot)
+routine: createNonRootInContainer(minimal.NonRootObjectContainerHelper container, minimal.NonRoot insertedNonRoot)
 match:
 	retrieve required element: minimal.NonRootObjectContainerHelper as nonRootContainer corresponding to container
 effect:

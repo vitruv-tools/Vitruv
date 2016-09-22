@@ -66,7 +66,7 @@ class DeletedParameterResponse extends AbstractResponseRealization {
     private void executeUserOperations(final RemoveEReference<OperationSignature, Parameter> change) {
       OperationSignature _affectedEObject = change.getAffectedEObject();
       Parameter _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteParameter(_affectedEObject, _oldValue);
+      this.effectFacade.deleteParameter(_affectedEObject, _oldValue);
     }
   }
 }

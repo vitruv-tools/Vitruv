@@ -64,7 +64,7 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<CollectionDataType, String> change) {
       CollectionDataType _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameCollectionDataType(_affectedEObject);
+      this.effectFacade.renameCollectionDataType(_affectedEObject);
     }
   }
 }

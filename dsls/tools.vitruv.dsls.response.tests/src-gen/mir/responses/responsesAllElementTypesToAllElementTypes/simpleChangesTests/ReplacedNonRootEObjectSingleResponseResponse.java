@@ -67,13 +67,13 @@ class ReplacedNonRootEObjectSingleResponseResponse extends AbstractResponseReali
       boolean _isFromNonDefaultValue = change.isFromNonDefaultValue();
       if (_isFromNonDefaultValue) {
         NonRoot _oldValue = change.getOldValue();
-        this.effectFacade.callDeleteNonRootEObjectSingle(_oldValue);
+        this.effectFacade.deleteNonRootEObjectSingle(_oldValue);
       }
       boolean _isToNonDefaultValue = change.isToNonDefaultValue();
       if (_isToNonDefaultValue) {
         Root _affectedEObject = change.getAffectedEObject();
         NonRoot _newValue = change.getNewValue();
-        this.effectFacade.callCreateNonRootEObjectSingle(_affectedEObject, _newValue);
+        this.effectFacade.createNonRootEObjectSingle(_affectedEObject, _newValue);
       }
     }
   }

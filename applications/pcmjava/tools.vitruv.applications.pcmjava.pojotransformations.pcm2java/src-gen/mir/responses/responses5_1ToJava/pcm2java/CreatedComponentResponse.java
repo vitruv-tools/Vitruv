@@ -65,7 +65,7 @@ class CreatedComponentResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<Repository, RepositoryComponent> change) {
       RepositoryComponent _newValue = change.getNewValue();
-      this.effectFacade.callCreateComponentImplementation(_newValue);
+      this.effectFacade.createComponentImplementation(_newValue);
     }
   }
 }

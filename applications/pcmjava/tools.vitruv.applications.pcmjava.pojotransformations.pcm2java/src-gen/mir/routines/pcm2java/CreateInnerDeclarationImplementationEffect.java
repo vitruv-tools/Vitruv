@@ -41,7 +41,7 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       final TypeReference innerDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
       CompositeDataType _compositeDataType_InnerDeclaration = innerDeclaration.getCompositeDataType_InnerDeclaration();
-      this.effectFacade.callAddInnerDeclarationToCompositeDataType(_compositeDataType_InnerDeclaration, innerDeclaration, innerDataTypeReference);
+      this.effectFacade.addInnerDeclarationToCompositeDataType(_compositeDataType_InnerDeclaration, innerDeclaration, innerDataTypeReference);
     }
   }
   

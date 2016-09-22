@@ -34,8 +34,8 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     }
     
     private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {
-      this.effectFacade.callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
-      this.effectFacade.callCreateJavaPackage(repository, repositoryPackage, "contracts", "contracts");
+      this.effectFacade.createJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
+      this.effectFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
     }
   }
   

@@ -35,7 +35,7 @@ public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final ResourceDemandingSEFF seff, final ClassMethod oldClassMethod) {
-      this.effectFacade.callCreateSEFF(seff);
+      this.effectFacade.createSEFF(seff);
     }
   }
   

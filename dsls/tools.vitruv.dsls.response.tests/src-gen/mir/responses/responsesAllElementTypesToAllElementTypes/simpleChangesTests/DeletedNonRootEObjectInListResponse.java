@@ -65,7 +65,7 @@ class DeletedNonRootEObjectInListResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final RemoveEReference<Root, NonRoot> change) {
       NonRoot _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveNonRoot(_oldValue);
+      this.effectFacade.removeNonRoot(_oldValue);
     }
   }
 }

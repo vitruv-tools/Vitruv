@@ -64,7 +64,7 @@ class RenamedCompositeDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<CompositeDataType, String> change) {
       CompositeDataType _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameCompositeDataType(_affectedEObject);
+      this.effectFacade.renameCompositeDataType(_affectedEObject);
     }
   }
 }

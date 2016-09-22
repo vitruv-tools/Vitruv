@@ -65,7 +65,7 @@ class ChangeOperationSignatureReturnTypeResponse extends AbstractResponseRealiza
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationSignature, DataType> change) {
       OperationSignature _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callChangeReturnTypeOfMethodForOperationSignature(_affectedEObject);
+      this.effectFacade.changeReturnTypeOfMethodForOperationSignature(_affectedEObject);
     }
   }
 }

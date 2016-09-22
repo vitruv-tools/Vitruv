@@ -66,7 +66,7 @@ class HelperResponseForNonRootObjectContainerContentsInitializationResponse exte
     private void executeUserOperations(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change) {
       NonRootObjectContainerHelper _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      this.effectFacade.callCreateNonRootInContainer(_affectedEObject, _newValue);
+      this.effectFacade.createNonRootInContainer(_affectedEObject, _newValue);
     }
   }
 }

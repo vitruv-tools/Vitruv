@@ -65,7 +65,7 @@ class InsertedEAttributeValueResponse extends AbstractResponseRealization {
     private void executeUserOperations(final InsertEAttributeValue<Root, Integer> change) {
       Root _affectedEObject = change.getAffectedEObject();
       Integer _newValue = change.getNewValue();
-      this.effectFacade.callInsertEAttribute(_affectedEObject, _newValue);
+      this.effectFacade.insertEAttribute(_affectedEObject, _newValue);
     }
   }
 }

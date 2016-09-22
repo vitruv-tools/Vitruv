@@ -74,7 +74,7 @@ class CreatedCompositeDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<Repository, DataType> change) {
       DataType _newValue = change.getNewValue();
-      this.effectFacade.callCreateCompositeDataTypeImplementation(((CompositeDataType) _newValue));
+      this.effectFacade.createCompositeDataTypeImplementation(((CompositeDataType) _newValue));
     }
   }
 }

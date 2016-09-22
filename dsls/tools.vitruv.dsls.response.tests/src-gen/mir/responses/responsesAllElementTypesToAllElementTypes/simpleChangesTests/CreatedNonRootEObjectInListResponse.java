@@ -66,7 +66,7 @@ class CreatedNonRootEObjectInListResponse extends AbstractResponseRealization {
     private void executeUserOperations(final InsertEReference<Root, NonRoot> change) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      this.effectFacade.callInsertNonRoot(_affectedEObject, _newValue);
+      this.effectFacade.insertNonRoot(_affectedEObject, _newValue);
     }
   }
 }

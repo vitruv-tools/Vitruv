@@ -63,7 +63,7 @@ class ChangedSystemNameResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<org.palladiosimulator.pcm.system.System, String> change) {
       org.palladiosimulator.pcm.system.System _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callChangeSystemImplementationName(_affectedEObject);
+      this.effectFacade.changeSystemImplementationName(_affectedEObject);
     }
   }
 }

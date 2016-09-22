@@ -66,7 +66,7 @@ class ReplacedSingleValuedNonContainmentEReferenceResponse extends AbstractRespo
     private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      this.effectFacade.callReplaceSingleValuedNonContainmentReference(_affectedEObject, _newValue);
+      this.effectFacade.replaceSingleValuedNonContainmentReference(_affectedEObject, _newValue);
     }
   }
 }

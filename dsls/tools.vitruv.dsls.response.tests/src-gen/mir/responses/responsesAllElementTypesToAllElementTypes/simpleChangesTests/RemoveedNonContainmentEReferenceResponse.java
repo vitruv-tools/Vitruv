@@ -66,7 +66,7 @@ class RemoveedNonContainmentEReferenceResponse extends AbstractResponseRealizati
     private void executeUserOperations(final RemoveEReference<Root, NonRoot> change) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRoot _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveNonContainmentReference(_affectedEObject, _oldValue);
+      this.effectFacade.removeNonContainmentReference(_affectedEObject, _oldValue);
     }
   }
 }

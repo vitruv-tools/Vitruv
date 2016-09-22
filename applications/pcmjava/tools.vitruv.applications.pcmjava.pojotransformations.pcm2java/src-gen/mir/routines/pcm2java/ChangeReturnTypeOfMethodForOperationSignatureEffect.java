@@ -37,7 +37,7 @@ public class ChangeReturnTypeOfMethodForOperationSignatureEffect extends Abstrac
     
     private void executeUserOperations(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
       DataType _returnType__OperationSignature = operationSignature.getReturnType__OperationSignature();
-      this.effectFacade.callChangeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
+      this.effectFacade.changeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
     }
   }
   

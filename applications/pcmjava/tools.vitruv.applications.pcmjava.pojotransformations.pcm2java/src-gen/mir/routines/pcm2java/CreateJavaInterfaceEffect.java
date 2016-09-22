@@ -45,7 +45,7 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
       javaInterface.setName(className);
       Public _createPublic = ModifiersFactory.eINSTANCE.createPublic();
       javaInterface.addModifier(_createPublic);
-      this.effectFacade.callCreateCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
+      this.effectFacade.createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
     }
   }
   

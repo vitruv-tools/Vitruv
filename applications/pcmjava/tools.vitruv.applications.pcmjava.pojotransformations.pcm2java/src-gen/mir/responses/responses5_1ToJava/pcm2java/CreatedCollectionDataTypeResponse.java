@@ -74,7 +74,7 @@ class CreatedCollectionDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<Repository, DataType> change) {
       DataType _newValue = change.getNewValue();
-      this.effectFacade.callCreateCollectionDataTypeImplementation(((CollectionDataType) _newValue));
+      this.effectFacade.createCollectionDataTypeImplementation(((CollectionDataType) _newValue));
     }
   }
 }

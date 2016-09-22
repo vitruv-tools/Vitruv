@@ -37,7 +37,7 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     
     private void executeUserOperations(final CompositeDataType compositeDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
       String _entityName = compositeDataType.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(compositeDataType, datatypesPackage, _entityName);
+      this.effectFacade.renameJavaClassifier(compositeDataType, datatypesPackage, _entityName);
     }
   }
   

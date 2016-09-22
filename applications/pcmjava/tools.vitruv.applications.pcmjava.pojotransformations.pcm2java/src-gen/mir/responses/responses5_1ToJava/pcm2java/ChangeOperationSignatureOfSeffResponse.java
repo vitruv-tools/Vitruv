@@ -65,7 +65,7 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> change) {
       ResourceDemandingSEFF _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callChangeMethodForSeff(_affectedEObject);
+      this.effectFacade.changeMethodForSeff(_affectedEObject);
     }
   }
 }

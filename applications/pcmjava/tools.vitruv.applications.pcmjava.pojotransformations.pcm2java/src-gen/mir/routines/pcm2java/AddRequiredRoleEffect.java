@@ -70,7 +70,7 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
       EList<Member> _members = javaClass.getMembers();
       Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
       for (final Constructor ctor : _filter) {
-        this.effectFacade.callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
+        this.effectFacade.addParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
       }
     }
   }

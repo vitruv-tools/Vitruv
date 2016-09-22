@@ -65,7 +65,7 @@ class RemovedEAttributeValueResponse extends AbstractResponseRealization {
     private void executeUserOperations(final RemoveEAttributeValue<Root, Integer> change) {
       Root _affectedEObject = change.getAffectedEObject();
       Integer _oldValue = change.getOldValue();
-      this.effectFacade.callRemoveEAttribute(_affectedEObject, _oldValue);
+      this.effectFacade.removeEAttribute(_affectedEObject, _oldValue);
     }
   }
 }

@@ -71,7 +71,7 @@ class CreateRootTestResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertRootEObject<Root> change) {
       Root _newValue = change.getNewValue();
-      this.effectFacade.callCreateRoot(_newValue);
+      this.effectFacade.createRoot(_newValue);
     }
   }
 }

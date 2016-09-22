@@ -64,7 +64,7 @@ class RenamedRepositoryResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<Repository, String> change) {
       Repository _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenamePackageForRepository(_affectedEObject);
+      this.effectFacade.renamePackageForRepository(_affectedEObject);
     }
   }
 }

@@ -65,7 +65,7 @@ class DeletedOperationSignatureResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final RemoveEReference<OperationInterface, OperationSignature> change) {
       OperationSignature _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteMethodForOperationSignature(_oldValue);
+      this.effectFacade.deleteMethodForOperationSignature(_oldValue);
     }
   }
 }

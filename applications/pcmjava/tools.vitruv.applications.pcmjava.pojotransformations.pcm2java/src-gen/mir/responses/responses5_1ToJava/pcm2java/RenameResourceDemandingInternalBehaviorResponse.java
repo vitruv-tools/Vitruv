@@ -64,7 +64,7 @@ class RenameResourceDemandingInternalBehaviorResponse extends AbstractResponseRe
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<ResourceDemandingInternalBehaviour, String> change) {
       ResourceDemandingInternalBehaviour _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameMethodForResourceDemandingBehavior(_affectedEObject);
+      this.effectFacade.renameMethodForResourceDemandingBehavior(_affectedEObject);
     }
   }
 }

@@ -35,7 +35,7 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     private void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
       String _entityName = system.getEntityName();
       String _plus = (_entityName + "Impl");
-      this.effectFacade.callCreateJavaClass(system, systemPackage, _plus);
+      this.effectFacade.createJavaClass(system, systemPackage, _plus);
     }
   }
   

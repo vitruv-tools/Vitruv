@@ -65,7 +65,7 @@ class RenamedInterfaceResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<Interface, String> change) {
       Interface _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameInterface(((OperationInterface) _affectedEObject));
+      this.effectFacade.renameInterface(((OperationInterface) _affectedEObject));
     }
   }
 }

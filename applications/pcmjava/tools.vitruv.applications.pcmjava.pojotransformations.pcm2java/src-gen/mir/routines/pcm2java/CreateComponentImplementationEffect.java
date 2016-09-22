@@ -36,8 +36,8 @@ public class CreateComponentImplementationEffect extends AbstractEffectRealizati
     
     private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
       String _entityName = component.getEntityName();
-      this.effectFacade.callCreateJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.callCreateImplementationForComponent(component);
+      this.effectFacade.createJavaPackage(component, repositoryPackage, _entityName, null);
+      this.effectFacade.createImplementationForComponent(component);
     }
   }
   

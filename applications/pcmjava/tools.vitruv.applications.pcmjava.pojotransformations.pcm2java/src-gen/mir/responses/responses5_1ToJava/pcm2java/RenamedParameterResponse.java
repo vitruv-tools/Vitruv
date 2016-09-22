@@ -64,7 +64,7 @@ class RenamedParameterResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<Parameter, String> change) {
       Parameter _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameParameter(_affectedEObject);
+      this.effectFacade.renameParameter(_affectedEObject);
     }
   }
 }

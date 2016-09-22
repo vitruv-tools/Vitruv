@@ -74,7 +74,7 @@ class CreatedRequiredRoleResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
       RequiredRole _newValue = change.getNewValue();
-      this.effectFacade.callAddRequiredRole(((OperationRequiredRole) _newValue));
+      this.effectFacade.addRequiredRole(((OperationRequiredRole) _newValue));
     }
   }
 }

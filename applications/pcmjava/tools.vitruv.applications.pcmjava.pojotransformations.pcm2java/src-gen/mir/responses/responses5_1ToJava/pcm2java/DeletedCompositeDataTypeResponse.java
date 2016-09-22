@@ -74,7 +74,7 @@ class DeletedCompositeDataTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final RemoveEReference<Repository, DataType> change) {
       DataType _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteJavaClassifier(((CompositeDataType) _oldValue));
+      this.effectFacade.deleteJavaClassifier(((CompositeDataType) _oldValue));
     }
   }
 }

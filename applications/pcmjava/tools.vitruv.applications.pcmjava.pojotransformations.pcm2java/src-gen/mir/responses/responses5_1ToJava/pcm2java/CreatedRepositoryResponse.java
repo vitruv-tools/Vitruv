@@ -61,8 +61,8 @@ class CreatedRepositoryResponse extends AbstractResponseRealization {
     private void executeUserOperations(final InsertRootEObject<Repository> change) {
       final Repository repository = change.getNewValue();
       String _entityName = repository.getEntityName();
-      this.effectFacade.callCreateJavaPackage(repository, null, _entityName, "repository_root");
-      this.effectFacade.callCreateRepositorySubPackages(repository);
+      this.effectFacade.createJavaPackage(repository, null, _entityName, "repository_root");
+      this.effectFacade.createRepositorySubPackages(repository);
     }
   }
 }

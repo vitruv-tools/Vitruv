@@ -37,7 +37,7 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
     
     private void executeUserOperations(final Interface interf, final org.emftext.language.java.containers.Package contractsPackage) {
       String _entityName = interf.getEntityName();
-      this.effectFacade.callCreateJavaInterface(interf, contractsPackage, _entityName);
+      this.effectFacade.createJavaInterface(interf, contractsPackage, _entityName);
     }
   }
   

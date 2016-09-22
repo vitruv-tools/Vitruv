@@ -71,7 +71,7 @@ class HelperResponseForDeleteSecondTestModelResponse extends AbstractResponseRea
     
     private void executeUserOperations(final RemoveRootEObject<Root> change) {
       Root _oldValue = change.getOldValue();
-      this.effectFacade.callDeleteRoot(_oldValue);
+      this.effectFacade.deleteRoot(_oldValue);
     }
   }
 }

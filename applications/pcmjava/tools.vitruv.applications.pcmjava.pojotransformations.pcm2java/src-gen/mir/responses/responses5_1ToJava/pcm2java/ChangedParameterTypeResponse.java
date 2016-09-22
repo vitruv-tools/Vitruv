@@ -65,7 +65,7 @@ class ChangedParameterTypeResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<Parameter, DataType> change) {
       Parameter _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callChangeParameterType(_affectedEObject);
+      this.effectFacade.changeParameterType(_affectedEObject);
     }
   }
 }

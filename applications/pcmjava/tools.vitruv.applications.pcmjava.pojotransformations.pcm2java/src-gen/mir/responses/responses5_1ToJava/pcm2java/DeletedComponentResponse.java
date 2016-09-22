@@ -67,9 +67,9 @@ class DeletedComponentResponse extends AbstractResponseRealization {
       RepositoryComponent _oldValue = change.getOldValue();
       RepositoryComponent _oldValue_1 = change.getOldValue();
       String _entityName = _oldValue_1.getEntityName();
-      this.effectFacade.callDeleteJavaPackage(_oldValue, _entityName, "");
+      this.effectFacade.deleteJavaPackage(_oldValue, _entityName, "");
       RepositoryComponent _oldValue_2 = change.getOldValue();
-      this.effectFacade.callDeleteJavaClassifier(_oldValue_2);
+      this.effectFacade.deleteJavaClassifier(_oldValue_2);
     }
   }
 }

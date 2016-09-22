@@ -66,7 +66,7 @@ class InsertedNonContainmentEReferenceResponse extends AbstractResponseRealizati
     private void executeUserOperations(final InsertEReference<Root, NonRoot> change) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      this.effectFacade.callInsertNonContainmentReference(_affectedEObject, _newValue);
+      this.effectFacade.insertNonContainmentReference(_affectedEObject, _newValue);
     }
   }
 }

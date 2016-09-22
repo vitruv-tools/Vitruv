@@ -81,7 +81,7 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
       final Consumer<BasicComponent> _function_1 = (BasicComponent it) -> {
         EList<ServiceEffectSpecification> _serviceEffectSpecifications__BasicComponent = it.getServiceEffectSpecifications__BasicComponent();
         final Consumer<ServiceEffectSpecification> _function_2 = (ServiceEffectSpecification it_1) -> {
-          this.effectFacade.callUpdateSEFFImplementingMethodName(it_1);
+          this.effectFacade.updateSEFFImplementingMethodName(it_1);
         };
         _serviceEffectSpecifications__BasicComponent.forEach(_function_2);
       };

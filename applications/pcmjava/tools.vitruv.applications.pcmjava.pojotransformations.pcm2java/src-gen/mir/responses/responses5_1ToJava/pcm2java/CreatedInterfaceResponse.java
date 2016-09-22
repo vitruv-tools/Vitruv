@@ -65,7 +65,7 @@ class CreatedInterfaceResponse extends AbstractResponseRealization {
     
     private void executeUserOperations(final InsertEReference<Repository, Interface> change) {
       Interface _newValue = change.getNewValue();
-      this.effectFacade.callCreateInterfaceImplementation(_newValue);
+      this.effectFacade.createInterfaceImplementation(_newValue);
     }
   }
 }
