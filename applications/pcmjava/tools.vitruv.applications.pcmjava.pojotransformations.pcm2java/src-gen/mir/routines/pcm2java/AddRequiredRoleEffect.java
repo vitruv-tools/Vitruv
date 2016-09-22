@@ -33,6 +33,48 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
   
   private OperationRequiredRole requiredRole;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+      final String requiredRoleName = requiredRole.getEntityName();
+      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
+      Pcm2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
+      EList<Member> _members = javaClass.getMembers();
+      _members.add(requiredInterfaceField);
+      EList<Member> _members_1 = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members_1, Constructor.class);
+      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_filter);
+      if (_isNullOrEmpty) {
+        Pcm2JavaHelper.addConstructorToClass(javaClass);
+      }
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      final String requiredRoleName = requiredRole.getEntityName();
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        this.effectFacade.callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
+      }
+    }
+  }
+  
   private EObject getCorrepondenceSourceRequiredInterface(final OperationRequiredRole requiredRole) {
     OperationInterface _requiredInterface__OperationRequiredRole = requiredRole.getRequiredInterface__OperationRequiredRole();
     return _requiredInterface__OperationRequiredRole;
@@ -83,6 +125,8 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     preprocessElementStates();
     new mir.routines.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    new mir.routines.pcm2java.AddRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
     postprocessElementStates();
   }
   
@@ -92,36 +136,5 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
   
   private EObject getElement3(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
     return requiredRole;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
-      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
-      final String requiredRoleName = requiredRole.getEntityName();
-      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
-      Pcm2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
-      EList<Member> _members = javaClass.getMembers();
-      _members.add(requiredInterfaceField);
-      EList<Member> _members_1 = javaClass.getMembers();
-      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members_1, Constructor.class);
-      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_filter);
-      if (_isNullOrEmpty) {
-        Pcm2JavaHelper.addConstructorToClass(javaClass);
-      }
-      EList<Member> _members_2 = javaClass.getMembers();
-      Iterable<Constructor> _filter_1 = Iterables.<Constructor>filter(_members_2, Constructor.class);
-      for (final Constructor ctor : _filter_1) {
-        this.effectFacade.callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
-      }
-    }
   }
 }

@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getTrigger <em>Trigger</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getRoutine <em>Routine</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}</li>
  * </ul>
  *
@@ -106,30 +106,30 @@ public interface Response extends EObject
   void setTrigger(Trigger value);
 
   /**
-   * Returns the value of the '<em><b>Routine</b></em>' containment reference.
+   * Returns the value of the '<em><b>Call Routine</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Routine</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Call Routine</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Routine</em>' containment reference.
-   * @see #setRoutine(ImplicitRoutine)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_Routine()
+   * @return the value of the '<em>Call Routine</em>' containment reference.
+   * @see #setCallRoutine(RoutineCallBlock)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_CallRoutine()
    * @model containment="true"
    * @generated
    */
-  ImplicitRoutine getRoutine();
+  RoutineCallBlock getCallRoutine();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getRoutine <em>Routine</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Routine</em>' containment reference.
-   * @see #getRoutine()
+   * @param value the new value of the '<em>Call Routine</em>' containment reference.
+   * @see #getCallRoutine()
    * @generated
    */
-  void setRoutine(ImplicitRoutine value);
+  void setCallRoutine(RoutineCallBlock value);
 
   /**
    * Returns the value of the '<em><b>Responses Segment</b></em>' container reference.

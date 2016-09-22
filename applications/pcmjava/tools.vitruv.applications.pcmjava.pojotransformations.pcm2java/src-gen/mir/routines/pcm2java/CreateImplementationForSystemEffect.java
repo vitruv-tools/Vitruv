@@ -17,6 +17,28 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
   
   private org.palladiosimulator.pcm.system.System system;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
+      String _entityName = system.getEntityName();
+      String _plus = (_entityName + "Impl");
+      this.effectFacade.callCreateJavaClass(system, systemPackage, _plus);
+    }
+  }
+  
   private EObject getCorrepondenceSourceSystemPackage(final org.palladiosimulator.pcm.system.System system) {
     return system;
   }
@@ -36,24 +58,8 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     initializeRetrieveElementState(systemPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateImplementationForSystemEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.pcm2java.CreateImplementationForSystemEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
     	system, systemPackage);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
-      String _entityName = system.getEntityName();
-      String _plus = (_entityName + "Impl");
-      this.effectFacade.callCreateJavaClass(system, systemPackage, _plus);
-    }
   }
 }

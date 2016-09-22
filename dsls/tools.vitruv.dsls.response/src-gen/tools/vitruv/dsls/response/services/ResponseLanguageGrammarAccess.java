@@ -136,14 +136,14 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		private final Assignment cTriggerAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cTriggerTriggerParserRuleCall_3_0 = (RuleCall)cTriggerAssignment_3.eContents().get(0);
-		private final Assignment cRoutineAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cRoutineImplicitRoutineParserRuleCall_4_0 = (RuleCall)cRoutineAssignment_4.eContents().get(0);
+		private final Assignment cCallRoutineAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cCallRoutineRoutineCallBlockParserRuleCall_4_0 = (RuleCall)cCallRoutineAssignment_4.eContents().get(0);
 		
 		//Response:
-		//	documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger routine=ImplicitRoutine;
+		//	documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger callRoutine=RoutineCallBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger routine=ImplicitRoutine
+		//documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger callRoutine=RoutineCallBlock
 		public Group getGroup() { return cGroup; }
 		
 		//documentation=ML_COMMENT?
@@ -167,11 +167,11 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Trigger
 		public RuleCall getTriggerTriggerParserRuleCall_3_0() { return cTriggerTriggerParserRuleCall_3_0; }
 		
-		//routine=ImplicitRoutine
-		public Assignment getRoutineAssignment_4() { return cRoutineAssignment_4; }
+		//callRoutine=RoutineCallBlock
+		public Assignment getCallRoutineAssignment_4() { return cCallRoutineAssignment_4; }
 		
-		//ImplicitRoutine
-		public RuleCall getRoutineImplicitRoutineParserRuleCall_4_0() { return cRoutineImplicitRoutineParserRuleCall_4_0; }
+		//RoutineCallBlock
+		public RuleCall getCallRoutineRoutineCallBlockParserRuleCall_4_0() { return cCallRoutineRoutineCallBlockParserRuleCall_4_0; }
 	}
 	public class InvariantViolationEventElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.InvariantViolationEvent");
@@ -1267,7 +1267,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//Response:
-	//	documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger routine=ImplicitRoutine;
+	//	documentation=ML_COMMENT? 'response:' name=ValidID trigger=Trigger callRoutine=RoutineCallBlock;
 	public ResponseElements getResponseAccess() {
 		return pResponse;
 	}

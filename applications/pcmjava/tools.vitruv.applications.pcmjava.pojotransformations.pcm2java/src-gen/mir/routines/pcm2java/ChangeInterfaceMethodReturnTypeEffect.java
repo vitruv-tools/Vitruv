@@ -23,6 +23,27 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
   
   private DataType returnType;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
+      final TypeReference returnTypeReference = Pcm2JavaHelper.createTypeReference(returnType, returnTypeClass);
+      interfaceMethod.setTypeReference(returnTypeReference);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeInterfaceMethodReturnTypeEffect with input:");
     getLogger().debug("   InterfaceMethod: " + this.interfaceMethod);
@@ -43,20 +64,5 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
   
   private EObject getCorrepondenceSourceReturnTypeClass(final InterfaceMethod interfaceMethod, final DataType returnType) {
     return returnType;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
-      final TypeReference returnTypeReference = Pcm2JavaHelper.createTypeReference(returnType, returnTypeClass);
-      interfaceMethod.setTypeReference(returnTypeReference);
-    }
   }
 }

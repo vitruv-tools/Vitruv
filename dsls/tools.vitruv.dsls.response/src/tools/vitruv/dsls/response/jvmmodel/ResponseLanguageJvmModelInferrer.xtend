@@ -37,8 +37,8 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			return;
 		}
 		
-		val effectClass = new ImplicitRoutineClassGenerator(response.routine, typesBuilderExtensionProvider).generateClass();
-		acceptor.accept(effectClass);
+		//val effectClass = new ImplicitRoutineClassGenerator(response.routine, typesBuilderExtensionProvider).generateClass();
+		//acceptor.accept(effectClass);
 		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
 		acceptor.accept(responseClassGenerator.generateClass());
 	}

@@ -296,7 +296,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges()
 	 * @generated
 	 */
-	EOperation getMoveEObject__GetAtomicChanges_1();
+	EOperation getMoveEObject__GetAtomicChanges();
 
 				/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
@@ -408,7 +408,7 @@ public interface CompoundPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges_1();
+		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges();
 
 								/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.

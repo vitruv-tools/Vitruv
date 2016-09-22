@@ -20,6 +20,27 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
   
   private CompositeDataType compositeDataType;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final CompositeDataType compositeDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
+      String _entityName = compositeDataType.getEntityName();
+      this.effectFacade.callRenameJavaClassifier(compositeDataType, datatypesPackage, _entityName);
+    }
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameCompositeDataTypeEffect with input:");
     getLogger().debug("   CompositeDataType: " + this.compositeDataType);
@@ -35,7 +56,7 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(datatypesPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RenameCompositeDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.pcm2java.RenameCompositeDataTypeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
     	compositeDataType, datatypesPackage);
     postprocessElementStates();
   }
@@ -49,20 +70,5 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
   private EObject getCorrepondenceSourceDatatypesPackage(final CompositeDataType compositeDataType) {
     Repository _repository__DataType = compositeDataType.getRepository__DataType();
     return _repository__DataType;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final CompositeDataType compositeDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
-      String _entityName = compositeDataType.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(compositeDataType, datatypesPackage, _entityName);
-    }
   }
 }

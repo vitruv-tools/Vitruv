@@ -35,6 +35,37 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
   
   private String superTypeQualifiedName;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {
+      final ClassifierImport collectionTypeClassImport = Pcm2JavaHelper.getJavaClassImport(superTypeQualifiedName);
+      EList<Import> _imports = dataTypeImplementationCU.getImports();
+      _imports.add(collectionTypeClassImport);
+      ConcreteClassifier _classifier = collectionTypeClassImport.getClassifier();
+      Pcm2JavaHelper.createNamespaceClassifierReference(namespaceClassifier, _classifier);
+      final QualifiedTypeArgument qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
+      qualifiedTypeArgument.setTypeReference(innerTypeReference);
+      EList<ClassifierReference> _classifierReferences = namespaceClassifier.getClassifierReferences();
+      ClassifierReference _get = _classifierReferences.get(0);
+      EList<TypeArgument> _typeArguments = _get.getTypeArguments();
+      _typeArguments.add(qualifiedTypeArgument);
+      dataTypeImplementation.setExtends(namespaceClassifier);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {
     return namespaceClassifier;
   }
@@ -83,30 +114,5 @@ public class AddSuperTypeToDataTypeEffect extends AbstractEffectRealization {
   
   private EObject getCorrepondenceSourceDataTypeImplementation(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
     return dataType;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU, final NamespaceClassifierReference namespaceClassifier) {
-      final ClassifierImport collectionTypeClassImport = Pcm2JavaHelper.getJavaClassImport(superTypeQualifiedName);
-      EList<Import> _imports = dataTypeImplementationCU.getImports();
-      _imports.add(collectionTypeClassImport);
-      ConcreteClassifier _classifier = collectionTypeClassImport.getClassifier();
-      Pcm2JavaHelper.createNamespaceClassifierReference(namespaceClassifier, _classifier);
-      final QualifiedTypeArgument qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
-      qualifiedTypeArgument.setTypeReference(innerTypeReference);
-      EList<ClassifierReference> _classifierReferences = namespaceClassifier.getClassifierReferences();
-      ClassifierReference _get = _classifierReferences.get(0);
-      EList<TypeArgument> _typeArguments = _get.getTypeArguments();
-      _typeArguments.add(qualifiedTypeArgument);
-      dataTypeImplementation.setExtends(namespaceClassifier);
-    }
   }
 }

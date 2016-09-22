@@ -20,6 +20,27 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
   
   private OperationInterface interf;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {
+      String _entityName = interf.getEntityName();
+      this.effectFacade.callRenameJavaClassifier(interf, contractsPackage, _entityName);
+    }
+  }
+  
   private boolean getCorrespondingModelElementsPreconditionContractsPackage(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {
     String _name = contractsPackage.getName();
     boolean _equals = Objects.equal(_name, "contracts");
@@ -41,7 +62,7 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(contractsPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RenameInterfaceEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.pcm2java.RenameInterfaceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
     	interf, contractsPackage);
     postprocessElementStates();
   }
@@ -49,20 +70,5 @@ public class RenameInterfaceEffect extends AbstractEffectRealization {
   private EObject getCorrepondenceSourceContractsPackage(final OperationInterface interf) {
     Repository _repository__Interface = interf.getRepository__Interface();
     return _repository__Interface;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final OperationInterface interf, final org.emftext.language.java.containers.Package contractsPackage) {
-      String _entityName = interf.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(interf, contractsPackage, _entityName);
-    }
   }
 }

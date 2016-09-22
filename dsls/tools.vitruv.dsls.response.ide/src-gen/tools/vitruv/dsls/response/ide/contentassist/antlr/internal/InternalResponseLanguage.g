@@ -392,31 +392,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleImplicitRoutine
-entryRuleImplicitRoutine
-:
-{ before(grammarAccess.getImplicitRoutineRule()); }
-	 ruleImplicitRoutine
-{ after(grammarAccess.getImplicitRoutineRule()); } 
-	 EOF 
-;
-
-// Rule ImplicitRoutine
-ruleImplicitRoutine 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getImplicitRoutineAccess().getRoutineParserRuleCall()); }
-		ruleRoutine
-		{ after(grammarAccess.getImplicitRoutineAccess().getRoutineParserRuleCall()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleMatching
 entryRuleMatching
 :
@@ -4674,9 +4649,9 @@ rule__Response__Group__4__Impl
 	}
 :
 (
-	{ before(grammarAccess.getResponseAccess().getRoutineAssignment_4()); }
-	(rule__Response__RoutineAssignment_4)
-	{ after(grammarAccess.getResponseAccess().getRoutineAssignment_4()); }
+	{ before(grammarAccess.getResponseAccess().getCallRoutineAssignment_4()); }
+	(rule__Response__CallRoutineAssignment_4)
+	{ after(grammarAccess.getResponseAccess().getCallRoutineAssignment_4()); }
 )
 ;
 finally {
@@ -19448,15 +19423,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Response__RoutineAssignment_4
+rule__Response__CallRoutineAssignment_4
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getResponseAccess().getRoutineImplicitRoutineParserRuleCall_4_0()); }
-		ruleImplicitRoutine
-		{ after(grammarAccess.getResponseAccess().getRoutineImplicitRoutineParserRuleCall_4_0()); }
+		{ before(grammarAccess.getResponseAccess().getCallRoutineRoutineCallBlockParserRuleCall_4_0()); }
+		ruleRoutineCallBlock
+		{ after(grammarAccess.getResponseAccess().getCallRoutineRoutineCallBlockParserRuleCall_4_0()); }
 	)
 ;
 finally {

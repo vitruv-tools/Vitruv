@@ -20,6 +20,27 @@ public class RenameCollectionDataTypeEffect extends AbstractEffectRealization {
   
   private CollectionDataType collectionDataType;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final CollectionDataType collectionDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
+      String _entityName = collectionDataType.getEntityName();
+      this.effectFacade.callRenameJavaClassifier(collectionDataType, datatypesPackage, _entityName);
+    }
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameCollectionDataTypeEffect with input:");
     getLogger().debug("   CollectionDataType: " + this.collectionDataType);
@@ -35,7 +56,7 @@ public class RenameCollectionDataTypeEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(datatypesPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RenameCollectionDataTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.pcm2java.RenameCollectionDataTypeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
     	collectionDataType, datatypesPackage);
     postprocessElementStates();
   }
@@ -49,20 +70,5 @@ public class RenameCollectionDataTypeEffect extends AbstractEffectRealization {
   private EObject getCorrepondenceSourceDatatypesPackage(final CollectionDataType collectionDataType) {
     Repository _repository__DataType = collectionDataType.getRepository__DataType();
     return _repository__DataType;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final CollectionDataType collectionDataType, final org.emftext.language.java.containers.Package datatypesPackage) {
-      String _entityName = collectionDataType.getEntityName();
-      this.effectFacade.callRenameJavaClassifier(collectionDataType, datatypesPackage, _entityName);
-    }
   }
 }

@@ -1,8 +1,13 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -45,7 +50,21 @@ class RenamedCollectionDataTypeResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEAttribute<CollectionDataType, String> typedChange = (ReplaceSingleValuedEAttribute<CollectionDataType, String>)change;
-    mir.routines.pcm2java.RenamedCollectionDataTypeEffect effect = new mir.routines.pcm2java.RenamedCollectionDataTypeEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    new mir.responses.responses5_1ToJava.pcm2java.RenamedCollectionDataTypeResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    private void executeUserOperations(final ReplaceSingleValuedEAttribute<CollectionDataType, String> change) {
+      CollectionDataType _affectedEObject = change.getAffectedEObject();
+      this.effectFacade.callRenameCollectionDataType(_affectedEObject);
+    }
   }
 }

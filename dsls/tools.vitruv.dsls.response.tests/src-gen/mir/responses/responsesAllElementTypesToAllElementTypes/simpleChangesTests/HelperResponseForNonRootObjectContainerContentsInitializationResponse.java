@@ -2,8 +2,13 @@ package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTes
 
 import allElementTypes.NonRoot;
 import allElementTypes.NonRootObjectContainerHelper;
+import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -46,7 +51,22 @@ class HelperResponseForNonRootObjectContainerContentsInitializationResponse exte
   
   public void executeResponse(final EChange change) {
     InsertEReference<NonRootObjectContainerHelper, NonRoot> typedChange = (InsertEReference<NonRootObjectContainerHelper, NonRoot>)change;
-    mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect effect = new mir.routines.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    private void executeUserOperations(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change) {
+      NonRootObjectContainerHelper _affectedEObject = change.getAffectedEObject();
+      NonRoot _newValue = change.getNewValue();
+      this.effectFacade.callCreateNonRootInContainer(_affectedEObject, _newValue);
+    }
   }
 }

@@ -28,6 +28,36 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
   
   private ServiceEffectSpecification seff;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
+      Pcm2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
+      ClassMethod correspondingClassMethod = Pcm2JavaHelper.findMethodInClass(componentClass, classMethod);
+      boolean _equals = Objects.equal(null, correspondingClassMethod);
+      if (_equals) {
+        EList<Member> _members = componentClass.getMembers();
+        _members.add(classMethod);
+        correspondingClassMethod = classMethod;
+      } else {
+        String _name = interfaceMethod.getName();
+        correspondingClassMethod.setName(_name);
+      }
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
     return classMethod;
   }
@@ -84,29 +114,5 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
   private EObject getCorrepondenceSourceComponentClass(final ServiceEffectSpecification seff) {
     BasicComponent _basicComponent_ServiceEffectSpecification = seff.getBasicComponent_ServiceEffectSpecification();
     return _basicComponent_ServiceEffectSpecification;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
-      Pcm2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
-      ClassMethod correspondingClassMethod = Pcm2JavaHelper.findMethodInClass(componentClass, classMethod);
-      boolean _equals = Objects.equal(null, correspondingClassMethod);
-      if (_equals) {
-        EList<Member> _members = componentClass.getMembers();
-        _members.add(classMethod);
-        correspondingClassMethod = classMethod;
-      } else {
-        String _name = interfaceMethod.getName();
-        correspondingClassMethod.setName(_name);
-      }
-    }
   }
 }

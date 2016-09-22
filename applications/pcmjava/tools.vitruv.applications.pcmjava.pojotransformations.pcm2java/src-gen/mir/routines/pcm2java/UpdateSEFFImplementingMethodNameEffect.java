@@ -20,6 +20,28 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
   
   private ServiceEffectSpecification seff;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final ServiceEffectSpecification seff, final ClassMethod classMethod) {
+      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
+      String _entityName = _describedService__SEFF.getEntityName();
+      classMethod.setName(_entityName);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine UpdateSEFFImplementingMethodNameEffect with input:");
     getLogger().debug("   ServiceEffectSpecification: " + this.seff);
@@ -42,21 +64,5 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
   
   private EObject getCorrepondenceSourceClassMethod(final ServiceEffectSpecification seff) {
     return seff;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ServiceEffectSpecification seff, final ClassMethod classMethod) {
-      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
-      String _entityName = _describedService__SEFF.getEntityName();
-      classMethod.setName(_entityName);
-    }
   }
 }

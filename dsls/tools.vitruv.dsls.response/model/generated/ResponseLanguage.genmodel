@@ -21,7 +21,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//Response/documentation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//Response/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Response/trigger"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Response/routine"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Response/callRoutine"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Response/responsesSegment"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//InvariantViolationEvent">

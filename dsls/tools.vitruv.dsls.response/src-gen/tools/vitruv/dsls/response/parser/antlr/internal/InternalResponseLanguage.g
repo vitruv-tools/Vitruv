@@ -336,18 +336,18 @@ ruleResponse returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getResponseAccess().getRoutineImplicitRoutineParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getResponseAccess().getCallRoutineRoutineCallBlockParserRuleCall_4_0());
 				}
-				lv_routine_4_0=ruleImplicitRoutine
+				lv_callRoutine_4_0=ruleRoutineCallBlock
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getResponseRule());
 					}
 					set(
 						$current,
-						"routine",
-						lv_routine_4_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.ImplicitRoutine");
+						"callRoutine",
+						lv_callRoutine_4_0,
+						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -851,34 +851,6 @@ ruleRoutine[EObject in_current]  returns [EObject current=in_current]
 			)
 		)
 	)
-;
-
-// Entry rule entryRuleImplicitRoutine
-entryRuleImplicitRoutine returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getImplicitRoutineRule()); }
-	iv_ruleImplicitRoutine=ruleImplicitRoutine
-	{ $current=$iv_ruleImplicitRoutine.current; }
-	EOF;
-
-// Rule ImplicitRoutine
-ruleImplicitRoutine returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	{
-		if ($current==null) {
-			$current = createModelElement(grammarAccess.getImplicitRoutineRule());
-		}
-		newCompositeNode(grammarAccess.getImplicitRoutineAccess().getRoutineParserRuleCall());
-	}
-	this_Routine_0=ruleRoutine[$current]
-	{
-		$current = $this_Routine_0.current;
-		afterParserOrEnumRuleCall();
-	}
 ;
 
 // Entry rule entryRuleMatching

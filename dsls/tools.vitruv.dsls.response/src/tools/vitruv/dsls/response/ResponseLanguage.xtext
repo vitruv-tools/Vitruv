@@ -22,7 +22,7 @@ Response:
 	(documentation=ML_COMMENT)?
 	'response:' name=ValidID
 	trigger=Trigger
-	routine=ImplicitRoutine;
+	callRoutine=RoutineCallBlock;
 
 // ****** TRIGGER ******
 

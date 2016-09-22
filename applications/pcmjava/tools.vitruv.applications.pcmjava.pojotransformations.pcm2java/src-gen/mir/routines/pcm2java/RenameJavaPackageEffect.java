@@ -28,6 +28,39 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
   
   private String expectedTag;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag, final org.emftext.language.java.containers.Package javaPackage) {
+      EList<String> _namespaces = javaPackage.getNamespaces();
+      _namespaces.clear();
+      boolean _notEquals = (!Objects.equal(parentPackage, null));
+      if (_notEquals) {
+        EList<String> _namespaces_1 = javaPackage.getNamespaces();
+        EList<String> _namespaces_2 = parentPackage.getNamespaces();
+        Iterables.<String>addAll(_namespaces_1, _namespaces_2);
+        EList<String> _namespaces_3 = javaPackage.getNamespaces();
+        String _name = parentPackage.getName();
+        _namespaces_3.add(_name);
+      }
+      javaPackage.setName(packageName);
+      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
+      this.persistProjectRelative(sourceElementMappedToPackage, javaPackage, _buildJavaFilePath);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameJavaPackageEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToPackage);
@@ -57,32 +90,5 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
   
   private EObject getCorrepondenceSourceJavaPackage(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag) {
     return sourceElementMappedToPackage;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag, final org.emftext.language.java.containers.Package javaPackage) {
-      EList<String> _namespaces = javaPackage.getNamespaces();
-      _namespaces.clear();
-      boolean _notEquals = (!Objects.equal(parentPackage, null));
-      if (_notEquals) {
-        EList<String> _namespaces_1 = javaPackage.getNamespaces();
-        EList<String> _namespaces_2 = parentPackage.getNamespaces();
-        Iterables.<String>addAll(_namespaces_1, _namespaces_2);
-        EList<String> _namespaces_3 = javaPackage.getNamespaces();
-        String _name = parentPackage.getName();
-        _namespaces_3.add(_name);
-      }
-      javaPackage.setName(packageName);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
-      this.persistProjectRelative(sourceElementMappedToPackage, javaPackage, _buildJavaFilePath);
-    }
   }
 }

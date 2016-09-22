@@ -27,6 +27,37 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
   
   private String className;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
+      javaClassifier.setName(className);
+      compilationUnit.setName(className);
+      EList<String> _namespaces = compilationUnit.getNamespaces();
+      _namespaces.clear();
+      EList<String> _namespaces_1 = compilationUnit.getNamespaces();
+      EList<String> _namespaces_2 = containingPackage.getNamespaces();
+      Iterables.<String>addAll(_namespaces_1, _namespaces_2);
+      EList<String> _namespaces_3 = compilationUnit.getNamespaces();
+      String _name = containingPackage.getName();
+      _namespaces_3.add(_name);
+      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
+      this.persistProjectRelative(classSourceElement, compilationUnit, _buildJavaFilePath);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameJavaClassifierEffect with input:");
     getLogger().debug("   NamedElement: " + this.classSourceElement);
@@ -64,30 +95,5 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
   
   private EObject getCorrepondenceSourceCompilationUnit(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     return classSourceElement;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
-      javaClassifier.setName(className);
-      compilationUnit.setName(className);
-      EList<String> _namespaces = compilationUnit.getNamespaces();
-      _namespaces.clear();
-      EList<String> _namespaces_1 = compilationUnit.getNamespaces();
-      EList<String> _namespaces_2 = containingPackage.getNamespaces();
-      Iterables.<String>addAll(_namespaces_1, _namespaces_2);
-      EList<String> _namespaces_3 = compilationUnit.getNamespaces();
-      String _name = containingPackage.getName();
-      _namespaces_3.add(_name);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
-      this.persistProjectRelative(classSourceElement, compilationUnit, _buildJavaFilePath);
-    }
   }
 }

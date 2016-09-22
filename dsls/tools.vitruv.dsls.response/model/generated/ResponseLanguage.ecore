@@ -24,7 +24,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="routine" eType="#//ImplicitRoutine"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
         eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/responses"/>

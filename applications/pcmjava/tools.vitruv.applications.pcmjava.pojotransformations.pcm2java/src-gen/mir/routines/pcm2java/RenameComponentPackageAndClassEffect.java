@@ -19,6 +19,28 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
   
   private RepositoryComponent component;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
+      String _entityName = component.getEntityName();
+      this.effectFacade.callRenameJavaPackage(component, repositoryPackage, _entityName, null);
+      this.effectFacade.callRenameComponentClass(component);
+    }
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine RenameComponentPackageAndClassEffect with input:");
     getLogger().debug("   RepositoryComponent: " + this.component);
@@ -34,7 +56,7 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     initializeRetrieveElementState(repositoryPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
+    new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
     	component, repositoryPackage);
     postprocessElementStates();
   }
@@ -50,21 +72,5 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
   private EObject getCorrepondenceSourceRepositoryPackage(final RepositoryComponent component) {
     Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
     return _repository__RepositoryComponent;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
-      String _entityName = component.getEntityName();
-      this.effectFacade.callRenameJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.callRenameComponentClass(component);
-    }
   }
 }

@@ -28,6 +28,37 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
   
   private org.emftext.language.java.containers.Package containingPackage;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
+      EList<String> _namespaces = compilationUnit.getNamespaces();
+      EList<String> _namespaces_1 = containingPackage.getNamespaces();
+      Iterables.<String>addAll(_namespaces, _namespaces_1);
+      EList<String> _namespaces_2 = compilationUnit.getNamespaces();
+      String _name = containingPackage.getName();
+      _namespaces_2.add(_name);
+      String _name_1 = classifier.getName();
+      compilationUnit.setName(_name_1);
+      EList<ConcreteClassifier> _classifiers = compilationUnit.getClassifiers();
+      _classifiers.add(classifier);
+      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
+      this.persistProjectRelative(sourceElementMappedToClass, compilationUnit, _buildJavaFilePath);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
     return compilationUnit;
   }
@@ -50,30 +81,5 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     new mir.routines.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	sourceElementMappedToClass, classifier, containingPackage, compilationUnit);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
-      EList<String> _namespaces = compilationUnit.getNamespaces();
-      EList<String> _namespaces_1 = containingPackage.getNamespaces();
-      Iterables.<String>addAll(_namespaces, _namespaces_1);
-      EList<String> _namespaces_2 = compilationUnit.getNamespaces();
-      String _name = containingPackage.getName();
-      _namespaces_2.add(_name);
-      String _name_1 = classifier.getName();
-      compilationUnit.setName(_name_1);
-      EList<ConcreteClassifier> _classifiers = compilationUnit.getClassifiers();
-      _classifiers.add(classifier);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
-      this.persistProjectRelative(sourceElementMappedToClass, compilationUnit, _buildJavaFilePath);
-    }
   }
 }

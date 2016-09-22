@@ -1098,7 +1098,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Response returns Response
 	 *
 	 * Constraint:
-	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger routine=ImplicitRoutine)
+	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=RoutineCallBlock)
 	 */
 	protected void sequence_Response(ISerializationContext context, Response semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

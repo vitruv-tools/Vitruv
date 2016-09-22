@@ -534,7 +534,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getResponse_Routine()
+  public EReference getResponse_CallRoutine()
   {
     return (EReference)responseEClass.getEStructuralFeatures().get(3);
   }
@@ -1274,7 +1274,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEAttribute(responseEClass, RESPONSE__DOCUMENTATION);
     createEAttribute(responseEClass, RESPONSE__NAME);
     createEReference(responseEClass, RESPONSE__TRIGGER);
-    createEReference(responseEClass, RESPONSE__ROUTINE);
+    createEReference(responseEClass, RESPONSE__CALL_ROUTINE);
     createEReference(responseEClass, RESPONSE__RESPONSES_SEGMENT);
 
     invariantViolationEventEClass = createEClass(INVARIANT_VIOLATION_EVENT);
@@ -1458,7 +1458,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEAttribute(getResponse_Documentation(), ecorePackage.getEString(), "documentation", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getResponse_Name(), ecorePackage.getEString(), "name", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_Trigger(), this.getTrigger(), null, "trigger", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getResponse_Routine(), this.getImplicitRoutine(), null, "routine", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResponse_CallRoutine(), this.getRoutineCallBlock(), null, "callRoutine", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_ResponsesSegment(), this.getResponsesSegment(), this.getResponsesSegment_Responses(), "responsesSegment", null, 1, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(invariantViolationEventEClass, InvariantViolationEvent.class, "InvariantViolationEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

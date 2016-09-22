@@ -319,7 +319,7 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getResponseAccess().getDocumentationAssignment_0(), "rule__Response__DocumentationAssignment_0");
 					put(grammarAccess.getResponseAccess().getNameAssignment_2(), "rule__Response__NameAssignment_2");
 					put(grammarAccess.getResponseAccess().getTriggerAssignment_3(), "rule__Response__TriggerAssignment_3");
-					put(grammarAccess.getResponseAccess().getRoutineAssignment_4(), "rule__Response__RoutineAssignment_4");
+					put(grammarAccess.getResponseAccess().getCallRoutineAssignment_4(), "rule__Response__CallRoutineAssignment_4");
 					put(grammarAccess.getInvariantViolationEventAccess().getViolationAssignment_1(), "rule__InvariantViolationEvent__ViolationAssignment_1");
 					put(grammarAccess.getTriggerAccess().getPreconditionAssignment_2_1(), "rule__Trigger__PreconditionAssignment_2_1");
 					put(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementAssignment_1(), "rule__AtomicRootObjectChange__ChangedElementAssignment_1");

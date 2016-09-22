@@ -24,6 +24,22 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
   
   private NamedElement correspondenceSource;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final Constructor ctor, final NamedElement correspondenceSource, final OrdinaryParameter param) {
     return param;
   }
@@ -56,15 +72,5 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
   
   private EObject getCorrepondenceSourceParam(final Constructor ctor, final NamedElement correspondenceSource) {
     return correspondenceSource;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
   }
 }

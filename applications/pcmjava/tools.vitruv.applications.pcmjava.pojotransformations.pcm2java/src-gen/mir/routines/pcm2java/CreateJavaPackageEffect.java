@@ -28,6 +28,37 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
   
   private String newTag;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
+      boolean _notEquals = (!Objects.equal(parentPackage, null));
+      if (_notEquals) {
+        EList<String> _namespaces = javaPackage.getNamespaces();
+        EList<String> _namespaces_1 = parentPackage.getNamespaces();
+        Iterables.<String>addAll(_namespaces, _namespaces_1);
+        EList<String> _namespaces_2 = javaPackage.getNamespaces();
+        String _name = parentPackage.getName();
+        _namespaces_2.add(_name);
+      }
+      javaPackage.setName(packageName);
+      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
+      this.persistProjectRelative(sourceElementMappedToPackage, javaPackage, _buildJavaFilePath);
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   private EObject getElement0(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
     return javaPackage;
   }
@@ -70,30 +101,5 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
   
   private EObject getCorrepondenceSourcenull(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     return sourceElementMappedToPackage;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag, final org.emftext.language.java.containers.Package javaPackage) {
-      boolean _notEquals = (!Objects.equal(parentPackage, null));
-      if (_notEquals) {
-        EList<String> _namespaces = javaPackage.getNamespaces();
-        EList<String> _namespaces_1 = parentPackage.getNamespaces();
-        Iterables.<String>addAll(_namespaces, _namespaces_1);
-        EList<String> _namespaces_2 = javaPackage.getNamespaces();
-        String _name = parentPackage.getName();
-        _namespaces_2.add(_name);
-      }
-      javaPackage.setName(packageName);
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(javaPackage);
-      this.persistProjectRelative(sourceElementMappedToPackage, javaPackage, _buildJavaFilePath);
-    }
   }
 }

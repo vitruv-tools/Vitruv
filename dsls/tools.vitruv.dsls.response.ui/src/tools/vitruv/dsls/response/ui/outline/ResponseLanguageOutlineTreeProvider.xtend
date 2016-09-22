@@ -79,12 +79,6 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (response.trigger?.precondition != null) {
 			createChildren(triggerNode, response.trigger.precondition)
 		}
-		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
-			ResponseLanguagePackage.Literals.RESPONSE__ROUTINE,
-			imageDispatcher.invoke(response.routine), "effect", response.routine == null);
-		if (response.routine != null) {
-			createChildren(effectsNode, response.routine);
-		}
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionCodeBlock preconditionBlock) {

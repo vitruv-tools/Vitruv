@@ -207,13 +207,13 @@ public interface ResponseLanguagePackage extends EPackage
   int RESPONSE__TRIGGER = 2;
 
   /**
-   * The feature id for the '<em><b>Routine</b></em>' containment reference.
+   * The feature id for the '<em><b>Call Routine</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSE__ROUTINE = 3;
+  int RESPONSE__CALL_ROUTINE = 3;
 
   /**
    * The feature id for the '<em><b>Responses Segment</b></em>' container reference.
@@ -1652,15 +1652,15 @@ public interface ResponseLanguagePackage extends EPackage
   EReference getResponse_Trigger();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getRoutine <em>Routine</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Routine</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getRoutine()
+   * @return the meta object for the containment reference '<em>Call Routine</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine()
    * @see #getResponse()
    * @generated
    */
-  EReference getResponse_Routine();
+  EReference getResponse_CallRoutine();
 
   /**
    * Returns the meta object for the container reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}'.
@@ -2520,12 +2520,12 @@ public interface ResponseLanguagePackage extends EPackage
     EReference RESPONSE__TRIGGER = eINSTANCE.getResponse_Trigger();
 
     /**
-     * The meta object literal for the '<em><b>Routine</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Call Routine</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE__ROUTINE = eINSTANCE.getResponse_Routine();
+    EReference RESPONSE__CALL_ROUTINE = eINSTANCE.getResponse_CallRoutine();
 
     /**
      * The meta object literal for the '<em><b>Responses Segment</b></em>' container reference feature.

@@ -14,7 +14,6 @@ import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.members.Constructor;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.members.Member;
-import org.emftext.language.java.parameters.Parameter;
 import org.emftext.language.java.references.IdentifierReference;
 import org.emftext.language.java.references.Reference;
 import org.emftext.language.java.references.ReferenceableElement;
@@ -37,6 +36,68 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
   private RequiredRole requiredRole;
   
   private InterfaceRequiringEntity requiringEntity;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        {
+          Statement statementToRemove = null;
+          EList<Statement> _statements = ctor.getStatements();
+          for (final Statement statement : _statements) {
+            if ((statement instanceof ExpressionStatement)) {
+              final Expression assignmentExpression = ((ExpressionStatement)statement).getExpression();
+              if ((assignmentExpression instanceof AssignmentExpression)) {
+                final AssignmentExpressionChild selfReference = ((AssignmentExpression)assignmentExpression).getChild();
+                if ((selfReference instanceof SelfReference)) {
+                  final Reference fieldReference = ((SelfReference)selfReference).getNext();
+                  if ((fieldReference instanceof IdentifierReference)) {
+                    final ReferenceableElement field = ((IdentifierReference)fieldReference).getTarget();
+                    if ((field instanceof Field)) {
+                      String _name = ((Field)field).getName();
+                      String _entityName = requiredRole.getEntityName();
+                      boolean _equals = _name.equals(_entityName);
+                      if (_equals) {
+                        statementToRemove = statement;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          boolean _notEquals = (!Objects.equal(statementToRemove, null));
+          if (_notEquals) {
+            EList<Statement> _statements_1 = ctor.getStatements();
+            _statements_1.remove(statementToRemove);
+          }
+        }
+      }
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        this.effectFacade.callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
+      }
+    }
+  }
   
   private EObject getCorrepondenceSourceRequiredInterfaceField(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     return requiredRole;
@@ -96,70 +157,8 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     preprocessElementStates();
     new mir.routines.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
     	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass);
+    new mir.routines.pcm2java.RemoveRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
-      EList<Member> _members = javaClass.getMembers();
-      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
-      for (final Constructor ctor : _filter) {
-        {
-          this.effectFacade.callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
-          Statement statementToRemove = null;
-          EList<Statement> _statements = ctor.getStatements();
-          for (final Statement statement : _statements) {
-            if ((statement instanceof ExpressionStatement)) {
-              final Expression assignmentExpression = ((ExpressionStatement)statement).getExpression();
-              if ((assignmentExpression instanceof AssignmentExpression)) {
-                final AssignmentExpressionChild selfReference = ((AssignmentExpression)assignmentExpression).getChild();
-                if ((selfReference instanceof SelfReference)) {
-                  final Reference fieldReference = ((SelfReference)selfReference).getNext();
-                  if ((fieldReference instanceof IdentifierReference)) {
-                    final ReferenceableElement field = ((IdentifierReference)fieldReference).getTarget();
-                    if ((field instanceof Field)) {
-                      String _name = ((Field)field).getName();
-                      String _entityName = requiredRole.getEntityName();
-                      boolean _equals = _name.equals(_entityName);
-                      if (_equals) {
-                        statementToRemove = statement;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-          Parameter parameterToRemove = null;
-          EList<Parameter> _parameters = ctor.getParameters();
-          for (final Parameter parameter : _parameters) {
-            String _name_1 = parameter.getName();
-            String _entityName_1 = requiredRole.getEntityName();
-            boolean _equals_1 = _name_1.equals(_entityName_1);
-            if (_equals_1) {
-              parameterToRemove = parameter;
-            }
-          }
-          boolean _notEquals = (!Objects.equal(statementToRemove, null));
-          if (_notEquals) {
-            EList<Statement> _statements_1 = ctor.getStatements();
-            _statements_1.remove(statementToRemove);
-          }
-          boolean _notEquals_1 = (!Objects.equal(parameterToRemove, null));
-          if (_notEquals_1) {
-            EList<Parameter> _parameters_1 = ctor.getParameters();
-            _parameters_1.remove(parameterToRemove);
-          }
-        }
-      }
-    }
   }
 }

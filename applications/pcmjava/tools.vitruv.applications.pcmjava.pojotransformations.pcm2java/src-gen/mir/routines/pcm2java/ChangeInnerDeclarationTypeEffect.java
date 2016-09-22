@@ -27,6 +27,38 @@ public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization 
   
   private TypeReference newTypeReference;
   
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    private void executeUserOperations(final InnerDeclaration innerDeclaration, final TypeReference newTypeReference, final Field compositeTypeField, final Method compositeTypeGetterMethod, final Method compositeTypeSetterMethod) {
+      TypeReference _copy = EcoreUtil.<TypeReference>copy(newTypeReference);
+      compositeTypeField.setTypeReference(_copy);
+      TypeReference _copy_1 = EcoreUtil.<TypeReference>copy(newTypeReference);
+      compositeTypeGetterMethod.setTypeReference(_copy_1);
+      EList<Parameter> _parameters = compositeTypeSetterMethod.getParameters();
+      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_parameters);
+      boolean _not = (!_isNullOrEmpty);
+      if (_not) {
+        EList<Parameter> _parameters_1 = compositeTypeSetterMethod.getParameters();
+        final Parameter parameter = _parameters_1.get(0);
+        TypeReference _copy_2 = EcoreUtil.<TypeReference>copy(newTypeReference);
+        parameter.setTypeReference(_copy_2);
+      }
+    }
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
+    
+    @Extension
+    private RoutinesFacade effectFacade;
+  }
+  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeInnerDeclarationTypeEffect with input:");
     getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
@@ -84,31 +116,5 @@ public class ChangeInnerDeclarationTypeEffect extends AbstractEffectRealization 
   
   private EObject getCorrepondenceSourceCompositeTypeSetterMethod(final InnerDeclaration innerDeclaration, final TypeReference newTypeReference) {
     return innerDeclaration;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final InnerDeclaration innerDeclaration, final TypeReference newTypeReference, final Field compositeTypeField, final Method compositeTypeGetterMethod, final Method compositeTypeSetterMethod) {
-      TypeReference _copy = EcoreUtil.<TypeReference>copy(newTypeReference);
-      compositeTypeField.setTypeReference(_copy);
-      TypeReference _copy_1 = EcoreUtil.<TypeReference>copy(newTypeReference);
-      compositeTypeGetterMethod.setTypeReference(_copy_1);
-      EList<Parameter> _parameters = compositeTypeSetterMethod.getParameters();
-      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_parameters);
-      boolean _not = (!_isNullOrEmpty);
-      if (_not) {
-        EList<Parameter> _parameters_1 = compositeTypeSetterMethod.getParameters();
-        final Parameter parameter = _parameters_1.get(0);
-        TypeReference _copy_2 = EcoreUtil.<TypeReference>copy(newTypeReference);
-        parameter.setTypeReference(_copy_2);
-      }
-    }
   }
 }
