@@ -298,38 +298,38 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
 		private final Group cGroup_0_0 = (Group)cAlternatives_0.eContents().get(0);
-		private final Keyword cInsertRootKeyword_0_0_0 = (Keyword)cGroup_0_0.eContents().get(0);
+		private final Keyword cCreatedRootKeyword_0_0_0 = (Keyword)cGroup_0_0.eContents().get(0);
 		private final Action cInsertRootChangeAction_0_0_1 = (Action)cGroup_0_0.eContents().get(1);
 		private final Group cGroup_0_1 = (Group)cAlternatives_0.eContents().get(1);
-		private final Keyword cRemoveRootKeyword_0_1_0 = (Keyword)cGroup_0_1.eContents().get(0);
+		private final Keyword cDeletedRootKeyword_0_1_0 = (Keyword)cGroup_0_1.eContents().get(0);
 		private final Action cRemoveRootChangeAction_0_1_1 = (Action)cGroup_0_1.eContents().get(1);
 		private final Assignment cChangedElementAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cChangedElementModelElementParserRuleCall_1_0 = (RuleCall)cChangedElementAssignment_1.eContents().get(0);
 		
 		//AtomicRootObjectChange:
-		//	('insert root' {InsertRootChange} | 'remove root' {RemoveRootChange}) changedElement=ModelElement;
+		//	('created root' {InsertRootChange} | 'deleted root' {RemoveRootChange}) changedElement=ModelElement;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//('insert root' {InsertRootChange} | 'remove root' {RemoveRootChange}) changedElement=ModelElement
+		//('created root' {InsertRootChange} | 'deleted root' {RemoveRootChange}) changedElement=ModelElement
 		public Group getGroup() { return cGroup; }
 		
-		//('insert root' {InsertRootChange} | 'remove root' {RemoveRootChange})
+		//('created root' {InsertRootChange} | 'deleted root' {RemoveRootChange})
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 		
-		//'insert root' {InsertRootChange}
+		//'created root' {InsertRootChange}
 		public Group getGroup_0_0() { return cGroup_0_0; }
 		
-		//'insert root'
-		public Keyword getInsertRootKeyword_0_0_0() { return cInsertRootKeyword_0_0_0; }
+		//'created root'
+		public Keyword getCreatedRootKeyword_0_0_0() { return cCreatedRootKeyword_0_0_0; }
 		
 		//{InsertRootChange}
 		public Action getInsertRootChangeAction_0_0_1() { return cInsertRootChangeAction_0_0_1; }
 		
-		//'remove root' {RemoveRootChange}
+		//'deleted root' {RemoveRootChange}
 		public Group getGroup_0_1() { return cGroup_0_1; }
 		
-		//'remove root'
-		public Keyword getRemoveRootKeyword_0_1_0() { return cRemoveRootKeyword_0_1_0; }
+		//'deleted root'
+		public Keyword getDeletedRootKeyword_0_1_0() { return cDeletedRootKeyword_0_1_0; }
 		
 		//{RemoveRootChange}
 		public Action getRemoveRootChangeAction_0_1_1() { return cRemoveRootChangeAction_0_1_1; }
@@ -375,47 +375,47 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.AtomicMultiValuedFeatureChange");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Keyword cInsertInListKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
+		private final Keyword cInsertedIntoListKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
 		private final Action cMultiValuedFeatureInsertChangeAction_0_1 = (Action)cGroup_0.eContents().get(1);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Keyword cRemoveFromListKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Keyword cRemovedFromListKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Action cMultiValuedFeatureRemoveChangeAction_1_1 = (Action)cGroup_1.eContents().get(1);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
-		private final Keyword cPermuteListKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Keyword cPermutedListKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Action cMultiValuedFeaturePermuteChangeAction_2_1 = (Action)cGroup_2.eContents().get(1);
 		
 		//AtomicMultiValuedFeatureChange:
-		//	'insert in list' {MultiValuedFeatureInsertChange} | 'remove from list' {MultiValuedFeatureRemoveChange} |
-		//	'permute list' {MultiValuedFeaturePermuteChange};
+		//	'inserted into list' {MultiValuedFeatureInsertChange} | 'removed from list' {MultiValuedFeatureRemoveChange} |
+		//	'permuted list' {MultiValuedFeaturePermuteChange};
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'insert in list' {MultiValuedFeatureInsertChange} | 'remove from list' {MultiValuedFeatureRemoveChange} | 'permute list'
-		//{MultiValuedFeaturePermuteChange}
+		//'inserted into list' {MultiValuedFeatureInsertChange} | 'removed from list' {MultiValuedFeatureRemoveChange} |
+		//'permuted list' {MultiValuedFeaturePermuteChange}
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//'insert in list' {MultiValuedFeatureInsertChange}
+		//'inserted into list' {MultiValuedFeatureInsertChange}
 		public Group getGroup_0() { return cGroup_0; }
 		
-		//'insert in list'
-		public Keyword getInsertInListKeyword_0_0() { return cInsertInListKeyword_0_0; }
+		//'inserted into list'
+		public Keyword getInsertedIntoListKeyword_0_0() { return cInsertedIntoListKeyword_0_0; }
 		
 		//{MultiValuedFeatureInsertChange}
 		public Action getMultiValuedFeatureInsertChangeAction_0_1() { return cMultiValuedFeatureInsertChangeAction_0_1; }
 		
-		//'remove from list' {MultiValuedFeatureRemoveChange}
+		//'removed from list' {MultiValuedFeatureRemoveChange}
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//'remove from list'
-		public Keyword getRemoveFromListKeyword_1_0() { return cRemoveFromListKeyword_1_0; }
+		//'removed from list'
+		public Keyword getRemovedFromListKeyword_1_0() { return cRemovedFromListKeyword_1_0; }
 		
 		//{MultiValuedFeatureRemoveChange}
 		public Action getMultiValuedFeatureRemoveChangeAction_1_1() { return cMultiValuedFeatureRemoveChangeAction_1_1; }
 		
-		//'permute list' {MultiValuedFeaturePermuteChange}
+		//'permuted list' {MultiValuedFeaturePermuteChange}
 		public Group getGroup_2() { return cGroup_2; }
 		
-		//'permute list'
-		public Keyword getPermuteListKeyword_2_0() { return cPermuteListKeyword_2_0; }
+		//'permuted list'
+		public Keyword getPermutedListKeyword_2_0() { return cPermutedListKeyword_2_0; }
 		
 		//{MultiValuedFeaturePermuteChange}
 		public Action getMultiValuedFeaturePermuteChangeAction_2_1() { return cMultiValuedFeaturePermuteChangeAction_2_1; }
@@ -423,23 +423,23 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	public class AtomicSingleValuedFeatureChangeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.AtomicSingleValuedFeatureChange");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cReplaceValueKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cReplacedValueKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Action cSingleValuedFeatureReplaceAction_1 = (Action)cGroup.eContents().get(1);
 		
 		//AtomicSingleValuedFeatureChange:
 		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		// 'replace value'
+		// 'replaced value'
 		//	{SingleValuedFeatureReplace};
 		@Override public ParserRule getRule() { return rule; }
 		
 		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		// 'replace value'
+		// 'replaced value'
 		//{SingleValuedFeatureReplace}
 		public Group getGroup() { return cGroup; }
 		
 		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		// 'replace value'
-		public Keyword getReplaceValueKeyword_0() { return cReplaceValueKeyword_0; }
+		// 'replaced value'
+		public Keyword getReplacedValueKeyword_0() { return cReplacedValueKeyword_0; }
 		
 		//{SingleValuedFeatureReplace}
 		public Action getSingleValuedFeatureReplaceAction_1() { return cSingleValuedFeatureReplaceAction_1; }
@@ -1298,7 +1298,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//AtomicRootObjectChange:
-	//	('insert root' {InsertRootChange} | 'remove root' {RemoveRootChange}) changedElement=ModelElement;
+	//	('created root' {InsertRootChange} | 'deleted root' {RemoveRootChange}) changedElement=ModelElement;
 	public AtomicRootObjectChangeElements getAtomicRootObjectChangeAccess() {
 		return pAtomicRootObjectChange;
 	}
@@ -1318,8 +1318,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//AtomicMultiValuedFeatureChange:
-	//	'insert in list' {MultiValuedFeatureInsertChange} | 'remove from list' {MultiValuedFeatureRemoveChange} |
-	//	'permute list' {MultiValuedFeaturePermuteChange};
+	//	'inserted into list' {MultiValuedFeatureInsertChange} | 'removed from list' {MultiValuedFeatureRemoveChange} |
+	//	'permuted list' {MultiValuedFeaturePermuteChange};
 	public AtomicMultiValuedFeatureChangeElements getAtomicMultiValuedFeatureChangeAccess() {
 		return pAtomicMultiValuedFeatureChange;
 	}
@@ -1330,7 +1330,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	
 	//AtomicSingleValuedFeatureChange:
 	////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	// 'replace value'
+	// 'replaced value'
 	//	{SingleValuedFeatureReplace};
 	public AtomicSingleValuedFeatureChangeElements getAtomicSingleValuedFeatureChangeAccess() {
 		return pAtomicSingleValuedFeatureChange;

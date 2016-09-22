@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalResponseLanguageParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ML_COMMENT", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'responses from metamodel'", "'to metamodel'", "'called'", "'response:'", "'invariant'", "'trigger:'", "'check:'", "'insert root'", "'remove root'", "'insert in list'", "'remove from list'", "'permute list'", "'replace value'", "'any change'", "'match:'", "'effect:'", "'execute:'", "'routine:'", "'('", "'plain:'", "','", "')'", "'retrieve required element:'", "'retrieve optional element:'", "'require absence of element:'", "'corresponding to'", "'tagged with'", "'with'", "'create element:'", "'delete element:'", "'add correspondence:'", "'tag with'", "'remove correspondence:'", "'import'", "'as'", "'using simple names'", "'['", "']'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'::'", "'?.'", "'#'", "'{'", "'}'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ML_COMMENT", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'responses from metamodel'", "'to metamodel'", "'called'", "'response:'", "'invariant'", "'trigger:'", "'check:'", "'created root'", "'deleted root'", "'inserted into list'", "'removed from list'", "'permuted list'", "'replaced value'", "'any change'", "'match:'", "'effect:'", "'execute:'", "'routine:'", "'('", "'plain:'", "','", "')'", "'retrieve required element:'", "'retrieve optional element:'", "'require absence of element:'", "'corresponding to'", "'tagged with'", "'with'", "'create element:'", "'delete element:'", "'add correspondence:'", "'tag with'", "'remove correspondence:'", "'import'", "'as'", "'using simple names'", "'['", "']'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'<'", "'>'", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'::'", "'?.'", "'#'", "'{'", "'}'", "'|'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'extends'", "'static'", "'extension'", "'super'", "'new'", "'false'", "'true'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_HEX=7;
     public static final int T__50=50;
@@ -1709,7 +1709,7 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
 
 
     // $ANTLR start "ruleAtomicRootObjectChange"
-    // InternalResponseLanguage.g:569:1: ruleAtomicRootObjectChange returns [EObject current=null] : ( ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) ) ;
+    // InternalResponseLanguage.g:569:1: ruleAtomicRootObjectChange returns [EObject current=null] : ( ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) ) ;
     public final EObject ruleAtomicRootObjectChange() throws RecognitionException {
         EObject current = null;
 
@@ -1722,13 +1722,13 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
         	enterRule();
 
         try {
-            // InternalResponseLanguage.g:575:2: ( ( ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) ) )
-            // InternalResponseLanguage.g:576:2: ( ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) )
+            // InternalResponseLanguage.g:575:2: ( ( ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) ) )
+            // InternalResponseLanguage.g:576:2: ( ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) )
             {
-            // InternalResponseLanguage.g:576:2: ( ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) )
-            // InternalResponseLanguage.g:577:3: ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) )
+            // InternalResponseLanguage.g:576:2: ( ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) ) )
+            // InternalResponseLanguage.g:577:3: ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) ) ( (lv_changedElement_4_0= ruleModelElement ) )
             {
-            // InternalResponseLanguage.g:577:3: ( (otherlv_0= 'insert root' () ) | (otherlv_2= 'remove root' () ) )
+            // InternalResponseLanguage.g:577:3: ( (otherlv_0= 'created root' () ) | (otherlv_2= 'deleted root' () ) )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -1747,15 +1747,15 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
             }
             switch (alt9) {
                 case 1 :
-                    // InternalResponseLanguage.g:578:4: (otherlv_0= 'insert root' () )
+                    // InternalResponseLanguage.g:578:4: (otherlv_0= 'created root' () )
                     {
-                    // InternalResponseLanguage.g:578:4: (otherlv_0= 'insert root' () )
-                    // InternalResponseLanguage.g:579:5: otherlv_0= 'insert root' ()
+                    // InternalResponseLanguage.g:578:4: (otherlv_0= 'created root' () )
+                    // InternalResponseLanguage.g:579:5: otherlv_0= 'created root' ()
                     {
                     otherlv_0=(Token)match(input,20,FOLLOW_5); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      					newLeafNode(otherlv_0, grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0());
+                      					newLeafNode(otherlv_0, grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0());
                       				
                     }
                     // InternalResponseLanguage.g:583:5: ()
@@ -1778,15 +1778,15 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
                     }
                     break;
                 case 2 :
-                    // InternalResponseLanguage.g:592:4: (otherlv_2= 'remove root' () )
+                    // InternalResponseLanguage.g:592:4: (otherlv_2= 'deleted root' () )
                     {
-                    // InternalResponseLanguage.g:592:4: (otherlv_2= 'remove root' () )
-                    // InternalResponseLanguage.g:593:5: otherlv_2= 'remove root' ()
+                    // InternalResponseLanguage.g:592:4: (otherlv_2= 'deleted root' () )
+                    // InternalResponseLanguage.g:593:5: otherlv_2= 'deleted root' ()
                     {
                     otherlv_2=(Token)match(input,21,FOLLOW_5); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      					newLeafNode(otherlv_2, grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0());
+                      					newLeafNode(otherlv_2, grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0());
                       				
                     }
                     // InternalResponseLanguage.g:597:5: ()
@@ -2097,7 +2097,7 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
 
 
     // $ANTLR start "ruleAtomicMultiValuedFeatureChange"
-    // InternalResponseLanguage.g:693:1: ruleAtomicMultiValuedFeatureChange returns [EObject current=null] : ( (otherlv_0= 'insert in list' () ) | (otherlv_2= 'remove from list' () ) | (otherlv_4= 'permute list' () ) ) ;
+    // InternalResponseLanguage.g:693:1: ruleAtomicMultiValuedFeatureChange returns [EObject current=null] : ( (otherlv_0= 'inserted into list' () ) | (otherlv_2= 'removed from list' () ) | (otherlv_4= 'permuted list' () ) ) ;
     public final EObject ruleAtomicMultiValuedFeatureChange() throws RecognitionException {
         EObject current = null;
 
@@ -2109,10 +2109,10 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
         	enterRule();
 
         try {
-            // InternalResponseLanguage.g:699:2: ( ( (otherlv_0= 'insert in list' () ) | (otherlv_2= 'remove from list' () ) | (otherlv_4= 'permute list' () ) ) )
-            // InternalResponseLanguage.g:700:2: ( (otherlv_0= 'insert in list' () ) | (otherlv_2= 'remove from list' () ) | (otherlv_4= 'permute list' () ) )
+            // InternalResponseLanguage.g:699:2: ( ( (otherlv_0= 'inserted into list' () ) | (otherlv_2= 'removed from list' () ) | (otherlv_4= 'permuted list' () ) ) )
+            // InternalResponseLanguage.g:700:2: ( (otherlv_0= 'inserted into list' () ) | (otherlv_2= 'removed from list' () ) | (otherlv_4= 'permuted list' () ) )
             {
-            // InternalResponseLanguage.g:700:2: ( (otherlv_0= 'insert in list' () ) | (otherlv_2= 'remove from list' () ) | (otherlv_4= 'permute list' () ) )
+            // InternalResponseLanguage.g:700:2: ( (otherlv_0= 'inserted into list' () ) | (otherlv_2= 'removed from list' () ) | (otherlv_4= 'permuted list' () ) )
             int alt11=3;
             switch ( input.LA(1) ) {
             case 22:
@@ -2140,15 +2140,15 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
 
             switch (alt11) {
                 case 1 :
-                    // InternalResponseLanguage.g:701:3: (otherlv_0= 'insert in list' () )
+                    // InternalResponseLanguage.g:701:3: (otherlv_0= 'inserted into list' () )
                     {
-                    // InternalResponseLanguage.g:701:3: (otherlv_0= 'insert in list' () )
-                    // InternalResponseLanguage.g:702:4: otherlv_0= 'insert in list' ()
+                    // InternalResponseLanguage.g:701:3: (otherlv_0= 'inserted into list' () )
+                    // InternalResponseLanguage.g:702:4: otherlv_0= 'inserted into list' ()
                     {
                     otherlv_0=(Token)match(input,22,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				newLeafNode(otherlv_0, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0());
+                      				newLeafNode(otherlv_0, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0());
                       			
                     }
                     // InternalResponseLanguage.g:706:4: ()
@@ -2171,15 +2171,15 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
                     }
                     break;
                 case 2 :
-                    // InternalResponseLanguage.g:715:3: (otherlv_2= 'remove from list' () )
+                    // InternalResponseLanguage.g:715:3: (otherlv_2= 'removed from list' () )
                     {
-                    // InternalResponseLanguage.g:715:3: (otherlv_2= 'remove from list' () )
-                    // InternalResponseLanguage.g:716:4: otherlv_2= 'remove from list' ()
+                    // InternalResponseLanguage.g:715:3: (otherlv_2= 'removed from list' () )
+                    // InternalResponseLanguage.g:716:4: otherlv_2= 'removed from list' ()
                     {
                     otherlv_2=(Token)match(input,23,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				newLeafNode(otherlv_2, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0());
+                      				newLeafNode(otherlv_2, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0());
                       			
                     }
                     // InternalResponseLanguage.g:720:4: ()
@@ -2202,15 +2202,15 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
                     }
                     break;
                 case 3 :
-                    // InternalResponseLanguage.g:729:3: (otherlv_4= 'permute list' () )
+                    // InternalResponseLanguage.g:729:3: (otherlv_4= 'permuted list' () )
                     {
-                    // InternalResponseLanguage.g:729:3: (otherlv_4= 'permute list' () )
-                    // InternalResponseLanguage.g:730:4: otherlv_4= 'permute list' ()
+                    // InternalResponseLanguage.g:729:3: (otherlv_4= 'permuted list' () )
+                    // InternalResponseLanguage.g:730:4: otherlv_4= 'permuted list' ()
                     {
                     otherlv_4=(Token)match(input,24,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
-                      				newLeafNode(otherlv_4, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0());
+                      				newLeafNode(otherlv_4, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0());
                       			
                     }
                     // InternalResponseLanguage.g:734:4: ()
@@ -2297,7 +2297,7 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
 
 
     // $ANTLR start "ruleAtomicSingleValuedFeatureChange"
-    // InternalResponseLanguage.g:753:1: ruleAtomicSingleValuedFeatureChange returns [EObject current=null] : (otherlv_0= 'replace value' () ) ;
+    // InternalResponseLanguage.g:753:1: ruleAtomicSingleValuedFeatureChange returns [EObject current=null] : (otherlv_0= 'replaced value' () ) ;
     public final EObject ruleAtomicSingleValuedFeatureChange() throws RecognitionException {
         EObject current = null;
 
@@ -2307,16 +2307,16 @@ public class InternalResponseLanguageParser extends AbstractInternalAntlrParser 
         	enterRule();
 
         try {
-            // InternalResponseLanguage.g:759:2: ( (otherlv_0= 'replace value' () ) )
-            // InternalResponseLanguage.g:760:2: (otherlv_0= 'replace value' () )
+            // InternalResponseLanguage.g:759:2: ( (otherlv_0= 'replaced value' () ) )
+            // InternalResponseLanguage.g:760:2: (otherlv_0= 'replaced value' () )
             {
-            // InternalResponseLanguage.g:760:2: (otherlv_0= 'replace value' () )
-            // InternalResponseLanguage.g:761:3: otherlv_0= 'replace value' ()
+            // InternalResponseLanguage.g:760:2: (otherlv_0= 'replaced value' () )
+            // InternalResponseLanguage.g:761:3: otherlv_0= 'replaced value' ()
             {
             otherlv_0=(Token)match(input,25,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_0, grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0());
+              			newLeafNode(otherlv_0, grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0());
               		
             }
             // InternalResponseLanguage.g:765:3: ()

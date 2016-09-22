@@ -10,7 +10,7 @@ called simpleChangesTests
  * UpdateSingleValuedEAttribute
  */
 response: SetSingleValuedEAttribute
-trigger: replace value minimal.Root[singleValuedEAttribute]
+trigger: replaced value minimal.Root[singleValuedEAttribute]
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect: execute: {
@@ -22,7 +22,7 @@ effect: execute: {
  * UpdateSingleValuedEAttribute
  */
 response: ReplaceNonRootId
-trigger: replace value minimal.NonRoot[id]
+trigger: replaced value minimal.NonRoot[id]
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to change.affectedEObject
 effect: execute: {
@@ -47,7 +47,7 @@ effect: execute: {
  * CreateNonRootEObjectInList
  */
 response: CreateNonRootEObjectInList
-trigger: insert in list minimal.Root[multiValuedContainmentEReference]
+trigger: inserted into list minimal.Root[multiValuedContainmentEReference]
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect:
@@ -63,7 +63,7 @@ effect:
  * DeleteNonRootEObjectInList
  */
 response: DeleteNonRootEObjectInList
-trigger: remove from list minimal.Root[multiValuedContainmentEReference]
+trigger: removed from list minimal.Root[multiValuedContainmentEReference]
 match:
 	retrieve required element: minimal.NonRoot as targetElement corresponding to change.oldValue
 effect:
@@ -78,7 +78,7 @@ effect:
  * ReplaceNonRootEObjectSingle
  */
 response: ReplacedNonRootEObjectSingleResponse
-trigger: replace value minimal.Root[singleValuedContainmentEReference]
+trigger: replaced value minimal.Root[singleValuedContainmentEReference]
 effect: execute: {
 	if (change.fromNonDefaultValue) {
 		callDeleteNonRootEObjectSingle(change.oldValue);
@@ -113,7 +113,7 @@ effect:
  * UpdateSingleValuedNonContainmentEReference
  */
 response: UpdateSingleValuedNonContainmentEReference
-trigger: replace value minimal.Root[singleValuedNonContainmentEReference] 
+trigger: replaced value minimal.Root[singleValuedNonContainmentEReference] 
 match:
 	retrieve required element: minimal.Root as targetContainer corresponding to change.affectedEObject
 	retrieve required element: minimal.NonRoot as targetElement corresponding to change.newValue
@@ -142,7 +142,7 @@ effect:
  * InsertEAttributeValue
  */
 response: InsertEAttributeValue
-trigger: insert in list minimal.Root[multiValuedEAttribute] 
+trigger: inserted into list minimal.Root[multiValuedEAttribute] 
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect:
@@ -155,7 +155,7 @@ effect:
  * RemoveEAttributeValue
  */
 response: RemoveEAttributeValue
-trigger: remove from list minimal.Root[multiValuedEAttribute] 
+trigger: removed from list minimal.Root[multiValuedEAttribute] 
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect:
@@ -169,7 +169,7 @@ effect:
  * InsertNonContainmentEReference
  */
 response: InsertNonContainmentEReference
-trigger: insert in list minimal.Root[multiValuedNonContainmentEReference] 
+trigger: inserted into list minimal.Root[multiValuedNonContainmentEReference] 
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
 effect:
@@ -183,7 +183,7 @@ effect:
  * RemoveNonContainmentEReference
  */
 response: RemoveNonContainmentEReference
-trigger: remove from list minimal.Root[multiValuedNonContainmentEReference] 
+trigger: removed from list minimal.Root[multiValuedNonContainmentEReference] 
 match:
 	retrieve required element: minimal.Root as targetRoot corresponding to change.affectedEObject
 effect:
@@ -223,7 +223,7 @@ effect:
  * Creates the model for comparing the "TestModelSource", created in each test, with.
  */
 response: HelperResponseForCreateSecondTestModel
-trigger: insert root minimal.Root
+trigger: created root minimal.Root
 check: change.newValue.id == "EachTestModelSource"
 effect:
 	create element: minimal.Root as newRoot
@@ -235,7 +235,7 @@ effect:
 	}
 
 response: HelperResponseForDeleteSecondTestModel
-trigger: remove root minimal.Root
+trigger: deleted root minimal.Root
 check: change.oldValue.id == "EachTestModelSource"
 match:
 	retrieve required element: minimal.Root as oldModel corresponding to change.oldValue
@@ -246,7 +246,7 @@ effect:
  * Creates the model for comparing the further test model with.
  */
 response: CreateRootTest
-trigger: insert root minimal.Root
+trigger: created root minimal.Root
 check: change.newValue.id == "Further_Source_Test_Model"
 effect:
 	create element: minimal.Root as newRoot
@@ -260,7 +260,7 @@ effect:
 //effect: create root minimal.Root at "Further_Target_Test_Model" auto-delete corresponding to change.newValue
 
 response: DeleteRootTest
-trigger: remove root minimal.Root
+trigger: deleted root minimal.Root
 check: change.oldValue.id == "Further_Source_Test_Model"
 match:
 	retrieve required element: minimal.Root as oldModel corresponding to change.oldValue
@@ -277,7 +277,7 @@ effect:
  * Initializes the nonRootObjectContainer for second model
  */
 response: HelperResponseForNonRootObjectContainerInitialization
-trigger: replace value minimal.Root[nonRootObjectContainerHelper]
+trigger: replaced value minimal.Root[nonRootObjectContainerHelper]
 check: change.isToNonDefaultValue
 match:
 	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
@@ -293,7 +293,7 @@ effect:
  * Initializes the nonRootObjectContainer for second model
  */
 response: HelperResponseForNonRootObjectContainerContentsInitialization
-trigger: insert in list minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
+trigger: inserted into list minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
 match:
 	retrieve required element: minimal.NonRootObjectContainerHelper as nonRootContainer corresponding to change.affectedEObject
 effect:

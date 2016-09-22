@@ -4929,9 +4929,9 @@ rule__AtomicRootObjectChange__Group_0_0__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0()); }
-	'insert root'
-	{ after(grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0()); }
+	{ before(grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0()); }
+	'created root'
+	{ after(grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0()); }
 )
 ;
 finally {
@@ -4983,9 +4983,9 @@ rule__AtomicRootObjectChange__Group_0_1__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0()); }
-	'remove root'
-	{ after(grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0()); }
+	{ before(grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0()); }
+	'deleted root'
+	{ after(grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0()); }
 )
 ;
 finally {
@@ -5091,9 +5091,9 @@ rule__AtomicMultiValuedFeatureChange__Group_0__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0()); }
-	'insert in list'
-	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0()); }
+	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0()); }
+	'inserted into list'
+	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0()); }
 )
 ;
 finally {
@@ -5145,9 +5145,9 @@ rule__AtomicMultiValuedFeatureChange__Group_1__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0()); }
-	'remove from list'
-	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0()); }
+	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0()); }
+	'removed from list'
+	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0()); }
 )
 ;
 finally {
@@ -5199,9 +5199,9 @@ rule__AtomicMultiValuedFeatureChange__Group_2__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0()); }
-	'permute list'
-	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0()); }
+	{ before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0()); }
+	'permuted list'
+	{ after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0()); }
 )
 ;
 finally {
@@ -5253,9 +5253,9 @@ rule__AtomicSingleValuedFeatureChange__Group__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0()); }
-	'replace value'
-	{ after(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0()); }
+	{ before(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0()); }
+	'replaced value'
+	{ after(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0()); }
 )
 ;
 finally {

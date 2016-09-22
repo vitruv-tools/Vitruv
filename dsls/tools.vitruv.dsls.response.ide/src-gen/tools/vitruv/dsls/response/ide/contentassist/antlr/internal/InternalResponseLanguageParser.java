@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalResponseLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'responses from metamodel'", "'to metamodel'", "'called'", "'response:'", "'invariant'", "'trigger:'", "'check:'", "'insert root'", "'remove root'", "'insert in list'", "'remove from list'", "'permute list'", "'replace value'", "'any change'", "'match:'", "'effect:'", "'execute:'", "'routine:'", "'('", "')'", "'plain:'", "','", "'corresponding to'", "'tagged with'", "'with'", "'create element:'", "'delete element:'", "'add correspondence:'", "'tag with'", "'remove correspondence:'", "'as'", "'['", "']'", "'instanceof'", "'#'", "'{'", "'}'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'retrieve required element:'", "'retrieve optional element:'", "'require absence of element:'", "'using simple names'", "'::'", "'?.'", "'|'", "'var'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'responses from metamodel'", "'to metamodel'", "'called'", "'response:'", "'invariant'", "'trigger:'", "'check:'", "'created root'", "'deleted root'", "'inserted into list'", "'removed from list'", "'permuted list'", "'replaced value'", "'any change'", "'match:'", "'effect:'", "'execute:'", "'routine:'", "'('", "')'", "'plain:'", "','", "'corresponding to'", "'tagged with'", "'with'", "'create element:'", "'delete element:'", "'add correspondence:'", "'tag with'", "'remove correspondence:'", "'as'", "'['", "']'", "'instanceof'", "'#'", "'{'", "'}'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'retrieve required element:'", "'retrieve optional element:'", "'require absence of element:'", "'using simple names'", "'::'", "'?.'", "'|'", "'var'", "'true'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -17997,24 +17997,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicRootObjectChange__Group_0_0__0__Impl"
-    // InternalResponseLanguage.g:4926:1: rule__AtomicRootObjectChange__Group_0_0__0__Impl : ( 'insert root' ) ;
+    // InternalResponseLanguage.g:4926:1: rule__AtomicRootObjectChange__Group_0_0__0__Impl : ( 'created root' ) ;
     public final void rule__AtomicRootObjectChange__Group_0_0__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:4930:1: ( ( 'insert root' ) )
-            // InternalResponseLanguage.g:4931:1: ( 'insert root' )
+            // InternalResponseLanguage.g:4930:1: ( ( 'created root' ) )
+            // InternalResponseLanguage.g:4931:1: ( 'created root' )
             {
-            // InternalResponseLanguage.g:4931:1: ( 'insert root' )
-            // InternalResponseLanguage.g:4932:2: 'insert root'
+            // InternalResponseLanguage.g:4931:1: ( 'created root' )
+            // InternalResponseLanguage.g:4932:2: 'created root'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0()); 
+               before(grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0()); 
             }
             match(input,58,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0()); 
+               after(grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0()); 
             }
 
             }
@@ -18150,24 +18150,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicRootObjectChange__Group_0_1__0__Impl"
-    // InternalResponseLanguage.g:4980:1: rule__AtomicRootObjectChange__Group_0_1__0__Impl : ( 'remove root' ) ;
+    // InternalResponseLanguage.g:4980:1: rule__AtomicRootObjectChange__Group_0_1__0__Impl : ( 'deleted root' ) ;
     public final void rule__AtomicRootObjectChange__Group_0_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:4984:1: ( ( 'remove root' ) )
-            // InternalResponseLanguage.g:4985:1: ( 'remove root' )
+            // InternalResponseLanguage.g:4984:1: ( ( 'deleted root' ) )
+            // InternalResponseLanguage.g:4985:1: ( 'deleted root' )
             {
-            // InternalResponseLanguage.g:4985:1: ( 'remove root' )
-            // InternalResponseLanguage.g:4986:2: 'remove root'
+            // InternalResponseLanguage.g:4985:1: ( 'deleted root' )
+            // InternalResponseLanguage.g:4986:2: 'deleted root'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0()); 
+               before(grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0()); 
             }
             match(input,59,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0()); 
+               after(grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0()); 
             }
 
             }
@@ -18476,24 +18476,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicMultiValuedFeatureChange__Group_0__0__Impl"
-    // InternalResponseLanguage.g:5088:1: rule__AtomicMultiValuedFeatureChange__Group_0__0__Impl : ( 'insert in list' ) ;
+    // InternalResponseLanguage.g:5088:1: rule__AtomicMultiValuedFeatureChange__Group_0__0__Impl : ( 'inserted into list' ) ;
     public final void rule__AtomicMultiValuedFeatureChange__Group_0__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:5092:1: ( ( 'insert in list' ) )
-            // InternalResponseLanguage.g:5093:1: ( 'insert in list' )
+            // InternalResponseLanguage.g:5092:1: ( ( 'inserted into list' ) )
+            // InternalResponseLanguage.g:5093:1: ( 'inserted into list' )
             {
-            // InternalResponseLanguage.g:5093:1: ( 'insert in list' )
-            // InternalResponseLanguage.g:5094:2: 'insert in list'
+            // InternalResponseLanguage.g:5093:1: ( 'inserted into list' )
+            // InternalResponseLanguage.g:5094:2: 'inserted into list'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0()); 
+               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0()); 
             }
             match(input,60,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0()); 
+               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0()); 
             }
 
             }
@@ -18629,24 +18629,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicMultiValuedFeatureChange__Group_1__0__Impl"
-    // InternalResponseLanguage.g:5142:1: rule__AtomicMultiValuedFeatureChange__Group_1__0__Impl : ( 'remove from list' ) ;
+    // InternalResponseLanguage.g:5142:1: rule__AtomicMultiValuedFeatureChange__Group_1__0__Impl : ( 'removed from list' ) ;
     public final void rule__AtomicMultiValuedFeatureChange__Group_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:5146:1: ( ( 'remove from list' ) )
-            // InternalResponseLanguage.g:5147:1: ( 'remove from list' )
+            // InternalResponseLanguage.g:5146:1: ( ( 'removed from list' ) )
+            // InternalResponseLanguage.g:5147:1: ( 'removed from list' )
             {
-            // InternalResponseLanguage.g:5147:1: ( 'remove from list' )
-            // InternalResponseLanguage.g:5148:2: 'remove from list'
+            // InternalResponseLanguage.g:5147:1: ( 'removed from list' )
+            // InternalResponseLanguage.g:5148:2: 'removed from list'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0()); 
+               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0()); 
             }
             match(input,61,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0()); 
+               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0()); 
             }
 
             }
@@ -18782,24 +18782,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicMultiValuedFeatureChange__Group_2__0__Impl"
-    // InternalResponseLanguage.g:5196:1: rule__AtomicMultiValuedFeatureChange__Group_2__0__Impl : ( 'permute list' ) ;
+    // InternalResponseLanguage.g:5196:1: rule__AtomicMultiValuedFeatureChange__Group_2__0__Impl : ( 'permuted list' ) ;
     public final void rule__AtomicMultiValuedFeatureChange__Group_2__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:5200:1: ( ( 'permute list' ) )
-            // InternalResponseLanguage.g:5201:1: ( 'permute list' )
+            // InternalResponseLanguage.g:5200:1: ( ( 'permuted list' ) )
+            // InternalResponseLanguage.g:5201:1: ( 'permuted list' )
             {
-            // InternalResponseLanguage.g:5201:1: ( 'permute list' )
-            // InternalResponseLanguage.g:5202:2: 'permute list'
+            // InternalResponseLanguage.g:5201:1: ( 'permuted list' )
+            // InternalResponseLanguage.g:5202:2: 'permuted list'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0()); 
+               before(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0()); 
             }
             match(input,62,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0()); 
+               after(grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0()); 
             }
 
             }
@@ -18935,24 +18935,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__AtomicSingleValuedFeatureChange__Group__0__Impl"
-    // InternalResponseLanguage.g:5250:1: rule__AtomicSingleValuedFeatureChange__Group__0__Impl : ( 'replace value' ) ;
+    // InternalResponseLanguage.g:5250:1: rule__AtomicSingleValuedFeatureChange__Group__0__Impl : ( 'replaced value' ) ;
     public final void rule__AtomicSingleValuedFeatureChange__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:5254:1: ( ( 'replace value' ) )
-            // InternalResponseLanguage.g:5255:1: ( 'replace value' )
+            // InternalResponseLanguage.g:5254:1: ( ( 'replaced value' ) )
+            // InternalResponseLanguage.g:5255:1: ( 'replaced value' )
             {
-            // InternalResponseLanguage.g:5255:1: ( 'replace value' )
-            // InternalResponseLanguage.g:5256:2: 'replace value'
+            // InternalResponseLanguage.g:5255:1: ( 'replaced value' )
+            // InternalResponseLanguage.g:5256:2: 'replaced value'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0()); 
+               before(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0()); 
             }
             match(input,63,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0()); 
+               after(grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0()); 
             }
 
             }

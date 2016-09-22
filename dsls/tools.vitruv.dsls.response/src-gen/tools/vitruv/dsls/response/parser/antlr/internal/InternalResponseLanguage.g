@@ -576,9 +576,9 @@ ruleAtomicRootObjectChange returns [EObject current=null]
 	(
 		(
 			(
-				otherlv_0='insert root'
+				otherlv_0='created root'
 				{
-					newLeafNode(otherlv_0, grammarAccess.getAtomicRootObjectChangeAccess().getInsertRootKeyword_0_0_0());
+					newLeafNode(otherlv_0, grammarAccess.getAtomicRootObjectChangeAccess().getCreatedRootKeyword_0_0_0());
 				}
 				(
 					{
@@ -590,9 +590,9 @@ ruleAtomicRootObjectChange returns [EObject current=null]
 			)
 			    |
 			(
-				otherlv_2='remove root'
+				otherlv_2='deleted root'
 				{
-					newLeafNode(otherlv_2, grammarAccess.getAtomicRootObjectChangeAccess().getRemoveRootKeyword_0_1_0());
+					newLeafNode(otherlv_2, grammarAccess.getAtomicRootObjectChangeAccess().getDeletedRootKeyword_0_1_0());
 				}
 				(
 					{
@@ -699,9 +699,9 @@ ruleAtomicMultiValuedFeatureChange returns [EObject current=null]
 }:
 	(
 		(
-			otherlv_0='insert in list'
+			otherlv_0='inserted into list'
 			{
-				newLeafNode(otherlv_0, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertInListKeyword_0_0());
+				newLeafNode(otherlv_0, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getInsertedIntoListKeyword_0_0());
 			}
 			(
 				{
@@ -713,9 +713,9 @@ ruleAtomicMultiValuedFeatureChange returns [EObject current=null]
 		)
 		    |
 		(
-			otherlv_2='remove from list'
+			otherlv_2='removed from list'
 			{
-				newLeafNode(otherlv_2, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemoveFromListKeyword_1_0());
+				newLeafNode(otherlv_2, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getRemovedFromListKeyword_1_0());
 			}
 			(
 				{
@@ -727,9 +727,9 @@ ruleAtomicMultiValuedFeatureChange returns [EObject current=null]
 		)
 		    |
 		(
-			otherlv_4='permute list'
+			otherlv_4='permuted list'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermuteListKeyword_2_0());
+				newLeafNode(otherlv_4, grammarAccess.getAtomicMultiValuedFeatureChangeAccess().getPermutedListKeyword_2_0());
 			}
 			(
 				{
@@ -758,9 +758,9 @@ ruleAtomicSingleValuedFeatureChange returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='replace value'
+		otherlv_0='replaced value'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplaceValueKeyword_0());
+			newLeafNode(otherlv_0, grammarAccess.getAtomicSingleValuedFeatureChangeAccess().getReplacedValueKeyword_0());
 		}
 		(
 			{

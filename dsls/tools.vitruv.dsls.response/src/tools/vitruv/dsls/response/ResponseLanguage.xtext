@@ -43,8 +43,8 @@ AtomicConcreteModelElementChange:
 	AtomicRootObjectChange | AtomicFeatureChange;
 
 AtomicRootObjectChange:
-	('insert root' {InsertRootChange} |
-	'remove root' {RemoveRootChange})
+	('created root' {InsertRootChange} |
+	'deleted root' {RemoveRootChange})
 	changedElement=ModelElement;
 
 AtomicFeatureChange:
@@ -52,13 +52,13 @@ AtomicFeatureChange:
 	changedFeature=FeatureOfElement;
 
 AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
-	'insert in list' {MultiValuedFeatureInsertChange} |
-	'remove from list' {MultiValuedFeatureRemoveChange} |
-	'permute list' {MultiValuedFeaturePermuteChange};
+	'inserted into list' {MultiValuedFeatureInsertChange} |
+	'removed from list' {MultiValuedFeatureRemoveChange} |
+	'permuted list' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	'replace value' {SingleValuedFeatureReplace};
+	'replaced value' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	{ArbitraryModelElementChange} 'any change';
