@@ -1766,6 +1766,16 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedModelElementAccess().getRule();
 	}
 	
+	//ClassicallyNamedModelElement ModelElement:
+	//	element=[ecore::EClass|QualifiedName] name=ValidID?
+	public MirBaseGrammarAccess.ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
+		return gaMirBase.getClassicallyNamedModelElementAccess();
+	}
+	
+	public ParserRule getClassicallyNamedModelElementRule() {
+		return getClassicallyNamedModelElementAccess().getRule();
+	}
+	
 	////fragment ModelElement:
 	////	element=[ecore::EClass|QualifiedName]
 	////;

@@ -194,7 +194,11 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
-				if (rule == grammarAccess.getModelElementRule()) {
+				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
+					sequence_ClassicallyNamedModelElement(context, (ModelElement) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getModelElementRule()) {
 					sequence_ModelElement(context, (ModelElement) semanticObject); 
 					return; 
 				}

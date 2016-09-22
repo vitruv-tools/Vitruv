@@ -134,6 +134,7 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNamedJavaElementAccess().getGroup(), "rule__NamedJavaElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup(), "rule__NamedModelElement__Group__0");
 					put(grammarAccess.getNamedModelElementAccess().getGroup_1(), "rule__NamedModelElement__Group_1__0");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getGroup(), "rule__ClassicallyNamedModelElement__Group__0");
 					put(grammarAccess.getFeatureOfElementAccess().getGroup(), "rule__FeatureOfElement__Group__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_0(), "rule__XAssignment__Group_0__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1(), "rule__XAssignment__Group_1__0");
@@ -374,6 +375,8 @@ public class MappingLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelElementAccess().getElementAssignment(), "rule__ModelElement__ElementAssignment");
 					put(grammarAccess.getNamedModelElementAccess().getElementAssignment_0(), "rule__NamedModelElement__ElementAssignment_0");
 					put(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1(), "rule__NamedModelElement__NameAssignment_1_1");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getElementAssignment_0(), "rule__ClassicallyNamedModelElement__ElementAssignment_0");
+					put(grammarAccess.getClassicallyNamedModelElementAccess().getNameAssignment_1(), "rule__ClassicallyNamedModelElement__NameAssignment_1");
 					put(grammarAccess.getFeatureOfElementAccess().getElementAssignment_0(), "rule__FeatureOfElement__ElementAssignment_0");
 					put(grammarAccess.getFeatureOfElementAccess().getFeatureAssignment_2(), "rule__FeatureOfElement__FeatureAssignment_2");
 					put(grammarAccess.getMetamodelReferenceAccess().getModelAssignment(), "rule__MetamodelReference__ModelAssignment");
