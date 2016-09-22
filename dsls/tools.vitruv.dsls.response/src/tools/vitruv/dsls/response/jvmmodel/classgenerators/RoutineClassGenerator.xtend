@@ -37,9 +37,10 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 	protected final Iterable<CreateElement> createElements;
 	protected final Iterable<DeleteElement> deleteElements;
 	private final String generalUserExecutionClassQualifiedName;
-	private final String callRoutineUserExecutionClassQualifiedName;
 	private final ClassNameGenerator routineClassNameGenerator;
+	private final CallRoutineClassGenerator callRoutineClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
+	
 	private int elementMethodCounter;
 	private int tagMethodCounter;
 	
@@ -55,7 +56,8 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = routine.responsesSegment.routinesFacadeClassNameGenerator;
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
-		this.callRoutineUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME;
+		this.callRoutineClassGenerator = new CallRoutineClassGenerator(typesBuilderExtensionProvider, routine, 
+			routineClassNameGenerator.qualifiedName + "." + EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME, routinesFacadeClassNameGenerator);
 		this.elementMethodCounter = 0;
 		this.tagMethodCounter = 0;
 	}
@@ -101,37 +103,20 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 		}
 		
 		generateMethodExecuteEffect();
-		
+		if (hasRoutineCallBlock) {
+			callRoutineClassGenerator.addMethod(generateMethodCallRoutines(routine.effect.callRoutine))
+		}
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 			superTypes += typeRef(AbstractEffectRealization);
 			members += generateConstructor();
 			members += generateInputFields();
 			members += generateEffectUserExecutionClass();
-			members += generateCallRoutineEffectUserExecutionClass();
+			members += callRoutineClassGenerator.generateClass();
 			members += generatedMethods;
 		];
 	}
 	
-	private def JvmGenericType generateCallRoutineEffectUserExecutionClass() {
-		return routine.toClass(callRoutineUserExecutionClassQualifiedName) [
-			initializeUserExecutionClass
-			val routinesFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName)) [
-				annotations += annotationRef(Extension);
-			]
-			members += #[routinesFacadeField];
-			members.filter(JvmConstructor).forEach[
-				body = '''
-					super(«parameters.get(0).name»);
-					this.«routinesFacadeField.simpleName» = new «routinesFacadeClassNameGenerator.qualifiedName»(«parameters.get(0).name», «parameters.get(1).name»);
-				'''
-			]
-			if (hasRoutineCallBlock) {
-				members += generateMethodCallRoutines(routine.effect.callRoutine);
-			}
-		]
-	}
-
 	private def void initializeUserExecutionClass(JvmGenericType clazz) {
 		clazz.visibility = JvmVisibility.PRIVATE;
 		clazz.static = true;
@@ -353,7 +338,7 @@ abstract class RoutineClassGenerator extends ClassGenerator {
 						«getParameterCallListWithModelInputAndAccesibleElements()»);
 				«ENDIF»
 				«IF hasRoutineCallBlock»
-					new «callRoutineUserExecutionClassQualifiedName»(getExecutionState(), this).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
+					new «callRoutineClassGenerator.qualifiedClassName»(getExecutionState(), this).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
 						«getParameterCallListWithModelInputAndAccesibleElements()»);
 				«ENDIF»
 				postprocessElementStates();
