@@ -122,7 +122,11 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
-				if (rule == grammarAccess.getModelElementRule()) {
+				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
+					sequence_ClassicallyNamedModelElement(context, (ModelElement) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getModelElementRule()) {
 					sequence_ModelElement(context, (ModelElement) semanticObject); 
 					return; 
 				}
@@ -1111,9 +1115,10 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *
 	 * Constraint:
 	 *     (
-	 *         (modelInputElements+=NamedModelElement modelInputElements+=NamedModelElement*)? 
-	 *         (javaInputElements+=NamedJavaElement javaInputElements+=NamedJavaElement*)?
-	 *     )
+	 *         (modelInputElements+=ClassicallyNamedModelElement | javaInputElements+=NamedJavaElement) 
+	 *         modelInputElements+=ClassicallyNamedModelElement? 
+	 *         (javaInputElements+=NamedJavaElement? modelInputElements+=ClassicallyNamedModelElement?)*
+	 *     )?
 	 */
 	protected void sequence_RoutineInput(ISerializationContext context, RoutineInput semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

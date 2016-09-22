@@ -25,6 +25,10 @@ NamedModelElement returns ModelElement:
 	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
 ;
 
+ClassicallyNamedModelElement returns ModelElement:
+	element=[ecore::EClass|QualifiedName] name=ValidID?
+;
+
 //fragment ModelElement:
 //	element=[ecore::EClass|QualifiedName]
 //;

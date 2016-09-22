@@ -95,7 +95,11 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
-				if (rule == grammarAccess.getModelElementRule()) {
+				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
+					sequence_ClassicallyNamedModelElement(context, (ModelElement) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getModelElementRule()) {
 					sequence_ModelElement(context, (ModelElement) semanticObject); 
 					return; 
 				}
@@ -350,6 +354,18 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		if (errorAcceptor != null)
 			errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
+	
+	/**
+	 * Contexts:
+	 *     ClassicallyNamedModelElement returns ModelElement
+	 *
+	 * Constraint:
+	 *     (element=[EClass|QualifiedName] name=ValidID?)
+	 */
+	protected void sequence_ClassicallyNamedModelElement(ISerializationContext context, ModelElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
 	
 	/**
 	 * Contexts:

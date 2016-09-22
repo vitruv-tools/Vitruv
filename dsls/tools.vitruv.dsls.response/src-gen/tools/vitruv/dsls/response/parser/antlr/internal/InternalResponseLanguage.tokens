@@ -1,109 +1,108 @@
-'!'=78
-'!='=62
-'!=='=64
-'#'=86
-'%'=77
-'%='=55
-'&&'=60
-'&'=118
-'('=84
-')'=85
-'*'=74
-'**'=75
-'*='=53
-'+'=72
-'++'=79
-'+='=51
-','=32
-'-'=73
-'--'=80
-'-='=52
-'->'=66
-'.'=81
-'..'=68
-'..<'=67
-'/'=76
-'/='=54
-':'=94
-'::'=82
-';'=90
-'<'=56
-'<>'=70
-'='=50
-'=='=61
-'==='=63
-'=>'=69
-'>'=57
-'>='=58
-'?'=117
-'?.'=83
-'?:'=71
-'['=48
-']'=49
-'add correspondence:'=42
+'!'=79
+'!='=63
+'!=='=65
+'#'=85
+'%'=78
+'%='=56
+'&&'=61
+'&'=117
+'('=31
+')'=34
+'*'=75
+'**'=76
+'*='=54
+'+'=73
+'++'=80
+'+='=52
+','=33
+'-'=74
+'--'=81
+'-='=53
+'->'=67
+'.'=82
+'..'=69
+'..<'=68
+'/'=77
+'/='=55
+':'=93
+'::'=83
+';'=89
+'<'=57
+'<>'=71
+'='=51
+'=='=62
+'==='=64
+'=>'=70
+'>'=58
+'>='=59
+'?'=116
+'?.'=84
+'?:'=72
+'['=49
+']'=50
+'add correspondence:'=43
 'any change'=26
-'as'=46
+'as'=47
 'called'=15
-'case'=96
-'catch'=116
+'case'=95
+'catch'=115
 'check:'=19
-'corresponding to'=37
-'create element:'=40
-'default'=95
-'delete element:'=41
-'do'=99
+'corresponding to'=38
+'create element:'=41
+'created root'=20
+'default'=94
+'delete element:'=42
+'deleted root'=21
+'do'=98
 'effect:'=28
-'else'=92
+'else'=91
 'execute:'=29
-'extends'=102
-'extension'=104
-'false'=107
-'finally'=114
-'for'=97
-'if'=91
-'import'=45
-'input:'=31
-'insert in list'=22
-'insert root'=20
-'instanceof'=65
+'extends'=101
+'extension'=103
+'false'=106
+'finally'=113
+'for'=96
+'if'=90
+'import'=46
+'inserted into list'=22
+'instanceof'=66
 'invariant'=17
 'match:'=27
-'new'=106
-'null'=109
-'permute list'=24
-'plain java input:'=33
-'remove correspondence:'=44
-'remove from list'=23
-'remove root'=21
-'replace value'=25
-'require absence of element:'=36
+'new'=105
+'null'=108
+'permuted list'=24
+'plain:'=32
+'remove correspondence:'=45
+'removed from list'=23
+'replaced value'=25
+'require absence of element:'=37
 'response:'=16
 'responses from metamodel'=13
-'retrieve optional element:'=35
-'retrieve required element:'=34
-'return'=112
+'retrieve optional element:'=36
+'retrieve required element:'=35
+'return'=111
 'routine:'=30
-'static'=103
-'super'=105
-'switch'=93
-'synchronized'=115
-'tag with'=43
-'tagged with'=38
-'throw'=111
+'static'=102
+'super'=104
+'switch'=92
+'synchronized'=114
+'tag with'=44
+'tagged with'=39
+'throw'=110
 'to metamodel'=14
 'trigger:'=18
-'true'=108
-'try'=113
-'typeof'=110
-'using simple names'=47
-'val'=101
-'var'=100
-'while'=98
-'with'=39
-'{'=87
-'|'=89
-'||'=59
-'}'=88
+'true'=107
+'try'=112
+'typeof'=109
+'using simple names'=48
+'val'=100
+'var'=99
+'while'=97
+'with'=40
+'{'=86
+'|'=88
+'||'=60
+'}'=87
 RULE_ANY_OTHER=12
 RULE_DECIMAL=9
 RULE_HEX=7
@@ -131,7 +130,6 @@ T__114=114
 T__115=115
 T__116=116
 T__117=117
-T__118=118
 T__13=13
 T__14=14
 T__15=15

@@ -185,6 +185,37 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_1_1_0() { return cNameValidIDParserRuleCall_1_1_0; }
 	}
+	public class ClassicallyNamedModelElementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.ClassicallyNamedModelElement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cElementAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cElementEClassCrossReference_0_0 = (CrossReference)cElementAssignment_0.eContents().get(0);
+		private final RuleCall cElementEClassQualifiedNameParserRuleCall_0_0_1 = (RuleCall)cElementEClassCrossReference_0_0.eContents().get(1);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		
+		//ClassicallyNamedModelElement ModelElement:
+		//	element=[ecore::EClass|QualifiedName] name=ValidID?
+		@Override public ParserRule getRule() { return rule; }
+		
+		//element=[ecore::EClass|QualifiedName] name=ValidID?
+		public Group getGroup() { return cGroup; }
+		
+		//element=[ecore::EClass|QualifiedName]
+		public Assignment getElementAssignment_0() { return cElementAssignment_0; }
+		
+		//[ecore::EClass|QualifiedName]
+		public CrossReference getElementEClassCrossReference_0_0() { return cElementEClassCrossReference_0_0; }
+		
+		//QualifiedName
+		public RuleCall getElementEClassQualifiedNameParserRuleCall_0_0_1() { return cElementEClassQualifiedNameParserRuleCall_0_0_1; }
+		
+		//name=ValidID?
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
+	}
 	public class FeatureOfElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mirbase.MirBase.FeatureOfElement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -265,6 +296,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	private final NamedJavaElementElements pNamedJavaElement;
 	private final ModelElementElements pModelElement;
 	private final NamedModelElementElements pNamedModelElement;
+	private final ClassicallyNamedModelElementElements pClassicallyNamedModelElement;
 	private final FeatureOfElementElements pFeatureOfElement;
 	private final MetamodelReferenceElements pMetamodelReference;
 	
@@ -287,6 +319,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNamedJavaElement = new NamedJavaElementElements();
 		this.pModelElement = new ModelElementElements();
 		this.pNamedModelElement = new NamedModelElementElements();
+		this.pClassicallyNamedModelElement = new ClassicallyNamedModelElementElements();
 		this.pFeatureOfElement = new FeatureOfElementElements();
 		this.pMetamodelReference = new MetamodelReferenceElements();
 	}
@@ -380,6 +413,16 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getNamedModelElementRule() {
 		return getNamedModelElementAccess().getRule();
+	}
+	
+	//ClassicallyNamedModelElement ModelElement:
+	//	element=[ecore::EClass|QualifiedName] name=ValidID?
+	public ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
+		return pClassicallyNamedModelElement;
+	}
+	
+	public ParserRule getClassicallyNamedModelElementRule() {
+		return getClassicallyNamedModelElementAccess().getRule();
 	}
 	
 	////fragment ModelElement:
