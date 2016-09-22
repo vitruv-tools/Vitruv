@@ -4,18 +4,18 @@ import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.ecore.change.FeatureChange
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.change.description.TransactionalChange
 
 /**
  * Represents a change in an EMF model. This change has to be instantiated when the model is in the state
  * right before the change described by the recorded {@link ChangeDescription}.
  */
-class EMFModelChangeImpl extends GenericCompositeChangeImpl<VitruviusChange> implements CompositeTransactionalChange {
+class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	private final ChangeDescription changeDescription;
 	private final VURI vuri;
 	private var boolean canBeBackwardsApplied;

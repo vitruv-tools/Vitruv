@@ -1,8 +1,5 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -10,6 +7,9 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
@@ -41,12 +41,18 @@ public class RemoveProvidedRoleEffect extends AbstractEffectRealization {
     	ClassifierImport.class,
     	(ClassifierImport _element) -> true, // correspondence precondition checker
     	null);
+    if (requiredInterfaceImport == null) {
+    	return;
+    }
     initializeRetrieveElementState(requiredInterfaceImport);
     NamespaceClassifierReference namespaceClassifierReference = getCorrespondingElement(
     	getCorrepondenceSourceNamespaceClassifierReference(providedRole), // correspondence source supplier
     	NamespaceClassifierReference.class,
     	(NamespaceClassifierReference _element) -> true, // correspondence precondition checker
     	null);
+    if (namespaceClassifierReference == null) {
+    	return;
+    }
     initializeRetrieveElementState(namespaceClassifierReference);
     deleteObject(getElement0(providedRole, requiredInterfaceImport, namespaceClassifierReference));
     deleteObject(getElement1(providedRole, requiredInterfaceImport, namespaceClassifierReference));

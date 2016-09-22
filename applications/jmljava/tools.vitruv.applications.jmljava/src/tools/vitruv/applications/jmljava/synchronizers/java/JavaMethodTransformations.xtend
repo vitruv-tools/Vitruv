@@ -115,7 +115,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 				LOGGER.trace("Updating " + jmlMethodDeclaration)
 				val jmlMethodDeclarationTUIDOld = correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration)
 				jmlMethodDeclaration.identifier = newValue as String
-				correspondenceModel.updateTUID(jmlMethodDeclarationTUIDOld, correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration));
+				jmlMethodDeclarationTUIDOld.updateTuid(correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration));
 				changedObjects.add(jmlMethodDeclaration)
 			}
 		}
@@ -142,7 +142,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				Java2JMLCorrespondenceAdder.addCorrespondences(newValue as Parameter, jmlParameter,
 					correspondenceModel)
-				correspondenceModel.updateTUID(jmlMethodDeclarationTUIDOld, correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration))
+				jmlMethodDeclarationTUIDOld.updateTuid(correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}
@@ -199,7 +199,7 @@ class JavaMethodTransformations extends Java2JMLTransformationBase {
 
 				jmlMethodDeclaration.parameters.remove(jmlParameter)
 
-				correspondenceModel.updateTUID(jmlMethodDeclarationOldTUID, correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration))
+				jmlMethodDeclarationOldTUID.updateTuid(correspondenceModel.calculateTUIDFromEObject(jmlMethodDeclaration))
 
 				changedObjects.add(jmlMethodDeclaration)
 			}

@@ -17,12 +17,11 @@ import org.junit.Test;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase;
-import tools.vitruv.applications.jmljava.tests.unittests.synchronizers.TransformationTestsBase.CloneContainer;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader.IResourceFiles;
 
 public class JavaMethodTransformationsTest extends TransformationTestsBase {
@@ -75,7 +74,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         newParameter.setName("newParam");
         method.changed().getParameters().add(0, newParameter);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newParameter, method.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newParameter, method.original());
 
         callSynchronizer(change);
 
@@ -89,7 +88,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().setName("methodNameChanged");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -102,7 +101,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(1));
         method.changed().setName("methodNameChanged");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         callSynchronizer(change);
 
@@ -115,7 +114,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().setName("modelMethod");
                 
-        EMFModelChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), CommonsPackage.eINSTANCE.getNamedElement_Name());
 
         EObject expected = Utilities.clone(cuJML);
         userInteracting.showMessage(eq(UserInteractionType.MODAL), notNull(String.class));
@@ -132,7 +131,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().setTypeReference(Utilities.clone(method.original().getParameters().get(0).getTypeReference()));
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(method.original(), method.changed(), TypesPackage.eINSTANCE.getTypedElement_TypeReference());
         
         callSynchronizer(change);
         
@@ -149,7 +148,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
 
         method.changed().getExceptions().add(0, newException);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newException, method.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newException, method.original());
 
         callSynchronizer(change);
 
@@ -164,7 +163,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         Modifier newModifier = ModifiersFactory.eINSTANCE.createFinal();
         method.changed().getAnnotationsAndModifiers().add(newModifier);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, method.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, method.original());
         
         callSynchronizer(change);
 
@@ -178,7 +177,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().getParameters().remove(0);
 
-        EMFModelChange change = ChangeBuilder.createDeleteChange(method.original().getParameters().get(0), method.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(method.original().getParameters().get(0), method.changed());
         
         callSynchronizer(change);
 
@@ -192,7 +191,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(2));
         method.changed().getParameters().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(method.original().getParameters().get(0), method.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(method.original().getParameters().get(0), method.changed());
         
         EObject expected = Utilities.clone(cuJML);
         
@@ -211,7 +210,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().getExceptions().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(method.original().getExceptions().get(0), method.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(method.original().getExceptions().get(0), method.changed());
         
         callSynchronizer(change);
 
@@ -225,7 +224,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         CloneContainer<Method> method = createClones(cuJava.getClassifiers().get(0).getMethods().get(0));
         method.changed().getAnnotationsAndModifiers().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(method.original().getAnnotationsAndModifiers().get(0), method.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(method.original().getAnnotationsAndModifiers().get(0), method.changed());
         
         callSynchronizer(change);
 
@@ -240,7 +239,7 @@ public class JavaMethodTransformationsTest extends TransformationTestsBase {
         Modifier newModifier = ModifiersFactory.eINSTANCE.createProtected();
         method.changed().getAnnotationsAndModifiers().add(newModifier);
 
-        EMFModelChange change = ChangeBuilder.createReplaceChangeInList(method.original(), method.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, method.original().getAnnotationsAndModifiers().get(0));
+        ConcreteChange change = ChangeBuilder.createReplaceChangeInList(method.original(), method.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, method.original().getAnnotationsAndModifiers().get(0));
         
         callSynchronizer(change);
 

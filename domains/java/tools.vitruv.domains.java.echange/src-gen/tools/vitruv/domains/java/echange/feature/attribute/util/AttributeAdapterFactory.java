@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -118,12 +119,12 @@ public class AttributeAdapterFactory extends AdapterFactoryImpl {
 				return createUpdateSingleListEntryEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseInsertInListEChange(InsertInListEChange<A, F> object) {
-				return createInsertInListEChangeAdapter();
-			}
-			@Override
 			public <T extends Object> Adapter caseAdditiveEChange(AdditiveEChange<T> object) {
 				return createAdditiveEChangeAdapter();
+			}
+			@Override
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
+				return createInsertInListEChangeAdapter();
 			}
 			@Override
 			public <A extends EObject> Adapter caseUpdateAttributeEChange(UpdateAttributeEChange<A> object) {
@@ -142,12 +143,12 @@ public class AttributeAdapterFactory extends AdapterFactoryImpl {
 				return createJavaFeatureEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
-				return createRemoveFromListEChangeAdapter();
-			}
-			@Override
 			public <T extends Object> Adapter caseSubtractiveEChange(SubtractiveEChange<T> object) {
 				return createSubtractiveEChangeAdapter();
+			}
+			@Override
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
+				return createRemoveFromListEChangeAdapter();
 			}
 			@Override
 			public <A extends EObject, T extends Object> Adapter caseSubtractiveAttributeEChange(SubtractiveAttributeEChange<A, T> object) {
@@ -160,6 +161,10 @@ public class AttributeAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
 				return createUpdateSingleValuedFeatureEChangeAdapter();
+			}
+			@Override
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
+				return createReplaceSingleValuedFeatureEChangeAdapter();
 			}
 			@Override
 			public <A extends EObject, T extends Object> Adapter caseReplaceSingleValuedEAttribute(ReplaceSingleValuedEAttribute<A, T> object) {
@@ -448,6 +453,20 @@ public class AttributeAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUpdateSingleValuedFeatureEChangeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange <em>Replace Single Valued Feature EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+	 * @generated
+	 */
+	public Adapter createReplaceSingleValuedFeatureEChangeAdapter() {
 		return null;
 	}
 

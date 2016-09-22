@@ -54,7 +54,7 @@ public class TraversalHandlerTest {
         final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
         this.vsum = new VSUMImpl(metaRepository, metaRepository);
         final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum, null);
+        this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum);
         this.resourceSet = new ResourceSetImpl();
     }
 

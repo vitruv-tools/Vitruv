@@ -14,7 +14,7 @@ import tools.vitruv.domains.jml.language.jML.MethodDeclaration;
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeSynchronizerRegistry;
 import tools.vitruv.applications.jmljava.changesynchronizer.ModelUtilities;
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 
 public abstract class JMLModifierTestBase extends FrameworkTestBase {
 
@@ -29,7 +29,7 @@ public abstract class JMLModifierTestBase extends FrameworkTestBase {
 		MemberDeclWithModifier memberDeclOld = ModelUtilities.clone(memberDecl);
 		MemberDeclWithModifier memberDeclChanged = ModelUtilities.clone(memberDecl);
 		
-		EMFModelChange change = null;
+		ConcreteChange change = null;
 		if (add) {
 			JMLMemberModifier modifier = JMLFactory.eINSTANCE.createJMLMemberModifier();
 			modifier.setModifier(getJMLModifier());

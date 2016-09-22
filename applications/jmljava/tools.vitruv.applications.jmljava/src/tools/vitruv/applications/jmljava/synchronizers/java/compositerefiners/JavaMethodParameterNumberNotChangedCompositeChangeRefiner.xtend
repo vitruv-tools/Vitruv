@@ -3,7 +3,6 @@ package tools.vitruv.applications.jmljava.synchronizers.java.compositerefiners
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder
 import tools.vitruv.applications.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.meta.change.feature.reference.containment.ContainmentFactory
 import tools.vitruv.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
@@ -23,6 +22,8 @@ import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.types.NamespaceClassifierReference
 import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.TypeReference
+import tools.vitruv.framework.change.description.ConcreteChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class JavaMethodParameterNumberNotChangedCompositeChangeRefiner extends CompositeChangeRefinerBase {
 	
@@ -89,13 +90,13 @@ class JavaMethodParameterNumberNotChangedCompositeChangeRefiner extends Composit
             	}
             }
             if (change.newIndexForElementAt.size > 0 && change.newIndexForElementAt.size == changedParams.size) {
-            	return #[change as EMFModelChange].toList
+            	return #[change as ConcreteChange].toList
             }
         }
         
         if (originalUnmatched.size() == 1 && changedUnmatched.size() == 1) {
             // only one parameter is changed
-            val changes = new ArrayList<EMFModelChange>();
+            val changes = new ArrayList<ConcreteChange>();
             val originalParam = originalUnmatched.get(0);
             val changedParam = changedUnmatched.get(0);
             
@@ -116,9 +117,9 @@ class JavaMethodParameterNumberNotChangedCompositeChangeRefiner extends Composit
         }
         
         // fallback
-        val changes = new ArrayList<EMFModelChange>();
-        deleteChanges.forEach[changes.add(new EMFModelChange(it, VURI.getInstance(it.eResource)))]
-        addChanges.forEach[changes.add(new EMFModelChange(it, VURI.getInstance(it.eResource)))]
+        val changes = new ArrayList<ConcreteChange>();
+        deleteChanges.forEach[changes.add(VitruviusChangeFactory.instance.createConcreteChange(it, VURI.getInstance(it.eResource)))]
+        addChanges.forEach[changes.add(VitruviusChangeFactory.instance.createConcreteChange(it, VURI.getInstance(it.eResource)))]
         return changes
 	}
 	
@@ -162,7 +163,7 @@ class JavaMethodParameterNumberNotChangedCompositeChangeRefiner extends Composit
     	return t1Refs.equals(t2Refs)
     }
     
-    private static def List<EMFModelChange> createModifierChanges (Parameter oldParam, Parameter newParam) {
+    private static def List<ConcreteChange> createModifierChanges (Parameter oldParam, Parameter newParam) {
     	
     	val matchResult = match(oldParam.modifiers, newParam.modifiers, [Modifier original, Iterable<Modifier> candidates | candidates.findFirst[original.class == it.class] ])
     	
@@ -181,7 +182,7 @@ class JavaMethodParameterNumberNotChangedCompositeChangeRefiner extends Composit
 		val unmatchedOriginalModifiers = matchResult.unmatchedOriginal
 		val unmatchedChangedModifiers = matchResult.unmatchedChanged
         
-        val changes = new ArrayList<EMFModelChange>();
+        val changes = new ArrayList<ConcreteChange>();
         
         val originalVisiblities = unmatchedOriginalModifiers.filter[isVisibilityModifier]
         val changedVisibilities = unmatchedChangedModifiers.filter[isVisibilityModifier]

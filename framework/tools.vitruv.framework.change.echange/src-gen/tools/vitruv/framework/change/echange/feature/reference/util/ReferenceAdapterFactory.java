@@ -16,6 +16,7 @@ import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 import tools.vitruv.framework.change.echange.feature.reference.*;
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -81,7 +82,7 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
     protected ReferenceSwitch<Adapter> modelSwitch =
         new ReferenceSwitch<Adapter>() {
 			@Override
-			public <A extends EObject> Adapter caseUpdateReferenceEChange(tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<A> object) {
+			public <A extends EObject> Adapter caseUpdateReferenceEChange(UpdateReferenceEChange<A> object) {
 				return createUpdateReferenceEChangeAdapter();
 			}
 			@Override
@@ -91,10 +92,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <A extends EObject, T extends EObject> Adapter caseSubtractiveReferenceEChange(SubtractiveReferenceEChange<A, T> object) {
 				return createSubtractiveReferenceEChangeAdapter();
-			}
-			@Override
-			public <A extends EObject, T extends EObject> Adapter caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<A, T> object) {
-				return createReplaceSingleValuedEReferenceAdapter();
 			}
 			@Override
 			public <A extends EObject, T extends EObject> Adapter caseInsertEReference(InsertEReference<A, T> object) {
@@ -107,6 +104,10 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public <A extends EObject> Adapter casePermuteEReferences(PermuteEReferences<A> object) {
 				return createPermuteEReferencesAdapter();
+			}
+			@Override
+			public <A extends EObject, T extends EObject> Adapter caseReplaceSingleValuedEReference(ReplaceSingleValuedEReference<A, T> object) {
+				return createReplaceSingleValuedEReferenceAdapter();
 			}
 			@Override
 			public Adapter caseEChange(EChange object) {
@@ -137,10 +138,6 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 				return createEObjectSubtractedEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
-				return createUpdateSingleValuedFeatureEChangeAdapter();
-			}
-			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateMultiValuedFeatureEChange(UpdateMultiValuedFeatureEChange<A, F> object) {
 				return createUpdateMultiValuedFeatureEChangeAdapter();
 			}
@@ -149,16 +146,24 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 				return createUpdateSingleListEntryEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseInsertInListEChange(InsertInListEChange<A, F> object) {
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 				return createInsertInListEChangeAdapter();
 			}
 			@Override
-			public <A extends EObject, F extends EStructuralFeature> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 				return createRemoveFromListEChangeAdapter();
 			}
 			@Override
 			public <A extends EObject, F extends EStructuralFeature> Adapter casePermuteListEChange(PermuteListEChange<A, F> object) {
 				return createPermuteListEChangeAdapter();
+			}
+			@Override
+			public <A extends EObject, F extends EStructuralFeature> Adapter caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
+				return createUpdateSingleValuedFeatureEChangeAdapter();
+			}
+			@Override
+			public <A extends EObject, F extends EStructuralFeature, T extends Object> Adapter caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
+				return createReplaceSingleValuedFeatureEChangeAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -391,6 +396,20 @@ public class ReferenceAdapterFactory extends AdapterFactoryImpl {
 	}
 
     /**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange <em>Replace Single Valued Feature EChange</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+	 * @generated
+	 */
+	public Adapter createReplaceSingleValuedFeatureEChangeAdapter() {
+		return null;
+	}
+
+				/**
 	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
 	 * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;

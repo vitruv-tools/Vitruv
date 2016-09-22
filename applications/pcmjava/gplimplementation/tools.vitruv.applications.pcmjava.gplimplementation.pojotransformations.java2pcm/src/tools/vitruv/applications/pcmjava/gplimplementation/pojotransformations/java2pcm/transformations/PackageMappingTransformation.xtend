@@ -38,6 +38,8 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override void setCorrespondenceModel(CorrespondenceModel correspondenceModel) {
 		super.setCorrespondenceModel(correspondenceModel)
+		// TODO Why can't we remove the following statement? Some Java-PCM tests fail
+		// because proxy objects that cannot be resolved afterwards are added to the correspondence model
 		checkCorrespondenceRepository()
 	}
 
@@ -48,7 +50,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 		} else {
 			if (1 != repositorys.size) {
 				logger.warn(
-					"more than one repositorys exists in correspondence model. Should not happen. " + repositorys)
+					"more than one repository exists in correspondence model. Should not happen. " + repositorys)
 			}
 			repository = repositorys.iterator.next
 			correspondenceRepositoryAlreadyExists = true

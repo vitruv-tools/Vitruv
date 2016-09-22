@@ -33,8 +33,7 @@ public final class PersistenceHelper {
 		val newModelFileSegments = relativePath.split("/");
 		if (!newModelFileSegments.last.contains(".")) {
 			// No file extension was specified, add the first one that is valid for the metamodel
-			val fileExtension = correspondenceModel.getMapping().getMetamodelB().
-				getFileExtensions().get(0);
+			val fileExtension = correspondenceModel.getMapping().getMetamodelB().getFileExtensions().get(0);
 			newModelFileSegments.set(newModelFileSegments.size - 1, newModelFileSegments.last + "." + fileExtension);
 		}
 		return baseURI.appendSegments(newModelFileSegments);

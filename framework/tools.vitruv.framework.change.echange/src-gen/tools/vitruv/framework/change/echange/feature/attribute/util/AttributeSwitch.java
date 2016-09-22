@@ -15,6 +15,7 @@ import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -109,21 +110,6 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
-				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
-				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseSubtractiveAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseAdditiveAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE: {
 				InsertEAttributeValue<?, ?> insertEAttributeValue = (InsertEAttributeValue<?, ?>)theEObject;
 				T1 result = caseInsertEAttributeValue(insertEAttributeValue);
@@ -163,6 +149,22 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseFeatureEChange(permuteEAttributeValues);
 				if (result == null) result = caseAtomicEChange(permuteEAttributeValues);
 				if (result == null) result = caseEChange(permuteEAttributeValues);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE: {
+				ReplaceSingleValuedEAttribute<?, ?> replaceSingleValuedEAttribute = (ReplaceSingleValuedEAttribute<?, ?>)theEObject;
+				T1 result = caseReplaceSingleValuedEAttribute(replaceSingleValuedEAttribute);
+				if (result == null) result = caseAdditiveAttributeEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseSubtractiveAttributeEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateAttributeEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseFeatureEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseAtomicEChange(replaceSingleValuedEAttribute);
+				if (result == null) result = caseEChange(replaceSingleValuedEAttribute);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -366,6 +368,21 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	}
 
     /**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
+		return null;
+	}
+
+				/**
 	 * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
 	 * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -406,7 +423,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseInsertInListEChange(InsertInListEChange<A, F> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -421,7 +438,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 		return null;
 	}
 

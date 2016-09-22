@@ -1,12 +1,6 @@
 package mir.routines.pcm2java;
 
 import com.google.common.collect.Iterables;
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -20,6 +14,11 @@ import org.palladiosimulator.pcm.repository.Interface;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
+import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class RenamedRepositoryEffect extends AbstractEffectRealization {
@@ -69,8 +68,7 @@ public class RenamedRepositoryEffect extends AbstractEffectRealization {
     }
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<Repository, String> change, final org.emftext.language.java.containers.Package rootPackage) {
-      Repository _affectedEObject = change.getAffectedEObject();
-      final Repository repository = ((Repository) _affectedEObject);
+      final Repository repository = change.getAffectedEObject();
       String _newValue = change.getNewValue();
       rootPackage.setName(_newValue);
       this.effectFacade.callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
@@ -95,9 +93,9 @@ public class RenamedRepositoryEffect extends AbstractEffectRealization {
       for (final CollectionDataType dataType_1 : _filter_3) {
         this.effectFacade.callRenameCollectionDataType(dataType_1);
       }
-      Repository _affectedEObject_1 = change.getAffectedEObject();
+      Repository _affectedEObject = change.getAffectedEObject();
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
-      this.persistProjectRelative(_affectedEObject_1, rootPackage, _buildJavaFilePath);
+      this.persistProjectRelative(_affectedEObject, rootPackage, _buildJavaFilePath);
     }
   }
 }

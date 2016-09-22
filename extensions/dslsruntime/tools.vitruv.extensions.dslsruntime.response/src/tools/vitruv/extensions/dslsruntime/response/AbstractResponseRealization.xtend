@@ -27,7 +27,7 @@ abstract class AbstractResponseRealization extends CallHierarchyHaving implement
 			} finally {
 				// The response was completely executed, so remove all objects registered for modification 
 				// by the effects as they are no longer under modification
-				// even if there was an exceptioN!
+				// even if there was an exception!
 				TuidManager.instance.flushRegisteredObjectsUnderModification();	
 			}
 			

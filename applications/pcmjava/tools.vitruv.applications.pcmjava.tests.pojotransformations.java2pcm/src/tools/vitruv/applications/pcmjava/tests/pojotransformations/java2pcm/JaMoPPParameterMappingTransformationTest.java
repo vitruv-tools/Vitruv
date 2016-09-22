@@ -7,8 +7,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.text.edits.DeleteEdit;
-import org.eclipse.text.edits.InsertEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.junit.Test;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
@@ -21,7 +20,6 @@ import org.palladiosimulator.pcm.repository.PrimitiveDataType;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 
 public class JaMoPPParameterMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
@@ -83,10 +81,8 @@ public class JaMoPPParameterMappingTransformationTest extends Java2PCMPackageMap
         final String paramName = localVariable.getSource().split(" ")[1];
         final int offset = localVariable.getSourceRange().getOffset() + typeName.length() + 1;
         final int length = paramName.length();
-        final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
-        final InsertEdit insertEdit = new InsertEdit(offset, newParameterName);
-        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization();
+        final ReplaceEdit replaceEdit = new ReplaceEdit(offset, length, newParameterName);
+        editCompilationUnit(icu, replaceEdit);
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, newParameterName);
         return CollectionBridge.claimOne(CorrespondenceModelUtil
@@ -101,10 +97,8 @@ public class JaMoPPParameterMappingTransformationTest extends Java2PCMPackageMap
         final ILocalVariable parameter = this.findParameterInIMethod(iMethod, paramName);
         final int offset = parameter.getSourceRange().getOffset();
         final int length = parameter.getSource().split(" ")[0].length();
-        final DeleteEdit deleteEdit = new DeleteEdit(offset, length);
-        final InsertEdit insertEdit = new InsertEdit(offset, newTypeName + " ");
-        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization(10000);
+        final ReplaceEdit replaceEdit = new ReplaceEdit(offset, length, newTypeName);
+        editCompilationUnit(icu, replaceEdit);
         final org.emftext.language.java.parameters.Parameter newJaMoPPParameter = super.findJaMoPPParameterInICU(icu,
                 interfaceName, methodName, paramName);
         return CollectionBridge.claimOne(CorrespondenceModelUtil

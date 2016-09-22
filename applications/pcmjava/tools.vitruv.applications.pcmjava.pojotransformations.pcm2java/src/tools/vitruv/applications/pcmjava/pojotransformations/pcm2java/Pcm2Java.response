@@ -7,7 +7,6 @@ import org.emftext.language.java.expressions.AssignmentExpression
 import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.references.IdentifierReference
 import org.emftext.language.java.statements.Statement
-import java.util.Collection
 import java.util.Set
 import java.util.HashSet
 import java.util.ArrayList
@@ -18,7 +17,6 @@ import java.util.List
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import org.emftext.language.java.generics.GenericsFactory
 import static extension tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper.*
-import org.palladiosimulator.pcm.repository.Repository
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.palladiosimulator.pcm.repository.CompositeDataType
 import org.emftext.language.java.types.TypeReference
@@ -27,11 +25,11 @@ import org.palladiosimulator.pcm.repository.OperationProvidedRole
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.emftext.language.java.members.Constructor
 import org.palladiosimulator.pcm.repository.OperationSignature
-import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF
 import org.palladiosimulator.pcm.repository.CollectionDataType
 import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.TypesFactory
 import org.emftext.language.java.members.Field
+import org.emftext.language.java.parameters.Parameter
 
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
@@ -69,7 +67,7 @@ match:
 		tagged with "repository_root"
 effect: 
 	execute: {
-		val repository = change.affectedEObject as Repository;
+		val repository = change.affectedEObject;
 		rootPackage.name = change.newValue;
 		callRenameJavaPackage(repository, rootPackage, "contracts", "contracts");
 		callRenameJavaPackage(repository, rootPackage, "datatypes", "datatypes");	
@@ -108,13 +106,21 @@ match:
 effect: 
 	execute: callCreateJavaClass(system, systemPackage, system.entityName + "Impl")
 
+response: DeletedSystem
+trigger: remove root pcm.System
+effect: execute: {
+	val system = change.oldValue;
+	callDeleteJavaPackage(system, system.entityName, "root_system");
+	callDeleteJavaClassifier(system);
+}
+
 response: ChangedSystemName
 trigger: replace value pcm.System[entityName]
 match:
 	retrieve required element: java.Package as systemPackage corresponding to change.affectedEObject
 effect: 
 	execute: {
-		val system = change.affectedEObject as org.palladiosimulator.pcm.system.System;
+		val system = change.affectedEObject;
 		callRenameJavaPackage(system, null, system.entityName, null);
 		callRenameJavaClassifier(system, systemPackage, system.entityName + "Impl");
 	}
@@ -169,7 +175,7 @@ response: RenameComponent
 trigger: replace value pcm.RepositoryComponent[entityName]
 effect: 
 	execute: {
-		val component = change.affectedEObject as RepositoryComponent;
+		val component = change.affectedEObject;
 		callRenameComponentPackageAndClass(component);
 	}
 
@@ -245,7 +251,7 @@ effect:
 response: RenamedCompositeDataType
 trigger: replace value pcm.CompositeDataType[entityName]
 effect: 
-	execute: callRenameCompositeDataType(change.affectedEObject as CompositeDataType)
+	execute: callRenameCompositeDataType(change.affectedEObject)
 
 routine: RenameCompositeDataType
 input: pcm.CompositeDataType as compositeDataType
@@ -277,7 +283,7 @@ effect:
 		}
 		
 		// Let user select the class to map the collection type to
-		var Set<Class<? extends Collection>> collectionDataTypes = new HashSet
+		var Set<Class<?>> collectionDataTypes = new HashSet
 		collectionDataTypes += #[ArrayList, LinkedList, Vector, Stack, HashSet]
 		val List<String> collectionDataTypeNames = new ArrayList<String>(collectionDataTypes.size)
 		for (collectionDataType : collectionDataTypes) {
@@ -286,7 +292,7 @@ effect:
 		val String selectTypeMsg = "Please select type (or interface) that should be used for the type"
 		val int selectedType = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg,
 			collectionDataTypeNames)
-		val Class<? extends Collection> selectedClass = collectionDataTypes.get(selectedType)
+		val Class<?> selectedClass = collectionDataTypes.get(selectedType)
 	
 		callCreateJavaClass(dataType, datatypesPackage, dataType.entityName);
 		callAddSuperTypeToDataType(dataType, innerTypeClassOrWrapper, selectedClass.name);
@@ -313,7 +319,7 @@ effect:
 response: RenamedCollectionDataType
 trigger: replace value pcm.CollectionDataType[entityName]
 effect: 
-	execute: callRenameCollectionDataType(change.affectedEObject as CollectionDataType)
+	execute: callRenameCollectionDataType(change.affectedEObject)
 
 routine: RenameCollectionDataType
 input: pcm.CollectionDataType as collectionDataType
@@ -546,7 +552,7 @@ response: ChangedProvidedInterfaceOfProvidedRole
 trigger: replace value pcm.OperationProvidedRole[providedInterface__OperationProvidedRole]
 effect: 
 	execute: {
-		val operationProvidedRole = change.affectedEObject as OperationProvidedRole;
+		val operationProvidedRole = change.affectedEObject;
 		callRemoveProvidedRole(operationProvidedRole);
 		callAddProvidedRole(operationProvidedRole);
 	}
@@ -555,10 +561,8 @@ response: ChangedProvidingEntityOfProvidedRole
 trigger: replace value pcm.OperationProvidedRole[providingEntity_ProvidedRole]
 effect: 
 	execute: {
-		val operationProvidedRole = change.affectedEObject as OperationProvidedRole;	
-		// TODO HK Reenable with the new change MM when we can remove the provided role because the TUID 
-		// of the containing component will get updated then and so the provided role correspondences can be resolved
-		// callRemoveProvidedRole(operationProvidedRole);
+		val operationProvidedRole = change.affectedEObject;	
+		callRemoveProvidedRole(operationProvidedRole);
 		callAddProvidedRole(operationProvidedRole);
 	}
 
@@ -572,22 +576,17 @@ trigger: remove from list pcm.RepositoryComponent[providedRoles_InterfaceProvidi
 effect: 
 	execute: callRemoveProvidedRole(change.oldValue)
 
-// TODO HK Remove optional with the new change MM and correct TUID update. If the providingEntity is changed
-// and thus remove is called, the correspondences cannot be resolved because of faulty correspondences 
 routine: RemoveProvidedRole
 input: pcm.ProvidedRole as providedRole
 match:
-	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
-	retrieve optional element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
+	retrieve required element: java.ClassifierImport as requiredInterfaceImport corresponding to providedRole
+	retrieve required element: java.NamespaceClassifierReference as namespaceClassifierReference corresponding to providedRole
 effect: 
 	delete element: requiredInterfaceImport
 	delete element: namespaceClassifierReference
 
 // ####################################################
 // ################ REQUIRED ROLES ####################
-
-// TODO HK Check again with new Change MM. When replacing the requiringEntity, the oldValue cannot be retrieved in the old 
-// changes. So the requiredRole cannot be reinitialized correctly.
 
 // TODO HK implement ctor statement as correspondence (dynamic in explicit effect for each ctor) to remove them easily
 // Use as example for responses best practices chapter
@@ -644,22 +643,16 @@ effect:
 		callRemoveRequiredRole(change.oldValue, change.affectedEObject as RepositoryComponent);
 	}
 
-// TODO HK Remove the optionals and the null check in the execute block. 
-// They are just there because after a rename they can potentially not be resolved
-// but correspondences shall be removed
 routine: RemoveRequiredRole
 input: pcm.RequiredRole as requiredRole, pcm.InterfaceRequiringEntity as requiringEntity
 match:
-	retrieve optional element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
-	retrieve optional element: java.Field as requiredInterfaceField corresponding to requiredRole
-	retrieve optional element: java.Class as javaClass corresponding to requiringEntity
+	retrieve required element: java.ClassifierImport as requiredInterfaceImport corresponding to requiredRole
+	retrieve required element: java.Field as requiredInterfaceField corresponding to requiredRole
+	retrieve required element: java.Class as javaClass corresponding to requiringEntity
 effect: 
 	delete element: requiredInterfaceImport
 	delete element: requiredInterfaceField
 	execute: {
-		if (javaClass == null) {
-			return
-		}
 		for (ctor : javaClass.members.filter(typeof(Constructor))) {
 			callRemoveCorrespondingParameterFromConstructor(ctor, requiredRole);
 			var Statement statementToRemove = null;
@@ -683,18 +676,18 @@ effect:
 					}
 				}
 			}
-//			var Parameter parameterToRemove = null;
-//			for (parameter : ctor.parameters) {
-//				if (parameter.name.equals(requiredRole.entityName)) {
-//					parameterToRemove = parameter;
-//				}
-//			}
+			var Parameter parameterToRemove = null;
+			for (parameter : ctor.parameters) {
+				if (parameter.name.equals(requiredRole.entityName)) {
+					parameterToRemove = parameter;
+				}
+			}
 			if (statementToRemove != null) {
 				ctor.statements.remove(statementToRemove);
 			}
-//			if (parameterToRemove != null) {
-//				ctor.parameters.remove(parameterToRemove);
-//			}
+			if (parameterToRemove != null) {
+				ctor.parameters.remove(parameterToRemove);
+			}
 		}
 	}
 
@@ -717,13 +710,13 @@ effect:
 response: RenameOperationRequiredRole
 trigger: replace value pcm.OperationRequiredRole[entityName]
 effect: 
-	execute: callReinitializeOperationRequiredRole(change.affectedEObject as OperationRequiredRole)
+	execute: callReinitializeOperationRequiredRole(change.affectedEObject)
 
 response: ChangeOperationRequiredRoleEntity
 trigger: replace value pcm.OperationRequiredRole[requiringEntity_RequiredRole]
 effect: 
 	execute: {
-		val requiredRole = change.affectedEObject as OperationRequiredRole;
+		val requiredRole = change.affectedEObject;
 		callRemoveRequiredRole(requiredRole, change.oldValue);
 		callAddRequiredRole(requiredRole);
 	}
@@ -731,7 +724,7 @@ effect:
 response: ChangeOperationRequiredRoleInterface
 trigger: replace value pcm.OperationRequiredRole[requiredInterface__OperationRequiredRole]
 effect: 
-	execute: callReinitializeOperationRequiredRole(change.affectedEObject as OperationRequiredRole)
+	execute: callReinitializeOperationRequiredRole(change.affectedEObject)
 
 
 // ##########################################################
@@ -757,7 +750,7 @@ trigger: replace value pcm.OperationSignature[entityName]
 match:
 	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.affectedEObject
 effect: execute: {
-	val operationSignature = change.affectedEObject as OperationSignature;
+	val operationSignature = change.affectedEObject;
 	val operationInterface = operationSignature.interface__OperationSignature;
 	interfaceMethod.name = change.newValue;
 	// get implementing components
@@ -781,7 +774,7 @@ trigger: replace value pcm.OperationSignature[returnType__OperationSignature]
 match: 
 	retrieve required element: java.InterfaceMethod as interfaceMethod corresponding to change.affectedEObject
 effect: 
-	execute: callChangeInterfaceMethodReturnType(interfaceMethod, (change.affectedEObject as OperationSignature).returnType__OperationSignature)
+	execute: callChangeInterfaceMethodReturnType(interfaceMethod, change.affectedEObject.returnType__OperationSignature)
 
 routine: ChangeInterfaceMethodReturnType
 input: java.InterfaceMethod as interfaceMethod, pcm.DataType as returnType
@@ -920,8 +913,7 @@ match:
 	retrieve optional element: java.ClassMethod as oldClassMethod corresponding to change.affectedEObject
 effect: 
 	delete element: oldClassMethod
-	//remove correspondence: oldClassMethod, change.affectedEObject
-	execute: callCreateSEFF(change.affectedEObject as ResourceDemandingSEFF)
+	execute: callCreateSEFF(change.affectedEObject)
 
 routine: UpdateSEFFImplementingMethodName
 input: pcm.ServiceEffectSpecification as seff

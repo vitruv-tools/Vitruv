@@ -1,15 +1,14 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 
 @SuppressWarnings("all")
 public class ChangedProvidedInterfaceOfProvidedRoleEffect extends AbstractEffectRealization {
@@ -41,8 +40,7 @@ public class ChangedProvidedInterfaceOfProvidedRoleEffect extends AbstractEffect
     }
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<OperationProvidedRole, OperationInterface> change) {
-      OperationProvidedRole _affectedEObject = change.getAffectedEObject();
-      final OperationProvidedRole operationProvidedRole = ((OperationProvidedRole) _affectedEObject);
+      final OperationProvidedRole operationProvidedRole = change.getAffectedEObject();
       this.effectFacade.callRemoveProvidedRole(operationProvidedRole);
       this.effectFacade.callAddProvidedRole(operationProvidedRole);
     }

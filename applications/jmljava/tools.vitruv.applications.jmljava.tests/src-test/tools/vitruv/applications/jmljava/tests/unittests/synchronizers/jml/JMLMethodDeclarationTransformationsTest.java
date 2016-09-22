@@ -15,7 +15,7 @@ import tools.vitruv.domains.jml.language.jML.MethodDeclaration;
 import tools.vitruv.domains.jml.language.jML.NormalClassDeclaration;
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.Pair;
@@ -62,7 +62,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
         CloneContainer<MethodDeclaration> methodDeclaration = createClones(Utilities.getFirstChildOfType(method, MethodDeclaration.class));
         methodDeclaration.changed().setIdentifier("calledMethod2");
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
         
         EObject expectedJML = Utilities.clone(cuJML);
         EObject expectedJava = Utilities.clone(cuJava);
@@ -86,7 +86,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
         
         EObject expectedJava = Utilities.clone(cuJava);
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
         
         callSynchronizer(change);
         
@@ -104,7 +104,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
         EObject expectedJava = Utilities.clone(cuJava);
         EObject expectedJML = Utilities.clone(cuJML);
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
         
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);
@@ -125,7 +125,7 @@ public class JMLMethodDeclarationTransformationsTest extends TransformationTests
         EObject expectedJava = Utilities.clone(cuJava);
         EObject expectedJML = Utilities.clone(cuJML);
         
-        EMFModelChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
+        ConcreteChange change = ChangeBuilder.createUpdateChange(methodDeclaration.original(), methodDeclaration.changed(), JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
         
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);

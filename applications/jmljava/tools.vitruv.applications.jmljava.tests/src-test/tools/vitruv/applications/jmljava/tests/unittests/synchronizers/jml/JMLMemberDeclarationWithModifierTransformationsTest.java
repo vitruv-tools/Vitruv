@@ -14,7 +14,7 @@ import tools.vitruv.domains.jml.language.jML.MemberDeclaration;
 import tools.vitruv.domains.jml.language.jML.NormalClassDeclaration;
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.Pair;
@@ -68,7 +68,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
 
         jmlMemberDeclWithModifier.changed().getJmlModifiers().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
         
         callSynchronizer(change);
         
@@ -85,7 +85,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         CloneContainer<MemberDeclWithModifier> jmlMemberDeclWithModifier = new CloneContainer<MemberDeclWithModifier>(jmlMemberDeclOriginal);
 
         jmlMemberDeclWithModifier.changed().getJmlModifiers().remove(0);
-        EMFModelChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);
         
@@ -108,7 +108,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         JMLMemberModifier newModifier = JMLFactory.eINSTANCE.createJMLMemberModifier();
         newModifier.setModifier(JMLSpecMemberModifier.HELPER);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().add(newModifier);
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
         
         callSynchronizer(change);
         
@@ -127,7 +127,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         newModifier.setModifier(JMLSpecMemberModifier.PURE);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().add(newModifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);
         
@@ -149,7 +149,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         newModifier.setModifier(JMLSpecMemberModifier.PURE);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().add(newModifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);
         
@@ -171,7 +171,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         newModifier.setModifier(JMLSpecMemberModifier.PURE);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().add(newModifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, jmlMemberDeclWithModifier.original());
         
         callSynchronizer(change);
         
@@ -188,7 +188,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         CloneContainer<MemberDeclWithModifier> jmlMemberDeclWithModifier = new CloneContainer<MemberDeclWithModifier>(jmlMemberDeclOriginal);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
         
         callSynchronizer(change);
         
@@ -205,7 +205,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         CloneContainer<MemberDeclWithModifier> jmlMemberDeclWithModifier = new CloneContainer<MemberDeclWithModifier>(jmlMemberDeclOriginal);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);       
         EObject expectedJML = Utilities.clone(cuJML);
@@ -227,7 +227,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         newModifier.setModifier(JMLSpecMemberModifier.PURE);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().add(newModifier);
         
-        EMFModelChange change = ChangeBuilder.createCreateChange(jmlMemberDeclWithModifier.changed().getJmlModifiers().get(0), jmlMemberDeclWithModifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(jmlMemberDeclWithModifier.changed().getJmlModifiers().get(0), jmlMemberDeclWithModifier.original());
         
         callSynchronizer(change);
         
@@ -246,7 +246,7 @@ public class JMLMemberDeclarationWithModifierTransformationsTest extends Transfo
         CloneContainer<MemberDeclWithModifier> jmlMemberDeclWithModifier = new CloneContainer<MemberDeclWithModifier>(jmlMemberDeclOriginal);
         jmlMemberDeclWithModifier.changed().getJmlModifiers().remove(0);
         
-        EMFModelChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(jmlMemberDeclWithModifier.original().getJmlModifiers().get(0), jmlMemberDeclWithModifier.changed());
         userInteracting.showMessage(eq(UserInteractionType.MODAL), anyString());
         syncAbortedListener.synchronisationAborted(change);       
         EObject expectedJML = Utilities.clone(cuJML);

@@ -13,9 +13,12 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.DefaultEObjectMappingTransformation
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransformation {
-
+	private static val logger = Logger.getLogger(TypeReferenceMappingTransformation)
+	
 	override getClassOfMappedEObject() {
 		return TypeReference
 	}
@@ -28,7 +31,7 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 	 */
 	override createEObject(EObject eObject) {
 		if (implementsChanged(eObject)) {
-
+			logger.debug("Added interface implementation: " + eObject + " for " + eObject.eContainer);
 			val jaMoPPClass = eObject.eContainer as Class
 
 			var interfaceClassifier = JaMoPP2PCMUtils.getTargetClassifierFromImplementsReferenceAndNormalizeURI(
@@ -36,7 +39,7 @@ class TypeReferenceMappingTransformation extends DefaultEObjectMappingTransforma
 			if(null == interfaceClassifier){
 				return null
 			}
-			val correspondingInterfaces = correspondenceModel.getCorrespondingEObjectsByType(interfaceClassifier,
+			val correspondingInterfaces = correspondenceModel.getCorrespondingEObjectsByType(if (interfaceClassifier.eIsProxy) EcoreUtil.resolve(interfaceClassifier, eObject) else interfaceClassifier,
 				OperationInterface)
 			if (correspondingInterfaces.nullOrEmpty) {
 				return null

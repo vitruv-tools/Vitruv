@@ -25,6 +25,7 @@ import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -42,6 +43,14 @@ public class DefaultImplementations {
         @Override
         public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
             return null;
+        }
+
+        @Override
+        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+        }
+
+        @Override
+        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
         }
     };
 
@@ -151,6 +160,14 @@ public class DefaultImplementations {
         public List<List<VitruviusChange>> synchronizeChange(VitruviusChange changes) {
             synchronizeChanges(Collections.singletonList(changes), null, null);
             return null;
+        }
+
+        @Override
+        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+        }
+
+        @Override
+        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
         }
 
     }

@@ -1,14 +1,13 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.CollectionDataType;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class RenamedCollectionDataTypeEffect extends AbstractEffectRealization {
@@ -41,7 +40,7 @@ public class RenamedCollectionDataTypeEffect extends AbstractEffectRealization {
     
     private void executeUserOperations(final ReplaceSingleValuedEAttribute<CollectionDataType, String> change) {
       CollectionDataType _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callRenameCollectionDataType(((CollectionDataType) _affectedEObject));
+      this.effectFacade.callRenameCollectionDataType(_affectedEObject);
     }
   }
 }

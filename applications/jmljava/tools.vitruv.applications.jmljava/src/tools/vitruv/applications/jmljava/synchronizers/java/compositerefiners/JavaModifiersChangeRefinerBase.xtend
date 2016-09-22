@@ -3,13 +3,13 @@ package tools.vitruv.applications.jmljava.synchronizers.java.compositerefiners
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder
 import tools.vitruv.applications.jmljava.helper.java.shadowcopy.ShadowCopyFactory
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
 import tools.vitruv.framework.meta.change.feature.reference.containment.CreateNonRootEObjectInList
 import tools.vitruv.framework.meta.change.feature.reference.containment.DeleteNonRootEObjectInList
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.emftext.language.java.modifiers.Modifier
+import tools.vitruv.framework.change.description.ConcreteChange
 
 abstract class JavaModifiersChangeRefinerBase extends CompositeChangeRefinerBase {
 
@@ -28,7 +28,7 @@ abstract class JavaModifiersChangeRefinerBase extends CompositeChangeRefinerBase
 
 	private def matchInternal(CompositeChange change) {
 
-		val modelChanges = change.changes.filter(EMFModelChange)
+		val modelChanges = change.changes.filter(ConcreteChange)
 		if (modelChanges.size != change.changes.size) {
 			return false
 		}
@@ -61,7 +61,7 @@ abstract class JavaModifiersChangeRefinerBase extends CompositeChangeRefinerBase
 	override refine(CompositeChange change) {
 		val firstLevelCompositeChanges = change.changes.filter(CompositeChange)
 		if (firstLevelCompositeChanges.size == change.changes.size) {
-			val changes = new ArrayList<EMFModelChange>()
+			val changes = new ArrayList<ConcreteChange>()
 			change.changes.forEach[changes.addAll(processInternal(it as CompositeChange))]
 			return new CompositeChangeRefinerResultAtomicTransformations(changes);
 		}
@@ -74,7 +74,7 @@ abstract class JavaModifiersChangeRefinerBase extends CompositeChangeRefinerBase
 		val addChanges = addAndDeleteChanges.addChanges
 		val deleteChanges = new ArrayList<DeleteNonRootEObjectInList<EObject>>(addAndDeleteChanges.deleteChanges)
 
-		val changes = new ArrayList<EMFModelChange>()
+		val changes = new ArrayList<ConcreteChange>()
 
 		for (addChange : addChanges) {
 			val matchingDeleteChange = addChange.findMatchingDeleteChange(deleteChanges)

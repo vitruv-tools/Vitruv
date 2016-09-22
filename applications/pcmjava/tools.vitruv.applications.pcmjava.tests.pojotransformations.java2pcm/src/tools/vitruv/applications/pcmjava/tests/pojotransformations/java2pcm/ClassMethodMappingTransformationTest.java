@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm;
 
 import org.junit.Test;
-import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
@@ -12,9 +11,8 @@ public class ClassMethodMappingTransformationTest extends Java2PCMPackageMapping
     @Test
     public void testAddClassMethodWithCorrespondence() throws Throwable {
         // create repo
-        final Repository repo = super.addRepoContractsAndDatatypesPackage();
+        super.addRepoContractsAndDatatypesPackage();
         this.testUserInteractor.addNextSelections(JaMoPP2PCMTransformationTest.SELECT_NOTHING_DECIDE_LATER);
-        super.createPackageWithPackageInfo(repo.getEntityName(), "contracts");
         // create component implementing class
         super.addPackageAndImplementingClass(PCM2JaMoPPTestUtils.BASIC_COMPONENT_NAME);
         // create interface

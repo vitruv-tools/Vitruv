@@ -1,10 +1,5 @@
 package mir.routines.pcm2java;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
-
 import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +7,10 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 
 @SuppressWarnings("all")
 public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealization {
@@ -60,7 +59,7 @@ public class ChangeOperationSignatureOfSeffEffect extends AbstractEffectRealizat
     
     private void executeUserOperations(final ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> change, final ClassMethod oldClassMethod) {
       ResourceDemandingSEFF _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.callCreateSEFF(((ResourceDemandingSEFF) _affectedEObject));
+      this.effectFacade.callCreateSEFF(_affectedEObject);
     }
   }
 }

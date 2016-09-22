@@ -26,21 +26,17 @@ import tools.vitruv.applications.jmljava.synchronizers.jml.JMLInvariantExpressio
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMemberDeclarationWithModifierTransformations
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLMethodDeclarationTransformations
 import tools.vitruv.applications.jmljava.synchronizers.jml.JMLVariableDeclarationTransformations
-import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.GeneralChange
+import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.processing.Change2CommandTransforming 
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.applications.pcmjava.pojotransformations.gplimplementation.util.transformationexecutor.TransformationExecutor
 import tools.vitruv.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.List
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.command.Command
 import org.emftext.language.java.imports.Import
 import org.emftext.language.java.modifiers.Modifier
 import org.emftext.language.java.statements.Statement
@@ -48,9 +44,11 @@ import org.emftext.language.java.types.Type
 import org.emftext.language.java.types.TypeReference
 import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.TransformationResult
-import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.TransformationExecutor
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
 
 /**
  * Synchronizer for Java and JML. It initializes the transformations and composite
@@ -114,23 +112,17 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		return result;
 	}
 
-	override transformChange2Commands(VitruviusChange change, CorrespondenceModel correspondenceModel) {
-		val List<VitruviusRecordingCommand> commands = new ArrayList<VitruviusRecordingCommand>()
-		if (change instanceof CompositeChange) {
-			commands.addAll(executeTransformation(change as CompositeChange, correspondenceModel))
-		} else {
-			commands.add(transformEMFModelChange2Command(change as GeneralChange, correspondenceModel))
-		}
-		return commands
+	override transformChange2Commands(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		return #[transformEMFModelChange2Command(change as ConcreteChange, correspondenceModel)];
 	}
 
-	def transformEMFModelChange2Command(GeneralChange change, CorrespondenceModel correspondenceModel) {
+	def transformEMFModelChange2Command(ConcreteChange change, CorrespondenceModel correspondenceModel) {
 		LOGGER.info("Synchronization of change " + change.class.simpleName + " started.")
 
 		this.correspondenceModel = correspondenceModel
 
-		val modelChange = (change as GeneralChange).EChanges.get(0)
-		this.setSyncAbortChange(change as GeneralChange)
+		val modelChange = (change as ConcreteChange).EChanges.get(0)
+		this.setSyncAbortChange(change as ConcreteChange)
 		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
 			override call() {
 				val res = executeTransformationForChange(modelChange)
@@ -140,14 +132,14 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		return command
 	}
 
-	def void setSyncAbortChange(GeneralChange change) {
+	def void setSyncAbortChange(ConcreteChange change) {
 		this.mappingTransformations.values.filter(AbortableEObjectMappingTransformationBase).forEach [
 			setSyncAbortChange(change)
 		]
 	}
 
-	def List<VitruviusRecordingCommand> executeTransformation(CompositeChange compositeChange, CorrespondenceModel correspondenceModel) {
-		LOGGER.info("Synchronization of composite change (" + compositeChange.allChanges.size +
+	def List<VitruviusRecordingCommand> executeTransformation(CompositeTransactionalChange compositeChange, CorrespondenceModel correspondenceModel) {
+		LOGGER.info("Synchronization of composite change (" + compositeChange.EChanges.size +
 			" changes included) started.")
 
 		this.correspondenceModel = correspondenceModel;
@@ -169,16 +161,16 @@ class CSSynchronizer extends TransformationExecutor implements Change2CommandTra
 		compositeChangeRefiners.add(refiner)
 	}
 
-	private static def getAllChanges(CompositeChange compositeChange) {
-		val changes = new ArrayList<GeneralChange>()
+	private static def getAllChanges(CompositeTransactionalChange compositeChange) {
+		val changes = new ArrayList<ConcreteChange>()
 		val queue = new LinkedList<VitruviusChange>()
 		queue.add(compositeChange)
 		while (!queue.empty) {
 			val change = queue.pop()
-			if (change instanceof GeneralChange) {
-				changes.add(change as GeneralChange)
-			} else if (change instanceof CompositeChange) {
-				queue.addAll((change as CompositeChange).changes)
+			if (change instanceof ConcreteChange) {
+				changes.add(change as ConcreteChange)
+			} else if (change instanceof CompositeTransactionalChange) {
+				queue.addAll((change as CompositeTransactionalChange).changes)
 			} else {
 				// not supported
 				LOGGER.warn("The composite change contains an invalid change type " + change.class + ". It is skipped.")

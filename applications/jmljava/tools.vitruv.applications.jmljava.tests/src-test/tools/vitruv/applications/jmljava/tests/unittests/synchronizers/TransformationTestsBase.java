@@ -48,11 +48,11 @@ import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceA
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.applications.jmljava.synchronizers.CSSynchronizer;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
-import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.description.CompositeChange;
+import tools.vitruv.framework.change.description.CompositeContainerChange;
+import tools.vitruv.framework.change.description.CompositeTransactionalChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
-import tools.vitruv.framework.change.description.GeneralChange;
 import tools.vitruv.framework.metamodel.Mapping;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.ModelInstance;
@@ -63,7 +63,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.datatypes.Pair;
-import tools.vitruv.applications.jmljava.tests.unittests.utils.CorrespondingProvidingMock;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.Initializer;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader;
 import tools.vitruv.applications.jmljava.tests.unittests.utils.ModelLoader.IResourceFiles;
@@ -144,7 +143,6 @@ public abstract class TransformationTestsBase {
 
     private static final Mapping MAPPING_JAVA2JML = constructMapping();
     private ModelProvidingMock modelProviding;
-    private CorrespondingProvidingMock correspondingProding;
     private CorrespondenceModelProxy correspondenceInstanceUpdateRecorder;
     protected CSSynchronizer synchronizer;
     protected CorrespondenceModel correspondenceInstance;
@@ -251,7 +249,7 @@ public abstract class TransformationTestsBase {
 
     abstract protected Pair<ModelInstance, ModelInstance> getModelInstances() throws Exception;
 
-    protected void callSynchronizer(final VitruviusChange change) {
+    protected void callSynchronizer(final TransactionalChange change) {
         replay(this.userInteracting);
         replay(this.syncAbortedListener);
         this.callSynchronizerInternal(change);
@@ -259,15 +257,12 @@ public abstract class TransformationTestsBase {
         verify(this.syncAbortedListener);
     }
 
-    private void callSynchronizerInternal(final VitruviusChange change) {
-        if (change instanceof GeneralChange) {
-            this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
-            return;
-        }
-        if (change instanceof CompositeChange) {
-            this.synchronizer.executeTransformation((CompositeChange) change, this.blackboard.getCorrespondenceModel());
-            return;
-        }
+    private void callSynchronizerInternal(final TransactionalChange change) {
+    	this.synchronizer.transformChange2Commands(change, this.blackboard.getCorrespondenceModel());
+    	if (change instanceof CompositeTransactionalChange) {
+    		this.synchronizer.executeTransformation((CompositeTransactionalChange) change, this.blackboard.getCorrespondenceModel());
+    		return;
+    	} 
         throw new IllegalArgumentException(
                 "The synchronizer can only be called with EMFModelChanges or with CompositeChanges!");
     }

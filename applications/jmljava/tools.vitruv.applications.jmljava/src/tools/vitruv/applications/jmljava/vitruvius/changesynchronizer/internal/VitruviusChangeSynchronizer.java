@@ -26,6 +26,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.change.processing.Change2CommandTransforming ;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.metamodel.MappingManaging;
 import tools.vitruv.framework.metamodel.MetamodelManaging;
@@ -188,7 +189,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
         LOGGER.info("Constructing sync manager.");
 
         final ChangeSynchronizerImpl result = new ChangeSynchronizerImpl(modelProviding,
-                change2CommandTransformingProviding, correspondenceProviding, null);
+                change2CommandTransformingProviding, correspondenceProviding);
 
         return result;
     }
@@ -209,5 +210,15 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
     public ModelProvidingDirtyMarker getModelProvidingDirtyMarker() {
         return this.vsumImpl;
     }
+
+	@Override
+	public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+		syncManagerImpl.addSynchronizationListener(synchronizationListener);
+	}
+
+	@Override
+	public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+		syncManagerImpl.removeSynchronizationListener(synchronizationListener);
+	}
 
 }

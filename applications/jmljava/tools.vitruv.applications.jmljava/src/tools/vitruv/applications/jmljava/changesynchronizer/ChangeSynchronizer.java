@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import tools.vitruv.applications.jmljava.synchronizers.SynchronisationAbortedListener;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.ModelProvidingDirtyMarker;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.internal.VitruviusChangeSynchronizer;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
@@ -61,7 +61,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
     }
 
     @Override
-    public void synchronisationAborted(final GeneralChange abortedChange) {
+    public void synchronisationAborted(final TransactionalChange abortedChange) {
         this.notifyListenersSynchronisationAborted(abortedChange);
     }
 
@@ -100,7 +100,7 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
      * @param abortedChange
      *            The unprocessed change because of the aborted transformation.
      */
-    private void notifyListenersSynchronisationAborted(final GeneralChange abortedChange) {
+    private void notifyListenersSynchronisationAborted(final TransactionalChange abortedChange) {
         this.notifyListeners(new ListenerCaller<JmlSynchronizationListener>() {
             @Override
             public void notifyListener(final JmlSynchronizationListener listener) {
@@ -166,5 +166,17 @@ public final class ChangeSynchronizer implements ChangeSynchronizing, Synchronis
     public void doNotAcceptNewChanges() {
         this.doNotAcceptNewChanges = true;
     }
+
+	@Override
+	public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
+	}
 
 }

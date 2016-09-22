@@ -16,7 +16,6 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 
 public class MethodMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
@@ -68,8 +67,7 @@ public class MethodMappingTransformationTest extends Java2PCMPackageMappingTrans
         final String newReturnTypeName = "String ";
         final DeleteEdit deleteEdit = new DeleteEdit(returnTypeOffset, returnTypeLength);
         final InsertEdit insertEdit = new InsertEdit(returnTypeOffset, newReturnTypeName);
-        CompilationUnitManipulatorHelper.editCompilationUnit(cu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization();
+        editCompilationUnit(cu, deleteEdit, insertEdit);
         return super.findOperationSignatureForJaMoPPMethodInCompilationUnit(methodName, className, cu);
     }
 

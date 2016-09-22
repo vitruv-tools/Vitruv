@@ -286,106 +286,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getReplaceSingleValuedEReference()
 	 * @generated
 	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE = 3;
-
-    /**
-	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_FEATURE;
-
-    /**
-	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
-
-    /**
-	 * The feature id for the '<em><b>Old Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
-
-    /**
-	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
-
-    /**
-	 * The feature id for the '<em><b>New Value</b></em>' reference.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
-
-    /**
-	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
-
-    /**
-	 * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
-
-    /**
-	 * The operation id for the '<em>Get Old Value</em>' operation.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 0;
-
-    /**
-	 * The operation id for the '<em>Is Containment</em>' operation.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
-
-    /**
-	 * The operation id for the '<em>Get New Value</em>' operation.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 2;
-
-    /**
-	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
-	 * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-    int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 3;
+    int REPLACE_SINGLE_VALUED_EREFERENCE = 6;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
@@ -395,7 +296,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getInsertEReference()
 	 * @generated
 	 */
-    int INSERT_EREFERENCE = 4;
+    int INSERT_EREFERENCE = 3;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -458,7 +359,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_EREFERENCE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
+    int INSERT_EREFERENCE___GET_NEW_VALUE = ListPackage.INSERT_IN_LIST_ECHANGE___GET_NEW_VALUE;
 
     /**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -467,7 +368,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
+    int INSERT_EREFERENCE___IS_CONTAINMENT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 0;
 
     /**
 	 * The number of operations of the '<em>Insert EReference</em>' class.
@@ -476,7 +377,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 2;
+    int INSERT_EREFERENCE_OPERATION_COUNT = ListPackage.INSERT_IN_LIST_ECHANGE_OPERATION_COUNT + 1;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl <em>Remove EReference</em>}' class.
@@ -486,7 +387,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getRemoveEReference()
 	 * @generated
 	 */
-    int REMOVE_EREFERENCE = 5;
+    int REMOVE_EREFERENCE = 4;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -549,7 +450,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_EREFERENCE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
+    int REMOVE_EREFERENCE___GET_OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_OLD_VALUE;
 
     /**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -558,7 +459,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
+    int REMOVE_EREFERENCE___IS_CONTAINMENT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 0;
 
     /**
 	 * The number of operations of the '<em>Remove EReference</em>' class.
@@ -567,7 +468,7 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 2;
+    int REMOVE_EREFERENCE_OPERATION_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT + 1;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.PermuteEReferencesImpl <em>Permute EReferences</em>}' class.
@@ -577,7 +478,7 @@ public interface ReferencePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getPermuteEReferences()
 	 * @generated
 	 */
-    int PERMUTE_EREFERENCES = 6;
+    int PERMUTE_EREFERENCES = 5;
 
     /**
 	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
@@ -632,6 +533,123 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
     int PERMUTE_EREFERENCES_OPERATION_COUNT = ListPackage.PERMUTE_LIST_ECHANGE_OPERATION_COUNT + 1;
+
+				/**
+	 * The feature id for the '<em><b>New Value</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE__NEW_VALUE;
+
+				/**
+	 * The feature id for the '<em><b>Is Create</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_CREATE = ADDITIVE_REFERENCE_ECHANGE__IS_CREATE;
+
+				/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_FEATURE = ADDITIVE_REFERENCE_ECHANGE__AFFECTED_FEATURE;
+
+				/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT = ADDITIVE_REFERENCE_ECHANGE__AFFECTED_EOBJECT;
+
+				/**
+	 * The feature id for the '<em><b>Old Value</b></em>' reference.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 0;
+
+				/**
+	 * The feature id for the '<em><b>Is Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE__IS_DELETE = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
+
+				/**
+	 * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = ADDITIVE_REFERENCE_ECHANGE_FEATURE_COUNT + 2;
+
+				/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_NEW_VALUE = ADDITIVE_REFERENCE_ECHANGE___GET_NEW_VALUE;
+
+				/**
+	 * The operation id for the '<em>Is Containment</em>' operation.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE___IS_CONTAINMENT = ADDITIVE_REFERENCE_ECHANGE___IS_CONTAINMENT;
+
+				/**
+	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE___GET_OLD_VALUE = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 0;
+
+				/**
+	 * The operation id for the '<em>Is From Non Default Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_FROM_NON_DEFAULT_VALUE = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 1;
+
+				/**
+	 * The operation id for the '<em>Is To Non Default Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_TO_NON_DEFAULT_VALUE = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 2;
+
+				/**
+	 * The number of operations of the '<em>Replace Single Valued EReference</em>' class.
+	 * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+    int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = ADDITIVE_REFERENCE_ECHANGE_OPERATION_COUNT + 3;
 
 
     /**

@@ -11,7 +11,6 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
@@ -43,19 +42,6 @@ class CommandExecutingImpl implements CommandExecuting {
 		modelProviding.detachTransactionalEditingDomain() // FIXME
 		blackboard.correspondenceModel.saveModel()
 		return Collections::emptyList()
-	}
-
-	/** 
-	 * undo all commands on the blackboard
-	 */
-	override void rollbackCommands(Blackboard blackboard) {
-		val Pair<List<VitruviusChange>, List<VitruviusRecordingCommand>> commandAndChangePairs = blackboard.getArchivedChangesAndCommandsForUndo()
-		val ArrayList<Object> affectedObjects = new ArrayList()
-		for (Command command : commandAndChangePairs.getSecond()) {
-			command.undo()
-			affectedObjects.addAll(command.getAffectedObjects())
-		}
-		this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
 	}
 
 	def private void executeTransformationResults(ArrayList<TransformationResult> transformationResults,

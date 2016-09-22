@@ -10,11 +10,10 @@ import tools.vitruv.domains.jml.language.jML.CompilationUnit;
 import tools.vitruv.domains.jml.language.jML.Expression;
 import tools.vitruv.domains.jml.language.jML.JMLInvariantExpression;
 import tools.vitruv.domains.jml.language.jML.JMLPackage;
+import tools.vitruv.domains.jml.monitorededitor.ChangeBuilder;
 import tools.vitruv.domains.jml.monitorededitor.ModelUtilities;
 import tools.vitruv.domains.jml.monitorededitor.changeinjection.Choice.EObjectToString;
-import tools.vitruv.casestudies.jml.run.monitorededitor.ChangeBuilder;
-import tools.vitruv.framework.change.description.EMFModelChange;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
 
@@ -56,7 +55,7 @@ public class JMLInjectChangeInvariantExpression extends JMLInjectionHandler {
         JMLInvariantExpression invariantNew = ModelUtilities.clone(choosenInvariant);
 
         invariantNew.setExpr(newExpression);
-        GeneralChange change = ChangeBuilder.createUpdateChange(invariantOld, invariantNew,
+        ConcreteChange change = ChangeBuilder.createUpdateChange(invariantOld, invariantNew,
                 JMLPackage.eINSTANCE.getJMLExpressionHaving_Expr());
 
         submitChange(change);

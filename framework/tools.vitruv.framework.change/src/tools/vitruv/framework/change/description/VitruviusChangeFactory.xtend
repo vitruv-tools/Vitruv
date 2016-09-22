@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.description
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.change.ChangeDescription
 import tools.vitruv.framework.change.description.impl.EMFModelChangeImpl
-import tools.vitruv.framework.change.description.impl.CompositeChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
@@ -15,6 +14,7 @@ import org.apache.log4j.Logger
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RootFactory
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -56,7 +56,7 @@ class VitruviusChangeFactory {
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
-		return new CompositeChangeImpl();
+		return new CompositeContainerChangeImpl();
 	}
 	
 	public def CompositeTransactionalChange createCompositeTransactionalChange() {
@@ -68,7 +68,7 @@ class VitruviusChangeFactory {
 	}
 	
 	public def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
-		val compositeChange = new CompositeChangeImpl();
+		val compositeChange = new CompositeContainerChangeImpl();
 		for (innerChange : innerChanges) {
 			compositeChange.addChange(innerChange);
 		}

@@ -17,5 +17,5 @@ import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
  * @model
  * @generated
  */
-public interface PermuteEReferences<A extends EObject> extends PermuteListEChange<A, EReference>, tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<A> {
+public interface PermuteEReferences<A extends EObject> extends PermuteListEChange<A, EReference>, UpdateReferenceEChange<A> {
 } // PermuteEReferences

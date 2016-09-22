@@ -1,6 +1,6 @@
 package tools.vitruv.applications.jmljava.synchronizers;
 
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 
 /**
@@ -17,7 +17,7 @@ public interface SynchronisationAbortedListener {
      * @param abortedChange
      *            The change, which triggered the aborted transformation.
      */
-    void synchronisationAborted(GeneralChange abortedChange);
+    void synchronisationAborted(TransactionalChange abortedChange);
     
     /**
      * Called whenever a transformation has been aborted.

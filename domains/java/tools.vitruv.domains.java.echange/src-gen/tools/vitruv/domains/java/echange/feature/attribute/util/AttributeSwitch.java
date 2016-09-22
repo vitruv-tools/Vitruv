@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -123,12 +124,13 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 				T1 result = caseJavaReplaceSingleValuedEAttribute(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseReplaceSingleValuedEAttribute(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseJavaFeatureEChange(javaReplaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(javaReplaceSingleValuedEAttribute);
-				if (result == null) result = caseSubtractiveAttributeEChange(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseAdditiveAttributeEChange(javaReplaceSingleValuedEAttribute);
-				if (result == null) result = caseSubtractiveEChange(javaReplaceSingleValuedEAttribute);
-				if (result == null) result = caseUpdateAttributeEChange(javaReplaceSingleValuedEAttribute);
+				if (result == null) result = caseSubtractiveAttributeEChange(javaReplaceSingleValuedEAttribute);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseAdditiveEChange(javaReplaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateAttributeEChange(javaReplaceSingleValuedEAttribute);
+				if (result == null) result = caseSubtractiveEChange(javaReplaceSingleValuedEAttribute);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseFeatureEChange(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseAtomicEChange(javaReplaceSingleValuedEAttribute);
 				if (result == null) result = caseEChange(javaReplaceSingleValuedEAttribute);
@@ -270,7 +272,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 caseInsertInListEChange(InsertInListEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -360,7 +362,7 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject, F extends EStructuralFeature> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -421,6 +423,21 @@ public class AttributeSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public <A extends EObject, F extends EStructuralFeature> T1 caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
 		return null;
 	}
 

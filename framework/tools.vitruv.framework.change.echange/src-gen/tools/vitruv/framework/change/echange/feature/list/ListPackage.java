@@ -159,13 +159,22 @@ public interface ListPackage extends EPackage {
     int INSERT_IN_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
     /**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___GET_NEW_VALUE = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
+
+				/**
 	 * The number of operations of the '<em>Insert In List EChange</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int INSERT_IN_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
+    int INSERT_IN_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 1;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListEChangeImpl <em>Remove From List EChange</em>}' class.
@@ -214,13 +223,22 @@ public interface ListPackage extends EPackage {
     int REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_FEATURE_COUNT + 0;
 
     /**
+	 * The operation id for the '<em>Get Old Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___GET_OLD_VALUE = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
+
+				/**
 	 * The number of operations of the '<em>Remove From List EChange</em>' class.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-    int REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 0;
+    int REMOVE_FROM_LIST_ECHANGE_OPERATION_COUNT = UPDATE_SINGLE_LIST_ENTRY_ECHANGE_OPERATION_COUNT + 1;
 
     /**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.list.impl.PermuteListEChangeImpl <em>Permute List EChange</em>}' class.

@@ -8,6 +8,7 @@ import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.statements.StatementsPackage
 import org.emftext.language.java.members.Method
 import tools.vitruv.framework.change.description.CompositeChange
+import tools.vitruv.framework.change.description.ConcreteChange
 
 class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 
@@ -16,13 +17,13 @@ class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 	}
 
 	override match(CompositeChange change) {
-		if (change.changes.filter(EMFModelChange).filter[EChange instanceof UpdateContainmentEReference<?>].size !=
+		if (change.changes.filter(ConcreteChange).filter[EChange instanceof UpdateContainmentEReference<?>].size !=
 			change.changes.size) {
 			return false
 		}
 
 		val echanges = new ArrayList<UpdateContainmentEReference<?>>()
-		change.changes.filter(EMFModelChange).forEach[echanges.add(it.EChange as UpdateContainmentEReference<?>)]
+		change.changes.filter(ConcreteChange).forEach[echanges.add(it.EChange as UpdateContainmentEReference<?>)]
 
 		val firstChange = echanges.get(0)
 		if (!(firstChange.oldAffectedEObject instanceof Method) ||
@@ -64,7 +65,7 @@ class JavaMethodBodyChangedChangeRefiner extends CompositeChangeRefinerBase {
 		if (!change.match) {
 			throw new IllegalArgumentException
 		}
-		val featureChange = (change.changes.get(0) as EMFModelChange).EChange as EFeatureChange<?>
+		val featureChange = (change.changes.get(0) as ConcreteChange).EChange as EFeatureChange<?>
 		val oldMethod = featureChange.oldAffectedEObject as ClassMethod
 		val newMethod = featureChange.newAffectedEObject as ClassMethod
 		return new CompositeChangeRefinerResultTransformation(new JavaMethodBodyChangedTransformation(shadowCopyFactory, oldMethod, newMethod))

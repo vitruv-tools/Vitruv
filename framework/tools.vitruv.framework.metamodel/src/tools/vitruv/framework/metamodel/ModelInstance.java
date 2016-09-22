@@ -7,8 +7,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
+import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.datatypes.AbstractURIHaving;
 import tools.vitruv.framework.util.datatypes.VURI;
 
@@ -102,7 +104,15 @@ public class ModelInstance extends AbstractURIHaving {
     public List<EObject> getRootElements() {
         return this.resource.getContents();
     }
-
+    
+    // TODO HK This should be done differently: The VSUM provides the editing domain!
+    private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
+        if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet())) {
+            TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resource.getResourceSet());
+        }
+        return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet());
+    }
+    
     /**
      * Loads the resource into memory. The load can be forced by setting
      * forceLoadByDoingUnloadBeforeLoad to true, which means that the resource will be unloaded
@@ -110,18 +120,21 @@ public class ModelInstance extends AbstractURIHaving {
      *
      */
     public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
-        try {
-            if (null != loadOptions) {
-                this.lastUsedLoadOptions = loadOptions;
-            }
-            if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
-                this.resource.unload();
-            }
-            this.resource.load(this.lastUsedLoadOptions);
-        } catch (IOException e) {
-            // soften
-            throw new RuntimeException(e);
-        }
+    	EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(() -> {
+    		try {
+    			if (null != loadOptions) {
+    				this.lastUsedLoadOptions = loadOptions;
+    			}
+    			if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
+    				this.resource.unload();
+    			}
+    			this.resource.load(this.lastUsedLoadOptions);
+    		} catch (IOException e) {
+    			// 	soften
+    			throw new RuntimeException(e);
+    		}
+    		return null;
+        }, getTransactionalEditingDomain());
     }
 
     public void load(final Map<Object, Object> loadOptions) {

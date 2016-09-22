@@ -55,6 +55,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 				createInterface = super.modalTextYesNoUserInteracting(msg)
 			}
 			if (createInterface) {
+				logger.debug("Created interface: " + eObject);
 				var OperationInterface opInterface = RepositoryFactory.eINSTANCE.createOperationInterface
 				opInterface.setEntityName(jaMoPPInterface.name)
 				val Repository repo = JaMoPP2PCMUtils.getRepository(correspondenceModel)

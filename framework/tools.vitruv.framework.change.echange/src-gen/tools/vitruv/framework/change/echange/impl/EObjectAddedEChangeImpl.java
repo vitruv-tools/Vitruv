@@ -26,7 +26,7 @@ import tools.vitruv.framework.change.echange.EObjectAddedEChange;
  *
  * @generated
  */
-public abstract class EObjectAddedEChangeImpl<T extends EObject> extends tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl<T> implements EObjectAddedEChange<T> {
+public abstract class EObjectAddedEChangeImpl<T extends EObject> extends AdditiveEChangeImpl<T> implements EObjectAddedEChange<T> {
     /**
 	 * The cached value of the '{@link #getNewValue() <em>New Value</em>}' reference.
 	 * <!-- begin-user-doc -->

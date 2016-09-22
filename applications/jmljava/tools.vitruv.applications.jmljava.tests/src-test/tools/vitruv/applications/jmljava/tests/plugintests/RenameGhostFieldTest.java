@@ -8,7 +8,7 @@ import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.domains.jml.language.jML.IdentifierHaving;
 import tools.vitruv.domains.jml.language.jML.JMLPackage;
 import tools.vitruv.domains.jml.language.jML.VariableDeclarator;
-import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 
 public class RenameGhostFieldTest extends FrameworkTestBase {
 
@@ -34,7 +34,7 @@ public class RenameGhostFieldTest extends FrameworkTestBase {
         IdentifierHaving newElement = ModelUtilities.clone(vd);
         newElement.setIdentifier(newName);
         
-        Change change = ChangeBuilder.createUpdateChange(oldElement, newElement,
+        ConcreteChange change = ChangeBuilder.createUpdateChange(oldElement, newElement,
                 JMLPackage.eINSTANCE.getIdentifierHaving_Identifier());
         ChangeSynchronizerRegistry.getInstance().getChangeSynchronizer().synchronizeChange(change);
         

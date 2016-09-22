@@ -31,6 +31,8 @@ import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
 
 import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
 
+import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
@@ -142,6 +144,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		// Obtain or create and register interdependencies
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
+		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
@@ -151,6 +154,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Create package meta-data objects
 		theEChangePackage.createPackageContents();
 		theFeaturePackage.createPackageContents();
+		theSinglePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theAttributePackage.createPackageContents();
 		theReferencePackage.createPackageContents();
@@ -160,6 +164,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Initialize created meta-data
 		theEChangePackage.initializePackageContents();
 		theFeaturePackage.initializePackageContents();
+		theSinglePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theAttributePackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();

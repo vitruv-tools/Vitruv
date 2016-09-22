@@ -16,6 +16,7 @@ import tools.vitruv.framework.change.echange.feature.list.PermuteListEChange;
 import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange;
 import tools.vitruv.framework.change.echange.feature.reference.*;
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -80,7 +81,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
     protected T1 doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case ReferencePackage.UPDATE_REFERENCE_ECHANGE: {
-				tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<?> updateReferenceEChange = (tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<?>)theEObject;
+				UpdateReferenceEChange<?> updateReferenceEChange = (UpdateReferenceEChange<?>)theEObject;
 				T1 result = caseUpdateReferenceEChange(updateReferenceEChange);
 				if (result == null) result = caseFeatureEChange(updateReferenceEChange);
 				if (result == null) result = caseAtomicEChange(updateReferenceEChange);
@@ -109,23 +110,6 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseFeatureEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseAtomicEChange(subtractiveReferenceEChange);
 				if (result == null) result = caseEChange(subtractiveReferenceEChange);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
-				ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
-				T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
-				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseSubtractiveReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseAdditiveReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseAtomicEChange(replaceSingleValuedEReference);
-				if (result == null) result = caseEChange(replaceSingleValuedEReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -173,6 +157,24 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE: {
+				ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEReference = (ReplaceSingleValuedEReference<?, ?>)theEObject;
+				T1 result = caseReplaceSingleValuedEReference(replaceSingleValuedEReference);
+				if (result == null) result = caseAdditiveReferenceEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseSubtractiveReferenceEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseReplaceSingleValuedFeatureEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseEObjectAddedEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseUpdateReferenceEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseEObjectSubtractedEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseUpdateSingleValuedFeatureEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseAdditiveEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseFeatureEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseSubtractiveEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseAtomicEChange(replaceSingleValuedEReference);
+				if (result == null) result = caseEChange(replaceSingleValuedEReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -188,7 +190,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public <A extends EObject> T1 caseUpdateReferenceEChange(tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange<A> object) {
+	public <A extends EObject> T1 caseUpdateReferenceEChange(UpdateReferenceEChange<A> object) {
 		return null;
 	}
 
@@ -403,6 +405,21 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	}
 
     /**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace Single Valued Feature EChange</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseReplaceSingleValuedFeatureEChange(ReplaceSingleValuedFeatureEChange<A, F, T> object) {
+		return null;
+	}
+
+				/**
 	 * Returns the result of interpreting the object as an instance of '<em>Update Multi Valued Feature EChange</em>'.
 	 * <!-- begin-user-doc -->
      * This implementation returns null;
@@ -443,7 +460,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseInsertInListEChange(InsertInListEChange<A, F> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseInsertInListEChange(InsertInListEChange<A, F, T> object) {
 		return null;
 	}
 
@@ -458,7 +475,7 @@ public class ReferenceSwitch<T1> extends Switch<T1> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-    public <A extends EObject, F extends EStructuralFeature> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F> object) {
+    public <A extends EObject, F extends EStructuralFeature, T extends Object> T1 caseRemoveFromListEChange(RemoveFromListEChange<A, F, T> object) {
 		return null;
 	}
 

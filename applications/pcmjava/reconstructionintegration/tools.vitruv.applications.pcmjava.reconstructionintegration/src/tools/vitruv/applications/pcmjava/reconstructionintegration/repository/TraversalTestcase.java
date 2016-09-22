@@ -57,7 +57,7 @@ public class TraversalTestcase {
 
         final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangeSynchronizerImpl changeSynchronizing = new ChangeSynchronizerImpl(vsum,
-                change2CommandTransformingProviding, vsum, null);
+                change2CommandTransformingProviding, vsum);
         
         final VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         // propagate changes

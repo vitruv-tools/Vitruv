@@ -10,7 +10,7 @@ class IntegrationMethodMappingTransformationTest extends Java2PCMPackageIntegrat
 	def public void addMethodInIntegratedArea() throws Throwable{
 		val String methodString = "void " + INTEGRATED_METHOD_NAME + "();";
 		CompilationUnitManipulatorHelper.addMethodToCompilationUnit(CodeIntegrationTestCBSNamespace.I_DISPLAY_INTERFACE_NAME, 
-			methodString, currentTestProject);
+			methodString, currentTestProject, this);
 		
 		assertMessage(1, "Elements in change were integrated into Vitruvius")
 	}

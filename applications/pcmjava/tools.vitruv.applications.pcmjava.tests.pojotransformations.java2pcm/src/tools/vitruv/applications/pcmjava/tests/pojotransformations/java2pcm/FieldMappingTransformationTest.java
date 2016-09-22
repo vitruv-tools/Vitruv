@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -15,6 +16,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.emftext.language.java.members.Field;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.palladiosimulator.pcm.repository.CompositeDataType;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
@@ -23,7 +25,6 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 
 public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
@@ -71,21 +72,25 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         this.assertInnerDeclaration(newInnerDeclaration, newFieldTypeName, fieldName);
     }
 
+    @Ignore
     @Test
     public void testRemoveFieldInClassThatCorrespondsToBasicComponent() {
         fail("Not yet implemented");
     }
 
+    @Ignore
     @Test
     public void testAddFieldToClassThatCorrespondsToBasicComponent() {
         fail("Not yet implemented");
     }
 
+    @Ignore
     @Test
     public void testAddFieldInClassWithoutCorrespondence() {
         fail("Not yet implemented");
     }
 
+    @Ignore
     @Test
     public void testAddFieldWithTypeOfInterface() throws Throwable {
         this.createRepoBasicComponentAndInterface();
@@ -113,7 +118,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         this.assertOperationRequiredRole(orrToInterface);
     }
 
-    private void createRepoBasicComponentAndInterface() throws Throwable, CoreException, InterruptedException {
+    private void createRepoBasicComponentAndInterface() throws CoreException, IOException, InterruptedException {
         // create main package
         super.addRepoContractsAndDatatypesPackage();
         // create package and classes
@@ -172,8 +177,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         final int lengthToDelete = fieldToRenameName.length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, lengthToDelete);
         final InsertEdit insertEdit = new InsertEdit(offset, newFieldName + ";");
-        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization();
+        editCompilationUnit(icu, deleteEdit, insertEdit);
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, newFieldName);
         return CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
                 this.getCorrespondenceModel(), newJaMoPPField, InnerDeclaration.class));
@@ -191,8 +195,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
         final int lengthToDelete = fieldType.length();
         final DeleteEdit deleteEdit = new DeleteEdit(offset, lengthToDelete);
         final InsertEdit insertEdit = new InsertEdit(offset, newFieldTypeName);
-        CompilationUnitManipulatorHelper.editCompilationUnit(icu, deleteEdit, insertEdit);
-        TestUtil.waitForSynchronization();
+        editCompilationUnit(icu, deleteEdit, insertEdit);
         final Field newJaMoPPField = this.getJaMoPPFieldFromClass(icu, fieldName);
         return CollectionBridge.claimOne(CorrespondenceModelUtil.getCorrespondingEObjectsByType(
                 this.getCorrespondenceModel(), newJaMoPPField, InnerDeclaration.class));

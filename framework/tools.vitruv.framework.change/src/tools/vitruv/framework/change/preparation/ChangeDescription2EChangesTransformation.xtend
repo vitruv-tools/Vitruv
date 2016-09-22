@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.change.ResourceChange
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import java.util.Collections
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import org.eclipse.emf.ecore.change.ChangeDescription
@@ -183,6 +182,13 @@ public class ChangeDescription2EChangesTransformation {
 				if (eObject.hasChangeableUnderivedPersistedNotContainingNonDefaultValue(feature)) {
 					// FIXME HK uncomment
 					val recursiveChanges = EMFModelChangeTransformationUtil.createAdditiveChangesForValue(eObject, feature);
+					for (recursiveChange : recursiveChanges) {
+						if (recursiveChange instanceof AdditiveReferenceEChange<?,?>) {
+							if (recursiveChange.isContainment) {
+								recursiveChange.isCreate = true;
+							}
+						}
+					}
 					eChanges.addAll(recursiveChanges);
 					for (change : recursiveChanges.filter(AdditiveReferenceEChange)) {
 						if ((change as UpdateReferenceEChange<?>).affectedFeature.containment) recursivelyAddChangesForNonDefaultValues(change.newValue);
@@ -253,12 +259,10 @@ public class ChangeDescription2EChangesTransformation {
 		}
 	}
 
-	def List<ReplaceSingleValuedEReference<?,?>> createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
+	def List<EChange> createChangeForSingleReferenceChange(EObject affectedEObject, EReference affectedReference,
 		EObject newReferenceValue) {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedReference).claimNotMany();
-		return Collections.singletonList(
-			createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue,
-				newReferenceValue));
+		return #[createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue)];
 	}
 
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference,
@@ -313,8 +317,7 @@ public class ChangeDescription2EChangesTransformation {
 	def List<EChange> createChangeForSingleAttributeChange(EObject affectedEObject, EAttribute affectedAttribute,
 		Object newValue) {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedAttribute).claimNotMany();
-		return Collections.singletonList(
-			createReplaceSingleValuedAttributeChange(affectedEObject, affectedAttribute, oldReferenceValue, newValue));
+		return #[createReplaceSingleValuedAttributeChange(affectedEObject, affectedAttribute, oldReferenceValue, newValue)];
 	}
 
 	def private List<EChange> createChangeForMultiAttributeChange(EObject affectedEObject, EAttribute affectedAttribute,
@@ -325,7 +328,7 @@ public class ChangeDescription2EChangesTransformation {
 			]
 			case ChangeKind.REMOVE_LITERAL: #[
 				createRemoveAttributeChange(affectedEObject, affectedAttribute, index,
-					affectedEObject.getReferenceValueList(affectedAttribute))]
+					affectedEObject.getReferenceValueList(affectedAttribute).get(index))]
 			default: Collections.emptyList()
 		}
 	}

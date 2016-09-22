@@ -247,15 +247,6 @@ public interface AttributePackage extends EPackage {
 	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT;
 
 	/**
-	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -263,6 +254,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__NEW_VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Old Affected EObject</b></em>' reference.
@@ -283,6 +283,15 @@ public interface AttributePackage extends EPackage {
 	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT + 1;
 
 	/**
+	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -292,13 +301,22 @@ public interface AttributePackage extends EPackage {
 	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_OLD_VALUE;
 
 	/**
-	 * The operation id for the '<em>Get New Value</em>' operation.
+	 * The operation id for the '<em>Is From Non Default Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_NEW_VALUE;
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_FROM_NON_DEFAULT_VALUE;
+
+	/**
+	 * The operation id for the '<em>Is To Non Default Value</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int JAVA_REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE = tools.vitruv.framework.change.echange.feature.attribute.AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_TO_NON_DEFAULT_VALUE;
 
 	/**
 	 * The number of operations of the '<em>Java Replace Single Valued EAttribute</em>' class.

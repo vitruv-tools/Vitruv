@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import tools.vitruv.applications.jmljava.changesynchronizer.ChangeBuilder;
 import tools.vitruv.applications.jmljava.helper.Utilities;
-import tools.vitruv.framework.change.description.GeneralChange;
+import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.util.datatypes.Pair;
@@ -69,7 +69,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         Modifier newModifier = ModifiersFactory.eINSTANCE.createFinal();
         classifier.changed().getAnnotationsAndModifiers().add(0, newModifier);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newModifier, classifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newModifier, classifier.original());
 
         callSynchronizer(change);
 
@@ -85,7 +85,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         Field newField = helperCu.getClassifiers().get(0).getFields().get(0);
         classifier.changed().getMembers().add(0, newField);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newField, classifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newField, classifier.original());
 
         callSynchronizer(change);
 
@@ -103,7 +103,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         Method newMethod = helperCu.getClassifiers().get(0).getMethods().get(0);
         classifier.changed().getMembers().add(0, newMethod);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newMethod, classifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newMethod, classifier.original());
 
         callSynchronizer(change);
 
@@ -125,7 +125,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getAnnotationsAndModifiers().remove(0);
         Modifier removedModifier = classifier.original().getModifiers().get(0);
         
-        GeneralChange change = ChangeBuilder.createDeleteChange(removedModifier, classifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(removedModifier, classifier.changed());
 
         callSynchronizer(change);
         
@@ -140,7 +140,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getMembers().remove(0);
         Method removedMethod = classifier.original().getMethods().get(0);
 
-        EMFModelChange change = ChangeBuilder.createDeleteChange(removedMethod, classifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(removedMethod, classifier.changed());
 
         callSynchronizer(change);
         
@@ -155,7 +155,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getMembers().remove(1);
         Method removedMethod = classifier.original().getMethods().get(1);
 
-        EMFModelChange change = ChangeBuilder.createDeleteChange(removedMethod, classifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(removedMethod, classifier.changed());
 
         EObject expected = Utilities.clone(cuJML);
 
@@ -175,7 +175,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getMembers().get(5);
         Field removedField = classifier.original().getFields().get(1);
 
-        EMFModelChange change = ChangeBuilder.createDeleteChange(removedField, classifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(removedField, classifier.changed());
 
         callSynchronizer(change);
         
@@ -190,7 +190,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getMembers().get(4);
         Field removedField = classifier.original().getFields().get(0);
 
-        EMFModelChange change = ChangeBuilder.createDeleteChange(removedField, classifier.changed());
+        ConcreteChange change = ChangeBuilder.createDeleteChange(removedField, classifier.changed());
 
         EObject expected = Utilities.clone(cuJML);
 
@@ -212,7 +212,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         classifier.changed().getAnnotationsAndModifiers().remove(0);
         classifier.changed().getAnnotationsAndModifiers().add(0, newModifier);
 
-        EMFModelChange change = ChangeBuilder.createReplaceChangeInList(classifier.original(), classifier.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, oldModifier);
+        ConcreteChange change = ChangeBuilder.createReplaceChangeInList(classifier.original(), classifier.changed(), ModifiersPackage.eINSTANCE.getAnnotableAndModifiable_AnnotationsAndModifiers(), newModifier, oldModifier);
         
         callSynchronizer(change);
 
@@ -228,7 +228,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         Method newMethod = helperCu.getClassifiers().get(2).getMethods().get(0);
         classifier.changed().getMembers().add(0, newMethod);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newMethod, classifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newMethod, classifier.original());
 
         EObject expected = Utilities.clone(cuJML);
         
@@ -248,7 +248,7 @@ public class JavaClassTransformationsTest extends TransformationTestsBase {
         Field newField = helperCu.getClassifiers().get(2).getFields().get(0);
         classifier.changed().getMembers().add(0, newField);
 
-        EMFModelChange change = ChangeBuilder.createCreateChange(newField, classifier.original());
+        ConcreteChange change = ChangeBuilder.createCreateChange(newField, classifier.original());
 
         EObject expected = Utilities.clone(cuJML);
         

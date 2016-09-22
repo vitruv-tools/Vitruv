@@ -159,9 +159,7 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * @generated
 	 */
     public boolean isContainment() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return getAffectedFeature().isContainment();
 	}
 
     /**

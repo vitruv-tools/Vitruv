@@ -114,7 +114,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         this.vsum = new VSUMImpl(metaRepositoryImpl, metaRepositoryImpl);
         this.transformingProviding = new Change2CommandTransformingProvidingImpl();
         final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
-        		this.transformingProviding, this.vsum, this);
+        		this.transformingProviding, this.vsum);
+        changeSynchronizerImpl.addSynchronizationListener(this);
         this.changeSynchronizing = changeSynchronizerImpl;
         return this.vsum;
     }

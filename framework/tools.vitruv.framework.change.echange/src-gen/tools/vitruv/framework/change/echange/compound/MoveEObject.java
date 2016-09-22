@@ -2,12 +2,14 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
+import org.eclipse.emf.common.util.EList;
 import tools.vitruv.framework.change.echange.EObjectAddedEChange;
 import tools.vitruv.framework.change.echange.EObjectSubtractedEChange;
 
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 
 import org.eclipse.emf.ecore.EObject;
+import tools.vitruv.framework.change.echange.AtomicEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -132,5 +134,14 @@ public interface MoveEObject<A extends EObject, B extends EObject, T extends EOb
 	 * @generated
 	 */
 	void setAddWhatChange(EObjectAddedEChange<T> value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/emf/2002/GenModel body='org.eclipse.emf.common.util.BasicEList<AtomicEChange> list = new org.eclipse.emf.common.util.BasicEList<AtomicEChange>();\r\nUpdateReferenceEChange<A> subWhereChange = getSubtractWhereChange();\r\nif (subWhereChange != null) {\r\n    list.add(subWhereChange);\r\n}\r\nlist.add(getSubtractWhatChange());\r\nUpdateReferenceEChange<B> addWhereChange = getAddWhereChange();\r\nif (addWhereChange != null) {\r\n    list.add(addWhereChange);\r\n}\r\nlist.add(getAddWhatChange());\r\nreturn list;'"
+	 * @generated
+	 */
+	EList<AtomicEChange> getAtomicChanges();
 
 } // MoveEObject

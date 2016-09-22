@@ -17,7 +17,6 @@ import org.palladiosimulator.pcm.system.System;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 
 public class PackageMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
@@ -99,7 +98,7 @@ public class PackageMappingTransformationTest extends Java2PCMPackageMappingTran
         final Package renamedPackage = super.renamePackage(this.secondPackage, packageName);
 
         // EcoreResourceBridge.saveEObjectAsOnlyContent(secondPackage, );
-        TestUtil.waitForSynchronization();
+        //waitForSynchronization();
 
         final Set<EObject> correspondingEObjects = CorrespondenceModelUtil
                 .getCorrespondingEObjects(this.getCorrespondenceModel(), renamedPackage);

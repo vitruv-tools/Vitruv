@@ -1,16 +1,15 @@
 package tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.system;
 
-import static org.junit.Assert.fail;
-
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.Package;
-import org.junit.Assert;
 import org.junit.Test;
 import org.palladiosimulator.pcm.system.System;
 
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.PCM2JaMoPPTransformationTest;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
+import tools.vitruv.framework.util.datatypes.VURI;
 
 public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTest {
 
@@ -34,10 +33,16 @@ public class SystemMappingTransformationTest extends PCM2JaMoPPTransformationTes
 
     @Test
     public void testRemoveSystem() throws Throwable {
-        final System system = PCM2JaMoPPTestUtils.createSystem(this.resourceSet, PCM2JaMoPPTestUtils.SYSTEM_NAME,
-                this.currentTestProjectName);
-        Assert.assertNotNull(system);
-        fail("Not yet implemented");
+        final System system = super.createAndSyncSystem(PCM2JaMoPPTestUtils.SYSTEM_NAME);
+        this.assertSystem(system);
+        
+        VURI systemVuri = VURI.getInstance(system.eResource()); 
+        system.eResource().delete(null);
+        super.synchronizeFileChange(FileChangeKind.Delete, systemVuri);
+        
+        assertEmptyCorrespondence(system);
+        assertCompilationUnitForSystemDeleted(system);
+        // TODO There should may be more deletions here than only the system
     }
 
     /**

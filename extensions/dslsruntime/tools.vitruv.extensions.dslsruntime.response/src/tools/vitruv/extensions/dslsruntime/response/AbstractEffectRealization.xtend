@@ -23,11 +23,19 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	public new(ResponseExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.executionState = executionState;
-		this._responseElementStatesHandler = new ResponseElementStatesHandlerImpl(correspondenceModel);
+		this._responseElementStatesHandler = new ResponseElementStatesHandlerImpl(correspondenceModel, transformationResult);
 	}
 	
 	protected def ResponseExecutionState getExecutionState() {
 		return executionState;
+	}
+	
+	protected def UserInteracting getUserInteracting() {
+		return executionState.userInteracting;
+	}
+	
+	protected def CorrespondenceModel getCorrespondenceModel() {
+		return executionState.correspondenceModel;
 	}
 	
 	protected def <T extends EObject> getCorrespondingElement(EObject correspondenceSource, Class<T> elementClass, 
