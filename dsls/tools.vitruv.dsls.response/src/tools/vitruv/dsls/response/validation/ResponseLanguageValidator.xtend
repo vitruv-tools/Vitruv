@@ -76,5 +76,21 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 				ResponseLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 		}
 	}
+	
+	@Check
+	def checkRoutine(Routine routine) {
+		if (!Character.isLowerCase(routine.name.charAt(0))) {
+			warning("Routine names should start lower case",
+				ResponseLanguagePackage.Literals.ROUTINE__NAME);
+		}
+	}
+	
+	@Check
+	def checkRoutine(Response response) {
+		if (!Character.isUpperCase(response.name.charAt(0))) {
+			warning("Response names should start upper case",
+				ResponseLanguagePackage.Literals.RESPONSE__NAME);
+		}
+	}
 
 }
