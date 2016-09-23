@@ -78,10 +78,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ATOMIC_MULTI_VALUED_FEATURE_CHANGE: return createAtomicMultiValuedFeatureChange();
       case ResponseLanguagePackage.ATOMIC_SINGLE_VALUED_FEATURE_CHANGE: return createAtomicSingleValuedFeatureChange();
       case ResponseLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE: return createArbitraryModelElementChange();
-      case ResponseLanguagePackage.MATCHING: return createMatching();
-      case ResponseLanguagePackage.EFFECT: return createEffect();
       case ResponseLanguagePackage.ROUTINE: return createRoutine();
       case ResponseLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
+      case ResponseLanguagePackage.MATCHING: return createMatching();
+      case ResponseLanguagePackage.EFFECT: return createEffect();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
@@ -254,28 +254,6 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public Matching createMatching()
-  {
-    MatchingImpl matching = new MatchingImpl();
-    return matching;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Effect createEffect()
-  {
-    EffectImpl effect = new EffectImpl();
-    return effect;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public Routine createRoutine()
   {
     RoutineImpl routine = new RoutineImpl();
@@ -291,6 +269,28 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     RoutineInputImpl routineInput = new RoutineInputImpl();
     return routineInput;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Matching createMatching()
+  {
+    MatchingImpl matching = new MatchingImpl();
+    return matching;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Effect createEffect()
+  {
+    EffectImpl effect = new EffectImpl();
+    return effect;
   }
 
   /**

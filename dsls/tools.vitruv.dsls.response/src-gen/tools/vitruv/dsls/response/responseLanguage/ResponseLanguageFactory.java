@@ -141,24 +141,6 @@ public interface ResponseLanguageFactory extends EFactory
   ArbitraryModelElementChange createArbitraryModelElementChange();
 
   /**
-   * Returns a new object of class '<em>Matching</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Matching</em>'.
-   * @generated
-   */
-  Matching createMatching();
-
-  /**
-   * Returns a new object of class '<em>Effect</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Effect</em>'.
-   * @generated
-   */
-  Effect createEffect();
-
-  /**
    * Returns a new object of class '<em>Routine</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -175,6 +157,24 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   RoutineInput createRoutineInput();
+
+  /**
+   * Returns a new object of class '<em>Matching</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Matching</em>'.
+   * @generated
+   */
+  Matching createMatching();
+
+  /**
+   * Returns a new object of class '<em>Effect</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Effect</em>'.
+   * @generated
+   */
+  Effect createEffect();
 
   /**
    * Returns a new object of class '<em>Taggable</em>'.

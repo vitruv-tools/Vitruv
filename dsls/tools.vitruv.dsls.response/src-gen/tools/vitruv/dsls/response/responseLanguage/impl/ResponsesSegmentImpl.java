@@ -34,9 +34,9 @@ import tools.vitruv.dsls.response.responseLanguage.Routine;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getFromMetamodel <em>From Metamodel</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getToMetamodel <em>To Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getResponses <em>Responses</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getRoutines <em>Routines</em>}</li>
  * </ul>
@@ -45,26 +45,6 @@ import tools.vitruv.dsls.response.responseLanguage.Routine;
  */
 public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implements ResponsesSegment
 {
-  /**
-   * The cached value of the '{@link #getFromMetamodel() <em>From Metamodel</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFromMetamodel()
-   * @generated
-   * @ordered
-   */
-  protected MetamodelReference fromMetamodel;
-
-  /**
-   * The cached value of the '{@link #getToMetamodel() <em>To Metamodel</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getToMetamodel()
-   * @generated
-   * @ordered
-   */
-  protected MetamodelReference toMetamodel;
-
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -84,6 +64,26 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getFromMetamodel() <em>From Metamodel</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFromMetamodel()
+   * @generated
+   * @ordered
+   */
+  protected MetamodelReference fromMetamodel;
+
+  /**
+   * The cached value of the '{@link #getToMetamodel() <em>To Metamodel</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getToMetamodel()
+   * @generated
+   * @ordered
+   */
+  protected MetamodelReference toMetamodel;
 
   /**
    * The cached value of the '{@link #getResponses() <em>Responses</em>}' containment reference list.
@@ -124,6 +124,29 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   protected EClass eStaticClass()
   {
     return ResponseLanguagePackage.Literals.RESPONSES_SEGMENT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__NAME, oldName, name));
   }
 
   /**
@@ -227,29 +250,6 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getName()
-  {
-    return name;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setName(String newName)
-  {
-    String oldName = name;
-    name = newName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__NAME, oldName, name));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EList<Response> getResponses()
   {
     if (responses == null)
@@ -324,12 +324,12 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+        return getName();
       case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
         return getFromMetamodel();
       case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
         return getToMetamodel();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
-        return getName();
       case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
         return getResponses();
       case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
@@ -349,14 +349,14 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+        setName((String)newValue);
+        return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
         setFromMetamodel((MetamodelReference)newValue);
         return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
         setToMetamodel((MetamodelReference)newValue);
-        return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
-        setName((String)newValue);
         return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
         getResponses().clear();
@@ -380,14 +380,14 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
         setFromMetamodel((MetamodelReference)null);
         return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
         setToMetamodel((MetamodelReference)null);
-        return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
-        setName(NAME_EDEFAULT);
         return;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
         getResponses().clear();
@@ -409,12 +409,12 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
         return fromMetamodel != null;
       case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
         return toMetamodel != null;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
         return responses != null && !responses.isEmpty();
       case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:

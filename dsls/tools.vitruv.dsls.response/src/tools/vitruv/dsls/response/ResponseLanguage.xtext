@@ -13,16 +13,18 @@ ResponseFile:
 	(responsesSegments+=ResponsesSegment)+;
 	
 ResponsesSegment:
-	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
-	'called' name=ValidID
+	'response collection:' name=ValidID
+	'from metamodel' fromMetamodel=MetamodelReference 
+	'to metamodel' toMetamodel=MetamodelReference
 	(responses+=Response |
 		routines+=Routine)*;
 
 Response:
 	(documentation=ML_COMMENT)?
-	'response:' name=ValidID
-	trigger=Trigger
-	callRoutine=RoutineCallBlock;
+	'response:' name=ValidID '{'
+		trigger=Trigger
+		callRoutine=RoutineCallBlock
+	'}';
 
 // ****** TRIGGER ******
 
@@ -30,8 +32,9 @@ InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	'trigger:' (ModelChange | InvariantViolationEvent)
-	('check:' precondition=PreconditionCodeBlock)?;
+	// TODO HK Extend this by "before" executing the transformation before applying the change
+	'after' (ModelChange | InvariantViolationEvent)
+	('with' precondition=PreconditionCodeBlock)?;
 
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
@@ -43,8 +46,8 @@ AtomicConcreteModelElementChange:
 	AtomicRootObjectChange | AtomicFeatureChange;
 
 AtomicRootObjectChange:
-	('created root' {InsertRootChange} |
-	'deleted root' {RemoveRootChange})
+	('root created' {InsertRootChange} |
+	'root deleted' {RemoveRootChange})
 	changedElement=ModelElement;
 
 AtomicFeatureChange:
@@ -52,13 +55,13 @@ AtomicFeatureChange:
 	changedFeature=FeatureOfElement;
 
 AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
-	'inserted into list' {MultiValuedFeatureInsertChange} |
-	'removed from list' {MultiValuedFeatureRemoveChange} |
-	'permuted list' {MultiValuedFeaturePermuteChange};
+	'list entry inserted' {MultiValuedFeatureInsertChange} |
+	'list entry removed' {MultiValuedFeatureRemoveChange} |
+	'list permuted' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	'replaced value' {SingleValuedFeatureReplace};
+	'value replaced' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	{ArbitraryModelElementChange} 'any change';
@@ -67,31 +70,34 @@ ArbitraryModelElementChange:
 
 // ****** EFFECTS ******
 
-Matching:
-	{Matching}
-	'match:'
-	retrievedElements+=RetrieveModelElement*
-	('check:' condition=PreconditionCodeBlock)?;
-
-Effect:
-	{Effect}
-	'effect:'
-	(elementCreation += CreateElement |
-		elementDeletion += DeleteElement |
-		correspondenceCreation += CreateCorrespondence | 
-		correspondenceDeletion += RemoveCorrespondence)*
-	('execute:' codeBlock=ExecutionCodeBlock)?
-	callRoutine=RoutineCallBlock?;
-
 Routine:
-	'routine:' name=ValidID '('	input=RoutineInput ')'
-	matching=Matching?
-	effect=Effect;
+	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
+		matching=Matching?
+		effect=Effect
+	'}';
 
 RoutineInput:
 	{RoutineInput}
-	 ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)?;
+	 ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)?;
+
+Matching:
+	{Matching}
+	'match' '{'
+		retrievedElements+=RetrieveModelElement*
+		('check' condition=PreconditionCodeBlock)?
+	'}';
+
+Effect:
+	{Effect}
+	'effect' '{'
+		(elementCreation += CreateElement |
+			elementDeletion += DeleteElement |
+			correspondenceCreation += CreateCorrespondence | 
+			correspondenceDeletion += RemoveCorrespondence)*
+		('execute' codeBlock=ExecutionCodeBlock)?
+		callRoutine=RoutineCallBlock?
+	'}';
 	
 // ****** CORRESPONDENCE SPECIFICATION ******	
 
@@ -99,7 +105,7 @@ fragment Taggable:
 	tag=TagCodeBlock;
 
 RetrieveModelElement:
-	(required?='retrieve required element:' | optional?='retrieve optional element:' | abscence?='require absence of element:') 
+	(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
 	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
@@ -107,17 +113,17 @@ ExistingElementReference:
 	CodeBlock;
 
 CreateElement:
-	"create element:" element=NamedModelElement;
+	"create element" element=NamedModelElement;
 	
 DeleteElement:
-	"delete element:" element=ExistingElementReference;
+	"delete element" element=ExistingElementReference;
 
 CreateCorrespondence:
-	"add correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference
+	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 	('tag with' Taggable)?;
 	
 RemoveCorrespondence:
-	"remove correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
+	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
 
 
 // ****** CODE BLOCKS ******

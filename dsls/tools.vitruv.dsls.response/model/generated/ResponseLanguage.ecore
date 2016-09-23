@@ -9,11 +9,11 @@
         eType="#//ResponsesSegment" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResponsesSegment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fromMetamodel" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toMetamodel" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="responses" upperBound="-1"
         eType="#//Response" containment="true" eOpposite="#//Response/responsesSegment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="routines" upperBound="-1"
@@ -50,6 +50,25 @@
   <eClassifiers xsi:type="ecore:EClass" name="AtomicMultiValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtomicSingleValuedFeatureChange" eSuperTypes="#//AtomicFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="ArbitraryModelElementChange" eSuperTypes="#//ModelChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Routine">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//RoutineInput"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matching" eType="#//Matching"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
+        eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/routines"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineInput">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelInputElements" upperBound="-1"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaInputElements" upperBound="-1"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedJavaElement"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Matching">
     <eStructuralFeatures xsi:type="ecore:EReference" name="retrievedElements" upperBound="-1"
         eType="#//RetrieveModelElement" containment="true"/>
@@ -68,25 +87,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="codeBlock" eType="#//ExecutionCodeBlock"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Routine">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//RoutineInput"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="matching" eType="#//Matching"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
-        eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/routines"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineInput">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="modelInputElements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="javaInputElements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedJavaElement"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Taggable">

@@ -1,109 +1,110 @@
-'!'=80
-'!='=64
-'!=='=66
-'#'=86
-'%'=79
-'%='=57
-'&&'=62
-'&'=118
-'('=31
-')'=32
-'*'=76
-'**'=77
-'*='=55
-'+'=74
-'++'=81
-'+='=53
-','=34
-'-'=75
-'--'=82
-'-='=54
-'->'=68
-'.'=83
-'..'=70
-'..<'=69
-'/'=78
-'/='=56
-':'=94
-'::'=84
-';'=90
-'<'=58
-'<>'=72
-'='=52
-'=='=63
-'==='=65
-'=>'=71
-'>'=59
-'>='=60
-'?'=117
-'?.'=85
-'?:'=73
-'['=50
-']'=51
-'add correspondence:'=43
-'any change'=26
-'as'=48
-'call'=46
-'called'=15
-'case'=96
-'catch'=116
-'check:'=19
-'corresponding to'=38
-'create element:'=41
-'created root'=20
-'default'=95
-'delete element:'=42
-'deleted root'=21
-'do'=99
-'effect:'=28
-'else'=92
-'execute:'=29
-'extends'=102
-'extension'=104
-'false'=107
-'finally'=114
-'for'=97
-'if'=91
-'import'=47
-'inserted into list'=22
-'instanceof'=67
-'invariant'=17
-'match:'=27
-'new'=106
-'null'=109
-'permuted list'=24
-'plain:'=33
-'remove correspondence:'=45
-'removed from list'=23
-'replaced value'=25
-'require absence of element:'=37
+'!'=83
+'!='=67
+'!=='=69
+'#'=89
+'%'=82
+'%='=60
+'&&'=65
+'&'=119
+'('=30
+')'=31
+'*'=79
+'**'=80
+'*='=58
+'+'=77
+'++'=84
+'+='=56
+','=33
+'-'=78
+'--'=85
+'-='=57
+'->'=71
+'.'=86
+'..'=73
+'..<'=72
+'/'=81
+'/='=59
+':'=95
+'::'=87
+';'=91
+'<'=61
+'<>'=75
+'='=55
+'=='=66
+'==='=68
+'=>'=74
+'>'=62
+'>='=63
+'?'=118
+'?.'=88
+'?:'=76
+'['=53
+']'=54
+'add correspondence between'=45
+'after'=20
+'and'=46
+'any change'=28
+'as'=51
+'call'=49
+'case'=97
+'catch'=117
+'check'=35
+'corresponding to'=41
+'create element'=43
+'default'=96
+'delete element'=44
+'do'=100
+'effect'=36
+'else'=93
+'execute'=37
+'extends'=103
+'extension'=105
+'false'=108
+'finally'=115
+'for'=98
+'from metamodel'=14
+'if'=92
+'import'=50
+'instanceof'=70
+'invariant'=19
+'list entry inserted'=24
+'list entry removed'=25
+'list permuted'=26
+'match'=34
+'new'=107
+'null'=110
+'plain'=32
+'remove correspondence'=48
+'require absence of element'=40
+'response collection:'=13
 'response:'=16
-'responses from metamodel'=13
-'retrieve optional element:'=36
-'retrieve required element:'=35
-'return'=112
-'routine:'=30
-'static'=103
-'super'=105
-'switch'=93
-'synchronized'=115
-'tag with'=44
-'tagged with'=39
-'throw'=111
-'to metamodel'=14
-'trigger:'=18
-'true'=108
-'try'=113
-'typeof'=110
-'using simple names'=49
-'val'=101
-'var'=100
-'while'=98
-'with'=40
-'{'=87
-'|'=89
-'||'=61
-'}'=88
+'retrieve optional element'=39
+'retrieve required element'=38
+'return'=113
+'root created'=22
+'root deleted'=23
+'routine:'=29
+'static'=104
+'super'=106
+'switch'=94
+'synchronized'=116
+'tag with'=47
+'tagged with'=42
+'throw'=112
+'to metamodel'=15
+'true'=109
+'try'=114
+'typeof'=111
+'using simple names'=52
+'val'=102
+'value replaced'=27
+'var'=101
+'while'=99
+'with'=21
+'{'=17
+'|'=90
+'||'=64
+'}'=18
 RULE_ANY_OTHER=12
 RULE_DECIMAL=9
 RULE_HEX=7
@@ -132,6 +133,7 @@ T__115=115
 T__116=116
 T__117=117
 T__118=118
+T__119=119
 T__13=13
 T__14=14
 T__15=15

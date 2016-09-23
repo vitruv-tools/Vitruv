@@ -18,9 +18,9 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getFromMetamodel <em>From Metamodel</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getToMetamodel <em>To Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses <em>Responses</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines <em>Routines</em>}</li>
  * </ul>
@@ -31,6 +31,32 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
  */
 public interface ResponsesSegment extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
   /**
    * Returns the value of the '<em><b>From Metamodel</b></em>' containment reference.
    * <!-- begin-user-doc -->
@@ -82,32 +108,6 @@ public interface ResponsesSegment extends EObject
    * @generated
    */
   void setToMetamodel(MetamodelReference value);
-
-  /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Name</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Name()
-   * @model
-   * @generated
-   */
-  String getName();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
-   * @generated
-   */
-  void setName(String value);
 
   /**
    * Returns the value of the '<em><b>Responses</b></em>' containment reference list.

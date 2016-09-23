@@ -194,20 +194,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.MATCHING:
-      {
-        Matching matching = (Matching)theEObject;
-        T result = caseMatching(matching);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.EFFECT:
-      {
-        Effect effect = (Effect)theEObject;
-        T result = caseEffect(effect);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case ResponseLanguagePackage.ROUTINE:
       {
         Routine routine = (Routine)theEObject;
@@ -219,6 +205,20 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
       {
         RoutineInput routineInput = (RoutineInput)theEObject;
         T result = caseRoutineInput(routineInput);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.MATCHING:
+      {
+        Matching matching = (Matching)theEObject;
+        T result = caseMatching(matching);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.EFFECT:
+      {
+        Effect effect = (Effect)theEObject;
+        T result = caseEffect(effect);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -610,38 +610,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Matching</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Matching</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseMatching(Matching object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Effect</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Effect</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEffect(Effect object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Routine</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -669,6 +637,38 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRoutineInput(RoutineInput object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Matching</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Matching</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMatching(Matching object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Effect</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Effect</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseEffect(Effect object)
   {
     return null;
   }

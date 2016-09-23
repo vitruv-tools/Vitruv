@@ -1094,7 +1094,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     ResponsesSegment returns ResponsesSegment
 	 *
 	 * Constraint:
-	 *     (fromMetamodel=MetamodelReference toMetamodel=MetamodelReference name=ValidID (responses+=Response | routines+=Routine)*)
+	 *     (name=ValidID fromMetamodel=MetamodelReference toMetamodel=MetamodelReference (responses+=Response | routines+=Routine)*)
 	 */
 	protected void sequence_ResponsesSegment(ISerializationContext context, ResponsesSegment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1107,7 +1107,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *
 	 * Constraint:
 	 *     (
-	 *         (required?='retrieve required element:' | optional?='retrieve optional element:' | abscence?='require absence of element:') 
+	 *         (required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
 	 *         element=NamedModelElement 
 	 *         correspondenceSource=CorrespondingObjectCodeBlock 
 	 *         tag=TagCodeBlock? 
