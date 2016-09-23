@@ -195,10 +195,10 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
 		//ClassicallyNamedModelElement ModelElement:
-		//	element=[ecore::EClass|QualifiedName] name=ValidID?
+		//	element=[ecore::EClass|QualifiedName] name=ValidID
 		@Override public ParserRule getRule() { return rule; }
 		
-		//element=[ecore::EClass|QualifiedName] name=ValidID?
+		//element=[ecore::EClass|QualifiedName] name=ValidID
 		public Group getGroup() { return cGroup; }
 		
 		//element=[ecore::EClass|QualifiedName]
@@ -210,7 +210,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getElementEClassQualifiedNameParserRuleCall_0_0_1() { return cElementEClassQualifiedNameParserRuleCall_0_0_1; }
 		
-		//name=ValidID?
+		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
 		
 		//ValidID
@@ -416,7 +416,7 @@ public class MirBaseGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ClassicallyNamedModelElement ModelElement:
-	//	element=[ecore::EClass|QualifiedName] name=ValidID?
+	//	element=[ecore::EClass|QualifiedName] name=ValidID
 	public ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
 		return pClassicallyNamedModelElement;
 	}

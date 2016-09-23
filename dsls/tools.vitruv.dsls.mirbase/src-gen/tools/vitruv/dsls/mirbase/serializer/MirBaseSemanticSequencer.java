@@ -360,10 +360,19 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	 *     ClassicallyNamedModelElement returns ModelElement
 	 *
 	 * Constraint:
-	 *     (element=[EClass|QualifiedName] name=ValidID?)
+	 *     (element=[EClass|QualifiedName] name=ValidID)
 	 */
 	protected void sequence_ClassicallyNamedModelElement(ISerializationContext context, ModelElement semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT));
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__NAME));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getClassicallyNamedModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_0_1(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getClassicallyNamedModelElementAccess().getNameValidIDParserRuleCall_1_0(), semanticObject.getName());
+		feeder.finish();
 	}
 	
 	
