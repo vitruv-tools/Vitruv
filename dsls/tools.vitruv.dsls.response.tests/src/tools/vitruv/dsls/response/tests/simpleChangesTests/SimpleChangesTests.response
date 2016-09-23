@@ -292,15 +292,6 @@ routine: removeNonContainmentReference(minimal.Root root, minimal.NonRoot remove
 //}
 
 
-/*
- * Creates the model for comparing the "TestModelSource", created in each test, with.
- */
-response: HelperResponseForCreateSecondTestModel {
-	after root created minimal.Root
-		with change.newValue.id == "EachTestModelSource"
-	call createRoot(change.newValue)
-}
-
 routine: createRoot(minimal.Root root) {
 	effect {
 		create element minimal.Root as newRoot
@@ -310,12 +301,6 @@ routine: createRoot(minimal.Root root) {
 			persistProjectRelative(root, newRoot, "model/" + root.id.replace("Source", "Target"));
 		}
 	}
-}
-
-response: HelperResponseForDeleteSecondTestModel {
-	after root deleted minimal.Root
-		with change.oldValue.id == "EachTestModelSource"
-	call deleteRoot(change.oldValue)
 }
 
 routine: deleteRoot(minimal.Root root) {
@@ -332,20 +317,13 @@ routine: deleteRoot(minimal.Root root) {
  */
 response: CreateRootTest {
 	after root created minimal.Root
-		with change.newValue.id == "Further_Source_Test_Model"
 	call createRoot(change.newValue)
 }
 
 response: DeleteRootTest {
 	after root deleted minimal.Root
-		with change.oldValue.id == "Further_Source_Test_Model"
 	call deleteRoot(change.oldValue)
 }
-
-//response: DuplicateRootDelete
-//after remove root minimal.Root
-//delete element oldModel of type minimal.Root corresponding to change.oldValue
-
 
 /**
  * Initializes the nonRootObjectContainer for second model

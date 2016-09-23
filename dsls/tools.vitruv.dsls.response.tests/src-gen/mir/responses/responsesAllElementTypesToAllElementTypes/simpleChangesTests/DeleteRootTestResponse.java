@@ -1,7 +1,6 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.Root;
-import com.google.common.base.Objects;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -17,13 +16,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 class DeleteRootTestResponse extends AbstractResponseRealization {
   public DeleteRootTestResponse(final UserInteracting userInteracting) {
     super(userInteracting);
-  }
-  
-  private boolean checkTriggerPrecondition(final RemoveRootEObject<Root> change) {
-    Root _oldValue = change.getOldValue();
-    String _id = _oldValue.getId();
-    boolean _equals = Objects.equal(_id, "Further_Source_Test_Model");
-    return _equals;
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -46,9 +38,6 @@ class DeleteRootTestResponse extends AbstractResponseRealization {
     }
     RemoveRootEObject typedChange = (RemoveRootEObject)change;
     if (!checkChangeProperties(typedChange)) {
-    	return false;
-    }
-    if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
