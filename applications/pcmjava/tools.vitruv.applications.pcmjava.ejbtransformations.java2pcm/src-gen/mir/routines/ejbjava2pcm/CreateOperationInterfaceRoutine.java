@@ -29,8 +29,6 @@ public class CreateOperationInterfaceRoutine extends AbstractRepairRoutineRealiz
     }
     
     public void update0Element(final Repository repo, final NamedElement namedElement, final OperationInterface operationInterface) {
-      String _name = namedElement.getName();
-      operationInterface.setEntityName(_name);
       EList<Interface> _interfaces__Repository = repo.getInterfaces__Repository();
       _interfaces__Repository.add(operationInterface);
     }
@@ -41,6 +39,11 @@ public class CreateOperationInterfaceRoutine extends AbstractRepairRoutineRealiz
     
     public EObject getElement3(final Repository repo, final NamedElement namedElement, final OperationInterface operationInterface) {
       return operationInterface;
+    }
+    
+    public void updateOperationInterfaceElement(final Repository repo, final NamedElement namedElement, final OperationInterface operationInterface) {
+      String _name = namedElement.getName();
+      operationInterface.setEntityName(_name);
     }
   }
   
@@ -62,6 +65,7 @@ public class CreateOperationInterfaceRoutine extends AbstractRepairRoutineRealiz
     
     OperationInterface operationInterface = RepositoryFactoryImpl.eINSTANCE.createOperationInterface();
     initializeCreateElementState(operationInterface);
+    userExecution.updateOperationInterfaceElement(repo, namedElement, operationInterface);
     
     addCorrespondenceBetween(userExecution.getElement1(repo, namedElement, operationInterface), userExecution.getElement2(repo, namedElement, operationInterface), "");
     

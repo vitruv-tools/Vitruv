@@ -9,7 +9,6 @@ import static extension tools.vitruv.applications.pcmjava.ejbtransformations.jav
 import org.emftext.language.java.members.ClassMethod
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper
 import org.palladiosimulator.pcm.repository.Repository
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import java.util.Collections
 import org.palladiosimulator.pcm.repository.OperationInterface
 import org.palladiosimulator.pcm.repository.OperationSignature
@@ -29,15 +28,15 @@ response: CreatedFirstPackage {
 }
 
 routine: createRepositoryForFirstPackage(java.Package javaPackage) {
+	match {
+		check EJBJava2PcmHelper.findRepository(correspondenceModel) == null
+	}
 	effect {
-		call {
-			if (null == EJBJava2PcmHelper.findRepository(correspondenceModel)){
-				val Repository repository = RepositoryFactory.eINSTANCE.createRepository
-				repository.setEntityName(javaPackage.name)
-				persistProjectRelative(javaPackage, repository, "model/" + repository.entityName + ".repository")
-				correspondenceModel.createAndAddCorrespondence(Collections.singletonList(repository), Collections.singletonList(javaPackage))
-			}		
+		create element pcm.Repository as repository initialized as {
+			repository.setEntityName(javaPackage.name)
+			persistProjectRelative(javaPackage, repository, "model/" + repository.entityName + ".repository")
 		}
+		add correspondence between repository and javaPackage
 	}
 }
 
@@ -64,10 +63,11 @@ response: CreateClassAnnotation {
 
 routine: createBasicComponent(pcm.Repository repo, java.NamedElement namedElement) {
 	effect {
-		create element pcm.BasicComponent as basicComponent
-		add correspondence between basicComponent and namedElement
-		update element basicComponent {
+		create element pcm.BasicComponent as basicComponent initialized as {
 			basicComponent.entityName = namedElement.name;
+		}
+		add correspondence between basicComponent and namedElement
+		update element repo {
 			repo.components__Repository.add(basicComponent);		
 		}
 	}
@@ -96,10 +96,11 @@ response: CreateInterfaceAnnotation {
 
 routine: createOperationInterface(pcm.Repository repo, java.NamedElement namedElement) {
 	effect { 
-		create element pcm.OperationInterface as operationInterface
+		create element pcm.OperationInterface as operationInterface initialized as {
+			operationInterface.entityName = namedElement.name;
+		}
 		add correspondence between operationInterface and namedElement
 		update element operationInterface {
-			operationInterface.entityName = namedElement.name;
 			repo.interfaces__Repository.add(operationInterface);		
 		}
 	}
@@ -150,13 +151,12 @@ routine: createdField(java.Field field) {
 
 routine: createOperationRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInterface opInterface, java.Field field) {
 	effect { 
-		create element pcm.OperationRequiredRole as orr
-		add correspondence between orr and field 
-		update element orr  {
+		create element pcm.OperationRequiredRole as orr initialized as {
 			orr.requiringEntity_RequiredRole = basicComponent
 			orr.requiredInterface__OperationRequiredRole = opInterface
-			orr.entityName = basicComponent.entityName + "_requires_" + opInterface.entityName	
+			orr.entityName = basicComponent.entityName + "_requires_" + opInterface.entityName
 		}
+		add correspondence between orr and field 
 	}
 }
 
@@ -237,17 +237,16 @@ routine: createdParameterInInterfaceMethod(java.InterfaceMethod method, java.Par
 
 routine: createPCMParameter(java.Parameter jaMoPPParam, pcm.OperationSignature opSignature) {
 	effect {
-		create element pcm.Parameter as pcmParameter
-		//add correspondence: pcmParameter, jaMoPPParam
-		update element pcmParameter {
+		create element pcm.Parameter as pcmParameter initialized as {
 			pcmParameter.entityName = jaMoPPParam.name
 			pcmParameter.parameterName = jaMoPPParam.name
 			pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, 
 				correspondenceModel, userInteracting, opSignature.interface__OperationSignature.repository__Interface, jaMoPPParam.arrayDimension)
-			opSignature.parameters__OperationSignature.add(pcmParameter)
-			//add correspondence here, because otherwise TUID calculation may be fail since type and name are null
-			correspondenceModel.createAndAddCorrespondence(Collections.singletonList(pcmParameter), Collections.singletonList(jaMoPPParam))
 		}
+		update element opSignature {
+			opSignature.parameters__OperationSignature.add(pcmParameter)
+		}
+		add correspondence between pcmParameter and jaMoPPParam
 	}
 }
 	
@@ -269,7 +268,7 @@ routine: createdReturnType(java.InterfaceMethod method, java.TypeReference type)
 
 routine: createPCMReturnType(java.TypeReference returnType, pcm.OperationSignature opSignature, java.Method javaMethod) {
 	effect {
-		call {
+		update element opSignature {
 			val pcmDataType = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(returnType, correspondenceModel, userInteracting, 
 					opSignature.interface__OperationSignature.repository__Interface, javaMethod.arrayDimension
 			)
@@ -291,13 +290,14 @@ routine: createdFieldInDatatypeClass(java.Class clazz, java.Field field) {
 		retrieve required element pcm.CompositeDataType as compositeDataType corresponding to clazz
 	}
 	effect {
-		create element pcm.InnerDeclaration as innerDec
-		add correspondence between innerDec and field
-		update element innerDec {
+		create element pcm.InnerDeclaration as innerDec initialized as {
 			innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceModel,
 						userInteracting, compositeDataType.repository__DataType, field.arrayDimension)
 			innerDec.entityName = field.name
+		}
+		add correspondence between innerDec and field
+		update element compositeDataType {
 			compositeDataType.innerDeclaration_CompositeDataType.add(innerDec)
 		}
 	}
@@ -332,10 +332,11 @@ routine: createdClassMethodInEJBClass(java.Class clazz, java.ClassMethod classMe
 
 routine: createSEFFForClassMethod(pcm.BasicComponent basicComponent, pcm.OperationSignature opSignature, java.ClassMethod classMethod) {
 	effect {
-		create element pcm.ResourceDemandingSEFF as seff
-		add correspondence between seff and classMethod
-		update element seff {
+		create element pcm.ResourceDemandingSEFF as seff initialized as {
 			seff.describedService__SEFF = opSignature
+		}
+		add correspondence between seff and classMethod
+		update element basicComponent {
 			basicComponent.serviceEffectSpecifications__BasicComponent.add(seff)
 		}	
 	}

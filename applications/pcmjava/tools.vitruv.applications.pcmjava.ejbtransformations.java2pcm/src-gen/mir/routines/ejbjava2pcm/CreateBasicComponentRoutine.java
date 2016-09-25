@@ -29,10 +29,13 @@ public class CreateBasicComponentRoutine extends AbstractRepairRoutineRealizatio
     }
     
     public void update0Element(final Repository repo, final NamedElement namedElement, final BasicComponent basicComponent) {
-      String _name = namedElement.getName();
-      basicComponent.setEntityName(_name);
       EList<RepositoryComponent> _components__Repository = repo.getComponents__Repository();
       _components__Repository.add(basicComponent);
+    }
+    
+    public void updateBasicComponentElement(final Repository repo, final NamedElement namedElement, final BasicComponent basicComponent) {
+      String _name = namedElement.getName();
+      basicComponent.setEntityName(_name);
     }
     
     public EObject getElement2(final Repository repo, final NamedElement namedElement, final BasicComponent basicComponent) {
@@ -40,7 +43,7 @@ public class CreateBasicComponentRoutine extends AbstractRepairRoutineRealizatio
     }
     
     public EObject getElement3(final Repository repo, final NamedElement namedElement, final BasicComponent basicComponent) {
-      return basicComponent;
+      return repo;
     }
   }
   
@@ -62,6 +65,7 @@ public class CreateBasicComponentRoutine extends AbstractRepairRoutineRealizatio
     
     BasicComponent basicComponent = RepositoryFactoryImpl.eINSTANCE.createBasicComponent();
     initializeCreateElementState(basicComponent);
+    userExecution.updateBasicComponentElement(repo, namedElement, basicComponent);
     
     addCorrespondenceBetween(userExecution.getElement1(repo, namedElement, basicComponent), userExecution.getElement2(repo, namedElement, basicComponent), "");
     

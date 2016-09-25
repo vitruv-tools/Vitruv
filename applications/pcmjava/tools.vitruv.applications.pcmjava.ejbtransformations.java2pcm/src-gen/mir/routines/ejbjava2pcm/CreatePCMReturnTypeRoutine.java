@@ -2,7 +2,7 @@ package mir.routines.ejbjava2pcm;
 
 import java.io.IOException;
 import mir.routines.ejbjava2pcm.RoutinesFacade;
-import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.members.Method;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.DataType;
@@ -25,7 +25,11 @@ public class CreatePCMReturnTypeRoutine extends AbstractRepairRoutineRealization
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final TypeReference returnType, final OperationSignature opSignature, final Method javaMethod, @Extension final RoutinesFacade _routinesFacade) {
+    public EObject getElement1(final TypeReference returnType, final OperationSignature opSignature, final Method javaMethod) {
+      return opSignature;
+    }
+    
+    public void update0Element(final TypeReference returnType, final OperationSignature opSignature, final Method javaMethod) {
       OperationInterface _interface__OperationSignature = opSignature.getInterface__OperationSignature();
       Repository _repository__Interface = _interface__OperationSignature.getRepository__Interface();
       long _arrayDimension = javaMethod.getArrayDimension();
@@ -53,7 +57,8 @@ public class CreatePCMReturnTypeRoutine extends AbstractRepairRoutineRealization
     getLogger().debug("   OperationSignature: " + this.opSignature);
     getLogger().debug("   Method: " + this.javaMethod);
     
-    userExecution.callRoutine1(returnType, opSignature, javaMethod, effectFacade);
+    // val updatedElement userExecution.getElement1(returnType, opSignature, javaMethod);
+    userExecution.update0Element(returnType, opSignature, javaMethod);
     
     postprocessElementStates();
   }

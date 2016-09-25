@@ -30,7 +30,6 @@ public class CreateSEFFForClassMethodRoutine extends AbstractRepairRoutineRealiz
     }
     
     public void update0Element(final BasicComponent basicComponent, final OperationSignature opSignature, final ClassMethod classMethod, final ResourceDemandingSEFF seff) {
-      seff.setDescribedService__SEFF(opSignature);
       EList<ServiceEffectSpecification> _serviceEffectSpecifications__BasicComponent = basicComponent.getServiceEffectSpecifications__BasicComponent();
       _serviceEffectSpecifications__BasicComponent.add(seff);
     }
@@ -40,7 +39,11 @@ public class CreateSEFFForClassMethodRoutine extends AbstractRepairRoutineRealiz
     }
     
     public EObject getElement3(final BasicComponent basicComponent, final OperationSignature opSignature, final ClassMethod classMethod, final ResourceDemandingSEFF seff) {
-      return seff;
+      return basicComponent;
+    }
+    
+    public void updateSeffElement(final BasicComponent basicComponent, final OperationSignature opSignature, final ClassMethod classMethod, final ResourceDemandingSEFF seff) {
+      seff.setDescribedService__SEFF(opSignature);
     }
   }
   
@@ -65,6 +68,7 @@ public class CreateSEFFForClassMethodRoutine extends AbstractRepairRoutineRealiz
     
     ResourceDemandingSEFF seff = SeffFactoryImpl.eINSTANCE.createResourceDemandingSEFF();
     initializeCreateElementState(seff);
+    userExecution.updateSeffElement(basicComponent, opSignature, classMethod, seff);
     
     addCorrespondenceBetween(userExecution.getElement1(basicComponent, opSignature, classMethod, seff), userExecution.getElement2(basicComponent, opSignature, classMethod, seff), "");
     

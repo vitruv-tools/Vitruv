@@ -32,14 +32,6 @@ public class CreatedFieldInDatatypeClassRoutine extends AbstractRepairRoutineRea
     }
     
     public void update0Element(final org.emftext.language.java.classifiers.Class clazz, final Field field, final CompositeDataType compositeDataType, final InnerDeclaration innerDec) {
-      TypeReference _typeReference = field.getTypeReference();
-      Repository _repository__DataType = compositeDataType.getRepository__DataType();
-      long _arrayDimension = field.getArrayDimension();
-      DataType _correspondingPCMDataTypeForTypeReference = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(_typeReference, this.correspondenceModel, 
-        this.userInteracting, _repository__DataType, _arrayDimension);
-      innerDec.setDatatype_InnerDeclaration(_correspondingPCMDataTypeForTypeReference);
-      String _name = field.getName();
-      innerDec.setEntityName(_name);
       EList<InnerDeclaration> _innerDeclaration_CompositeDataType = compositeDataType.getInnerDeclaration_CompositeDataType();
       _innerDeclaration_CompositeDataType.add(innerDec);
     }
@@ -53,7 +45,18 @@ public class CreatedFieldInDatatypeClassRoutine extends AbstractRepairRoutineRea
     }
     
     public EObject getElement3(final org.emftext.language.java.classifiers.Class clazz, final Field field, final CompositeDataType compositeDataType, final InnerDeclaration innerDec) {
-      return innerDec;
+      return compositeDataType;
+    }
+    
+    public void updateInnerDecElement(final org.emftext.language.java.classifiers.Class clazz, final Field field, final CompositeDataType compositeDataType, final InnerDeclaration innerDec) {
+      TypeReference _typeReference = field.getTypeReference();
+      Repository _repository__DataType = compositeDataType.getRepository__DataType();
+      long _arrayDimension = field.getArrayDimension();
+      DataType _correspondingPCMDataTypeForTypeReference = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(_typeReference, this.correspondenceModel, 
+        this.userInteracting, _repository__DataType, _arrayDimension);
+      innerDec.setDatatype_InnerDeclaration(_correspondingPCMDataTypeForTypeReference);
+      String _name = field.getName();
+      innerDec.setEntityName(_name);
     }
   }
   
@@ -84,6 +87,7 @@ public class CreatedFieldInDatatypeClassRoutine extends AbstractRepairRoutineRea
     initializeRetrieveElementState(compositeDataType);
     InnerDeclaration innerDec = RepositoryFactoryImpl.eINSTANCE.createInnerDeclaration();
     initializeCreateElementState(innerDec);
+    userExecution.updateInnerDecElement(clazz, field, compositeDataType, innerDec);
     
     addCorrespondenceBetween(userExecution.getElement1(clazz, field, compositeDataType, innerDec), userExecution.getElement2(clazz, field, compositeDataType, innerDec), "");
     

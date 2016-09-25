@@ -2,13 +2,10 @@ package mir.routines.ejbjava2pcm;
 
 import com.google.common.base.Objects;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import mir.routines.ejbjava2pcm.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.pcm.repository.RepositoryFactory;
+import org.palladiosimulator.pcm.repository.impl.RepositoryFactoryImpl;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper;
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
@@ -25,21 +22,27 @@ public class CreateRepositoryForFirstPackageRoutine extends AbstractRepairRoutin
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final org.emftext.language.java.containers.Package javaPackage, @Extension final RoutinesFacade _routinesFacade) {
+    public EObject getElement1(final org.emftext.language.java.containers.Package javaPackage, final Repository repository) {
+      return repository;
+    }
+    
+    public EObject getElement2(final org.emftext.language.java.containers.Package javaPackage, final Repository repository) {
+      return javaPackage;
+    }
+    
+    public void updateRepositoryElement(final org.emftext.language.java.containers.Package javaPackage, final Repository repository) {
+      String _name = javaPackage.getName();
+      repository.setEntityName(_name);
+      String _entityName = repository.getEntityName();
+      String _plus = ("model/" + _entityName);
+      String _plus_1 = (_plus + ".repository");
+      this.persistProjectRelative(javaPackage, repository, _plus_1);
+    }
+    
+    public boolean checkMatcherPrecondition1(final org.emftext.language.java.containers.Package javaPackage) {
       Repository _findRepository = EJBJava2PcmHelper.findRepository(this.correspondenceModel);
-      boolean _equals = Objects.equal(null, _findRepository);
-      if (_equals) {
-        final Repository repository = RepositoryFactory.eINSTANCE.createRepository();
-        String _name = javaPackage.getName();
-        repository.setEntityName(_name);
-        String _entityName = repository.getEntityName();
-        String _plus = ("model/" + _entityName);
-        String _plus_1 = (_plus + ".repository");
-        this.persistProjectRelative(javaPackage, repository, _plus_1);
-        List<EObject> _singletonList = Collections.<EObject>singletonList(repository);
-        List<EObject> _singletonList_1 = Collections.<EObject>singletonList(javaPackage);
-        this.correspondenceModel.createAndAddCorrespondence(_singletonList, _singletonList_1);
-      }
+      boolean _equals = Objects.equal(_findRepository, null);
+      return _equals;
     }
   }
   
@@ -56,7 +59,14 @@ public class CreateRepositoryForFirstPackageRoutine extends AbstractRepairRoutin
     getLogger().debug("Called routine CreateRepositoryForFirstPackageRoutine with input:");
     getLogger().debug("   Package: " + this.javaPackage);
     
-    userExecution.callRoutine1(javaPackage, effectFacade);
+    if (!userExecution.checkMatcherPrecondition1(javaPackage)) {
+    	return;
+    }
+    Repository repository = RepositoryFactoryImpl.eINSTANCE.createRepository();
+    initializeCreateElementState(repository);
+    userExecution.updateRepositoryElement(javaPackage, repository);
+    
+    addCorrespondenceBetween(userExecution.getElement1(javaPackage, repository), userExecution.getElement2(javaPackage, repository), "");
     
     postprocessElementStates();
   }

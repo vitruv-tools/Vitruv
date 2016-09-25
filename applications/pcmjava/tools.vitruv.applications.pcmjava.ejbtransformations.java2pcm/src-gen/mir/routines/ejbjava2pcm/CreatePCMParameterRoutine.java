@@ -1,8 +1,6 @@
 package mir.routines.ejbjava2pcm;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import mir.routines.ejbjava2pcm.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -30,10 +28,23 @@ public class CreatePCMParameterRoutine extends AbstractRepairRoutineRealization 
     }
     
     public EObject getElement1(final Parameter jaMoPPParam, final OperationSignature opSignature, final org.palladiosimulator.pcm.repository.Parameter pcmParameter) {
-      return pcmParameter;
+      return opSignature;
     }
     
     public void update0Element(final Parameter jaMoPPParam, final OperationSignature opSignature, final org.palladiosimulator.pcm.repository.Parameter pcmParameter) {
+      EList<org.palladiosimulator.pcm.repository.Parameter> _parameters__OperationSignature = opSignature.getParameters__OperationSignature();
+      _parameters__OperationSignature.add(pcmParameter);
+    }
+    
+    public EObject getElement2(final Parameter jaMoPPParam, final OperationSignature opSignature, final org.palladiosimulator.pcm.repository.Parameter pcmParameter) {
+      return pcmParameter;
+    }
+    
+    public EObject getElement3(final Parameter jaMoPPParam, final OperationSignature opSignature, final org.palladiosimulator.pcm.repository.Parameter pcmParameter) {
+      return jaMoPPParam;
+    }
+    
+    public void updatePcmParameterElement(final Parameter jaMoPPParam, final OperationSignature opSignature, final org.palladiosimulator.pcm.repository.Parameter pcmParameter) {
       String _name = jaMoPPParam.getName();
       pcmParameter.setEntityName(_name);
       String _name_1 = jaMoPPParam.getName();
@@ -45,11 +56,6 @@ public class CreatePCMParameterRoutine extends AbstractRepairRoutineRealization 
       DataType _correspondingPCMDataTypeForTypeReference = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(_typeReference, 
         this.correspondenceModel, this.userInteracting, _repository__Interface, _arrayDimension);
       pcmParameter.setDataType__Parameter(_correspondingPCMDataTypeForTypeReference);
-      EList<org.palladiosimulator.pcm.repository.Parameter> _parameters__OperationSignature = opSignature.getParameters__OperationSignature();
-      _parameters__OperationSignature.add(pcmParameter);
-      List<EObject> _singletonList = Collections.<EObject>singletonList(pcmParameter);
-      List<EObject> _singletonList_1 = Collections.<EObject>singletonList(jaMoPPParam);
-      this.correspondenceModel.createAndAddCorrespondence(_singletonList, _singletonList_1);
     }
   }
   
@@ -71,9 +77,12 @@ public class CreatePCMParameterRoutine extends AbstractRepairRoutineRealization 
     
     org.palladiosimulator.pcm.repository.Parameter pcmParameter = RepositoryFactoryImpl.eINSTANCE.createParameter();
     initializeCreateElementState(pcmParameter);
+    userExecution.updatePcmParameterElement(jaMoPPParam, opSignature, pcmParameter);
     
     // val updatedElement userExecution.getElement1(jaMoPPParam, opSignature, pcmParameter);
     userExecution.update0Element(jaMoPPParam, opSignature, pcmParameter);
+    
+    addCorrespondenceBetween(userExecution.getElement2(jaMoPPParam, opSignature, pcmParameter), userExecution.getElement3(jaMoPPParam, opSignature, pcmParameter), "");
     
     postprocessElementStates();
   }
