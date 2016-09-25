@@ -1124,50 +1124,25 @@ ruleMatching returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getMatchingAccess().getRetrievedElementsRetrieveModelElementParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getMatchingAccess().getMatcherStatementsMatcherStatementParserRuleCall_3_0());
 				}
-				lv_retrievedElements_3_0=ruleRetrieveModelElement
+				lv_matcherStatements_3_0=ruleMatcherStatement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getMatchingRule());
 					}
 					add(
 						$current,
-						"retrievedElements",
-						lv_retrievedElements_3_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.RetrieveModelElement");
+						"matcherStatements",
+						lv_matcherStatements_3_0,
+						"tools.vitruv.dsls.response.ResponseLanguage.MatcherStatement");
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)*
-		(
-			otherlv_4='check'
-			{
-				newLeafNode(otherlv_4, grammarAccess.getMatchingAccess().getCheckKeyword_4_0());
-			}
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getMatchingAccess().getConditionPreconditionCodeBlockParserRuleCall_4_1_0());
-					}
-					lv_condition_5_0=rulePreconditionCodeBlock
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getMatchingRule());
-						}
-						set(
-							$current,
-							"condition",
-							lv_condition_5_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.PreconditionCodeBlock");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-		)?
-		otherlv_6='}'
+		)+
+		otherlv_4='}'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getMatchingAccess().getRightCurlyBracketKeyword_5());
+			newLeafNode(otherlv_4, grammarAccess.getMatchingAccess().getRightCurlyBracketKeyword_4());
 		}
 	)
 ;
@@ -1324,15 +1299,51 @@ ruleTaggable[EObject in_current]  returns [EObject current=in_current]
 	)
 ;
 
-// Entry rule entryRuleRetrieveModelElement
-entryRuleRetrieveModelElement returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getRetrieveModelElementRule()); }
-	iv_ruleRetrieveModelElement=ruleRetrieveModelElement
-	{ $current=$iv_ruleRetrieveModelElement.current; }
+// Entry rule entryRuleMatcherStatement
+entryRuleMatcherStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getMatcherStatementRule()); }
+	iv_ruleMatcherStatement=ruleMatcherStatement
+	{ $current=$iv_ruleMatcherStatement.current; }
 	EOF;
 
-// Rule RetrieveModelElement
-ruleRetrieveModelElement returns [EObject current=null]
+// Rule MatcherStatement
+ruleMatcherStatement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getMatcherStatementAccess().getRetrieveModelElementStatementParserRuleCall_0());
+		}
+		this_RetrieveModelElementStatement_0=ruleRetrieveModelElementStatement
+		{
+			$current = $this_RetrieveModelElementStatement_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getMatcherStatementAccess().getMatcherCheckStatementParserRuleCall_1());
+		}
+		this_MatcherCheckStatement_1=ruleMatcherCheckStatement
+		{
+			$current = $this_MatcherCheckStatement_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleRetrieveModelElementStatement
+entryRuleRetrieveModelElementStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getRetrieveModelElementStatementRule()); }
+	iv_ruleRetrieveModelElementStatement=ruleRetrieveModelElementStatement
+	{ $current=$iv_ruleRetrieveModelElementStatement.current; }
+	EOF;
+
+// Rule RetrieveModelElementStatement
+ruleRetrieveModelElementStatement returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1341,15 +1352,22 @@ ruleRetrieveModelElement returns [EObject current=null]
 }:
 	(
 		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getRetrieveModelElementStatementAccess().getRetrieveModelElementStatementAction_0(),
+					$current);
+			}
+		)
+		(
 			(
 				(
-					lv_required_0_0='retrieve required element'
+					lv_required_1_0='retrieve required element'
 					{
-						newLeafNode(lv_required_0_0, grammarAccess.getRetrieveModelElementAccess().getRequiredRetrieveRequiredElementKeyword_0_0_0());
+						newLeafNode(lv_required_1_0, grammarAccess.getRetrieveModelElementStatementAccess().getRequiredRetrieveRequiredElementKeyword_1_0_0());
 					}
 					{
 						if ($current==null) {
-							$current = createModelElement(grammarAccess.getRetrieveModelElementRule());
+							$current = createModelElement(grammarAccess.getRetrieveModelElementStatementRule());
 						}
 						setWithLastConsumed($current, "required", true, "retrieve required element");
 					}
@@ -1358,13 +1376,13 @@ ruleRetrieveModelElement returns [EObject current=null]
 			    |
 			(
 				(
-					lv_optional_1_0='retrieve optional element'
+					lv_optional_2_0='retrieve optional element'
 					{
-						newLeafNode(lv_optional_1_0, grammarAccess.getRetrieveModelElementAccess().getOptionalRetrieveOptionalElementKeyword_0_1_0());
+						newLeafNode(lv_optional_2_0, grammarAccess.getRetrieveModelElementStatementAccess().getOptionalRetrieveOptionalElementKeyword_1_1_0());
 					}
 					{
 						if ($current==null) {
-							$current = createModelElement(grammarAccess.getRetrieveModelElementRule());
+							$current = createModelElement(grammarAccess.getRetrieveModelElementStatementRule());
 						}
 						setWithLastConsumed($current, "optional", true, "retrieve optional element");
 					}
@@ -1373,13 +1391,13 @@ ruleRetrieveModelElement returns [EObject current=null]
 			    |
 			(
 				(
-					lv_abscence_2_0='require absence of element'
+					lv_abscence_3_0='require absence of element'
 					{
-						newLeafNode(lv_abscence_2_0, grammarAccess.getRetrieveModelElementAccess().getAbscenceRequireAbsenceOfElementKeyword_0_2_0());
+						newLeafNode(lv_abscence_3_0, grammarAccess.getRetrieveModelElementStatementAccess().getAbscenceRequireAbsenceOfElementKeyword_1_2_0());
 					}
 					{
 						if ($current==null) {
-							$current = createModelElement(grammarAccess.getRetrieveModelElementRule());
+							$current = createModelElement(grammarAccess.getRetrieveModelElementStatementRule());
 						}
 						setWithLastConsumed($current, "abscence", true, "require absence of element");
 					}
@@ -1389,87 +1407,128 @@ ruleRetrieveModelElement returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRetrieveModelElementAccess().getElementNamedModelElementParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getRetrieveModelElementStatementAccess().getElementNamedModelElementParserRuleCall_2_0());
 				}
-				lv_element_3_0=ruleNamedModelElement
+				lv_element_4_0=ruleNamedModelElement
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getRetrieveModelElementRule());
+						$current = createModelElementForParent(grammarAccess.getRetrieveModelElementStatementRule());
 					}
 					set(
 						$current,
 						"element",
-						lv_element_3_0,
+						lv_element_4_0,
 						"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_4='corresponding to'
+		otherlv_5='corresponding to'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getRetrieveModelElementAccess().getCorrespondingToKeyword_2());
+			newLeafNode(otherlv_5, grammarAccess.getRetrieveModelElementStatementAccess().getCorrespondingToKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRetrieveModelElementAccess().getCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getRetrieveModelElementStatementAccess().getCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_4_0());
 				}
-				lv_correspondenceSource_5_0=ruleCorrespondingObjectCodeBlock
+				lv_correspondenceSource_6_0=ruleCorrespondingObjectCodeBlock
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getRetrieveModelElementRule());
+						$current = createModelElementForParent(grammarAccess.getRetrieveModelElementStatementRule());
 					}
 					set(
 						$current,
 						"correspondenceSource",
-						lv_correspondenceSource_5_0,
+						lv_correspondenceSource_6_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.CorrespondingObjectCodeBlock");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
 		(
-			otherlv_6='tagged with'
+			otherlv_7='tagged with'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getRetrieveModelElementAccess().getTaggedWithKeyword_4_0());
+				newLeafNode(otherlv_7, grammarAccess.getRetrieveModelElementStatementAccess().getTaggedWithKeyword_5_0());
 			}
 			{
 				if ($current==null) {
-					$current = createModelElement(grammarAccess.getRetrieveModelElementRule());
+					$current = createModelElement(grammarAccess.getRetrieveModelElementStatementRule());
 				}
-				newCompositeNode(grammarAccess.getRetrieveModelElementAccess().getTaggableParserRuleCall_4_1());
+				newCompositeNode(grammarAccess.getRetrieveModelElementStatementAccess().getTaggableParserRuleCall_5_1());
 			}
-			this_Taggable_7=ruleTaggable[$current]
+			this_Taggable_8=ruleTaggable[$current]
 			{
-				$current = $this_Taggable_7.current;
+				$current = $this_Taggable_8.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
 		(
-			otherlv_8='with'
+			otherlv_9='with'
 			{
-				newLeafNode(otherlv_8, grammarAccess.getRetrieveModelElementAccess().getWithKeyword_5_0());
+				newLeafNode(otherlv_9, grammarAccess.getRetrieveModelElementStatementAccess().getWithKeyword_6_0());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getRetrieveModelElementAccess().getPreconditionPreconditionCodeBlockParserRuleCall_5_1_0());
+						newCompositeNode(grammarAccess.getRetrieveModelElementStatementAccess().getPreconditionPreconditionCodeBlockParserRuleCall_6_1_0());
 					}
-					lv_precondition_9_0=rulePreconditionCodeBlock
+					lv_precondition_10_0=rulePreconditionCodeBlock
 					{
 						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getRetrieveModelElementRule());
+							$current = createModelElementForParent(grammarAccess.getRetrieveModelElementStatementRule());
 						}
 						set(
 							$current,
 							"precondition",
-							lv_precondition_9_0,
+							lv_precondition_10_0,
 							"tools.vitruv.dsls.response.ResponseLanguage.PreconditionCodeBlock");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 		)?
+	)
+;
+
+// Entry rule entryRuleMatcherCheckStatement
+entryRuleMatcherCheckStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getMatcherCheckStatementRule()); }
+	iv_ruleMatcherCheckStatement=ruleMatcherCheckStatement
+	{ $current=$iv_ruleMatcherCheckStatement.current; }
+	EOF;
+
+// Rule MatcherCheckStatement
+ruleMatcherCheckStatement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getMatcherCheckStatementAccess().getMatcherCheckStatementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='check'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getMatcherCheckStatementAccess().getCheckKeyword_1());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getMatcherCheckStatementRule());
+			}
+			newCompositeNode(grammarAccess.getMatcherCheckStatementAccess().getCodeBlockParserRuleCall_2());
+		}
+		this_CodeBlock_2=ruleCodeBlock[$current]
+		{
+			$current = $this_CodeBlock_2.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 

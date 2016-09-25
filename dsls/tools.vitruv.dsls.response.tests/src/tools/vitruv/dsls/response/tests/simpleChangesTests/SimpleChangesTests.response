@@ -16,7 +16,10 @@ response: ReplacedSingleValuedEAttribute {
 
 routine: replaceSingleValuedEAttribute(minimal.Root root, Int value) {
 	match {
+		// The check statements do only test that multiple check statements work
+		check { ^root != null }
 		retrieve required element minimal.Root as targetElement corresponding to root
+		check { ^value != null }
 	}
 	effect {
 		update element targetElement {

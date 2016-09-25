@@ -5,7 +5,6 @@ package tools.vitruv.dsls.response.responseLanguage.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -13,16 +12,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import tools.vitruv.dsls.response.responseLanguage.MatcherStatement;
 import tools.vitruv.dsls.response.responseLanguage.Matching;
-import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,8 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.MatchingImpl#getRetrievedElements <em>Retrieved Elements</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.MatchingImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.MatchingImpl#getMatcherStatements <em>Matcher Statements</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,24 +37,14 @@ import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 public class MatchingImpl extends MinimalEObjectImpl.Container implements Matching
 {
   /**
-   * The cached value of the '{@link #getRetrievedElements() <em>Retrieved Elements</em>}' containment reference list.
+   * The cached value of the '{@link #getMatcherStatements() <em>Matcher Statements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRetrievedElements()
+   * @see #getMatcherStatements()
    * @generated
    * @ordered
    */
-  protected EList<RetrieveModelElement> retrievedElements;
-
-  /**
-   * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCondition()
-   * @generated
-   * @ordered
-   */
-  protected PreconditionCodeBlock condition;
+  protected EList<MatcherStatement> matcherStatements;
 
   /**
    * <!-- begin-user-doc -->
@@ -86,61 +72,13 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<RetrieveModelElement> getRetrievedElements()
+  public EList<MatcherStatement> getMatcherStatements()
   {
-    if (retrievedElements == null)
+    if (matcherStatements == null)
     {
-      retrievedElements = new EObjectContainmentEList<RetrieveModelElement>(RetrieveModelElement.class, this, ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS);
+      matcherStatements = new EObjectContainmentEList<MatcherStatement>(MatcherStatement.class, this, ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS);
     }
-    return retrievedElements;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public PreconditionCodeBlock getCondition()
-  {
-    return condition;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetCondition(PreconditionCodeBlock newCondition, NotificationChain msgs)
-  {
-    PreconditionCodeBlock oldCondition = condition;
-    condition = newCondition;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.MATCHING__CONDITION, oldCondition, newCondition);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setCondition(PreconditionCodeBlock newCondition)
-  {
-    if (newCondition != condition)
-    {
-      NotificationChain msgs = null;
-      if (condition != null)
-        msgs = ((InternalEObject)condition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.MATCHING__CONDITION, null, msgs);
-      if (newCondition != null)
-        msgs = ((InternalEObject)newCondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.MATCHING__CONDITION, null, msgs);
-      msgs = basicSetCondition(newCondition, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.MATCHING__CONDITION, newCondition, newCondition));
+    return matcherStatements;
   }
 
   /**
@@ -153,10 +91,8 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS:
-        return ((InternalEList<?>)getRetrievedElements()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.MATCHING__CONDITION:
-        return basicSetCondition(null, msgs);
+      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+        return ((InternalEList<?>)getMatcherStatements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -171,10 +107,8 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS:
-        return getRetrievedElements();
-      case ResponseLanguagePackage.MATCHING__CONDITION:
-        return getCondition();
+      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+        return getMatcherStatements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -190,12 +124,9 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS:
-        getRetrievedElements().clear();
-        getRetrievedElements().addAll((Collection<? extends RetrieveModelElement>)newValue);
-        return;
-      case ResponseLanguagePackage.MATCHING__CONDITION:
-        setCondition((PreconditionCodeBlock)newValue);
+      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+        getMatcherStatements().clear();
+        getMatcherStatements().addAll((Collection<? extends MatcherStatement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -211,11 +142,8 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS:
-        getRetrievedElements().clear();
-        return;
-      case ResponseLanguagePackage.MATCHING__CONDITION:
-        setCondition((PreconditionCodeBlock)null);
+      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+        getMatcherStatements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -231,10 +159,8 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__RETRIEVED_ELEMENTS:
-        return retrievedElements != null && !retrievedElements.isEmpty();
-      case ResponseLanguagePackage.MATCHING__CONDITION:
-        return condition != null;
+      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+        return matcherStatements != null && !matcherStatements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

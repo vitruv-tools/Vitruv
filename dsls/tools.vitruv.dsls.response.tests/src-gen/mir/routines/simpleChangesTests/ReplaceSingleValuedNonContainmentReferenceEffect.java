@@ -46,9 +46,9 @@ public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEf
   
   public ReplaceSingleValuedNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot newReferencedElement) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.root = root;this.newReferencedElement = newReferencedElement;
+    this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.root = root;this.newReferencedElement = newReferencedElement;
   }
   
   private Root root;

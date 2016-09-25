@@ -257,11 +257,28 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
+      case ResponseLanguagePackage.MATCHER_STATEMENT:
       {
-        RetrieveModelElement retrieveModelElement = (RetrieveModelElement)theEObject;
-        T result = caseRetrieveModelElement(retrieveModelElement);
-        if (result == null) result = caseTaggable(retrieveModelElement);
+        MatcherStatement matcherStatement = (MatcherStatement)theEObject;
+        T result = caseMatcherStatement(matcherStatement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT:
+      {
+        RetrieveModelElementStatement retrieveModelElementStatement = (RetrieveModelElementStatement)theEObject;
+        T result = caseRetrieveModelElementStatement(retrieveModelElementStatement);
+        if (result == null) result = caseMatcherStatement(retrieveModelElementStatement);
+        if (result == null) result = caseTaggable(retrieveModelElementStatement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT:
+      {
+        MatcherCheckStatement matcherCheckStatement = (MatcherCheckStatement)theEObject;
+        T result = caseMatcherCheckStatement(matcherCheckStatement);
+        if (result == null) result = caseMatcherStatement(matcherCheckStatement);
+        if (result == null) result = caseCodeBlock(matcherCheckStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -782,17 +799,49 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Retrieve Model Element</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Matcher Statement</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Retrieve Model Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Matcher Statement</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseRetrieveModelElement(RetrieveModelElement object)
+  public T caseMatcherStatement(MatcherStatement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Retrieve Model Element Statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Retrieve Model Element Statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRetrieveModelElementStatement(RetrieveModelElementStatement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Matcher Check Statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Matcher Check Statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseMatcherCheckStatement(MatcherCheckStatement object)
   {
     return null;
   }

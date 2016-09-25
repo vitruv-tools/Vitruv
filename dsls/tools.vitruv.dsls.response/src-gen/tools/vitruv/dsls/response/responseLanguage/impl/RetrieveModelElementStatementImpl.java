@@ -16,28 +16,41 @@ import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.response.responseLanguage.CorrespondingObjectCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement;
+import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.Taggable;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Retrieve Model Element</b></em>'.
+ * An implementation of the model object '<em><b>Retrieve Model Element Statement</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#isRequired <em>Required</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#isOptional <em>Optional</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#isAbscence <em>Abscence</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getElement <em>Element</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getCorrespondenceSource <em>Correspondence Source</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl#getPrecondition <em>Precondition</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#getTag <em>Tag</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#isRequired <em>Required</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#isOptional <em>Optional</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#isAbscence <em>Abscence</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#getCorrespondenceSource <em>Correspondence Source</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl#getPrecondition <em>Precondition</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveModelElement
+public class RetrieveModelElementStatementImpl extends MatcherStatementImpl implements RetrieveModelElementStatement
 {
+  /**
+   * The cached value of the '{@link #getTag() <em>Tag</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTag()
+   * @generated
+   * @ordered
+   */
+  protected TagCodeBlock tag;
+
   /**
    * The default value of the '{@link #isRequired() <em>Required</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -133,7 +146,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
    * <!-- end-user-doc -->
    * @generated
    */
-  protected RetrieveModelElementImpl()
+  protected RetrieveModelElementStatementImpl()
   {
     super();
   }
@@ -146,7 +159,55 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT;
+    return ResponseLanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT_STATEMENT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TagCodeBlock getTag()
+  {
+    return tag;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTag(TagCodeBlock newTag, NotificationChain msgs)
+  {
+    TagCodeBlock oldTag = tag;
+    tag = newTag;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG, oldTag, newTag);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTag(TagCodeBlock newTag)
+  {
+    if (newTag != tag)
+    {
+      NotificationChain msgs = null;
+      if (tag != null)
+        msgs = ((InternalEObject)tag).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG, null, msgs);
+      if (newTag != null)
+        msgs = ((InternalEObject)newTag).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG, null, msgs);
+      msgs = basicSetTag(newTag, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG, newTag, newTag));
   }
 
   /**
@@ -169,7 +230,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     boolean oldRequired = required;
     required = newRequired;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__REQUIRED, oldRequired, required));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED, oldRequired, required));
   }
 
   /**
@@ -192,7 +253,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     boolean oldOptional = optional;
     optional = newOptional;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__OPTIONAL, oldOptional, optional));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL, oldOptional, optional));
   }
 
   /**
@@ -215,7 +276,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     boolean oldAbscence = abscence;
     abscence = newAbscence;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ABSCENCE, oldAbscence, abscence));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE, oldAbscence, abscence));
   }
 
   /**
@@ -239,7 +300,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     element = newElement;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, oldElement, newElement);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT, oldElement, newElement);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -256,14 +317,14 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     {
       NotificationChain msgs = null;
       if (element != null)
-        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT, null, msgs);
       if (newElement != null)
-        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT, null, msgs);
       msgs = basicSetElement(newElement, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT, newElement, newElement));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT, newElement, newElement));
   }
 
   /**
@@ -287,7 +348,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     correspondenceSource = newCorrespondenceSource;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE, oldCorrespondenceSource, newCorrespondenceSource);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE, oldCorrespondenceSource, newCorrespondenceSource);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -304,14 +365,14 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     {
       NotificationChain msgs = null;
       if (correspondenceSource != null)
-        msgs = ((InternalEObject)correspondenceSource).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE, null, msgs);
+        msgs = ((InternalEObject)correspondenceSource).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE, null, msgs);
       if (newCorrespondenceSource != null)
-        msgs = ((InternalEObject)newCorrespondenceSource).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE, null, msgs);
+        msgs = ((InternalEObject)newCorrespondenceSource).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE, null, msgs);
       msgs = basicSetCorrespondenceSource(newCorrespondenceSource, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE, newCorrespondenceSource, newCorrespondenceSource));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE, newCorrespondenceSource, newCorrespondenceSource));
   }
 
   /**
@@ -335,7 +396,7 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     precondition = newPrecondition;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION, oldPrecondition, newPrecondition);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION, oldPrecondition, newPrecondition);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -352,14 +413,14 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     {
       NotificationChain msgs = null;
       if (precondition != null)
-        msgs = ((InternalEObject)precondition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION, null, msgs);
+        msgs = ((InternalEObject)precondition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION, null, msgs);
       if (newPrecondition != null)
-        msgs = ((InternalEObject)newPrecondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION, null, msgs);
+        msgs = ((InternalEObject)newPrecondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION, null, msgs);
       msgs = basicSetPrecondition(newPrecondition, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION, newPrecondition, newPrecondition));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION, newPrecondition, newPrecondition));
   }
 
   /**
@@ -372,11 +433,13 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG:
+        return basicSetTag(null, msgs);
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT:
         return basicSetElement(null, msgs);
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE:
         return basicSetCorrespondenceSource(null, msgs);
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION:
         return basicSetPrecondition(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -392,17 +455,19 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__REQUIRED:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG:
+        return getTag();
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED:
         return isRequired();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__OPTIONAL:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL:
         return isOptional();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ABSCENCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE:
         return isAbscence();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT:
         return getElement();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE:
         return getCorrespondenceSource();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION:
         return getPrecondition();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -418,22 +483,25 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__REQUIRED:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG:
+        setTag((TagCodeBlock)newValue);
+        return;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED:
         setRequired((Boolean)newValue);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__OPTIONAL:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL:
         setOptional((Boolean)newValue);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ABSCENCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE:
         setAbscence((Boolean)newValue);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT:
         setElement((ModelElement)newValue);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE:
         setCorrespondenceSource((CorrespondingObjectCodeBlock)newValue);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION:
         setPrecondition((PreconditionCodeBlock)newValue);
         return;
     }
@@ -450,22 +518,25 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__REQUIRED:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG:
+        setTag((TagCodeBlock)null);
+        return;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED:
         setRequired(REQUIRED_EDEFAULT);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__OPTIONAL:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL:
         setOptional(OPTIONAL_EDEFAULT);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ABSCENCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE:
         setAbscence(ABSCENCE_EDEFAULT);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT:
         setElement((ModelElement)null);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE:
         setCorrespondenceSource((CorrespondingObjectCodeBlock)null);
         return;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION:
         setPrecondition((PreconditionCodeBlock)null);
         return;
     }
@@ -482,20 +553,60 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__REQUIRED:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG:
+        return tag != null;
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED:
         return required != REQUIRED_EDEFAULT;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__OPTIONAL:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL:
         return optional != OPTIONAL_EDEFAULT;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ABSCENCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE:
         return abscence != ABSCENCE_EDEFAULT;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT:
         return element != null;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE:
         return correspondenceSource != null;
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT__PRECONDITION:
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION:
         return precondition != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == Taggable.class)
+    {
+      switch (derivedFeatureID)
+      {
+        case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG: return ResponseLanguagePackage.TAGGABLE__TAG;
+        default: return -1;
+      }
+    }
+    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == Taggable.class)
+    {
+      switch (baseFeatureID)
+      {
+        case ResponseLanguagePackage.TAGGABLE__TAG: return ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG;
+        default: return -1;
+      }
+    }
+    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
   }
 
   /**
@@ -519,4 +630,4 @@ public class RetrieveModelElementImpl extends TaggableImpl implements RetrieveMo
     return result.toString();
   }
 
-} //RetrieveModelElementImpl
+} //RetrieveModelElementStatementImpl

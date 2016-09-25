@@ -657,22 +657,18 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Action cMatchingAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cMatchKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cRetrievedElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cRetrievedElementsRetrieveModelElementParserRuleCall_3_0 = (RuleCall)cRetrievedElementsAssignment_3.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cCheckKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cConditionAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cConditionPreconditionCodeBlockParserRuleCall_4_1_0 = (RuleCall)cConditionAssignment_4_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cMatcherStatementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cMatcherStatementsMatcherStatementParserRuleCall_3_0 = (RuleCall)cMatcherStatementsAssignment_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Matching:
 		//	{Matching}
 		//	'match' '{'
-		//	retrievedElements+=RetrieveModelElement* ('check' condition=PreconditionCodeBlock)?
+		//	matcherStatements+=MatcherStatement+
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Matching} 'match' '{' retrievedElements+=RetrieveModelElement* ('check' condition=PreconditionCodeBlock)? '}'
+		//{Matching} 'match' '{' matcherStatements+=MatcherStatement+ '}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Matching}
@@ -684,26 +680,14 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 		
-		//retrievedElements+=RetrieveModelElement*
-		public Assignment getRetrievedElementsAssignment_3() { return cRetrievedElementsAssignment_3; }
+		//matcherStatements+=MatcherStatement+
+		public Assignment getMatcherStatementsAssignment_3() { return cMatcherStatementsAssignment_3; }
 		
-		//RetrieveModelElement
-		public RuleCall getRetrievedElementsRetrieveModelElementParserRuleCall_3_0() { return cRetrievedElementsRetrieveModelElementParserRuleCall_3_0; }
-		
-		//('check' condition=PreconditionCodeBlock)?
-		public Group getGroup_4() { return cGroup_4; }
-		
-		//'check'
-		public Keyword getCheckKeyword_4_0() { return cCheckKeyword_4_0; }
-		
-		//condition=PreconditionCodeBlock
-		public Assignment getConditionAssignment_4_1() { return cConditionAssignment_4_1; }
-		
-		//PreconditionCodeBlock
-		public RuleCall getConditionPreconditionCodeBlockParserRuleCall_4_1_0() { return cConditionPreconditionCodeBlockParserRuleCall_4_1_0; }
+		//MatcherStatement
+		public RuleCall getMatcherStatementsMatcherStatementParserRuleCall_3_0() { return cMatcherStatementsMatcherStatementParserRuleCall_3_0; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
 	}
 	public class EffectElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Effect");
@@ -797,97 +781,145 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//TagCodeBlock
 		public RuleCall getTagTagCodeBlockParserRuleCall_0() { return cTagTagCodeBlockParserRuleCall_0; }
 	}
-	public class RetrieveModelElementElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RetrieveModelElement");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
-		private final Assignment cRequiredAssignment_0_0 = (Assignment)cAlternatives_0.eContents().get(0);
-		private final Keyword cRequiredRetrieveRequiredElementKeyword_0_0_0 = (Keyword)cRequiredAssignment_0_0.eContents().get(0);
-		private final Assignment cOptionalAssignment_0_1 = (Assignment)cAlternatives_0.eContents().get(1);
-		private final Keyword cOptionalRetrieveOptionalElementKeyword_0_1_0 = (Keyword)cOptionalAssignment_0_1.eContents().get(0);
-		private final Assignment cAbscenceAssignment_0_2 = (Assignment)cAlternatives_0.eContents().get(2);
-		private final Keyword cAbscenceRequireAbsenceOfElementKeyword_0_2_0 = (Keyword)cAbscenceAssignment_0_2.eContents().get(0);
-		private final Assignment cElementAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementNamedModelElementParserRuleCall_1_0 = (RuleCall)cElementAssignment_1.eContents().get(0);
-		private final Keyword cCorrespondingToKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cCorrespondenceSourceAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_3_0 = (RuleCall)cCorrespondenceSourceAssignment_3.eContents().get(0);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cTaggedWithKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final RuleCall cTaggableParserRuleCall_4_1 = (RuleCall)cGroup_4.eContents().get(1);
-		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
-		private final Keyword cWithKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
-		private final Assignment cPreconditionAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final RuleCall cPreconditionPreconditionCodeBlockParserRuleCall_5_1_0 = (RuleCall)cPreconditionAssignment_5_1.eContents().get(0);
+	public class MatcherStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.MatcherStatement");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cRetrieveModelElementStatementParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cMatcherCheckStatementParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//RetrieveModelElement:
-		//	(required?='retrieve required element' | optional?='retrieve optional element' |
+		//MatcherStatement:
+		//	RetrieveModelElementStatement | MatcherCheckStatement;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//RetrieveModelElementStatement | MatcherCheckStatement
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//RetrieveModelElementStatement
+		public RuleCall getRetrieveModelElementStatementParserRuleCall_0() { return cRetrieveModelElementStatementParserRuleCall_0; }
+		
+		//MatcherCheckStatement
+		public RuleCall getMatcherCheckStatementParserRuleCall_1() { return cMatcherCheckStatementParserRuleCall_1; }
+	}
+	public class RetrieveModelElementStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RetrieveModelElementStatement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cRetrieveModelElementStatementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Assignment cRequiredAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
+		private final Keyword cRequiredRetrieveRequiredElementKeyword_1_0_0 = (Keyword)cRequiredAssignment_1_0.eContents().get(0);
+		private final Assignment cOptionalAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final Keyword cOptionalRetrieveOptionalElementKeyword_1_1_0 = (Keyword)cOptionalAssignment_1_1.eContents().get(0);
+		private final Assignment cAbscenceAssignment_1_2 = (Assignment)cAlternatives_1.eContents().get(2);
+		private final Keyword cAbscenceRequireAbsenceOfElementKeyword_1_2_0 = (Keyword)cAbscenceAssignment_1_2.eContents().get(0);
+		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cElementNamedModelElementParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
+		private final Keyword cCorrespondingToKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cCorrespondenceSourceAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_4_0 = (RuleCall)cCorrespondenceSourceAssignment_4.eContents().get(0);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cTaggedWithKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final RuleCall cTaggableParserRuleCall_5_1 = (RuleCall)cGroup_5.eContents().get(1);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cWithKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cPreconditionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cPreconditionPreconditionCodeBlockParserRuleCall_6_1_0 = (RuleCall)cPreconditionAssignment_6_1.eContents().get(0);
+		
+		//RetrieveModelElementStatement:
+		//	{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
 		//	abscence?='require absence of element') element=NamedModelElement 'corresponding to'
 		//	correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
 		//	precondition=PreconditionCodeBlock)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element')
-		//element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with'
-		//Taggable)? ('with' precondition=PreconditionCodeBlock)?
+		//{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
+		//abscence?='require absence of element') element=NamedModelElement 'corresponding to'
+		//correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
+		//precondition=PreconditionCodeBlock)?
 		public Group getGroup() { return cGroup; }
 		
+		//{RetrieveModelElementStatement}
+		public Action getRetrieveModelElementStatementAction_0() { return cRetrieveModelElementStatementAction_0; }
+		
 		//(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element')
-		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
 		//required?='retrieve required element'
-		public Assignment getRequiredAssignment_0_0() { return cRequiredAssignment_0_0; }
+		public Assignment getRequiredAssignment_1_0() { return cRequiredAssignment_1_0; }
 		
 		//'retrieve required element'
-		public Keyword getRequiredRetrieveRequiredElementKeyword_0_0_0() { return cRequiredRetrieveRequiredElementKeyword_0_0_0; }
+		public Keyword getRequiredRetrieveRequiredElementKeyword_1_0_0() { return cRequiredRetrieveRequiredElementKeyword_1_0_0; }
 		
 		//optional?='retrieve optional element'
-		public Assignment getOptionalAssignment_0_1() { return cOptionalAssignment_0_1; }
+		public Assignment getOptionalAssignment_1_1() { return cOptionalAssignment_1_1; }
 		
 		//'retrieve optional element'
-		public Keyword getOptionalRetrieveOptionalElementKeyword_0_1_0() { return cOptionalRetrieveOptionalElementKeyword_0_1_0; }
+		public Keyword getOptionalRetrieveOptionalElementKeyword_1_1_0() { return cOptionalRetrieveOptionalElementKeyword_1_1_0; }
 		
 		//abscence?='require absence of element'
-		public Assignment getAbscenceAssignment_0_2() { return cAbscenceAssignment_0_2; }
+		public Assignment getAbscenceAssignment_1_2() { return cAbscenceAssignment_1_2; }
 		
 		//'require absence of element'
-		public Keyword getAbscenceRequireAbsenceOfElementKeyword_0_2_0() { return cAbscenceRequireAbsenceOfElementKeyword_0_2_0; }
+		public Keyword getAbscenceRequireAbsenceOfElementKeyword_1_2_0() { return cAbscenceRequireAbsenceOfElementKeyword_1_2_0; }
 		
 		//element=NamedModelElement
-		public Assignment getElementAssignment_1() { return cElementAssignment_1; }
+		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
 		
 		//NamedModelElement
-		public RuleCall getElementNamedModelElementParserRuleCall_1_0() { return cElementNamedModelElementParserRuleCall_1_0; }
+		public RuleCall getElementNamedModelElementParserRuleCall_2_0() { return cElementNamedModelElementParserRuleCall_2_0; }
 		
 		//'corresponding to'
-		public Keyword getCorrespondingToKeyword_2() { return cCorrespondingToKeyword_2; }
+		public Keyword getCorrespondingToKeyword_3() { return cCorrespondingToKeyword_3; }
 		
 		//correspondenceSource=CorrespondingObjectCodeBlock
-		public Assignment getCorrespondenceSourceAssignment_3() { return cCorrespondenceSourceAssignment_3; }
+		public Assignment getCorrespondenceSourceAssignment_4() { return cCorrespondenceSourceAssignment_4; }
 		
 		//CorrespondingObjectCodeBlock
-		public RuleCall getCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_3_0() { return cCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_3_0; }
+		public RuleCall getCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_4_0() { return cCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_4_0; }
 		
 		//('tagged with' Taggable)?
-		public Group getGroup_4() { return cGroup_4; }
-		
-		//'tagged with'
-		public Keyword getTaggedWithKeyword_4_0() { return cTaggedWithKeyword_4_0; }
-		
-		//Taggable
-		public RuleCall getTaggableParserRuleCall_4_1() { return cTaggableParserRuleCall_4_1; }
-		
-		//('with' precondition=PreconditionCodeBlock)?
 		public Group getGroup_5() { return cGroup_5; }
 		
+		//'tagged with'
+		public Keyword getTaggedWithKeyword_5_0() { return cTaggedWithKeyword_5_0; }
+		
+		//Taggable
+		public RuleCall getTaggableParserRuleCall_5_1() { return cTaggableParserRuleCall_5_1; }
+		
+		//('with' precondition=PreconditionCodeBlock)?
+		public Group getGroup_6() { return cGroup_6; }
+		
 		//'with'
-		public Keyword getWithKeyword_5_0() { return cWithKeyword_5_0; }
+		public Keyword getWithKeyword_6_0() { return cWithKeyword_6_0; }
 		
 		//precondition=PreconditionCodeBlock
-		public Assignment getPreconditionAssignment_5_1() { return cPreconditionAssignment_5_1; }
+		public Assignment getPreconditionAssignment_6_1() { return cPreconditionAssignment_6_1; }
 		
 		//PreconditionCodeBlock
-		public RuleCall getPreconditionPreconditionCodeBlockParserRuleCall_5_1_0() { return cPreconditionPreconditionCodeBlockParserRuleCall_5_1_0; }
+		public RuleCall getPreconditionPreconditionCodeBlockParserRuleCall_6_1_0() { return cPreconditionPreconditionCodeBlockParserRuleCall_6_1_0; }
+	}
+	public class MatcherCheckStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.MatcherCheckStatement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cMatcherCheckStatementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cCheckKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final RuleCall cCodeBlockParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		
+		//MatcherCheckStatement:
+		//	{MatcherCheckStatement}
+		//	'check' CodeBlock;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{MatcherCheckStatement} 'check' CodeBlock
+		public Group getGroup() { return cGroup; }
+		
+		//{MatcherCheckStatement}
+		public Action getMatcherCheckStatementAction_0() { return cMatcherCheckStatementAction_0; }
+		
+		//'check'
+		public Keyword getCheckKeyword_1() { return cCheckKeyword_1; }
+		
+		//CodeBlock
+		public RuleCall getCodeBlockParserRuleCall_2() { return cCodeBlockParserRuleCall_2; }
 	}
 	public class ExistingElementReferenceElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
@@ -1253,7 +1285,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final RoutineCallStatementElements pRoutineCallStatement;
 	private final RoutineCallBlockElements pRoutineCallBlock;
 	private final TaggableElements pTaggable;
-	private final RetrieveModelElementElements pRetrieveModelElement;
+	private final MatcherStatementElements pMatcherStatement;
+	private final RetrieveModelElementStatementElements pRetrieveModelElementStatement;
+	private final MatcherCheckStatementElements pMatcherCheckStatement;
 	private final ExistingElementReferenceElements pExistingElementReference;
 	private final EffectStatementElements pEffectStatement;
 	private final CreateElementElements pCreateElement;
@@ -1305,7 +1339,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pRoutineCallStatement = new RoutineCallStatementElements();
 		this.pRoutineCallBlock = new RoutineCallBlockElements();
 		this.pTaggable = new TaggableElements();
-		this.pRetrieveModelElement = new RetrieveModelElementElements();
+		this.pMatcherStatement = new MatcherStatementElements();
+		this.pRetrieveModelElementStatement = new RetrieveModelElementStatementElements();
+		this.pMatcherCheckStatement = new MatcherCheckStatementElements();
 		this.pExistingElementReference = new ExistingElementReferenceElements();
 		this.pEffectStatement = new EffectStatementElements();
 		this.pCreateElement = new CreateElementElements();
@@ -1535,7 +1571,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//Matching:
 	//	{Matching}
 	//	'match' '{'
-	//	retrievedElements+=RetrieveModelElement* ('check' condition=PreconditionCodeBlock)?
+	//	matcherStatements+=MatcherStatement+
 	//	'}';
 	public MatchingElements getMatchingAccess() {
 		return pMatching;
@@ -1589,17 +1625,38 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getTaggableAccess().getRule();
 	}
 	
-	//RetrieveModelElement:
-	//	(required?='retrieve required element' | optional?='retrieve optional element' |
+	//MatcherStatement:
+	//	RetrieveModelElementStatement | MatcherCheckStatement;
+	public MatcherStatementElements getMatcherStatementAccess() {
+		return pMatcherStatement;
+	}
+	
+	public ParserRule getMatcherStatementRule() {
+		return getMatcherStatementAccess().getRule();
+	}
+	
+	//RetrieveModelElementStatement:
+	//	{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
 	//	abscence?='require absence of element') element=NamedModelElement 'corresponding to'
 	//	correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
 	//	precondition=PreconditionCodeBlock)?;
-	public RetrieveModelElementElements getRetrieveModelElementAccess() {
-		return pRetrieveModelElement;
+	public RetrieveModelElementStatementElements getRetrieveModelElementStatementAccess() {
+		return pRetrieveModelElementStatement;
 	}
 	
-	public ParserRule getRetrieveModelElementRule() {
-		return getRetrieveModelElementAccess().getRule();
+	public ParserRule getRetrieveModelElementStatementRule() {
+		return getRetrieveModelElementStatementAccess().getRule();
+	}
+	
+	//MatcherCheckStatement:
+	//	{MatcherCheckStatement}
+	//	'check' CodeBlock;
+	public MatcherCheckStatementElements getMatcherCheckStatementAccess() {
+		return pMatcherCheckStatement;
+	}
+	
+	public ParserRule getMatcherCheckStatementRule() {
+		return getMatcherCheckStatementAccess().getRule();
 	}
 	
 	//ExistingElementReference:

@@ -37,9 +37,9 @@ public class RemoveNonRootEffect extends AbstractEffectRealization {
   
   public RemoveNonRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.RemoveNonRootEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.removedNonRoot = removedNonRoot;
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonRootEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.removedNonRoot = removedNonRoot;
   }
   
   private NonRoot removedNonRoot;

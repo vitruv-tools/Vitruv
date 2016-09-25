@@ -51,11 +51,6 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
       return _describedService__SEFF;
     }
     
-    public boolean checkMatcherPrecondition(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod) {
-      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
-      return (_describedService__SEFF instanceof OperationSignature);
-    }
-    
     public EObject getCorrepondenceSourceComponentClass(final ServiceEffectSpecification seff) {
       BasicComponent _basicComponent_ServiceEffectSpecification = seff.getBasicComponent_ServiceEffectSpecification();
       return _basicComponent_ServiceEffectSpecification;
@@ -71,6 +66,11 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
     
     public EObject getElement3(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
       return componentClass;
+    }
+    
+    public boolean checkMatcherPrecondition1(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod) {
+      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
+      return (_describedService__SEFF instanceof OperationSignature);
     }
   }
   
@@ -105,7 +105,7 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
     	return;
     }
     initializeRetrieveElementState(interfaceMethod);
-    if (!userExecution.checkMatcherPrecondition(seff, componentClass, interfaceMethod)) {
+    if (!userExecution.checkMatcherPrecondition1(seff, componentClass, interfaceMethod)) {
     	return;
     }
     ClassMethod classMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();

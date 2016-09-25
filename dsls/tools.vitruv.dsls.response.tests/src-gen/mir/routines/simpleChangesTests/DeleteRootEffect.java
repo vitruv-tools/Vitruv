@@ -30,9 +30,9 @@ public class DeleteRootEffect extends AbstractEffectRealization {
   
   public DeleteRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.DeleteRootEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.root = root;
+    this.userExecution = new mir.routines.simpleChangesTests.DeleteRootEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.root = root;
   }
   
   private Root root;

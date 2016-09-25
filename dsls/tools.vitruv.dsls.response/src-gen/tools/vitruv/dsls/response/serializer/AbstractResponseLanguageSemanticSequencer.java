@@ -76,6 +76,7 @@ import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement;
 import tools.vitruv.dsls.response.responseLanguage.Matching;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeaturePermuteChange;
@@ -88,7 +89,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
@@ -198,6 +199,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 					return; 
 				}
 				else break;
+			case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT:
+				sequence_CodeBlock_MatcherCheckStatement(context, (MatcherCheckStatement) semanticObject); 
+				return; 
 			case ResponseLanguagePackage.MATCHING:
 				sequence_Matching(context, (Matching) semanticObject); 
 				return; 
@@ -283,8 +287,8 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case ResponseLanguagePackage.RESPONSES_SEGMENT:
 				sequence_ResponsesSegment(context, (ResponsesSegment) semanticObject); 
 				return; 
-			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
-				sequence_RetrieveModelElement_Taggable(context, (RetrieveModelElement) semanticObject); 
+			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT:
+				sequence_RetrieveModelElementStatement_Taggable(context, (RetrieveModelElementStatement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.ROUTINE:
 				sequence_Routine(context, (Routine) semanticObject); 
@@ -889,6 +893,25 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     MatcherStatement returns MatcherCheckStatement
+	 *     MatcherCheckStatement returns MatcherCheckStatement
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_MatcherCheckStatement(ISerializationContext context, MatcherCheckStatement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     PreconditionCodeBlock returns PreconditionCodeBlock
 	 *
 	 * Constraint:
@@ -1052,7 +1075,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Matching returns Matching
 	 *
 	 * Constraint:
-	 *     (retrievedElements+=RetrieveModelElement* condition=PreconditionCodeBlock?)
+	 *     matcherStatements+=MatcherStatement+
 	 */
 	protected void sequence_Matching(ISerializationContext context, Matching semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1119,7 +1142,8 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     RetrieveModelElement returns RetrieveModelElement
+	 *     MatcherStatement returns RetrieveModelElementStatement
+	 *     RetrieveModelElementStatement returns RetrieveModelElementStatement
 	 *
 	 * Constraint:
 	 *     (
@@ -1130,7 +1154,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *         precondition=PreconditionCodeBlock?
 	 *     )
 	 */
-	protected void sequence_RetrieveModelElement_Taggable(ISerializationContext context, RetrieveModelElement semanticObject) {
+	protected void sequence_RetrieveModelElementStatement_Taggable(ISerializationContext context, RetrieveModelElementStatement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

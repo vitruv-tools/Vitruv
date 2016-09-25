@@ -213,13 +213,31 @@ public interface ResponseLanguageFactory extends EFactory
   Taggable createTaggable();
 
   /**
-   * Returns a new object of class '<em>Retrieve Model Element</em>'.
+   * Returns a new object of class '<em>Matcher Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Retrieve Model Element</em>'.
+   * @return a new object of class '<em>Matcher Statement</em>'.
    * @generated
    */
-  RetrieveModelElement createRetrieveModelElement();
+  MatcherStatement createMatcherStatement();
+
+  /**
+   * Returns a new object of class '<em>Retrieve Model Element Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Retrieve Model Element Statement</em>'.
+   * @generated
+   */
+  RetrieveModelElementStatement createRetrieveModelElementStatement();
+
+  /**
+   * Returns a new object of class '<em>Matcher Check Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Matcher Check Statement</em>'.
+   * @generated
+   */
+  MatcherCheckStatement createMatcherCheckStatement();
 
   /**
    * Returns a new object of class '<em>Existing Element Reference</em>'.

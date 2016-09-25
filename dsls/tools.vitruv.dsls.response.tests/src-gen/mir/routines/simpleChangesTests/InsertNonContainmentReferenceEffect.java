@@ -56,9 +56,9 @@ public class InsertNonContainmentReferenceEffect extends AbstractEffectRealizati
   
   public InsertNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot insertedNonRoot) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.InsertNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.root = root;this.insertedNonRoot = insertedNonRoot;
+    this.userExecution = new mir.routines.simpleChangesTests.InsertNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.root = root;this.insertedNonRoot = insertedNonRoot;
   }
   
   private Root root;

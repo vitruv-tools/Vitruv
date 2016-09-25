@@ -37,9 +37,9 @@ public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization 
   
   public DeleteNonRootEObjectSingleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.containedObject = containedObject;
+    this.userExecution = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.containedObject = containedObject;
   }
   
   private NonRoot containedObject;

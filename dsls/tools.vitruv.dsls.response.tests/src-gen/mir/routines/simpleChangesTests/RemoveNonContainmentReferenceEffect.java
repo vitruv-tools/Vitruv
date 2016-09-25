@@ -51,9 +51,9 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
   
   public RemoveNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
-    				this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
-    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
-    				this.root = root;this.removedNonRoot = removedNonRoot;
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.root = root;this.removedNonRoot = removedNonRoot;
   }
   
   private Root root;

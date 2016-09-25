@@ -34,6 +34,8 @@ import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement;
+import tools.vitruv.dsls.response.responseLanguage.MatcherStatement;
 import tools.vitruv.dsls.response.responseLanguage.Matching;
 import tools.vitruv.dsls.response.responseLanguage.ModelChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
@@ -48,7 +50,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguageFactory;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
@@ -219,7 +221,21 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass retrieveModelElementEClass = null;
+  private EClass matcherStatementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass retrieveModelElementStatementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass matcherCheckStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -820,19 +836,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMatching_RetrievedElements()
+  public EReference getMatching_MatcherStatements()
   {
     return (EReference)matchingEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getMatching_Condition()
-  {
-    return (EReference)matchingEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -900,9 +906,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRetrieveModelElement()
+  public EClass getMatcherStatement()
   {
-    return retrieveModelElementEClass;
+    return matcherStatementEClass;
   }
 
   /**
@@ -910,9 +916,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRetrieveModelElement_Required()
+  public EClass getRetrieveModelElementStatement()
   {
-    return (EAttribute)retrieveModelElementEClass.getEStructuralFeatures().get(0);
+    return retrieveModelElementStatementEClass;
   }
 
   /**
@@ -920,9 +926,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRetrieveModelElement_Optional()
+  public EAttribute getRetrieveModelElementStatement_Required()
   {
-    return (EAttribute)retrieveModelElementEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)retrieveModelElementStatementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -930,9 +936,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRetrieveModelElement_Abscence()
+  public EAttribute getRetrieveModelElementStatement_Optional()
   {
-    return (EAttribute)retrieveModelElementEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)retrieveModelElementStatementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -940,9 +946,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRetrieveModelElement_Element()
+  public EAttribute getRetrieveModelElementStatement_Abscence()
   {
-    return (EReference)retrieveModelElementEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)retrieveModelElementStatementEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -950,9 +956,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRetrieveModelElement_CorrespondenceSource()
+  public EReference getRetrieveModelElementStatement_Element()
   {
-    return (EReference)retrieveModelElementEClass.getEStructuralFeatures().get(4);
+    return (EReference)retrieveModelElementStatementEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -960,9 +966,29 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRetrieveModelElement_Precondition()
+  public EReference getRetrieveModelElementStatement_CorrespondenceSource()
   {
-    return (EReference)retrieveModelElementEClass.getEStructuralFeatures().get(5);
+    return (EReference)retrieveModelElementStatementEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRetrieveModelElementStatement_Precondition()
+  {
+    return (EReference)retrieveModelElementStatementEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getMatcherCheckStatement()
+  {
+    return matcherCheckStatementEClass;
   }
 
   /**
@@ -1331,8 +1357,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(routineInputEClass, ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 
     matchingEClass = createEClass(MATCHING);
-    createEReference(matchingEClass, MATCHING__RETRIEVED_ELEMENTS);
-    createEReference(matchingEClass, MATCHING__CONDITION);
+    createEReference(matchingEClass, MATCHING__MATCHER_STATEMENTS);
 
     effectEClass = createEClass(EFFECT);
     createEReference(effectEClass, EFFECT__EFFECT_STATEMENT);
@@ -1344,13 +1369,17 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     taggableEClass = createEClass(TAGGABLE);
     createEReference(taggableEClass, TAGGABLE__TAG);
 
-    retrieveModelElementEClass = createEClass(RETRIEVE_MODEL_ELEMENT);
-    createEAttribute(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__REQUIRED);
-    createEAttribute(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__OPTIONAL);
-    createEAttribute(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__ABSCENCE);
-    createEReference(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__ELEMENT);
-    createEReference(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE);
-    createEReference(retrieveModelElementEClass, RETRIEVE_MODEL_ELEMENT__PRECONDITION);
+    matcherStatementEClass = createEClass(MATCHER_STATEMENT);
+
+    retrieveModelElementStatementEClass = createEClass(RETRIEVE_MODEL_ELEMENT_STATEMENT);
+    createEAttribute(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED);
+    createEAttribute(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL);
+    createEAttribute(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE);
+    createEReference(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT);
+    createEReference(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE);
+    createEReference(retrieveModelElementStatementEClass, RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION);
+
+    matcherCheckStatementEClass = createEClass(MATCHER_CHECK_STATEMENT);
 
     existingElementReferenceEClass = createEClass(EXISTING_ELEMENT_REFERENCE);
 
@@ -1449,7 +1478,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     routineCallStatementEClass.getESuperTypes().add(this.getCodeBlock());
     routineCallStatementEClass.getESuperTypes().add(this.getEffectStatement());
     routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
-    retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
+    retrieveModelElementStatementEClass.getESuperTypes().add(this.getMatcherStatement());
+    retrieveModelElementStatementEClass.getESuperTypes().add(this.getTaggable());
+    matcherCheckStatementEClass.getESuperTypes().add(this.getMatcherStatement());
+    matcherCheckStatementEClass.getESuperTypes().add(this.getCodeBlock());
     existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
     effectStatementEClass.getESuperTypes().add(this.getTaggable());
     tagCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
@@ -1525,8 +1557,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getRoutineInput_JavaInputElements(), theMirBasePackage.getNamedJavaElement(), null, "javaInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(matchingEClass, Matching.class, "Matching", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMatching_RetrievedElements(), this.getRetrieveModelElement(), null, "retrievedElements", null, 0, -1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMatching_Condition(), this.getPreconditionCodeBlock(), null, "condition", null, 0, 1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMatching_MatcherStatements(), this.getMatcherStatement(), null, "matcherStatements", null, 0, -1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEffect_EffectStatement(), this.getEffectStatement(), null, "effectStatement", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1538,13 +1569,17 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(taggableEClass, Taggable.class, "Taggable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTaggable_Tag(), this.getTagCodeBlock(), null, "tag", null, 0, 1, Taggable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(retrieveModelElementEClass, RetrieveModelElement.class, "RetrieveModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getRetrieveModelElement_Required(), ecorePackage.getEBoolean(), "required", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getRetrieveModelElement_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getRetrieveModelElement_Abscence(), ecorePackage.getEBoolean(), "abscence", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRetrieveModelElement_Element(), theMirBasePackage.getModelElement(), null, "element", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRetrieveModelElement_CorrespondenceSource(), this.getCorrespondingObjectCodeBlock(), null, "correspondenceSource", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRetrieveModelElement_Precondition(), this.getPreconditionCodeBlock(), null, "precondition", null, 0, 1, RetrieveModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(matcherStatementEClass, MatcherStatement.class, "MatcherStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(retrieveModelElementStatementEClass, RetrieveModelElementStatement.class, "RetrieveModelElementStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRetrieveModelElementStatement_Required(), ecorePackage.getEBoolean(), "required", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRetrieveModelElementStatement_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRetrieveModelElementStatement_Abscence(), ecorePackage.getEBoolean(), "abscence", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRetrieveModelElementStatement_Element(), theMirBasePackage.getModelElement(), null, "element", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRetrieveModelElementStatement_CorrespondenceSource(), this.getCorrespondingObjectCodeBlock(), null, "correspondenceSource", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRetrieveModelElementStatement_Precondition(), this.getPreconditionCodeBlock(), null, "precondition", null, 0, 1, RetrieveModelElementStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(matcherCheckStatementEClass, MatcherCheckStatement.class, "MatcherCheckStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(existingElementReferenceEClass, ExistingElementReference.class, "ExistingElementReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

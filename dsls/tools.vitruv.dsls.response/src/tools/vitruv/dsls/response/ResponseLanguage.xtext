@@ -88,8 +88,7 @@ RoutineInput:
 Matching:
 	{Matching}
 	'match' '{'
-		retrievedElements+=RetrieveModelElement*
-		('check' condition=PreconditionCodeBlock)?
+		(matcherStatements+=MatcherStatement)+
 	'}';
 
 Effect:
@@ -110,10 +109,18 @@ fragment RoutineCallBlock:
 fragment Taggable:
 	tag=TagCodeBlock;
 
-RetrieveModelElement:
+MatcherStatement:
+	RetrieveModelElementStatement | MatcherCheckStatement;
+
+RetrieveModelElementStatement:
+	{RetrieveModelElementStatement}
 	(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
 	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+
+MatcherCheckStatement:
+	{MatcherCheckStatement}
+	'check' CodeBlock;
 
 ExistingElementReference:
 	CodeBlock;

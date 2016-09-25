@@ -7,26 +7,26 @@ import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Retrieve Model Element</b></em>'.
+ * A representation of the model object '<em><b>Retrieve Model Element Statement</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isRequired <em>Required</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional <em>Optional</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence <em>Abscence</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getElement <em>Element</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource <em>Correspondence Source</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition <em>Precondition</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired <em>Required</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional <em>Optional</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence <em>Abscence</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource <em>Correspondence Source</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition <em>Precondition</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement()
+ * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement()
  * @model
  * @generated
  */
-public interface RetrieveModelElement extends Taggable
+public interface RetrieveModelElementStatement extends MatcherStatement, Taggable
 {
   /**
    * Returns the value of the '<em><b>Required</b></em>' attribute.
@@ -38,14 +38,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Required</em>' attribute.
    * @see #setRequired(boolean)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_Required()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_Required()
    * @model
    * @generated
    */
   boolean isRequired();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isRequired <em>Required</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired <em>Required</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Required</em>' attribute.
@@ -64,14 +64,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Optional</em>' attribute.
    * @see #setOptional(boolean)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_Optional()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_Optional()
    * @model
    * @generated
    */
   boolean isOptional();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional <em>Optional</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional <em>Optional</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Optional</em>' attribute.
@@ -90,14 +90,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Abscence</em>' attribute.
    * @see #setAbscence(boolean)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_Abscence()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_Abscence()
    * @model
    * @generated
    */
   boolean isAbscence();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence <em>Abscence</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence <em>Abscence</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Abscence</em>' attribute.
@@ -116,14 +116,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element</em>' containment reference.
    * @see #setElement(ModelElement)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_Element()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_Element()
    * @model containment="true"
    * @generated
    */
   ModelElement getElement();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getElement <em>Element</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement <em>Element</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element</em>' containment reference.
@@ -142,14 +142,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Correspondence Source</em>' containment reference.
    * @see #setCorrespondenceSource(CorrespondingObjectCodeBlock)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_CorrespondenceSource()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_CorrespondenceSource()
    * @model containment="true"
    * @generated
    */
   CorrespondingObjectCodeBlock getCorrespondenceSource();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource <em>Correspondence Source</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource <em>Correspondence Source</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Correspondence Source</em>' containment reference.
@@ -168,14 +168,14 @@ public interface RetrieveModelElement extends Taggable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Precondition</em>' containment reference.
    * @see #setPrecondition(PreconditionCodeBlock)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElement_Precondition()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRetrieveModelElementStatement_Precondition()
    * @model containment="true"
    * @generated
    */
   PreconditionCodeBlock getPrecondition();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition <em>Precondition</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition <em>Precondition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Precondition</em>' containment reference.
@@ -184,4 +184,4 @@ public interface RetrieveModelElement extends Taggable
    */
   void setPrecondition(PreconditionCodeBlock value);
 
-} // RetrieveModelElement
+} // RetrieveModelElementStatement

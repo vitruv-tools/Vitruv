@@ -16,8 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Matching#getRetrievedElements <em>Retrieved Elements</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Matching#getCondition <em>Condition</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Matching#getMatcherStatements <em>Matcher Statements</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching()
@@ -27,45 +26,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface Matching extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Retrieved Elements</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement}.
+   * Returns the value of the '<em><b>Matcher Statements</b></em>' containment reference list.
+   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.MatcherStatement}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Retrieved Elements</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Matcher Statements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Retrieved Elements</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching_RetrievedElements()
+   * @return the value of the '<em>Matcher Statements</em>' containment reference list.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching_MatcherStatements()
    * @model containment="true"
    * @generated
    */
-  EList<RetrieveModelElement> getRetrievedElements();
-
-  /**
-   * Returns the value of the '<em><b>Condition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Condition</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Condition</em>' containment reference.
-   * @see #setCondition(PreconditionCodeBlock)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching_Condition()
-   * @model containment="true"
-   * @generated
-   */
-  PreconditionCodeBlock getCondition();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Matching#getCondition <em>Condition</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Condition</em>' containment reference.
-   * @see #getCondition()
-   * @generated
-   */
-  void setCondition(PreconditionCodeBlock value);
+  EList<MatcherStatement> getMatcherStatements();
 
 } // Matching

@@ -9,11 +9,11 @@ import org.eclipse.xtext.common.types.JvmOperation
 import tools.vitruv.dsls.response.responseLanguage.CodeBlock
 import tools.vitruv.dsls.response.environment.SimpleTextXBlockExpression
 import tools.vitruv.dsls.response.responseLanguage.Taggable
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference
-import tools.vitruv.dsls.response.responseLanguage.Matching
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -22,6 +22,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	private var int counterGetElementMethods;
 	private var int counterGetRetrieveTagMethods;
 	private var int counterCallRoutineMethods;
+	private var int counterCheckMatcherPreconditionMethods;
 	
 	protected static class AccessibleElement {
 		public val String name;
@@ -40,6 +41,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		this.counterGetElementMethods = 1;
 		this.counterGetRetrieveTagMethods = 1;
 		this.counterCallRoutineMethods = 1;
+		this.counterCheckMatcherPreconditionMethods = 1;
 	}
 	
 	public def String getQualifiedClassName() {
@@ -98,7 +100,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];		
 	}
 	
-	protected def generateMethodCorrespondencePrecondition(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+	protected def generateMethodCorrespondencePrecondition(RetrieveModelElementStatement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrespondingModelElementsPrecondition" + elementRetrieve.element.name.toFirstUpper;
 		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			val elementParameter = generateModelElementParameter(elementRetrieve.element);
@@ -108,7 +110,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+	protected def generateMethodGetCorrespondenceSource(RetrieveModelElementStatement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrepondenceSource" + elementRetrieve.element.name.toFirstUpper;
 		
 		return elementRetrieve.correspondenceSource.getOrGenerateMethod(methodName, typeRef(EObject)) [
@@ -136,14 +138,11 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	protected def generateMethodMatcherPrecondition(Matching matching, Iterable<AccessibleElement> accessibleElements) {
-		if (matching?.condition == null) {
-			return null;
-		}
-		val methodName = "checkMatcherPrecondition";
-		return matching.condition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
+	protected def JvmOperation generateMethodMatcherPrecondition(MatcherCheckStatement checkStatement, Iterable<AccessibleElement> accessibleElements) {
+		val methodName = "checkMatcherPrecondition" + counterCheckMatcherPreconditionMethods++;
+		return checkStatement.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			body = matching.condition.code;
+			body = checkStatement.code;
 		];
 	}
 	

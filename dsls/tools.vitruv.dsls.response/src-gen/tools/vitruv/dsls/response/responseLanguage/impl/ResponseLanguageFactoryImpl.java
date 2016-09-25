@@ -86,7 +86,9 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
       case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
+      case ResponseLanguagePackage.MATCHER_STATEMENT: return createMatcherStatement();
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT: return createRetrieveModelElementStatement();
+      case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT: return createMatcherCheckStatement();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
       case ResponseLanguagePackage.EFFECT_STATEMENT: return createEffectStatement();
       case ResponseLanguagePackage.TAG_CODE_BLOCK: return createTagCodeBlock();
@@ -346,10 +348,32 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public RetrieveModelElement createRetrieveModelElement()
+  public MatcherStatement createMatcherStatement()
   {
-    RetrieveModelElementImpl retrieveModelElement = new RetrieveModelElementImpl();
-    return retrieveModelElement;
+    MatcherStatementImpl matcherStatement = new MatcherStatementImpl();
+    return matcherStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RetrieveModelElementStatement createRetrieveModelElementStatement()
+  {
+    RetrieveModelElementStatementImpl retrieveModelElementStatement = new RetrieveModelElementStatementImpl();
+    return retrieveModelElementStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MatcherCheckStatement createMatcherCheckStatement()
+  {
+    MatcherCheckStatementImpl matcherCheckStatement = new MatcherCheckStatementImpl();
+    return matcherCheckStatement;
   }
 
   /**

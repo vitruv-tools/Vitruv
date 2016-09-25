@@ -23,7 +23,8 @@ import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 
 /**
  * Outline structure definition for a response file.
@@ -106,7 +107,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		for (element : routine.matching.retrievedElements) {
+		for (element : routine.matching.matcherStatements) {
 			createEObjectNode(parentNode, element);	
 		}
 		
@@ -179,8 +180,12 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Create element: " + elementCreate.elementText;
 //	}
 	
-	protected def Object _text(RetrieveModelElement elementRetrieve) {
+	protected def Object _text(RetrieveModelElementStatement elementRetrieve) {
 		"retrieve element: " + elementRetrieve.elementText;
+	}
+	
+	protected def Object _text(MatcherCheckStatement checkStatement) {
+		"custom check statement";
 	}
 	
 	protected def Object _text(CreateCorrespondence createCorrespondence) {
@@ -195,7 +200,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Delete element: " + elementDelete.elementText;
 //	}
 	
-	private def String getElementText(RetrieveModelElement retrieveElement) {
+	private def String getElementText(RetrieveModelElementStatement retrieveElement) {
 		return retrieveElement.element.name + " (" + retrieveElement.element?.element?.name + ")"
 	}
 	
@@ -211,7 +216,11 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(RetrieveModelElement element) {
+	protected def boolean _isLeaf(RetrieveModelElementStatement element) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(MatcherCheckStatement element) {
 		return true;
 	}
 	

@@ -55,8 +55,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RoutineInput/javaInputElements"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//Matching">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Matching/retrievedElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Matching/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Matching/matcherStatements"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//Effect">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/effectStatement"/>
@@ -66,14 +65,16 @@
     <genClasses ecoreClass="ResponseLanguage.ecore#//Taggable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Taggable/tag"/>
     </genClasses>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//RetrieveModelElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElement/required"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElement/optional"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElement/abscence"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElement/element"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElement/correspondenceSource"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElement/precondition"/>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//MatcherStatement"/>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//RetrieveModelElementStatement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElementStatement/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElementStatement/optional"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ResponseLanguage.ecore#//RetrieveModelElementStatement/abscence"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElementStatement/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElementStatement/correspondenceSource"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElementStatement/precondition"/>
     </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//MatcherCheckStatement"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//ExistingElementReference"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//EffectStatement"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//TagCodeBlock"/>

@@ -241,7 +241,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCodeBlock()
    * @generated
    */
-  int CODE_BLOCK = 28;
+  int CODE_BLOCK = 30;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -754,22 +754,13 @@ public interface ResponseLanguagePackage extends EPackage
   int MATCHING = 16;
 
   /**
-   * The feature id for the '<em><b>Retrieved Elements</b></em>' containment reference list.
+   * The feature id for the '<em><b>Matcher Statements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MATCHING__RETRIEVED_ELEMENTS = 0;
-
-  /**
-   * The feature id for the '<em><b>Condition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MATCHING__CONDITION = 1;
+  int MATCHING__MATCHER_STATEMENTS = 0;
 
   /**
    * The number of structural features of the '<em>Matching</em>' class.
@@ -778,7 +769,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int MATCHING_FEATURE_COUNT = 2;
+  int MATCHING_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl <em>Effect</em>}' class.
@@ -874,14 +865,33 @@ public interface ResponseLanguagePackage extends EPackage
   int TAGGABLE_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl <em>Retrieve Model Element</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherStatementImpl <em>Matcher Statement</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.MatcherStatementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMatcherStatement()
    * @generated
    */
-  int RETRIEVE_MODEL_ELEMENT = 21;
+  int MATCHER_STATEMENT = 21;
+
+  /**
+   * The number of structural features of the '<em>Matcher Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MATCHER_STATEMENT_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl <em>Retrieve Model Element Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElementStatement()
+   * @generated
+   */
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT = 22;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -890,7 +900,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__TAG = TAGGABLE__TAG;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG = MATCHER_STATEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Required</b></em>' attribute.
@@ -899,7 +909,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__REQUIRED = TAGGABLE_FEATURE_COUNT + 0;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED = MATCHER_STATEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -908,7 +918,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__OPTIONAL = TAGGABLE_FEATURE_COUNT + 1;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL = MATCHER_STATEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Abscence</b></em>' attribute.
@@ -917,7 +927,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__ABSCENCE = TAGGABLE_FEATURE_COUNT + 2;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE = MATCHER_STATEMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' containment reference.
@@ -926,7 +936,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__ELEMENT = TAGGABLE_FEATURE_COUNT + 3;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT = MATCHER_STATEMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Correspondence Source</b></em>' containment reference.
@@ -935,7 +945,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = TAGGABLE_FEATURE_COUNT + 4;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE = MATCHER_STATEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -944,16 +954,44 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__PRECONDITION = TAGGABLE_FEATURE_COUNT + 5;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION = MATCHER_STATEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The number of structural features of the '<em>Retrieve Model Element</em>' class.
+   * The number of structural features of the '<em>Retrieve Model Element Statement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_FEATURE_COUNT = TAGGABLE_FEATURE_COUNT + 6;
+  int RETRIEVE_MODEL_ELEMENT_STATEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 7;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl <em>Matcher Check Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMatcherCheckStatement()
+   * @generated
+   */
+  int MATCHER_CHECK_STATEMENT = 23;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MATCHER_CHECK_STATEMENT__CODE = MATCHER_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Matcher Check Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MATCHER_CHECK_STATEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ExistingElementReferenceImpl <em>Existing Element Reference</em>}' class.
@@ -963,7 +1001,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExistingElementReference()
    * @generated
    */
-  int EXISTING_ELEMENT_REFERENCE = 22;
+  int EXISTING_ELEMENT_REFERENCE = 24;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -991,7 +1029,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffectStatement()
    * @generated
    */
-  int EFFECT_STATEMENT = 23;
+  int EFFECT_STATEMENT = 25;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1019,7 +1057,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTagCodeBlock()
    * @generated
    */
-  int TAG_CODE_BLOCK = 24;
+  int TAG_CODE_BLOCK = 26;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1047,7 +1085,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getPreconditionCodeBlock()
    * @generated
    */
-  int PRECONDITION_CODE_BLOCK = 25;
+  int PRECONDITION_CODE_BLOCK = 27;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1075,7 +1113,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCorrespondingObjectCodeBlock()
    * @generated
    */
-  int CORRESPONDING_OBJECT_CODE_BLOCK = 26;
+  int CORRESPONDING_OBJECT_CODE_BLOCK = 28;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1103,7 +1141,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExecutionCodeBlock()
    * @generated
    */
-  int EXECUTION_CODE_BLOCK = 27;
+  int EXECUTION_CODE_BLOCK = 29;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1131,7 +1169,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getInsertRootChange()
    * @generated
    */
-  int INSERT_ROOT_CHANGE = 29;
+  int INSERT_ROOT_CHANGE = 31;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1168,7 +1206,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveRootChange()
    * @generated
    */
-  int REMOVE_ROOT_CHANGE = 30;
+  int REMOVE_ROOT_CHANGE = 32;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1205,7 +1243,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureInsertChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 31;
+  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 33;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1242,7 +1280,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureRemoveChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 32;
+  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 34;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1279,7 +1317,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeaturePermuteChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 33;
+  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 35;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1316,7 +1354,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getSingleValuedFeatureReplace()
    * @generated
    */
-  int SINGLE_VALUED_FEATURE_REPLACE = 34;
+  int SINGLE_VALUED_FEATURE_REPLACE = 36;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1353,7 +1391,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateElement()
    * @generated
    */
-  int CREATE_ELEMENT = 35;
+  int CREATE_ELEMENT = 37;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1399,7 +1437,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteElement()
    * @generated
    */
-  int DELETE_ELEMENT = 36;
+  int DELETE_ELEMENT = 38;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1436,7 +1474,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateElement()
    * @generated
    */
-  int UPDATE_ELEMENT = 37;
+  int UPDATE_ELEMENT = 39;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1482,7 +1520,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
    * @generated
    */
-  int CREATE_CORRESPONDENCE = 38;
+  int CREATE_CORRESPONDENCE = 40;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1528,7 +1566,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
    * @generated
    */
-  int REMOVE_CORRESPONDENCE = 39;
+  int REMOVE_CORRESPONDENCE = 41;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1991,26 +2029,15 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getMatching();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.Matching#getRetrievedElements <em>Retrieved Elements</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.Matching#getMatcherStatements <em>Matcher Statements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Retrieved Elements</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Matching#getRetrievedElements()
+   * @return the meta object for the containment reference list '<em>Matcher Statements</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Matching#getMatcherStatements()
    * @see #getMatching()
    * @generated
    */
-  EReference getMatching_RetrievedElements();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Matching#getCondition <em>Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Matching#getCondition()
-   * @see #getMatching()
-   * @generated
-   */
-  EReference getMatching_Condition();
+  EReference getMatching_MatcherStatements();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Effect <em>Effect</em>}'.
@@ -2075,80 +2102,100 @@ public interface ResponseLanguagePackage extends EPackage
   EReference getTaggable_Tag();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement <em>Retrieve Model Element</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.MatcherStatement <em>Matcher Statement</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Retrieve Model Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+   * @return the meta object for class '<em>Matcher Statement</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.MatcherStatement
    * @generated
    */
-  EClass getRetrieveModelElement();
+  EClass getMatcherStatement();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isRequired <em>Required</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement <em>Retrieve Model Element Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Retrieve Model Element Statement</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+   * @generated
+   */
+  EClass getRetrieveModelElementStatement();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired <em>Required</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Required</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isRequired()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EAttribute getRetrieveModelElement_Required();
+  EAttribute getRetrieveModelElementStatement_Required();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional <em>Optional</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional <em>Optional</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Optional</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EAttribute getRetrieveModelElement_Optional();
+  EAttribute getRetrieveModelElementStatement_Optional();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence <em>Abscence</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence <em>Abscence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Abscence</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EAttribute getRetrieveModelElement_Abscence();
+  EAttribute getRetrieveModelElementStatement_Abscence();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getElement <em>Element</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement <em>Element</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getElement()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EReference getRetrieveModelElement_Element();
+  EReference getRetrieveModelElementStatement_Element();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource <em>Correspondence Source</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource <em>Correspondence Source</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Correspondence Source</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EReference getRetrieveModelElement_CorrespondenceSource();
+  EReference getRetrieveModelElementStatement_CorrespondenceSource();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition <em>Precondition</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition <em>Precondition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Precondition</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition()
-   * @see #getRetrieveModelElement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition()
+   * @see #getRetrieveModelElementStatement()
    * @generated
    */
-  EReference getRetrieveModelElement_Precondition();
+  EReference getRetrieveModelElementStatement_Precondition();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement <em>Matcher Check Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Matcher Check Statement</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
+   * @generated
+   */
+  EClass getMatcherCheckStatement();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ExistingElementReference <em>Existing Element Reference</em>}'.
@@ -2818,20 +2865,12 @@ public interface ResponseLanguagePackage extends EPackage
     EClass MATCHING = eINSTANCE.getMatching();
 
     /**
-     * The meta object literal for the '<em><b>Retrieved Elements</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Matcher Statements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MATCHING__RETRIEVED_ELEMENTS = eINSTANCE.getMatching_RetrievedElements();
-
-    /**
-     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference MATCHING__CONDITION = eINSTANCE.getMatching_Condition();
+    EReference MATCHING__MATCHER_STATEMENTS = eINSTANCE.getMatching_MatcherStatements();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl <em>Effect</em>}' class.
@@ -2890,14 +2929,24 @@ public interface ResponseLanguagePackage extends EPackage
     EReference TAGGABLE__TAG = eINSTANCE.getTaggable_Tag();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl <em>Retrieve Model Element</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherStatementImpl <em>Matcher Statement</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElement()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.MatcherStatementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMatcherStatement()
      * @generated
      */
-    EClass RETRIEVE_MODEL_ELEMENT = eINSTANCE.getRetrieveModelElement();
+    EClass MATCHER_STATEMENT = eINSTANCE.getMatcherStatement();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl <em>Retrieve Model Element Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElementStatement()
+     * @generated
+     */
+    EClass RETRIEVE_MODEL_ELEMENT_STATEMENT = eINSTANCE.getRetrieveModelElementStatement();
 
     /**
      * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
@@ -2905,7 +2954,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT__REQUIRED = eINSTANCE.getRetrieveModelElement_Required();
+    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED = eINSTANCE.getRetrieveModelElementStatement_Required();
 
     /**
      * The meta object literal for the '<em><b>Optional</b></em>' attribute feature.
@@ -2913,7 +2962,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT__OPTIONAL = eINSTANCE.getRetrieveModelElement_Optional();
+    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL = eINSTANCE.getRetrieveModelElementStatement_Optional();
 
     /**
      * The meta object literal for the '<em><b>Abscence</b></em>' attribute feature.
@@ -2921,7 +2970,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT__ABSCENCE = eINSTANCE.getRetrieveModelElement_Abscence();
+    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE = eINSTANCE.getRetrieveModelElementStatement_Abscence();
 
     /**
      * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
@@ -2929,7 +2978,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RETRIEVE_MODEL_ELEMENT__ELEMENT = eINSTANCE.getRetrieveModelElement_Element();
+    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT = eINSTANCE.getRetrieveModelElementStatement_Element();
 
     /**
      * The meta object literal for the '<em><b>Correspondence Source</b></em>' containment reference feature.
@@ -2937,7 +2986,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = eINSTANCE.getRetrieveModelElement_CorrespondenceSource();
+    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE = eINSTANCE.getRetrieveModelElementStatement_CorrespondenceSource();
 
     /**
      * The meta object literal for the '<em><b>Precondition</b></em>' containment reference feature.
@@ -2945,7 +2994,17 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RETRIEVE_MODEL_ELEMENT__PRECONDITION = eINSTANCE.getRetrieveModelElement_Precondition();
+    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION = eINSTANCE.getRetrieveModelElementStatement_Precondition();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl <em>Matcher Check Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMatcherCheckStatement()
+     * @generated
+     */
+    EClass MATCHER_CHECK_STATEMENT = eINSTANCE.getMatcherCheckStatement();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ExistingElementReferenceImpl <em>Existing Element Reference</em>}' class.

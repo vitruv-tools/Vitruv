@@ -183,9 +183,19 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createTaggableAdapter();
       }
       @Override
-      public Adapter caseRetrieveModelElement(RetrieveModelElement object)
+      public Adapter caseMatcherStatement(MatcherStatement object)
       {
-        return createRetrieveModelElementAdapter();
+        return createMatcherStatementAdapter();
+      }
+      @Override
+      public Adapter caseRetrieveModelElementStatement(RetrieveModelElementStatement object)
+      {
+        return createRetrieveModelElementStatementAdapter();
+      }
+      @Override
+      public Adapter caseMatcherCheckStatement(MatcherCheckStatement object)
+      {
+        return createMatcherCheckStatementAdapter();
       }
       @Override
       public Adapter caseExistingElementReference(ExistingElementReference object)
@@ -620,16 +630,46 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement <em>Retrieve Model Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.MatcherStatement <em>Matcher Statement</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+   * @see tools.vitruv.dsls.response.responseLanguage.MatcherStatement
    * @generated
    */
-  public Adapter createRetrieveModelElementAdapter()
+  public Adapter createMatcherStatementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement <em>Retrieve Model Element Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+   * @generated
+   */
+  public Adapter createRetrieveModelElementStatementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement <em>Matcher Check Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
+   * @generated
+   */
+  public Adapter createMatcherCheckStatementAdapter()
   {
     return null;
   }
