@@ -217,43 +217,10 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.MATCHING:
+      case ResponseLanguagePackage.MATCHER:
       {
-        Matching matching = (Matching)theEObject;
-        T result = caseMatching(matching);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.EFFECT:
-      {
-        Effect effect = (Effect)theEObject;
-        T result = caseEffect(effect);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT:
-      {
-        RoutineCallStatement routineCallStatement = (RoutineCallStatement)theEObject;
-        T result = caseRoutineCallStatement(routineCallStatement);
-        if (result == null) result = caseRoutineCallBlock(routineCallStatement);
-        if (result == null) result = caseEffectStatement(routineCallStatement);
-        if (result == null) result = caseCodeBlock(routineCallStatement);
-        if (result == null) result = caseTaggable(routineCallStatement);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
-      {
-        RoutineCallBlock routineCallBlock = (RoutineCallBlock)theEObject;
-        T result = caseRoutineCallBlock(routineCallBlock);
-        if (result == null) result = caseCodeBlock(routineCallBlock);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.TAGGABLE:
-      {
-        Taggable taggable = (Taggable)theEObject;
-        T result = caseTaggable(taggable);
+        Matcher matcher = (Matcher)theEObject;
+        T result = caseMatcher(matcher);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -282,11 +249,21 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE:
+      case ResponseLanguagePackage.EFFECT:
       {
-        ExistingElementReference existingElementReference = (ExistingElementReference)theEObject;
-        T result = caseExistingElementReference(existingElementReference);
-        if (result == null) result = caseCodeBlock(existingElementReference);
+        Effect effect = (Effect)theEObject;
+        T result = caseEffect(effect);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT:
+      {
+        RoutineCallStatement routineCallStatement = (RoutineCallStatement)theEObject;
+        T result = caseRoutineCallStatement(routineCallStatement);
+        if (result == null) result = caseRoutineCallBlock(routineCallStatement);
+        if (result == null) result = caseEffectStatement(routineCallStatement);
+        if (result == null) result = caseCodeBlock(routineCallStatement);
+        if (result == null) result = caseTaggable(routineCallStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -295,6 +272,36 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         EffectStatement effectStatement = (EffectStatement)theEObject;
         T result = caseEffectStatement(effectStatement);
         if (result == null) result = caseTaggable(effectStatement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.CODE_BLOCK:
+      {
+        CodeBlock codeBlock = (CodeBlock)theEObject;
+        T result = caseCodeBlock(codeBlock);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
+      {
+        RoutineCallBlock routineCallBlock = (RoutineCallBlock)theEObject;
+        T result = caseRoutineCallBlock(routineCallBlock);
+        if (result == null) result = caseCodeBlock(routineCallBlock);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.TAGGABLE:
+      {
+        Taggable taggable = (Taggable)theEObject;
+        T result = caseTaggable(taggable);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE:
+      {
+        ExistingElementReference existingElementReference = (ExistingElementReference)theEObject;
+        T result = caseExistingElementReference(existingElementReference);
+        if (result == null) result = caseCodeBlock(existingElementReference);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -327,13 +334,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         ExecutionCodeBlock executionCodeBlock = (ExecutionCodeBlock)theEObject;
         T result = caseExecutionCodeBlock(executionCodeBlock);
         if (result == null) result = caseCodeBlock(executionCodeBlock);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case ResponseLanguagePackage.CODE_BLOCK:
-      {
-        CodeBlock codeBlock = (CodeBlock)theEObject;
-        T result = caseCodeBlock(codeBlock);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -719,81 +719,17 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Matching</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Matcher</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Matching</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Matcher</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseMatching(Matching object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Effect</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Effect</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseEffect(Effect object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Routine Call Statement</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Routine Call Statement</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRoutineCallStatement(RoutineCallStatement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRoutineCallBlock(RoutineCallBlock object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Taggable</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Taggable</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseTaggable(Taggable object)
+  public T caseMatcher(Matcher object)
   {
     return null;
   }
@@ -847,17 +783,33 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Existing Element Reference</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Effect</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Existing Element Reference</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Effect</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseExistingElementReference(ExistingElementReference object)
+  public T caseEffect(Effect object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Routine Call Statement</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Routine Call Statement</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRoutineCallStatement(RoutineCallStatement object)
   {
     return null;
   }
@@ -874,6 +826,70 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseEffectStatement(EffectStatement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Code Block</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Code Block</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCodeBlock(CodeBlock object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRoutineCallBlock(RoutineCallBlock object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Taggable</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Taggable</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTaggable(Taggable object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Existing Element Reference</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Existing Element Reference</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseExistingElementReference(ExistingElementReference object)
   {
     return null;
   }
@@ -938,22 +954,6 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseExecutionCodeBlock(ExecutionCodeBlock object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Code Block</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Code Block</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseCodeBlock(CodeBlock object)
   {
     return null;
   }

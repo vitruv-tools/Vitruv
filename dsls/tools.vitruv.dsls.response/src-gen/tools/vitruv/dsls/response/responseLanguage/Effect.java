@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getEffectStatement <em>Effect Statement</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getEffectStatements <em>Effect Statements</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect()
@@ -26,19 +26,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface Effect extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Effect Statement</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Effect Statements</b></em>' containment reference list.
    * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.EffectStatement}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Effect Statement</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Effect Statements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Effect Statement</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_EffectStatement()
+   * @return the value of the '<em>Effect Statements</em>' containment reference list.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_EffectStatements()
    * @model containment="true"
    * @generated
    */
-  EList<EffectStatement> getEffectStatement();
+  EList<EffectStatement> getEffectStatements();
 
 } // Effect

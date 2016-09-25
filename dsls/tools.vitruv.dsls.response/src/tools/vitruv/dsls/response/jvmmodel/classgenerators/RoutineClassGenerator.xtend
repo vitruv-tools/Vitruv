@@ -229,8 +229,8 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeRoutine";
 		val inputParameters = routine.generateInputParameters();
-		val matcherStatements = if (routine.matching != null) routine.matching.matcherStatements else #[];
-		val effectStatements = routine.effect.effectStatement;
+		val matcherStatements = if (routine.matcher != null) routine.matcher.matcherStatements else #[];
+		val effectStatements = routine.effect.effectStatements;
 		val matcherStatementsMap = <MatcherStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(matcherStatements, [matcherStatementsMap.put(it, createStatements(it))]);
 		val effectStatementsMap = <EffectStatement, StringConcatenationClient>newHashMap();

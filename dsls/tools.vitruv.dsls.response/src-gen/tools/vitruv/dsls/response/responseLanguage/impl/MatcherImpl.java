@@ -17,24 +17,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import tools.vitruv.dsls.response.responseLanguage.Matcher;
 import tools.vitruv.dsls.response.responseLanguage.MatcherStatement;
-import tools.vitruv.dsls.response.responseLanguage.Matching;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Matching</b></em>'.
+ * An implementation of the model object '<em><b>Matcher</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.MatchingImpl#getMatcherStatements <em>Matcher Statements</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherImpl#getMatcherStatements <em>Matcher Statements</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class MatchingImpl extends MinimalEObjectImpl.Container implements Matching
+public class MatcherImpl extends MinimalEObjectImpl.Container implements Matcher
 {
   /**
    * The cached value of the '{@link #getMatcherStatements() <em>Matcher Statements</em>}' containment reference list.
@@ -51,7 +51,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
    * <!-- end-user-doc -->
    * @generated
    */
-  protected MatchingImpl()
+  protected MatcherImpl()
   {
     super();
   }
@@ -64,7 +64,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.MATCHING;
+    return ResponseLanguagePackage.Literals.MATCHER;
   }
 
   /**
@@ -76,7 +76,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     if (matcherStatements == null)
     {
-      matcherStatements = new EObjectContainmentEList<MatcherStatement>(MatcherStatement.class, this, ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS);
+      matcherStatements = new EObjectContainmentEList<MatcherStatement>(MatcherStatement.class, this, ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS);
     }
     return matcherStatements;
   }
@@ -91,7 +91,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+      case ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS:
         return ((InternalEList<?>)getMatcherStatements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -107,7 +107,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+      case ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS:
         return getMatcherStatements();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -124,7 +124,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+      case ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS:
         getMatcherStatements().clear();
         getMatcherStatements().addAll((Collection<? extends MatcherStatement>)newValue);
         return;
@@ -142,7 +142,7 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+      case ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS:
         getMatcherStatements().clear();
         return;
     }
@@ -159,10 +159,10 @@ public class MatchingImpl extends MinimalEObjectImpl.Container implements Matchi
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.MATCHING__MATCHER_STATEMENTS:
+      case ResponseLanguagePackage.MATCHER__MATCHER_STATEMENTS:
         return matcherStatements != null && !matcherStatements.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //MatchingImpl
+} //MatcherImpl

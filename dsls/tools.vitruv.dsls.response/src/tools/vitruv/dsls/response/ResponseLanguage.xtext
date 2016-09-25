@@ -19,6 +19,10 @@ ResponsesSegment:
 	(responses+=Response |
 		routines+=Routine)*;
 
+// *********************************
+// *********** RESPONSES ***********
+// *********************************
+
 Response:
 	(documentation=ML_COMMENT)?
 	'response:' name=ValidID '{'
@@ -30,7 +34,7 @@ ResponseReactionRoutineCall:
 	{ResponseReactionRoutineCall}
 	RoutineCallBlock;
 
-// ****** TRIGGER ******
+// *********** TRIGGER ***********
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
@@ -72,11 +76,13 @@ ArbitraryModelElementChange:
 
 
 
-// ****** EFFECTS ******
+// ***************************************
+// *********** REPAIR ROUTINES ***********
+// ***************************************
 
 Routine:
 	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
-		matching=Matching?
+		matcher=Matcher?
 		effect=Effect
 	'}';
 
@@ -85,29 +91,13 @@ RoutineInput:
 	 ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
 		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)?;
 
-Matching:
-	{Matching}
+// *********** MATCHER ***********
+
+Matcher:
+	{Matcher}
 	'match' '{'
 		(matcherStatements+=MatcherStatement)+
 	'}';
-
-Effect:
-	{Effect}
-	'effect' '{'
-		(effectStatement += EffectStatement)+
-	'}';
-
-RoutineCallStatement returns RoutineCallStatement:
-	{RoutineCallStatement}
-	RoutineCallBlock;
-
-fragment RoutineCallBlock:
-	'call' CodeBlock;
-
-// ****** CORRESPONDENCE SPECIFICATION ******	
-
-fragment Taggable:
-	tag=TagCodeBlock;
 
 MatcherStatement:
 	RetrieveModelElementStatement | MatcherCheckStatement;
@@ -122,8 +112,17 @@ MatcherCheckStatement:
 	{MatcherCheckStatement}
 	'check' CodeBlock;
 
-ExistingElementReference:
-	CodeBlock;
+// *********** EFFECTS ***********
+
+Effect:
+	{Effect}
+	'effect' '{'
+		(effectStatements+=EffectStatement)+
+	'}';
+
+RoutineCallStatement returns RoutineCallStatement:
+	{RoutineCallStatement}
+	RoutineCallBlock;
 
 EffectStatement:
 	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
@@ -153,6 +152,18 @@ RemoveCorrespondence returns EffectStatement:
 
 // ****** CODE BLOCKS ******
 
+fragment CodeBlock:
+	code=XExpression;
+
+fragment RoutineCallBlock:
+	'call' CodeBlock;
+
+fragment Taggable:
+	tag=TagCodeBlock;
+
+ExistingElementReference:
+	CodeBlock;
+
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
 	CodeBlock;
@@ -168,6 +179,3 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
-
-fragment CodeBlock:
-	code=XExpression;

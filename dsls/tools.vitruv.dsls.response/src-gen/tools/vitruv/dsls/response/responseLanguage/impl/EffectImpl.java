@@ -29,7 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getEffectStatement <em>Effect Statement</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getEffectStatements <em>Effect Statements</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,14 +37,14 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
 {
   /**
-   * The cached value of the '{@link #getEffectStatement() <em>Effect Statement</em>}' containment reference list.
+   * The cached value of the '{@link #getEffectStatements() <em>Effect Statements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEffectStatement()
+   * @see #getEffectStatements()
    * @generated
    * @ordered
    */
-  protected EList<EffectStatement> effectStatement;
+  protected EList<EffectStatement> effectStatements;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +72,13 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EffectStatement> getEffectStatement()
+  public EList<EffectStatement> getEffectStatements()
   {
-    if (effectStatement == null)
+    if (effectStatements == null)
     {
-      effectStatement = new EObjectContainmentEList<EffectStatement>(EffectStatement.class, this, ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT);
+      effectStatements = new EObjectContainmentEList<EffectStatement>(EffectStatement.class, this, ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS);
     }
-    return effectStatement;
+    return effectStatements;
   }
 
   /**
@@ -91,8 +91,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
-        return ((InternalEList<?>)getEffectStatement()).basicRemove(otherEnd, msgs);
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
+        return ((InternalEList<?>)getEffectStatements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +107,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
-        return getEffectStatement();
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
+        return getEffectStatements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +124,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
-        getEffectStatement().clear();
-        getEffectStatement().addAll((Collection<? extends EffectStatement>)newValue);
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
+        getEffectStatements().clear();
+        getEffectStatements().addAll((Collection<? extends EffectStatement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +142,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
-        getEffectStatement().clear();
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
+        getEffectStatements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +159,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
-        return effectStatement != null && !effectStatement.isEmpty();
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
+        return effectStatements != null && !effectStatements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

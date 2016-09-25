@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import tools.vitruv.dsls.response.responseLanguage.Effect;
-import tools.vitruv.dsls.response.responseLanguage.Matching;
+import tools.vitruv.dsls.response.responseLanguage.Matcher;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
@@ -31,7 +31,7 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
  * <ul>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getInput <em>Input</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getMatching <em>Matching</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getMatcher <em>Matcher</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getEffect <em>Effect</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getResponsesSegment <em>Responses Segment</em>}</li>
  * </ul>
@@ -71,14 +71,14 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
   protected RoutineInput input;
 
   /**
-   * The cached value of the '{@link #getMatching() <em>Matching</em>}' containment reference.
+   * The cached value of the '{@link #getMatcher() <em>Matcher</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getMatching()
+   * @see #getMatcher()
    * @generated
    * @ordered
    */
-  protected Matching matching;
+  protected Matcher matcher;
 
   /**
    * The cached value of the '{@link #getEffect() <em>Effect</em>}' containment reference.
@@ -187,9 +187,9 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public Matching getMatching()
+  public Matcher getMatcher()
   {
-    return matching;
+    return matcher;
   }
 
   /**
@@ -197,13 +197,13 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetMatching(Matching newMatching, NotificationChain msgs)
+  public NotificationChain basicSetMatcher(Matcher newMatcher, NotificationChain msgs)
   {
-    Matching oldMatching = matching;
-    matching = newMatching;
+    Matcher oldMatcher = matcher;
+    matcher = newMatcher;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__MATCHING, oldMatching, newMatching);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__MATCHER, oldMatcher, newMatcher);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -214,20 +214,20 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setMatching(Matching newMatching)
+  public void setMatcher(Matcher newMatcher)
   {
-    if (newMatching != matching)
+    if (newMatcher != matcher)
     {
       NotificationChain msgs = null;
-      if (matching != null)
-        msgs = ((InternalEObject)matching).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__MATCHING, null, msgs);
-      if (newMatching != null)
-        msgs = ((InternalEObject)newMatching).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__MATCHING, null, msgs);
-      msgs = basicSetMatching(newMatching, msgs);
+      if (matcher != null)
+        msgs = ((InternalEObject)matcher).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__MATCHER, null, msgs);
+      if (newMatcher != null)
+        msgs = ((InternalEObject)newMatcher).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__MATCHER, null, msgs);
+      msgs = basicSetMatcher(newMatcher, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__MATCHING, newMatching, newMatching));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__MATCHER, newMatcher, newMatcher));
   }
 
   /**
@@ -353,8 +353,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
     {
       case ResponseLanguagePackage.ROUTINE__INPUT:
         return basicSetInput(null, msgs);
-      case ResponseLanguagePackage.ROUTINE__MATCHING:
-        return basicSetMatching(null, msgs);
+      case ResponseLanguagePackage.ROUTINE__MATCHER:
+        return basicSetMatcher(null, msgs);
       case ResponseLanguagePackage.ROUTINE__EFFECT:
         return basicSetEffect(null, msgs);
       case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
@@ -393,8 +393,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
         return getName();
       case ResponseLanguagePackage.ROUTINE__INPUT:
         return getInput();
-      case ResponseLanguagePackage.ROUTINE__MATCHING:
-        return getMatching();
+      case ResponseLanguagePackage.ROUTINE__MATCHER:
+        return getMatcher();
       case ResponseLanguagePackage.ROUTINE__EFFECT:
         return getEffect();
       case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
@@ -419,8 +419,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
       case ResponseLanguagePackage.ROUTINE__INPUT:
         setInput((RoutineInput)newValue);
         return;
-      case ResponseLanguagePackage.ROUTINE__MATCHING:
-        setMatching((Matching)newValue);
+      case ResponseLanguagePackage.ROUTINE__MATCHER:
+        setMatcher((Matcher)newValue);
         return;
       case ResponseLanguagePackage.ROUTINE__EFFECT:
         setEffect((Effect)newValue);
@@ -448,8 +448,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
       case ResponseLanguagePackage.ROUTINE__INPUT:
         setInput((RoutineInput)null);
         return;
-      case ResponseLanguagePackage.ROUTINE__MATCHING:
-        setMatching((Matching)null);
+      case ResponseLanguagePackage.ROUTINE__MATCHER:
+        setMatcher((Matcher)null);
         return;
       case ResponseLanguagePackage.ROUTINE__EFFECT:
         setEffect((Effect)null);
@@ -475,8 +475,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case ResponseLanguagePackage.ROUTINE__INPUT:
         return input != null;
-      case ResponseLanguagePackage.ROUTINE__MATCHING:
-        return matching != null;
+      case ResponseLanguagePackage.ROUTINE__MATCHER:
+        return matcher != null;
       case ResponseLanguagePackage.ROUTINE__EFFECT:
         return effect != null;
       case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:

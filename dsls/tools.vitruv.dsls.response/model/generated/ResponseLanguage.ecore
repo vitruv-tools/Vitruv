@@ -55,7 +55,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//RoutineInput"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="matching" eType="#//Matching"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" eType="#//Matcher"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
         containment="true"/>
@@ -70,19 +70,9 @@
         eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedJavaElement"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Matching">
+  <eClassifiers xsi:type="ecore:EClass" name="Matcher">
     <eStructuralFeatures xsi:type="ecore:EReference" name="matcherStatements" upperBound="-1"
         eType="#//MatcherStatement" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Effect">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effectStatement" upperBound="-1"
-        eType="#//EffectStatement" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//RoutineCallBlock #//CodeBlock #//EffectStatement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Taggable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tag" eType="#//TagCodeBlock"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MatcherStatement"/>
   <eClassifiers xsi:type="ecore:EClass" name="RetrieveModelElementStatement" eSuperTypes="#//MatcherStatement #//Taggable">
@@ -97,16 +87,26 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MatcherCheckStatement" eSuperTypes="#//MatcherStatement #//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ExistingElementReference" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Effect">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effectStatements" upperBound="-1"
+        eType="#//EffectStatement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//RoutineCallBlock #//CodeBlock #//EffectStatement"/>
   <eClassifiers xsi:type="ecore:EClass" name="EffectStatement" eSuperTypes="#//Taggable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TagCodeBlock" eSuperTypes="#//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CorrespondingObjectCodeBlock" eSuperTypes="#//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ExecutionCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
     <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Taggable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tag" eType="#//TagCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistingElementReference" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TagCodeBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CorrespondingObjectCodeBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecutionCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="InsertRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="RemoveRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureInsertChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>

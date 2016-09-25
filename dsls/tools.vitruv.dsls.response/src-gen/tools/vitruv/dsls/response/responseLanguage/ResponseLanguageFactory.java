@@ -168,49 +168,13 @@ public interface ResponseLanguageFactory extends EFactory
   RoutineInput createRoutineInput();
 
   /**
-   * Returns a new object of class '<em>Matching</em>'.
+   * Returns a new object of class '<em>Matcher</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Matching</em>'.
+   * @return a new object of class '<em>Matcher</em>'.
    * @generated
    */
-  Matching createMatching();
-
-  /**
-   * Returns a new object of class '<em>Effect</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Effect</em>'.
-   * @generated
-   */
-  Effect createEffect();
-
-  /**
-   * Returns a new object of class '<em>Routine Call Statement</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Routine Call Statement</em>'.
-   * @generated
-   */
-  RoutineCallStatement createRoutineCallStatement();
-
-  /**
-   * Returns a new object of class '<em>Routine Call Block</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Routine Call Block</em>'.
-   * @generated
-   */
-  RoutineCallBlock createRoutineCallBlock();
-
-  /**
-   * Returns a new object of class '<em>Taggable</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Taggable</em>'.
-   * @generated
-   */
-  Taggable createTaggable();
+  Matcher createMatcher();
 
   /**
    * Returns a new object of class '<em>Matcher Statement</em>'.
@@ -240,13 +204,22 @@ public interface ResponseLanguageFactory extends EFactory
   MatcherCheckStatement createMatcherCheckStatement();
 
   /**
-   * Returns a new object of class '<em>Existing Element Reference</em>'.
+   * Returns a new object of class '<em>Effect</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Existing Element Reference</em>'.
+   * @return a new object of class '<em>Effect</em>'.
    * @generated
    */
-  ExistingElementReference createExistingElementReference();
+  Effect createEffect();
+
+  /**
+   * Returns a new object of class '<em>Routine Call Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Routine Call Statement</em>'.
+   * @generated
+   */
+  RoutineCallStatement createRoutineCallStatement();
 
   /**
    * Returns a new object of class '<em>Effect Statement</em>'.
@@ -256,6 +229,42 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   EffectStatement createEffectStatement();
+
+  /**
+   * Returns a new object of class '<em>Code Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Code Block</em>'.
+   * @generated
+   */
+  CodeBlock createCodeBlock();
+
+  /**
+   * Returns a new object of class '<em>Routine Call Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Routine Call Block</em>'.
+   * @generated
+   */
+  RoutineCallBlock createRoutineCallBlock();
+
+  /**
+   * Returns a new object of class '<em>Taggable</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Taggable</em>'.
+   * @generated
+   */
+  Taggable createTaggable();
+
+  /**
+   * Returns a new object of class '<em>Existing Element Reference</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Existing Element Reference</em>'.
+   * @generated
+   */
+  ExistingElementReference createExistingElementReference();
 
   /**
    * Returns a new object of class '<em>Tag Code Block</em>'.
@@ -292,15 +301,6 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   ExecutionCodeBlock createExecutionCodeBlock();
-
-  /**
-   * Returns a new object of class '<em>Code Block</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Code Block</em>'.
-   * @generated
-   */
-  CodeBlock createCodeBlock();
 
   /**
    * Returns a new object of class '<em>Insert Root Change</em>'.

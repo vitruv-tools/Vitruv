@@ -48,11 +48,11 @@ public class ResponseBuilder implements IResponseBuilder {
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
 		val executionBlock = ResponseLanguageFactory.eINSTANCE.createRoutineCallStatement();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
-		val matching = ResponseLanguageFactory.eINSTANCE.createMatching();
+		val matcher = ResponseLanguageFactory.eINSTANCE.createMatcher();
 		val effect = ResponseLanguageFactory.eINSTANCE.createEffect();
-		effect.effectStatement += executionBlock;
+		effect.effectStatements += executionBlock;
 		this.routine.effect = effect;
-		this.routine.matching = matching;
+		this.routine.matcher = matcher;
 		return this;
 	}
 	

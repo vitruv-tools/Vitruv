@@ -76,8 +76,8 @@ import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
+import tools.vitruv.dsls.response.responseLanguage.Matcher;
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement;
-import tools.vitruv.dsls.response.responseLanguage.Matching;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeaturePermuteChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureRemoveChange;
@@ -199,11 +199,11 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 					return; 
 				}
 				else break;
+			case ResponseLanguagePackage.MATCHER:
+				sequence_Matcher(context, (Matcher) semanticObject); 
+				return; 
 			case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT:
 				sequence_CodeBlock_MatcherCheckStatement(context, (MatcherCheckStatement) semanticObject); 
-				return; 
-			case ResponseLanguagePackage.MATCHING:
-				sequence_Matching(context, (Matching) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
@@ -1033,7 +1033,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Effect returns Effect
 	 *
 	 * Constraint:
-	 *     effectStatement+=EffectStatement+
+	 *     effectStatements+=EffectStatement+
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1072,12 +1072,12 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     Matching returns Matching
+	 *     Matcher returns Matcher
 	 *
 	 * Constraint:
 	 *     matcherStatements+=MatcherStatement+
 	 */
-	protected void sequence_Matching(ISerializationContext context, Matching semanticObject) {
+	protected void sequence_Matcher(ISerializationContext context, Matcher semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1180,7 +1180,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Routine returns Routine
 	 *
 	 * Constraint:
-	 *     (name=ValidID input=RoutineInput matching=Matching? effect=Effect)
+	 *     (name=ValidID input=RoutineInput matcher=Matcher? effect=Effect)
 	 */
 	protected void sequence_Routine(ISerializationContext context, Routine semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

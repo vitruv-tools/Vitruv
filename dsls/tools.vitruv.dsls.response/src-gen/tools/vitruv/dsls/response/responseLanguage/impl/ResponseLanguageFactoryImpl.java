@@ -81,21 +81,21 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ARBITRARY_MODEL_ELEMENT_CHANGE: return createArbitraryModelElementChange();
       case ResponseLanguagePackage.ROUTINE: return createRoutine();
       case ResponseLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
-      case ResponseLanguagePackage.MATCHING: return createMatching();
-      case ResponseLanguagePackage.EFFECT: return createEffect();
-      case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
-      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
-      case ResponseLanguagePackage.TAGGABLE: return createTaggable();
+      case ResponseLanguagePackage.MATCHER: return createMatcher();
       case ResponseLanguagePackage.MATCHER_STATEMENT: return createMatcherStatement();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT: return createRetrieveModelElementStatement();
       case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT: return createMatcherCheckStatement();
-      case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
+      case ResponseLanguagePackage.EFFECT: return createEffect();
+      case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
       case ResponseLanguagePackage.EFFECT_STATEMENT: return createEffectStatement();
+      case ResponseLanguagePackage.CODE_BLOCK: return createCodeBlock();
+      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
+      case ResponseLanguagePackage.TAGGABLE: return createTaggable();
+      case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
       case ResponseLanguagePackage.TAG_CODE_BLOCK: return createTagCodeBlock();
       case ResponseLanguagePackage.PRECONDITION_CODE_BLOCK: return createPreconditionCodeBlock();
       case ResponseLanguagePackage.CORRESPONDING_OBJECT_CODE_BLOCK: return createCorrespondingObjectCodeBlock();
       case ResponseLanguagePackage.EXECUTION_CODE_BLOCK: return createExecutionCodeBlock();
-      case ResponseLanguagePackage.CODE_BLOCK: return createCodeBlock();
       case ResponseLanguagePackage.INSERT_ROOT_CHANGE: return createInsertRootChange();
       case ResponseLanguagePackage.REMOVE_ROOT_CHANGE: return createRemoveRootChange();
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE: return createMultiValuedFeatureInsertChange();
@@ -293,54 +293,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public Matching createMatching()
+  public Matcher createMatcher()
   {
-    MatchingImpl matching = new MatchingImpl();
-    return matching;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Effect createEffect()
-  {
-    EffectImpl effect = new EffectImpl();
-    return effect;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RoutineCallStatement createRoutineCallStatement()
-  {
-    RoutineCallStatementImpl routineCallStatement = new RoutineCallStatementImpl();
-    return routineCallStatement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RoutineCallBlock createRoutineCallBlock()
-  {
-    RoutineCallBlockImpl routineCallBlock = new RoutineCallBlockImpl();
-    return routineCallBlock;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Taggable createTaggable()
-  {
-    TaggableImpl taggable = new TaggableImpl();
-    return taggable;
+    MatcherImpl matcher = new MatcherImpl();
+    return matcher;
   }
 
   /**
@@ -381,10 +337,21 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public ExistingElementReference createExistingElementReference()
+  public Effect createEffect()
   {
-    ExistingElementReferenceImpl existingElementReference = new ExistingElementReferenceImpl();
-    return existingElementReference;
+    EffectImpl effect = new EffectImpl();
+    return effect;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoutineCallStatement createRoutineCallStatement()
+  {
+    RoutineCallStatementImpl routineCallStatement = new RoutineCallStatementImpl();
+    return routineCallStatement;
   }
 
   /**
@@ -396,6 +363,50 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     EffectStatementImpl effectStatement = new EffectStatementImpl();
     return effectStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CodeBlock createCodeBlock()
+  {
+    CodeBlockImpl codeBlock = new CodeBlockImpl();
+    return codeBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoutineCallBlock createRoutineCallBlock()
+  {
+    RoutineCallBlockImpl routineCallBlock = new RoutineCallBlockImpl();
+    return routineCallBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Taggable createTaggable()
+  {
+    TaggableImpl taggable = new TaggableImpl();
+    return taggable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ExistingElementReference createExistingElementReference()
+  {
+    ExistingElementReferenceImpl existingElementReference = new ExistingElementReferenceImpl();
+    return existingElementReference;
   }
 
   /**
@@ -440,17 +451,6 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     ExecutionCodeBlockImpl executionCodeBlock = new ExecutionCodeBlockImpl();
     return executionCodeBlock;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CodeBlock createCodeBlock()
-  {
-    CodeBlockImpl codeBlock = new CodeBlockImpl();
-    return codeBlock;
   }
 
   /**

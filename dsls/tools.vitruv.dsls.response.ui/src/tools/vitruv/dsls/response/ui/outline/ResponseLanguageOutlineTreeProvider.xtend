@@ -107,19 +107,20 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		for (element : routine.matching.matcherStatements) {
-			createEObjectNode(parentNode, element);	
-		}
-		
+		if (routine.matcher != null) {
+			for (element : routine.matcher.matcherStatements) {
+				createEObjectNode(parentNode, element);	
+			}
+		}		
 		createChildren(parentNode, routine.effect);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
 		// TODO HK Add missing elements: create / delete / update / call routine
-		for (element : effect.effectStatement.filter(CreateCorrespondence)) {
+		for (element : effect.effectStatements.filter(CreateCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
-		for (element : effect.effectStatement.filter(RemoveCorrespondence)) {
+		for (element : effect.effectStatements.filter(RemoveCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
 	}

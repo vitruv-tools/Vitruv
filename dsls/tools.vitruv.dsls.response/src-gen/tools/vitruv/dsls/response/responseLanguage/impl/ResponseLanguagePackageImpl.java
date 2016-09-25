@@ -34,9 +34,9 @@ import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
+import tools.vitruv.dsls.response.responseLanguage.Matcher;
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement;
 import tools.vitruv.dsls.response.responseLanguage.MatcherStatement;
-import tools.vitruv.dsls.response.responseLanguage.Matching;
 import tools.vitruv.dsls.response.responseLanguage.ModelChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeaturePermuteChange;
@@ -186,35 +186,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass matchingEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass effectEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass routineCallStatementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass routineCallBlockEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass taggableEClass = null;
+  private EClass matcherEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -242,7 +214,14 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass existingElementReferenceEClass = null;
+  private EClass effectEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass routineCallStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -250,6 +229,34 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass effectStatementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass codeBlockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass routineCallBlockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass taggableEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass existingElementReferenceEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -278,13 +285,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass executionCodeBlockEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass codeBlockEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -766,7 +766,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRoutine_Matching()
+  public EReference getRoutine_Matcher()
   {
     return (EReference)routineEClass.getEStructuralFeatures().get(2);
   }
@@ -826,9 +826,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getMatching()
+  public EClass getMatcher()
   {
-    return matchingEClass;
+    return matcherEClass;
   }
 
   /**
@@ -836,69 +836,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getMatching_MatcherStatements()
+  public EReference getMatcher_MatcherStatements()
   {
-    return (EReference)matchingEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getEffect()
-  {
-    return effectEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getEffect_EffectStatement()
-  {
-    return (EReference)effectEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getRoutineCallStatement()
-  {
-    return routineCallStatementEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getRoutineCallBlock()
-  {
-    return routineCallBlockEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getTaggable()
-  {
-    return taggableEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getTaggable_Tag()
-  {
-    return (EReference)taggableEClass.getEStructuralFeatures().get(0);
+    return (EReference)matcherEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -996,9 +936,29 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExistingElementReference()
+  public EClass getEffect()
   {
-    return existingElementReferenceEClass;
+    return effectEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getEffect_EffectStatements()
+  {
+    return (EReference)effectEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRoutineCallStatement()
+  {
+    return routineCallStatementEClass;
   }
 
   /**
@@ -1009,6 +969,66 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
   public EClass getEffectStatement()
   {
     return effectStatementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getCodeBlock()
+  {
+    return codeBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCodeBlock_Code()
+  {
+    return (EReference)codeBlockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRoutineCallBlock()
+  {
+    return routineCallBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getTaggable()
+  {
+    return taggableEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTaggable_Tag()
+  {
+    return (EReference)taggableEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getExistingElementReference()
+  {
+    return existingElementReferenceEClass;
   }
 
   /**
@@ -1049,26 +1069,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
   public EClass getExecutionCodeBlock()
   {
     return executionCodeBlockEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getCodeBlock()
-  {
-    return codeBlockEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCodeBlock_Code()
-  {
-    return (EReference)codeBlockEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1348,7 +1348,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     routineEClass = createEClass(ROUTINE);
     createEAttribute(routineEClass, ROUTINE__NAME);
     createEReference(routineEClass, ROUTINE__INPUT);
-    createEReference(routineEClass, ROUTINE__MATCHING);
+    createEReference(routineEClass, ROUTINE__MATCHER);
     createEReference(routineEClass, ROUTINE__EFFECT);
     createEReference(routineEClass, ROUTINE__RESPONSES_SEGMENT);
 
@@ -1356,18 +1356,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(routineInputEClass, ROUTINE_INPUT__MODEL_INPUT_ELEMENTS);
     createEReference(routineInputEClass, ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 
-    matchingEClass = createEClass(MATCHING);
-    createEReference(matchingEClass, MATCHING__MATCHER_STATEMENTS);
-
-    effectEClass = createEClass(EFFECT);
-    createEReference(effectEClass, EFFECT__EFFECT_STATEMENT);
-
-    routineCallStatementEClass = createEClass(ROUTINE_CALL_STATEMENT);
-
-    routineCallBlockEClass = createEClass(ROUTINE_CALL_BLOCK);
-
-    taggableEClass = createEClass(TAGGABLE);
-    createEReference(taggableEClass, TAGGABLE__TAG);
+    matcherEClass = createEClass(MATCHER);
+    createEReference(matcherEClass, MATCHER__MATCHER_STATEMENTS);
 
     matcherStatementEClass = createEClass(MATCHER_STATEMENT);
 
@@ -1381,9 +1371,22 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     matcherCheckStatementEClass = createEClass(MATCHER_CHECK_STATEMENT);
 
-    existingElementReferenceEClass = createEClass(EXISTING_ELEMENT_REFERENCE);
+    effectEClass = createEClass(EFFECT);
+    createEReference(effectEClass, EFFECT__EFFECT_STATEMENTS);
+
+    routineCallStatementEClass = createEClass(ROUTINE_CALL_STATEMENT);
 
     effectStatementEClass = createEClass(EFFECT_STATEMENT);
+
+    codeBlockEClass = createEClass(CODE_BLOCK);
+    createEReference(codeBlockEClass, CODE_BLOCK__CODE);
+
+    routineCallBlockEClass = createEClass(ROUTINE_CALL_BLOCK);
+
+    taggableEClass = createEClass(TAGGABLE);
+    createEReference(taggableEClass, TAGGABLE__TAG);
+
+    existingElementReferenceEClass = createEClass(EXISTING_ELEMENT_REFERENCE);
 
     tagCodeBlockEClass = createEClass(TAG_CODE_BLOCK);
 
@@ -1392,9 +1395,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     correspondingObjectCodeBlockEClass = createEClass(CORRESPONDING_OBJECT_CODE_BLOCK);
 
     executionCodeBlockEClass = createEClass(EXECUTION_CODE_BLOCK);
-
-    codeBlockEClass = createEClass(CODE_BLOCK);
-    createEReference(codeBlockEClass, CODE_BLOCK__CODE);
 
     insertRootChangeEClass = createEClass(INSERT_ROOT_CHANGE);
 
@@ -1474,16 +1474,16 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     atomicMultiValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     atomicSingleValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
-    routineCallStatementEClass.getESuperTypes().add(this.getRoutineCallBlock());
-    routineCallStatementEClass.getESuperTypes().add(this.getCodeBlock());
-    routineCallStatementEClass.getESuperTypes().add(this.getEffectStatement());
-    routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
     retrieveModelElementStatementEClass.getESuperTypes().add(this.getMatcherStatement());
     retrieveModelElementStatementEClass.getESuperTypes().add(this.getTaggable());
     matcherCheckStatementEClass.getESuperTypes().add(this.getMatcherStatement());
     matcherCheckStatementEClass.getESuperTypes().add(this.getCodeBlock());
-    existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
+    routineCallStatementEClass.getESuperTypes().add(this.getRoutineCallBlock());
+    routineCallStatementEClass.getESuperTypes().add(this.getCodeBlock());
+    routineCallStatementEClass.getESuperTypes().add(this.getEffectStatement());
     effectStatementEClass.getESuperTypes().add(this.getTaggable());
+    routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
+    existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
     tagCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     preconditionCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     correspondingObjectCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
@@ -1548,7 +1548,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(routineEClass, Routine.class, "Routine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRoutine_Name(), ecorePackage.getEString(), "name", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRoutine_Input(), this.getRoutineInput(), null, "input", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRoutine_Matching(), this.getMatching(), null, "matching", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutine_Matcher(), this.getMatcher(), null, "matcher", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRoutine_Effect(), this.getEffect(), null, "effect", null, 0, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRoutine_ResponsesSegment(), this.getResponsesSegment(), this.getResponsesSegment_Routines(), "responsesSegment", null, 1, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1556,18 +1556,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getRoutineInput_ModelInputElements(), theMirBasePackage.getModelElement(), null, "modelInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRoutineInput_JavaInputElements(), theMirBasePackage.getNamedJavaElement(), null, "javaInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(matchingEClass, Matching.class, "Matching", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMatching_MatcherStatements(), this.getMatcherStatement(), null, "matcherStatements", null, 0, -1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEffect_EffectStatement(), this.getEffectStatement(), null, "effectStatement", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(routineCallStatementEClass, RoutineCallStatement.class, "RoutineCallStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(routineCallBlockEClass, RoutineCallBlock.class, "RoutineCallBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(taggableEClass, Taggable.class, "Taggable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getTaggable_Tag(), this.getTagCodeBlock(), null, "tag", null, 0, 1, Taggable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(matcherEClass, Matcher.class, "Matcher", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMatcher_MatcherStatements(), this.getMatcherStatement(), null, "matcherStatements", null, 0, -1, Matcher.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(matcherStatementEClass, MatcherStatement.class, "MatcherStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1581,9 +1571,22 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     initEClass(matcherCheckStatementEClass, MatcherCheckStatement.class, "MatcherCheckStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(existingElementReferenceEClass, ExistingElementReference.class, "ExistingElementReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getEffect_EffectStatements(), this.getEffectStatement(), null, "effectStatements", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(routineCallStatementEClass, RoutineCallStatement.class, "RoutineCallStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(effectStatementEClass, EffectStatement.class, "EffectStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(codeBlockEClass, CodeBlock.class, "CodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCodeBlock_Code(), theXbasePackage.getXExpression(), null, "code", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(routineCallBlockEClass, RoutineCallBlock.class, "RoutineCallBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(taggableEClass, Taggable.class, "Taggable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTaggable_Tag(), this.getTagCodeBlock(), null, "tag", null, 0, 1, Taggable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(existingElementReferenceEClass, ExistingElementReference.class, "ExistingElementReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(tagCodeBlockEClass, TagCodeBlock.class, "TagCodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1592,9 +1595,6 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(correspondingObjectCodeBlockEClass, CorrespondingObjectCodeBlock.class, "CorrespondingObjectCodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(executionCodeBlockEClass, ExecutionCodeBlock.class, "ExecutionCodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(codeBlockEClass, CodeBlock.class, "CodeBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCodeBlock_Code(), theXbasePackage.getXExpression(), null, "code", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(insertRootChangeEClass, InsertRootChange.class, "InsertRootChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

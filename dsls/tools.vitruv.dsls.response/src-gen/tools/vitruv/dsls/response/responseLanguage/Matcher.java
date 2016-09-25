@@ -9,21 +9,21 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Matching</b></em>'.
+ * A representation of the model object '<em><b>Matcher</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Matching#getMatcherStatements <em>Matcher Statements</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Matcher#getMatcherStatements <em>Matcher Statements</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching()
+ * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatcher()
  * @model
  * @generated
  */
-public interface Matching extends EObject
+public interface Matcher extends EObject
 {
   /**
    * Returns the value of the '<em><b>Matcher Statements</b></em>' containment reference list.
@@ -35,10 +35,10 @@ public interface Matching extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Matcher Statements</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatching_MatcherStatements()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getMatcher_MatcherStatements()
    * @model containment="true"
    * @generated
    */
   EList<MatcherStatement> getMatcherStatements();
 
-} // Matching
+} // Matcher

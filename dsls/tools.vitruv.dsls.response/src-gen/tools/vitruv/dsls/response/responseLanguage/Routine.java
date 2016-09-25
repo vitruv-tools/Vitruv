@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getInput <em>Input</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatching <em>Matching</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatcher <em>Matcher</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getEffect <em>Effect</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}</li>
  * </ul>
@@ -80,30 +80,30 @@ public interface Routine extends EObject
   void setInput(RoutineInput value);
 
   /**
-   * Returns the value of the '<em><b>Matching</b></em>' containment reference.
+   * Returns the value of the '<em><b>Matcher</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Matching</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Matcher</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Matching</em>' containment reference.
-   * @see #setMatching(Matching)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Matching()
+   * @return the value of the '<em>Matcher</em>' containment reference.
+   * @see #setMatcher(Matcher)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Matcher()
    * @model containment="true"
    * @generated
    */
-  Matching getMatching();
+  Matcher getMatcher();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatching <em>Matching</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatcher <em>Matcher</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Matching</em>' containment reference.
-   * @see #getMatching()
+   * @param value the new value of the '<em>Matcher</em>' containment reference.
+   * @see #getMatcher()
    * @generated
    */
-  void setMatching(Matching value);
+  void setMatcher(Matcher value);
 
   /**
    * Returns the value of the '<em><b>Effect</b></em>' containment reference.
