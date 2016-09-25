@@ -12,17 +12,47 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
+      return javaMethod;
+    }
+    
+    public EObject getCorrepondenceSourceJavaMethod(final ResourceDemandingInternalBehaviour behavior) {
+      return behavior;
+    }
+  }
+  
+  private DeleteMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
   public DeleteMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.DeleteMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this);
     				this.behavior = behavior;
   }
   
   private ResourceDemandingInternalBehaviour behavior;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine DeleteMethodForResourceDemandingBehaviorEffect with input:");
+    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
+    
+    ClassMethod javaMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaMethod(behavior), // correspondence source supplier
+    	ClassMethod.class,
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaMethod == null) {
+    	return;
     }
+    initializeRetrieveElementState(javaMethod);
+    deleteObject(userExecution.getElement1(behavior, javaMethod));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -33,32 +63,5 @@ public class DeleteMethodForResourceDemandingBehaviorEffect extends AbstractEffe
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
-    return javaMethod;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine DeleteMethodForResourceDemandingBehaviorEffect with input:");
-    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
-    
-    ClassMethod javaMethod = getCorrespondingElement(
-    	getCorrepondenceSourceJavaMethod(behavior), // correspondence source supplier
-    	ClassMethod.class,
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (javaMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(javaMethod);
-    deleteObject(getElement0(behavior, javaMethod));
-    
-    preprocessElementStates();
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaMethod(final ResourceDemandingInternalBehaviour behavior) {
-    return behavior;
   }
 }

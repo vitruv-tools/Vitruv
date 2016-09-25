@@ -14,8 +14,42 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateNonRootEObjectSingleEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetElement(final Root sourceRoot, final NonRoot containedObject) {
+      return sourceRoot;
+    }
+    
+    public EObject getElement1(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      return targetElement;
+    }
+    
+    public void update0Element(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      targetElement.setSingleValuedContainmentEReference(newNonRoot);
+    }
+    
+    public EObject getElement2(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      return newNonRoot;
+    }
+    
+    public EObject getElement3(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      return containedObject;
+    }
+    
+    public void updateNewNonRootElement(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      String _id = containedObject.getId();
+      newNonRoot.setId(_id);
+    }
+  }
+  
+  private CreateNonRootEObjectSingleEffect.EffectUserExecution userExecution;
+  
   public CreateNonRootEObjectSingleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root sourceRoot, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this);
     				this.sourceRoot = sourceRoot;this.containedObject = containedObject;
   }
   
@@ -23,18 +57,33 @@ public class CreateNonRootEObjectSingleEffect extends AbstractEffectRealization 
   
   private NonRoot containedObject;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateNonRootEObjectSingleEffect with input:");
+    getLogger().debug("   Root: " + this.sourceRoot);
+    getLogger().debug("   NonRoot: " + this.containedObject);
     
-    private void executeUserOperations(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
-      String _id = containedObject.getId();
-      newNonRoot.setId(_id);
-      targetElement.setSingleValuedContainmentEReference(newNonRoot);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectSingle);
+    Root targetElement = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceTargetElement(sourceRoot, containedObject), // correspondence source supplier
+    	Root.class,
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
+    	return;
     }
+    initializeRetrieveElementState(targetElement);
+    NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
+    initializeCreateElementState(newNonRoot);
+    userExecution.updateNewNonRootElement(sourceRoot, containedObject, targetElement, newNonRoot);
+    
+    // val updatedElement userExecution.getElement1(sourceRoot, containedObject, targetElement, newNonRoot);
+    userExecution.update0Element(sourceRoot, containedObject, targetElement, newNonRoot);
+    
+    addCorrespondenceBetween(userExecution.getElement2(sourceRoot, containedObject, targetElement, newNonRoot), userExecution.getElement3(sourceRoot, containedObject, targetElement, newNonRoot), "");
+    
+    preprocessElementStates();
+    new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	sourceRoot, containedObject, targetElement, newNonRoot);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -45,41 +94,10 @@ public class CreateNonRootEObjectSingleEffect extends AbstractEffectRealization 
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
-    return newNonRoot;
-  }
-  
-  private EObject getCorrepondenceSourceTargetElement(final Root sourceRoot, final NonRoot containedObject) {
-    return sourceRoot;
-  }
-  
-  private EObject getElement1(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
-    return containedObject;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateNonRootEObjectSingleEffect with input:");
-    getLogger().debug("   Root: " + this.sourceRoot);
-    getLogger().debug("   NonRoot: " + this.containedObject);
     
-    Root targetElement = getCorrespondingElement(
-    	getCorrepondenceSourceTargetElement(sourceRoot, containedObject), // correspondence source supplier
-    	Root.class,
-    	(Root _element) -> true, // correspondence precondition checker
-    	null);
-    if (targetElement == null) {
-    	return;
+    public void executeUserOperations(final Root sourceRoot, final NonRoot containedObject, final Root targetElement, final NonRoot newNonRoot) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.CreateNonRootEObjectSingle);
     }
-    initializeRetrieveElementState(targetElement);
-    NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
-    initializeCreateElementState(newNonRoot);
-    
-    addCorrespondenceBetween(getElement0(sourceRoot, containedObject, targetElement, newNonRoot), getElement1(sourceRoot, containedObject, targetElement, newNonRoot), "");
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceRoot, containedObject, targetElement, newNonRoot);
-    postprocessElementStates();
   }
 }

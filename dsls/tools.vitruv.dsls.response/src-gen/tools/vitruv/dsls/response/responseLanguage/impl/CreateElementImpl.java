@@ -10,11 +10,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 import tools.vitruv.dsls.response.responseLanguage.CreateElement;
+import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
@@ -26,11 +26,12 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl#getInitializationBlock <em>Initialization Block</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class CreateElementImpl extends MinimalEObjectImpl.Container implements CreateElement
+public class CreateElementImpl extends EffectStatementImpl implements CreateElement
 {
   /**
    * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference.
@@ -41,6 +42,16 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
    * @ordered
    */
   protected ModelElement element;
+
+  /**
+   * The cached value of the '{@link #getInitializationBlock() <em>Initialization Block</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getInitializationBlock()
+   * @generated
+   * @ordered
+   */
+  protected ExecutionCodeBlock initializationBlock;
 
   /**
    * <!-- begin-user-doc -->
@@ -116,6 +127,54 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
    * <!-- end-user-doc -->
    * @generated
    */
+  public ExecutionCodeBlock getInitializationBlock()
+  {
+    return initializationBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetInitializationBlock(ExecutionCodeBlock newInitializationBlock, NotificationChain msgs)
+  {
+    ExecutionCodeBlock oldInitializationBlock = initializationBlock;
+    initializationBlock = newInitializationBlock;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK, oldInitializationBlock, newInitializationBlock);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setInitializationBlock(ExecutionCodeBlock newInitializationBlock)
+  {
+    if (newInitializationBlock != initializationBlock)
+    {
+      NotificationChain msgs = null;
+      if (initializationBlock != null)
+        msgs = ((InternalEObject)initializationBlock).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK, null, msgs);
+      if (newInitializationBlock != null)
+        msgs = ((InternalEObject)newInitializationBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK, null, msgs);
+      msgs = basicSetInitializationBlock(newInitializationBlock, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK, newInitializationBlock, newInitializationBlock));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -123,6 +182,8 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
     {
       case ResponseLanguagePackage.CREATE_ELEMENT__ELEMENT:
         return basicSetElement(null, msgs);
+      case ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK:
+        return basicSetInitializationBlock(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -139,6 +200,8 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
     {
       case ResponseLanguagePackage.CREATE_ELEMENT__ELEMENT:
         return getElement();
+      case ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK:
+        return getInitializationBlock();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -155,6 +218,9 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
     {
       case ResponseLanguagePackage.CREATE_ELEMENT__ELEMENT:
         setElement((ModelElement)newValue);
+        return;
+      case ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK:
+        setInitializationBlock((ExecutionCodeBlock)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -173,6 +239,9 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
       case ResponseLanguagePackage.CREATE_ELEMENT__ELEMENT:
         setElement((ModelElement)null);
         return;
+      case ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK:
+        setInitializationBlock((ExecutionCodeBlock)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -189,6 +258,8 @@ public class CreateElementImpl extends MinimalEObjectImpl.Container implements C
     {
       case ResponseLanguagePackage.CREATE_ELEMENT__ELEMENT:
         return element != null;
+      case ResponseLanguagePackage.CREATE_ELEMENT__INITIALIZATION_BLOCK:
+        return initializationBlock != null;
     }
     return super.eIsSet(featureID);
   }

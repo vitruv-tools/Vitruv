@@ -13,8 +13,30 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class InsertEAttributeEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetElement(final Root root, final Integer attributeValue) {
+      return root;
+    }
+    
+    public EObject getElement1(final Root root, final Integer attributeValue, final Root targetElement) {
+      return targetElement;
+    }
+    
+    public void update0Element(final Root root, final Integer attributeValue, final Root targetElement) {
+      EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
+      _multiValuedEAttribute.add(attributeValue);
+    }
+  }
+  
+  private InsertEAttributeEffect.EffectUserExecution userExecution;
+  
   public InsertEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer attributeValue) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.simpleChangesTests.InsertEAttributeEffect.EffectUserExecution(getExecutionState(), this);
     				this.root = root;this.attributeValue = attributeValue;
   }
   
@@ -22,17 +44,27 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
   
   private Integer attributeValue;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine InsertEAttributeEffect with input:");
+    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   Integer: " + this.attributeValue);
     
-    private void executeUserOperations(final Root root, final Integer attributeValue, final Root targetElement) {
-      EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
-      _multiValuedEAttribute.add(attributeValue);
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
+    Root targetElement = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceTargetElement(root, attributeValue), // correspondence source supplier
+    	Root.class,
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
+    	return;
     }
+    initializeRetrieveElementState(targetElement);
+    // val updatedElement userExecution.getElement1(root, attributeValue, targetElement);
+    userExecution.update0Element(root, attributeValue, targetElement);
+    
+    preprocessElementStates();
+    new mir.routines.simpleChangesTests.InsertEAttributeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	root, attributeValue, targetElement);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -43,30 +75,10 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getCorrepondenceSourceTargetElement(final Root root, final Integer attributeValue) {
-    return root;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine InsertEAttributeEffect with input:");
-    getLogger().debug("   Root: " + this.root);
-    getLogger().debug("   Integer: " + this.attributeValue);
     
-    Root targetElement = getCorrespondingElement(
-    	getCorrepondenceSourceTargetElement(root, attributeValue), // correspondence source supplier
-    	Root.class,
-    	(Root _element) -> true, // correspondence precondition checker
-    	null);
-    if (targetElement == null) {
-    	return;
+    public void executeUserOperations(final Root root, final Integer attributeValue, final Root targetElement) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
     }
-    initializeRetrieveElementState(targetElement);
-    
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.InsertEAttributeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, attributeValue, targetElement);
-    postprocessElementStates();
   }
 }

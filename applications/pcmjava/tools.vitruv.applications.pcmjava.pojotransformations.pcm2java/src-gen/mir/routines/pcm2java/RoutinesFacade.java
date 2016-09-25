@@ -242,6 +242,12 @@ public class RoutinesFacade extends AbstractEffectsFacade {
     effect.applyRoutine();
   }
   
+  public void removeParameterToFieldAssignmentFromConstructor(final Constructor ctor, final String fieldName) {
+    mir.routines.pcm2java.RemoveParameterToFieldAssignmentFromConstructorEffect effect = new mir.routines.pcm2java.RemoveParameterToFieldAssignmentFromConstructorEffect(this.executionState, calledBy,
+    	ctor, fieldName);
+    effect.applyRoutine();
+  }
+  
   public void removeCorrespondingParameterFromConstructor(final Constructor ctor, final NamedElement correspondenceSource) {
     mir.routines.pcm2java.RemoveCorrespondingParameterFromConstructorEffect effect = new mir.routines.pcm2java.RemoveCorrespondingParameterFromConstructorEffect(this.executionState, calledBy,
     	ctor, correspondenceSource);

@@ -14,8 +14,29 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteParameterEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final OperationSignature signature, final Parameter parameter, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
+      return javaParameter;
+    }
+    
+    public EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature signature, final Parameter parameter) {
+      return signature;
+    }
+    
+    public EObject getCorrepondenceSourceJavaParameter(final OperationSignature signature, final Parameter parameter, final InterfaceMethod interfaceMethod) {
+      return parameter;
+    }
+  }
+  
+  private DeleteParameterEffect.EffectUserExecution userExecution;
+  
   public DeleteParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature signature, final Parameter parameter) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.DeleteParameterEffect.EffectUserExecution(getExecutionState(), this);
     				this.signature = signature;this.parameter = parameter;
   }
   
@@ -23,10 +44,33 @@ public class DeleteParameterEffect extends AbstractEffectRealization {
   
   private Parameter parameter;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine DeleteParameterEffect with input:");
+    getLogger().debug("   OperationSignature: " + this.signature);
+    getLogger().debug("   Parameter: " + this.parameter);
+    
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceInterfaceMethod(signature, parameter), // correspondence source supplier
+    	InterfaceMethod.class,
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
+    	return;
     }
+    initializeRetrieveElementState(interfaceMethod);
+    OrdinaryParameter javaParameter = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaParameter(signature, parameter, interfaceMethod), // correspondence source supplier
+    	OrdinaryParameter.class,
+    	(OrdinaryParameter _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaParameter == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaParameter);
+    deleteObject(userExecution.getElement1(signature, parameter, interfaceMethod, javaParameter));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -37,46 +81,5 @@ public class DeleteParameterEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final OperationSignature signature, final Parameter parameter, final InterfaceMethod interfaceMethod, final OrdinaryParameter javaParameter) {
-    return javaParameter;
-  }
-  
-  private EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature signature, final Parameter parameter) {
-    return signature;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine DeleteParameterEffect with input:");
-    getLogger().debug("   OperationSignature: " + this.signature);
-    getLogger().debug("   Parameter: " + this.parameter);
-    
-    InterfaceMethod interfaceMethod = getCorrespondingElement(
-    	getCorrepondenceSourceInterfaceMethod(signature, parameter), // correspondence source supplier
-    	InterfaceMethod.class,
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (interfaceMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(interfaceMethod);
-    OrdinaryParameter javaParameter = getCorrespondingElement(
-    	getCorrepondenceSourceJavaParameter(signature, parameter), // correspondence source supplier
-    	OrdinaryParameter.class,
-    	(OrdinaryParameter _element) -> true, // correspondence precondition checker
-    	null);
-    if (javaParameter == null) {
-    	return;
-    }
-    initializeRetrieveElementState(javaParameter);
-    deleteObject(getElement0(signature, parameter, interfaceMethod, javaParameter));
-    
-    preprocessElementStates();
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaParameter(final OperationSignature signature, final Parameter parameter) {
-    return parameter;
   }
 }

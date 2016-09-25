@@ -93,6 +93,7 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.UpdateElement;
 import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 
 @SuppressWarnings("all")
@@ -309,6 +310,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				else break;
 			case ResponseLanguagePackage.TAG_CODE_BLOCK:
 				sequence_CodeBlock_TagCodeBlock(context, (TagCodeBlock) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.UPDATE_ELEMENT:
+				sequence_UpdateElement(context, (UpdateElement) semanticObject); 
 				return; 
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
@@ -935,6 +939,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns CreateCorrespondence
 	 *     CreateCorrespondence returns CreateCorrespondence
 	 *
 	 * Constraint:
@@ -947,24 +952,20 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns CreateElement
 	 *     CreateElement returns CreateElement
 	 *
 	 * Constraint:
-	 *     element=NamedModelElement
+	 *     (element=NamedModelElement initializationBlock=ExecutionCodeBlock?)
 	 */
 	protected void sequence_CreateElement(ISerializationContext context, CreateElement semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CREATE_ELEMENT__ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CREATE_ELEMENT__ELEMENT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getCreateElementAccess().getElementNamedModelElementParserRuleCall_1_0(), semanticObject.getElement());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns DeleteElement
 	 *     DeleteElement returns DeleteElement
 	 *
 	 * Constraint:
@@ -976,7 +977,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.DELETE_ELEMENT__ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_1_0(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getElement());
 		feeder.finish();
 	}
 	
@@ -986,16 +987,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Effect returns Effect
 	 *
 	 * Constraint:
-	 *     (
-	 *         (
-	 *             elementCreation+=CreateElement | 
-	 *             elementDeletion+=DeleteElement | 
-	 *             correspondenceCreation+=CreateCorrespondence | 
-	 *             correspondenceDeletion+=RemoveCorrespondence
-	 *         )* 
-	 *         codeBlock=ExecutionCodeBlock? 
-	 *         callRoutine=RoutineCallBlock?
-	 *     )
+	 *     (effectStatement+=EffectStatement* callRoutine=RoutineCallBlock?)
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1058,6 +1050,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns RemoveCorrespondence
 	 *     RemoveCorrespondence returns RemoveCorrespondence
 	 *
 	 * Constraint:
@@ -1071,8 +1064,8 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.REMOVE_CORRESPONDENCE__SECOND_ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_1_0(), semanticObject.getFirstElement());
-		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_3_0(), semanticObject.getSecondElement());
+		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getFirstElement());
+		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_4_0(), semanticObject.getSecondElement());
 		feeder.finish();
 	}
 	
@@ -1144,6 +1137,28 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 */
 	protected void sequence_Routine(ISerializationContext context, Routine semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     EffectStatement returns UpdateElement
+	 *     UpdateElement returns UpdateElement
+	 *
+	 * Constraint:
+	 *     (element=ExistingElementReference updateBlock=ExecutionCodeBlock)
+	 */
+	protected void sequence_UpdateElement(ISerializationContext context, UpdateElement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__ELEMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__ELEMENT));
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__UPDATE_BLOCK) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__UPDATE_BLOCK));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getUpdateElementAccess().getElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getUpdateElementAccess().getUpdateBlockExecutionCodeBlockParserRuleCall_3_0(), semanticObject.getUpdateBlock());
+		feeder.finish();
 	}
 	
 	

@@ -19,27 +19,87 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateParameterEffect extends AbstractEffectRealization {
-  public CreateParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter parameter) {
-    super(responseExecutionState, calledBy);
-    				this.parameter = parameter;
-  }
-  
-  private Parameter parameter;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
-      String _parameterName = parameter.getParameterName();
-      javaParameter.setName(_parameterName);
+    public EObject getElement1(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
+      return javaParameter;
+    }
+    
+    public void update0Element(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
       EList<org.emftext.language.java.parameters.Parameter> _parameters = interfaceMethod.getParameters();
       _parameters.add(javaParameter);
+    }
+    
+    public EObject getCorrepondenceSourceInterfaceMethod(final Parameter parameter) {
+      OperationSignature _operationSignature__Parameter = parameter.getOperationSignature__Parameter();
+      return _operationSignature__Parameter;
+    }
+    
+    public EObject getElement2(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
+      return parameter;
+    }
+    
+    public EObject getElement3(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
+      return interfaceMethod;
+    }
+    
+    public void updateJavaParameterElement(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
+      String _parameterName = parameter.getParameterName();
+      javaParameter.setName(_parameterName);
       DataType _dataType__Parameter = parameter.getDataType__Parameter();
       final TypeReference parameterTypeReference = Pcm2JavaHelper.createTypeReference(_dataType__Parameter, javaParameterTypeClass);
       javaParameter.setTypeReference(parameterTypeReference);
     }
+    
+    public EObject getCorrepondenceSourceJavaParameterTypeClass(final Parameter parameter, final InterfaceMethod interfaceMethod) {
+      DataType _dataType__Parameter = parameter.getDataType__Parameter();
+      return _dataType__Parameter;
+    }
+  }
+  
+  private CreateParameterEffect.EffectUserExecution userExecution;
+  
+  public CreateParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter parameter) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateParameterEffect.EffectUserExecution(getExecutionState(), this);
+    				this.parameter = parameter;
+  }
+  
+  private Parameter parameter;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateParameterEffect with input:");
+    getLogger().debug("   Parameter: " + this.parameter);
+    
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceInterfaceMethod(parameter), // correspondence source supplier
+    	InterfaceMethod.class,
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(interfaceMethod);
+    org.emftext.language.java.classifiers.Class javaParameterTypeClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaParameterTypeClass(parameter, interfaceMethod), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    initializeRetrieveElementState(javaParameterTypeClass);
+    OrdinaryParameter javaParameter = ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter();
+    initializeCreateElementState(javaParameter);
+    userExecution.updateJavaParameterElement(parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
+    
+    addCorrespondenceBetween(userExecution.getElement1(parameter, interfaceMethod, javaParameterTypeClass, javaParameter), userExecution.getElement2(parameter, interfaceMethod, javaParameterTypeClass, javaParameter), "");
+    
+    // val updatedElement userExecution.getElement3(parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
+    userExecution.update0Element(parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -50,52 +110,5 @@ public class CreateParameterEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
-    return javaParameter;
-  }
-  
-  private EObject getElement1(final Parameter parameter, final InterfaceMethod interfaceMethod, final org.emftext.language.java.classifiers.Class javaParameterTypeClass, final OrdinaryParameter javaParameter) {
-    return parameter;
-  }
-  
-  private EObject getCorrepondenceSourceInterfaceMethod(final Parameter parameter) {
-    OperationSignature _operationSignature__Parameter = parameter.getOperationSignature__Parameter();
-    return _operationSignature__Parameter;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateParameterEffect with input:");
-    getLogger().debug("   Parameter: " + this.parameter);
-    
-    InterfaceMethod interfaceMethod = getCorrespondingElement(
-    	getCorrepondenceSourceInterfaceMethod(parameter), // correspondence source supplier
-    	InterfaceMethod.class,
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (interfaceMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(interfaceMethod);
-    org.emftext.language.java.classifiers.Class javaParameterTypeClass = getCorrespondingElement(
-    	getCorrepondenceSourceJavaParameterTypeClass(parameter), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    initializeRetrieveElementState(javaParameterTypeClass);
-    OrdinaryParameter javaParameter = ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter();
-    initializeCreateElementState(javaParameter);
-    
-    addCorrespondenceBetween(getElement0(parameter, interfaceMethod, javaParameterTypeClass, javaParameter), getElement1(parameter, interfaceMethod, javaParameterTypeClass, javaParameter), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateParameterEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaParameterTypeClass(final Parameter parameter) {
-    DataType _dataType__Parameter = parameter.getDataType__Parameter();
-    return _dataType__Parameter;
   }
 }

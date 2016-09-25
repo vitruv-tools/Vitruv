@@ -24,8 +24,83 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement10(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return constructor;
+    }
+    
+    public EObject getCorrepondenceSourceEncapsulatedComponentJavaClass(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass) {
+      RepositoryComponent _encapsulatedComponent__AssemblyContext = assemblyContext.getEncapsulatedComponent__AssemblyContext();
+      return _encapsulatedComponent__AssemblyContext;
+    }
+    
+    public void update0Element(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      EList<Member> _members = compositeComponentJavaClass.getMembers();
+      _members.add(assemblyContextField);
+      Pcm2JavaHelper.addConstructorToClass(constructor, compositeComponentJavaClass);
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentJavaClass, encapsulatedComponentJavaClass);
+    }
+    
+    public EObject getElement8(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return assemblyContext;
+    }
+    
+    public EObject getElement9(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return compositeComponentJavaClass;
+    }
+    
+    public EObject getElement6(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return assemblyContext;
+    }
+    
+    public EObject getElement7(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return constructor;
+    }
+    
+    public void update1Element(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      Pcm2JavaHelper.createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
+    }
+    
+    public EObject getElement1(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return assemblyContextField;
+    }
+    
+    public EObject getCorrepondenceSourceCompositeComponentJavaClass(final ComposedStructure composedStructure, final AssemblyContext assemblyContext) {
+      return composedStructure;
+    }
+    
+    public EObject getElement4(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return assemblyContext;
+    }
+    
+    public EObject getElement5(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return contextClassImport;
+    }
+    
+    public EObject getElement2(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return assemblyContext;
+    }
+    
+    public void updateAssemblyContextFieldElement(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField) {
+      final TypeReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(encapsulatedComponentJavaClass);
+      String _entityName = assemblyContext.getEntityName();
+      Pcm2JavaHelper.createPrivateField(assemblyContextField, typeRef, _entityName);
+    }
+    
+    public EObject getElement3(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
+      return newConstructorCall;
+    }
+  }
+  
+  private AddAssemblyContextToComposedStructureEffect.EffectUserExecution userExecution;
+  
   public AddAssemblyContextToComposedStructureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ComposedStructure composedStructure, final AssemblyContext assemblyContext) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.AddAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this);
     				this.composedStructure = composedStructure;this.assemblyContext = assemblyContext;
   }
   
@@ -33,21 +108,58 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
   
   private AssemblyContext assemblyContext;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine AddAssemblyContextToComposedStructureEffect with input:");
+    getLogger().debug("   ComposedStructure: " + this.composedStructure);
+    getLogger().debug("   AssemblyContext: " + this.assemblyContext);
     
-    private void executeUserOperations(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-      final TypeReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(encapsulatedComponentJavaClass);
-      String _entityName = assemblyContext.getEntityName();
-      Pcm2JavaHelper.createPrivateField(assemblyContextField, typeRef, _entityName);
-      EList<Member> _members = compositeComponentJavaClass.getMembers();
-      _members.add(assemblyContextField);
-      Pcm2JavaHelper.addConstructorToClass(constructor, compositeComponentJavaClass);
-      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentJavaClass, encapsulatedComponentJavaClass);
-      Pcm2JavaHelper.createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
+    org.emftext.language.java.classifiers.Class compositeComponentJavaClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceCompositeComponentJavaClass(composedStructure, assemblyContext), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (compositeComponentJavaClass == null) {
+    	return;
     }
+    initializeRetrieveElementState(compositeComponentJavaClass);
+    org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceEncapsulatedComponentJavaClass(composedStructure, assemblyContext, compositeComponentJavaClass), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (encapsulatedComponentJavaClass == null) {
+    	return;
+    }
+    initializeRetrieveElementState(encapsulatedComponentJavaClass);
+    Field assemblyContextField = MembersFactoryImpl.eINSTANCE.createField();
+    initializeCreateElementState(assemblyContextField);
+    userExecution.updateAssemblyContextFieldElement(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField);
+    
+    NewConstructorCall newConstructorCall = InstantiationsFactoryImpl.eINSTANCE.createNewConstructorCall();
+    initializeCreateElementState(newConstructorCall);
+    
+    ClassifierImport contextClassImport = ImportsFactoryImpl.eINSTANCE.createClassifierImport();
+    initializeCreateElementState(contextClassImport);
+    
+    Constructor constructor = MembersFactoryImpl.eINSTANCE.createConstructor();
+    initializeCreateElementState(constructor);
+    
+    addCorrespondenceBetween(userExecution.getElement1(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), userExecution.getElement2(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
+    
+    addCorrespondenceBetween(userExecution.getElement3(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), userExecution.getElement4(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
+    
+    addCorrespondenceBetween(userExecution.getElement5(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), userExecution.getElement6(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
+    
+    addCorrespondenceBetween(userExecution.getElement7(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), userExecution.getElement8(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
+    
+    // val updatedElement userExecution.getElement9(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
+    userExecution.update0Element(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
+    
+    // val updatedElement userExecution.getElement10(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
+    userExecution.update1Element(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -58,88 +170,5 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return assemblyContextField;
-  }
-  
-  private EObject getElement1(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return newConstructorCall;
-  }
-  
-  private EObject getCorrepondenceSourceEncapsulatedComponentJavaClass(final ComposedStructure composedStructure, final AssemblyContext assemblyContext) {
-    RepositoryComponent _encapsulatedComponent__AssemblyContext = assemblyContext.getEncapsulatedComponent__AssemblyContext();
-    return _encapsulatedComponent__AssemblyContext;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine AddAssemblyContextToComposedStructureEffect with input:");
-    getLogger().debug("   ComposedStructure: " + this.composedStructure);
-    getLogger().debug("   AssemblyContext: " + this.assemblyContext);
-    
-    org.emftext.language.java.classifiers.Class compositeComponentJavaClass = getCorrespondingElement(
-    	getCorrepondenceSourceCompositeComponentJavaClass(composedStructure, assemblyContext), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    if (compositeComponentJavaClass == null) {
-    	return;
-    }
-    initializeRetrieveElementState(compositeComponentJavaClass);
-    org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass = getCorrespondingElement(
-    	getCorrepondenceSourceEncapsulatedComponentJavaClass(composedStructure, assemblyContext), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    if (encapsulatedComponentJavaClass == null) {
-    	return;
-    }
-    initializeRetrieveElementState(encapsulatedComponentJavaClass);
-    Field assemblyContextField = MembersFactoryImpl.eINSTANCE.createField();
-    initializeCreateElementState(assemblyContextField);
-    NewConstructorCall newConstructorCall = InstantiationsFactoryImpl.eINSTANCE.createNewConstructorCall();
-    initializeCreateElementState(newConstructorCall);
-    ClassifierImport contextClassImport = ImportsFactoryImpl.eINSTANCE.createClassifierImport();
-    initializeCreateElementState(contextClassImport);
-    Constructor constructor = MembersFactoryImpl.eINSTANCE.createConstructor();
-    initializeCreateElementState(constructor);
-    
-    addCorrespondenceBetween(getElement0(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), getElement4(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
-    addCorrespondenceBetween(getElement1(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), getElement5(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
-    addCorrespondenceBetween(getElement2(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), getElement6(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
-    addCorrespondenceBetween(getElement3(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), getElement7(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.AddAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceCompositeComponentJavaClass(final ComposedStructure composedStructure, final AssemblyContext assemblyContext) {
-    return composedStructure;
-  }
-  
-  private EObject getElement4(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return assemblyContext;
-  }
-  
-  private EObject getElement5(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return assemblyContext;
-  }
-  
-  private EObject getElement2(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return contextClassImport;
-  }
-  
-  private EObject getElement3(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return constructor;
-  }
-  
-  private EObject getElement6(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return assemblyContext;
-  }
-  
-  private EObject getElement7(final ComposedStructure composedStructure, final AssemblyContext assemblyContext, final org.emftext.language.java.classifiers.Class compositeComponentJavaClass, final org.emftext.language.java.classifiers.Class encapsulatedComponentJavaClass, final Field assemblyContextField, final NewConstructorCall newConstructorCall, final ClassifierImport contextClassImport, final Constructor constructor) {
-    return assemblyContext;
   }
 }

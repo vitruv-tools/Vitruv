@@ -16,24 +16,28 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameJavaClassifierEffect extends AbstractEffectRealization {
-  public RenameJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
-    super(responseExecutionState, calledBy);
-    				this.classSourceElement = classSourceElement;this.containingPackage = containingPackage;this.className = className;
-  }
-  
-  private NamedElement classSourceElement;
-  
-  private org.emftext.language.java.containers.Package containingPackage;
-  
-  private String className;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
+    public EObject getElement1(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
+      return javaClassifier;
+    }
+    
+    public void update0Element(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
       javaClassifier.setName(className);
+    }
+    
+    public EObject getElement2(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
+      return compilationUnit;
+    }
+    
+    public EObject getCorrepondenceSourceJavaClassifier(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit) {
+      return classSourceElement;
+    }
+    
+    public void update1Element(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className, final CompilationUnit compilationUnit, final ConcreteClassifier javaClassifier) {
       compilationUnit.setName(className);
       EList<String> _namespaces = compilationUnit.getNamespaces();
       _namespaces.clear();
@@ -46,6 +50,58 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
       this.persistProjectRelative(classSourceElement, compilationUnit, _buildJavaFilePath);
     }
+    
+    public EObject getCorrepondenceSourceCompilationUnit(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
+      return classSourceElement;
+    }
+  }
+  
+  private RenameJavaClassifierEffect.EffectUserExecution userExecution;
+  
+  public RenameJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.RenameJavaClassifierEffect.EffectUserExecution(getExecutionState(), this);
+    				this.classSourceElement = classSourceElement;this.containingPackage = containingPackage;this.className = className;
+  }
+  
+  private NamedElement classSourceElement;
+  
+  private org.emftext.language.java.containers.Package containingPackage;
+  
+  private String className;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameJavaClassifierEffect with input:");
+    getLogger().debug("   NamedElement: " + this.classSourceElement);
+    getLogger().debug("   Package: " + this.containingPackage);
+    getLogger().debug("   String: " + this.className);
+    
+    CompilationUnit compilationUnit = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceCompilationUnit(classSourceElement, containingPackage, className), // correspondence source supplier
+    	CompilationUnit.class,
+    	(CompilationUnit _element) -> true, // correspondence precondition checker
+    	null);
+    if (compilationUnit == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compilationUnit);
+    ConcreteClassifier javaClassifier = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaClassifier(classSourceElement, containingPackage, className, compilationUnit), // correspondence source supplier
+    	ConcreteClassifier.class,
+    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaClassifier == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaClassifier);
+    // val updatedElement userExecution.getElement1(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
+    userExecution.update0Element(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
+    
+    // val updatedElement userExecution.getElement2(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
+    userExecution.update1Element(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -56,44 +112,5 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine RenameJavaClassifierEffect with input:");
-    getLogger().debug("   NamedElement: " + this.classSourceElement);
-    getLogger().debug("   Package: " + this.containingPackage);
-    getLogger().debug("   String: " + this.className);
-    
-    CompilationUnit compilationUnit = getCorrespondingElement(
-    	getCorrepondenceSourceCompilationUnit(classSourceElement, containingPackage, className), // correspondence source supplier
-    	CompilationUnit.class,
-    	(CompilationUnit _element) -> true, // correspondence precondition checker
-    	null);
-    if (compilationUnit == null) {
-    	return;
-    }
-    initializeRetrieveElementState(compilationUnit);
-    ConcreteClassifier javaClassifier = getCorrespondingElement(
-    	getCorrepondenceSourceJavaClassifier(classSourceElement, containingPackage, className), // correspondence source supplier
-    	ConcreteClassifier.class,
-    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
-    	null);
-    if (javaClassifier == null) {
-    	return;
-    }
-    initializeRetrieveElementState(javaClassifier);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.RenameJavaClassifierEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaClassifier(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
-    return classSourceElement;
-  }
-  
-  private EObject getCorrepondenceSourceCompilationUnit(final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
-    return classSourceElement;
   }
 }

@@ -14,17 +14,41 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceNewJavaDataType(final InnerDeclaration innerDeclaration) {
+      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
+      return _datatype_InnerDeclaration;
+    }
+  }
+  
+  private ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
+  
   public ChangeTypeOfInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution(getExecutionState(), this);
     				this.innerDeclaration = innerDeclaration;
   }
   
   private InnerDeclaration innerDeclaration;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ChangeTypeOfInnerDeclarationImplementationEffect with input:");
+    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
+    
+    org.emftext.language.java.classifiers.Class newJavaDataType = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceNewJavaDataType(innerDeclaration), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    initializeRetrieveElementState(newJavaDataType);
+    preprocessElementStates();
+    new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	innerDeclaration, newJavaDataType);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -36,32 +60,10 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class newJavaDataType) {
+    public void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class newJavaDataType) {
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       final TypeReference newDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, newJavaDataType);
       this.effectFacade.changeInnerDeclarationType(innerDeclaration, newDataTypeReference);
     }
-  }
-  
-  private EObject getCorrepondenceSourceNewJavaDataType(final InnerDeclaration innerDeclaration) {
-    DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
-    return _datatype_InnerDeclaration;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine ChangeTypeOfInnerDeclarationImplementationEffect with input:");
-    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
-    
-    org.emftext.language.java.classifiers.Class newJavaDataType = getCorrespondingElement(
-    	getCorrepondenceSourceNewJavaDataType(innerDeclaration), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    initializeRetrieveElementState(newJavaDataType);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	innerDeclaration, newJavaDataType);
-    postprocessElementStates();
   }
 }

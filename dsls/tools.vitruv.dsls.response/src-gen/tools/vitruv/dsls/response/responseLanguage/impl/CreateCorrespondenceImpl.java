@@ -29,7 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  *
  * @generated
  */
-public class CreateCorrespondenceImpl extends TaggableImpl implements CreateCorrespondence
+public class CreateCorrespondenceImpl extends EffectStatementImpl implements CreateCorrespondence
 {
   /**
    * The cached value of the '{@link #getFirstElement() <em>First Element</em>}' containment reference.

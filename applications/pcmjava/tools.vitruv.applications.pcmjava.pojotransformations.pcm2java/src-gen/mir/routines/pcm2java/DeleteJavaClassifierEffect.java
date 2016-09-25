@@ -13,17 +13,66 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final NamedElement sourceElement, final ConcreteClassifier javaClassifier, final CompilationUnit compilationUnit) {
+      return javaClassifier;
+    }
+    
+    public EObject getElement2(final NamedElement sourceElement, final ConcreteClassifier javaClassifier, final CompilationUnit compilationUnit) {
+      return compilationUnit;
+    }
+    
+    public EObject getCorrepondenceSourceJavaClassifier(final NamedElement sourceElement) {
+      return sourceElement;
+    }
+    
+    public EObject getCorrepondenceSourceCompilationUnit(final NamedElement sourceElement, final ConcreteClassifier javaClassifier) {
+      return sourceElement;
+    }
+  }
+  
+  private DeleteJavaClassifierEffect.EffectUserExecution userExecution;
+  
   public DeleteJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElement) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.DeleteJavaClassifierEffect.EffectUserExecution(getExecutionState(), this);
     				this.sourceElement = sourceElement;
   }
   
   private NamedElement sourceElement;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine DeleteJavaClassifierEffect with input:");
+    getLogger().debug("   NamedElement: " + this.sourceElement);
+    
+    ConcreteClassifier javaClassifier = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaClassifier(sourceElement), // correspondence source supplier
+    	ConcreteClassifier.class,
+    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaClassifier == null) {
+    	return;
     }
+    initializeRetrieveElementState(javaClassifier);
+    CompilationUnit compilationUnit = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceCompilationUnit(sourceElement, javaClassifier), // correspondence source supplier
+    	CompilationUnit.class,
+    	(CompilationUnit _element) -> true, // correspondence precondition checker
+    	null);
+    if (compilationUnit == null) {
+    	return;
+    }
+    initializeRetrieveElementState(compilationUnit);
+    deleteObject(userExecution.getElement1(sourceElement, javaClassifier, compilationUnit));
+    
+    deleteObject(userExecution.getElement2(sourceElement, javaClassifier, compilationUnit));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -34,50 +83,5 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final NamedElement sourceElement, final ConcreteClassifier javaClassifier, final CompilationUnit compilationUnit) {
-    return javaClassifier;
-  }
-  
-  private EObject getElement1(final NamedElement sourceElement, final ConcreteClassifier javaClassifier, final CompilationUnit compilationUnit) {
-    return compilationUnit;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine DeleteJavaClassifierEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElement);
-    
-    ConcreteClassifier javaClassifier = getCorrespondingElement(
-    	getCorrepondenceSourceJavaClassifier(sourceElement), // correspondence source supplier
-    	ConcreteClassifier.class,
-    	(ConcreteClassifier _element) -> true, // correspondence precondition checker
-    	null);
-    if (javaClassifier == null) {
-    	return;
-    }
-    initializeRetrieveElementState(javaClassifier);
-    CompilationUnit compilationUnit = getCorrespondingElement(
-    	getCorrepondenceSourceCompilationUnit(sourceElement), // correspondence source supplier
-    	CompilationUnit.class,
-    	(CompilationUnit _element) -> true, // correspondence precondition checker
-    	null);
-    if (compilationUnit == null) {
-    	return;
-    }
-    initializeRetrieveElementState(compilationUnit);
-    deleteObject(getElement0(sourceElement, javaClassifier, compilationUnit));
-    deleteObject(getElement1(sourceElement, javaClassifier, compilationUnit));
-    
-    preprocessElementStates();
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaClassifier(final NamedElement sourceElement) {
-    return sourceElement;
-  }
-  
-  private EObject getCorrepondenceSourceCompilationUnit(final NamedElement sourceElement) {
-    return sourceElement;
   }
 }

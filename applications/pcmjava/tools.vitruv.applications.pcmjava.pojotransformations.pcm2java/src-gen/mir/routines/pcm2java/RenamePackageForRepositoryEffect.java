@@ -21,22 +21,59 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenamePackageForRepositoryEffect extends AbstractEffectRealization {
-  public RenamePackageForRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
-    super(responseExecutionState, calledBy);
-    				this.repository = repository;
-  }
-  
-  private Repository repository;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
+    public EObject getElement1(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
+      return rootPackage;
+    }
+    
+    public void update0Element(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
       String _entityName = repository.getEntityName();
       rootPackage.setName(_entityName);
     }
+    
+    public String getRetrieveTag1(final Repository repository) {
+      return "repository_root";
+    }
+    
+    public EObject getCorrepondenceSourceRootPackage(final Repository repository) {
+      return repository;
+    }
+  }
+  
+  private RenamePackageForRepositoryEffect.EffectUserExecution userExecution;
+  
+  public RenamePackageForRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.RenamePackageForRepositoryEffect.EffectUserExecution(getExecutionState(), this);
+    				this.repository = repository;
+  }
+  
+  private Repository repository;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenamePackageForRepositoryEffect with input:");
+    getLogger().debug("   Repository: " + this.repository);
+    
+    org.emftext.language.java.containers.Package rootPackage = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceRootPackage(repository), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(repository));
+    if (rootPackage == null) {
+    	return;
+    }
+    initializeRetrieveElementState(rootPackage);
+    // val updatedElement userExecution.getElement1(repository, rootPackage);
+    userExecution.update0Element(repository, rootPackage);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenamePackageForRepositoryEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	repository, rootPackage);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -48,7 +85,7 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
+    public void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
       this.effectFacade.renameJavaPackage(repository, rootPackage, "contracts", "contracts");
       this.effectFacade.renameJavaPackage(repository, rootPackage, "datatypes", "datatypes");
       EList<RepositoryComponent> _components__Repository = repository.getComponents__Repository();
@@ -74,35 +111,5 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
       this.persistProjectRelative(repository, rootPackage, _buildJavaFilePath);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine RenamePackageForRepositoryEffect with input:");
-    getLogger().debug("   Repository: " + this.repository);
-    
-    org.emftext.language.java.containers.Package rootPackage = getCorrespondingElement(
-    	getCorrepondenceSourceRootPackage(repository), // correspondence source supplier
-    	org.emftext.language.java.containers.Package.class,
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	getRetrieveTag0(repository));
-    if (rootPackage == null) {
-    	return;
-    }
-    initializeRetrieveElementState(rootPackage);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.RenamePackageForRepositoryEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, rootPackage);
-    new mir.routines.pcm2java.RenamePackageForRepositoryEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, rootPackage);
-    postprocessElementStates();
-  }
-  
-  private String getRetrieveTag0(final Repository repository) {
-    return "repository_root";
-  }
-  
-  private EObject getCorrepondenceSourceRootPackage(final Repository repository) {
-    return repository;
   }
 }

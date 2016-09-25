@@ -13,23 +13,54 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealization {
-  public UpdateSEFFImplementingMethodNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
-    super(responseExecutionState, calledBy);
-    				this.seff = seff;
-  }
-  
-  private ServiceEffectSpecification seff;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final ServiceEffectSpecification seff, final ClassMethod classMethod) {
+    public EObject getElement1(final ServiceEffectSpecification seff, final ClassMethod classMethod) {
+      return classMethod;
+    }
+    
+    public void update0Element(final ServiceEffectSpecification seff, final ClassMethod classMethod) {
       Signature _describedService__SEFF = seff.getDescribedService__SEFF();
       String _entityName = _describedService__SEFF.getEntityName();
       classMethod.setName(_entityName);
     }
+    
+    public EObject getCorrepondenceSourceClassMethod(final ServiceEffectSpecification seff) {
+      return seff;
+    }
+  }
+  
+  private UpdateSEFFImplementingMethodNameEffect.EffectUserExecution userExecution;
+  
+  public UpdateSEFFImplementingMethodNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.UpdateSEFFImplementingMethodNameEffect.EffectUserExecution(getExecutionState(), this);
+    				this.seff = seff;
+  }
+  
+  private ServiceEffectSpecification seff;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine UpdateSEFFImplementingMethodNameEffect with input:");
+    getLogger().debug("   ServiceEffectSpecification: " + this.seff);
+    
+    ClassMethod classMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
+    	ClassMethod.class,
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (classMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(classMethod);
+    // val updatedElement userExecution.getElement1(seff, classMethod);
+    userExecution.update0Element(seff, classMethod);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -40,29 +71,5 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine UpdateSEFFImplementingMethodNameEffect with input:");
-    getLogger().debug("   ServiceEffectSpecification: " + this.seff);
-    
-    ClassMethod classMethod = getCorrespondingElement(
-    	getCorrepondenceSourceClassMethod(seff), // correspondence source supplier
-    	ClassMethod.class,
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (classMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(classMethod);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.UpdateSEFFImplementingMethodNameEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	seff, classMethod);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceClassMethod(final ServiceEffectSpecification seff) {
-    return seff;
   }
 }

@@ -58,11 +58,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Matching/condition"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//Effect">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/elementCreation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/elementDeletion"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/correspondenceCreation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/correspondenceDeletion"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/codeBlock"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/effectStatement"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/callRoutine"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//Taggable">
@@ -77,20 +73,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RetrieveModelElement/precondition"/>
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//ExistingElementReference"/>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//CreateElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateElement/element"/>
-    </genClasses>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//DeleteElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//DeleteElement/element"/>
-    </genClasses>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//CreateCorrespondence">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateCorrespondence/firstElement"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateCorrespondence/secondElement"/>
-    </genClasses>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//RemoveCorrespondence">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/firstElement"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/secondElement"/>
-    </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//EffectStatement"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//RoutineCallBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//TagCodeBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//PreconditionCodeBlock"/>
@@ -105,5 +88,24 @@
     <genClasses ecoreClass="ResponseLanguage.ecore#//MultiValuedFeatureRemoveChange"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//MultiValuedFeaturePermuteChange"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//SingleValuedFeatureReplace"/>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//CreateElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateElement/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateElement/initializationBlock"/>
+    </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//DeleteElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//DeleteElement/element"/>
+    </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//UpdateElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//UpdateElement/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//UpdateElement/updateBlock"/>
+    </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//CreateCorrespondence">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateCorrespondence/firstElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//CreateCorrespondence/secondElement"/>
+    </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//RemoveCorrespondence">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/firstElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//RemoveCorrespondence/secondElement"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

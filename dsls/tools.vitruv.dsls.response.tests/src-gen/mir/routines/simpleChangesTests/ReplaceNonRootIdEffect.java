@@ -11,8 +11,29 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetElement(final NonRoot nonRoot, final String value) {
+      return nonRoot;
+    }
+    
+    public EObject getElement1(final NonRoot nonRoot, final String value, final NonRoot targetElement) {
+      return targetElement;
+    }
+    
+    public void update0Element(final NonRoot nonRoot, final String value, final NonRoot targetElement) {
+      targetElement.setId(value);
+    }
+  }
+  
+  private ReplaceNonRootIdEffect.EffectUserExecution userExecution;
+  
   public ReplaceNonRootIdEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot nonRoot, final String value) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.simpleChangesTests.ReplaceNonRootIdEffect.EffectUserExecution(getExecutionState(), this);
     				this.nonRoot = nonRoot;this.value = value;
   }
   
@@ -20,14 +41,25 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
   
   private String value;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ReplaceNonRootIdEffect with input:");
+    getLogger().debug("   NonRoot: " + this.nonRoot);
+    getLogger().debug("   String: " + this.value);
     
-    private void executeUserOperations(final NonRoot nonRoot, final String value, final NonRoot targetElement) {
-      targetElement.setId(value);
+    NonRoot targetElement = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceTargetElement(nonRoot, value), // correspondence source supplier
+    	NonRoot.class,
+    	(NonRoot _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetElement == null) {
+    	return;
     }
+    initializeRetrieveElementState(targetElement);
+    // val updatedElement userExecution.getElement1(nonRoot, value, targetElement);
+    userExecution.update0Element(nonRoot, value, targetElement);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -38,30 +70,5 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getCorrepondenceSourceTargetElement(final NonRoot nonRoot, final String value) {
-    return nonRoot;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine ReplaceNonRootIdEffect with input:");
-    getLogger().debug("   NonRoot: " + this.nonRoot);
-    getLogger().debug("   String: " + this.value);
-    
-    NonRoot targetElement = getCorrespondingElement(
-    	getCorrepondenceSourceTargetElement(nonRoot, value), // correspondence source supplier
-    	NonRoot.class,
-    	(NonRoot _element) -> true, // correspondence precondition checker
-    	null);
-    if (targetElement == null) {
-    	return;
-    }
-    initializeRetrieveElementState(targetElement);
-    
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.ReplaceNonRootIdEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	nonRoot, value, targetElement);
-    postprocessElementStates();
   }
 }

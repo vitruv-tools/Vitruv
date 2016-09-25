@@ -14,8 +14,43 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      return nonRootContainer;
+    }
+    
+    public void update0Element(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      EList<NonRoot> _nonRootObjectsContainment = nonRootContainer.getNonRootObjectsContainment();
+      _nonRootObjectsContainment.add(newNonRoot);
+    }
+    
+    public EObject getElement2(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      return newNonRoot;
+    }
+    
+    public EObject getElement3(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      return insertedNonRoot;
+    }
+    
+    public EObject getCorrepondenceSourceNonRootContainer(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot) {
+      return container;
+    }
+    
+    public void updateNewNonRootElement(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
+      String _id = insertedNonRoot.getId();
+      newNonRoot.setId(_id);
+    }
+  }
+  
+  private CreateNonRootInContainerEffect.EffectUserExecution userExecution;
+  
   public CreateNonRootInContainerEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.simpleChangesTests.CreateNonRootInContainerEffect.EffectUserExecution(getExecutionState(), this);
     				this.container = container;this.insertedNonRoot = insertedNonRoot;
   }
   
@@ -23,17 +58,31 @@ public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
   
   private NonRoot insertedNonRoot;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateNonRootInContainerEffect with input:");
+    getLogger().debug("   NonRootObjectContainerHelper: " + this.container);
+    getLogger().debug("   NonRoot: " + this.insertedNonRoot);
     
-    private void executeUserOperations(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
-      String _id = insertedNonRoot.getId();
-      newNonRoot.setId(_id);
-      EList<NonRoot> _nonRootObjectsContainment = nonRootContainer.getNonRootObjectsContainment();
-      _nonRootObjectsContainment.add(newNonRoot);
+    NonRootObjectContainerHelper nonRootContainer = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceNonRootContainer(container, insertedNonRoot), // correspondence source supplier
+    	NonRootObjectContainerHelper.class,
+    	(NonRootObjectContainerHelper _element) -> true, // correspondence precondition checker
+    	null);
+    if (nonRootContainer == null) {
+    	return;
     }
+    initializeRetrieveElementState(nonRootContainer);
+    NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
+    initializeCreateElementState(newNonRoot);
+    userExecution.updateNewNonRootElement(container, insertedNonRoot, nonRootContainer, newNonRoot);
+    
+    // val updatedElement userExecution.getElement1(container, insertedNonRoot, nonRootContainer, newNonRoot);
+    userExecution.update0Element(container, insertedNonRoot, nonRootContainer, newNonRoot);
+    
+    addCorrespondenceBetween(userExecution.getElement2(container, insertedNonRoot, nonRootContainer, newNonRoot), userExecution.getElement3(container, insertedNonRoot, nonRootContainer, newNonRoot), "");
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -44,41 +93,5 @@ public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
-    return newNonRoot;
-  }
-  
-  private EObject getElement1(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot, final NonRootObjectContainerHelper nonRootContainer, final NonRoot newNonRoot) {
-    return insertedNonRoot;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateNonRootInContainerEffect with input:");
-    getLogger().debug("   NonRootObjectContainerHelper: " + this.container);
-    getLogger().debug("   NonRoot: " + this.insertedNonRoot);
-    
-    NonRootObjectContainerHelper nonRootContainer = getCorrespondingElement(
-    	getCorrepondenceSourceNonRootContainer(container, insertedNonRoot), // correspondence source supplier
-    	NonRootObjectContainerHelper.class,
-    	(NonRootObjectContainerHelper _element) -> true, // correspondence precondition checker
-    	null);
-    if (nonRootContainer == null) {
-    	return;
-    }
-    initializeRetrieveElementState(nonRootContainer);
-    NonRoot newNonRoot = AllElementTypesFactoryImpl.eINSTANCE.createNonRoot();
-    initializeCreateElementState(newNonRoot);
-    
-    addCorrespondenceBetween(getElement0(container, insertedNonRoot, nonRootContainer, newNonRoot), getElement1(container, insertedNonRoot, nonRootContainer, newNonRoot), "");
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.CreateNonRootInContainerEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	container, insertedNonRoot, nonRootContainer, newNonRoot);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceNonRootContainer(final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot) {
-    return container;
   }
 }

@@ -12,17 +12,47 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteMethodForOperationSignatureEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
+      return interfaceMethod;
+    }
+    
+    public EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature operationSignature) {
+      return operationSignature;
+    }
+  }
+  
+  private DeleteMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
   public DeleteMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.DeleteMethodForOperationSignatureEffect.EffectUserExecution(getExecutionState(), this);
     				this.operationSignature = operationSignature;
   }
   
   private OperationSignature operationSignature;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine DeleteMethodForOperationSignatureEffect with input:");
+    getLogger().debug("   OperationSignature: " + this.operationSignature);
+    
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceInterfaceMethod(operationSignature), // correspondence source supplier
+    	InterfaceMethod.class,
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
+    	return;
     }
+    initializeRetrieveElementState(interfaceMethod);
+    deleteObject(userExecution.getElement1(operationSignature, interfaceMethod));
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -33,32 +63,5 @@ public class DeleteMethodForOperationSignatureEffect extends AbstractEffectReali
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
-    return interfaceMethod;
-  }
-  
-  private EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature operationSignature) {
-    return operationSignature;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine DeleteMethodForOperationSignatureEffect with input:");
-    getLogger().debug("   OperationSignature: " + this.operationSignature);
-    
-    InterfaceMethod interfaceMethod = getCorrespondingElement(
-    	getCorrepondenceSourceInterfaceMethod(operationSignature), // correspondence source supplier
-    	InterfaceMethod.class,
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (interfaceMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(interfaceMethod);
-    deleteObject(getElement0(operationSignature, interfaceMethod));
-    
-    preprocessElementStates();
-    postprocessElementStates();
   }
 }

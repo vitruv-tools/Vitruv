@@ -91,11 +91,7 @@ Matching:
 Effect:
 	{Effect}
 	'effect' '{'
-		(elementCreation += CreateElement |
-			elementDeletion += DeleteElement |
-			correspondenceCreation += CreateCorrespondence | 
-			correspondenceDeletion += RemoveCorrespondence)*
-		('execute' codeBlock=ExecutionCodeBlock)?
+		(effectStatement += EffectStatement)*
 		callRoutine=RoutineCallBlock?
 	'}';
 	
@@ -112,17 +108,29 @@ RetrieveModelElement:
 ExistingElementReference:
 	CodeBlock;
 
-CreateElement:
-	"create element" element=NamedModelElement;
+EffectStatement:
+	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence;
 	
-DeleteElement:
+CreateElement returns EffectStatement:
+	{CreateElement}
+	"create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?;
+	
+DeleteElement returns EffectStatement:
+	{DeleteElement}
 	"delete element" element=ExistingElementReference;
 
-CreateCorrespondence:
+UpdateElement returns EffectStatement:
+	{UpdateElement}
+	"update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
+
+
+CreateCorrespondence returns EffectStatement:
+	{CreateCorrespondence}
 	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 	('tag with' Taggable)?;
 	
-RemoveCorrespondence:
+RemoveCorrespondence returns EffectStatement:
+	{RemoveCorrespondence}
 	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
 
 

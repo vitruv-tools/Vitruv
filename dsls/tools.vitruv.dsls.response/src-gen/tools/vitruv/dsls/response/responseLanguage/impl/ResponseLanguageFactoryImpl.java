@@ -85,10 +85,7 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
-      case ResponseLanguagePackage.CREATE_ELEMENT: return createCreateElement();
-      case ResponseLanguagePackage.DELETE_ELEMENT: return createDeleteElement();
-      case ResponseLanguagePackage.CREATE_CORRESPONDENCE: return createCreateCorrespondence();
-      case ResponseLanguagePackage.REMOVE_CORRESPONDENCE: return createRemoveCorrespondence();
+      case ResponseLanguagePackage.EFFECT_STATEMENT: return createEffectStatement();
       case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAG_CODE_BLOCK: return createTagCodeBlock();
       case ResponseLanguagePackage.PRECONDITION_CODE_BLOCK: return createPreconditionCodeBlock();
@@ -101,6 +98,11 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_REMOVE_CHANGE: return createMultiValuedFeatureRemoveChange();
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_PERMUTE_CHANGE: return createMultiValuedFeaturePermuteChange();
       case ResponseLanguagePackage.SINGLE_VALUED_FEATURE_REPLACE: return createSingleValuedFeatureReplace();
+      case ResponseLanguagePackage.CREATE_ELEMENT: return createCreateElement();
+      case ResponseLanguagePackage.DELETE_ELEMENT: return createDeleteElement();
+      case ResponseLanguagePackage.UPDATE_ELEMENT: return createUpdateElement();
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE: return createCreateCorrespondence();
+      case ResponseLanguagePackage.REMOVE_CORRESPONDENCE: return createRemoveCorrespondence();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -331,43 +333,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public CreateElement createCreateElement()
+  public EffectStatement createEffectStatement()
   {
-    CreateElementImpl createElement = new CreateElementImpl();
-    return createElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public DeleteElement createDeleteElement()
-  {
-    DeleteElementImpl deleteElement = new DeleteElementImpl();
-    return deleteElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CreateCorrespondence createCreateCorrespondence()
-  {
-    CreateCorrespondenceImpl createCorrespondence = new CreateCorrespondenceImpl();
-    return createCorrespondence;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RemoveCorrespondence createRemoveCorrespondence()
-  {
-    RemoveCorrespondenceImpl removeCorrespondence = new RemoveCorrespondenceImpl();
-    return removeCorrespondence;
+    EffectStatementImpl effectStatement = new EffectStatementImpl();
+    return effectStatement;
   }
 
   /**
@@ -500,6 +469,61 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     SingleValuedFeatureReplaceImpl singleValuedFeatureReplace = new SingleValuedFeatureReplaceImpl();
     return singleValuedFeatureReplace;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CreateElement createCreateElement()
+  {
+    CreateElementImpl createElement = new CreateElementImpl();
+    return createElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DeleteElement createDeleteElement()
+  {
+    DeleteElementImpl deleteElement = new DeleteElementImpl();
+    return deleteElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UpdateElement createUpdateElement()
+  {
+    UpdateElementImpl updateElement = new UpdateElementImpl();
+    return updateElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CreateCorrespondence createCreateCorrespondence()
+  {
+    CreateCorrespondenceImpl createCorrespondence = new CreateCorrespondenceImpl();
+    return createCorrespondence;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RemoveCorrespondence createRemoveCorrespondence()
+  {
+    RemoveCorrespondenceImpl removeCorrespondence = new RemoveCorrespondenceImpl();
+    return removeCorrespondence;
   }
 
   /**

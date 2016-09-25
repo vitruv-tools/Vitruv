@@ -15,17 +15,41 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceNonPrimitiveInnerDataTypeClass(final InnerDeclaration innerDeclaration) {
+      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
+      return _datatype_InnerDeclaration;
+    }
+  }
+  
+  private CreateInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
+  
   public CreateInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateInnerDeclarationImplementationEffect.EffectUserExecution(getExecutionState(), this);
     				this.innerDeclaration = innerDeclaration;
   }
   
   private InnerDeclaration innerDeclaration;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateInnerDeclarationImplementationEffect with input:");
+    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
+    
+    org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceNonPrimitiveInnerDataTypeClass(innerDeclaration), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    initializeRetrieveElementState(nonPrimitiveInnerDataTypeClass);
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreateInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	innerDeclaration, nonPrimitiveInnerDataTypeClass);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -37,33 +61,11 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass) {
+    public void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass) {
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       final TypeReference innerDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
       CompositeDataType _compositeDataType_InnerDeclaration = innerDeclaration.getCompositeDataType_InnerDeclaration();
       this.effectFacade.addInnerDeclarationToCompositeDataType(_compositeDataType_InnerDeclaration, innerDeclaration, innerDataTypeReference);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateInnerDeclarationImplementationEffect with input:");
-    getLogger().debug("   InnerDeclaration: " + this.innerDeclaration);
-    
-    org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass = getCorrespondingElement(
-    	getCorrepondenceSourceNonPrimitiveInnerDataTypeClass(innerDeclaration), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    initializeRetrieveElementState(nonPrimitiveInnerDataTypeClass);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	innerDeclaration, nonPrimitiveInnerDataTypeClass);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceNonPrimitiveInnerDataTypeClass(final InnerDeclaration innerDeclaration) {
-    DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
-    return _datatype_InnerDeclaration;
   }
 }

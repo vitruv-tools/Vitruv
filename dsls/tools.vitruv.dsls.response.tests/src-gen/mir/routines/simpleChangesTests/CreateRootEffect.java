@@ -12,26 +12,49 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRootEffect extends AbstractEffectRealization {
-  public CreateRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
-    super(responseExecutionState, calledBy);
-    				this.root = root;
-  }
-  
-  private Root root;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final Root root, final Root newRoot) {
+    public EObject getElement1(final Root root, final Root newRoot) {
+      return newRoot;
+    }
+    
+    public void updateNewRootElement(final Root root, final Root newRoot) {
       String _id = root.getId();
       newRoot.setId(_id);
-      String _id_1 = root.getId();
-      String _replace = _id_1.replace("Source", "Target");
-      String _plus = ("model/" + _replace);
-      this.persistProjectRelative(root, newRoot, _plus);
     }
+    
+    public EObject getElement2(final Root root, final Root newRoot) {
+      return root;
+    }
+  }
+  
+  private CreateRootEffect.EffectUserExecution userExecution;
+  
+  public CreateRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.simpleChangesTests.CreateRootEffect.EffectUserExecution(getExecutionState(), this);
+    				this.root = root;
+  }
+  
+  private Root root;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateRootEffect with input:");
+    getLogger().debug("   Root: " + this.root);
+    
+    Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
+    initializeCreateElementState(newRoot);
+    userExecution.updateNewRootElement(root, newRoot);
+    
+    addCorrespondenceBetween(userExecution.getElement1(root, newRoot), userExecution.getElement2(root, newRoot), "");
+    
+    preprocessElementStates();
+    new mir.routines.simpleChangesTests.CreateRootEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	root, newRoot);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -42,27 +65,12 @@ public class CreateRootEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final Root root, final Root newRoot) {
-    return newRoot;
-  }
-  
-  private EObject getElement1(final Root root, final Root newRoot) {
-    return root;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateRootEffect with input:");
-    getLogger().debug("   Root: " + this.root);
     
-    Root newRoot = AllElementTypesFactoryImpl.eINSTANCE.createRoot();
-    initializeCreateElementState(newRoot);
-    
-    addCorrespondenceBetween(getElement0(root, newRoot), getElement1(root, newRoot), "");
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.CreateRootEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, newRoot);
-    postprocessElementStates();
+    public void executeUserOperations(final Root root, final Root newRoot) {
+      String _id = root.getId();
+      String _replace = _id.replace("Source", "Target");
+      String _plus = ("model/" + _replace);
+      this.persistProjectRelative(root, newRoot, _plus);
+    }
   }
 }

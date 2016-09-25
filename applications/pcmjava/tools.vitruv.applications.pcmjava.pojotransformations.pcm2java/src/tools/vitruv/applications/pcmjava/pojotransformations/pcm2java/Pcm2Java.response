@@ -6,7 +6,6 @@ import org.emftext.language.java.statements.ExpressionStatement
 import org.emftext.language.java.expressions.AssignmentExpression
 import org.emftext.language.java.references.SelfReference
 import org.emftext.language.java.references.IdentifierReference
-import org.emftext.language.java.statements.Statement
 import java.util.Set
 import java.util.HashSet
 import java.util.ArrayList
@@ -29,6 +28,7 @@ import org.emftext.language.java.types.PrimitiveType
 import org.emftext.language.java.types.TypesFactory
 import org.emftext.language.java.members.Field
 import org.palladiosimulator.pcm.repository.OperationSignature
+import org.emftext.language.java.imports.ClassifierImport
 
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
@@ -73,7 +73,7 @@ routine: renamePackageForRepository(pcm.Repository repository) {
 			tagged with "repository_root"
 	}
 	effect { 
-		execute {
+		update element rootPackage {
 			rootPackage.name = repository.entityName;
 		}
 		call {
@@ -149,12 +149,16 @@ response: AddedAssemblyContextToComposedStructure {
 	call addAssemblyContextToComposedStructure(change.affectedEObject, change.newValue)
 }
 
+// TODO HK This is ugly...
 routine: addAssemblyContextToComposedStructure(pcm.ComposedStructure composedStructure, pcm.AssemblyContext assemblyContext) {
 	match {
 		retrieve required element java.Class as compositeComponentJavaClass corresponding to composedStructure
 		retrieve required element java.Class as encapsulatedComponentJavaClass corresponding to assemblyContext.encapsulatedComponent__AssemblyContext
 	} effect {
-		create element java.Field as assemblyContextField
+		create element java.Field as assemblyContextField initialized as {
+			val TypeReference typeRef = createNamespaceClassifierReference(encapsulatedComponentJavaClass);
+			createPrivateField(assemblyContextField, typeRef, assemblyContext.entityName);	
+		}
 		create element java.NewConstructorCall as newConstructorCall
 		create element java.ClassifierImport as contextClassImport
 		create element java.Constructor as constructor
@@ -162,12 +166,12 @@ routine: addAssemblyContextToComposedStructure(pcm.ComposedStructure composedStr
 		add correspondence between newConstructorCall and assemblyContext
 		add correspondence between contextClassImport and assemblyContext
 		add correspondence between constructor and assemblyContext
-		execute {
-			val TypeReference typeRef = createNamespaceClassifierReference(encapsulatedComponentJavaClass);
-			createPrivateField(assemblyContextField, typeRef, assemblyContext.entityName);
+		update element compositeComponentJavaClass {
 			compositeComponentJavaClass.members += assemblyContextField;
 			addConstructorToClass(constructor, compositeComponentJavaClass)
 			addImportToCompilationUnitOfClassifier(contextClassImport, compositeComponentJavaClass, encapsulatedComponentJavaClass)
+		}
+		update element constructor {
 			createNewForFieldInConstructor(newConstructorCall, constructor, assemblyContextField);
 		}
 	}
@@ -287,7 +291,8 @@ response: CreatedCompositeDataType {
 
 routine: createCompositeDataTypeImplementation(pcm.CompositeDataType dataType) { 
 	match {
-		retrieve required element java.Package as datatypesPackage corresponding to dataType.repository__DataType with datatypesPackage.name == "datatypes"
+		retrieve required element java.Package as datatypesPackage corresponding to dataType.repository__DataType 
+			with datatypesPackage.name == "datatypes"
 	} 
 	effect {
 		call {
@@ -360,15 +365,18 @@ routine: addSuperTypeToDataType(pcm.DataType dataType, java.TypeReference innerT
 		retrieve required element java.CompilationUnit as dataTypeImplementationCU corresponding to dataType
 	} 
 	effect { 
-		create element java.NamespaceClassifierReference as namespaceClassifier
-		add correspondence between namespaceClassifier and dataType
-		execute {
+		update element dataTypeImplementationCU {
 			val collectionTypeClassImport = getJavaClassImport(superTypeQualifiedName);
 			dataTypeImplementationCU.imports += collectionTypeClassImport;
-			createNamespaceClassifierReference(namespaceClassifier, collectionTypeClassImport.classifier);
+		}
+		create element java.NamespaceClassifierReference as namespaceClassifier initialized as {
+			createNamespaceClassifierReference(namespaceClassifier, dataTypeImplementationCU.imports.filter(ClassifierImport).last.classifier);
 			val qualifiedTypeArgument = GenericsFactory.eINSTANCE.createQualifiedTypeArgument();
 			qualifiedTypeArgument.typeReference = innerTypeReference;
 			namespaceClassifier.classifierReferences.get(0).typeArguments += qualifiedTypeArgument;
+		}
+		add correspondence between namespaceClassifier and dataType
+		update element dataTypeImplementation {
 			dataTypeImplementation.extends = namespaceClassifier;
 		}
 	}
@@ -417,16 +425,19 @@ routine: addInnerDeclarationToCompositeDataType(pcm.CompositeDataType dataType, 
 		retrieve required element java.Class as dataTypeClass corresponding to dataType
 	} 
 	effect { 
-		create element java.Field as innerDataTypeField
-		create element java.ClassMethod as getterMethod
-		create element java.ClassMethod as setterMethod
+		create element java.Field as innerDataTypeField initialized as {
+			createPrivateField(innerDataTypeField, EcoreUtil.copy(dataTypeReference), innerDeclaration.entityName);	
+		}
 		add correspondence between innerDataTypeField and innerDeclaration
-		add correspondence between getterMethod and innerDeclaration tag with "getter"
-		add correspondence between setterMethod and innerDeclaration tag with "setter"
-		execute {
-			createPrivateField(innerDataTypeField, EcoreUtil.copy(dataTypeReference), innerDeclaration.entityName);
-			createSetter(innerDataTypeField, setterMethod);
+		create element java.ClassMethod as getterMethod initialized as {
 			createGetter(innerDataTypeField, getterMethod);
+		}
+		add correspondence between getterMethod and innerDeclaration tag with "getter"
+		create element java.ClassMethod as setterMethod initialized as {
+			createSetter(innerDataTypeField, setterMethod);
+		}
+		add correspondence between setterMethod and innerDeclaration tag with "setter"
+		update element dataTypeClass {
 			dataTypeClass.members += innerDataTypeField;
 			dataTypeClass.members += getterMethod;
 			dataTypeClass.members += setterMethod;
@@ -446,14 +457,17 @@ routine: renameInnerDeclarationImplementation(pcm.InnerDeclaration innerDeclarat
 		retrieve required element java.ClassMethod as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
 		retrieve required element java.ClassMethod as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
 	} 
-	effect { 
-		execute {
-			val newName = innerDeclaration.entityName;
-			compositeTypeField.name = newName;
-			compositeTypeGetterMethod.name = "get" + newName.toFirstUpper;
+	effect {
+		update element compositeTypeField {
+			compositeTypeField.name = innerDeclaration.entityName;
+		}
+		update element compositeTypeGetterMethod {
+			compositeTypeGetterMethod.name = "get" + innerDeclaration.entityName.toFirstUpper;
+		}
+		update element compositeTypeSetterMethod {
 			if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
 				val parameter = compositeTypeSetterMethod.parameters.get(0)
-				parameter.name = "set" + newName.toFirstUpper;
+				parameter.name = "set" + innerDeclaration.entityName.toFirstUpper;
 			}
 		}
 	}
@@ -482,15 +496,19 @@ routine: changeInnerDeclarationType(pcm.InnerDeclaration innerDeclaration, java.
 		retrieve required element java.Method as compositeTypeGetterMethod corresponding to innerDeclaration tagged with "getter"
 		retrieve required element java.Method as compositeTypeSetterMethod corresponding to innerDeclaration tagged with "setter"
 	} 
-	effect { 
-		execute {
+	effect {
+		update element compositeTypeField {
 			compositeTypeField.typeReference = EcoreUtil.copy(newTypeReference);
+		}
+		update element compositeTypeGetterMethod {
 			compositeTypeGetterMethod.typeReference = EcoreUtil.copy(newTypeReference);
+		}
+		update element compositeTypeSetterMethod {
 			if (!compositeTypeSetterMethod.parameters.nullOrEmpty) {
 				val parameter = compositeTypeSetterMethod.parameters.get(0)
 				parameter.typeReference = EcoreUtil.copy(newTypeReference)
 			}
-		}
+		} 
 	}
 }
 
@@ -503,10 +521,7 @@ routine: createJavaPackage(EObject sourceElementMappedToPackage, java.Package pa
 		require absence of element java.Package corresponding to sourceElementMappedToPackage tagged with newTag
 	} 
 	effect { 
-		create element java.Package as javaPackage
-		add correspondence between javaPackage and sourceElementMappedToPackage
-			tag with newTag //persist as root at project-relative location: buildJavaFilePath(javaPackage)
-		execute {
+		create element java.Package as javaPackage initialized as {
 			if (parentPackage != null) {
 				javaPackage.namespaces += parentPackage.namespaces;
 				javaPackage.namespaces += parentPackage.name; 
@@ -514,6 +529,8 @@ routine: createJavaPackage(EObject sourceElementMappedToPackage, java.Package pa
 			javaPackage.name = packageName;
 			persistProjectRelative(sourceElementMappedToPackage, javaPackage, buildJavaFilePath(javaPackage));
 		}
+		add correspondence between javaPackage and sourceElementMappedToPackage
+			tag with newTag
 	}
 }
 
@@ -523,7 +540,7 @@ routine: renameJavaPackage(pcm.NamedElement sourceElementMappedToPackage, java.P
 			tagged with expectedTag	//move containing model to project-relative location: buildJavaFilePath(javaPackage)
 	} 
 	effect { 
-		execute {
+		update element javaPackage {
 			javaPackage.namespaces.clear();
 			if (parentPackage != null) {
 				javaPackage.namespaces += parentPackage.namespaces;
@@ -549,40 +566,36 @@ routine: deleteJavaPackage(pcm.NamedElement sourceElementMappedToPackage, String
 
 routine: createJavaClass(pcm.NamedElement sourceElementMappedToClass, java.Package containingPackage, String className) {
 	effect { 
-		create element java.Class as javaClass
-		add correspondence between javaClass and sourceElementMappedToClass
-		call {
+		create element java.Class as javaClass initialized as {
 			javaClass.name = className;
 			javaClass.addModifier(ModifiersFactory.eINSTANCE.createPublic());
-			createCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage);
 		}
+		add correspondence between javaClass and sourceElementMappedToClass
+		call createCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage)
 	}
 }
 
 routine: createJavaInterface(pcm.NamedElement sourceElementMappedToClass, java.Package containingPackage, String className) {
 	effect { 
-		create element java.Interface as javaInterface
-		add correspondence between javaInterface and sourceElementMappedToClass
-		call {
+		create element java.Interface as javaInterface initialized as {
 			javaInterface.name = className;
 			javaInterface.addModifier(ModifiersFactory.eINSTANCE.createPublic());
-			createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
 		}
+		add correspondence between javaInterface and sourceElementMappedToClass
+		call createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage)
 	}
 }
 
 routine: createCompilationUnit(pcm.NamedElement sourceElementMappedToClass, java.ConcreteClassifier classifier, java.Package containingPackage) {
 	effect { 
-		create element  java.CompilationUnit as compilationUnit
-		add correspondence between compilationUnit and sourceElementMappedToClass
-			//persist as root at project-relative location: buildJavaFilePath(compilationUnit)
-		execute {
+		create element  java.CompilationUnit as compilationUnit initialized as {
 			compilationUnit.namespaces += containingPackage.namespaces;
 			compilationUnit.namespaces += containingPackage.name;
 			compilationUnit.name = classifier.name;
 			compilationUnit.classifiers.add(classifier);
 			persistProjectRelative(sourceElementMappedToClass, compilationUnit, buildJavaFilePath(compilationUnit));
 		}
+		add correspondence between compilationUnit and sourceElementMappedToClass
 	}
 }
 
@@ -593,8 +606,10 @@ routine: renameJavaClassifier(pcm.NamedElement classSourceElement, java.Package 
 		retrieve required element java.ConcreteClassifier as javaClassifier corresponding to classSourceElement
 	} 
 	effect { 
-		execute {
+		update element javaClassifier {
 			javaClassifier.name = className;
+		}
+		update element compilationUnit {
 			compilationUnit.name = className;
 			compilationUnit.namespaces.clear;
 			compilationUnit.namespaces += containingPackage.namespaces;
@@ -630,15 +645,18 @@ routine: addProvidedRole(pcm.OperationProvidedRole providedRole) {
 		retrieve required element java.Interface as operationProvidingInterface corresponding to providedRole.providedInterface__OperationProvidedRole
 		retrieve required element java.Class as javaClass corresponding to providedRole.providingEntity_ProvidedRole
 	} 
-	effect { 
-		create element java.ClassifierImport as interfaceImport
-		create element java.NamespaceClassifierReference as namespaceClassifierReference
-		add correspondence between interfaceImport and providedRole
-		add correspondence between namespaceClassifierReference and providedRole
-		execute {
-			createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
-			javaClass.implements.add(namespaceClassifierReference)
+	effect {
+		// TODO HK This should be partly in the context of the compilation unit
+		create element java.ClassifierImport as interfaceImport initialized as {
 			addImportToCompilationUnitOfClassifier(interfaceImport, javaClass, operationProvidingInterface);
+		}
+		add correspondence between interfaceImport and providedRole
+		create element java.NamespaceClassifierReference as namespaceClassifierReference initialized as {
+			createNamespaceClassifierReference(namespaceClassifierReference, operationProvidingInterface);
+		}
+		add correspondence between namespaceClassifierReference and providedRole
+		update element javaClass {
+			javaClass.implements.add(namespaceClassifierReference)
 		}
 	}
 }
@@ -695,20 +713,24 @@ response: CreatedRequiredRole {
 	call addRequiredRole(change.newValue as OperationRequiredRole)
 }
 
+// TODO HK This routine is hard to read, isn't it?
 routine: addRequiredRole(pcm.OperationRequiredRole requiredRole) { 
 	match {
 		retrieve required element java.Interface as requiredInterface corresponding to requiredRole.requiredInterface__OperationRequiredRole
 		retrieve required element java.Class as javaClass corresponding to requiredRole.requiringEntity_RequiredRole
-	} effect { 
-		create element java.ClassifierImport as requiredInterfaceImport
-		create element java.Field as requiredInterfaceField
-		add correspondence between requiredInterfaceImport and requiredRole
-		add correspondence between requiredInterfaceField and requiredRole
-		execute {
-			val typeRef = createNamespaceClassifierReference(requiredInterface);
+	} effect {
+		// TODO HK this should be partly in the context of the compilation unit
+		create element java.ClassifierImport as requiredInterfaceImport initialized as {
 			addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+		}
+		add correspondence between requiredInterfaceImport and requiredRole
+		create element java.Field as requiredInterfaceField initialized as {
+			val typeRef = createNamespaceClassifierReference(requiredInterface);
 			val requiredRoleName = requiredRole.entityName;
 			createPrivateField(requiredInterfaceField, EcoreUtil.copy(typeRef), requiredRoleName);
+		}
+		add correspondence between requiredInterfaceField and requiredRole
+		update element javaClass {
 			javaClass.members += requiredInterfaceField;
 			if (javaClass.members.filter(typeof(Constructor)).nullOrEmpty) {
 				addConstructorToClass(javaClass)
@@ -727,11 +749,12 @@ routine: addRequiredRole(pcm.OperationRequiredRole requiredRole) {
 routine: addParameterAndAssignmentToConstructor(pcm.NamedElement parameterCorrespondenceSource, java.Constructor constructor, 
 		java.NamespaceClassifierReference typeReference, java.Field fieldToBeAssigned, String parameterName) {
 	effect { 
-		create element java.OrdinaryParameter as newParameter
-		add correspondence between newParameter and parameterCorrespondenceSource
-		execute {
+		create element java.OrdinaryParameter as newParameter initialized as {
 			newParameter.name = parameterName;
 			newParameter.typeReference = EcoreUtil.copy(typeReference);
+		}
+		add correspondence between newParameter and parameterCorrespondenceSource
+		update element constructor {
 			constructor.parameters.add(newParameter)
 			val asssignment = createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
 			constructor.statements.add(asssignment)
@@ -756,37 +779,38 @@ routine: removeRequiredRole(pcm.RequiredRole requiredRole, pcm.InterfaceRequirin
 	effect { 
 		delete element requiredInterfaceImport
 		delete element requiredInterfaceField
-		execute {
+		call {
 			for (ctor : javaClass.members.filter(typeof(Constructor))) {
-				var Statement statementToRemove = null;
-				for (statement : ctor.statements) {
-					if (statement instanceof ExpressionStatement) {
-						val assignmentExpression = statement.expression
-						if (assignmentExpression instanceof AssignmentExpression) {
-							val selfReference = assignmentExpression.child;
-							if (selfReference instanceof SelfReference) {
-								val fieldReference = selfReference.next;
-								if (fieldReference instanceof IdentifierReference) {
-									val field = fieldReference.target;
-									if (field instanceof Field) {
-										if (field.name.equals(requiredRole.entityName)) {
-											statementToRemove = statement;
-										}
+				removeParameterToFieldAssignmentFromConstructor(ctor, requiredRole.entityName)
+				removeCorrespondingParameterFromConstructor(ctor, requiredRole);
+			}
+		}
+	}
+}
+
+routine: removeParameterToFieldAssignmentFromConstructor(java.Constructor ctor, String fieldName) {
+	effect {
+		update element ctor {
+			for (statement : ctor.statements) {
+				if (statement instanceof ExpressionStatement) {
+					val assignmentExpression = statement.expression
+					if (assignmentExpression instanceof AssignmentExpression) {
+						val selfReference = assignmentExpression.child;
+						if (selfReference instanceof SelfReference) {
+							val fieldReference = selfReference.next;
+							if (fieldReference instanceof IdentifierReference) {
+								val field = fieldReference.target;
+								if (field instanceof Field) {
+									if (field.name.equals(fieldName)) {
+										ctor.statements.remove(statement);
+										return;
 									}
 								}
-								
 							}
+							
 						}
 					}
 				}
-				if (statementToRemove != null) {
-					ctor.statements.remove(statementToRemove);
-				}
-			}
-		}
-		call {
-			for (ctor : javaClass.members.filter(typeof(Constructor))) {
-				removeCorrespondingParameterFromConstructor(ctor, requiredRole);
 			}
 		}
 	}
@@ -866,7 +890,7 @@ routine: renameMethodForOperationSignature(pcm.OperationSignature operationSigna
 		retrieve required element java.InterfaceMethod as interfaceMethod corresponding to operationSignature
 	} 
 	effect { 
-		execute {
+		update element interfaceMethod {
 			interfaceMethod.name = operationSignature.entityName;
 		}
 		call {
@@ -908,7 +932,7 @@ routine: changeInterfaceMethodReturnType(java.InterfaceMethod interfaceMethod, p
 		retrieve optional element java.Class as returnTypeClass corresponding to returnType
 	} 
 	effect { 
-		execute {
+		update element interfaceMethod {
 			val returnTypeReference = createTypeReference(returnType, returnTypeClass);
 			interfaceMethod.typeReference = returnTypeReference;
 		}
@@ -945,13 +969,14 @@ routine: createParameter(pcm.Parameter parameter) {
 		retrieve optional element java.Class as javaParameterTypeClass corresponding to parameter.dataType__Parameter
 	} 
 	effect { 
-		create element java.OrdinaryParameter as javaParameter
-		add correspondence between javaParameter and parameter
-		execute {
+		create element java.OrdinaryParameter as javaParameter initialized as {
 			javaParameter.name = parameter.parameterName;
-			interfaceMethod.parameters += javaParameter;
 			val parameterTypeReference = createTypeReference(parameter.dataType__Parameter, javaParameterTypeClass);
 			javaParameter.typeReference = parameterTypeReference;
+		}
+		add correspondence between javaParameter and parameter
+		update element interfaceMethod {
+			interfaceMethod.parameters += javaParameter;
 		}
 	}
 }
@@ -966,7 +991,7 @@ routine: renameParameter(pcm.Parameter parameter) {
 		retrieve required element java.OrdinaryParameter as javaParameter corresponding to parameter
 	} 
 	effect { 
-		execute {
+		update element javaParameter {
 			javaParameter.name = parameter.parameterName;
 		}
 	}
@@ -985,7 +1010,7 @@ routine: changeParameterType(pcm.Parameter parameter) {
 		retrieve optional element java.Class as javaParameterTypeClass corresponding to parameter.dataType__Parameter
 	} 
 	effect { 
-		execute {
+		update element parameter {
 			val parameterTypeReference = createTypeReference(parameter.dataType__Parameter, javaParameterTypeClass);
 			javaParameter.typeReference = parameterTypeReference;
 		}
@@ -1021,11 +1046,12 @@ routine: createMethodForResourceDemandingBehavior(pcm.ResourceDemandingInternalB
 		retrieve required element java.Class as componentClass corresponding to behavior.basicComponent_ResourceDemandingInternalBehaviour
 	} 
 	effect { 
-		create element java.ClassMethod as javaMethod
-		add correspondence between javaMethod and behavior
-		execute {
+		create element java.ClassMethod as javaMethod initialized as {
 			javaMethod.name = behavior.entityName;
 			javaMethod.typeReference = TypesFactory.eINSTANCE.createVoid;
+		}
+		add correspondence between javaMethod and behavior
+		update element componentClass {
 			componentClass.members += javaMethod;
 		}
 	}
@@ -1041,7 +1067,7 @@ routine: renameMethodForResourceDemandingBehavior(pcm.ResourceDemandingInternalB
 		retrieve required element java.ClassMethod as javaMethod corresponding to behavior
 	} 
 	effect { 
-		execute {
+		update element javaMethod {
 			javaMethod.name = behavior.entityName;
 		}
 	}
@@ -1075,10 +1101,12 @@ routine: createSEFF(pcm.ServiceEffectSpecification seff) {
 		check seff.describedService__SEFF instanceof OperationSignature
 	} 
 	effect { 
-		create element java.ClassMethod as classMethod
-		add correspondence between classMethod and seff
-		execute {
+		create element java.ClassMethod as classMethod initialized as  {
 			initializeClassMethod(classMethod, interfaceMethod, true);
+		}
+		add correspondence between classMethod and seff
+		// TODO HK This is not completely in the context of the component class, but in contained elements...
+		update element componentClass {
 			var correspondingClassMethod = componentClass.findMethodInClass(classMethod)
 			if (null == correspondingClassMethod) {
 				componentClass.members.add(classMethod)
@@ -1110,7 +1138,7 @@ routine: updateSEFFImplementingMethodName(pcm.ServiceEffectSpecification seff) {
 		retrieve required element java.ClassMethod as classMethod corresponding to seff
 	} 
 	effect { 
-		execute {
+		update element classMethod {
 			classMethod.name = seff.describedService__SEFF.entityName;
 		}
 	}

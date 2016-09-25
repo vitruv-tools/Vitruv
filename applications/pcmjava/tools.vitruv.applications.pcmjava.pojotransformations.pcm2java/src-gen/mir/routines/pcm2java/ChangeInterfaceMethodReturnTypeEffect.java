@@ -14,8 +14,30 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
+      return interfaceMethod;
+    }
+    
+    public void update0Element(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
+      final TypeReference returnTypeReference = Pcm2JavaHelper.createTypeReference(returnType, returnTypeClass);
+      interfaceMethod.setTypeReference(returnTypeReference);
+    }
+    
+    public EObject getCorrepondenceSourceReturnTypeClass(final InterfaceMethod interfaceMethod, final DataType returnType) {
+      return returnType;
+    }
+  }
+  
+  private ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution userExecution;
+  
   public ChangeInterfaceMethodReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod interfaceMethod, final DataType returnType) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution(getExecutionState(), this);
     				this.interfaceMethod = interfaceMethod;this.returnType = returnType;
   }
   
@@ -23,15 +45,22 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
   
   private DataType returnType;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ChangeInterfaceMethodReturnTypeEffect with input:");
+    getLogger().debug("   InterfaceMethod: " + this.interfaceMethod);
+    getLogger().debug("   DataType: " + this.returnType);
     
-    private void executeUserOperations(final InterfaceMethod interfaceMethod, final DataType returnType, final org.emftext.language.java.classifiers.Class returnTypeClass) {
-      final TypeReference returnTypeReference = Pcm2JavaHelper.createTypeReference(returnType, returnTypeClass);
-      interfaceMethod.setTypeReference(returnTypeReference);
-    }
+    org.emftext.language.java.classifiers.Class returnTypeClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceReturnTypeClass(interfaceMethod, returnType), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    initializeRetrieveElementState(returnTypeClass);
+    // val updatedElement userExecution.getElement1(interfaceMethod, returnType, returnTypeClass);
+    userExecution.update0Element(interfaceMethod, returnType, returnTypeClass);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -42,27 +71,5 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine ChangeInterfaceMethodReturnTypeEffect with input:");
-    getLogger().debug("   InterfaceMethod: " + this.interfaceMethod);
-    getLogger().debug("   DataType: " + this.returnType);
-    
-    org.emftext.language.java.classifiers.Class returnTypeClass = getCorrespondingElement(
-    	getCorrepondenceSourceReturnTypeClass(interfaceMethod, returnType), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    initializeRetrieveElementState(returnTypeClass);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	interfaceMethod, returnType, returnTypeClass);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceReturnTypeClass(final InterfaceMethod interfaceMethod, final DataType returnType) {
-    return returnType;
   }
 }

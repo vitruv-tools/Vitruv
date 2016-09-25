@@ -19,12 +19,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence;
-import tools.vitruv.dsls.response.responseLanguage.CreateElement;
-import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
-import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
-import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence;
+import tools.vitruv.dsls.response.responseLanguage.EffectStatement;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 
@@ -36,11 +32,7 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getElementCreation <em>Element Creation</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getElementDeletion <em>Element Deletion</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCorrespondenceCreation <em>Correspondence Creation</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCorrespondenceDeletion <em>Correspondence Deletion</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCodeBlock <em>Code Block</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getEffectStatement <em>Effect Statement</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getCallRoutine <em>Call Routine</em>}</li>
  * </ul>
  *
@@ -49,54 +41,14 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
 {
   /**
-   * The cached value of the '{@link #getElementCreation() <em>Element Creation</em>}' containment reference list.
+   * The cached value of the '{@link #getEffectStatement() <em>Effect Statement</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getElementCreation()
+   * @see #getEffectStatement()
    * @generated
    * @ordered
    */
-  protected EList<CreateElement> elementCreation;
-
-  /**
-   * The cached value of the '{@link #getElementDeletion() <em>Element Deletion</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getElementDeletion()
-   * @generated
-   * @ordered
-   */
-  protected EList<DeleteElement> elementDeletion;
-
-  /**
-   * The cached value of the '{@link #getCorrespondenceCreation() <em>Correspondence Creation</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCorrespondenceCreation()
-   * @generated
-   * @ordered
-   */
-  protected EList<CreateCorrespondence> correspondenceCreation;
-
-  /**
-   * The cached value of the '{@link #getCorrespondenceDeletion() <em>Correspondence Deletion</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCorrespondenceDeletion()
-   * @generated
-   * @ordered
-   */
-  protected EList<RemoveCorrespondence> correspondenceDeletion;
-
-  /**
-   * The cached value of the '{@link #getCodeBlock() <em>Code Block</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCodeBlock()
-   * @generated
-   * @ordered
-   */
-  protected ExecutionCodeBlock codeBlock;
+  protected EList<EffectStatement> effectStatement;
 
   /**
    * The cached value of the '{@link #getCallRoutine() <em>Call Routine</em>}' containment reference.
@@ -134,103 +86,13 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<CreateElement> getElementCreation()
+  public EList<EffectStatement> getEffectStatement()
   {
-    if (elementCreation == null)
+    if (effectStatement == null)
     {
-      elementCreation = new EObjectContainmentEList<CreateElement>(CreateElement.class, this, ResponseLanguagePackage.EFFECT__ELEMENT_CREATION);
+      effectStatement = new EObjectContainmentEList<EffectStatement>(EffectStatement.class, this, ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT);
     }
-    return elementCreation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<DeleteElement> getElementDeletion()
-  {
-    if (elementDeletion == null)
-    {
-      elementDeletion = new EObjectContainmentEList<DeleteElement>(DeleteElement.class, this, ResponseLanguagePackage.EFFECT__ELEMENT_DELETION);
-    }
-    return elementDeletion;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<CreateCorrespondence> getCorrespondenceCreation()
-  {
-    if (correspondenceCreation == null)
-    {
-      correspondenceCreation = new EObjectContainmentEList<CreateCorrespondence>(CreateCorrespondence.class, this, ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION);
-    }
-    return correspondenceCreation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EList<RemoveCorrespondence> getCorrespondenceDeletion()
-  {
-    if (correspondenceDeletion == null)
-    {
-      correspondenceDeletion = new EObjectContainmentEList<RemoveCorrespondence>(RemoveCorrespondence.class, this, ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION);
-    }
-    return correspondenceDeletion;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ExecutionCodeBlock getCodeBlock()
-  {
-    return codeBlock;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetCodeBlock(ExecutionCodeBlock newCodeBlock, NotificationChain msgs)
-  {
-    ExecutionCodeBlock oldCodeBlock = codeBlock;
-    codeBlock = newCodeBlock;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.EFFECT__CODE_BLOCK, oldCodeBlock, newCodeBlock);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setCodeBlock(ExecutionCodeBlock newCodeBlock)
-  {
-    if (newCodeBlock != codeBlock)
-    {
-      NotificationChain msgs = null;
-      if (codeBlock != null)
-        msgs = ((InternalEObject)codeBlock).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.EFFECT__CODE_BLOCK, null, msgs);
-      if (newCodeBlock != null)
-        msgs = ((InternalEObject)newCodeBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.EFFECT__CODE_BLOCK, null, msgs);
-      msgs = basicSetCodeBlock(newCodeBlock, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.EFFECT__CODE_BLOCK, newCodeBlock, newCodeBlock));
+    return effectStatement;
   }
 
   /**
@@ -291,16 +153,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__ELEMENT_CREATION:
-        return ((InternalEList<?>)getElementCreation()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.EFFECT__ELEMENT_DELETION:
-        return ((InternalEList<?>)getElementDeletion()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION:
-        return ((InternalEList<?>)getCorrespondenceCreation()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION:
-        return ((InternalEList<?>)getCorrespondenceDeletion()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
-        return basicSetCodeBlock(null, msgs);
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
+        return ((InternalEList<?>)getEffectStatement()).basicRemove(otherEnd, msgs);
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
         return basicSetCallRoutine(null, msgs);
     }
@@ -317,16 +171,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__ELEMENT_CREATION:
-        return getElementCreation();
-      case ResponseLanguagePackage.EFFECT__ELEMENT_DELETION:
-        return getElementDeletion();
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION:
-        return getCorrespondenceCreation();
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION:
-        return getCorrespondenceDeletion();
-      case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
-        return getCodeBlock();
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
+        return getEffectStatement();
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
         return getCallRoutine();
     }
@@ -344,24 +190,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__ELEMENT_CREATION:
-        getElementCreation().clear();
-        getElementCreation().addAll((Collection<? extends CreateElement>)newValue);
-        return;
-      case ResponseLanguagePackage.EFFECT__ELEMENT_DELETION:
-        getElementDeletion().clear();
-        getElementDeletion().addAll((Collection<? extends DeleteElement>)newValue);
-        return;
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION:
-        getCorrespondenceCreation().clear();
-        getCorrespondenceCreation().addAll((Collection<? extends CreateCorrespondence>)newValue);
-        return;
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION:
-        getCorrespondenceDeletion().clear();
-        getCorrespondenceDeletion().addAll((Collection<? extends RemoveCorrespondence>)newValue);
-        return;
-      case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
-        setCodeBlock((ExecutionCodeBlock)newValue);
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
+        getEffectStatement().clear();
+        getEffectStatement().addAll((Collection<? extends EffectStatement>)newValue);
         return;
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
         setCallRoutine((RoutineCallBlock)newValue);
@@ -380,20 +211,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__ELEMENT_CREATION:
-        getElementCreation().clear();
-        return;
-      case ResponseLanguagePackage.EFFECT__ELEMENT_DELETION:
-        getElementDeletion().clear();
-        return;
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION:
-        getCorrespondenceCreation().clear();
-        return;
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION:
-        getCorrespondenceDeletion().clear();
-        return;
-      case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
-        setCodeBlock((ExecutionCodeBlock)null);
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
+        getEffectStatement().clear();
         return;
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
         setCallRoutine((RoutineCallBlock)null);
@@ -412,16 +231,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__ELEMENT_CREATION:
-        return elementCreation != null && !elementCreation.isEmpty();
-      case ResponseLanguagePackage.EFFECT__ELEMENT_DELETION:
-        return elementDeletion != null && !elementDeletion.isEmpty();
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_CREATION:
-        return correspondenceCreation != null && !correspondenceCreation.isEmpty();
-      case ResponseLanguagePackage.EFFECT__CORRESPONDENCE_DELETION:
-        return correspondenceDeletion != null && !correspondenceDeletion.isEmpty();
-      case ResponseLanguagePackage.EFFECT__CODE_BLOCK:
-        return codeBlock != null;
+      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENT:
+        return effectStatement != null && !effectStatement.isEmpty();
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
         return callRoutine != null;
     }

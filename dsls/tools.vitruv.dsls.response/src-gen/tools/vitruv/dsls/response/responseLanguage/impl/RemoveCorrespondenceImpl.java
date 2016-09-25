@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence;
@@ -30,7 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  *
  * @generated
  */
-public class RemoveCorrespondenceImpl extends MinimalEObjectImpl.Container implements RemoveCorrespondence
+public class RemoveCorrespondenceImpl extends EffectStatementImpl implements RemoveCorrespondence
 {
   /**
    * The cached value of the '{@link #getFirstElement() <em>First Element</em>}' containment reference.

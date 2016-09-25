@@ -28,22 +28,55 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameMethodForOperationSignatureEffect extends AbstractEffectRealization {
-  public RenameMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
-    super(responseExecutionState, calledBy);
-    				this.operationSignature = operationSignature;
-  }
-  
-  private OperationSignature operationSignature;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
+    public EObject getElement1(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
+      return interfaceMethod;
+    }
+    
+    public void update0Element(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
       String _entityName = operationSignature.getEntityName();
       interfaceMethod.setName(_entityName);
     }
+    
+    public EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature operationSignature) {
+      return operationSignature;
+    }
+  }
+  
+  private RenameMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
+  public RenameMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.RenameMethodForOperationSignatureEffect.EffectUserExecution(getExecutionState(), this);
+    				this.operationSignature = operationSignature;
+  }
+  
+  private OperationSignature operationSignature;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameMethodForOperationSignatureEffect with input:");
+    getLogger().debug("   OperationSignature: " + this.operationSignature);
+    
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceInterfaceMethod(operationSignature), // correspondence source supplier
+    	InterfaceMethod.class,
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(interfaceMethod);
+    // val updatedElement userExecution.getElement1(operationSignature, interfaceMethod);
+    userExecution.update0Element(operationSignature, interfaceMethod);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.RenameMethodForOperationSignatureEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	operationSignature, interfaceMethod);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -55,7 +88,7 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
+    public void executeUserOperations(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
       final OperationInterface operationInterface = operationSignature.getInterface__OperationSignature();
       final HashSet<InterfaceProvidingEntity> implementingComponents = Sets.<InterfaceProvidingEntity>newHashSet();
       Repository _repository__Interface = operationInterface.getRepository__Interface();
@@ -87,31 +120,5 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
       };
       basicComponents.forEach(_function_1);
     }
-  }
-  
-  private EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature operationSignature) {
-    return operationSignature;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine RenameMethodForOperationSignatureEffect with input:");
-    getLogger().debug("   OperationSignature: " + this.operationSignature);
-    
-    InterfaceMethod interfaceMethod = getCorrespondingElement(
-    	getCorrepondenceSourceInterfaceMethod(operationSignature), // correspondence source supplier
-    	InterfaceMethod.class,
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (interfaceMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(interfaceMethod);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.RenameMethodForOperationSignatureEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	operationSignature, interfaceMethod);
-    new mir.routines.pcm2java.RenameMethodForOperationSignatureEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	operationSignature, interfaceMethod);
-    postprocessElementStates();
   }
 }

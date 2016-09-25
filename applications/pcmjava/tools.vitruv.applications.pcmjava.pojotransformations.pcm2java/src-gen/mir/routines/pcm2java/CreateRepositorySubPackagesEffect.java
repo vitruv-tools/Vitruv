@@ -11,17 +11,43 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
+      return repository;
+    }
+  }
+  
+  private CreateRepositorySubPackagesEffect.EffectUserExecution userExecution;
+  
   public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this);
     				this.repository = repository;
   }
   
   private Repository repository;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateRepositorySubPackagesEffect with input:");
+    getLogger().debug("   Repository: " + this.repository);
+    
+    org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
+    	org.emftext.language.java.containers.Package.class,
+    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
+    	null);
+    if (repositoryPackage == null) {
+    	return;
     }
+    initializeRetrieveElementState(repositoryPackage);
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	repository, repositoryPackage);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -33,33 +59,9 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {
+    public void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {
       this.effectFacade.createJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
       this.effectFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateRepositorySubPackagesEffect with input:");
-    getLogger().debug("   Repository: " + this.repository);
-    
-    org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
-    	getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
-    	org.emftext.language.java.containers.Package.class,
-    	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
-    	null);
-    if (repositoryPackage == null) {
-    	return;
-    }
-    initializeRetrieveElementState(repositoryPackage);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, repositoryPackage);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
-    return repository;
   }
 }

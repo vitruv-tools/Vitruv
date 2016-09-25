@@ -178,24 +178,9 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createExistingElementReferenceAdapter();
       }
       @Override
-      public Adapter caseCreateElement(CreateElement object)
+      public Adapter caseEffectStatement(EffectStatement object)
       {
-        return createCreateElementAdapter();
-      }
-      @Override
-      public Adapter caseDeleteElement(DeleteElement object)
-      {
-        return createDeleteElementAdapter();
-      }
-      @Override
-      public Adapter caseCreateCorrespondence(CreateCorrespondence object)
-      {
-        return createCreateCorrespondenceAdapter();
-      }
-      @Override
-      public Adapter caseRemoveCorrespondence(RemoveCorrespondence object)
-      {
-        return createRemoveCorrespondenceAdapter();
+        return createEffectStatementAdapter();
       }
       @Override
       public Adapter caseRoutineCallBlock(RoutineCallBlock object)
@@ -256,6 +241,31 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseSingleValuedFeatureReplace(SingleValuedFeatureReplace object)
       {
         return createSingleValuedFeatureReplaceAdapter();
+      }
+      @Override
+      public Adapter caseCreateElement(CreateElement object)
+      {
+        return createCreateElementAdapter();
+      }
+      @Override
+      public Adapter caseDeleteElement(DeleteElement object)
+      {
+        return createDeleteElementAdapter();
+      }
+      @Override
+      public Adapter caseUpdateElement(UpdateElement object)
+      {
+        return createUpdateElementAdapter();
+      }
+      @Override
+      public Adapter caseCreateCorrespondence(CreateCorrespondence object)
+      {
+        return createCreateCorrespondenceAdapter();
+      }
+      @Override
+      public Adapter caseRemoveCorrespondence(RemoveCorrespondence object)
+      {
+        return createRemoveCorrespondenceAdapter();
       }
       @Override
       public Adapter caseMirBaseFile(MirBaseFile object)
@@ -585,61 +595,16 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement <em>Create Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.EffectStatement <em>Effect Statement</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateElement
+   * @see tools.vitruv.dsls.response.responseLanguage.EffectStatement
    * @generated
    */
-  public Adapter createCreateElementAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement <em>Delete Element</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.DeleteElement
-   * @generated
-   */
-  public Adapter createDeleteElementAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence <em>Create Correspondence</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
-   * @generated
-   */
-  public Adapter createCreateCorrespondenceAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence <em>Remove Correspondence</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-   * @generated
-   */
-  public Adapter createRemoveCorrespondenceAdapter()
+  public Adapter createEffectStatementAdapter()
   {
     return null;
   }
@@ -820,6 +785,81 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSingleValuedFeatureReplaceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement <em>Create Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateElement
+   * @generated
+   */
+  public Adapter createCreateElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement <em>Delete Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.DeleteElement
+   * @generated
+   */
+  public Adapter createDeleteElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.UpdateElement <em>Update Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.UpdateElement
+   * @generated
+   */
+  public Adapter createUpdateElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence <em>Create Correspondence</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
+   * @generated
+   */
+  public Adapter createCreateCorrespondenceAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence <em>Remove Correspondence</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
+   * @generated
+   */
+  public Adapter createRemoveCorrespondenceAdapter()
   {
     return null;
   }

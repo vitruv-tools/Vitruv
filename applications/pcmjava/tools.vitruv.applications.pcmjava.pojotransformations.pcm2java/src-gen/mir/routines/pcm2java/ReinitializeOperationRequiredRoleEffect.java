@@ -11,17 +11,30 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+  }
+  
+  private ReinitializeOperationRequiredRoleEffect.EffectUserExecution userExecution;
+  
   public ReinitializeOperationRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.EffectUserExecution(getExecutionState(), this);
     				this.requiredRole = requiredRole;
   }
   
   private OperationRequiredRole requiredRole;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine ReinitializeOperationRequiredRoleEffect with input:");
+    getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	requiredRole);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -33,21 +46,10 @@ public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectReali
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final OperationRequiredRole requiredRole) {
+    public void executeUserOperations(final OperationRequiredRole requiredRole) {
       InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
       this.effectFacade.removeRequiredRole(requiredRole, _requiringEntity_RequiredRole);
       this.effectFacade.addRequiredRole(requiredRole);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine ReinitializeOperationRequiredRoleEffect with input:");
-    getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
-    
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole);
-    postprocessElementStates();
   }
 }

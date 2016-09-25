@@ -15,8 +15,31 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
+      return javaInterface;
+    }
+    
+    public void updateJavaInterfaceElement(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
+      javaInterface.setName(className);
+      Public _createPublic = ModifiersFactory.eINSTANCE.createPublic();
+      javaInterface.addModifier(_createPublic);
+    }
+    
+    public EObject getElement2(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
+      return sourceElementMappedToClass;
+    }
+  }
+  
+  private CreateJavaInterfaceEffect.EffectUserExecution userExecution;
+  
   public CreateJavaInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateJavaInterfaceEffect.EffectUserExecution(getExecutionState(), this);
     				this.sourceElementMappedToClass = sourceElementMappedToClass;this.containingPackage = containingPackage;this.className = className;
   }
   
@@ -26,10 +49,22 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
   
   private String className;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateJavaInterfaceEffect with input:");
+    getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
+    getLogger().debug("   Package: " + this.containingPackage);
+    getLogger().debug("   String: " + this.className);
+    
+    Interface javaInterface = ClassifiersFactoryImpl.eINSTANCE.createInterface();
+    initializeCreateElementState(javaInterface);
+    userExecution.updateJavaInterfaceElement(sourceElementMappedToClass, containingPackage, className, javaInterface);
+    
+    addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToClass, containingPackage, className, javaInterface), userExecution.getElement2(sourceElementMappedToClass, containingPackage, className, javaInterface), "");
+    
+    preprocessElementStates();
+    new mir.routines.pcm2java.CreateJavaInterfaceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
+    	sourceElementMappedToClass, containingPackage, className, javaInterface);
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -41,35 +76,8 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
-      javaInterface.setName(className);
-      Public _createPublic = ModifiersFactory.eINSTANCE.createPublic();
-      javaInterface.addModifier(_createPublic);
+    public void executeUserOperations(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
       this.effectFacade.createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
     }
-  }
-  
-  private EObject getElement0(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
-    return javaInterface;
-  }
-  
-  private EObject getElement1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
-    return sourceElementMappedToClass;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateJavaInterfaceEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
-    getLogger().debug("   Package: " + this.containingPackage);
-    getLogger().debug("   String: " + this.className);
-    
-    Interface javaInterface = ClassifiersFactoryImpl.eINSTANCE.createInterface();
-    initializeCreateElementState(javaInterface);
-    
-    addCorrespondenceBetween(getElement0(sourceElementMappedToClass, containingPackage, className, javaInterface), getElement1(sourceElementMappedToClass, containingPackage, className, javaInterface), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateJavaInterfaceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToClass, containingPackage, className, javaInterface);
-    postprocessElementStates();
   }
 }

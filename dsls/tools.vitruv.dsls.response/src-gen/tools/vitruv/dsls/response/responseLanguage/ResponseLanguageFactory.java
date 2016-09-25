@@ -204,40 +204,13 @@ public interface ResponseLanguageFactory extends EFactory
   ExistingElementReference createExistingElementReference();
 
   /**
-   * Returns a new object of class '<em>Create Element</em>'.
+   * Returns a new object of class '<em>Effect Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Create Element</em>'.
+   * @return a new object of class '<em>Effect Statement</em>'.
    * @generated
    */
-  CreateElement createCreateElement();
-
-  /**
-   * Returns a new object of class '<em>Delete Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Delete Element</em>'.
-   * @generated
-   */
-  DeleteElement createDeleteElement();
-
-  /**
-   * Returns a new object of class '<em>Create Correspondence</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Create Correspondence</em>'.
-   * @generated
-   */
-  CreateCorrespondence createCreateCorrespondence();
-
-  /**
-   * Returns a new object of class '<em>Remove Correspondence</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Remove Correspondence</em>'.
-   * @generated
-   */
-  RemoveCorrespondence createRemoveCorrespondence();
+  EffectStatement createEffectStatement();
 
   /**
    * Returns a new object of class '<em>Routine Call Block</em>'.
@@ -346,6 +319,51 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   SingleValuedFeatureReplace createSingleValuedFeatureReplace();
+
+  /**
+   * Returns a new object of class '<em>Create Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Create Element</em>'.
+   * @generated
+   */
+  CreateElement createCreateElement();
+
+  /**
+   * Returns a new object of class '<em>Delete Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Delete Element</em>'.
+   * @generated
+   */
+  DeleteElement createDeleteElement();
+
+  /**
+   * Returns a new object of class '<em>Update Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Update Element</em>'.
+   * @generated
+   */
+  UpdateElement createUpdateElement();
+
+  /**
+   * Returns a new object of class '<em>Create Correspondence</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Create Correspondence</em>'.
+   * @generated
+   */
+  CreateCorrespondence createCreateCorrespondence();
+
+  /**
+   * Returns a new object of class '<em>Remove Correspondence</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Remove Correspondence</em>'.
+   * @generated
+   */
+  RemoveCorrespondence createRemoveCorrespondence();
 
   /**
    * Returns the package supported by this factory.

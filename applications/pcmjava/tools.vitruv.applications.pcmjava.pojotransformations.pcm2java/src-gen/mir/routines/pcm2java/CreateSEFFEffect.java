@@ -21,20 +21,16 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateSEFFEffect extends AbstractEffectRealization {
-  public CreateSEFFEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
-    super(responseExecutionState, calledBy);
-    				this.seff = seff;
-  }
-  
-  private ServiceEffectSpecification seff;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
-      Pcm2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
+    public EObject getElement1(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
+      return classMethod;
+    }
+    
+    public void update0Element(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
       ClassMethod correspondingClassMethod = Pcm2JavaHelper.findMethodInClass(componentClass, classMethod);
       boolean _equals = Objects.equal(null, correspondingClassMethod);
       if (_equals) {
@@ -46,6 +42,81 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
         correspondingClassMethod.setName(_name);
       }
     }
+    
+    public EObject getCorrepondenceSourceInterfaceMethod(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass) {
+      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
+      return _describedService__SEFF;
+    }
+    
+    public boolean checkMatcherPrecondition(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod) {
+      Signature _describedService__SEFF = seff.getDescribedService__SEFF();
+      return (_describedService__SEFF instanceof OperationSignature);
+    }
+    
+    public EObject getCorrepondenceSourceComponentClass(final ServiceEffectSpecification seff) {
+      BasicComponent _basicComponent_ServiceEffectSpecification = seff.getBasicComponent_ServiceEffectSpecification();
+      return _basicComponent_ServiceEffectSpecification;
+    }
+    
+    public EObject getElement2(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
+      return seff;
+    }
+    
+    public void updateClassMethodElement(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
+      Pcm2JavaHelper.initializeClassMethod(classMethod, interfaceMethod, true);
+    }
+    
+    public EObject getElement3(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
+      return componentClass;
+    }
+  }
+  
+  private CreateSEFFEffect.EffectUserExecution userExecution;
+  
+  public CreateSEFFEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateSEFFEffect.EffectUserExecution(getExecutionState(), this);
+    				this.seff = seff;
+  }
+  
+  private ServiceEffectSpecification seff;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateSEFFEffect with input:");
+    getLogger().debug("   ServiceEffectSpecification: " + this.seff);
+    
+    org.emftext.language.java.classifiers.Class componentClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceComponentClass(seff), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (componentClass == null) {
+    	return;
+    }
+    initializeRetrieveElementState(componentClass);
+    InterfaceMethod interfaceMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceInterfaceMethod(seff, componentClass), // correspondence source supplier
+    	InterfaceMethod.class,
+    	(InterfaceMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (interfaceMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(interfaceMethod);
+    if (!userExecution.checkMatcherPrecondition(seff, componentClass, interfaceMethod)) {
+    	return;
+    }
+    ClassMethod classMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
+    initializeCreateElementState(classMethod);
+    userExecution.updateClassMethodElement(seff, componentClass, interfaceMethod, classMethod);
+    
+    addCorrespondenceBetween(userExecution.getElement1(seff, componentClass, interfaceMethod, classMethod), userExecution.getElement2(seff, componentClass, interfaceMethod, classMethod), "");
+    
+    // val updatedElement userExecution.getElement3(seff, componentClass, interfaceMethod, classMethod);
+    userExecution.update0Element(seff, componentClass, interfaceMethod, classMethod);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -56,63 +127,5 @@ public class CreateSEFFEffect extends AbstractEffectRealization {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
-    return classMethod;
-  }
-  
-  private EObject getElement1(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod, final ClassMethod classMethod) {
-    return seff;
-  }
-  
-  private EObject getCorrepondenceSourceInterfaceMethod(final ServiceEffectSpecification seff) {
-    Signature _describedService__SEFF = seff.getDescribedService__SEFF();
-    return _describedService__SEFF;
-  }
-  
-  private boolean checkMatcherPrecondition(final ServiceEffectSpecification seff, final org.emftext.language.java.classifiers.Class componentClass, final InterfaceMethod interfaceMethod) {
-    Signature _describedService__SEFF = seff.getDescribedService__SEFF();
-    return (_describedService__SEFF instanceof OperationSignature);
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateSEFFEffect with input:");
-    getLogger().debug("   ServiceEffectSpecification: " + this.seff);
-    
-    org.emftext.language.java.classifiers.Class componentClass = getCorrespondingElement(
-    	getCorrepondenceSourceComponentClass(seff), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    if (componentClass == null) {
-    	return;
-    }
-    initializeRetrieveElementState(componentClass);
-    InterfaceMethod interfaceMethod = getCorrespondingElement(
-    	getCorrepondenceSourceInterfaceMethod(seff), // correspondence source supplier
-    	InterfaceMethod.class,
-    	(InterfaceMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (interfaceMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(interfaceMethod);
-    if (!checkMatcherPrecondition(seff, componentClass, interfaceMethod)) {
-    	return;
-    }
-    ClassMethod classMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
-    initializeCreateElementState(classMethod);
-    
-    addCorrespondenceBetween(getElement0(seff, componentClass, interfaceMethod, classMethod), getElement1(seff, componentClass, interfaceMethod, classMethod), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateSEFFEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	seff, componentClass, interfaceMethod, classMethod);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceComponentClass(final ServiceEffectSpecification seff) {
-    BasicComponent _basicComponent_ServiceEffectSpecification = seff.getBasicComponent_ServiceEffectSpecification();
-    return _basicComponent_ServiceEffectSpecification;
   }
 }

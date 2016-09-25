@@ -19,8 +19,10 @@ routine: replaceSingleValuedEAttribute(minimal.Root root, Int value) {
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		execute {
+		update element targetElement {
 			targetElement.singleValuedEAttribute = value;
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedEAttribute);
 		}
 	} 
@@ -39,7 +41,7 @@ routine: replaceNonRootId(minimal.NonRoot nonRoot, String value) {
 		retrieve required element minimal.NonRoot as targetElement corresponding to nonRoot
 	}
 	effect {
-		execute {
+		update element targetElement {
 			targetElement.id = value;
 		}
 	}
@@ -72,11 +74,14 @@ routine: insertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot) {
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		create element minimal.NonRoot as newNonRoot
-		add correspondence between newNonRoot and insertedNonRoot 
-		execute {
+		create element minimal.NonRoot as newNonRoot initialized as {
 			newNonRoot.id = insertedNonRoot.id
+		}
+		update element targetElement {
 			targetElement.multiValuedContainmentEReference += newNonRoot;
+		}
+		add correspondence between newNonRoot and insertedNonRoot 
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectInList);
 		}
 	}
@@ -96,9 +101,7 @@ routine: removeNonRoot(minimal.NonRoot removedNonRoot) {
 	}
 	effect {
 		delete element targetElement
-		execute {
-			// It works, even if we remove element in the execute block and via effect as well
-			org.eclipse.emf.ecore.util.EcoreUtil.remove(targetElement);
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectInList);
 		}
 	}
@@ -125,7 +128,7 @@ routine: deleteNonRootEObjectSingle(minimal.NonRoot containedObject) {
 	}
 	effect {
 		delete element targetElement
-		execute {
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
 		}
 	}
@@ -136,11 +139,14 @@ routine: createNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot con
 		retrieve required element minimal.Root as targetElement corresponding to sourceRoot
 	}
 	effect {
-		create element minimal.NonRoot as newNonRoot
-		add correspondence between newNonRoot and containedObject
-		execute {
-			newNonRoot.id = containedObject.id;
+		create element minimal.NonRoot as newNonRoot initialized as {
+			newNonRoot.id = containedObject.id
+		}
+		update element targetElement {
 			targetElement.singleValuedContainmentEReference = newNonRoot;
+		}
+		add correspondence between newNonRoot and containedObject
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectSingle);
 		}
 	}
@@ -160,8 +166,10 @@ routine: replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.N
 		retrieve required element minimal.NonRoot as targetElement corresponding to newReferencedElement
 	}
 	effect {
-		execute {
-			targetContainer.singleValuedNonContainmentEReference = targetElement;    
+		update element targetContainer {
+			targetContainer.singleValuedNonContainmentEReference = targetElement;
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedNonContainmentEReference);
 		}
 	}
@@ -195,8 +203,10 @@ routine: insertEAttribute(minimal.Root root, Int attributeValue) {
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		execute {
-			targetElement.multiValuedEAttribute.add(attributeValue);    
+		update element targetElement {
+			targetElement.multiValuedEAttribute.add(attributeValue);
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(InsertEAttributeValue);
 		}
 	}
@@ -215,9 +225,11 @@ routine: removeEAttribute(minimal.Root root, Int removedAttributeValue) {
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		execute {
+		update element targetElement {
 			val sourceValueList = root.multiValuedEAttribute;
 			targetElement.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(RemoveEAttributeValue);
 		}
 	}
@@ -236,9 +248,11 @@ routine: insertNonContainmentReference(minimal.Root root, minimal.NonRoot insert
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		execute {
+		update element targetElement {
 			val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == insertedNonRoot.id];
-			targetElement.multiValuedNonContainmentEReference.add(addedNonRoot);    
+			targetElement.multiValuedNonContainmentEReference.add(addedNonRoot);
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(InsertNonContainmentEReference);
 		}
 	}
@@ -258,8 +272,10 @@ routine: removeNonContainmentReference(minimal.Root root, minimal.NonRoot remove
 		retrieve required element minimal.Root as targetRoot corresponding to root
 	}
 	effect {
-		execute {
+		update element targetRoot {
 			targetRoot.multiValuedNonContainmentEReference.removeIf[it.id == removedNonRoot.id];
+		}
+		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(RemoveNonContainmentEReference);
 		}
 	}
@@ -294,10 +310,11 @@ routine: removeNonContainmentReference(minimal.Root root, minimal.NonRoot remove
 
 routine: createRoot(minimal.Root root) {
 	effect {
-		create element minimal.Root as newRoot
-		add correspondence between newRoot and root
-		execute {
+		create element minimal.Root as newRoot initialized as {
 			newRoot.id = root.id;
+		}
+		add correspondence between newRoot and root
+		call {
 			persistProjectRelative(root, newRoot, "model/" + root.id.replace("Source", "Target"));
 		}
 	}
@@ -339,12 +356,13 @@ routine: createNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectCo
 		retrieve required element minimal.Root as targetElement corresponding to root
 	}
 	effect {
-		create element minimal.NonRootObjectContainerHelper as newNonRootContainer
-		add correspondence between newNonRootContainer and nonRootObjectContainer
-		execute {
+		create element minimal.NonRootObjectContainerHelper as newNonRootContainer initialized as {
 			newNonRootContainer.id = nonRootObjectContainer.id;
+		}
+		update element targetElement {
 			targetElement.nonRootObjectContainerHelper = newNonRootContainer;
 		}
+		add correspondence between newNonRootContainer and nonRootObjectContainer
 	}
 }
 
@@ -361,11 +379,12 @@ routine: createNonRootInContainer(minimal.NonRootObjectContainerHelper container
 		retrieve required element minimal.NonRootObjectContainerHelper as nonRootContainer corresponding to container
 	}
 	effect {
-		create element minimal.NonRoot as newNonRoot
-		add correspondence between newNonRoot and insertedNonRoot
-		execute {
+		create element minimal.NonRoot as newNonRoot initialized as {
 			newNonRoot.id = insertedNonRoot.id;
-			nonRootContainer.nonRootObjectsContainment += newNonRoot;
 		}
+		update element nonRootContainer {
+			nonRootContainer.nonRootObjectsContainment += newNonRoot;	
+		}
+		add correspondence between newNonRoot and insertedNonRoot
 	}
 }

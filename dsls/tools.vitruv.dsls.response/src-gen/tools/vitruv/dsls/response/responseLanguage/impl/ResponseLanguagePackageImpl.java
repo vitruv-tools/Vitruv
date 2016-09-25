@@ -29,6 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence;
 import tools.vitruv.dsls.response.responseLanguage.CreateElement;
 import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
+import tools.vitruv.dsls.response.responseLanguage.EffectStatement;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
@@ -54,6 +55,7 @@ import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.Taggable;
 import tools.vitruv.dsls.response.responseLanguage.Trigger;
+import tools.vitruv.dsls.response.responseLanguage.UpdateElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -208,28 +210,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass createElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass deleteElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass createCorrespondenceEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass removeCorrespondenceEClass = null;
+  private EClass effectStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -314,6 +295,41 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass singleValuedFeatureReplaceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass createElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass deleteElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass updateElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass createCorrespondenceEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass removeCorrespondenceEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -808,7 +824,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEffect_ElementCreation()
+  public EReference getEffect_EffectStatement()
   {
     return (EReference)effectEClass.getEStructuralFeatures().get(0);
   }
@@ -818,49 +834,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEffect_ElementDeletion()
-  {
-    return (EReference)effectEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getEffect_CorrespondenceCreation()
-  {
-    return (EReference)effectEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getEffect_CorrespondenceDeletion()
-  {
-    return (EReference)effectEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getEffect_CodeBlock()
-  {
-    return (EReference)effectEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getEffect_CallRoutine()
   {
-    return (EReference)effectEClass.getEStructuralFeatures().get(5);
+    return (EReference)effectEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -968,99 +944,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCreateElement()
+  public EClass getEffectStatement()
   {
-    return createElementEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCreateElement_Element()
-  {
-    return (EReference)createElementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getDeleteElement()
-  {
-    return deleteElementEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getDeleteElement_Element()
-  {
-    return (EReference)deleteElementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getCreateCorrespondence()
-  {
-    return createCorrespondenceEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCreateCorrespondence_FirstElement()
-  {
-    return (EReference)createCorrespondenceEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCreateCorrespondence_SecondElement()
-  {
-    return (EReference)createCorrespondenceEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getRemoveCorrespondence()
-  {
-    return removeCorrespondenceEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getRemoveCorrespondence_FirstElement()
-  {
-    return (EReference)removeCorrespondenceEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getRemoveCorrespondence_SecondElement()
-  {
-    return (EReference)removeCorrespondenceEClass.getEStructuralFeatures().get(1);
+    return effectStatementEClass;
   }
 
   /**
@@ -1198,6 +1084,146 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getCreateElement()
+  {
+    return createElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCreateElement_Element()
+  {
+    return (EReference)createElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCreateElement_InitializationBlock()
+  {
+    return (EReference)createElementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDeleteElement()
+  {
+    return deleteElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getDeleteElement_Element()
+  {
+    return (EReference)deleteElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getUpdateElement()
+  {
+    return updateElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getUpdateElement_Element()
+  {
+    return (EReference)updateElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getUpdateElement_UpdateBlock()
+  {
+    return (EReference)updateElementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getCreateCorrespondence()
+  {
+    return createCorrespondenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCreateCorrespondence_FirstElement()
+  {
+    return (EReference)createCorrespondenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCreateCorrespondence_SecondElement()
+  {
+    return (EReference)createCorrespondenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRemoveCorrespondence()
+  {
+    return removeCorrespondenceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRemoveCorrespondence_FirstElement()
+  {
+    return (EReference)removeCorrespondenceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRemoveCorrespondence_SecondElement()
+  {
+    return (EReference)removeCorrespondenceEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public ResponseLanguageFactory getResponseLanguageFactory()
   {
     return (ResponseLanguageFactory)getEFactoryInstance();
@@ -1281,11 +1307,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(matchingEClass, MATCHING__CONDITION);
 
     effectEClass = createEClass(EFFECT);
-    createEReference(effectEClass, EFFECT__ELEMENT_CREATION);
-    createEReference(effectEClass, EFFECT__ELEMENT_DELETION);
-    createEReference(effectEClass, EFFECT__CORRESPONDENCE_CREATION);
-    createEReference(effectEClass, EFFECT__CORRESPONDENCE_DELETION);
-    createEReference(effectEClass, EFFECT__CODE_BLOCK);
+    createEReference(effectEClass, EFFECT__EFFECT_STATEMENT);
     createEReference(effectEClass, EFFECT__CALL_ROUTINE);
 
     taggableEClass = createEClass(TAGGABLE);
@@ -1301,19 +1323,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     existingElementReferenceEClass = createEClass(EXISTING_ELEMENT_REFERENCE);
 
-    createElementEClass = createEClass(CREATE_ELEMENT);
-    createEReference(createElementEClass, CREATE_ELEMENT__ELEMENT);
-
-    deleteElementEClass = createEClass(DELETE_ELEMENT);
-    createEReference(deleteElementEClass, DELETE_ELEMENT__ELEMENT);
-
-    createCorrespondenceEClass = createEClass(CREATE_CORRESPONDENCE);
-    createEReference(createCorrespondenceEClass, CREATE_CORRESPONDENCE__FIRST_ELEMENT);
-    createEReference(createCorrespondenceEClass, CREATE_CORRESPONDENCE__SECOND_ELEMENT);
-
-    removeCorrespondenceEClass = createEClass(REMOVE_CORRESPONDENCE);
-    createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__FIRST_ELEMENT);
-    createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__SECOND_ELEMENT);
+    effectStatementEClass = createEClass(EFFECT_STATEMENT);
 
     routineCallBlockEClass = createEClass(ROUTINE_CALL_BLOCK);
 
@@ -1339,6 +1349,25 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     multiValuedFeaturePermuteChangeEClass = createEClass(MULTI_VALUED_FEATURE_PERMUTE_CHANGE);
 
     singleValuedFeatureReplaceEClass = createEClass(SINGLE_VALUED_FEATURE_REPLACE);
+
+    createElementEClass = createEClass(CREATE_ELEMENT);
+    createEReference(createElementEClass, CREATE_ELEMENT__ELEMENT);
+    createEReference(createElementEClass, CREATE_ELEMENT__INITIALIZATION_BLOCK);
+
+    deleteElementEClass = createEClass(DELETE_ELEMENT);
+    createEReference(deleteElementEClass, DELETE_ELEMENT__ELEMENT);
+
+    updateElementEClass = createEClass(UPDATE_ELEMENT);
+    createEReference(updateElementEClass, UPDATE_ELEMENT__ELEMENT);
+    createEReference(updateElementEClass, UPDATE_ELEMENT__UPDATE_BLOCK);
+
+    createCorrespondenceEClass = createEClass(CREATE_CORRESPONDENCE);
+    createEReference(createCorrespondenceEClass, CREATE_CORRESPONDENCE__FIRST_ELEMENT);
+    createEReference(createCorrespondenceEClass, CREATE_CORRESPONDENCE__SECOND_ELEMENT);
+
+    removeCorrespondenceEClass = createEClass(REMOVE_CORRESPONDENCE);
+    createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__FIRST_ELEMENT);
+    createEReference(removeCorrespondenceEClass, REMOVE_CORRESPONDENCE__SECOND_ELEMENT);
   }
 
   /**
@@ -1387,7 +1416,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
     existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
-    createCorrespondenceEClass.getESuperTypes().add(this.getTaggable());
+    effectStatementEClass.getESuperTypes().add(this.getTaggable());
     routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
     tagCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
     preconditionCodeBlockEClass.getESuperTypes().add(this.getCodeBlock());
@@ -1399,6 +1428,11 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     multiValuedFeatureRemoveChangeEClass.getESuperTypes().add(this.getAtomicMultiValuedFeatureChange());
     multiValuedFeaturePermuteChangeEClass.getESuperTypes().add(this.getAtomicMultiValuedFeatureChange());
     singleValuedFeatureReplaceEClass.getESuperTypes().add(this.getAtomicSingleValuedFeatureChange());
+    createElementEClass.getESuperTypes().add(this.getEffectStatement());
+    deleteElementEClass.getESuperTypes().add(this.getEffectStatement());
+    updateElementEClass.getESuperTypes().add(this.getEffectStatement());
+    createCorrespondenceEClass.getESuperTypes().add(this.getEffectStatement());
+    removeCorrespondenceEClass.getESuperTypes().add(this.getEffectStatement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(responseFileEClass, ResponseFile.class, "ResponseFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1459,11 +1493,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getMatching_Condition(), this.getPreconditionCodeBlock(), null, "condition", null, 0, 1, Matching.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getEffect_ElementCreation(), this.getCreateElement(), null, "elementCreation", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEffect_ElementDeletion(), this.getDeleteElement(), null, "elementDeletion", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEffect_CorrespondenceCreation(), this.getCreateCorrespondence(), null, "correspondenceCreation", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEffect_CorrespondenceDeletion(), this.getRemoveCorrespondence(), null, "correspondenceDeletion", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEffect_CodeBlock(), this.getExecutionCodeBlock(), null, "codeBlock", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEffect_EffectStatement(), this.getEffectStatement(), null, "effectStatement", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getEffect_CallRoutine(), this.getRoutineCallBlock(), null, "callRoutine", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(taggableEClass, Taggable.class, "Taggable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1479,19 +1509,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     initEClass(existingElementReferenceEClass, ExistingElementReference.class, "ExistingElementReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(createElementEClass, CreateElement.class, "CreateElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCreateElement_Element(), theMirBasePackage.getModelElement(), null, "element", null, 0, 1, CreateElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(deleteElementEClass, DeleteElement.class, "DeleteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getDeleteElement_Element(), this.getExistingElementReference(), null, "element", null, 0, 1, DeleteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(createCorrespondenceEClass, CreateCorrespondence.class, "CreateCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCreateCorrespondence_FirstElement(), this.getExistingElementReference(), null, "firstElement", null, 0, 1, CreateCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCreateCorrespondence_SecondElement(), this.getExistingElementReference(), null, "secondElement", null, 0, 1, CreateCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(removeCorrespondenceEClass, RemoveCorrespondence.class, "RemoveCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRemoveCorrespondence_FirstElement(), this.getExistingElementReference(), null, "firstElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRemoveCorrespondence_SecondElement(), this.getExistingElementReference(), null, "secondElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(effectStatementEClass, EffectStatement.class, "EffectStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(routineCallBlockEClass, RoutineCallBlock.class, "RoutineCallBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1517,6 +1535,25 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(multiValuedFeaturePermuteChangeEClass, MultiValuedFeaturePermuteChange.class, "MultiValuedFeaturePermuteChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(singleValuedFeatureReplaceEClass, SingleValuedFeatureReplace.class, "SingleValuedFeatureReplace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(createElementEClass, CreateElement.class, "CreateElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCreateElement_Element(), theMirBasePackage.getModelElement(), null, "element", null, 0, 1, CreateElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCreateElement_InitializationBlock(), this.getExecutionCodeBlock(), null, "initializationBlock", null, 0, 1, CreateElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(deleteElementEClass, DeleteElement.class, "DeleteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getDeleteElement_Element(), this.getExistingElementReference(), null, "element", null, 0, 1, DeleteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(updateElementEClass, UpdateElement.class, "UpdateElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getUpdateElement_Element(), this.getExistingElementReference(), null, "element", null, 0, 1, UpdateElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getUpdateElement_UpdateBlock(), this.getExecutionCodeBlock(), null, "updateBlock", null, 0, 1, UpdateElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(createCorrespondenceEClass, CreateCorrespondence.class, "CreateCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCreateCorrespondence_FirstElement(), this.getExistingElementReference(), null, "firstElement", null, 0, 1, CreateCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCreateCorrespondence_SecondElement(), this.getExistingElementReference(), null, "secondElement", null, 0, 1, CreateCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(removeCorrespondenceEClass, RemoveCorrespondence.class, "RemoveCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRemoveCorrespondence_FirstElement(), this.getExistingElementReference(), null, "firstElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRemoveCorrespondence_SecondElement(), this.getExistingElementReference(), null, "secondElement", null, 0, 1, RemoveCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

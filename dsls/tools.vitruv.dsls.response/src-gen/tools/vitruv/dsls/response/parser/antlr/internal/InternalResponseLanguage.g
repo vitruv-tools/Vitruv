@@ -1168,116 +1168,29 @@ ruleEffect returns [EObject current=null]
 		}
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getEffectAccess().getElementCreationCreateElementParserRuleCall_3_0_0());
+				{
+					newCompositeNode(grammarAccess.getEffectAccess().getEffectStatementEffectStatementParserRuleCall_3_0());
+				}
+				lv_effectStatement_3_0=ruleEffectStatement
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getEffectRule());
 					}
-					lv_elementCreation_3_0=ruleCreateElement
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEffectRule());
-						}
-						add(
-							$current,
-							"elementCreation",
-							lv_elementCreation_3_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.CreateElement");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			    |
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getEffectAccess().getElementDeletionDeleteElementParserRuleCall_3_1_0());
-					}
-					lv_elementDeletion_4_0=ruleDeleteElement
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEffectRule());
-						}
-						add(
-							$current,
-							"elementDeletion",
-							lv_elementDeletion_4_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.DeleteElement");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			    |
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getEffectAccess().getCorrespondenceCreationCreateCorrespondenceParserRuleCall_3_2_0());
-					}
-					lv_correspondenceCreation_5_0=ruleCreateCorrespondence
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEffectRule());
-						}
-						add(
-							$current,
-							"correspondenceCreation",
-							lv_correspondenceCreation_5_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.CreateCorrespondence");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			    |
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getEffectAccess().getCorrespondenceDeletionRemoveCorrespondenceParserRuleCall_3_3_0());
-					}
-					lv_correspondenceDeletion_6_0=ruleRemoveCorrespondence
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEffectRule());
-						}
-						add(
-							$current,
-							"correspondenceDeletion",
-							lv_correspondenceDeletion_6_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.RemoveCorrespondence");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"effectStatement",
+						lv_effectStatement_3_0,
+						"tools.vitruv.dsls.response.ResponseLanguage.EffectStatement");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)*
 		(
-			otherlv_7='execute'
-			{
-				newLeafNode(otherlv_7, grammarAccess.getEffectAccess().getExecuteKeyword_4_0());
-			}
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getEffectAccess().getCodeBlockExecutionCodeBlockParserRuleCall_4_1_0());
-					}
-					lv_codeBlock_8_0=ruleExecutionCodeBlock
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEffectRule());
-						}
-						set(
-							$current,
-							"codeBlock",
-							lv_codeBlock_8_0,
-							"tools.vitruv.dsls.response.ResponseLanguage.ExecutionCodeBlock");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-		)?
-		(
 			(
 				{
-					newCompositeNode(grammarAccess.getEffectAccess().getCallRoutineRoutineCallBlockParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getEffectAccess().getCallRoutineRoutineCallBlockParserRuleCall_4_0());
 				}
-				lv_callRoutine_9_0=ruleRoutineCallBlock
+				lv_callRoutine_4_0=ruleRoutineCallBlock
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getEffectRule());
@@ -1285,15 +1198,15 @@ ruleEffect returns [EObject current=null]
 					set(
 						$current,
 						"callRoutine",
-						lv_callRoutine_9_0,
+						lv_callRoutine_4_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)?
-		otherlv_10='}'
+		otherlv_5='}'
 		{
-			newLeafNode(otherlv_10, grammarAccess.getEffectAccess().getRightCurlyBracketKeyword_6());
+			newLeafNode(otherlv_5, grammarAccess.getEffectAccess().getRightCurlyBracketKeyword_5());
 		}
 	)
 ;
@@ -1505,6 +1418,69 @@ ruleExistingElementReference returns [EObject current=null]
 	}
 ;
 
+// Entry rule entryRuleEffectStatement
+entryRuleEffectStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getEffectStatementRule()); }
+	iv_ruleEffectStatement=ruleEffectStatement
+	{ $current=$iv_ruleEffectStatement.current; }
+	EOF;
+
+// Rule EffectStatement
+ruleEffectStatement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getCreateElementParserRuleCall_0());
+		}
+		this_CreateElement_0=ruleCreateElement
+		{
+			$current = $this_CreateElement_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getDeleteElementParserRuleCall_1());
+		}
+		this_DeleteElement_1=ruleDeleteElement
+		{
+			$current = $this_DeleteElement_1.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getUpdateElementParserRuleCall_2());
+		}
+		this_UpdateElement_2=ruleUpdateElement
+		{
+			$current = $this_UpdateElement_2.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getCreateCorrespondenceParserRuleCall_3());
+		}
+		this_CreateCorrespondence_3=ruleCreateCorrespondence
+		{
+			$current = $this_CreateCorrespondence_3.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getRemoveCorrespondenceParserRuleCall_4());
+		}
+		this_RemoveCorrespondence_4=ruleRemoveCorrespondence
+		{
+			$current = $this_RemoveCorrespondence_4.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
 // Entry rule entryRuleCreateElement
 entryRuleCreateElement returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getCreateElementRule()); }
@@ -1521,16 +1497,23 @@ ruleCreateElement returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='create element'
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getCreateElementAccess().getCreateElementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='create element'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getCreateElementAccess().getCreateElementKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getCreateElementAccess().getCreateElementKeyword_1());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getCreateElementAccess().getElementNamedModelElementParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getCreateElementAccess().getElementNamedModelElementParserRuleCall_2_0());
 				}
-				lv_element_1_0=ruleNamedModelElement
+				lv_element_2_0=ruleNamedModelElement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCreateElementRule());
@@ -1538,12 +1521,37 @@ ruleCreateElement returns [EObject current=null]
 					set(
 						$current,
 						"element",
-						lv_element_1_0,
+						lv_element_2_0,
 						"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
+		(
+			otherlv_3='initialized as'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getCreateElementAccess().getInitializedAsKeyword_3_0());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getCreateElementAccess().getInitializationBlockExecutionCodeBlockParserRuleCall_3_1_0());
+					}
+					lv_initializationBlock_4_0=ruleExecutionCodeBlock
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getCreateElementRule());
+						}
+						set(
+							$current,
+							"initializationBlock",
+							lv_initializationBlock_4_0,
+							"tools.vitruv.dsls.response.ResponseLanguage.ExecutionCodeBlock");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
 	)
 ;
 
@@ -1563,16 +1571,23 @@ ruleDeleteElement returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='delete element'
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getDeleteElementAccess().getDeleteElementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='delete element'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getDeleteElementAccess().getDeleteElementKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getDeleteElementAccess().getDeleteElementKeyword_1());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_2_0());
 				}
-				lv_element_1_0=ruleExistingElementReference
+				lv_element_2_0=ruleExistingElementReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getDeleteElementRule());
@@ -1580,8 +1595,76 @@ ruleDeleteElement returns [EObject current=null]
 					set(
 						$current,
 						"element",
-						lv_element_1_0,
+						lv_element_2_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleUpdateElement
+entryRuleUpdateElement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getUpdateElementRule()); }
+	iv_ruleUpdateElement=ruleUpdateElement
+	{ $current=$iv_ruleUpdateElement.current; }
+	EOF;
+
+// Rule UpdateElement
+ruleUpdateElement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getUpdateElementAccess().getUpdateElementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='update element'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getUpdateElementAccess().getUpdateElementKeyword_1());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getUpdateElementAccess().getElementExistingElementReferenceParserRuleCall_2_0());
+				}
+				lv_element_2_0=ruleExistingElementReference
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getUpdateElementRule());
+					}
+					set(
+						$current,
+						"element",
+						lv_element_2_0,
+						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getUpdateElementAccess().getUpdateBlockExecutionCodeBlockParserRuleCall_3_0());
+				}
+				lv_updateBlock_3_0=ruleExecutionCodeBlock
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getUpdateElementRule());
+					}
+					set(
+						$current,
+						"updateBlock",
+						lv_updateBlock_3_0,
+						"tools.vitruv.dsls.response.ResponseLanguage.ExecutionCodeBlock");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1605,16 +1688,23 @@ ruleCreateCorrespondence returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='add correspondence between'
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getCreateCorrespondenceAccess().getCreateCorrespondenceAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='add correspondence between'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getCreateCorrespondenceAccess().getAddCorrespondenceBetweenKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getCreateCorrespondenceAccess().getAddCorrespondenceBetweenKeyword_1());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_2_0());
 				}
-				lv_firstElement_1_0=ruleExistingElementReference
+				lv_firstElement_2_0=ruleExistingElementReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCreateCorrespondenceRule());
@@ -1622,22 +1712,22 @@ ruleCreateCorrespondence returns [EObject current=null]
 					set(
 						$current,
 						"firstElement",
-						lv_firstElement_1_0,
+						lv_firstElement_2_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_2='and'
+		otherlv_3='and'
 		{
-			newLeafNode(otherlv_2, grammarAccess.getCreateCorrespondenceAccess().getAndKeyword_2());
+			newLeafNode(otherlv_3, grammarAccess.getCreateCorrespondenceAccess().getAndKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_4_0());
 				}
-				lv_secondElement_3_0=ruleExistingElementReference
+				lv_secondElement_4_0=ruleExistingElementReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCreateCorrespondenceRule());
@@ -1645,26 +1735,26 @@ ruleCreateCorrespondence returns [EObject current=null]
 					set(
 						$current,
 						"secondElement",
-						lv_secondElement_3_0,
+						lv_secondElement_4_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
 		(
-			otherlv_4='tag with'
+			otherlv_5='tag with'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getCreateCorrespondenceAccess().getTagWithKeyword_4_0());
+				newLeafNode(otherlv_5, grammarAccess.getCreateCorrespondenceAccess().getTagWithKeyword_5_0());
 			}
 			{
 				if ($current==null) {
 					$current = createModelElement(grammarAccess.getCreateCorrespondenceRule());
 				}
-				newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getTaggableParserRuleCall_4_1());
+				newCompositeNode(grammarAccess.getCreateCorrespondenceAccess().getTaggableParserRuleCall_5_1());
 			}
-			this_Taggable_5=ruleTaggable[$current]
+			this_Taggable_6=ruleTaggable[$current]
 			{
-				$current = $this_Taggable_5.current;
+				$current = $this_Taggable_6.current;
 				afterParserOrEnumRuleCall();
 			}
 		)?
@@ -1687,16 +1777,23 @@ ruleRemoveCorrespondence returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='remove correspondence'
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='remove correspondence'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_2_0());
 				}
-				lv_firstElement_1_0=ruleExistingElementReference
+				lv_firstElement_2_0=ruleExistingElementReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getRemoveCorrespondenceRule());
@@ -1704,22 +1801,22 @@ ruleRemoveCorrespondence returns [EObject current=null]
 					set(
 						$current,
 						"firstElement",
-						lv_firstElement_1_0,
+						lv_firstElement_2_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
-		otherlv_2=','
+		otherlv_3=','
 		{
-			newLeafNode(otherlv_2, grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_2());
+			newLeafNode(otherlv_3, grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_3_0());
+					newCompositeNode(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_4_0());
 				}
-				lv_secondElement_3_0=ruleExistingElementReference
+				lv_secondElement_4_0=ruleExistingElementReference
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getRemoveCorrespondenceRule());
@@ -1727,7 +1824,7 @@ ruleRemoveCorrespondence returns [EObject current=null]
 					set(
 						$current,
 						"secondElement",
-						lv_secondElement_3_0,
+						lv_secondElement_4_0,
 						"tools.vitruv.dsls.response.ResponseLanguage.ExistingElementReference");
 					afterParserOrEnumRuleCall();
 				}

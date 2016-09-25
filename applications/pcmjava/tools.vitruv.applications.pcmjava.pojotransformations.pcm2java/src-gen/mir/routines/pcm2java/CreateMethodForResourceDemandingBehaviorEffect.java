@@ -17,26 +17,75 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
-  public CreateMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
-    super(responseExecutionState, calledBy);
-    				this.behavior = behavior;
-  }
-  
-  private ResourceDemandingInternalBehaviour behavior;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
+    public void updateJavaMethodElement(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
       String _entityName = behavior.getEntityName();
       javaMethod.setName(_entityName);
       org.emftext.language.java.types.Void _createVoid = TypesFactory.eINSTANCE.createVoid();
       javaMethod.setTypeReference(_createVoid);
+    }
+    
+    public EObject getElement1(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
+      return javaMethod;
+    }
+    
+    public void update0Element(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
       EList<Member> _members = componentClass.getMembers();
       _members.add(javaMethod);
     }
+    
+    public EObject getCorrepondenceSourceComponentClass(final ResourceDemandingInternalBehaviour behavior) {
+      BasicComponent _basicComponent_ResourceDemandingInternalBehaviour = behavior.getBasicComponent_ResourceDemandingInternalBehaviour();
+      return _basicComponent_ResourceDemandingInternalBehaviour;
+    }
+    
+    public EObject getElement2(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
+      return behavior;
+    }
+    
+    public EObject getElement3(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
+      return componentClass;
+    }
+  }
+  
+  private CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
+  public CreateMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this);
+    				this.behavior = behavior;
+  }
+  
+  private ResourceDemandingInternalBehaviour behavior;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateMethodForResourceDemandingBehaviorEffect with input:");
+    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
+    
+    org.emftext.language.java.classifiers.Class componentClass = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceComponentClass(behavior), // correspondence source supplier
+    	org.emftext.language.java.classifiers.Class.class,
+    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
+    	null);
+    if (componentClass == null) {
+    	return;
+    }
+    initializeRetrieveElementState(componentClass);
+    ClassMethod javaMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
+    initializeCreateElementState(javaMethod);
+    userExecution.updateJavaMethodElement(behavior, componentClass, javaMethod);
+    
+    addCorrespondenceBetween(userExecution.getElement1(behavior, componentClass, javaMethod), userExecution.getElement2(behavior, componentClass, javaMethod), "");
+    
+    // val updatedElement userExecution.getElement3(behavior, componentClass, javaMethod);
+    userExecution.update0Element(behavior, componentClass, javaMethod);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -47,41 +96,5 @@ public class CreateMethodForResourceDemandingBehaviorEffect extends AbstractEffe
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  private EObject getElement0(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
-    return javaMethod;
-  }
-  
-  private EObject getElement1(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
-    return behavior;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateMethodForResourceDemandingBehaviorEffect with input:");
-    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
-    
-    org.emftext.language.java.classifiers.Class componentClass = getCorrespondingElement(
-    	getCorrepondenceSourceComponentClass(behavior), // correspondence source supplier
-    	org.emftext.language.java.classifiers.Class.class,
-    	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
-    	null);
-    if (componentClass == null) {
-    	return;
-    }
-    initializeRetrieveElementState(componentClass);
-    ClassMethod javaMethod = MembersFactoryImpl.eINSTANCE.createClassMethod();
-    initializeCreateElementState(javaMethod);
-    
-    addCorrespondenceBetween(getElement0(behavior, componentClass, javaMethod), getElement1(behavior, componentClass, javaMethod), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	behavior, componentClass, javaMethod);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceComponentClass(final ResourceDemandingInternalBehaviour behavior) {
-    BasicComponent _basicComponent_ResourceDemandingInternalBehaviour = behavior.getBasicComponent_ResourceDemandingInternalBehaviour();
-    return _basicComponent_ResourceDemandingInternalBehaviour;
   }
 }

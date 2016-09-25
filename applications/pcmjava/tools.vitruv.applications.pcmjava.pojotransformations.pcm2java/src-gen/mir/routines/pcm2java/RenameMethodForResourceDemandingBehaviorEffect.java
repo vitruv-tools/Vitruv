@@ -12,22 +12,53 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
-  public RenameMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
-    super(responseExecutionState, calledBy);
-    				this.behavior = behavior;
-  }
-  
-  private ResourceDemandingInternalBehaviour behavior;
-  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    private void executeUserOperations(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
+    public EObject getElement1(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
+      return javaMethod;
+    }
+    
+    public void update0Element(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
       String _entityName = behavior.getEntityName();
       javaMethod.setName(_entityName);
     }
+    
+    public EObject getCorrepondenceSourceJavaMethod(final ResourceDemandingInternalBehaviour behavior) {
+      return behavior;
+    }
+  }
+  
+  private RenameMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
+  public RenameMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.RenameMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this);
+    				this.behavior = behavior;
+  }
+  
+  private ResourceDemandingInternalBehaviour behavior;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RenameMethodForResourceDemandingBehaviorEffect with input:");
+    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
+    
+    ClassMethod javaMethod = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceJavaMethod(behavior), // correspondence source supplier
+    	ClassMethod.class,
+    	(ClassMethod _element) -> true, // correspondence precondition checker
+    	null);
+    if (javaMethod == null) {
+    	return;
+    }
+    initializeRetrieveElementState(javaMethod);
+    // val updatedElement userExecution.getElement1(behavior, javaMethod);
+    userExecution.update0Element(behavior, javaMethod);
+    
+    preprocessElementStates();
+    postprocessElementStates();
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
@@ -38,29 +69,5 @@ public class RenameMethodForResourceDemandingBehaviorEffect extends AbstractEffe
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine RenameMethodForResourceDemandingBehaviorEffect with input:");
-    getLogger().debug("   ResourceDemandingInternalBehaviour: " + this.behavior);
-    
-    ClassMethod javaMethod = getCorrespondingElement(
-    	getCorrepondenceSourceJavaMethod(behavior), // correspondence source supplier
-    	ClassMethod.class,
-    	(ClassMethod _element) -> true, // correspondence precondition checker
-    	null);
-    if (javaMethod == null) {
-    	return;
-    }
-    initializeRetrieveElementState(javaMethod);
-    
-    preprocessElementStates();
-    new mir.routines.pcm2java.RenameMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	behavior, javaMethod);
-    postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceJavaMethod(final ResourceDemandingInternalBehaviour behavior) {
-    return behavior;
   }
 }

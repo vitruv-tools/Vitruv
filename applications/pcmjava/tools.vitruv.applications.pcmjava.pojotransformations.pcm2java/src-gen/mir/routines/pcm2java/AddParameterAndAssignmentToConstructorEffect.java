@@ -21,8 +21,43 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffectRealization {
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
+      return newParameter;
+    }
+    
+    public void update0Element(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
+      EList<Parameter> _parameters = constructor.getParameters();
+      _parameters.add(newParameter);
+      final Statement asssignment = Pcm2JavaHelper.createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
+      EList<Statement> _statements = constructor.getStatements();
+      _statements.add(asssignment);
+    }
+    
+    public void updateNewParameterElement(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
+      newParameter.setName(parameterName);
+      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeReference);
+      newParameter.setTypeReference(_copy);
+    }
+    
+    public EObject getElement2(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
+      return parameterCorrespondenceSource;
+    }
+    
+    public EObject getElement3(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
+      return constructor;
+    }
+  }
+  
+  private AddParameterAndAssignmentToConstructorEffect.EffectUserExecution userExecution;
+  
   public AddParameterAndAssignmentToConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.AddParameterAndAssignmentToConstructorEffect.EffectUserExecution(getExecutionState(), this);
     				this.parameterCorrespondenceSource = parameterCorrespondenceSource;this.constructor = constructor;this.typeReference = typeReference;this.fieldToBeAssigned = fieldToBeAssigned;this.parameterName = parameterName;
   }
   
@@ -36,41 +71,6 @@ public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffect
   
   private String parameterName;
   
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-    }
-    
-    private void executeUserOperations(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
-      newParameter.setName(parameterName);
-      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeReference);
-      newParameter.setTypeReference(_copy);
-      EList<Parameter> _parameters = constructor.getParameters();
-      _parameters.add(newParameter);
-      final Statement asssignment = Pcm2JavaHelper.createAssignmentFromParameterToField(fieldToBeAssigned, newParameter);
-      EList<Statement> _statements = constructor.getStatements();
-      _statements.add(asssignment);
-    }
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-  }
-  
-  private EObject getElement0(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
-    return newParameter;
-  }
-  
-  private EObject getElement1(final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName, final OrdinaryParameter newParameter) {
-    return parameterCorrespondenceSource;
-  }
-  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine AddParameterAndAssignmentToConstructorEffect with input:");
     getLogger().debug("   NamedElement: " + this.parameterCorrespondenceSource);
@@ -81,11 +81,24 @@ public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffect
     
     OrdinaryParameter newParameter = ParametersFactoryImpl.eINSTANCE.createOrdinaryParameter();
     initializeCreateElementState(newParameter);
+    userExecution.updateNewParameterElement(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
     
-    addCorrespondenceBetween(getElement0(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter), getElement1(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter), "");
+    addCorrespondenceBetween(userExecution.getElement1(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter), userExecution.getElement2(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter), "");
+    
+    // val updatedElement userExecution.getElement3(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
+    userExecution.update0Element(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
+    
     preprocessElementStates();
-    new mir.routines.pcm2java.AddParameterAndAssignmentToConstructorEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
     postprocessElementStates();
+  }
+  
+  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
+    @Extension
+    private RoutinesFacade effectFacade;
+    
+    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
+    }
   }
 }

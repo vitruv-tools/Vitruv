@@ -76,16 +76,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Effect">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementCreation" upperBound="-1"
-        eType="#//CreateElement" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementDeletion" upperBound="-1"
-        eType="#//DeleteElement" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondenceCreation"
-        upperBound="-1" eType="#//CreateCorrespondence" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="correspondenceDeletion"
-        upperBound="-1" eType="#//RemoveCorrespondence" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="codeBlock" eType="#//ExecutionCodeBlock"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effectStatement" upperBound="-1"
+        eType="#//EffectStatement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
         containment="true"/>
   </eClassifiers>
@@ -105,26 +97,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExistingElementReference" eSuperTypes="#//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CreateElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DeleteElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CreateCorrespondence" eSuperTypes="#//Taggable">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RemoveCorrespondence">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EffectStatement" eSuperTypes="#//Taggable"/>
   <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="TagCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
@@ -140,4 +113,32 @@
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureRemoveChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeaturePermuteChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="SingleValuedFeatureReplace" eSuperTypes="#//AtomicSingleValuedFeatureChange"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateElement" eSuperTypes="#//EffectStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initializationBlock" eType="#//ExecutionCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//EffectStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateElement" eSuperTypes="#//EffectStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="updateBlock" eType="#//ExecutionCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateCorrespondence" eSuperTypes="#//EffectStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveCorrespondence" eSuperTypes="#//EffectStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>
