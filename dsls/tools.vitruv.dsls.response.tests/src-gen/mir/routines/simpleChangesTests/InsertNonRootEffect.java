@@ -17,6 +17,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class InsertNonRootEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private InsertNonRootEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -54,8 +56,6 @@ public class InsertNonRootEffect extends AbstractEffectRealization {
     }
   }
   
-  private InsertNonRootEffect.EffectUserExecution userExecution;
-  
   public InsertNonRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot insertedNonRoot) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.InsertNonRootEffect.EffectUserExecution(getExecutionState(), this);
@@ -92,7 +92,6 @@ public class InsertNonRootEffect extends AbstractEffectRealization {
     
     userExecution.callRoutine1(root, insertedNonRoot, targetElement, newNonRoot, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

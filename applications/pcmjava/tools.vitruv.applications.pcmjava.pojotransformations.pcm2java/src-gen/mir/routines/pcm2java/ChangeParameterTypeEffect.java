@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class ChangeParameterTypeEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private ChangeParameterTypeEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -47,8 +49,6 @@ public class ChangeParameterTypeEffect extends AbstractEffectRealization {
       return parameter;
     }
   }
-  
-  private ChangeParameterTypeEffect.EffectUserExecution userExecution;
   
   public ChangeParameterTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter parameter) {
     super(responseExecutionState, calledBy);
@@ -90,7 +90,6 @@ public class ChangeParameterTypeEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement1(parameter, interfaceMethod, javaParameter, javaParameterTypeClass);
     userExecution.update0Element(parameter, interfaceMethod, javaParameter, javaParameterTypeClass);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -53,8 +55,6 @@ public class CreateMethodForResourceDemandingBehaviorEffect extends AbstractEffe
     }
   }
   
-  private CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
-  
   public CreateMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateMethodForResourceDemandingBehaviorEffect.EffectUserExecution(getExecutionState(), this);
@@ -86,7 +86,6 @@ public class CreateMethodForResourceDemandingBehaviorEffect extends AbstractEffe
     // val updatedElement userExecution.getElement3(behavior, componentClass, javaMethod);
     userExecution.update0Element(behavior, componentClass, javaMethod);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

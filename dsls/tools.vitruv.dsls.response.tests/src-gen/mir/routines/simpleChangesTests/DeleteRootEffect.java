@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteRootEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteRootEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -25,8 +27,6 @@ public class DeleteRootEffect extends AbstractEffectRealization {
       return root;
     }
   }
-  
-  private DeleteRootEffect.EffectUserExecution userExecution;
   
   public DeleteRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
     super(responseExecutionState, calledBy);
@@ -52,7 +52,6 @@ public class DeleteRootEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(oldModel);
     deleteObject(userExecution.getElement1(root, oldModel));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

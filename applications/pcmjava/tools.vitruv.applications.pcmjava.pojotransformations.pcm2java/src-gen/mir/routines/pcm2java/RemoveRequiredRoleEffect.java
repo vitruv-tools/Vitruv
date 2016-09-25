@@ -20,6 +20,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RemoveRequiredRoleEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -57,8 +59,6 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
       }
     }
   }
-  
-  private RemoveRequiredRoleEffect.EffectUserExecution userExecution;
   
   public RemoveRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     super(responseExecutionState, calledBy);
@@ -109,7 +109,6 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     
     userExecution.callRoutine1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

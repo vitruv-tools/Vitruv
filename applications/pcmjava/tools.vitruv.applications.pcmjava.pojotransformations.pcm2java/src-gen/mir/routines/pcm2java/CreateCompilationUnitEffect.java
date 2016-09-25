@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateCompilationUnitEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateCompilationUnitEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -47,8 +49,6 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     }
   }
   
-  private CreateCompilationUnitEffect.EffectUserExecution userExecution;
-  
   public CreateCompilationUnitEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this);
@@ -74,7 +74,6 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
     
     addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), userExecution.getElement2(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), "");
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

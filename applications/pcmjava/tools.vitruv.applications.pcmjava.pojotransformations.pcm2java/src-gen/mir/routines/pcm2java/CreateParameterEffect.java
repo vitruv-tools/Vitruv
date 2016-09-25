@@ -20,6 +20,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateParameterEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateParameterEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -61,8 +63,6 @@ public class CreateParameterEffect extends AbstractEffectRealization {
     }
   }
   
-  private CreateParameterEffect.EffectUserExecution userExecution;
-  
   public CreateParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter parameter) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateParameterEffect.EffectUserExecution(getExecutionState(), this);
@@ -100,7 +100,6 @@ public class CreateParameterEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement3(parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
     userExecution.update0Element(parameter, interfaceMethod, javaParameterTypeClass, javaParameter);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

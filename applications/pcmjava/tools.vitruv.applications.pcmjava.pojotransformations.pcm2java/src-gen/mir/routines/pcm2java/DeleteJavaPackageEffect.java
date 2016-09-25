@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteJavaPackageEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteJavaPackageEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -29,8 +31,6 @@ public class DeleteJavaPackageEffect extends AbstractEffectRealization {
       return sourceElementMappedToPackage;
     }
   }
-  
-  private DeleteJavaPackageEffect.EffectUserExecution userExecution;
   
   public DeleteJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToPackage, final String packageName, final String expectedTag) {
     super(responseExecutionState, calledBy);
@@ -62,7 +62,6 @@ public class DeleteJavaPackageEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(javaPackage);
     deleteObject(userExecution.getElement1(sourceElementMappedToPackage, packageName, expectedTag, javaPackage));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

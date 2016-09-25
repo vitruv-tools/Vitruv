@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateNonRootInContainerEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -46,8 +48,6 @@ public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
       newNonRoot.setId(_id);
     }
   }
-  
-  private CreateNonRootInContainerEffect.EffectUserExecution userExecution;
   
   public CreateNonRootInContainerEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRootObjectContainerHelper container, final NonRoot insertedNonRoot) {
     super(responseExecutionState, calledBy);
@@ -83,7 +83,6 @@ public class CreateNonRootInContainerEffect extends AbstractEffectRealization {
     
     addCorrespondenceBetween(userExecution.getElement2(container, insertedNonRoot, nonRootContainer, newNonRoot), userExecution.getElement3(container, insertedNonRoot, nonRootContainer, newNonRoot), "");
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

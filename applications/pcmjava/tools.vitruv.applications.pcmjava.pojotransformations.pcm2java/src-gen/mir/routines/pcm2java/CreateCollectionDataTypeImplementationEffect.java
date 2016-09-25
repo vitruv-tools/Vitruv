@@ -32,6 +32,8 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 public class CreateCollectionDataTypeImplementationEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateCollectionDataTypeImplementationEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -80,8 +82,6 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
     }
   }
   
-  private CreateCollectionDataTypeImplementationEffect.EffectUserExecution userExecution;
-  
   public CreateCollectionDataTypeImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CollectionDataType dataType) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateCollectionDataTypeImplementationEffect.EffectUserExecution(getExecutionState(), this);
@@ -112,7 +112,6 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
     initializeRetrieveElementState(datatypesPackage);
     userExecution.callRoutine1(dataType, innerTypeClass, datatypesPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

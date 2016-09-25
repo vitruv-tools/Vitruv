@@ -22,6 +22,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private AddParameterAndAssignmentToConstructorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -53,8 +55,6 @@ public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffect
       return constructor;
     }
   }
-  
-  private AddParameterAndAssignmentToConstructorEffect.EffectUserExecution userExecution;
   
   public AddParameterAndAssignmentToConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement parameterCorrespondenceSource, final Constructor constructor, final NamespaceClassifierReference typeReference, final Field fieldToBeAssigned, final String parameterName) {
     super(responseExecutionState, calledBy);
@@ -90,7 +90,6 @@ public class AddParameterAndAssignmentToConstructorEffect extends AbstractEffect
     // val updatedElement userExecution.getElement3(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
     userExecution.update0Element(parameterCorrespondenceSource, constructor, typeReference, fieldToBeAssigned, parameterName, newParameter);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

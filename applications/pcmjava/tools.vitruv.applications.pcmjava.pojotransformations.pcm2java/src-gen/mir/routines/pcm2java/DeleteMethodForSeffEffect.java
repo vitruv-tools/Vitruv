@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteMethodForSeffEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteMethodForSeffEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -26,8 +28,6 @@ public class DeleteMethodForSeffEffect extends AbstractEffectRealization {
       return seff;
     }
   }
-  
-  private DeleteMethodForSeffEffect.EffectUserExecution userExecution;
   
   public DeleteMethodForSeffEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
     super(responseExecutionState, calledBy);
@@ -53,7 +53,6 @@ public class DeleteMethodForSeffEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(classMethod);
     deleteObject(userExecution.getElement1(seff, classMethod));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

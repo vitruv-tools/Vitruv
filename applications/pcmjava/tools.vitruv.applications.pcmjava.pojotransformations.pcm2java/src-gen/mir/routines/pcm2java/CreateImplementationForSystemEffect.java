@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateImplementationForSystemEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateImplementationForSystemEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -27,8 +29,6 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
       _routinesFacade.createJavaClass(system, systemPackage, _plus);
     }
   }
-  
-  private CreateImplementationForSystemEffect.EffectUserExecution userExecution;
   
   public CreateImplementationForSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.palladiosimulator.pcm.system.System system) {
     super(responseExecutionState, calledBy);
@@ -54,7 +54,6 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     initializeRetrieveElementState(systemPackage);
     userExecution.callRoutine1(system, systemPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

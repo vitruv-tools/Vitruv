@@ -17,6 +17,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameJavaClassifierEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameJavaClassifierEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -56,8 +58,6 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
       return classSourceElement;
     }
   }
-  
-  private RenameJavaClassifierEffect.EffectUserExecution userExecution;
   
   public RenameJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
@@ -102,7 +102,6 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement2(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
     userExecution.update1Element(classSourceElement, containingPackage, className, compilationUnit, javaClassifier);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

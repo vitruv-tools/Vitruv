@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private ReplaceNonRootIdEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -29,8 +31,6 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
       targetElement.setId(value);
     }
   }
-  
-  private ReplaceNonRootIdEffect.EffectUserExecution userExecution;
   
   public ReplaceNonRootIdEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot nonRoot, final String value) {
     super(responseExecutionState, calledBy);
@@ -60,7 +60,6 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement1(nonRoot, value, targetElement);
     userExecution.update0Element(nonRoot, value, targetElement);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

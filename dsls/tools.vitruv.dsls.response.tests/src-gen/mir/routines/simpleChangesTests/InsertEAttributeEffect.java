@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class InsertEAttributeEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private InsertEAttributeEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -38,8 +40,6 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
     }
   }
-  
-  private InsertEAttributeEffect.EffectUserExecution userExecution;
   
   public InsertEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer attributeValue) {
     super(responseExecutionState, calledBy);
@@ -71,7 +71,6 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
     
     userExecution.callRoutine1(root, attributeValue, targetElement, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

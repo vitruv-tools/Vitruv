@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RemoveCorrespondingParameterFromConstructorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -35,8 +37,6 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
       return correspondenceSource;
     }
   }
-  
-  private RemoveCorrespondingParameterFromConstructorEffect.EffectUserExecution userExecution;
   
   public RemoveCorrespondingParameterFromConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final NamedElement correspondenceSource) {
     super(responseExecutionState, calledBy);
@@ -65,7 +65,6 @@ public class RemoveCorrespondingParameterFromConstructorEffect extends AbstractE
     initializeRetrieveElementState(param);
     deleteObject(userExecution.getElement1(ctor, correspondenceSource, param));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

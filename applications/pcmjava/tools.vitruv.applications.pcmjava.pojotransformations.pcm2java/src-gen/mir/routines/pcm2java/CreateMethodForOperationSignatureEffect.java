@@ -20,6 +20,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateMethodForOperationSignatureEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -47,8 +49,6 @@ public class CreateMethodForOperationSignatureEffect extends AbstractEffectReali
       _members.add(interfaceMethod);
     }
   }
-  
-  private CreateMethodForOperationSignatureEffect.EffectUserExecution userExecution;
   
   public CreateMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
@@ -79,7 +79,6 @@ public class CreateMethodForOperationSignatureEffect extends AbstractEffectReali
     
     userExecution.callRoutine1(operationSignature, javaInterface, interfaceMethod, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

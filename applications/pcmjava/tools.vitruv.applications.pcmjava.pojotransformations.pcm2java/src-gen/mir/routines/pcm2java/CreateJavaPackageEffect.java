@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateJavaPackageEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateJavaPackageEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -57,8 +59,6 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     }
   }
   
-  private CreateJavaPackageEffect.EffectUserExecution userExecution;
-  
   public CreateJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final EObject sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String newTag) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateJavaPackageEffect.EffectUserExecution(getExecutionState(), this);
@@ -94,7 +94,6 @@ public class CreateJavaPackageEffect extends AbstractEffectRealization {
     
     addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), userExecution.getElement2(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage), userExecution.getTag1(sourceElementMappedToPackage, parentPackage, packageName, newTag, javaPackage));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

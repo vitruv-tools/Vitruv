@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RemoveEAttributeEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RemoveEAttributeEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -45,8 +47,6 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveEAttributeValue);
     }
   }
-  
-  private RemoveEAttributeEffect.EffectUserExecution userExecution;
   
   public RemoveEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer removedAttributeValue) {
     super(responseExecutionState, calledBy);
@@ -78,7 +78,6 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
     
     userExecution.callRoutine1(root, removedAttributeValue, targetElement, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

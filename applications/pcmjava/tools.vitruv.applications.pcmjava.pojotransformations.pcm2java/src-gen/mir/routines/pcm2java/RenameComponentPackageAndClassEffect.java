@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameComponentPackageAndClassEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameComponentPackageAndClassEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -39,8 +41,6 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     }
   }
   
-  private RenameComponentPackageAndClassEffect.EffectUserExecution userExecution;
-  
   public RenameComponentPackageAndClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this);
@@ -65,7 +65,6 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     initializeRetrieveElementState(repositoryPackage);
     userExecution.callRoutine1(component, repositoryPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

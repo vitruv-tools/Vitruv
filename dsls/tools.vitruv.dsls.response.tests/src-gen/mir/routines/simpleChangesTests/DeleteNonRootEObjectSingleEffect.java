@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteNonRootEObjectSingleEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -32,8 +34,6 @@ public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization 
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectSingle);
     }
   }
-  
-  private DeleteNonRootEObjectSingleEffect.EffectUserExecution userExecution;
   
   public DeleteNonRootEObjectSingleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
@@ -61,7 +61,6 @@ public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization 
     
     userExecution.callRoutine1(containedObject, targetElement, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -23,6 +23,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RemoveParameterToFieldAssignmentFromConstructorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RemoveParameterToFieldAssignmentFromConstructorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -60,8 +62,6 @@ public class RemoveParameterToFieldAssignmentFromConstructorEffect extends Abstr
     }
   }
   
-  private RemoveParameterToFieldAssignmentFromConstructorEffect.EffectUserExecution userExecution;
-  
   public RemoveParameterToFieldAssignmentFromConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final String fieldName) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RemoveParameterToFieldAssignmentFromConstructorEffect.EffectUserExecution(getExecutionState(), this);
@@ -81,7 +81,6 @@ public class RemoveParameterToFieldAssignmentFromConstructorEffect extends Abstr
     // val updatedElement userExecution.getElement1(ctor, fieldName);
     userExecution.update0Element(ctor, fieldName);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateInterfaceImplementationEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateInterfaceImplementationEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -36,8 +38,6 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
       _routinesFacade.createJavaInterface(interf, contractsPackage, _entityName);
     }
   }
-  
-  private CreateInterfaceImplementationEffect.EffectUserExecution userExecution;
   
   public CreateInterfaceImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Interface interf) {
     super(responseExecutionState, calledBy);
@@ -63,7 +63,6 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
     initializeRetrieveElementState(contractsPackage);
     userExecution.callRoutine1(interf, contractsPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

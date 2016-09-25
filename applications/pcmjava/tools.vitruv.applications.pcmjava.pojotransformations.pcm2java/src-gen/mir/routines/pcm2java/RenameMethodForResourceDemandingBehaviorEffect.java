@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -31,8 +33,6 @@ public class RenameMethodForResourceDemandingBehaviorEffect extends AbstractEffe
       return behavior;
     }
   }
-  
-  private RenameMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
   
   public RenameMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
     super(responseExecutionState, calledBy);
@@ -59,7 +59,6 @@ public class RenameMethodForResourceDemandingBehaviorEffect extends AbstractEffe
     // val updatedElement userExecution.getElement1(behavior, javaMethod);
     userExecution.update0Element(behavior, javaMethod);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

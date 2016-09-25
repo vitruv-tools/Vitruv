@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteParameterEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteParameterEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -32,8 +34,6 @@ public class DeleteParameterEffect extends AbstractEffectRealization {
       return parameter;
     }
   }
-  
-  private DeleteParameterEffect.EffectUserExecution userExecution;
   
   public DeleteParameterEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature signature, final Parameter parameter) {
     super(responseExecutionState, calledBy);
@@ -71,7 +71,6 @@ public class DeleteParameterEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(javaParameter);
     deleteObject(userExecution.getElement1(signature, parameter, interfaceMethod, javaParameter));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

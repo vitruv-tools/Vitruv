@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private UpdateSEFFImplementingMethodNameEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -33,8 +35,6 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
       return seff;
     }
   }
-  
-  private UpdateSEFFImplementingMethodNameEffect.EffectUserExecution userExecution;
   
   public UpdateSEFFImplementingMethodNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ServiceEffectSpecification seff) {
     super(responseExecutionState, calledBy);
@@ -61,7 +61,6 @@ public class UpdateSEFFImplementingMethodNameEffect extends AbstractEffectRealiz
     // val updatedElement userExecution.getElement1(seff, classMethod);
     userExecution.update0Element(seff, classMethod);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

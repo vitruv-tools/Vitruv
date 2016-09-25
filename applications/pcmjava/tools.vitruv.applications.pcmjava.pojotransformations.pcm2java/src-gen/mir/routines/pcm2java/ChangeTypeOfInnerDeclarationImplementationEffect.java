@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -32,8 +34,6 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
       _routinesFacade.changeInnerDeclarationType(innerDeclaration, newDataTypeReference);
     }
   }
-  
-  private ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
   
   public ChangeTypeOfInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
@@ -56,7 +56,6 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
     initializeRetrieveElementState(newJavaDataType);
     userExecution.callRoutine1(innerDeclaration, newJavaDataType, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

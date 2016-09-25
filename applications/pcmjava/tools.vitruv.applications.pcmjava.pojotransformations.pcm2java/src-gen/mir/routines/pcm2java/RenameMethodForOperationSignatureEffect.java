@@ -30,6 +30,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameMethodForOperationSignatureEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -82,8 +84,6 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
     }
   }
   
-  private RenameMethodForOperationSignatureEffect.EffectUserExecution userExecution;
-  
   public RenameMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameMethodForOperationSignatureEffect.EffectUserExecution(getExecutionState(), this);
@@ -111,7 +111,6 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
     
     userExecution.callRoutine1(operationSignature, interfaceMethod, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

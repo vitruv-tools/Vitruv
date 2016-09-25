@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class ChangeReturnTypeOfMethodForOperationSignatureEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private ChangeReturnTypeOfMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -29,8 +31,6 @@ public class ChangeReturnTypeOfMethodForOperationSignatureEffect extends Abstrac
       _routinesFacade.changeInterfaceMethodReturnType(interfaceMethod, _returnType__OperationSignature);
     }
   }
-  
-  private ChangeReturnTypeOfMethodForOperationSignatureEffect.EffectUserExecution userExecution;
   
   public ChangeReturnTypeOfMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
@@ -56,7 +56,6 @@ public class ChangeReturnTypeOfMethodForOperationSignatureEffect extends Abstrac
     initializeRetrieveElementState(interfaceMethod);
     userExecution.callRoutine1(operationSignature, interfaceMethod, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

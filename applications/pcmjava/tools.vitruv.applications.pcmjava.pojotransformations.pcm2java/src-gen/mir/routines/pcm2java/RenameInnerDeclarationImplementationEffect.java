@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameInnerDeclarationImplementationEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -82,8 +84,6 @@ public class RenameInnerDeclarationImplementationEffect extends AbstractEffectRe
     }
   }
   
-  private RenameInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
-  
   public RenameInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameInnerDeclarationImplementationEffect.EffectUserExecution(getExecutionState(), this);
@@ -133,7 +133,6 @@ public class RenameInnerDeclarationImplementationEffect extends AbstractEffectRe
     // val updatedElement userExecution.getElement3(innerDeclaration, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);
     userExecution.update2Element(innerDeclaration, compositeTypeField, compositeTypeGetterMethod, compositeTypeSetterMethod);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

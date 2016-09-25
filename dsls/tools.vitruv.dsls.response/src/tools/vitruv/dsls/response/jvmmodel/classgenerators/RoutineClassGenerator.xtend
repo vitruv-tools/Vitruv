@@ -35,8 +35,6 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	protected final Iterable<RetrieveModelElement> retrievedElements;
-	protected final Iterable<CreateElement> createElements;
-	protected final Iterable<DeleteElement> deleteElements;
 	private final String generalUserExecutionClassQualifiedName;
 	private final ClassNameGenerator routineClassNameGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
@@ -52,8 +50,6 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.routine = routine;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.retrievedElements = routine.matching?.retrievedElements?.filter[complete]?:newArrayList();
-		this.createElements = routine.effect.effectStatement.filter(CreateElement);
-		this.deleteElements = routine.effect.effectStatement.filter(DeleteElement);
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = routine.responsesSegment.routinesFacadeClassNameGenerator;
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
@@ -103,18 +99,13 @@ class RoutineClassGenerator extends ClassGenerator {
 		
 		val executeMethod = generateMethodExecuteEffect();
 		val userExecutionClass = userExecutionClassGenerator.generateClass;
-//		if (hasRoutineCallBlock) {
-//			userExecutionClass.generateMethod
-//			callRoutineClassGenerator.addMethod(generateMethodCallRoutines(routine.effect.callRoutine))
-//		}
 		
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
-			val routinesFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName));
-			members += #[routinesFacadeField];
 			superTypes += typeRef(AbstractEffectRealization);
-			members += userExecutionClass;
+			members += toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 			members += toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass));
+			members += userExecutionClass;
 			members += generateConstructor();
 			members += generateInputFields();
 			members += executeMethod;
@@ -241,7 +232,6 @@ class RoutineClassGenerator extends ClassGenerator {
 					«effectStatementsMap.get(effectStatement)»
 					
 				«ENDFOR»
-				preprocessElementStates();
 				postprocessElementStates();
 				'''
 		];	

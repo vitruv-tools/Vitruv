@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenameJavaPackageEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenameJavaPackageEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -51,8 +53,6 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     }
   }
   
-  private RenameJavaPackageEffect.EffectUserExecution userExecution;
-  
   public RenameJavaPackageEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToPackage, final org.emftext.language.java.containers.Package parentPackage, final String packageName, final String expectedTag) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameJavaPackageEffect.EffectUserExecution(getExecutionState(), this);
@@ -87,7 +87,6 @@ public class RenameJavaPackageEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement1(sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage);
     userExecution.update0Element(sourceElementMappedToPackage, parentPackage, packageName, expectedTag, javaPackage);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteMethodForResourceDemandingBehaviorEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -26,8 +28,6 @@ public class DeleteMethodForResourceDemandingBehaviorEffect extends AbstractEffe
       return behavior;
     }
   }
-  
-  private DeleteMethodForResourceDemandingBehaviorEffect.EffectUserExecution userExecution;
   
   public DeleteMethodForResourceDemandingBehaviorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
     super(responseExecutionState, calledBy);
@@ -53,7 +53,6 @@ public class DeleteMethodForResourceDemandingBehaviorEffect extends AbstractEffe
     initializeRetrieveElementState(javaMethod);
     deleteObject(userExecution.getElement1(behavior, javaMethod));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

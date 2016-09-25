@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private CreateRepositorySubPackagesEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -27,8 +29,6 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
       _routinesFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
     }
   }
-  
-  private CreateRepositorySubPackagesEffect.EffectUserExecution userExecution;
   
   public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
@@ -54,7 +54,6 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     initializeRetrieveElementState(repositoryPackage);
     userExecution.callRoutine1(repository, repositoryPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RemoveNonContainmentReferenceEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -46,8 +48,6 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
       _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveNonContainmentEReference);
     }
   }
-  
-  private RemoveNonContainmentReferenceEffect.EffectUserExecution userExecution;
   
   public RemoveNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
@@ -79,7 +79,6 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
     
     userExecution.callRoutine1(root, removedNonRoot, targetRoot, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -33,8 +35,6 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
       return returnType;
     }
   }
-  
-  private ChangeInterfaceMethodReturnTypeEffect.EffectUserExecution userExecution;
   
   public ChangeInterfaceMethodReturnTypeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod interfaceMethod, final DataType returnType) {
     super(responseExecutionState, calledBy);
@@ -61,7 +61,6 @@ public class ChangeInterfaceMethodReturnTypeEffect extends AbstractEffectRealiza
     // val updatedElement userExecution.getElement1(interfaceMethod, returnType, returnTypeClass);
     userExecution.update0Element(interfaceMethod, returnType, returnTypeClass);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

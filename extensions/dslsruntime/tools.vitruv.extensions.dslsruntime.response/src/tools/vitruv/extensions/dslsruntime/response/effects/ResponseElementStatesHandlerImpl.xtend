@@ -29,7 +29,7 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 //		ResponseCorrespondenceHelper.addCorrespondence(correspondenceModel, 
 //			firstElement, secondElement, tag);
 		if (!elementStates.containsKey(firstElement)) {
-			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceModel, transformationResult));
+			elementStates.put(firstElement, new RetrieveResponseElementState(firstElement, correspondenceModel));
 		}
 		this.elementStates.get(firstElement).addCorrespondingElement(secondElement, tag);
 	}
@@ -61,17 +61,11 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	}
 	
 	override initializeCreateElementState(EObject element) {
-		this.elementStates.put(element, new CreateResponseElementState(element, correspondenceModel, transformationResult));
+		this.elementStates.put(element, new CreateResponseElementState(element, correspondenceModel));
 	}
 	
 	override initializeRetrieveElementState(EObject element) {
-		this.elementStates.put(element, new RetrieveResponseElementState(element, correspondenceModel, transformationResult));
-	}
-	
-	override preprocessElementStates() {
-		for (state : elementStates.values) {
-			state.preprocess();
-		}
+		this.elementStates.put(element, new RetrieveResponseElementState(element, correspondenceModel));
 	}
 	
 	override postprocessElementStates() {

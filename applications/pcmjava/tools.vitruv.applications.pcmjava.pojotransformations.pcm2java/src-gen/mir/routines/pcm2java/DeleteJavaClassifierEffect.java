@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteJavaClassifierEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -35,8 +37,6 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
       return sourceElement;
     }
   }
-  
-  private DeleteJavaClassifierEffect.EffectUserExecution userExecution;
   
   public DeleteJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElement) {
     super(responseExecutionState, calledBy);
@@ -73,7 +73,6 @@ public class DeleteJavaClassifierEffect extends AbstractEffectRealization {
     
     deleteObject(userExecution.getElement2(sourceElement, javaClassifier, compilationUnit));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

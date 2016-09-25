@@ -25,6 +25,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private AddAssemblyContextToComposedStructureEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -97,8 +99,6 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
     }
   }
   
-  private AddAssemblyContextToComposedStructureEffect.EffectUserExecution userExecution;
-  
   public AddAssemblyContextToComposedStructureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ComposedStructure composedStructure, final AssemblyContext assemblyContext) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.AddAssemblyContextToComposedStructureEffect.EffectUserExecution(getExecutionState(), this);
@@ -160,7 +160,6 @@ public class AddAssemblyContextToComposedStructureEffect extends AbstractEffectR
     // val updatedElement userExecution.getElement10(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
     userExecution.update1Element(composedStructure, assemblyContext, compositeComponentJavaClass, encapsulatedComponentJavaClass, assemblyContextField, newConstructorCall, contextClassImport, constructor);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

@@ -22,6 +22,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class AddProvidedRoleEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private AddProvidedRoleEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -71,8 +73,6 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     }
   }
   
-  private AddProvidedRoleEffect.EffectUserExecution userExecution;
-  
   public AddProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationProvidedRole providedRole) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.AddProvidedRoleEffect.EffectUserExecution(getExecutionState(), this);
@@ -119,7 +119,6 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement5(providedRole, operationProvidingInterface, javaClass, interfaceImport, namespaceClassifierReference);
     userExecution.update0Element(providedRole, operationProvidingInterface, javaClass, interfaceImport, namespaceClassifierReference);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

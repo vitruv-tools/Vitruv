@@ -23,6 +23,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class RenamePackageForRepositoryEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private RenamePackageForRepositoryEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -73,8 +75,6 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     }
   }
   
-  private RenamePackageForRepositoryEffect.EffectUserExecution userExecution;
-  
   public RenamePackageForRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenamePackageForRepositoryEffect.EffectUserExecution(getExecutionState(), this);
@@ -102,7 +102,6 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     
     userExecution.callRoutine1(repository, rootPackage, effectFacade);
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }

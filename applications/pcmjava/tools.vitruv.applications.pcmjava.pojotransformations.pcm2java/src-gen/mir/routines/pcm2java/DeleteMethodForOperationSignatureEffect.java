@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 public class DeleteMethodForOperationSignatureEffect extends AbstractEffectRealization {
   private RoutinesFacade effectFacade;
   
+  private DeleteMethodForOperationSignatureEffect.EffectUserExecution userExecution;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -26,8 +28,6 @@ public class DeleteMethodForOperationSignatureEffect extends AbstractEffectReali
       return operationSignature;
     }
   }
-  
-  private DeleteMethodForOperationSignatureEffect.EffectUserExecution userExecution;
   
   public DeleteMethodForOperationSignatureEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
@@ -53,7 +53,6 @@ public class DeleteMethodForOperationSignatureEffect extends AbstractEffectReali
     initializeRetrieveElementState(interfaceMethod);
     deleteObject(userExecution.getElement1(operationSignature, interfaceMethod));
     
-    preprocessElementStates();
     postprocessElementStates();
   }
 }
