@@ -97,6 +97,15 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case ResponseLanguagePackage.RESPONSE_REACTION_ROUTINE_CALL:
+      {
+        ResponseReactionRoutineCall responseReactionRoutineCall = (ResponseReactionRoutineCall)theEObject;
+        T result = caseResponseReactionRoutineCall(responseReactionRoutineCall);
+        if (result == null) result = caseRoutineCallBlock(responseReactionRoutineCall);
+        if (result == null) result = caseCodeBlock(responseReactionRoutineCall);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case ResponseLanguagePackage.INVARIANT_VIOLATION_EVENT:
       {
         InvariantViolationEvent invariantViolationEvent = (InvariantViolationEvent)theEObject;
@@ -226,7 +235,18 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
       {
         RoutineCallStatement routineCallStatement = (RoutineCallStatement)theEObject;
         T result = caseRoutineCallStatement(routineCallStatement);
+        if (result == null) result = caseRoutineCallBlock(routineCallStatement);
+        if (result == null) result = caseEffectStatement(routineCallStatement);
         if (result == null) result = caseCodeBlock(routineCallStatement);
+        if (result == null) result = caseTaggable(routineCallStatement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
+      {
+        RoutineCallBlock routineCallBlock = (RoutineCallBlock)theEObject;
+        T result = caseRoutineCallBlock(routineCallBlock);
+        if (result == null) result = caseCodeBlock(routineCallBlock);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -474,6 +494,22 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Response Reaction Routine Call</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Response Reaction Routine Call</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseResponseReactionRoutineCall(ResponseReactionRoutineCall object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Invariant Violation Event</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -709,6 +745,22 @@ public class ResponseLanguageSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRoutineCallStatement(RoutineCallStatement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Routine Call Block</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRoutineCallBlock(RoutineCallBlock object)
   {
     return null;
   }

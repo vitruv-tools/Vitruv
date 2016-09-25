@@ -67,19 +67,9 @@ public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealizati
     // val updatedElement userExecution.getElement1(root, value, targetElement);
     userExecution.update0Element(root, value, targetElement);
     
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	root, value, targetElement, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(root, value, targetElement, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

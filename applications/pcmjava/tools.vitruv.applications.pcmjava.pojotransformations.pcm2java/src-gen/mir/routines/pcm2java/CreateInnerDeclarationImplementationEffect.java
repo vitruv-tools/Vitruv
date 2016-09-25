@@ -56,19 +56,9 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
     initializeRetrieveElementState(nonPrimitiveInnerDataTypeClass);
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	innerDeclaration, nonPrimitiveInnerDataTypeClass, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(innerDeclaration, nonPrimitiveInnerDataTypeClass, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

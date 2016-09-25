@@ -93,6 +93,11 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
         return createResponseAdapter();
       }
       @Override
+      public Adapter caseResponseReactionRoutineCall(ResponseReactionRoutineCall object)
+      {
+        return createResponseReactionRoutineCallAdapter();
+      }
+      @Override
       public Adapter caseInvariantViolationEvent(InvariantViolationEvent object)
       {
         return createInvariantViolationEventAdapter();
@@ -166,6 +171,11 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
       public Adapter caseRoutineCallStatement(RoutineCallStatement object)
       {
         return createRoutineCallStatementAdapter();
+      }
+      @Override
+      public Adapter caseRoutineCallBlock(RoutineCallBlock object)
+      {
+        return createRoutineCallBlockAdapter();
       }
       @Override
       public Adapter caseTaggable(Taggable object)
@@ -335,6 +345,21 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createResponseAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall <em>Response Reaction Routine Call</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall
+   * @generated
+   */
+  public Adapter createResponseReactionRoutineCallAdapter()
   {
     return null;
   }
@@ -560,6 +585,21 @@ public class ResponseLanguageAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRoutineCallStatementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock <em>Routine Call Block</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
+   * @generated
+   */
+  public Adapter createRoutineCallBlockAdapter()
   {
     return null;
   }

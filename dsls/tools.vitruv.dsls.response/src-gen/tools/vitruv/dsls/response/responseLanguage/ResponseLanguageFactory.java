@@ -51,6 +51,15 @@ public interface ResponseLanguageFactory extends EFactory
   Response createResponse();
 
   /**
+   * Returns a new object of class '<em>Response Reaction Routine Call</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Response Reaction Routine Call</em>'.
+   * @generated
+   */
+  ResponseReactionRoutineCall createResponseReactionRoutineCall();
+
+  /**
    * Returns a new object of class '<em>Invariant Violation Event</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -184,6 +193,15 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   RoutineCallStatement createRoutineCallStatement();
+
+  /**
+   * Returns a new object of class '<em>Routine Call Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Routine Call Block</em>'.
+   * @generated
+   */
+  RoutineCallBlock createRoutineCallBlock();
 
   /**
    * Returns a new object of class '<em>Taggable</em>'.

@@ -109,19 +109,9 @@ public class RenameMethodForOperationSignatureEffect extends AbstractEffectReali
     // val updatedElement userExecution.getElement1(operationSignature, interfaceMethod);
     userExecution.update0Element(operationSignature, interfaceMethod);
     
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	operationSignature, interfaceMethod, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(operationSignature, interfaceMethod, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

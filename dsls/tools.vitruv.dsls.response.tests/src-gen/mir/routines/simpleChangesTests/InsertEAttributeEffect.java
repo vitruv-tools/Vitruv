@@ -69,19 +69,9 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
     // val updatedElement userExecution.getElement1(root, attributeValue, targetElement);
     userExecution.update0Element(root, attributeValue, targetElement);
     
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	root, attributeValue, targetElement, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(root, attributeValue, targetElement, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

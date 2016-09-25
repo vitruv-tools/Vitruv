@@ -46,9 +46,11 @@ import tools.vitruv.dsls.response.responseLanguage.Response;
 import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguageFactory;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
@@ -85,6 +87,13 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass responseEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass responseReactionRoutineCallEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -190,6 +199,13 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * @generated
    */
   private EClass routineCallStatementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass routineCallBlockEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -554,6 +570,16 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getResponseReactionRoutineCall()
+  {
+    return responseReactionRoutineCallEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getInvariantViolationEvent()
   {
     return invariantViolationEventEClass;
@@ -834,9 +860,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getEffect_CallRoutine()
+  public EClass getRoutineCallStatement()
   {
-    return (EReference)effectEClass.getEStructuralFeatures().get(1);
+    return routineCallStatementEClass;
   }
 
   /**
@@ -844,9 +870,9 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getRoutineCallStatement()
+  public EClass getRoutineCallBlock()
   {
-    return routineCallStatementEClass;
+    return routineCallBlockEClass;
   }
 
   /**
@@ -1267,6 +1293,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     createEReference(responseEClass, RESPONSE__CALL_ROUTINE);
     createEReference(responseEClass, RESPONSE__RESPONSES_SEGMENT);
 
+    responseReactionRoutineCallEClass = createEClass(RESPONSE_REACTION_ROUTINE_CALL);
+
     invariantViolationEventEClass = createEClass(INVARIANT_VIOLATION_EVENT);
     createEReference(invariantViolationEventEClass, INVARIANT_VIOLATION_EVENT__VIOLATION);
 
@@ -1308,9 +1336,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     effectEClass = createEClass(EFFECT);
     createEReference(effectEClass, EFFECT__EFFECT_STATEMENT);
-    createEReference(effectEClass, EFFECT__CALL_ROUTINE);
 
     routineCallStatementEClass = createEClass(ROUTINE_CALL_STATEMENT);
+
+    routineCallBlockEClass = createEClass(ROUTINE_CALL_BLOCK);
 
     taggableEClass = createEClass(TAGGABLE);
     createEReference(taggableEClass, TAGGABLE__TAG);
@@ -1405,6 +1434,8 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     // Add supertypes to classes
     responseFileEClass.getESuperTypes().add(theMirBasePackage.getMirBaseFile());
+    responseReactionRoutineCallEClass.getESuperTypes().add(this.getRoutineCallBlock());
+    responseReactionRoutineCallEClass.getESuperTypes().add(this.getCodeBlock());
     invariantViolationEventEClass.getESuperTypes().add(this.getTrigger());
     modelChangeEClass.getESuperTypes().add(this.getTrigger());
     concreteModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
@@ -1414,7 +1445,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     atomicMultiValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     atomicSingleValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
+    routineCallStatementEClass.getESuperTypes().add(this.getRoutineCallBlock());
     routineCallStatementEClass.getESuperTypes().add(this.getCodeBlock());
+    routineCallStatementEClass.getESuperTypes().add(this.getEffectStatement());
+    routineCallBlockEClass.getESuperTypes().add(this.getCodeBlock());
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
     existingElementReferenceEClass.getESuperTypes().add(this.getCodeBlock());
     effectStatementEClass.getESuperTypes().add(this.getTaggable());
@@ -1450,8 +1484,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEAttribute(getResponse_Documentation(), ecorePackage.getEString(), "documentation", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getResponse_Name(), ecorePackage.getEString(), "name", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_Trigger(), this.getTrigger(), null, "trigger", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getResponse_CallRoutine(), this.getRoutineCallStatement(), null, "callRoutine", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getResponse_CallRoutine(), this.getResponseReactionRoutineCall(), null, "callRoutine", null, 0, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getResponse_ResponsesSegment(), this.getResponsesSegment(), this.getResponsesSegment_Responses(), "responsesSegment", null, 1, 1, Response.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(responseReactionRoutineCallEClass, ResponseReactionRoutineCall.class, "ResponseReactionRoutineCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(invariantViolationEventEClass, InvariantViolationEvent.class, "InvariantViolationEvent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getInvariantViolationEvent_Violation(), ecorePackage.getEClass(), null, "violation", null, 0, 1, InvariantViolationEvent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1494,9 +1530,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
 
     initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEffect_EffectStatement(), this.getEffectStatement(), null, "effectStatement", null, 0, -1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getEffect_CallRoutine(), this.getRoutineCallStatement(), null, "callRoutine", null, 0, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(routineCallStatementEClass, RoutineCallStatement.class, "RoutineCallStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(routineCallBlockEClass, RoutineCallBlock.class, "RoutineCallBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(taggableEClass, Taggable.class, "Taggable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTaggable_Tag(), this.getTagCodeBlock(), null, "tag", null, 0, 1, Taggable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

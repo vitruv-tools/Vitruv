@@ -340,9 +340,9 @@ ruleResponse returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getResponseAccess().getCallRoutineRoutineCallStatementParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getResponseAccess().getCallRoutineResponseReactionRoutineCallParserRuleCall_5_0());
 				}
-				lv_callRoutine_5_0=ruleRoutineCallStatement
+				lv_callRoutine_5_0=ruleResponseReactionRoutineCall
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getResponseRule());
@@ -351,7 +351,7 @@ ruleResponse returns [EObject current=null]
 						$current,
 						"callRoutine",
 						lv_callRoutine_5_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallStatement");
+						"tools.vitruv.dsls.response.ResponseLanguage.ResponseReactionRoutineCall");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -359,6 +359,43 @@ ruleResponse returns [EObject current=null]
 		otherlv_6='}'
 		{
 			newLeafNode(otherlv_6, grammarAccess.getResponseAccess().getRightCurlyBracketKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleResponseReactionRoutineCall
+entryRuleResponseReactionRoutineCall returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getResponseReactionRoutineCallRule()); }
+	iv_ruleResponseReactionRoutineCall=ruleResponseReactionRoutineCall
+	{ $current=$iv_ruleResponseReactionRoutineCall.current; }
+	EOF;
+
+// Rule ResponseReactionRoutineCall
+ruleResponseReactionRoutineCall returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getResponseReactionRoutineCallAccess().getResponseReactionRoutineCallAction_0(),
+					$current);
+			}
+		)
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getResponseReactionRoutineCallRule());
+			}
+			newCompositeNode(grammarAccess.getResponseReactionRoutineCallAccess().getRoutineCallBlockParserRuleCall_1());
+		}
+		this_RoutineCallBlock_1=ruleRoutineCallBlock[$current]
+		{
+			$current = $this_RoutineCallBlock_1.current;
+			afterParserOrEnumRuleCall();
 		}
 	)
 ;
@@ -1184,29 +1221,10 @@ ruleEffect returns [EObject current=null]
 					afterParserOrEnumRuleCall();
 				}
 			)
-		)*
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getEffectAccess().getCallRoutineRoutineCallStatementParserRuleCall_4_0());
-				}
-				lv_callRoutine_4_0=ruleRoutineCallStatement
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getEffectRule());
-					}
-					set(
-						$current,
-						"callRoutine",
-						lv_callRoutine_4_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallStatement");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)?
-		otherlv_5='}'
+		)+
+		otherlv_4='}'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getEffectAccess().getRightCurlyBracketKeyword_5());
+			newLeafNode(otherlv_4, grammarAccess.getEffectAccess().getRightCurlyBracketKeyword_4());
 		}
 	)
 ;
@@ -1234,19 +1252,43 @@ ruleRoutineCallStatement returns [EObject current=null]
 					$current);
 			}
 		)
-		otherlv_1='call'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getRoutineCallStatementAccess().getCallKeyword_1());
-		}
 		{
 			if ($current==null) {
 				$current = createModelElement(grammarAccess.getRoutineCallStatementRule());
 			}
-			newCompositeNode(grammarAccess.getRoutineCallStatementAccess().getCodeBlockParserRuleCall_2());
+			newCompositeNode(grammarAccess.getRoutineCallStatementAccess().getRoutineCallBlockParserRuleCall_1());
 		}
-		this_CodeBlock_2=ruleCodeBlock[$current]
+		this_RoutineCallBlock_1=ruleRoutineCallBlock[$current]
 		{
-			$current = $this_CodeBlock_2.current;
+			$current = $this_RoutineCallBlock_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+
+// Rule RoutineCallBlock
+ruleRoutineCallBlock[EObject in_current]  returns [EObject current=in_current]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='call'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getRoutineCallBlockAccess().getCallKeyword_0());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getRoutineCallBlockRule());
+			}
+			newCompositeNode(grammarAccess.getRoutineCallBlockAccess().getCodeBlockParserRuleCall_1());
+		}
+		this_CodeBlock_1=ruleCodeBlock[$current]
+		{
+			$current = $this_CodeBlock_1.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -1517,6 +1559,15 @@ ruleEffectStatement returns [EObject current=null]
 		this_RemoveCorrespondence_4=ruleRemoveCorrespondence
 		{
 			$current = $this_RemoveCorrespondence_4.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getEffectStatementAccess().getRoutineCallStatementParserRuleCall_5());
+		}
+		this_RoutineCallStatement_5=ruleRoutineCallStatement
+		{
+			$current = $this_RoutineCallStatement_5.current;
 			afterParserOrEnumRuleCall();
 		}
 	)

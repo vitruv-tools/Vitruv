@@ -86,6 +86,7 @@ import tools.vitruv.dsls.response.responseLanguage.RemoveRootChange;
 import tools.vitruv.dsls.response.responseLanguage.Response;
 import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
@@ -275,6 +276,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				return; 
 			case ResponseLanguagePackage.RESPONSE_FILE:
 				sequence_MirBaseFile_ResponseFile(context, (ResponseFile) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.RESPONSE_REACTION_ROUTINE_CALL:
+				sequence_CodeBlock_ResponseReactionRoutineCall(context, (ResponseReactionRoutineCall) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.RESPONSES_SEGMENT:
 				sequence_ResponsesSegment(context, (ResponsesSegment) semanticObject); 
@@ -903,7 +907,26 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     ResponseReactionRoutineCall returns ResponseReactionRoutineCall
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_ResponseReactionRoutineCall(ISerializationContext context, ResponseReactionRoutineCall semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     RoutineCallStatement returns RoutineCallStatement
+	 *     EffectStatement returns RoutineCallStatement
 	 *
 	 * Constraint:
 	 *     code=XExpression
@@ -987,7 +1010,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Effect returns Effect
 	 *
 	 * Constraint:
-	 *     (effectStatement+=EffectStatement* callRoutine=RoutineCallStatement?)
+	 *     effectStatement+=EffectStatement+
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1075,7 +1098,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Response returns Response
 	 *
 	 * Constraint:
-	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=RoutineCallStatement)
+	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=ResponseReactionRoutineCall)
 	 */
 	protected void sequence_Response(ISerializationContext context, Response semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

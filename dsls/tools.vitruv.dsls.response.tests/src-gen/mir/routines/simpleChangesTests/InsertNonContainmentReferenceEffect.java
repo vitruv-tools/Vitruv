@@ -82,19 +82,9 @@ public class InsertNonContainmentReferenceEffect extends AbstractEffectRealizati
     // val updatedElement userExecution.getElement1(root, insertedNonRoot, targetElement);
     userExecution.update0Element(root, insertedNonRoot, targetElement);
     
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	root, insertedNonRoot, targetElement, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(root, insertedNonRoot, targetElement, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

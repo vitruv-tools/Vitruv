@@ -61,19 +61,9 @@ public class RenameCompositeDataTypeEffect extends AbstractEffectRealization {
     	return;
     }
     initializeRetrieveElementState(datatypesPackage);
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	compositeDataType, datatypesPackage, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(compositeDataType, datatypesPackage, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

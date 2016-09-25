@@ -141,18 +141,18 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cTriggerAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cTriggerTriggerParserRuleCall_4_0 = (RuleCall)cTriggerAssignment_4.eContents().get(0);
 		private final Assignment cCallRoutineAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cCallRoutineRoutineCallStatementParserRuleCall_5_0 = (RuleCall)cCallRoutineAssignment_5.eContents().get(0);
+		private final RuleCall cCallRoutineResponseReactionRoutineCallParserRuleCall_5_0 = (RuleCall)cCallRoutineAssignment_5.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//Response:
 		//	documentation=ML_COMMENT?
 		//	'response:' name=ValidID '{'
 		//	trigger=Trigger
-		//	callRoutine=RoutineCallStatement
+		//	callRoutine=ResponseReactionRoutineCall
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//documentation=ML_COMMENT? 'response:' name=ValidID '{' trigger=Trigger callRoutine=RoutineCallStatement '}'
+		//documentation=ML_COMMENT? 'response:' name=ValidID '{' trigger=Trigger callRoutine=ResponseReactionRoutineCall '}'
 		public Group getGroup() { return cGroup; }
 		
 		//documentation=ML_COMMENT?
@@ -179,14 +179,33 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Trigger
 		public RuleCall getTriggerTriggerParserRuleCall_4_0() { return cTriggerTriggerParserRuleCall_4_0; }
 		
-		//callRoutine=RoutineCallStatement
+		//callRoutine=ResponseReactionRoutineCall
 		public Assignment getCallRoutineAssignment_5() { return cCallRoutineAssignment_5; }
 		
-		//RoutineCallStatement
-		public RuleCall getCallRoutineRoutineCallStatementParserRuleCall_5_0() { return cCallRoutineRoutineCallStatementParserRuleCall_5_0; }
+		//ResponseReactionRoutineCall
+		public RuleCall getCallRoutineResponseReactionRoutineCallParserRuleCall_5_0() { return cCallRoutineResponseReactionRoutineCallParserRuleCall_5_0; }
 		
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
+	}
+	public class ResponseReactionRoutineCallElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ResponseReactionRoutineCall");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cResponseReactionRoutineCallAction_0 = (Action)cGroup.eContents().get(0);
+		private final RuleCall cRoutineCallBlockParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//ResponseReactionRoutineCall:
+		//	{ResponseReactionRoutineCall} RoutineCallBlock;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ResponseReactionRoutineCall} RoutineCallBlock
+		public Group getGroup() { return cGroup; }
+		
+		//{ResponseReactionRoutineCall}
+		public Action getResponseReactionRoutineCallAction_0() { return cResponseReactionRoutineCallAction_0; }
+		
+		//RoutineCallBlock
+		public RuleCall getRoutineCallBlockParserRuleCall_1() { return cRoutineCallBlockParserRuleCall_1; }
 	}
 	public class InvariantViolationEventElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.InvariantViolationEvent");
@@ -694,19 +713,16 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cEffectStatementAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cEffectStatementEffectStatementParserRuleCall_3_0 = (RuleCall)cEffectStatementAssignment_3.eContents().get(0);
-		private final Assignment cCallRoutineAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cCallRoutineRoutineCallStatementParserRuleCall_4_0 = (RuleCall)cCallRoutineAssignment_4.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Effect:
 		//	{Effect}
 		//	'effect' '{'
-		//	effectStatement+=EffectStatement*
-		//	callRoutine=RoutineCallStatement?
+		//	effectStatement+=EffectStatement+
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Effect} 'effect' '{' effectStatement+=EffectStatement* callRoutine=RoutineCallStatement? '}'
+		//{Effect} 'effect' '{' effectStatement+=EffectStatement+ '}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Effect}
@@ -718,44 +734,52 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 		
-		//effectStatement+=EffectStatement*
+		//effectStatement+=EffectStatement+
 		public Assignment getEffectStatementAssignment_3() { return cEffectStatementAssignment_3; }
 		
 		//EffectStatement
 		public RuleCall getEffectStatementEffectStatementParserRuleCall_3_0() { return cEffectStatementEffectStatementParserRuleCall_3_0; }
 		
-		//callRoutine=RoutineCallStatement?
-		public Assignment getCallRoutineAssignment_4() { return cCallRoutineAssignment_4; }
-		
-		//RoutineCallStatement
-		public RuleCall getCallRoutineRoutineCallStatementParserRuleCall_4_0() { return cCallRoutineRoutineCallStatementParserRuleCall_4_0; }
-		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
 	}
 	public class RoutineCallStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineCallStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cRoutineCallStatementAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cCallKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final RuleCall cCodeBlockParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final RuleCall cRoutineCallBlockParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
 		//RoutineCallStatement:
-		//	{RoutineCallStatement}
-		//	'call' CodeBlock;
+		//	{RoutineCallStatement} RoutineCallBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{RoutineCallStatement} 'call' CodeBlock
+		//{RoutineCallStatement} RoutineCallBlock
 		public Group getGroup() { return cGroup; }
 		
 		//{RoutineCallStatement}
 		public Action getRoutineCallStatementAction_0() { return cRoutineCallStatementAction_0; }
 		
+		//RoutineCallBlock
+		public RuleCall getRoutineCallBlockParserRuleCall_1() { return cRoutineCallBlockParserRuleCall_1; }
+	}
+	public class RoutineCallBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cCallKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cCodeBlockParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//fragment RoutineCallBlock:
+		//	'call' CodeBlock;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'call' CodeBlock
+		public Group getGroup() { return cGroup; }
+		
 		//'call'
-		public Keyword getCallKeyword_1() { return cCallKeyword_1; }
+		public Keyword getCallKeyword_0() { return cCallKeyword_0; }
 		
 		//CodeBlock
-		public RuleCall getCodeBlockParserRuleCall_2() { return cCodeBlockParserRuleCall_2; }
+		public RuleCall getCodeBlockParserRuleCall_1() { return cCodeBlockParserRuleCall_1; }
 	}
 	public class TaggableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Taggable");
@@ -884,12 +908,13 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final RuleCall cUpdateElementParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cCreateCorrespondenceParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cRemoveCorrespondenceParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cRoutineCallStatementParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		
 		//EffectStatement:
-		//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence;
+		//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence
+		//CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//CreateElement
@@ -906,6 +931,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		
 		//RemoveCorrespondence
 		public RuleCall getRemoveCorrespondenceParserRuleCall_4() { return cRemoveCorrespondenceParserRuleCall_4; }
+		
+		//RoutineCallStatement
+		public RuleCall getRoutineCallStatementParserRuleCall_5() { return cRoutineCallStatementParserRuleCall_5; }
 	}
 	public class CreateElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.CreateElement");
@@ -1207,6 +1235,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final ResponseFileElements pResponseFile;
 	private final ResponsesSegmentElements pResponsesSegment;
 	private final ResponseElements pResponse;
+	private final ResponseReactionRoutineCallElements pResponseReactionRoutineCall;
 	private final InvariantViolationEventElements pInvariantViolationEvent;
 	private final TriggerElements pTrigger;
 	private final ModelChangeElements pModelChange;
@@ -1222,6 +1251,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final MatchingElements pMatching;
 	private final EffectElements pEffect;
 	private final RoutineCallStatementElements pRoutineCallStatement;
+	private final RoutineCallBlockElements pRoutineCallBlock;
 	private final TaggableElements pTaggable;
 	private final RetrieveModelElementElements pRetrieveModelElement;
 	private final ExistingElementReferenceElements pExistingElementReference;
@@ -1257,6 +1287,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pResponseFile = new ResponseFileElements();
 		this.pResponsesSegment = new ResponsesSegmentElements();
 		this.pResponse = new ResponseElements();
+		this.pResponseReactionRoutineCall = new ResponseReactionRoutineCallElements();
 		this.pInvariantViolationEvent = new InvariantViolationEventElements();
 		this.pTrigger = new TriggerElements();
 		this.pModelChange = new ModelChangeElements();
@@ -1272,6 +1303,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pMatching = new MatchingElements();
 		this.pEffect = new EffectElements();
 		this.pRoutineCallStatement = new RoutineCallStatementElements();
+		this.pRoutineCallBlock = new RoutineCallBlockElements();
 		this.pTaggable = new TaggableElements();
 		this.pRetrieveModelElement = new RetrieveModelElementElements();
 		this.pExistingElementReference = new ExistingElementReferenceElements();
@@ -1351,7 +1383,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//	documentation=ML_COMMENT?
 	//	'response:' name=ValidID '{'
 	//	trigger=Trigger
-	//	callRoutine=RoutineCallStatement
+	//	callRoutine=ResponseReactionRoutineCall
 	//	'}';
 	public ResponseElements getResponseAccess() {
 		return pResponse;
@@ -1359,6 +1391,16 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	
 	public ParserRule getResponseRule() {
 		return getResponseAccess().getRule();
+	}
+	
+	//ResponseReactionRoutineCall:
+	//	{ResponseReactionRoutineCall} RoutineCallBlock;
+	public ResponseReactionRoutineCallElements getResponseReactionRoutineCallAccess() {
+		return pResponseReactionRoutineCall;
+	}
+	
+	public ParserRule getResponseReactionRoutineCallRule() {
+		return getResponseReactionRoutineCallAccess().getRule();
 	}
 	
 	//// ****** TRIGGER ******
@@ -1506,8 +1548,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//Effect:
 	//	{Effect}
 	//	'effect' '{'
-	//	effectStatement+=EffectStatement*
-	//	callRoutine=RoutineCallStatement?
+	//	effectStatement+=EffectStatement+
 	//	'}';
 	public EffectElements getEffectAccess() {
 		return pEffect;
@@ -1518,14 +1559,23 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//RoutineCallStatement:
-	//	{RoutineCallStatement}
-	//	'call' CodeBlock;
+	//	{RoutineCallStatement} RoutineCallBlock;
 	public RoutineCallStatementElements getRoutineCallStatementAccess() {
 		return pRoutineCallStatement;
 	}
 	
 	public ParserRule getRoutineCallStatementRule() {
 		return getRoutineCallStatementAccess().getRule();
+	}
+	
+	//fragment RoutineCallBlock:
+	//	'call' CodeBlock;
+	public RoutineCallBlockElements getRoutineCallBlockAccess() {
+		return pRoutineCallBlock;
+	}
+	
+	public ParserRule getRoutineCallBlockRule() {
+		return getRoutineCallBlockAccess().getRule();
 	}
 	
 	//// ****** CORRESPONDENCE SPECIFICATION ******	
@@ -1563,7 +1613,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//EffectStatement:
-	//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence;
+	//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
 	public EffectStatementElements getEffectStatementAccess() {
 		return pEffectStatement;
 	}

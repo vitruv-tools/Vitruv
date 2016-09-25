@@ -29,10 +29,10 @@ import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.EffectStatement
 import java.util.ArrayList
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
-	protected final boolean hasRoutineCallBlock;
 	protected extension ResponseElementsCompletionChecker _completionChecker;
 	protected final Iterable<RetrieveModelElement> retrievedElements;
 	protected final Iterable<CreateElement> createElements;
@@ -50,7 +50,6 @@ class RoutineClassGenerator extends ClassGenerator {
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.routine = routine;
-		this.hasRoutineCallBlock = routine.effect.callRoutine != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.retrievedElements = routine.matching?.retrievedElements?.filter[complete]?:newArrayList();
 		this.createElements = routine.effect.effectStatement.filter(CreateElement);
@@ -200,6 +199,13 @@ class RoutineClassGenerator extends ClassGenerator {
 		'''
 	}
 	
+	private def dispatch StringConcatenationClient createStatements(RoutineCallStatement routineCall) {
+		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+		val StringConcatenationClient callRoutineMethodCall = '''«USER_EXECUTION_FIELD_NAME».«callRoutineMethod.simpleName»(«
+			callRoutineMethod.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList», «EFFECT_FACADE_FIELD_NAME»);''';
+		return callRoutineMethodCall;
+	}
+	
 	
 	protected def generateMethodExecuteEffect() {
 		val methodName = "executeRoutine";
@@ -214,7 +220,6 @@ class RoutineClassGenerator extends ClassGenerator {
 		val effectStatementsMap = <EffectStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(routine.effect.effectStatement,
 			[effectStatementsMap.put(it, createStatements(it))]);
-		val callMethod = if (hasRoutineCallBlock) generateMethodCallRoutine(routine.effect.callRoutine, currentlyAccessibleElements, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		return generateUnassociatedMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
@@ -237,10 +242,6 @@ class RoutineClassGenerator extends ClassGenerator {
 					
 				«ENDFOR»
 				preprocessElementStates();
-				«IF hasRoutineCallBlock»
-					«USER_EXECUTION_FIELD_NAME».«callMethod.simpleName»(
-						«routine.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList», «EFFECT_FACADE_FIELD_NAME»);
-				«ENDIF»
 				postprocessElementStates();
 				'''
 		];	

@@ -234,6 +234,90 @@ public interface ResponseLanguagePackage extends EPackage
   int RESPONSE_FEATURE_COUNT = 5;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCodeBlock()
+   * @generated
+   */
+  int CODE_BLOCK = 28;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CODE_BLOCK__CODE = 0;
+
+  /**
+   * The number of structural features of the '<em>Code Block</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CODE_BLOCK_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallBlockImpl <em>Routine Call Block</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallBlockImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutineCallBlock()
+   * @generated
+   */
+  int ROUTINE_CALL_BLOCK = 19;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ROUTINE_CALL_BLOCK__CODE = CODE_BLOCK__CODE;
+
+  /**
+   * The number of structural features of the '<em>Routine Call Block</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ROUTINE_CALL_BLOCK_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl <em>Response Reaction Routine Call</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponseReactionRoutineCall()
+   * @generated
+   */
+  int RESPONSE_REACTION_ROUTINE_CALL = 3;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESPONSE_REACTION_ROUTINE_CALL__CODE = ROUTINE_CALL_BLOCK__CODE;
+
+  /**
+   * The number of structural features of the '<em>Response Reaction Routine Call</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESPONSE_REACTION_ROUTINE_CALL_FEATURE_COUNT = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.TriggerImpl <em>Trigger</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -241,7 +325,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTrigger()
    * @generated
    */
-  int TRIGGER = 4;
+  int TRIGGER = 5;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -269,7 +353,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getInvariantViolationEvent()
    * @generated
    */
-  int INVARIANT_VIOLATION_EVENT = 3;
+  int INVARIANT_VIOLATION_EVENT = 4;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -306,7 +390,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getModelChange()
    * @generated
    */
-  int MODEL_CHANGE = 5;
+  int MODEL_CHANGE = 6;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -334,7 +418,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getConcreteModelElementChange()
    * @generated
    */
-  int CONCRETE_MODEL_ELEMENT_CHANGE = 6;
+  int CONCRETE_MODEL_ELEMENT_CHANGE = 7;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -362,7 +446,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAtomicConcreteModelElementChange()
    * @generated
    */
-  int ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE = 7;
+  int ATOMIC_CONCRETE_MODEL_ELEMENT_CHANGE = 8;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -390,7 +474,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAtomicRootObjectChange()
    * @generated
    */
-  int ATOMIC_ROOT_OBJECT_CHANGE = 8;
+  int ATOMIC_ROOT_OBJECT_CHANGE = 9;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -427,7 +511,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAtomicFeatureChange()
    * @generated
    */
-  int ATOMIC_FEATURE_CHANGE = 9;
+  int ATOMIC_FEATURE_CHANGE = 10;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -464,7 +548,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAtomicMultiValuedFeatureChange()
    * @generated
    */
-  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE = 10;
+  int ATOMIC_MULTI_VALUED_FEATURE_CHANGE = 11;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -501,7 +585,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAtomicSingleValuedFeatureChange()
    * @generated
    */
-  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE = 11;
+  int ATOMIC_SINGLE_VALUED_FEATURE_CHANGE = 12;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -538,7 +622,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getArbitraryModelElementChange()
    * @generated
    */
-  int ARBITRARY_MODEL_ELEMENT_CHANGE = 12;
+  int ARBITRARY_MODEL_ELEMENT_CHANGE = 13;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -566,7 +650,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutine()
    * @generated
    */
-  int ROUTINE = 13;
+  int ROUTINE = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -630,7 +714,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutineInput()
    * @generated
    */
-  int ROUTINE_INPUT = 14;
+  int ROUTINE_INPUT = 15;
 
   /**
    * The feature id for the '<em><b>Model Input Elements</b></em>' containment reference list.
@@ -667,7 +751,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMatching()
    * @generated
    */
-  int MATCHING = 15;
+  int MATCHING = 16;
 
   /**
    * The feature id for the '<em><b>Retrieved Elements</b></em>' containment reference list.
@@ -704,7 +788,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffect()
    * @generated
    */
-  int EFFECT = 16;
+  int EFFECT = 17;
 
   /**
    * The feature id for the '<em><b>Effect Statement</b></em>' containment reference list.
@@ -716,50 +800,13 @@ public interface ResponseLanguagePackage extends EPackage
   int EFFECT__EFFECT_STATEMENT = 0;
 
   /**
-   * The feature id for the '<em><b>Call Routine</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int EFFECT__CALL_ROUTINE = 1;
-
-  /**
    * The number of structural features of the '<em>Effect</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EFFECT_FEATURE_COUNT = 2;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCodeBlock()
-   * @generated
-   */
-  int CODE_BLOCK = 26;
-
-  /**
-   * The feature id for the '<em><b>Code</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CODE_BLOCK__CODE = 0;
-
-  /**
-   * The number of structural features of the '<em>Code Block</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CODE_BLOCK_FEATURE_COUNT = 1;
+  int EFFECT_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallStatementImpl <em>Routine Call Statement</em>}' class.
@@ -769,7 +816,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutineCallStatement()
    * @generated
    */
-  int ROUTINE_CALL_STATEMENT = 17;
+  int ROUTINE_CALL_STATEMENT = 18;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -778,7 +825,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ROUTINE_CALL_STATEMENT__CODE = CODE_BLOCK__CODE;
+  int ROUTINE_CALL_STATEMENT__CODE = ROUTINE_CALL_BLOCK__CODE;
+
+  /**
+   * The feature id for the '<em><b>Tag</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ROUTINE_CALL_STATEMENT__TAG = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Routine Call Statement</em>' class.
@@ -787,7 +843,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ROUTINE_CALL_STATEMENT_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 0;
+  int ROUTINE_CALL_STATEMENT_FEATURE_COUNT = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.TaggableImpl <em>Taggable</em>}' class.
@@ -797,7 +853,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTaggable()
    * @generated
    */
-  int TAGGABLE = 18;
+  int TAGGABLE = 20;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -825,7 +881,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElement()
    * @generated
    */
-  int RETRIEVE_MODEL_ELEMENT = 19;
+  int RETRIEVE_MODEL_ELEMENT = 21;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -907,7 +963,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExistingElementReference()
    * @generated
    */
-  int EXISTING_ELEMENT_REFERENCE = 20;
+  int EXISTING_ELEMENT_REFERENCE = 22;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -935,7 +991,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffectStatement()
    * @generated
    */
-  int EFFECT_STATEMENT = 21;
+  int EFFECT_STATEMENT = 23;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -963,7 +1019,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTagCodeBlock()
    * @generated
    */
-  int TAG_CODE_BLOCK = 22;
+  int TAG_CODE_BLOCK = 24;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -991,7 +1047,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getPreconditionCodeBlock()
    * @generated
    */
-  int PRECONDITION_CODE_BLOCK = 23;
+  int PRECONDITION_CODE_BLOCK = 25;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1019,7 +1075,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCorrespondingObjectCodeBlock()
    * @generated
    */
-  int CORRESPONDING_OBJECT_CODE_BLOCK = 24;
+  int CORRESPONDING_OBJECT_CODE_BLOCK = 26;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1047,7 +1103,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExecutionCodeBlock()
    * @generated
    */
-  int EXECUTION_CODE_BLOCK = 25;
+  int EXECUTION_CODE_BLOCK = 27;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1075,7 +1131,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getInsertRootChange()
    * @generated
    */
-  int INSERT_ROOT_CHANGE = 27;
+  int INSERT_ROOT_CHANGE = 29;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1112,7 +1168,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveRootChange()
    * @generated
    */
-  int REMOVE_ROOT_CHANGE = 28;
+  int REMOVE_ROOT_CHANGE = 30;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1149,7 +1205,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureInsertChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 29;
+  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 31;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1186,7 +1242,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureRemoveChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 30;
+  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 32;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1223,7 +1279,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeaturePermuteChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 31;
+  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 33;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1260,7 +1316,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getSingleValuedFeatureReplace()
    * @generated
    */
-  int SINGLE_VALUED_FEATURE_REPLACE = 32;
+  int SINGLE_VALUED_FEATURE_REPLACE = 34;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1297,7 +1353,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateElement()
    * @generated
    */
-  int CREATE_ELEMENT = 33;
+  int CREATE_ELEMENT = 35;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1343,7 +1399,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteElement()
    * @generated
    */
-  int DELETE_ELEMENT = 34;
+  int DELETE_ELEMENT = 36;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1380,7 +1436,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateElement()
    * @generated
    */
-  int UPDATE_ELEMENT = 35;
+  int UPDATE_ELEMENT = 37;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1426,7 +1482,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
    * @generated
    */
-  int CREATE_CORRESPONDENCE = 36;
+  int CREATE_CORRESPONDENCE = 38;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1472,7 +1528,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
    * @generated
    */
-  int REMOVE_CORRESPONDENCE = 37;
+  int REMOVE_CORRESPONDENCE = 39;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -1672,6 +1728,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    */
   EReference getResponse_ResponsesSegment();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall <em>Response Reaction Routine Call</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Response Reaction Routine Call</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall
+   * @generated
+   */
+  EClass getResponseReactionRoutineCall();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent <em>Invariant Violation Event</em>}'.
@@ -1968,17 +2034,6 @@ public interface ResponseLanguagePackage extends EPackage
   EReference getEffect_EffectStatement();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCallRoutine <em>Call Routine</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Call Routine</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Effect#getCallRoutine()
-   * @see #getEffect()
-   * @generated
-   */
-  EReference getEffect_CallRoutine();
-
-  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement <em>Routine Call Statement</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1987,6 +2042,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    */
   EClass getRoutineCallStatement();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock <em>Routine Call Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Routine Call Block</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
+   * @generated
+   */
+  EClass getRoutineCallBlock();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Taggable <em>Taggable</em>}'.
@@ -2525,6 +2590,16 @@ public interface ResponseLanguagePackage extends EPackage
     EReference RESPONSE__RESPONSES_SEGMENT = eINSTANCE.getResponse_ResponsesSegment();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl <em>Response Reaction Routine Call</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponseReactionRoutineCall()
+     * @generated
+     */
+    EClass RESPONSE_REACTION_ROUTINE_CALL = eINSTANCE.getResponseReactionRoutineCall();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.InvariantViolationEventImpl <em>Invariant Violation Event</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2777,14 +2852,6 @@ public interface ResponseLanguagePackage extends EPackage
     EReference EFFECT__EFFECT_STATEMENT = eINSTANCE.getEffect_EffectStatement();
 
     /**
-     * The meta object literal for the '<em><b>Call Routine</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference EFFECT__CALL_ROUTINE = eINSTANCE.getEffect_CallRoutine();
-
-    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallStatementImpl <em>Routine Call Statement</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2793,6 +2860,16 @@ public interface ResponseLanguagePackage extends EPackage
      * @generated
      */
     EClass ROUTINE_CALL_STATEMENT = eINSTANCE.getRoutineCallStatement();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallBlockImpl <em>Routine Call Block</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallBlockImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutineCallBlock()
+     * @generated
+     */
+    EClass ROUTINE_CALL_BLOCK = eINSTANCE.getRoutineCallBlock();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.TaggableImpl <em>Taggable</em>}' class.

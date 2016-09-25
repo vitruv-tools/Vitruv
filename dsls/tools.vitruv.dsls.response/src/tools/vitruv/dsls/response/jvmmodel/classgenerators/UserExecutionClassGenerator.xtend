@@ -13,7 +13,7 @@ import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference
 import tools.vitruv.dsls.response.responseLanguage.Matching
 import org.eclipse.xtext.common.types.JvmTypeReference
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -147,7 +147,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	protected def JvmOperation generateMethodCallRoutine(RoutineCallStatement routineCall, Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
+	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall, Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
 		if (routineCall.code == null) {
 			return null;
 		}

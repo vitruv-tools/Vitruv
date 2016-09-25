@@ -23,8 +23,12 @@ Response:
 	(documentation=ML_COMMENT)?
 	'response:' name=ValidID '{'
 		trigger=Trigger
-		callRoutine=RoutineCallStatement
+		callRoutine=ResponseReactionRoutineCall
 	'}';
+	
+ResponseReactionRoutineCall:
+	{ResponseReactionRoutineCall}
+	RoutineCallBlock;
 
 // ****** TRIGGER ******
 
@@ -91,14 +95,16 @@ Matching:
 Effect:
 	{Effect}
 	'effect' '{'
-		(effectStatement += EffectStatement)*
-		callRoutine=RoutineCallStatement?
+		(effectStatement += EffectStatement)+
 	'}';
-	
+
 RoutineCallStatement returns RoutineCallStatement:
 	{RoutineCallStatement}
+	RoutineCallBlock;
+
+fragment RoutineCallBlock:
 	'call' CodeBlock;
-	
+
 // ****** CORRESPONDENCE SPECIFICATION ******	
 
 fragment Taggable:
@@ -113,7 +119,7 @@ ExistingElementReference:
 	CodeBlock;
 
 EffectStatement:
-	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence;
+	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
 	
 CreateElement returns EffectStatement:
 	{CreateElement}

@@ -114,14 +114,13 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
+		// TODO HK Add missing elements: create / delete / update / call routine
 		for (element : effect.effectStatement.filter(CreateCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
 		for (element : effect.effectStatement.filter(RemoveCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
-		
-		createChildren(parentNode, effect.callRoutine);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CreateCorrespondence createCorrespondence) {

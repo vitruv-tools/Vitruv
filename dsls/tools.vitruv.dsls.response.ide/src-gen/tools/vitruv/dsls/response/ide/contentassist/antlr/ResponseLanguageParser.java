@@ -88,6 +88,7 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getResponseFileAccess().getGroup(), "rule__ResponseFile__Group__0");
 					put(grammarAccess.getResponsesSegmentAccess().getGroup(), "rule__ResponsesSegment__Group__0");
 					put(grammarAccess.getResponseAccess().getGroup(), "rule__Response__Group__0");
+					put(grammarAccess.getResponseReactionRoutineCallAccess().getGroup(), "rule__ResponseReactionRoutineCall__Group__0");
 					put(grammarAccess.getInvariantViolationEventAccess().getGroup(), "rule__InvariantViolationEvent__Group__0");
 					put(grammarAccess.getTriggerAccess().getGroup(), "rule__Trigger__Group__0");
 					put(grammarAccess.getTriggerAccess().getGroup_2(), "rule__Trigger__Group_2__0");
@@ -110,6 +111,7 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMatchingAccess().getGroup_4(), "rule__Matching__Group_4__0");
 					put(grammarAccess.getEffectAccess().getGroup(), "rule__Effect__Group__0");
 					put(grammarAccess.getRoutineCallStatementAccess().getGroup(), "rule__RoutineCallStatement__Group__0");
+					put(grammarAccess.getRoutineCallBlockAccess().getGroup(), "rule__RoutineCallBlock__Group__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup(), "rule__RetrieveModelElement__Group__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_4(), "rule__RetrieveModelElement__Group_4__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_5(), "rule__RetrieveModelElement__Group_5__0");
@@ -335,7 +337,6 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMatchingAccess().getRetrievedElementsAssignment_3(), "rule__Matching__RetrievedElementsAssignment_3");
 					put(grammarAccess.getMatchingAccess().getConditionAssignment_4_1(), "rule__Matching__ConditionAssignment_4_1");
 					put(grammarAccess.getEffectAccess().getEffectStatementAssignment_3(), "rule__Effect__EffectStatementAssignment_3");
-					put(grammarAccess.getEffectAccess().getCallRoutineAssignment_4(), "rule__Effect__CallRoutineAssignment_4");
 					put(grammarAccess.getTaggableAccess().getTagAssignment(), "rule__Taggable__TagAssignment");
 					put(grammarAccess.getRetrieveModelElementAccess().getRequiredAssignment_0_0(), "rule__RetrieveModelElement__RequiredAssignment_0_0");
 					put(grammarAccess.getRetrieveModelElementAccess().getOptionalAssignment_0_1(), "rule__RetrieveModelElement__OptionalAssignment_0_1");

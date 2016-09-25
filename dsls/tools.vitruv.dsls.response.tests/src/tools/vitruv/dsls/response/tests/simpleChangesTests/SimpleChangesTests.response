@@ -100,10 +100,10 @@ routine: removeNonRoot(minimal.NonRoot removedNonRoot) {
 		retrieve required element minimal.NonRoot as targetElement corresponding to removedNonRoot
 	}
 	effect {
-		delete element targetElement
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectInList);
 		}
+		delete element targetElement
 	}
 }
 

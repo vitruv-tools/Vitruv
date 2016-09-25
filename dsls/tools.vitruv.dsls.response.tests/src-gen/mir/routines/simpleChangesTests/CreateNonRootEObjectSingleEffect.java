@@ -88,19 +88,9 @@ public class CreateNonRootEObjectSingleEffect extends AbstractEffectRealization 
     
     addCorrespondenceBetween(userExecution.getElement2(sourceRoot, containedObject, targetElement, newNonRoot), userExecution.getElement3(sourceRoot, containedObject, targetElement, newNonRoot), "");
     
-    preprocessElementStates();
-    userExecution.callRoutine1(
-    	sourceRoot, containedObject, targetElement, newNonRoot, effectFacade);
-    postprocessElementStates();
-  }
-  
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
+    userExecution.callRoutine1(sourceRoot, containedObject, targetElement, newNonRoot, effectFacade);
     
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
+    preprocessElementStates();
+    postprocessElementStates();
   }
 }

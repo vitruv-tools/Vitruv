@@ -68,6 +68,7 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.RESPONSE_FILE: return createResponseFile();
       case ResponseLanguagePackage.RESPONSES_SEGMENT: return createResponsesSegment();
       case ResponseLanguagePackage.RESPONSE: return createResponse();
+      case ResponseLanguagePackage.RESPONSE_REACTION_ROUTINE_CALL: return createResponseReactionRoutineCall();
       case ResponseLanguagePackage.INVARIANT_VIOLATION_EVENT: return createInvariantViolationEvent();
       case ResponseLanguagePackage.TRIGGER: return createTrigger();
       case ResponseLanguagePackage.MODEL_CHANGE: return createModelChange();
@@ -83,6 +84,7 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.MATCHING: return createMatching();
       case ResponseLanguagePackage.EFFECT: return createEffect();
       case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
+      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
@@ -139,6 +141,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     ResponseImpl response = new ResponseImpl();
     return response;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ResponseReactionRoutineCall createResponseReactionRoutineCall()
+  {
+    ResponseReactionRoutineCallImpl responseReactionRoutineCall = new ResponseReactionRoutineCallImpl();
+    return responseReactionRoutineCall;
   }
 
   /**
@@ -304,6 +317,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     RoutineCallStatementImpl routineCallStatement = new RoutineCallStatementImpl();
     return routineCallStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoutineCallBlock createRoutineCallBlock()
+  {
+    RoutineCallBlockImpl routineCallBlock = new RoutineCallBlockImpl();
+    return routineCallBlock;
   }
 
   /**

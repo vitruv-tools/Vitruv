@@ -19,7 +19,6 @@ public class ResponseBuilder implements IResponseBuilder {
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
 		this.routine = ResponseLanguageFactory.eINSTANCE.createRoutine();
-		this.response.callRoutine = ResponseLanguageFactory.eINSTANCE.createRoutineCallStatement();
 		this.responsesSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
 		responsesSegment.responses += this.response;
 		responsesSegment.routines += this.routine;
@@ -51,7 +50,7 @@ public class ResponseBuilder implements IResponseBuilder {
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
 		val matching = ResponseLanguageFactory.eINSTANCE.createMatching();
 		val effect = ResponseLanguageFactory.eINSTANCE.createEffect();
-		effect.callRoutine = executionBlock;
+		effect.effectStatement += executionBlock;
 		this.routine.effect = effect;
 		this.routine.matching = matching;
 		return this;
