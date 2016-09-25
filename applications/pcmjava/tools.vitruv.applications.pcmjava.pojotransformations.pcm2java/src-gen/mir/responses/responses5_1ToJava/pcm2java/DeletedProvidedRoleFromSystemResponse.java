@@ -4,7 +4,7 @@ import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
@@ -51,12 +51,12 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   public void executeResponse(final EChange change) {
     RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
-    mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.CallRoutinesUserExecution(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.EffectUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.EffectUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

@@ -36,7 +36,7 @@ final class ResponseClassNamesGenerator {
 	public static def String getBasicResponsesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«RESPONSES_PACKAGE»'''
 	
-	public static def String getBasicEffectsPackageQualifiedName() '''
+	public static def String getBasicRoutinesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«ROUTINES_PACKAGE»'''	
 	
 	private static def String getMetamodelIdentifier(URI uri) {
@@ -141,10 +141,10 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«routine.name.toFirstUpper»Effect'''
+			«routine.name.toFirstUpper»Routine'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
+			«basicRoutinesPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
 		
 	}
 	
@@ -158,6 +158,6 @@ final class ResponseClassNamesGenerator {
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
+			«basicRoutinesPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
 	}
 }

@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
@@ -52,12 +52,12 @@ class CreatedSEFFResponse extends AbstractResponseRealization {
   public void executeResponse(final EChange change) {
     InsertEReference<BasicComponent, ServiceEffectSpecification> typedChange = (InsertEReference<BasicComponent, ServiceEffectSpecification>)change;
     mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
-    mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse.CallRoutinesUserExecution(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse.EffectUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedSEFFResponse.EffectUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

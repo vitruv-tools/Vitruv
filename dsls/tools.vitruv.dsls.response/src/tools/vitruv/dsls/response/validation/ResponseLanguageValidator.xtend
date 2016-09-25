@@ -37,19 +37,19 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 			}
 			alreadyCheckedResponses.put(responseName, response);
 		}
-		val alreadyCheckedEffects = new HashMap<String, Routine>();
+		val alreadyCheckedRoutines = new HashMap<String, Routine>();
 //		for (implicitRoutine : responseSegment.responses.map[routine]) {
 //			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 //		}
 		for (routine : responseSegment.routines) {
 			val routineName = routine.routineClassNameGenerator.simpleName
-			if (alreadyCheckedEffects.containsKey(routineName)) {
+			if (alreadyCheckedRoutines.containsKey(routineName)) {
 				val errorMessage = "Duplicate effect name: " + routineName;
 				error(errorMessage, routine, ResponseLanguagePackage.Literals.ROUTINE__NAME);
-				val duplicateNameEffect = alreadyCheckedEffects.get(routineName);
-				error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.ROUTINE__NAME);
+				val duplicateNameRoutine = alreadyCheckedRoutines.get(routineName);
+				error(errorMessage, duplicateNameRoutine, ResponseLanguagePackage.Literals.ROUTINE__NAME);
 			}
-			alreadyCheckedEffects.put(routineName, routine);
+			alreadyCheckedRoutines.put(routineName, routine);
 		}
 	}
 

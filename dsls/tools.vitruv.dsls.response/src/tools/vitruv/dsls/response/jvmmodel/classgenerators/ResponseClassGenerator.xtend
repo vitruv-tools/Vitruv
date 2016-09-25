@@ -41,7 +41,7 @@ class ResponseClassGenerator extends ClassGenerator {
 		this.responseClassNameGenerator = response.responseClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = response.responsesSegment.routinesFacadeClassNameGenerator;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, response, 
-			responseClassNameGenerator.qualifiedName + "." + EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME);
+			responseClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
 	public override JvmGenericType generateClass() {

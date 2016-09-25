@@ -3,7 +3,6 @@ package tools.vitruv.dsls.response.jvmmodel.classgenerators
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.ClassGenerator
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import org.eclipse.xtext.common.types.JvmOperation
 import tools.vitruv.dsls.response.responseLanguage.CodeBlock
@@ -14,6 +13,7 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -52,7 +52,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		return objectMappedToClass.toClass(qualifiedClassName) [
 			visibility = JvmVisibility.PRIVATE;
 			static = true;
-			superTypes += typeRef(AbstractEffectRealization.UserExecution);
+			superTypes += typeRef(AbstractRepairRoutineRealization.UserExecution);
 			members += toConstructor() [
 				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
 				val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));

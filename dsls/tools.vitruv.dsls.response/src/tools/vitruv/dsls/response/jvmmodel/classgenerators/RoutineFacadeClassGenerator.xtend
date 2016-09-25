@@ -7,9 +7,9 @@ import static tools.vitruv.dsls.response.helper.ResponseLanguageConstants.*;
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectsFacade
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.dsls.response.responseLanguage.Routine
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutinesFacade
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	private val List<Routine> routines;
@@ -23,7 +23,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	
 	public override generateClass() {
 		generateUnassociatedClass(routinesFacadeNameGenerator.qualifiedName) [
-			superTypes += typeRef(AbstractEffectsFacade);
+			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += toConstructor() [
 				val responseExecutionStateParameter = generateResponseExecutionStateParameter();
 				val calledByParameter = generateParameter(EFFECT_FACADE_CALLED_BY_FIELD_NAME, typeRef(CallHierarchyHaving));

@@ -19,6 +19,4 @@ final class ResponseLanguageConstants {
 	public static val EFFECT_FACADE_CALLED_BY_FIELD_NAME = "calledBy";
 	
 	public static val EFFECT_USER_EXECUTION_SIMPLE_NAME = "EffectUserExecution";
-	public static val EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME = "CallRoutinesUserExecution";
-	public static val EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME = "executeUserOperations";
 }

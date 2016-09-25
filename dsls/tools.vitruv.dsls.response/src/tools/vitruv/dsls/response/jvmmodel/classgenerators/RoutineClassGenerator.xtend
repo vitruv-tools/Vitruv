@@ -14,7 +14,6 @@ import org.eclipse.xtext.common.types.JvmConstructor
 import static tools.vitruv.dsls.response.helper.ResponseLanguageConstants.*;
 import tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
-import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.CreateElement
@@ -32,6 +31,7 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherStatement
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -90,7 +90,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
-			superTypes += typeRef(AbstractEffectRealization);
+			superTypes += typeRef(AbstractRepairRoutineRealization);
 			members += toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 			members += toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass));
 			members += userExecutionClass;
