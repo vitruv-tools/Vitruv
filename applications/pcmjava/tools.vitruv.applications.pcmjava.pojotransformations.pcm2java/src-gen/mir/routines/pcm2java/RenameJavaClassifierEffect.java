@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameJavaClassifierEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -61,6 +63,7 @@ public class RenameJavaClassifierEffect extends AbstractEffectRealization {
   public RenameJavaClassifierEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameJavaClassifierEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.classSourceElement = classSourceElement;this.containingPackage = containingPackage;this.className = className;
   }
   

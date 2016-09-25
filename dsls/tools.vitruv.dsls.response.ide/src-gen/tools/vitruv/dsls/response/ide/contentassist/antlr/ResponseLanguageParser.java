@@ -109,6 +109,7 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMatchingAccess().getGroup(), "rule__Matching__Group__0");
 					put(grammarAccess.getMatchingAccess().getGroup_4(), "rule__Matching__Group_4__0");
 					put(grammarAccess.getEffectAccess().getGroup(), "rule__Effect__Group__0");
+					put(grammarAccess.getRoutineCallStatementAccess().getGroup(), "rule__RoutineCallStatement__Group__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup(), "rule__RetrieveModelElement__Group__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_4(), "rule__RetrieveModelElement__Group_4__0");
 					put(grammarAccess.getRetrieveModelElementAccess().getGroup_5(), "rule__RetrieveModelElement__Group_5__0");
@@ -119,7 +120,6 @@ public class ResponseLanguageParser extends AbstractContentAssistParser {
 					put(grammarAccess.getCreateCorrespondenceAccess().getGroup(), "rule__CreateCorrespondence__Group__0");
 					put(grammarAccess.getCreateCorrespondenceAccess().getGroup_5(), "rule__CreateCorrespondence__Group_5__0");
 					put(grammarAccess.getRemoveCorrespondenceAccess().getGroup(), "rule__RemoveCorrespondence__Group__0");
-					put(grammarAccess.getRoutineCallBlockAccess().getGroup(), "rule__RoutineCallBlock__Group__0");
 					put(grammarAccess.getTagCodeBlockAccess().getGroup(), "rule__TagCodeBlock__Group__0");
 					put(grammarAccess.getPreconditionCodeBlockAccess().getGroup(), "rule__PreconditionCodeBlock__Group__0");
 					put(grammarAccess.getCorrespondingObjectCodeBlockAccess().getGroup(), "rule__CorrespondingObjectCodeBlock__Group__0");

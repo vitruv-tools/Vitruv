@@ -114,12 +114,12 @@ public interface Response extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Call Routine</em>' containment reference.
-   * @see #setCallRoutine(RoutineCallBlock)
+   * @see #setCallRoutine(RoutineCallStatement)
    * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_CallRoutine()
    * @model containment="true"
    * @generated
    */
-  RoutineCallBlock getCallRoutine();
+  RoutineCallStatement getCallRoutine();
 
   /**
    * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}' containment reference.
@@ -129,7 +129,7 @@ public interface Response extends EObject
    * @see #getCallRoutine()
    * @generated
    */
-  void setCallRoutine(RoutineCallBlock value);
+  void setCallRoutine(RoutineCallStatement value);
 
   /**
    * Returns the value of the '<em><b>Responses Segment</b></em>' container reference.

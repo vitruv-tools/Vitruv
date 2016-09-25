@@ -30,6 +30,8 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class CreateCollectionDataTypeImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -50,6 +52,32 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
       Repository _repository__DataType = dataType.getRepository__DataType();
       return _repository__DataType;
     }
+    
+    public void callRoutine1(final CollectionDataType dataType, final org.emftext.language.java.classifiers.Class innerTypeClass, final org.emftext.language.java.containers.Package datatypesPackage, @Extension final RoutinesFacade _routinesFacade) {
+      DataType _innerType_CollectionDataType = dataType.getInnerType_CollectionDataType();
+      final TypeReference innerTypeRef = Pcm2JavaHelper.createTypeReference(_innerType_CollectionDataType, innerTypeClass);
+      TypeReference innerTypeClassOrWrapper = innerTypeRef;
+      if ((innerTypeRef instanceof PrimitiveType)) {
+        TypeReference _wrapperTypeReferenceForPrimitiveType = Pcm2JavaHelper.getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
+        innerTypeClassOrWrapper = _wrapperTypeReferenceForPrimitiveType;
+      }
+      Set<Class<?>> collectionDataTypes = new HashSet<Class<?>>();
+      Iterables.<Class<?>>addAll(collectionDataTypes, Collections.<Class<? extends AbstractCollection>>unmodifiableList(CollectionLiterals.<Class<? extends AbstractCollection>>newArrayList(ArrayList.class, LinkedList.class, Vector.class, Stack.class, HashSet.class)));
+      int _size = collectionDataTypes.size();
+      final List<String> collectionDataTypeNames = new ArrayList<String>(_size);
+      for (final Class<?> collectionDataType : collectionDataTypes) {
+        String _name = collectionDataType.getName();
+        collectionDataTypeNames.add(_name);
+      }
+      final String selectTypeMsg = "Please select type (or interface) that should be used for the type";
+      final int selectedType = this.userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg, ((String[])Conversions.unwrapArray(collectionDataTypeNames, String.class)));
+      final Set<Class<?>> _converted_collectionDataTypes = (Set<Class<?>>)collectionDataTypes;
+      final Class<?> selectedClass = ((Class<?>[])Conversions.unwrapArray(_converted_collectionDataTypes, Class.class))[selectedType];
+      String _entityName = dataType.getEntityName();
+      _routinesFacade.createJavaClass(dataType, datatypesPackage, _entityName);
+      String _name_1 = selectedClass.getName();
+      _routinesFacade.addSuperTypeToDataType(dataType, innerTypeClassOrWrapper, _name_1);
+    }
   }
   
   private CreateCollectionDataTypeImplementationEffect.EffectUserExecution userExecution;
@@ -57,6 +85,7 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
   public CreateCollectionDataTypeImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CollectionDataType dataType) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateCollectionDataTypeImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.dataType = dataType;
   }
   
@@ -82,8 +111,8 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
     }
     initializeRetrieveElementState(datatypesPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateCollectionDataTypeImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	dataType, innerTypeClass, datatypesPackage);
+    userExecution.callRoutine1(
+    	dataType, innerTypeClass, datatypesPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -94,32 +123,6 @@ public class CreateCollectionDataTypeImplementationEffect extends AbstractEffect
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final CollectionDataType dataType, final org.emftext.language.java.classifiers.Class innerTypeClass, final org.emftext.language.java.containers.Package datatypesPackage) {
-      DataType _innerType_CollectionDataType = dataType.getInnerType_CollectionDataType();
-      final TypeReference innerTypeRef = Pcm2JavaHelper.createTypeReference(_innerType_CollectionDataType, innerTypeClass);
-      TypeReference innerTypeClassOrWrapper = innerTypeRef;
-      if ((innerTypeRef instanceof PrimitiveType)) {
-        TypeReference _wrapperTypeReferenceForPrimitiveType = Pcm2JavaHelper.getWrapperTypeReferenceForPrimitiveType(innerTypeRef);
-        innerTypeClassOrWrapper = _wrapperTypeReferenceForPrimitiveType;
-      }
-      Set<Class<?>> collectionDataTypes = new HashSet<Class<?>>();
-      Iterables.<Class<?>>addAll(collectionDataTypes, Collections.<Class<? extends AbstractCollection>>unmodifiableList(CollectionLiterals.<Class<? extends AbstractCollection>>newArrayList(ArrayList.class, LinkedList.class, Vector.class, Stack.class, HashSet.class)));
-      int _size = collectionDataTypes.size();
-      final List<String> collectionDataTypeNames = new ArrayList<String>(_size);
-      for (final Class<?> collectionDataType : collectionDataTypes) {
-        String _name = collectionDataType.getName();
-        collectionDataTypeNames.add(_name);
-      }
-      final String selectTypeMsg = "Please select type (or interface) that should be used for the type";
-      final int selectedType = this.userInteracting.selectFromMessage(UserInteractionType.MODAL, selectTypeMsg, ((String[])Conversions.unwrapArray(collectionDataTypeNames, String.class)));
-      final Set<Class<?>> _converted_collectionDataTypes = (Set<Class<?>>)collectionDataTypes;
-      final Class<?> selectedClass = ((Class<?>[])Conversions.unwrapArray(_converted_collectionDataTypes, Class.class))[selectedType];
-      String _entityName = dataType.getEntityName();
-      this.effectFacade.createJavaClass(dataType, datatypesPackage, _entityName);
-      String _name_1 = selectedClass.getName();
-      this.effectFacade.addSuperTypeToDataType(dataType, innerTypeClassOrWrapper, _name_1);
     }
   }
 }

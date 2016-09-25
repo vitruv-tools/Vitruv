@@ -45,23 +45,21 @@ class DeletedSystemResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveRootEObject<org.palladiosimulator.pcm.system.System> typedChange = (RemoveRootEObject<org.palladiosimulator.pcm.system.System>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.DeletedSystemResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedSystemResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedSystemResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RemoveRootEObject<org.palladiosimulator.pcm.system.System> change) {
+    public void callRoutine1(final RemoveRootEObject<org.palladiosimulator.pcm.system.System> change, @Extension final RoutinesFacade _routinesFacade) {
       final org.palladiosimulator.pcm.system.System system = change.getOldValue();
       String _entityName = system.getEntityName();
-      this.effectFacade.deleteJavaPackage(system, _entityName, "root_system");
-      this.effectFacade.deleteJavaClassifier(system);
+      _routinesFacade.deleteJavaPackage(system, _entityName, "root_system");
+      _routinesFacade.deleteJavaClassifier(system);
     }
   }
 }

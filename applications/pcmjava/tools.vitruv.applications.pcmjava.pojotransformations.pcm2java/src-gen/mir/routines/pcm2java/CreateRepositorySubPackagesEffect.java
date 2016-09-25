@@ -11,6 +11,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -19,6 +21,11 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     public EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
       return repository;
     }
+    
+    public void callRoutine1(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
+      _routinesFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
+    }
   }
   
   private CreateRepositorySubPackagesEffect.EffectUserExecution userExecution;
@@ -26,6 +33,7 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
   public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.repository = repository;
   }
   
@@ -45,8 +53,8 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     }
     initializeRetrieveElementState(repositoryPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, repositoryPackage);
+    userExecution.callRoutine1(
+    	repository, repositoryPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -57,11 +65,6 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {
-      this.effectFacade.createJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
-      this.effectFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
     }
   }
 }

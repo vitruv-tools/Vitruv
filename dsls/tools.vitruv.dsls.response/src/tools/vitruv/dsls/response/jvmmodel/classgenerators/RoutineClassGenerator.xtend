@@ -4,7 +4,6 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
-import tools.vitruv.dsls.response.environment.SimpleTextXBlockExpression
 import java.io.IOException
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmFormalParameter
@@ -21,7 +20,6 @@ import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 import tools.vitruv.dsls.response.responseLanguage.CreateElement
 import tools.vitruv.dsls.response.responseLanguage.DeleteElement
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
 import java.util.List
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
@@ -41,7 +39,6 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected final Iterable<DeleteElement> deleteElements;
 	private final String generalUserExecutionClassQualifiedName;
 	private final ClassNameGenerator routineClassNameGenerator;
-	private final CallRoutineClassGenerator callRoutineClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
 	private final List<ModelElement> modelInputElements;
 	private final List<NamedJavaElement> javaInputElements;
@@ -53,7 +50,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.routine = routine;
-		this.hasRoutineCallBlock = routine.effect.callRoutine!= null;
+		this.hasRoutineCallBlock = routine.effect.callRoutine != null;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.retrievedElements = routine.matching?.retrievedElements?.filter[complete]?:newArrayList();
 		this.createElements = routine.effect.effectStatement.filter(CreateElement);
@@ -61,8 +58,6 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = routine.responsesSegment.routinesFacadeClassNameGenerator;
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
-		this.callRoutineClassGenerator = new CallRoutineClassGenerator(typesBuilderExtensionProvider, routine, 
-			routineClassNameGenerator.qualifiedName + "." + EFFECT_CALL_ROUTINES_USER_EXECUTION_SIMPLE_NAME, routinesFacadeClassNameGenerator);
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, routine, 
 			routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 		this.modelInputElements = routine.input.modelInputElements;
@@ -108,42 +103,24 @@ class RoutineClassGenerator extends ClassGenerator {
 		}
 		
 		val executeMethod = generateMethodExecuteEffect();
-		if (hasRoutineCallBlock) {
-			callRoutineClassGenerator.addMethod(generateMethodCallRoutines(routine.effect.callRoutine))
-		}
 		val userExecutionClass = userExecutionClassGenerator.generateClass;
+//		if (hasRoutineCallBlock) {
+//			userExecutionClass.generateMethod
+//			callRoutineClassGenerator.addMethod(generateMethodCallRoutines(routine.effect.callRoutine))
+//		}
+		
 		routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
+			val routinesFacadeField = toField(EFFECT_FACADE_FIELD_NAME,  typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+			members += #[routinesFacadeField];
 			superTypes += typeRef(AbstractEffectRealization);
 			members += userExecutionClass;
 			members += toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass));
 			members += generateConstructor();
 			members += generateInputFields();
 			members += executeMethod;
-			members += callRoutineClassGenerator.generateClass();
 		];
 	}
-	
-		
-	protected def generateMethodCallRoutines(RoutineCallBlock routineCallBlock) {
-		if (!hasRoutineCallBlock) {
-			return null;
-		}
-		
-		val methodName = EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME;
-		return routineCallBlock.toMethod(methodName, typeRef(Void.TYPE)) [
-			parameters += routine.generateInputParameters;
-			parameters += retrievedElements.map[routine.generateModelElementParameter(element)];
-			parameters += createElements.map[routine.generateModelElementParameter(it.element)];
-			val code = routineCallBlock.code;
-			if (code instanceof SimpleTextXBlockExpression) {
-				body = code.text;
-			} else {
-				body = code;
-			}
-		];	
-		
-	}	
 	
 	private def String getUserExecutionMethodCallString(JvmOperation method) '''
 		«USER_EXECUTION_FIELD_NAME».«method.simpleName»(«method.generateMethodParameterCallList»)'''
@@ -164,6 +141,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			parameters += inputParameters;
 			body = '''super(«executionStateParameter.name», «calledByParameter.name»);
 				this.«USER_EXECUTION_FIELD_NAME» = new «generalUserExecutionClassQualifiedName»(getExecutionState(), this);
+				this.«EFFECT_FACADE_FIELD_NAME» = new «routinesFacadeClassNameGenerator.qualifiedName»(getExecutionState(), this);
 				«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
 		]
 	}
@@ -232,22 +210,11 @@ class RoutineClassGenerator extends ClassGenerator {
 					currentlyAccessibleElements += new AccessibleElement(element.name, typeRef(element.element.instanceClass))]);
 		
 		val matcherMethodPrecondition = generateMethodMatcherPrecondition(routine.matching, currentlyAccessibleElements);
-//		val effectStatements = routine.effect.effectStatement;
-//		val elementReferences = <EObject, String>newHashMap();
-//		CollectionBridge.mapFixed((effectStatements.filter(CreateCorrespondence).map[firstElement] + effectStatements.filter(CreateCorrespondence).map[secondElement]
-//			+ effectStatements.filter(RemoveCorrespondence).map[firstElement] + effectStatements.filter(RemoveCorrespondence).map[secondElement]).filter(ExistingElementReference),
-//			[elementReferences.put(it, generateMethodGetElement(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)''')]);
-//		CollectionBridge.mapFixed(effectStatements.filter(DeleteElement).map[element],
-//			[elementReferences.put(it, generateMethodGetElement(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)''')]);
-//			
-//		val tagMethodCalls = <CreateCorrespondence, String>newHashMap();
-//		CollectionBridge.mapFixed(effectStatements.filter(CreateCorrespondence),
-//			[tagMethodCalls.put(it, if (it.tag != null) {generateMethodGetCreateTag(it).simpleName + '''(«getParameterCallListWithModelInputAndAccesibleElements()»)'''} else {'''""'''})]);
 
 		val effectStatementsMap = <EffectStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(routine.effect.effectStatement,
 			[effectStatementsMap.put(it, createStatements(it))]);
-
+		val callMethod = if (hasRoutineCallBlock) generateMethodCallRoutine(routine.effect.callRoutine, currentlyAccessibleElements, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 		return generateUnassociatedMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
@@ -269,25 +236,10 @@ class RoutineClassGenerator extends ClassGenerator {
 					«effectStatementsMap.get(effectStatement)»
 					
 				«ENDFOR»
-«««				«FOR createElement : effectStatements.filter(CreateElement)»
-«««					«getElementCreationCode(createElement)»
-«««				«ENDFOR»
-«««				«FOR deleteElement : effectStatements.filter(DeleteElement)»
-«««					deleteObject(«elementReferences.get(deleteElement.element)»);
-«««				«ENDFOR»
-«««
-«««				«FOR correspondenceCreate : effectStatements.filter(CreateCorrespondence)»
-«««					addCorrespondenceBetween(«elementReferences.get(correspondenceCreate.firstElement)», «
-«««						elementReferences.get(correspondenceCreate.secondElement)», «tagMethodCalls.get(correspondenceCreate)»);
-«««				«ENDFOR»
-«««				«FOR correspondenceDelete : effectStatements.filter(RemoveCorrespondence)»
-«««					removeCorrespondenceBetween(«elementReferences.get(correspondenceDelete.firstElement)», «
-«««						elementReferences.get(correspondenceDelete.secondElement)»);
-«««				«ENDFOR»				
 				preprocessElementStates();
 				«IF hasRoutineCallBlock»
-					new «callRoutineClassGenerator.qualifiedClassName»(getExecutionState(), this).«EFFECT_USER_EXECUTION_EXECUTE_METHOD_NAME»(
-						«routine.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList»);
+					«USER_EXECUTION_FIELD_NAME».«callMethod.simpleName»(
+						«routine.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList», «EFFECT_FACADE_FIELD_NAME»);
 				«ENDIF»
 				postprocessElementStates();
 				'''

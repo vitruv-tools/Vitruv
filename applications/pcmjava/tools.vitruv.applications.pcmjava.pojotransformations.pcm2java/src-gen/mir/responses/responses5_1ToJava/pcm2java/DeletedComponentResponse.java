@@ -51,25 +51,23 @@ class DeletedComponentResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<Repository, RepositoryComponent> typedChange = (RemoveEReference<Repository, RepositoryComponent>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.DeletedComponentResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedComponentResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedComponentResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RemoveEReference<Repository, RepositoryComponent> change) {
+    public void callRoutine1(final RemoveEReference<Repository, RepositoryComponent> change, @Extension final RoutinesFacade _routinesFacade) {
       RepositoryComponent _oldValue = change.getOldValue();
       RepositoryComponent _oldValue_1 = change.getOldValue();
       String _entityName = _oldValue_1.getEntityName();
-      this.effectFacade.deleteJavaPackage(_oldValue, _entityName, "");
+      _routinesFacade.deleteJavaPackage(_oldValue, _entityName, "");
       RepositoryComponent _oldValue_2 = change.getOldValue();
-      this.effectFacade.deleteJavaClassifier(_oldValue_2);
+      _routinesFacade.deleteJavaClassifier(_oldValue_2);
     }
   }
 }

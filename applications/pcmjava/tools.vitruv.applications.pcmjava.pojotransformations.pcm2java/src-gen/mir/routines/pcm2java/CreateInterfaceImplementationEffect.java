@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateInterfaceImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -28,6 +30,11 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
       Repository _repository__Interface = interf.getRepository__Interface();
       return _repository__Interface;
     }
+    
+    public void callRoutine1(final Interface interf, final org.emftext.language.java.containers.Package contractsPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = interf.getEntityName();
+      _routinesFacade.createJavaInterface(interf, contractsPackage, _entityName);
+    }
   }
   
   private CreateInterfaceImplementationEffect.EffectUserExecution userExecution;
@@ -35,6 +42,7 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
   public CreateInterfaceImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Interface interf) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateInterfaceImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.interf = interf;
   }
   
@@ -54,8 +62,8 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
     }
     initializeRetrieveElementState(contractsPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateInterfaceImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	interf, contractsPackage);
+    userExecution.callRoutine1(
+    	interf, contractsPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -66,11 +74,6 @@ public class CreateInterfaceImplementationEffect extends AbstractEffectRealizati
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Interface interf, final org.emftext.language.java.containers.Package contractsPackage) {
-      String _entityName = interf.getEntityName();
-      this.effectFacade.createJavaInterface(interf, contractsPackage, _entityName);
     }
   }
 }

@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -33,6 +35,10 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     public EObject getElement2(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
       return sourceElementMappedToClass;
     }
+    
+    public void callRoutine1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
+    }
   }
   
   private CreateJavaInterfaceEffect.EffectUserExecution userExecution;
@@ -40,6 +46,7 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
   public CreateJavaInterfaceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateJavaInterfaceEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.sourceElementMappedToClass = sourceElementMappedToClass;this.containingPackage = containingPackage;this.className = className;
   }
   
@@ -62,8 +69,8 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToClass, containingPackage, className, javaInterface), userExecution.getElement2(sourceElementMappedToClass, containingPackage, className, javaInterface), "");
     
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateJavaInterfaceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToClass, containingPackage, className, javaInterface);
+    userExecution.callRoutine1(
+    	sourceElementMappedToClass, containingPackage, className, javaInterface, effectFacade);
     postprocessElementStates();
   }
   
@@ -74,10 +81,6 @@ public class CreateJavaInterfaceEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final Interface javaInterface) {
-      this.effectFacade.createCompilationUnit(sourceElementMappedToClass, javaInterface, containingPackage);
     }
   }
 }

@@ -45,23 +45,21 @@ class CreatedSystemResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertRootEObject<org.palladiosimulator.pcm.system.System> typedChange = (InsertRootEObject<org.palladiosimulator.pcm.system.System>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertRootEObject<org.palladiosimulator.pcm.system.System> change) {
+    public void callRoutine1(final InsertRootEObject<org.palladiosimulator.pcm.system.System> change, @Extension final RoutinesFacade _routinesFacade) {
       final org.palladiosimulator.pcm.system.System system = change.getNewValue();
       String _entityName = system.getEntityName();
-      this.effectFacade.createJavaPackage(system, null, _entityName, "root_system");
-      this.effectFacade.createImplementationForSystem(system);
+      _routinesFacade.createJavaPackage(system, null, _entityName, "root_system");
+      _routinesFacade.createImplementationForSystem(system);
     }
   }
 }

@@ -340,9 +340,9 @@ ruleResponse returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getResponseAccess().getCallRoutineRoutineCallBlockParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getResponseAccess().getCallRoutineRoutineCallStatementParserRuleCall_5_0());
 				}
-				lv_callRoutine_5_0=ruleRoutineCallBlock
+				lv_callRoutine_5_0=ruleRoutineCallStatement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getResponseRule());
@@ -351,7 +351,7 @@ ruleResponse returns [EObject current=null]
 						$current,
 						"callRoutine",
 						lv_callRoutine_5_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallStatement");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1188,9 +1188,9 @@ ruleEffect returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getEffectAccess().getCallRoutineRoutineCallBlockParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getEffectAccess().getCallRoutineRoutineCallStatementParserRuleCall_4_0());
 				}
-				lv_callRoutine_4_0=ruleRoutineCallBlock
+				lv_callRoutine_4_0=ruleRoutineCallStatement
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getEffectRule());
@@ -1199,7 +1199,7 @@ ruleEffect returns [EObject current=null]
 						$current,
 						"callRoutine",
 						lv_callRoutine_4_0,
-						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+						"tools.vitruv.dsls.response.ResponseLanguage.RoutineCallStatement");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1207,6 +1207,47 @@ ruleEffect returns [EObject current=null]
 		otherlv_5='}'
 		{
 			newLeafNode(otherlv_5, grammarAccess.getEffectAccess().getRightCurlyBracketKeyword_5());
+		}
+	)
+;
+
+// Entry rule entryRuleRoutineCallStatement
+entryRuleRoutineCallStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getRoutineCallStatementRule()); }
+	iv_ruleRoutineCallStatement=ruleRoutineCallStatement
+	{ $current=$iv_ruleRoutineCallStatement.current; }
+	EOF;
+
+// Rule RoutineCallStatement
+ruleRoutineCallStatement returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getRoutineCallStatementAccess().getRoutineCallStatementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='call'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getRoutineCallStatementAccess().getCallKeyword_1());
+		}
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getRoutineCallStatementRule());
+			}
+			newCompositeNode(grammarAccess.getRoutineCallStatementAccess().getCodeBlockParserRuleCall_2());
+		}
+		this_CodeBlock_2=ruleCodeBlock[$current]
+		{
+			$current = $this_CodeBlock_2.current;
+			afterParserOrEnumRuleCall();
 		}
 	)
 ;
@@ -1830,47 +1871,6 @@ ruleRemoveCorrespondence returns [EObject current=null]
 				}
 			)
 		)
-	)
-;
-
-// Entry rule entryRuleRoutineCallBlock
-entryRuleRoutineCallBlock returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getRoutineCallBlockRule()); }
-	iv_ruleRoutineCallBlock=ruleRoutineCallBlock
-	{ $current=$iv_ruleRoutineCallBlock.current; }
-	EOF;
-
-// Rule RoutineCallBlock
-ruleRoutineCallBlock returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getRoutineCallBlockAccess().getRoutineCallBlockAction_0(),
-					$current);
-			}
-		)
-		otherlv_1='call'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getRoutineCallBlockAccess().getCallKeyword_1());
-		}
-		{
-			if ($current==null) {
-				$current = createModelElement(grammarAccess.getRoutineCallBlockRule());
-			}
-			newCompositeNode(grammarAccess.getRoutineCallBlockAccess().getCodeBlockParserRuleCall_2());
-		}
-		this_CodeBlock_2=ruleCodeBlock[$current]
-		{
-			$current = $this_CodeBlock_2.current;
-			afterParserOrEnumRuleCall();
-		}
 	)
 ;
 

@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -33,6 +35,11 @@ public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEf
     public EObject getCorrepondenceSourceTargetContainer(final Root root, final NonRoot newReferencedElement) {
       return root;
     }
+    
+    public void callRoutine1(final Root root, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedNonContainmentEReference);
+    }
   }
   
   private ReplaceSingleValuedNonContainmentReferenceEffect.EffectUserExecution userExecution;
@@ -40,6 +47,7 @@ public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEf
   public ReplaceSingleValuedNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot newReferencedElement) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;this.newReferencedElement = newReferencedElement;
   }
   
@@ -74,8 +82,8 @@ public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEf
     userExecution.update0Element(root, newReferencedElement, targetContainer, targetElement);
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, newReferencedElement, targetContainer, targetElement);
+    userExecution.callRoutine1(
+    	root, newReferencedElement, targetContainer, targetElement, effectFacade);
     postprocessElementStates();
   }
   
@@ -86,11 +94,6 @@ public class ReplaceSingleValuedNonContainmentReferenceEffect extends AbstractEf
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final NonRoot newReferencedElement, final Root targetContainer, final NonRoot targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedNonContainmentEReference);
     }
   }
 }

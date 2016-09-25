@@ -10,6 +10,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateImplementationForSystemEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -18,6 +20,12 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     public EObject getCorrepondenceSourceSystemPackage(final org.palladiosimulator.pcm.system.System system) {
       return system;
     }
+    
+    public void callRoutine1(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = system.getEntityName();
+      String _plus = (_entityName + "Impl");
+      _routinesFacade.createJavaClass(system, systemPackage, _plus);
+    }
   }
   
   private CreateImplementationForSystemEffect.EffectUserExecution userExecution;
@@ -25,6 +33,7 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
   public CreateImplementationForSystemEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.palladiosimulator.pcm.system.System system) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateImplementationForSystemEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.system = system;
   }
   
@@ -44,8 +53,8 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     }
     initializeRetrieveElementState(systemPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateImplementationForSystemEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	system, systemPackage);
+    userExecution.callRoutine1(
+    	system, systemPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -56,12 +65,6 @@ public class CreateImplementationForSystemEffect extends AbstractEffectRealizati
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
-      String _entityName = system.getEntityName();
-      String _plus = (_entityName + "Impl");
-      this.effectFacade.createJavaClass(system, systemPackage, _plus);
     }
   }
 }

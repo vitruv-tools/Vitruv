@@ -26,6 +26,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddRequiredRoleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -82,6 +84,16 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     public void updateRequiredInterfaceImportElement(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport) {
       Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
     }
+    
+    public void callRoutine1(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, @Extension final RoutinesFacade _routinesFacade) {
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      final String requiredRoleName = requiredRole.getEntityName();
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        _routinesFacade.addParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
+      }
+    }
   }
   
   private AddRequiredRoleEffect.EffectUserExecution userExecution;
@@ -89,6 +101,7 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
   public AddRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.requiredRole = requiredRole;
   }
   
@@ -132,8 +145,8 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     userExecution.update0Element(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.AddRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    userExecution.callRoutine1(
+    	requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField, effectFacade);
     postprocessElementStates();
   }
   
@@ -144,16 +157,6 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
-      final String requiredRoleName = requiredRole.getEntityName();
-      EList<Member> _members = javaClass.getMembers();
-      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
-      for (final Constructor ctor : _filter) {
-        this.effectFacade.addParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
-      }
     }
   }
 }

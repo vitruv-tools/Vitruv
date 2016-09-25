@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -24,6 +26,10 @@ public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
     public EObject getCorrepondenceSourceOldClassMethod(final ResourceDemandingSEFF seff) {
       return seff;
     }
+    
+    public void callRoutine1(final ResourceDemandingSEFF seff, final ClassMethod oldClassMethod, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createSEFF(seff);
+    }
   }
   
   private ChangeMethodForSeffEffect.EffectUserExecution userExecution;
@@ -31,6 +37,7 @@ public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
   public ChangeMethodForSeffEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingSEFF seff) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.ChangeMethodForSeffEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.seff = seff;
   }
   
@@ -49,8 +56,8 @@ public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
     deleteObject(userExecution.getElement1(seff, oldClassMethod));
     
     preprocessElementStates();
-    new mir.routines.pcm2java.ChangeMethodForSeffEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	seff, oldClassMethod);
+    userExecution.callRoutine1(
+    	seff, oldClassMethod, effectFacade);
     postprocessElementStates();
   }
   
@@ -61,10 +68,6 @@ public class ChangeMethodForSeffEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final ResourceDemandingSEFF seff, final ClassMethod oldClassMethod) {
-      this.effectFacade.createSEFF(seff);
     }
   }
 }

@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveEAttributeEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -37,6 +39,11 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
       };
       _multiValuedEAttribute.removeIf(_function);
     }
+    
+    public void callRoutine1(final Root root, final Integer removedAttributeValue, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveEAttributeValue);
+    }
   }
   
   private RemoveEAttributeEffect.EffectUserExecution userExecution;
@@ -44,6 +51,7 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
   public RemoveEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer removedAttributeValue) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.RemoveEAttributeEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;this.removedAttributeValue = removedAttributeValue;
   }
   
@@ -69,8 +77,8 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
     userExecution.update0Element(root, removedAttributeValue, targetElement);
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.RemoveEAttributeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, removedAttributeValue, targetElement);
+    userExecution.callRoutine1(
+    	root, removedAttributeValue, targetElement, effectFacade);
     postprocessElementStates();
   }
   
@@ -81,11 +89,6 @@ public class RemoveEAttributeEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final Integer removedAttributeValue, final Root targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveEAttributeValue);
     }
   }
 }

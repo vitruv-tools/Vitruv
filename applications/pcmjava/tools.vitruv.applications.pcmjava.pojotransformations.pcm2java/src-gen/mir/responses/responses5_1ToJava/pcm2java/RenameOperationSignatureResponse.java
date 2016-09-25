@@ -50,21 +50,19 @@ class RenameOperationSignatureResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEAttribute<OperationSignature, String> typedChange = (ReplaceSingleValuedEAttribute<OperationSignature, String>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.RenameOperationSignatureResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.RenameOperationSignatureResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.RenameOperationSignatureResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<OperationSignature, String> change) {
+    public void callRoutine1(final ReplaceSingleValuedEAttribute<OperationSignature, String> change, @Extension final RoutinesFacade _routinesFacade) {
       OperationSignature _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.renameMethodForOperationSignature(_affectedEObject);
+      _routinesFacade.renameMethodForOperationSignature(_affectedEObject);
     }
   }
 }

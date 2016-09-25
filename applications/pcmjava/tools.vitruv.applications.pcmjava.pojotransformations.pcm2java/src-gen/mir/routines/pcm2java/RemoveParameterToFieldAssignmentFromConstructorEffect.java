@@ -22,6 +22,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveParameterToFieldAssignmentFromConstructorEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -64,6 +66,7 @@ public class RemoveParameterToFieldAssignmentFromConstructorEffect extends Abstr
   public RemoveParameterToFieldAssignmentFromConstructorEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final String fieldName) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RemoveParameterToFieldAssignmentFromConstructorEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.ctor = ctor;this.fieldName = fieldName;
   }
   

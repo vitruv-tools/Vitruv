@@ -59,22 +59,20 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
-    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.CallRoutinesUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change) {
+    public void callRoutine1(final ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> change, @Extension final RoutinesFacade _routinesFacade) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRootObjectContainerHelper _newValue = change.getNewValue();
-      this.effectFacade.createNonRootObjectContainer(_affectedEObject, _newValue);
+      _routinesFacade.createNonRootObjectContainer(_affectedEObject, _newValue);
     }
   }
 }

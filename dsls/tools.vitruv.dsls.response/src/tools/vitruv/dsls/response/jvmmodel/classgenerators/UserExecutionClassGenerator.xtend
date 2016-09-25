@@ -13,13 +13,15 @@ import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference
 import tools.vitruv.dsls.response.responseLanguage.Matching
 import org.eclipse.xtext.common.types.JvmTypeReference
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
 	private val String qualifiedClassName;
 	private var int counterGetTagMethods;
 	private var int counterGetElementMethods;
-	private var int counterGetRetrieveTagCounter;
+	private var int counterGetRetrieveTagMethods;
+	private var int counterCallRoutineMethods;
 	
 	protected static class AccessibleElement {
 		public val String name;
@@ -36,7 +38,12 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		this.qualifiedClassName = qualifiedClassName;
 		this.counterGetTagMethods = 1;
 		this.counterGetElementMethods = 1;
-		this.counterGetRetrieveTagCounter = 1;
+		this.counterGetRetrieveTagMethods = 1;
+		this.counterCallRoutineMethods = 1;
+	}
+	
+	public def String getQualifiedClassName() {
+		return qualifiedClassName;
 	}
 	
 	override generateClass() {
@@ -74,7 +81,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	}
 	
 	protected def JvmOperation generateMethodGetRetrieveTag(Taggable taggable, Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getRetrieveTag" + counterGetRetrieveTagCounter++;
+		val methodName = "getRetrieveTag" + counterGetRetrieveTagMethods++;
 		
 		return taggable.tag.getOrGenerateMethod(methodName, typeRef(String)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
@@ -140,4 +147,22 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 	
+	protected def JvmOperation generateMethodCallRoutine(RoutineCallStatement routineCall, Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
+		if (routineCall.code == null) {
+			return null;
+		}
+		val methodName = "callRoutine" + counterCallRoutineMethods++;
+		val codeBlock = routineCall.code;
+		return codeBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
+			parameters += generateAccessibleElementsParameters(accessibleElements);
+			val facadeParam = toParameter("_routinesFacade", facadeClassTypeReference);
+			facadeParam.annotations += annotationRef(Extension);
+			parameters += facadeParam
+			if (codeBlock instanceof SimpleTextXBlockExpression) {
+				body = codeBlock.text;
+			} else {
+				body = codeBlock;
+			}
+		]
+	}
 }

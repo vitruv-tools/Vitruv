@@ -24,7 +24,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallStatement"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
         eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/responses"/>
@@ -78,9 +78,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="Effect">
     <eStructuralFeatures xsi:type="ecore:EReference" name="effectStatement" upperBound="-1"
         eType="#//EffectStatement" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallBlock"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//RoutineCallStatement"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="Taggable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tag" eType="#//TagCodeBlock"
         containment="true"/>
@@ -98,7 +99,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExistingElementReference" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="EffectStatement" eSuperTypes="#//Taggable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="TagCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="CorrespondingObjectCodeBlock" eSuperTypes="#//CodeBlock"/>

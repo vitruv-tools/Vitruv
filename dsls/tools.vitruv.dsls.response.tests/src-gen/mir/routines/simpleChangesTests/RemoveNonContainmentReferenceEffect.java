@@ -16,6 +16,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -38,6 +40,11 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
       };
       _multiValuedNonContainmentEReference.removeIf(_function);
     }
+    
+    public void callRoutine1(final Root root, final NonRoot removedNonRoot, final Root targetRoot, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveNonContainmentEReference);
+    }
   }
   
   private RemoveNonContainmentReferenceEffect.EffectUserExecution userExecution;
@@ -45,6 +52,7 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
   public RemoveNonContainmentReferenceEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;this.removedNonRoot = removedNonRoot;
   }
   
@@ -70,8 +78,8 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
     userExecution.update0Element(root, removedNonRoot, targetRoot);
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, removedNonRoot, targetRoot);
+    userExecution.callRoutine1(
+    	root, removedNonRoot, targetRoot, effectFacade);
     postprocessElementStates();
   }
   
@@ -82,11 +90,6 @@ public class RemoveNonContainmentReferenceEffect extends AbstractEffectRealizati
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final NonRoot removedNonRoot, final Root targetRoot) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveNonContainmentEReference);
     }
   }
 }

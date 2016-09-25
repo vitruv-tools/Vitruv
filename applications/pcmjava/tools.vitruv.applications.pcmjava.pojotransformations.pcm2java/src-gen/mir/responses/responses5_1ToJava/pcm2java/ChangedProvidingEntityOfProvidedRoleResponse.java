@@ -51,22 +51,20 @@ class ChangedProvidingEntityOfProvidedRoleResponse extends AbstractResponseReali
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<OperationProvidedRole, InterfaceProvidingEntity> typedChange = (ReplaceSingleValuedEReference<OperationProvidedRole, InterfaceProvidingEntity>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.ChangedProvidingEntityOfProvidedRoleResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.ChangedProvidingEntityOfProvidedRoleResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.ChangedProvidingEntityOfProvidedRoleResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEReference<OperationProvidedRole, InterfaceProvidingEntity> change) {
+    public void callRoutine1(final ReplaceSingleValuedEReference<OperationProvidedRole, InterfaceProvidingEntity> change, @Extension final RoutinesFacade _routinesFacade) {
       final OperationProvidedRole operationProvidedRole = change.getAffectedEObject();
-      this.effectFacade.removeProvidedRole(operationProvidedRole);
-      this.effectFacade.addProvidedRole(operationProvidedRole);
+      _routinesFacade.removeProvidedRole(operationProvidedRole);
+      _routinesFacade.addProvidedRole(operationProvidedRole);
     }
   }
 }

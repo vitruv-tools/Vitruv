@@ -51,12 +51,12 @@ public interface Effect extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Call Routine</em>' containment reference.
-   * @see #setCallRoutine(RoutineCallBlock)
+   * @see #setCallRoutine(RoutineCallStatement)
    * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_CallRoutine()
    * @model containment="true"
    * @generated
    */
-  RoutineCallBlock getCallRoutine();
+  RoutineCallStatement getCallRoutine();
 
   /**
    * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCallRoutine <em>Call Routine</em>}' containment reference.
@@ -66,6 +66,6 @@ public interface Effect extends EObject
    * @see #getCallRoutine()
    * @generated
    */
-  void setCallRoutine(RoutineCallBlock value);
+  void setCallRoutine(RoutineCallStatement value);
 
 } // Effect

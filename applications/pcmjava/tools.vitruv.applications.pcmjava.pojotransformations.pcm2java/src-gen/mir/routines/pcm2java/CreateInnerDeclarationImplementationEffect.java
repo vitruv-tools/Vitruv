@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -24,6 +26,13 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       return _datatype_InnerDeclaration;
     }
+    
+    public void callRoutine1(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass, @Extension final RoutinesFacade _routinesFacade) {
+      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
+      final TypeReference innerDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
+      CompositeDataType _compositeDataType_InnerDeclaration = innerDeclaration.getCompositeDataType_InnerDeclaration();
+      _routinesFacade.addInnerDeclarationToCompositeDataType(_compositeDataType_InnerDeclaration, innerDeclaration, innerDataTypeReference);
+    }
   }
   
   private CreateInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
@@ -31,6 +40,7 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
   public CreateInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateInnerDeclarationImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.innerDeclaration = innerDeclaration;
   }
   
@@ -47,8 +57,8 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
     	null);
     initializeRetrieveElementState(nonPrimitiveInnerDataTypeClass);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	innerDeclaration, nonPrimitiveInnerDataTypeClass);
+    userExecution.callRoutine1(
+    	innerDeclaration, nonPrimitiveInnerDataTypeClass, effectFacade);
     postprocessElementStates();
   }
   
@@ -59,13 +69,6 @@ public class CreateInnerDeclarationImplementationEffect extends AbstractEffectRe
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class nonPrimitiveInnerDataTypeClass) {
-      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
-      final TypeReference innerDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, nonPrimitiveInnerDataTypeClass);
-      CompositeDataType _compositeDataType_InnerDeclaration = innerDeclaration.getCompositeDataType_InnerDeclaration();
-      this.effectFacade.addInnerDeclarationToCompositeDataType(_compositeDataType_InnerDeclaration, innerDeclaration, innerDataTypeReference);
     }
   }
 }

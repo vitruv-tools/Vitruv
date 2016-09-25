@@ -50,21 +50,19 @@ class DeletedProvidedRoleFromSystemResponse extends AbstractResponseRealization 
   
   public void executeResponse(final EChange change) {
     RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> typedChange = (RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromSystemResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> change) {
+    public void callRoutine1(final RemoveEReference<org.palladiosimulator.pcm.system.System, ProvidedRole> change, @Extension final RoutinesFacade _routinesFacade) {
       ProvidedRole _oldValue = change.getOldValue();
-      this.effectFacade.removeProvidedRole(_oldValue);
+      _routinesFacade.removeProvidedRole(_oldValue);
     }
   }
 }

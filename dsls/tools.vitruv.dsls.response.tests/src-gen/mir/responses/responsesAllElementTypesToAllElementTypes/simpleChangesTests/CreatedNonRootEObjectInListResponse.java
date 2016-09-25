@@ -51,22 +51,20 @@ class CreatedNonRootEObjectInListResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
-    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.CallRoutinesUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertEReference<Root, NonRoot> change) {
+    public void callRoutine1(final InsertEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
       Root _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      this.effectFacade.insertNonRoot(_affectedEObject, _newValue);
+      _routinesFacade.insertNonRoot(_affectedEObject, _newValue);
     }
   }
 }

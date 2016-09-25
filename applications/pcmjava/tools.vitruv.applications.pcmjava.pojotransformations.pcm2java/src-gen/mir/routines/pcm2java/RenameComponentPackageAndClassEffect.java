@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameComponentPackageAndClassEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -29,6 +31,12 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
       Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
       return _repository__RepositoryComponent;
     }
+    
+    public void callRoutine1(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = component.getEntityName();
+      _routinesFacade.renameJavaPackage(component, repositoryPackage, _entityName, null);
+      _routinesFacade.renameComponentClass(component);
+    }
   }
   
   private RenameComponentPackageAndClassEffect.EffectUserExecution userExecution;
@@ -36,6 +44,7 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
   public RenameComponentPackageAndClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.component = component;
   }
   
@@ -55,8 +64,8 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     }
     initializeRetrieveElementState(repositoryPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	component, repositoryPackage);
+    userExecution.callRoutine1(
+    	component, repositoryPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -67,12 +76,6 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
-      String _entityName = component.getEntityName();
-      this.effectFacade.renameJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.renameComponentClass(component);
     }
   }
 }

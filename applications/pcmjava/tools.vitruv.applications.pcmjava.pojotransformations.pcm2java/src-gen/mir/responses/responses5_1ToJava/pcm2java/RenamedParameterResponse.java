@@ -50,21 +50,19 @@ class RenamedParameterResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEAttribute<Parameter, String> typedChange = (ReplaceSingleValuedEAttribute<Parameter, String>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.RenamedParameterResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.RenamedParameterResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.RenamedParameterResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Parameter, String> change) {
+    public void callRoutine1(final ReplaceSingleValuedEAttribute<Parameter, String> change, @Extension final RoutinesFacade _routinesFacade) {
       Parameter _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.renameParameter(_affectedEObject);
+      _routinesFacade.renameParameter(_affectedEObject);
     }
   }
 }

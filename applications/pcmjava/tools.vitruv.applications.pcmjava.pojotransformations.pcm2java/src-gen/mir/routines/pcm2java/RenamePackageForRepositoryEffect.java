@@ -21,6 +21,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenamePackageForRepositoryEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -42,6 +44,33 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     public EObject getCorrepondenceSourceRootPackage(final Repository repository) {
       return repository;
     }
+    
+    public void callRoutine1(final Repository repository, final org.emftext.language.java.containers.Package rootPackage, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.renameJavaPackage(repository, rootPackage, "contracts", "contracts");
+      _routinesFacade.renameJavaPackage(repository, rootPackage, "datatypes", "datatypes");
+      EList<RepositoryComponent> _components__Repository = repository.getComponents__Repository();
+      Iterable<BasicComponent> _filter = Iterables.<BasicComponent>filter(_components__Repository, BasicComponent.class);
+      for (final BasicComponent component : _filter) {
+        _routinesFacade.renameComponentPackageAndClass(component);
+      }
+      EList<Interface> _interfaces__Repository = repository.getInterfaces__Repository();
+      Iterable<OperationInterface> _filter_1 = Iterables.<OperationInterface>filter(_interfaces__Repository, OperationInterface.class);
+      for (final OperationInterface interface_ : _filter_1) {
+        _routinesFacade.renameInterface(interface_);
+      }
+      EList<DataType> _dataTypes__Repository = repository.getDataTypes__Repository();
+      Iterable<CompositeDataType> _filter_2 = Iterables.<CompositeDataType>filter(_dataTypes__Repository, CompositeDataType.class);
+      for (final CompositeDataType dataType : _filter_2) {
+        _routinesFacade.renameCompositeDataType(dataType);
+      }
+      EList<DataType> _dataTypes__Repository_1 = repository.getDataTypes__Repository();
+      Iterable<CollectionDataType> _filter_3 = Iterables.<CollectionDataType>filter(_dataTypes__Repository_1, CollectionDataType.class);
+      for (final CollectionDataType dataType_1 : _filter_3) {
+        _routinesFacade.renameCollectionDataType(dataType_1);
+      }
+      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
+      this.persistProjectRelative(repository, rootPackage, _buildJavaFilePath);
+    }
   }
   
   private RenamePackageForRepositoryEffect.EffectUserExecution userExecution;
@@ -49,6 +78,7 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
   public RenamePackageForRepositoryEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RenamePackageForRepositoryEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.repository = repository;
   }
   
@@ -71,8 +101,8 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     userExecution.update0Element(repository, rootPackage);
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RenamePackageForRepositoryEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, rootPackage);
+    userExecution.callRoutine1(
+    	repository, rootPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -83,33 +113,6 @@ public class RenamePackageForRepositoryEffect extends AbstractEffectRealization 
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package rootPackage) {
-      this.effectFacade.renameJavaPackage(repository, rootPackage, "contracts", "contracts");
-      this.effectFacade.renameJavaPackage(repository, rootPackage, "datatypes", "datatypes");
-      EList<RepositoryComponent> _components__Repository = repository.getComponents__Repository();
-      Iterable<BasicComponent> _filter = Iterables.<BasicComponent>filter(_components__Repository, BasicComponent.class);
-      for (final BasicComponent component : _filter) {
-        this.effectFacade.renameComponentPackageAndClass(component);
-      }
-      EList<Interface> _interfaces__Repository = repository.getInterfaces__Repository();
-      Iterable<OperationInterface> _filter_1 = Iterables.<OperationInterface>filter(_interfaces__Repository, OperationInterface.class);
-      for (final OperationInterface interface_ : _filter_1) {
-        this.effectFacade.renameInterface(interface_);
-      }
-      EList<DataType> _dataTypes__Repository = repository.getDataTypes__Repository();
-      Iterable<CompositeDataType> _filter_2 = Iterables.<CompositeDataType>filter(_dataTypes__Repository, CompositeDataType.class);
-      for (final CompositeDataType dataType : _filter_2) {
-        this.effectFacade.renameCompositeDataType(dataType);
-      }
-      EList<DataType> _dataTypes__Repository_1 = repository.getDataTypes__Repository();
-      Iterable<CollectionDataType> _filter_3 = Iterables.<CollectionDataType>filter(_dataTypes__Repository_1, CollectionDataType.class);
-      for (final CollectionDataType dataType_1 : _filter_3) {
-        this.effectFacade.renameCollectionDataType(dataType_1);
-      }
-      String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(rootPackage);
-      this.persistProjectRelative(repository, rootPackage, _buildJavaFilePath);
     }
   }
 }

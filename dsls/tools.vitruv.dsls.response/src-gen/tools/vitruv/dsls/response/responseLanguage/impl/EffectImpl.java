@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
 import tools.vitruv.dsls.response.responseLanguage.EffectStatement;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 
 /**
  * <!-- begin-user-doc -->
@@ -58,7 +58,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * @generated
    * @ordered
    */
-  protected RoutineCallBlock callRoutine;
+  protected RoutineCallStatement callRoutine;
 
   /**
    * <!-- begin-user-doc -->
@@ -100,7 +100,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public RoutineCallBlock getCallRoutine()
+  public RoutineCallStatement getCallRoutine()
   {
     return callRoutine;
   }
@@ -110,9 +110,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetCallRoutine(RoutineCallBlock newCallRoutine, NotificationChain msgs)
+  public NotificationChain basicSetCallRoutine(RoutineCallStatement newCallRoutine, NotificationChain msgs)
   {
-    RoutineCallBlock oldCallRoutine = callRoutine;
+    RoutineCallStatement oldCallRoutine = callRoutine;
     callRoutine = newCallRoutine;
     if (eNotificationRequired())
     {
@@ -127,7 +127,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCallRoutine(RoutineCallBlock newCallRoutine)
+  public void setCallRoutine(RoutineCallStatement newCallRoutine)
   {
     if (newCallRoutine != callRoutine)
     {
@@ -195,7 +195,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
         getEffectStatement().addAll((Collection<? extends EffectStatement>)newValue);
         return;
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
-        setCallRoutine((RoutineCallBlock)newValue);
+        setCallRoutine((RoutineCallStatement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -215,7 +215,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
         getEffectStatement().clear();
         return;
       case ResponseLanguagePackage.EFFECT__CALL_ROUTINE:
-        setCallRoutine((RoutineCallBlock)null);
+        setCallRoutine((RoutineCallStatement)null);
         return;
     }
     super.eUnset(featureID);

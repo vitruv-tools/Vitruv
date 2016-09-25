@@ -51,29 +51,27 @@ class ReplacedNonRootEObjectSingleResponseResponse extends AbstractResponseReali
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
-    new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseResponse.CallRoutinesUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEReference<Root, NonRoot> change) {
+    public void callRoutine1(final ReplaceSingleValuedEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
       boolean _isFromNonDefaultValue = change.isFromNonDefaultValue();
       if (_isFromNonDefaultValue) {
         NonRoot _oldValue = change.getOldValue();
-        this.effectFacade.deleteNonRootEObjectSingle(_oldValue);
+        _routinesFacade.deleteNonRootEObjectSingle(_oldValue);
       }
       boolean _isToNonDefaultValue = change.isToNonDefaultValue();
       if (_isToNonDefaultValue) {
         Root _affectedEObject = change.getAffectedEObject();
         NonRoot _newValue = change.getNewValue();
-        this.effectFacade.createNonRootEObjectSingle(_affectedEObject, _newValue);
+        _routinesFacade.createNonRootEObjectSingle(_affectedEObject, _newValue);
       }
     }
   }

@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveNonRootEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -24,6 +26,11 @@ public class RemoveNonRootEffect extends AbstractEffectRealization {
     public EObject getElement1(final NonRoot removedNonRoot, final NonRoot targetElement) {
       return targetElement;
     }
+    
+    public void callRoutine1(final NonRoot removedNonRoot, final NonRoot targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectInList);
+    }
   }
   
   private RemoveNonRootEffect.EffectUserExecution userExecution;
@@ -31,6 +38,7 @@ public class RemoveNonRootEffect extends AbstractEffectRealization {
   public RemoveNonRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.RemoveNonRootEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.removedNonRoot = removedNonRoot;
   }
   
@@ -52,8 +60,8 @@ public class RemoveNonRootEffect extends AbstractEffectRealization {
     deleteObject(userExecution.getElement1(removedNonRoot, targetElement));
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.RemoveNonRootEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	removedNonRoot, targetElement);
+    userExecution.callRoutine1(
+    	removedNonRoot, targetElement, effectFacade);
     postprocessElementStates();
   }
   
@@ -64,11 +72,6 @@ public class RemoveNonRootEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final NonRoot removedNonRoot, final NonRoot targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectInList);
     }
   }
 }

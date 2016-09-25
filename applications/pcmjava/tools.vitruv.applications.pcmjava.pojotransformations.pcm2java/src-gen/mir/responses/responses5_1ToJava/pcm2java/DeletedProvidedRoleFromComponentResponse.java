@@ -51,21 +51,19 @@ class DeletedProvidedRoleFromComponentResponse extends AbstractResponseRealizati
   
   public void executeResponse(final EChange change) {
     RemoveEReference<RepositoryComponent, ProvidedRole> typedChange = (RemoveEReference<RepositoryComponent, ProvidedRole>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromComponentResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromComponentResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedProvidedRoleFromComponentResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final RemoveEReference<RepositoryComponent, ProvidedRole> change) {
+    public void callRoutine1(final RemoveEReference<RepositoryComponent, ProvidedRole> change, @Extension final RoutinesFacade _routinesFacade) {
       ProvidedRole _oldValue = change.getOldValue();
-      this.effectFacade.removeProvidedRole(_oldValue);
+      _routinesFacade.removeProvidedRole(_oldValue);
     }
   }
 }

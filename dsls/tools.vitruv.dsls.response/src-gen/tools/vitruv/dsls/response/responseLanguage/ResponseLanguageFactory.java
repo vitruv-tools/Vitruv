@@ -177,6 +177,15 @@ public interface ResponseLanguageFactory extends EFactory
   Effect createEffect();
 
   /**
+   * Returns a new object of class '<em>Routine Call Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Routine Call Statement</em>'.
+   * @generated
+   */
+  RoutineCallStatement createRoutineCallStatement();
+
+  /**
    * Returns a new object of class '<em>Taggable</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -211,15 +220,6 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   EffectStatement createEffectStatement();
-
-  /**
-   * Returns a new object of class '<em>Routine Call Block</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Routine Call Block</em>'.
-   * @generated
-   */
-  RoutineCallBlock createRoutineCallBlock();
 
   /**
    * Returns a new object of class '<em>Tag Code Block</em>'.

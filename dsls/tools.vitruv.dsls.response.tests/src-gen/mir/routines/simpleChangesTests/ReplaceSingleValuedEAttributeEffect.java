@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -28,6 +30,11 @@ public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealizati
     public void update0Element(final Root root, final Integer value, final Root targetElement) {
       targetElement.setSingleValuedEAttribute(value);
     }
+    
+    public void callRoutine1(final Root root, final Integer value, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedEAttribute);
+    }
   }
   
   private ReplaceSingleValuedEAttributeEffect.EffectUserExecution userExecution;
@@ -35,6 +42,7 @@ public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealizati
   public ReplaceSingleValuedEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer value) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;this.value = value;
   }
   
@@ -60,8 +68,8 @@ public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealizati
     userExecution.update0Element(root, value, targetElement);
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, value, targetElement);
+    userExecution.callRoutine1(
+    	root, value, targetElement, effectFacade);
     postprocessElementStates();
   }
   
@@ -72,11 +80,6 @@ public class ReplaceSingleValuedEAttributeEffect extends AbstractEffectRealizati
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final Integer value, final Root targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.UpdateSingleValuedEAttribute);
     }
   }
 }

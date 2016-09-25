@@ -60,21 +60,19 @@ class CreatedProvidedRoleResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<InterfaceProvidingEntity, ProvidedRole> typedChange = (InsertEReference<InterfaceProvidingEntity, ProvidedRole>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.CreatedProvidedRoleResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.CreatedProvidedRoleResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedProvidedRoleResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertEReference<InterfaceProvidingEntity, ProvidedRole> change) {
+    public void callRoutine1(final InsertEReference<InterfaceProvidingEntity, ProvidedRole> change, @Extension final RoutinesFacade _routinesFacade) {
       ProvidedRole _newValue = change.getNewValue();
-      this.effectFacade.addProvidedRole(((OperationProvidedRole) _newValue));
+      _routinesFacade.addProvidedRole(((OperationProvidedRole) _newValue));
     }
   }
 }

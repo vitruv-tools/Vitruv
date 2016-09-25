@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateComponentImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -25,6 +27,12 @@ public class CreateComponentImplementationEffect extends AbstractEffectRealizati
       Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
       return _repository__RepositoryComponent;
     }
+    
+    public void callRoutine1(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = component.getEntityName();
+      _routinesFacade.createJavaPackage(component, repositoryPackage, _entityName, null);
+      _routinesFacade.createImplementationForComponent(component);
+    }
   }
   
   private CreateComponentImplementationEffect.EffectUserExecution userExecution;
@@ -32,6 +40,7 @@ public class CreateComponentImplementationEffect extends AbstractEffectRealizati
   public CreateComponentImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateComponentImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.component = component;
   }
   
@@ -51,8 +60,8 @@ public class CreateComponentImplementationEffect extends AbstractEffectRealizati
     }
     initializeRetrieveElementState(repositoryPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateComponentImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	component, repositoryPackage);
+    userExecution.callRoutine1(
+    	component, repositoryPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -63,12 +72,6 @@ public class CreateComponentImplementationEffect extends AbstractEffectRealizati
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
-      String _entityName = component.getEntityName();
-      this.effectFacade.createJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.createImplementationForComponent(component);
     }
   }
 }

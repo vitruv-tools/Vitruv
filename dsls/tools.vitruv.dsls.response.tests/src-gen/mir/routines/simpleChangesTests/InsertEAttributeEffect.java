@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class InsertEAttributeEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -30,6 +32,11 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
       EList<Integer> _multiValuedEAttribute = targetElement.getMultiValuedEAttribute();
       _multiValuedEAttribute.add(attributeValue);
     }
+    
+    public void callRoutine1(final Root root, final Integer attributeValue, final Root targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
+    }
   }
   
   private InsertEAttributeEffect.EffectUserExecution userExecution;
@@ -37,6 +44,7 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
   public InsertEAttributeEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer attributeValue) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.InsertEAttributeEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;this.attributeValue = attributeValue;
   }
   
@@ -62,8 +70,8 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
     userExecution.update0Element(root, attributeValue, targetElement);
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.InsertEAttributeEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, attributeValue, targetElement);
+    userExecution.callRoutine1(
+    	root, attributeValue, targetElement, effectFacade);
     postprocessElementStates();
   }
   
@@ -74,11 +82,6 @@ public class InsertEAttributeEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final Integer attributeValue, final Root targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.InsertEAttributeValue);
     }
   }
 }

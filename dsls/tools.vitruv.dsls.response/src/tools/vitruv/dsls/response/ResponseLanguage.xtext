@@ -23,7 +23,7 @@ Response:
 	(documentation=ML_COMMENT)?
 	'response:' name=ValidID '{'
 		trigger=Trigger
-		callRoutine=RoutineCallBlock
+		callRoutine=RoutineCallStatement
 	'}';
 
 // ****** TRIGGER ******
@@ -92,8 +92,12 @@ Effect:
 	{Effect}
 	'effect' '{'
 		(effectStatement += EffectStatement)*
-		callRoutine=RoutineCallBlock?
+		callRoutine=RoutineCallStatement?
 	'}';
+	
+RoutineCallStatement returns RoutineCallStatement:
+	{RoutineCallStatement}
+	'call' CodeBlock;
 	
 // ****** CORRESPONDENCE SPECIFICATION ******	
 
@@ -135,10 +139,6 @@ RemoveCorrespondence returns EffectStatement:
 
 
 // ****** CODE BLOCKS ******
-
-RoutineCallBlock returns RoutineCallBlock:
-	{RoutineCallBlock}
-	'call' CodeBlock;
 
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}

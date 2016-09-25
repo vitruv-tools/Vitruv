@@ -21,6 +21,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddProvidedRoleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -75,6 +77,7 @@ public class AddProvidedRoleEffect extends AbstractEffectRealization {
   public AddProvidedRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationProvidedRole providedRole) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.AddProvidedRoleEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.providedRole = providedRole;
   }
   

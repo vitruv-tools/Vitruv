@@ -12,6 +12,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRootEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -29,6 +31,13 @@ public class CreateRootEffect extends AbstractEffectRealization {
     public EObject getElement2(final Root root, final Root newRoot) {
       return root;
     }
+    
+    public void callRoutine1(final Root root, final Root newRoot, @Extension final RoutinesFacade _routinesFacade) {
+      String _id = root.getId();
+      String _replace = _id.replace("Source", "Target");
+      String _plus = ("model/" + _replace);
+      this.persistProjectRelative(root, newRoot, _plus);
+    }
   }
   
   private CreateRootEffect.EffectUserExecution userExecution;
@@ -36,6 +45,7 @@ public class CreateRootEffect extends AbstractEffectRealization {
   public CreateRootEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.simpleChangesTests.CreateRootEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     				this.root = root;
   }
   
@@ -52,8 +62,8 @@ public class CreateRootEffect extends AbstractEffectRealization {
     addCorrespondenceBetween(userExecution.getElement1(root, newRoot), userExecution.getElement2(root, newRoot), "");
     
     preprocessElementStates();
-    new mir.routines.simpleChangesTests.CreateRootEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	root, newRoot);
+    userExecution.callRoutine1(
+    	root, newRoot, effectFacade);
     postprocessElementStates();
   }
   
@@ -64,13 +74,6 @@ public class CreateRootEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final Root root, final Root newRoot) {
-      String _id = root.getId();
-      String _replace = _id.replace("Source", "Target");
-      String _plus = ("model/" + _replace);
-      this.persistProjectRelative(root, newRoot, _plus);
     }
   }
 }

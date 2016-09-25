@@ -82,11 +82,11 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
       case ResponseLanguagePackage.MATCHING: return createMatching();
       case ResponseLanguagePackage.EFFECT: return createEffect();
+      case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
       case ResponseLanguagePackage.EFFECT_STATEMENT: return createEffectStatement();
-      case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAG_CODE_BLOCK: return createTagCodeBlock();
       case ResponseLanguagePackage.PRECONDITION_CODE_BLOCK: return createPreconditionCodeBlock();
       case ResponseLanguagePackage.CORRESPONDING_OBJECT_CODE_BLOCK: return createCorrespondingObjectCodeBlock();
@@ -300,6 +300,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public RoutineCallStatement createRoutineCallStatement()
+  {
+    RoutineCallStatementImpl routineCallStatement = new RoutineCallStatementImpl();
+    return routineCallStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Taggable createTaggable()
   {
     TaggableImpl taggable = new TaggableImpl();
@@ -337,17 +348,6 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     EffectStatementImpl effectStatement = new EffectStatementImpl();
     return effectStatement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RoutineCallBlock createRoutineCallBlock()
-  {
-    RoutineCallBlockImpl routineCallBlock = new RoutineCallBlockImpl();
-    return routineCallBlock;
   }
 
   /**

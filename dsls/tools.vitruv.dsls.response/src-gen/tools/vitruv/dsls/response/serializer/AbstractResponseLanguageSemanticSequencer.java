@@ -89,7 +89,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
@@ -285,8 +285,8 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case ResponseLanguagePackage.ROUTINE:
 				sequence_Routine(context, (Routine) semanticObject); 
 				return; 
-			case ResponseLanguagePackage.ROUTINE_CALL_BLOCK:
-				sequence_CodeBlock_RoutineCallBlock(context, (RoutineCallBlock) semanticObject); 
+			case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT:
+				sequence_CodeBlock_RoutineCallStatement(context, (RoutineCallStatement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.ROUTINE_INPUT:
 				sequence_RoutineInput(context, (RoutineInput) semanticObject); 
@@ -903,12 +903,12 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     RoutineCallBlock returns RoutineCallBlock
+	 *     RoutineCallStatement returns RoutineCallStatement
 	 *
 	 * Constraint:
 	 *     code=XExpression
 	 */
-	protected void sequence_CodeBlock_RoutineCallBlock(ISerializationContext context, RoutineCallBlock semanticObject) {
+	protected void sequence_CodeBlock_RoutineCallStatement(ISerializationContext context, RoutineCallStatement semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
@@ -987,7 +987,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Effect returns Effect
 	 *
 	 * Constraint:
-	 *     (effectStatement+=EffectStatement* callRoutine=RoutineCallBlock?)
+	 *     (effectStatement+=EffectStatement* callRoutine=RoutineCallStatement?)
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1075,7 +1075,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Response returns Response
 	 *
 	 * Constraint:
-	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=RoutineCallBlock)
+	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=RoutineCallStatement)
 	 */
 	protected void sequence_Response(ISerializationContext context, Response semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

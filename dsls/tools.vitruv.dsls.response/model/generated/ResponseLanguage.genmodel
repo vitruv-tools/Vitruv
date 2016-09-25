@@ -61,6 +61,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/effectStatement"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Effect/callRoutine"/>
     </genClasses>
+    <genClasses ecoreClass="ResponseLanguage.ecore#//RoutineCallStatement"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//Taggable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//Taggable/tag"/>
     </genClasses>
@@ -74,7 +75,6 @@
     </genClasses>
     <genClasses ecoreClass="ResponseLanguage.ecore#//ExistingElementReference"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//EffectStatement"/>
-    <genClasses ecoreClass="ResponseLanguage.ecore#//RoutineCallBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//TagCodeBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//PreconditionCodeBlock"/>
     <genClasses ecoreClass="ResponseLanguage.ecore#//CorrespondingObjectCodeBlock"/>

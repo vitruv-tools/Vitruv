@@ -18,6 +18,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -42,6 +44,18 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     public EObject getElement2(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
       return requiredInterfaceField;
     }
+    
+    public void callRoutine1(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass, @Extension final RoutinesFacade _routinesFacade) {
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        {
+          String _entityName = requiredRole.getEntityName();
+          _routinesFacade.removeParameterToFieldAssignmentFromConstructor(ctor, _entityName);
+          _routinesFacade.removeCorrespondingParameterFromConstructor(ctor, requiredRole);
+        }
+      }
+    }
   }
   
   private RemoveRequiredRoleEffect.EffectUserExecution userExecution;
@@ -49,6 +63,7 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
   public RemoveRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.RemoveRequiredRoleEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.requiredRole = requiredRole;this.requiringEntity = requiringEntity;
   }
   
@@ -93,8 +108,8 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     deleteObject(userExecution.getElement2(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     
     preprocessElementStates();
-    new mir.routines.pcm2java.RemoveRequiredRoleEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass);
+    userExecution.callRoutine1(
+    	requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass, effectFacade);
     postprocessElementStates();
   }
   
@@ -105,18 +120,6 @@ public class RemoveRequiredRoleEffect extends AbstractEffectRealization {
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, final org.emftext.language.java.classifiers.Class javaClass) {
-      EList<Member> _members = javaClass.getMembers();
-      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
-      for (final Constructor ctor : _filter) {
-        {
-          String _entityName = requiredRole.getEntityName();
-          this.effectFacade.removeParameterToFieldAssignmentFromConstructor(ctor, _entityName);
-          this.effectFacade.removeCorrespondingParameterFromConstructor(ctor, requiredRole);
-        }
-      }
     }
   }
 }

@@ -46,23 +46,21 @@ class CreatedRepositoryResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertRootEObject<Repository> typedChange = (InsertRootEObject<Repository>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final InsertRootEObject<Repository> change) {
+    public void callRoutine1(final InsertRootEObject<Repository> change, @Extension final RoutinesFacade _routinesFacade) {
       final Repository repository = change.getNewValue();
       String _entityName = repository.getEntityName();
-      this.effectFacade.createJavaPackage(repository, null, _entityName, "repository_root");
-      this.effectFacade.createRepositorySubPackages(repository);
+      _routinesFacade.createJavaPackage(repository, null, _entityName, "repository_root");
+      _routinesFacade.createRepositorySubPackages(repository);
     }
   }
 }

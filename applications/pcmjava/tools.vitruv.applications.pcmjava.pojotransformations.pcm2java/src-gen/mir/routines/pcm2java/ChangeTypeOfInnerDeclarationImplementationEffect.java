@@ -14,6 +14,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -23,6 +25,12 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
       DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
       return _datatype_InnerDeclaration;
     }
+    
+    public void callRoutine1(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class newJavaDataType, @Extension final RoutinesFacade _routinesFacade) {
+      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
+      final TypeReference newDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, newJavaDataType);
+      _routinesFacade.changeInnerDeclarationType(innerDeclaration, newDataTypeReference);
+    }
   }
   
   private ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution userExecution;
@@ -30,6 +38,7 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
   public ChangeTypeOfInnerDeclarationImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.innerDeclaration = innerDeclaration;
   }
   
@@ -46,8 +55,8 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
     	null);
     initializeRetrieveElementState(newJavaDataType);
     preprocessElementStates();
-    new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	innerDeclaration, newJavaDataType);
+    userExecution.callRoutine1(
+    	innerDeclaration, newJavaDataType, effectFacade);
     postprocessElementStates();
   }
   
@@ -58,12 +67,6 @@ public class ChangeTypeOfInnerDeclarationImplementationEffect extends AbstractEf
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final InnerDeclaration innerDeclaration, final org.emftext.language.java.classifiers.Class newJavaDataType) {
-      DataType _datatype_InnerDeclaration = innerDeclaration.getDatatype_InnerDeclaration();
-      final TypeReference newDataTypeReference = Pcm2JavaHelper.createTypeReference(_datatype_InnerDeclaration, newJavaDataType);
-      this.effectFacade.changeInnerDeclarationType(innerDeclaration, newDataTypeReference);
     }
   }
 }

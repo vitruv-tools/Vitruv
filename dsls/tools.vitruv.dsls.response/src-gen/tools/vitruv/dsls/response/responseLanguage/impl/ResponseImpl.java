@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import tools.vitruv.dsls.response.responseLanguage.Response;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.response.responseLanguage.Trigger;
 
 /**
@@ -97,7 +97,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * @generated
    * @ordered
    */
-  protected RoutineCallBlock callRoutine;
+  protected RoutineCallStatement callRoutine;
 
   /**
    * <!-- begin-user-doc -->
@@ -219,7 +219,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public RoutineCallBlock getCallRoutine()
+  public RoutineCallStatement getCallRoutine()
   {
     return callRoutine;
   }
@@ -229,9 +229,9 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetCallRoutine(RoutineCallBlock newCallRoutine, NotificationChain msgs)
+  public NotificationChain basicSetCallRoutine(RoutineCallStatement newCallRoutine, NotificationChain msgs)
   {
-    RoutineCallBlock oldCallRoutine = callRoutine;
+    RoutineCallStatement oldCallRoutine = callRoutine;
     callRoutine = newCallRoutine;
     if (eNotificationRequired())
     {
@@ -246,7 +246,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCallRoutine(RoutineCallBlock newCallRoutine)
+  public void setCallRoutine(RoutineCallStatement newCallRoutine)
   {
     if (newCallRoutine != callRoutine)
     {
@@ -405,7 +405,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
         setTrigger((Trigger)newValue);
         return;
       case ResponseLanguagePackage.RESPONSE__CALL_ROUTINE:
-        setCallRoutine((RoutineCallBlock)newValue);
+        setCallRoutine((RoutineCallStatement)newValue);
         return;
       case ResponseLanguagePackage.RESPONSE__RESPONSES_SEGMENT:
         setResponsesSegment((ResponsesSegment)newValue);
@@ -434,7 +434,7 @@ public class ResponseImpl extends MinimalEObjectImpl.Container implements Respon
         setTrigger((Trigger)null);
         return;
       case ResponseLanguagePackage.RESPONSE__CALL_ROUTINE:
-        setCallRoutine((RoutineCallBlock)null);
+        setCallRoutine((RoutineCallStatement)null);
         return;
       case ResponseLanguagePackage.RESPONSE__RESPONSES_SEGMENT:
         setResponsesSegment((ResponsesSegment)null);

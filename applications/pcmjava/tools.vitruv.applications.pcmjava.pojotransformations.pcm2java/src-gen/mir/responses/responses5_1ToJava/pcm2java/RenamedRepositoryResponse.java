@@ -50,21 +50,19 @@ class RenamedRepositoryResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEAttribute<Repository, String> typedChange = (ReplaceSingleValuedEAttribute<Repository, String>)change;
-    new mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse.CallRoutinesUserExecution(this.executionState, this).executeUserOperations(typedChange);
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse.CallRoutinesUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse.CallRoutinesUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   private static class CallRoutinesUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<Repository, String> change) {
+    public void callRoutine1(final ReplaceSingleValuedEAttribute<Repository, String> change, @Extension final RoutinesFacade _routinesFacade) {
       Repository _affectedEObject = change.getAffectedEObject();
-      this.effectFacade.renamePackageForRepository(_affectedEObject);
+      _routinesFacade.renamePackageForRepository(_affectedEObject);
     }
   }
 }

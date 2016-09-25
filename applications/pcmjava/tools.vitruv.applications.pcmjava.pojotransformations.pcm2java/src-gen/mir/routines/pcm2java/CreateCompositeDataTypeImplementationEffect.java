@@ -13,6 +13,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -28,6 +30,11 @@ public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectR
       Repository _repository__DataType = dataType.getRepository__DataType();
       return _repository__DataType;
     }
+    
+    public void callRoutine1(final CompositeDataType dataType, final org.emftext.language.java.containers.Package datatypesPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = dataType.getEntityName();
+      _routinesFacade.createJavaClass(dataType, datatypesPackage, _entityName);
+    }
   }
   
   private CreateCompositeDataTypeImplementationEffect.EffectUserExecution userExecution;
@@ -35,6 +42,7 @@ public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectR
   public CreateCompositeDataTypeImplementationEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CompositeDataType dataType) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.CreateCompositeDataTypeImplementationEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.dataType = dataType;
   }
   
@@ -54,8 +62,8 @@ public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectR
     }
     initializeRetrieveElementState(datatypesPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.CreateCompositeDataTypeImplementationEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	dataType, datatypesPackage);
+    userExecution.callRoutine1(
+    	dataType, datatypesPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -66,11 +74,6 @@ public class CreateCompositeDataTypeImplementationEffect extends AbstractEffectR
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final CompositeDataType dataType, final org.emftext.language.java.containers.Package datatypesPackage) {
-      String _entityName = dataType.getEntityName();
-      this.effectFacade.createJavaClass(dataType, datatypesPackage, _entityName);
     }
   }
 }

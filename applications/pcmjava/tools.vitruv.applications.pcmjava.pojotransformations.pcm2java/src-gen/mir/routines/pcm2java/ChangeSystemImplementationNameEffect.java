@@ -10,6 +10,8 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeSystemImplementationNameEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
@@ -18,6 +20,14 @@ public class ChangeSystemImplementationNameEffect extends AbstractEffectRealizat
     public EObject getCorrepondenceSourceSystemPackage(final org.palladiosimulator.pcm.system.System system) {
       return system;
     }
+    
+    public void callRoutine1(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = system.getEntityName();
+      _routinesFacade.renameJavaPackage(system, null, _entityName, null);
+      String _entityName_1 = system.getEntityName();
+      String _plus = (_entityName_1 + "Impl");
+      _routinesFacade.renameJavaClassifier(system, systemPackage, _plus);
+    }
   }
   
   private ChangeSystemImplementationNameEffect.EffectUserExecution userExecution;
@@ -25,6 +35,7 @@ public class ChangeSystemImplementationNameEffect extends AbstractEffectRealizat
   public ChangeSystemImplementationNameEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.palladiosimulator.pcm.system.System system) {
     super(responseExecutionState, calledBy);
     				this.userExecution = new mir.routines.pcm2java.ChangeSystemImplementationNameEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.system = system;
   }
   
@@ -44,8 +55,8 @@ public class ChangeSystemImplementationNameEffect extends AbstractEffectRealizat
     }
     initializeRetrieveElementState(systemPackage);
     preprocessElementStates();
-    new mir.routines.pcm2java.ChangeSystemImplementationNameEffect.CallRoutinesUserExecution(getExecutionState(), this).executeUserOperations(
-    	system, systemPackage);
+    userExecution.callRoutine1(
+    	system, systemPackage, effectFacade);
     postprocessElementStates();
   }
   
@@ -56,14 +67,6 @@ public class ChangeSystemImplementationNameEffect extends AbstractEffectRealizat
     public CallRoutinesUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
       this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    public void executeUserOperations(final org.palladiosimulator.pcm.system.System system, final org.emftext.language.java.containers.Package systemPackage) {
-      String _entityName = system.getEntityName();
-      this.effectFacade.renameJavaPackage(system, null, _entityName, null);
-      String _entityName_1 = system.getEntityName();
-      String _plus = (_entityName_1 + "Impl");
-      this.effectFacade.renameJavaClassifier(system, systemPackage, _plus);
     }
   }
 }
