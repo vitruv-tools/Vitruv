@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalResponseLanguageParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'response collection:'", "'from metamodel'", "'to metamodel'", "'response:'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created'", "'root deleted'", "'list entry inserted'", "'list entry removed'", "'list permuted'", "'value replaced'", "'any change'", "'routine:'", "'('", "')'", "'plain'", "','", "'match'", "'corresponding to'", "'tagged with'", "'check'", "'effect'", "'create element'", "'initialized as'", "'delete element'", "'update element'", "'add correspondence between'", "'and'", "'tag with'", "'remove correspondence'", "'call'", "'as'", "'['", "']'", "'instanceof'", "'#'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'retrieve required element'", "'retrieve optional element'", "'require absence of element'", "'using simple names'", "'::'", "'?.'", "'|'", "'var'", "'true'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_STRING", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'false'", "'response collection:'", "'from metamodel'", "'to metamodel'", "'response:'", "'{'", "'}'", "'invariant'", "'after'", "'with'", "'root created'", "'root deleted'", "'list entry inserted'", "'list entry removed'", "'list permuted'", "'value replaced'", "'any change'", "'routine:'", "'('", "')'", "'plain'", "','", "'match'", "'corresponding to'", "'tagged with'", "'check'", "'effect'", "'create element'", "'initialized as'", "'delete element'", "'update element'", "'add correspondence between'", "'and'", "'tag with'", "'remove correspondence between'", "'call'", "'as'", "'['", "']'", "'instanceof'", "'#'", "';'", "'if'", "'else'", "'switch'", "':'", "'default'", "'case'", "'for'", "'while'", "'do'", "'new'", "'null'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'retrieve required element'", "'retrieve optional element'", "'require absence of element'", "'using simple names'", "'::'", "'?.'", "'|'", "'var'", "'true'"
     };
     public static final int RULE_HEX=5;
     public static final int T__50=50;
@@ -25744,24 +25744,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__RemoveCorrespondence__Group__1__Impl"
-    // InternalResponseLanguage.g:7438:1: rule__RemoveCorrespondence__Group__1__Impl : ( 'remove correspondence' ) ;
+    // InternalResponseLanguage.g:7438:1: rule__RemoveCorrespondence__Group__1__Impl : ( 'remove correspondence between' ) ;
     public final void rule__RemoveCorrespondence__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:7442:1: ( ( 'remove correspondence' ) )
-            // InternalResponseLanguage.g:7443:1: ( 'remove correspondence' )
+            // InternalResponseLanguage.g:7442:1: ( ( 'remove correspondence between' ) )
+            // InternalResponseLanguage.g:7443:1: ( 'remove correspondence between' )
             {
-            // InternalResponseLanguage.g:7443:1: ( 'remove correspondence' )
-            // InternalResponseLanguage.g:7444:2: 'remove correspondence'
+            // InternalResponseLanguage.g:7443:1: ( 'remove correspondence between' )
+            // InternalResponseLanguage.g:7444:2: 'remove correspondence between'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1()); 
+               before(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceBetweenKeyword_1()); 
             }
             match(input,84,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1()); 
+               after(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceBetweenKeyword_1()); 
             }
 
             }
@@ -25794,7 +25794,7 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
             // InternalResponseLanguage.g:7457:1: ( rule__RemoveCorrespondence__Group__2__Impl rule__RemoveCorrespondence__Group__3 )
             // InternalResponseLanguage.g:7458:2: rule__RemoveCorrespondence__Group__2__Impl rule__RemoveCorrespondence__Group__3
             {
-            pushFollow(FOLLOW_26);
+            pushFollow(FOLLOW_42);
             rule__RemoveCorrespondence__Group__2__Impl();
 
             state._fsp--;
@@ -25912,24 +25912,24 @@ public class InternalResponseLanguageParser extends AbstractInternalContentAssis
 
 
     // $ANTLR start "rule__RemoveCorrespondence__Group__3__Impl"
-    // InternalResponseLanguage.g:7492:1: rule__RemoveCorrespondence__Group__3__Impl : ( ',' ) ;
+    // InternalResponseLanguage.g:7492:1: rule__RemoveCorrespondence__Group__3__Impl : ( 'and' ) ;
     public final void rule__RemoveCorrespondence__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalResponseLanguage.g:7496:1: ( ( ',' ) )
-            // InternalResponseLanguage.g:7497:1: ( ',' )
+            // InternalResponseLanguage.g:7496:1: ( ( 'and' ) )
+            // InternalResponseLanguage.g:7497:1: ( 'and' )
             {
-            // InternalResponseLanguage.g:7497:1: ( ',' )
-            // InternalResponseLanguage.g:7498:2: ','
+            // InternalResponseLanguage.g:7497:1: ( 'and' )
+            // InternalResponseLanguage.g:7498:2: 'and'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3()); 
+               before(grammarAccess.getRemoveCorrespondenceAccess().getAndKeyword_3()); 
             }
-            match(input,71,FOLLOW_2); if (state.failed) return ;
+            match(input,82,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3()); 
+               after(grammarAccess.getRemoveCorrespondenceAccess().getAndKeyword_3()); 
             }
 
             }

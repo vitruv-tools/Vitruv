@@ -900,10 +900,10 @@ public class InternalResponseLanguageLexer extends Lexer {
         try {
             int _type = T__49;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalResponseLanguage.g:47:7: ( 'remove correspondence' )
-            // InternalResponseLanguage.g:47:9: 'remove correspondence'
+            // InternalResponseLanguage.g:47:7: ( 'remove correspondence between' )
+            // InternalResponseLanguage.g:47:9: 'remove correspondence between'
             {
-            match("remove correspondence"); 
+            match("remove correspondence between"); 
 
 
             }

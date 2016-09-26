@@ -7441,9 +7441,9 @@ rule__RemoveCorrespondence__Group__1__Impl
 	}
 :
 (
-	{ before(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1()); }
-	'remove correspondence'
-	{ after(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1()); }
+	{ before(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceBetweenKeyword_1()); }
+	'remove correspondence between'
+	{ after(grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceBetweenKeyword_1()); }
 )
 ;
 finally {
@@ -7495,9 +7495,9 @@ rule__RemoveCorrespondence__Group__3__Impl
 	}
 :
 (
-	{ before(grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3()); }
-	','
-	{ after(grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3()); }
+	{ before(grammarAccess.getRemoveCorrespondenceAccess().getAndKeyword_3()); }
+	'and'
+	{ after(grammarAccess.getRemoveCorrespondenceAccess().getAndKeyword_3()); }
 )
 ;
 finally {

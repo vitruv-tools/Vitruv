@@ -1849,9 +1849,9 @@ ruleRemoveCorrespondence returns [EObject current=null]
 					$current);
 			}
 		)
-		otherlv_1='remove correspondence'
+		otherlv_1='remove correspondence between'
 		{
-			newLeafNode(otherlv_1, grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceKeyword_1());
+			newLeafNode(otherlv_1, grammarAccess.getRemoveCorrespondenceAccess().getRemoveCorrespondenceBetweenKeyword_1());
 		}
 		(
 			(
@@ -1872,9 +1872,9 @@ ruleRemoveCorrespondence returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=','
+		otherlv_3='and'
 		{
-			newLeafNode(otherlv_3, grammarAccess.getRemoveCorrespondenceAccess().getCommaKeyword_3());
+			newLeafNode(otherlv_3, grammarAccess.getRemoveCorrespondenceAccess().getAndKeyword_3());
 		}
 		(
 			(
