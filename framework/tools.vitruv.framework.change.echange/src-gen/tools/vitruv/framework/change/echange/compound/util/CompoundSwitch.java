@@ -6,11 +6,14 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 import tools.vitruv.framework.change.echange.compound.*;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.util.Switch;
+import tools.vitruv.framework.change.echange.AdditiveEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -92,6 +95,14 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CompoundPackage.REPLACE_IN_ELIST: {
+				ReplaceInEList<?, ?, ?, ?, ?> replaceInEList = (ReplaceInEList<?, ?, ?, ?, ?>)theEObject;
+				T1 result = caseReplaceInEList(replaceInEList);
+				if (result == null) result = caseCompoundEChange(replaceInEList);
+				if (result == null) result = caseEChange(replaceInEList);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -142,6 +153,21 @@ public class CompoundSwitch<T1> extends Switch<T1> {
 	}
 
     /**
+	 * Returns the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Replace In EList</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> T1 caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+		return null;
+	}
+
+				/**
 	 * Returns the result of interpreting the object as an instance of '<em>EChange</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;

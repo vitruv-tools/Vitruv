@@ -215,6 +215,62 @@ public interface CompoundPackage extends EPackage {
 
 
     /**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
+	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
+	 * @generated
+	 */
+	int REPLACE_IN_ELIST = 3;
+
+				/**
+	 * The feature id for the '<em><b>Remove Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST__REMOVE_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 0;
+
+				/**
+	 * The feature id for the '<em><b>Insert Change</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST__INSERT_CHANGE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
+
+				/**
+	 * The number of structural features of the '<em>Replace In EList</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+				/**
+	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST___GET_ATOMIC_CHANGES = COMPOUND_ECHANGE___GET_ATOMIC_CHANGES;
+
+				/**
+	 * The number of operations of the '<em>Replace In EList</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_IN_ELIST_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 0;
+
+
+				/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -296,7 +352,7 @@ public interface CompoundPackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.compound.MoveEObject#getAtomicChanges()
 	 * @generated
 	 */
-	EOperation getMoveEObject__GetAtomicChanges_1();
+	EOperation getMoveEObject__GetAtomicChanges();
 
 				/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature <em>Explicit Unset EFeature</em>}'.
@@ -320,6 +376,38 @@ public interface CompoundPackage extends EPackage {
     EReference getExplicitUnsetEFeature_SubtractiveChanges();
 
     /**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Replace In EList</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList
+	 * @generated
+	 */
+	EClass getReplaceInEList();
+
+				/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange <em>Remove Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Remove Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getRemoveChange()
+	 * @see #getReplaceInEList()
+	 * @generated
+	 */
+	EReference getReplaceInEList_RemoveChange();
+
+				/**
+	 * Returns the meta object for the containment reference '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange <em>Insert Change</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Insert Change</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList#getInsertChange()
+	 * @see #getReplaceInEList()
+	 * @generated
+	 */
+	EReference getReplaceInEList_InsertChange();
+
+				/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -408,7 +496,7 @@ public interface CompoundPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges_1();
+		EOperation MOVE_EOBJECT___GET_ATOMIC_CHANGES = eINSTANCE.getMoveEObject__GetAtomicChanges();
 
 								/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl <em>Explicit Unset EFeature</em>}' class.
@@ -427,6 +515,32 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
         EReference EXPLICIT_UNSET_EFEATURE__SUBTRACTIVE_CHANGES = eINSTANCE.getExplicitUnsetEFeature_SubtractiveChanges();
+
+								/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl <em>Replace In EList</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.compound.impl.ReplaceInEListImpl
+		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getReplaceInEList()
+		 * @generated
+		 */
+		EClass REPLACE_IN_ELIST = eINSTANCE.getReplaceInEList();
+
+								/**
+		 * The meta object literal for the '<em><b>Remove Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPLACE_IN_ELIST__REMOVE_CHANGE = eINSTANCE.getReplaceInEList_RemoveChange();
+
+								/**
+		 * The meta object literal for the '<em><b>Insert Change</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference REPLACE_IN_ELIST__INSERT_CHANGE = eINSTANCE.getReplaceInEList_InsertChange();
 
     }
 
