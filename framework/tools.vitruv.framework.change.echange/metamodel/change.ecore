@@ -504,5 +504,52 @@
         <eGenericType eTypeParameter="#//compound/ExplicitUnsetEFeature/S"/>
       </eStructuralFeatures>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ReplaceInEList" eSuperTypes="#//compound/CompoundEChange">
+      <eTypeParameters name="A">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="F">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      </eTypeParameters>
+      <eTypeParameters name="T">
+        <eBounds eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eTypeParameters>
+      <eTypeParameters name="R">
+        <eBounds eClassifier="#//feature/list/RemoveFromListEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/A"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/F"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
+        </eBounds>
+        <eBounds eClassifier="#//feature/FeatureEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/A"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/F"/>
+        </eBounds>
+        <eBounds eClassifier="#//SubtractiveEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
+        </eBounds>
+      </eTypeParameters>
+      <eTypeParameters name="I">
+        <eBounds eClassifier="#//feature/list/InsertInListEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/A"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/F"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
+        </eBounds>
+        <eBounds eClassifier="#//feature/FeatureEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/A"/>
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/F"/>
+        </eBounds>
+        <eBounds eClassifier="#//AdditiveEChange">
+          <eTypeArguments eTypeParameter="#//compound/ReplaceInEList/T"/>
+        </eBounds>
+      </eTypeParameters>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="removeChange" lowerBound="1"
+          containment="true">
+        <eGenericType eTypeParameter="#//compound/ReplaceInEList/R"/>
+      </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="insertChange" lowerBound="1"
+          containment="true">
+        <eGenericType eTypeParameter="#//compound/ReplaceInEList/I"/>
+      </eStructuralFeatures>
+    </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

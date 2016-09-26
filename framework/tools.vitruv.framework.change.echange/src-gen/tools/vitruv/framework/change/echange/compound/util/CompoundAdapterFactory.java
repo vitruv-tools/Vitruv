@@ -6,6 +6,8 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 import tools.vitruv.framework.change.echange.compound.*;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
+import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
+import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
@@ -13,6 +15,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import tools.vitruv.framework.change.echange.AdditiveEChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -83,6 +86,10 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 				return createExplicitUnsetEFeatureAdapter();
 			}
 			@Override
+			public <A extends EObject, F extends EStructuralFeature, T extends EObject, R extends RemoveFromListEChange<A, F, T> & FeatureEChange<A, F> & SubtractiveEChange<T>, I extends InsertInListEChange<A, F, T> & FeatureEChange<A, F> & AdditiveEChange<T>> Adapter caseReplaceInEList(ReplaceInEList<A, F, T, R, I> object) {
+				return createReplaceInEListAdapter();
+			}
+			@Override
 			public Adapter caseEChange(EChange object) {
 				return createEChangeAdapter();
 			}
@@ -149,6 +156,20 @@ public class CompoundAdapterFactory extends AdapterFactoryImpl {
 	}
 
     /**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.compound.ReplaceInEList <em>Replace In EList</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.compound.ReplaceInEList
+	 * @generated
+	 */
+	public Adapter createReplaceInEListAdapter() {
+		return null;
+	}
+
+				/**
 	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
      * This default implementation returns null so that we can easily ignore cases;

@@ -50,7 +50,8 @@
         <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateSingleValuedFeatureEChange/A"/>
         <genTypeParameters ecoreTypeParameter="change.ecore#//feature/UpdateSingleValuedFeatureEChange/F"/>
       </genClasses>
-      <nestedGenPackages prefix="Single" disposableProviderFactory="true" ecorePackage="change.ecore#//feature/single">
+      <nestedGenPackages prefix="Single" basePackage="tools.vitruv.framework.change.echange.feature"
+          disposableProviderFactory="true" ecorePackage="change.ecore#//feature/single">
         <genClasses image="false" ecoreClass="change.ecore#//feature/single/ReplaceSingleValuedFeatureEChange">
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/A"/>
           <genTypeParameters ecoreTypeParameter="change.ecore#//feature/single/ReplaceSingleValuedFeatureEChange/F"/>
@@ -171,6 +172,7 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/addWhereChange"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/MoveEObject/addWhatChange"/>
+        <genOperations ecoreOperation="change.ecore#//compound/MoveEObject/getAtomicChanges"/>
       </genClasses>
       <genClasses ecoreClass="change.ecore#//compound/ExplicitUnsetEFeature">
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/A"/>
@@ -179,6 +181,15 @@
         <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ExplicitUnsetEFeature/S"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference change.ecore#//compound/ExplicitUnsetEFeature/subtractiveChanges"/>
+      </genClasses>
+      <genClasses ecoreClass="change.ecore#//compound/ReplaceInEList">
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/A"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/F"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/T"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/R"/>
+        <genTypeParameters ecoreTypeParameter="change.ecore#//compound/ReplaceInEList/I"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/removeChange"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference change.ecore#//compound/ReplaceInEList/insertChange"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
