@@ -9,11 +9,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.extensions.constructionsimulation.handler.IntegrationHandler;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.extensions.constructionsimulation.util.IntegrationUtil;
+import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 public class JaMoPPIntegrationHandler extends IntegrationHandler<IJavaProject> {
 
@@ -55,10 +54,10 @@ public class JaMoPPIntegrationHandler extends IntegrationHandler<IJavaProject> {
             throw new IllegalArgumentException("Run SoMoX first!");
         }
 
-        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
-        vsum.getOrCreateAllCorrespondenceModelsForMM(
-                metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
+        final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+        final InternalVirtualModel vsum = IntegrationUtil.createVSUM(metamodels);
+//        vsum.getOrCreateAllCorrespondenceModelsForMM(
+//                metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
 
         final ICreateCorrespondenceModel transformation = new PCMJaMoPPCorrespondenceModelTransformation(
                 scdmPath.toString(), pcmPath.toString(), srcPath.toString(), vsum);

@@ -24,11 +24,10 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -39,18 +38,14 @@ public class DefaultImplementations {
 
     };
 
-    public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
+    public static final VirtualModel EFFECTLESS_VIRTUAL_MODEL = new VirtualModel() {
         @Override
-        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
+        public void propagateChange(VitruviusChange change) {
+        }
+
+        @Override
+        public ModelInstance getModelInstance(VURI modelVuri) {
             return null;
-        }
-
-        @Override
-        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
-        }
-
-        @Override
-        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
         }
     };
 
@@ -121,7 +116,7 @@ public class DefaultImplementations {
 
     };
 
-    public static class TestChangeSynchronizing implements ResourceChangeSynchronizing, ChangeSynchronizing {
+    public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {
         private VURI lastVURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
@@ -152,22 +147,18 @@ public class DefaultImplementations {
             return lastVURI;
         }
 
-        public static TestChangeSynchronizing createInstance() {
-            return new TestChangeSynchronizing();
+        public static TestVirtualModel createInstance() {
+            return new TestVirtualModel();
         }
 
         @Override
-        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange changes) {
-            synchronizeChanges(Collections.singletonList(changes), null, null);
+        public void propagateChange(VitruviusChange change) {
+            synchronizeChanges(Collections.singletonList(change), null, null);
+        }
+
+        @Override
+        public ModelInstance getModelInstance(VURI modelVuri) {
             return null;
-        }
-
-        @Override
-        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
-        }
-
-        @Override
-        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
         }
 
     }

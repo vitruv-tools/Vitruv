@@ -14,7 +14,6 @@ import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.applications.pcmjava.reconstructionintegration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.PCM2JaMoPPTransformationTest;
-import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -55,8 +54,8 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
     private static final String PCM_REPOSITORY = MODEL_PATH + IPath.SEPARATOR
             + "internal_architecture_model.repository";
 
-    /** The Constant pcmMMUri. */
-    private static final VURI pcmMMUri = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
+//    /** The Constant pcmMMUri. */
+//    private static final VURI pcmMMUri = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
 
     /** The transformation. */
     private PCMJaMoPPCorrespondenceModelTransformation transformation;
@@ -86,11 +85,11 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
         mockupProject.copy(copyPath, true, null);
 
         // Initialize vsum
-        this.vsum.getOrCreateAllCorrespondenceModelsForMM(this.metaRepository.getMetamodel(pcmMMUri));
+        //this.vsum.getOrCreateAllCorrespondenceModelsForMM(this.metaRepository.getMetamodel(pcmMMUri));
 
         // Create and execute the transformation
         this.transformation = new PCMJaMoPPCorrespondenceModelTransformation(projectPath + SCDM_PATH,
-                projectPath + PCM_REPOSITORY, projectPath + CODE_PATH, this.vsum);
+                projectPath + PCM_REPOSITORY, projectPath + CODE_PATH, this.getVirtualModel());
         try {
             this.transformation.createCorrespondences();
         } catch (final Exception ex) {
@@ -99,7 +98,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
 
         // Add the PCM model to Vitruvius
         final VURI sourceModelURI = VURI.getInstance(TestUtil.PROJECT_URI + "/" + PCM_REPOSITORY);
-        final ModelInstance pcmInstance = this.vsum.getAndLoadModelInstanceOriginal(sourceModelURI);
+        final ModelInstance pcmInstance = this.getVirtualModel().getModelInstance(sourceModelURI);
 
         this.pcmRepo = pcmInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository.class);
     }
@@ -120,8 +119,7 @@ public class BasicCorrespondenceTest extends PCM2JaMoPPTransformationTest {
     public void cleanWorkspace() throws CoreException {
 
         // Clear vsum
-        this.vsum = null;
-        this.correspondenceModel = null;
+        // this.virtualModel = null;
 
         // Delete modified project
         final IWorkspaceRoot root = this.workspace.getRoot();

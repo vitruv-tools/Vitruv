@@ -67,7 +67,7 @@ public class OperationRequiredRoleMappingTransformationTest extends PCM2JaMoPPTr
         opr.setRequiringEntity_RequiredRole(newBasicComponent);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
-        this.vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        this.getVirtualModel().executeCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 try {

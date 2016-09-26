@@ -18,6 +18,7 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * A factory for classes residing in this package.
@@ -39,8 +40,8 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(IEditorPartAdapterFactory factory,
-            ChangeSynchronizing changeSync, ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(factory, changeSync, modelProviding, vitruvAccessor);
+            VirtualModel virtualModel, ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+        return new VitruviusEMFEditorMonitorImpl(factory, virtualModel, modelProviding, vitruvAccessor);
     }
 
     /**
@@ -55,9 +56,9 @@ public class EMFEditorMonitorFactory {
      *            An {@link IVitruviusAccessor} object providing access to Vitruvius facilities.
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
-    public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(ChangeSynchronizing changeSync,
+    public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(VirtualModel virtualModel,
             ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(changeSync, modelProviding, vitruvAccessor);
+        return new VitruviusEMFEditorMonitorImpl(virtualModel, modelProviding, vitruvAccessor);
     }
 
     public IEditorPartAdapterFactory createDefaultEditorPartAdapterFactory(Collection<String> acceptedFileSuffixes) {

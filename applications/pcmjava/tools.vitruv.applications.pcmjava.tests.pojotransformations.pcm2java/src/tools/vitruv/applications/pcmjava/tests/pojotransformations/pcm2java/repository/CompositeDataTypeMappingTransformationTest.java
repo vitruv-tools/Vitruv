@@ -43,7 +43,7 @@ public class CompositeDataTypeMappingTransformationTest extends PCM2JaMoPPTransf
         final InnerDeclaration innerDec = this.addInnerDeclaration(cdt, repo);
         super.triggerSynchronization(VURI.getInstance(repo.eResource()));
 
-        this.vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        this.getVirtualModel().executeCommand(new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {

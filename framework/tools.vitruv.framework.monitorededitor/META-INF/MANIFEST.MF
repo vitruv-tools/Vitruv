@@ -8,6 +8,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: tools.vitruv.framework.monitorededitor.Activator
 Require-Bundle: org.eclipse.osgi,
  tools.vitruv.framework.metamodel;visibility:=reexport,
- tools.vitruv.framework.modelsynchronization
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.framework.vsum
 Export-Package: tools.vitruv.framework.monitorededitor,
  tools.vitruv.framework.monitorededitor.registries

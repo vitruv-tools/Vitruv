@@ -14,7 +14,7 @@ import tools.vitruv.applications.jmljava.correspondences.JavaJmlFileMatcher;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.util.datatypes.Pair;
 
@@ -32,7 +32,7 @@ public class CSTCorrespondenceProvider implements CorrespondenceProvider {
 
     @Override
     public void setAllCorrespondences(CorrespondenceModel correspondenceInstance, List<VURI> relevantURIs,
-            ModelProviding modelProviding, MetamodelManaging mmManaging) {
+            ModelProviding modelProviding, MetamodelRepository mmManaging) {
 
         Metamodel mmJava = mmManaging.getMetamodel(FIRST_MM_URI);
         Metamodel mmJml = mmManaging.getMetamodel(SECOND_MM_URI);

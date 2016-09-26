@@ -8,5 +8,5 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public interface CorrespondenceProviding {
     CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI);
 
-    Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI mmVURI);
+    Set<CorrespondenceModel> getAllCorrespondenceModels(final VURI mmVURI);
 }

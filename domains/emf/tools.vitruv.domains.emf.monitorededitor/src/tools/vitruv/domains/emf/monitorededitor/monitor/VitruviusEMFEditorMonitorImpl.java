@@ -25,20 +25,21 @@ import org.eclipse.ui.IEditorPart;
 
 import tools.vitruv.domains.emf.monitorededitor.EditorNotMonitorableException;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
+import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
 import tools.vitruv.domains.emf.monitorededitor.IMonitoringDecider;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor;
-import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
-import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
+import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * A simple implementation of {@link IVitruviusEMFEditorMonitor} using an {@link IVitruviusAccessor}
@@ -67,7 +68,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     /** The editor part adapter factory used to access Eclipse IEditorPart objects. */
     private final IEditorPartAdapterFactory editorPartAdapterFactory;
 
-    private final ChangeSynchronizing summaryChangeSynchronizing;
+    private final VirtualModel virtualModel;
 
     private final Map<VURI, Long> lastSynchronizationRequestTimestamps;
 
@@ -105,13 +106,13 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            A {@link IVitruviusAccessor} instance providing information about which EMF models
      *            need to be monitored.
      */
-    public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, ChangeSynchronizing changeSync,
+    public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, VirtualModel virtualModel,
             ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
         ResourceChangeSynchronizing internalChangeSync = createInternalChangeSynchronizing();
         changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(internalChangeSync, factory, monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
         this.editorPartAdapterFactory = factory;
-        this.summaryChangeSynchronizing = changeSync;
+        this.virtualModel = virtualModel;
         this.lastSynchronizationRequestTimestamps = new HashMap<>();
         this.collectedChanges = new ArrayList<>();
     }
@@ -130,9 +131,9 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            A {@link IVitruviusAccessor} instance providing information about which EMF models
      *            need to be monitored.
      */
-    public VitruviusEMFEditorMonitorImpl(ChangeSynchronizing changeSync, ModelProviding modelProviding,
+    public VitruviusEMFEditorMonitorImpl(VirtualModel virtualModel, ModelProviding modelProviding,
             IVitruviusAccessor vitruvAccessor) {
-        this(new DefaultEditorPartAdapterFactoryImpl(), changeSync, modelProviding, vitruvAccessor);
+        this(new DefaultEditorPartAdapterFactoryImpl(), virtualModel, modelProviding, vitruvAccessor);
     }
 
     private boolean isPendingSynchronizationRequest(VURI resourceURI) {
@@ -265,7 +266,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
             LOGGER.trace("Got a change for " + resourceURI + ", continuing synchronization.");
             CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance()
                     .createCompositeChange(collectedChanges);
-            summaryChangeSynchronizing.synchronizeChange(compositeChange);
+            virtualModel.propagateChange(compositeChange);
             this.collectedChanges.clear();
         }
     }

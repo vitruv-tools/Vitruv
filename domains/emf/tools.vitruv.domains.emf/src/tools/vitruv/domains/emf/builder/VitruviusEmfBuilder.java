@@ -1,5 +1,7 @@
 package tools.vitruv.domains.emf.builder;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,15 +27,12 @@ import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
-import tools.vitruv.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
-import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.VirtualModelManager;
 
 public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder implements SynchronisationListener {
 
@@ -47,9 +46,8 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
 
     protected final EMFEditorMonitorFactory monitorFactory;
     protected IVitruviusEMFEditorMonitor emfMonitor;
-    protected ChangeSynchronizing changeSynchronizing;
-    protected ModelProviding modelProviding;
-    protected VSUMImpl vsum;
+    protected VirtualModel vsum;
+    private boolean initialized;
     protected Change2CommandTransformingProviding transformingProviding;
     
     private final boolean isInTestingMode = true;
@@ -60,6 +58,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
 
     protected VitruviusEmfBuilder(final IResourceDeltaProviding resourceDeltaProviding,
             final IProjectProviding projectProviding, final EMFEditorMonitorFactory monitorFactory) {
+    	this.initialized = false;
         LOGGER.setLevel(Level.ALL); // TODO
         Logger.getRootLogger().setLevel(Level.ALL);
         LOGGER.trace("Created a VitruviusEmfBuilder.");
@@ -94,31 +93,37 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         }
     }
 
-    protected void initializeBuilder(final Set<String> monitoredFileTypes, final MetaRepositoryImpl metaRepository) {
-        this.monitoredFileTypes = monitoredFileTypes;
-        this.modelProviding = this.createChangeSynchronizing(metaRepository);
+    protected void initializeBuilder() {//final Set<String> monitoredFileTypes, final MetaRepositoryImpl metaRepository) {
+    	if (initialized) return;
+    	this.vsum = VirtualModelManager.getInstance().getVirtualModel(getCommand().getArguments().get("vmodelName"));
+    	Set<String> fileExtensions = new HashSet<String>();
+    	for (String fileExtension : getCommand().getArguments().get("fileExtensions").split(", ")) {
+    		fileExtensions.add(fileExtension);
+    	}
+        this.monitoredFileTypes = fileExtensions;
 
         this.createAndStartEMFMonitor();
         this.emfMonitor.initialize();
         LOGGER.trace("Initialized the builder.");
+        initialized = true;
     }
 
     protected void createAndStartEMFMonitor() {
         final IVitruviusAccessor vitruviusAcc = this.createVitruviusAccessor();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(this.monitoredFileTypes);
-        this.emfMonitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.changeSynchronizing,
+        this.emfMonitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.vsum,
                 null /* TODO */, vitruviusAcc);
     }
 
-    private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
-        this.vsum = new VSUMImpl(metaRepositoryImpl, metaRepositoryImpl);
-        this.transformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
-        		this.transformingProviding, this.vsum);
-        changeSynchronizerImpl.addSynchronizationListener(this);
-        this.changeSynchronizing = changeSynchronizerImpl;
-        return this.vsum;
-    }
+//    private ModelProviding createChangeSynchronizing(final MetaRepositoryImpl metaRepositoryImpl) {
+//        this.vsum = new VSUMImpl(metaRepositoryImpl);
+//        this.transformingProviding = new Change2CommandTransformingProvidingImpl();
+//        final ChangeSynchronizerImpl changeSynchronizerImpl = new ChangeSynchronizerImpl(this.vsum,
+//        		this.transformingProviding, this.vsum);
+//        changeSynchronizerImpl.addSynchronizationListener(this);
+//        this.changeSynchronizing = changeSynchronizerImpl;
+//        return this.vsum;
+//    }
 
     private IVitruviusAccessor createVitruviusAccessor() {
         return new IVitruviusAccessor() {
@@ -198,6 +203,7 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
     @Override
     protected IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor)
             throws CoreException {
+    	initializeBuilder();
         if (kind == FULL_BUILD) {
             this.fullBuild(monitor);
         } else {
@@ -254,9 +260,12 @@ public abstract class VitruviusEmfBuilder extends IncrementalProjectBuilder impl
         final String fileExtension = iResource.getFileExtension();
         if (this.monitoredFileTypes.contains(fileExtension)) {
             final VURI vuri = VURI.getInstance(iResource);
-            Resource modelResource = this.vsum.getAndLoadModelInstanceOriginal(vuri).getResource();
-            final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
-            this.changeSynchronizing.synchronizeChange(fileChange);
+            ModelInstance modelInstance = this.vsum.getModelInstance(vuri);
+            if (modelInstance != null) {
+            	Resource modelResource = this.vsum.getModelInstance(vuri).getResource();
+            	final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
+            	this.vsum.propagateChange(fileChange);
+            }
         }
     }
 

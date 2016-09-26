@@ -1,20 +1,14 @@
 package tools.vitruv.applications.pcmjava.builder;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import tools.vitruv.domains.pcm.util.PCMNamespace;
-import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 
@@ -29,19 +23,20 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
     public PCMJavaBuilder() {
         super();
         logger.trace("PCMJavaBuilder is ALIVE");
-        final MetaRepositoryImpl metarepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        Set<String> monitoredFileTypes = new HashSet<String>(
-                Arrays.asList(PCMNamespace.REPOSITORY_FILE_EXTENSION
+//        final MetaRepositoryImpl metarepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
+//        Set<String> monitoredFileTypes = new HashSet<String>(
+//                Arrays.asList(PCMNamespace.REPOSITORY_FILE_EXTENSION
                         // since java files already monitored by the java monitor we do not have to monitor
                         // them here
-                        /* , PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION */));
+                        /* , PCMJaMoPPNamespace.JaMoPP.JAVA_FILE_EXTENSION *///));
 
-        super.initializeBuilder(monitoredFileTypes, metarepository);
+        //super.initializeBuilder();
     }
 
     @Override
     protected IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor)
             throws CoreException {
+    	initializeBuilder();
         if (null == this.javaMonitoredEditor) {
             initializeCodeMonitor();
         }
@@ -51,8 +46,7 @@ public class PCMJavaBuilder extends VitruviusEmfBuilder implements Synchronisati
     private void initializeCodeMonitor() {
         IProject monitoredProject = getProject();
         String monitoredProjectName = monitoredProject.getName();
-        this.javaMonitoredEditor = new MonitoredEditor(this.changeSynchronizing, this.modelProviding,
-                monitoredProjectName);
+        this.javaMonitoredEditor = new MonitoredEditor(this.vsum, monitoredProjectName);
     }
 
     /**

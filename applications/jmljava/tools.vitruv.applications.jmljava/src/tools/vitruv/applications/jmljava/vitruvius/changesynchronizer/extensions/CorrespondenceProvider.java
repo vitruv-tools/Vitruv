@@ -4,7 +4,7 @@ import java.util.List;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.metamodel.ModelProviding;
 
 /**
@@ -33,7 +33,7 @@ public interface CorrespondenceProvider {
 	 */
 	void setAllCorrespondences(CorrespondenceModel correspondenceInstance,
 			List<VURI> relevantURIs, ModelProviding modelProviding,
-			MetamodelManaging mmManaging);
+			MetamodelRepository mmManaging);
 
 	/**
 	 * @return The first supported meta-model.

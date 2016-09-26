@@ -44,7 +44,7 @@ import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 @SuppressWarnings("restriction")
 public class CodeIntegrationTest {
@@ -131,7 +131,7 @@ public class CodeIntegrationTest {
 
         // add PCM Java Builder to Project under test
         final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
-        pcmJavaBuilder.addBuilderToProject(this.testProject);
+        pcmJavaBuilder.addBuilderToProject(this.testProject, META_PROJECT_NAME, Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
         // build the project
         progress = new DoneFlagProgressMonitor();
         this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, PCMJavaBuilder.BUILDER_ID,
@@ -187,7 +187,7 @@ public class CodeIntegrationTest {
     }
 
     protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-        final VSUMImpl vsum = this.getVSUM();
+        final InternalVirtualModel vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
         final CorrespondenceModel corresponcenceInstance = vsum
@@ -195,12 +195,12 @@ public class CodeIntegrationTest {
         return corresponcenceInstance;
     }
 
-    private VSUMImpl getVSUM() throws Throwable {
+    private InternalVirtualModel getVSUM() throws Throwable {
         final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
         if (null == pcmJavaBuilder) {
             return null;
         }
-        final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
+        final InternalVirtualModel vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
         return vsum;
     }
 

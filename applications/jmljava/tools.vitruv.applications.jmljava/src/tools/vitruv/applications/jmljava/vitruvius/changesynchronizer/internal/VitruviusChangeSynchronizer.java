@@ -20,7 +20,7 @@ import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions.ModelURIProvider;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.Mapping;
+import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.change.processing.Change2CommandTransforming ;
@@ -29,7 +29,7 @@ import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.metamodel.MappingManaging;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
@@ -101,7 +101,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
         }
 
         for (final MappingProvider mappingProvider : JavaJMLExtensionProvider.getMappingProviders()) {
-            for (final Mapping mapping : mappingProvider.getMappings(result)) {
+            for (final MetamodelPair mapping : mappingProvider.getMappings(result)) {
                 result.addMapping(mapping);
                 LOGGER.debug("Mapping registered: " + mapping);
             }
@@ -119,7 +119,7 @@ public class VitruviusChangeSynchronizer implements ChangeSynchronizing {
      *            An initialized implementation of a mapping managing.
      * @return The initialized VSUM.
      */
-    protected VSUMImplCustom constructVSUMImpl(final MetamodelManaging metamodelManaging,
+    protected VSUMImplCustom constructVSUMImpl(final MetamodelRepository metamodelManaging,
             final MappingManaging mappingManaging) {
         LOGGER.info("Constructing VSUM.");
         final VSUMImplCustom result = new VSUMImplCustom(metamodelManaging, mappingManaging);

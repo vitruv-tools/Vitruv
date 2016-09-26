@@ -1,26 +1,17 @@
 package tools.vitruv.framework.metarepository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import tools.vitruv.framework.metamodel.Mapping;
-import tools.vitruv.framework.metamodel.MappingManaging;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
-import tools.vitruv.framework.util.datatypes.ClaimableConcatMap;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap;
-import tools.vitruv.framework.util.datatypes.ClaimableLexicographicalConcatHashMap;
 import tools.vitruv.framework.util.datatypes.ClaimableMap;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
-
-    // TODO MK (meta repo): either rename all gets in interfaces to claim... instead of get... or
-    // change
-    // implementations so that they do
-    // not claim but only get elements
+public class MetaRepositoryImpl implements MetamodelRepository {
 
     private ClaimableMap<VURI, Metamodel> uri2MetamodelMap;
     /**
@@ -29,12 +20,10 @@ public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
      * most one metamodel is mapped.
      */
     private Map<String, Metamodel> fileExtension2MetamodelMap;
-    private ClaimableConcatMap<VURI, Mapping> uris2MappingMap;
 
     public MetaRepositoryImpl() {
         this.uri2MetamodelMap = new ClaimableHashMap<VURI, Metamodel>();
         this.fileExtension2MetamodelMap = new HashMap<String, Metamodel>();
-        this.uris2MappingMap = new ClaimableLexicographicalConcatHashMap<VURI, Mapping>();
     }
 
     @Override
@@ -67,45 +56,8 @@ public class MetaRepositoryImpl implements MetamodelManaging, MappingManaging {
         return this.fileExtension2MetamodelMap.get(fileExtension);
     }
 
-    private void claimReferredMetamodels(final Mapping mapping) {
-        this.uri2MetamodelMap.claimKeyIsMapped(mapping.getMetamodelA().getURI());
-        this.uri2MetamodelMap.claimKeyIsMapped(mapping.getMetamodelB().getURI());
-    }
-
     @Override
-    public void addMapping(final Mapping mapping) {
-        claimReferredMetamodels(mapping);
-        this.uris2MappingMap.putClaimingNullOrSameMapped(mapping, mapping.getMetamodelA().getURI(),
-                mapping.getMetamodelB().getURI());
-    }
-
-    @Override
-    public Mapping getMapping(final VURI... metamodelURIs) {
-        for (VURI metamodelURI : metamodelURIs) {
-            this.uri2MetamodelMap.claimKeyIsMapped(metamodelURI);
-        }
-        return this.uris2MappingMap.claimValueForKeys(metamodelURIs);
-    }
-
-    @Override
-    public Mapping getMapping(final Metamodel... metamodels) {
-        VURI[] uris = new VURI[metamodels.length];
-        for (int i = 0; i < metamodels.length; i++) {
-            VURI uri = metamodels[i].getURI();
-            uris[i] = uri;
-        }
-        return getMapping(uris);
-    }
-
-    @Override
-    public Collection<Mapping> getAllMappings(final Metamodel metamodel) {
-        VURI uri = metamodel.getURI();
-        return this.uris2MappingMap.get(uri);
-    }
-
-    @Override
-    public Metamodel[] getAllMetamodels() {
-        return this.fileExtension2MetamodelMap.values()
-                .toArray(new Metamodel[this.fileExtension2MetamodelMap.values().size()]);
+    public Iterator<Metamodel> iterator() {
+        return this.fileExtension2MetamodelMap.values().iterator();
     }
 }

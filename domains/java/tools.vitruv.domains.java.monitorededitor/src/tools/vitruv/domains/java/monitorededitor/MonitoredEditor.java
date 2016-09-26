@@ -1,7 +1,6 @@
 package tools.vitruv.domains.java.monitorededitor;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -21,14 +20,15 @@ import tools.vitruv.domains.java.monitorededitor.refactoringlistener.Refactoring
 import tools.vitruv.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
+import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.monitorededitor.AbstractMonitoredEditor;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
+import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * @author messinger
@@ -109,21 +109,15 @@ public class MonitoredEditor extends AbstractMonitoredEditor
     // "MediaStore";
 
     public MonitoredEditor() {
-        this(new ChangeSynchronizing() {
-            @Override
-            public List<List<VitruviusChange>> synchronizeChange(final VitruviusChange changes) {
-                return null;
-            }
-
+        this(new VirtualModel() {
 			@Override
-			public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+			public void propagateChange(VitruviusChange change) {
 			}
-
 			@Override
-			public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+			public ModelInstance getModelInstance(VURI modelVuri) {
+				return null;
 			}
-
-        }, null, MY_MONITORED_PROJECT);
+        }, MY_MONITORED_PROJECT);
         this.reportChanges = true;
     }
 
@@ -139,9 +133,9 @@ public class MonitoredEditor extends AbstractMonitoredEditor
         this.refactoringInProgress = true;
     }
 
-    public MonitoredEditor(final ChangeSynchronizing changeSynchronizing, final ModelProviding modelProviding,
+    public MonitoredEditor(final VirtualModel virtualModel,
             final String... monitoredProjectNames) {
-        super(changeSynchronizing, modelProviding);
+        super(virtualModel);
 
         this.configureLogger();
 
@@ -262,9 +256,9 @@ public class MonitoredEditor extends AbstractMonitoredEditor
             @Override
             protected IStatus run(final IProgressMonitor monitor) {
                 if (null != change) {
-                    MonitoredEditor.this.changeSynchronizing.synchronizeChange(change);
+                    MonitoredEditor.this.virtualModel.propagateChange(change);
                 } else {
-                    MonitoredEditor.this.changeSynchronizing.synchronizeChange(MonitoredEditor.this.changeStash);
+                    MonitoredEditor.this.virtualModel.propagateChange(MonitoredEditor.this.changeStash);
                 }
                 return Status.OK_STATUS;
             }

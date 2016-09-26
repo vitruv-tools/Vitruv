@@ -28,11 +28,12 @@ import tools.vitruv.extensions.constructionsimulation.invariantcheckers.IMModelI
 import tools.vitruv.extensions.constructionsimulation.traversal.util.UnorderedReferencesRespectingEqualityHelper;
 import tools.vitruv.extensions.constructionsimulation.util.IntegrationUtil;
 import tools.vitruv.extensions.constructionsimulation.util.ResourceHelper;
+import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.ModelInstance;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
 
@@ -50,7 +51,7 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
      * @param changeSynchronizing
      *            : the synchronization provider used for synchronizing the generated changes
      */
-    private void integratePCMRepository(IResource resource, ChangeSynchronizing changeSynchronizing) {
+    private void integratePCMRepository(IResource resource, VirtualModel vmodel) {
 
         Logger.getRootLogger().setLevel(Level.ALL);
 
@@ -66,14 +67,14 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
 
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
 
-        if (changeSynchronizing == null) {
-            final MetaRepositoryImpl pcmJavaMetarepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-            this.vsum = IntegrationUtil.createVSUM(pcmJavaMetarepository);
-            changeSynchronizing = IntegrationUtil.createVitruviusCore(this.vsum, pcmJavaMetarepository);
+        if (vmodel == null) {
+        	// TODO No change2command transformers are added here
+        	final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+            vmodel = IntegrationUtil.createVSUM(metamodels);
         }
 
         try {
-            integrator.integrateModel(resource, changeSynchronizing);
+            integrator.integrateModel(resource, vmodel);
         } catch (final Exception e) {
             e.printStackTrace();
         }
@@ -99,8 +100,8 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
         }
 
         // create underlying elements (MetaRepo, VSUM,...)
-        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        final ChangeSynchronizing changeSynchronizing = IntegrationUtil.createVitruviusCore(metaRepository);
+        final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+        final InternalVirtualModel vmodel = IntegrationUtil.createVSUM(metamodels);
 
         // find all referenced repositories and integrate them first
         final EList<Repository> linkedRepositories = this.extractRepositories(resource);
@@ -111,13 +112,13 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
             final IResource repositoryResource = ResourceHelper
                     .absoluteEmfResourceToWorkspaceRelativeIResource(repository.eResource());
 
-            this.integratePCMRepository(repositoryResource, changeSynchronizing);
+            this.integratePCMRepository(repositoryResource, vmodel);
         }
 
         final PCMSystemIntegrationStrategy integrator = new PCMSystemIntegrationStrategy();
 
         try {
-            integrator.integrateModel(resource, changeSynchronizing);
+            integrator.integrateModel(resource, vmodel);
         } catch (final Exception e) {
             e.printStackTrace();
         }
@@ -186,7 +187,7 @@ public class PCMIntegrationHandler extends IntegrationHandler<IFile> {
 
     protected void compareWithNewModel(final IResource resource, final URI uri) {
         // get integrated pcm model instance
-        final ModelInstance integratedModelInstance = this.vsum.getModelInstanceOriginal(VURI.getInstance(uri));
+        final ModelInstance integratedModelInstance = this.vsum.getModelInstance(VURI.getInstance(uri));
         final IPath oldModelPath = this.createPathToOldModel(resource.getLocation());
 
         // load copy of the model before integration

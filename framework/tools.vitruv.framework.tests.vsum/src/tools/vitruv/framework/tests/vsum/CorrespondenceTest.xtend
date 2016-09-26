@@ -5,7 +5,6 @@ import tools.vitruv.framework.metamodel.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
-import tools.vitruv.framework.vsum.VSUMImpl
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
@@ -32,16 +31,17 @@ import pcm_mockup.PInterface
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 class CorrespondenceTest extends VSUMTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
 
 	@Test def void testAllInCommand() {
-		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
-		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([testAll(vsum) return null]);
+		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		vsum.executeCommand([testAll(vsum) return null]);
 	}
 
-	def private void testAll(VSUMImpl vsum) {
+	def private void testAll(InternalVirtualModel vsum) {
 		var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
 		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
@@ -60,8 +60,8 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testCorrespondenceUpdate() {
-		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
-		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([ // create vsum and Repo and UPackage
+		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		vsum.executeCommand([ // create vsum and Repo and UPackage
 			var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 			// create correspondence
@@ -81,8 +81,8 @@ class CorrespondenceTest extends VSUMTest {
 	}
 
 	@Test def void testMoveRootEObjectBetweenResource() {
-		val VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances()
-		vsum.createRecordingCommandAndExecuteCommandOnTransactionalDomain([
+		val InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances()
+		vsum.executeCommand([
 			var Repository repo = testLoadObject(vsum, getDefaultPCMInstanceURI(), Repository)
 			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 			// create correspondence
@@ -117,16 +117,16 @@ class CorrespondenceTest extends VSUMTest {
 
 	}
 
-	def private void moveUMLPackageTo(UPackage pkg, String string, VSUMImpl vsum,
+	def private void moveUMLPackageTo(UPackage pkg, String string, InternalVirtualModel vsum,
 		CorrespondenceModel correspondenceModel) {
 		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
 	}
 
-	def private void saveUPackageInNewFileAndUpdateCorrespondence(VSUMImpl vsum, UPackage pkg,
+	def private void saveUPackageInNewFileAndUpdateCorrespondence(InternalVirtualModel vsum, UPackage pkg,
 		CorrespondenceModel correspondenceModel) {
 		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		var VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
-		vsum.saveModelInstanceOriginalWithEObjectAsOnlyContent(newVURI, pkg, oldTUID)
+		vsum.saveModelInstanceWithRoot(newVURI, pkg, oldTUID)
 		oldTUID.updateTuid(pkg)
 	}
 
@@ -145,7 +145,7 @@ class CorrespondenceTest extends VSUMTest {
 		oldTUID.updateTuid(pkg)
 	}
 
-	def private void testCorrespondencePersistence(VSUMImpl vsum, Repository repo, UPackage pkg,
+	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
 		CorrespondenceModel corresp) {
 		// recreate the same correspondence as before
 		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp)
@@ -167,9 +167,9 @@ class CorrespondenceTest extends VSUMTest {
 		}
 		// save instances in order to trigger saving for CorrespondenceModel(s)
 		var VURI pcmVURI = VURI.getInstance(getDefaultPCMInstanceURI())
-		vsum.saveExistingModelInstanceOriginal(pcmVURI)
+		vsum.saveModelInstance(pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
-		var VSUMImpl vsum2 = createMetaRepositoryVSUMAndModelInstances(alternativePCMInstanceURI, alterantiveUMLInstanceURI);
+		var InternalVirtualModel vsum2 = createMetaRepositoryVSUMAndModelInstances(alternativePCMInstanceURI, alterantiveUMLInstanceURI);
 		var Repository repo2 = testLoadObject(vsum2, alternativePCMInstanceURI, Repository)
 		var UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
 		var CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
@@ -180,14 +180,14 @@ class CorrespondenceTest extends VSUMTest {
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
 
-	def private <T extends EObject> T testLoadObject(VSUMImpl vsum, String uri, Class<T> clazz) {
+	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, String uri, Class<T> clazz) {
 		var VURI vURI = VURI.getInstance(uri)
-		var ModelInstance instance = vsum.getAndLoadModelInstanceOriginal(vURI)
+		var ModelInstance instance = vsum.getModelInstance(vURI)
 		var T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz)
 		return obj
 	}
 
-	def private CorrespondenceModel testCorrespondenceModelCreation(VSUMImpl vsum) {
+	def private CorrespondenceModel testCorrespondenceModelCreation(InternalVirtualModel vsum) {
 		var VURI pcmMMVURI = VURI.getInstance(PCM_MM_URI)
 		var VURI umlMMVURI = VURI.getInstance(UML_MM_URI)
 		var CorrespondenceModel corresp = vsum.getCorrespondenceModel(pcmMMVURI, umlMMVURI)

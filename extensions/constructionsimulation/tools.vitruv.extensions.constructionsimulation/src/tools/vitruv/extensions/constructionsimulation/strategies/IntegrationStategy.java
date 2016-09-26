@@ -8,7 +8,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.change.description.VitruviusChange;
 
 /**
@@ -42,7 +42,7 @@ public abstract class IntegrationStategy {
      *            the sync
      * @return List of changes
      */
-    public List<VitruviusChange> integrateModel(final IResource resource, final ChangeSynchronizing sync) {
+    public List<VitruviusChange> integrateModel(final IResource resource, final VirtualModel vmodel) {
         this.logger.info("Start loading Model " + resource.getName());
         model = this.loadModel(resource.getLocation().toString());
         this.logger.info("Invariant Check/Enforce for Model " + resource.getName());
@@ -50,7 +50,7 @@ public abstract class IntegrationStategy {
         this.logger.info("Traverse Model and create Change-Models for Vitruvius Integration/Synchronization "
                 + resource.getName());
         final List<VitruviusChange> changes = this.createChangeModels(resource, model);
-        this.propagateChanges(changes, sync);
+        this.propagateChanges(changes, vmodel);
         this.logger.info("Finish integration for model: " + model.toString() + "@" + model.getTimeStamp());
         return changes;
     }
@@ -63,11 +63,11 @@ public abstract class IntegrationStategy {
      * @param sync
      *            the sync
      */
-    private void propagateChanges(final List<VitruviusChange> changes, final ChangeSynchronizing sync) {
+    private void propagateChanges(final List<VitruviusChange> changes, final VirtualModel vmodel) {
 
         try {
         	VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-            sync.synchronizeChange(compositeChange);
+            vmodel.propagateChange(compositeChange);
         } catch (final Exception e) {
             e.printStackTrace();
         }

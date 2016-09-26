@@ -5,8 +5,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
@@ -66,7 +68,7 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChan
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
+import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.VitruviusEMFCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
@@ -560,8 +562,12 @@ public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
     }
 
     @Override
-    protected MetaRepositoryImpl createMetaRepository() {
-        return JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository();
+    protected List<Metamodel> createMetamodels() {
+    	List<Metamodel> result = new ArrayList<Metamodel>();
+    	for (Metamodel metamodel : JaMoPPPCMTestUtil.createPcmJamoppMetamodels()) {
+    		result.add(metamodel);
+    	}
+        return result;
     }
 
     /**

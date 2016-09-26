@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,24 +103,22 @@ import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
+import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * Test class that contains utillity methods that can be used by JaMoPP2PCM
@@ -127,7 +126,7 @@ import tools.vitruv.framework.vsum.VSUMImpl;
  *
  */
 @SuppressWarnings("restriction")
-public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest implements SynchronisationListener, SynchronizationAwaitCallback {
+public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTest implements SynchronizationAwaitCallback {
 
 	private static final Logger logger = Logger.getLogger(JaMoPP2PCMTransformationTest.class.getSimpleName());
 
@@ -140,39 +139,26 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	protected Package secondPackage;
 	
 	@Override
+	protected Iterable<Metamodel> createMetamodels() {
+		return JaMoPPPCMTestUtil.createPcmJamoppMetamodels();
+	}
+	
+	@Override
 	protected void beforeTest(final Description description) throws Throwable {
 		super.beforeTest(description);
 		this.testUserInteractor = new TestUserInteractor();
 		// add PCM Java Builder to Project under test
 		final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
-		pcmJavaBuilder.addBuilderToProject(this.currentTestProject);
+		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
 		// build the project
 		BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
-		injectChange2CommandTransformingProviding();
+		//injectChange2CommandTransformingProviding();
 
 		this.resourceSet = new ResourceSetImpl();
 		// set new user interactor
 		this.setUserInteractor(this.testUserInteractor);
 		// deactivate the EMF Monitor
 		this.deactivateEMFMonitor();
-	}
-
-	private void injectChange2CommandTransformingProviding() throws Throwable {
-		/*
-		 * FIXME HK This is really hacky: We "inject" the specified
-		 * Change2CommandTransformingProviding into the PCMJavaBuilder and its
-		 * ChangeSynchronizer to use the one we expect instead of the one loaded
-		 * via extension points. If this does not work any more, check for
-		 * changed field names.
-		 */
-		PCMJavaBuilder builder = getPCMJavaBuilderFromProject();
-		Change2CommandTransformingProviding transformingProviding = createChange2CommandTransformingProviding();
-		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "transformingProviding", builder, transformingProviding);
-		ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
-				"changeSynchronizing", builder);
-		changeSynchronizing.addSynchronizationListener(this);
-		JavaBridge.setFieldInClass(ChangeSynchronizerImpl.class, "change2CommandTransformingProviding",
-				changeSynchronizing, transformingProviding);
 	}
 
 	@Override
@@ -195,20 +181,10 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	@Override
 	protected CorrespondenceModel getCorrespondenceModel() throws CoreException  {
-		final VSUMImpl vsum = this.getVSUM();
 		final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
 		final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-		final CorrespondenceModel corresponcenceInstance = vsum.getCorrespondenceModel(pcmVURI, jaMoPPVURI);
+		final CorrespondenceModel corresponcenceInstance = getVirtualModel().getCorrespondenceModel(pcmVURI, jaMoPPVURI);
 		return corresponcenceInstance;
-	}
-
-	protected VSUMImpl getVSUM() throws CoreException  {
-		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-		if (null == pcmJavaBuilder) {
-			return null;
-		}
-		final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
-		return vsum;
 	}
 
 	private PCMJavaBuilder getPCMJavaBuilderFromProject() throws CoreException  {
@@ -510,12 +486,12 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	 *
 	 * @throws Throwable
 	 */
-	private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
-		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-		final Change2CommandTransformingProviding transformingProviding = JavaBridge
-				.getFieldFromClass(VitruviusEmfBuilder.class, "transformingProviding", pcmJavaBuilder);
-		this.setUserInteractor(newUserInteracting, transformingProviding);
-	}
+//	private void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
+////		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+////		final Change2CommandTransformingProviding transformingProviding = JavaBridge
+////				.getFieldFromClass(VitruviusEmfBuilder.class, "transformingProviding", pcmJavaBuilder);
+//		this.setUserInteractor(newUserInteracting);
+//	}
 
 	protected CompositeComponent addSecondPackageCorrespondsToCompositeComponent() throws Throwable {
 		this.testUserInteractor.addNextSelections(SELECT_COMPOSITE_COMPONENT);
@@ -1027,26 +1003,20 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	private void deactivateEMFMonitor() throws Throwable {
 		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-		final ChangeSynchronizing dummyChangeSynchronizing = new ChangeSynchronizing() {
+		final VirtualModel dummyVirtualModel = new VirtualModel() {
 			@Override
-			public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
+			public void propagateChange(VitruviusChange change) {
 				final StringBuilder changeMessage = new StringBuilder();
 				change.getEChanges().forEach(eChange -> changeMessage.append(eChange).append(", "));
 				logger.info("Detected (but ignored) changes: " + changeMessage);
+			}
+			@Override
+			public ModelInstance getModelInstance(VURI modelVuri) {
 				return null;
 			}
-
-			@Override
-			public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
-			}
-
-			@Override
-			public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
-			}
-
 		};
-		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "changeSynchronizing", pcmJavaBuilder,
-				dummyChangeSynchronizing);
+		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder,
+				dummyVirtualModel);
 
 	}
 

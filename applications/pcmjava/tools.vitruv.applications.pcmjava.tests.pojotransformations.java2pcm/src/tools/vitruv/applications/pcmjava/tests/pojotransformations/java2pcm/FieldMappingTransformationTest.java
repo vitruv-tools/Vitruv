@@ -132,7 +132,7 @@ public class FieldMappingTransformationTest extends Java2PCMPackageMappingTransf
     }
 
     private void assertOperationRequiredRole(final OperationRequiredRole operationRequiredRole) throws Throwable {
-    	this.getVSUM().createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+    	this.getVirtualModel().executeCommand(new Callable<Void>() {
 
             @Override
             public Void call() throws Exception {

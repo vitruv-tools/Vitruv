@@ -1,7 +1,7 @@
 package tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.extensions;
 
-import tools.vitruv.framework.metamodel.Mapping;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
+import tools.vitruv.framework.metamodel.MetamodelPair;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 
 /**
  * Provider for mappings between meta-models.
@@ -19,6 +19,6 @@ public interface MappingProvider {
 	 *            An initialized implementation of a meta-model managing.
 	 * @return A set of mappings.
 	 */
-	Iterable<Mapping> getMappings(MetamodelManaging metaModelManaging);
+	Iterable<MetamodelPair> getMappings(MetamodelRepository metaModelManaging);
 
 }

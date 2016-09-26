@@ -1,6 +1,7 @@
 package tools.vitruv.framework.tests.util;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.log4j.ConsoleAppender;
@@ -18,12 +19,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
+import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.Mapping;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VSUMConstants;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.VirtualModelConfiguration;
+import tools.vitruv.framework.vsum.VirtualModelImpl;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 /**
@@ -46,6 +48,10 @@ public final class TestUtil {
     private TestUtil() {
     }
 
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
+        return createVSUM(metamodels, new ArrayList<Change2CommandTransforming>(), null);
+    }
+    
     /**
      * creates and returns a VSUM with the given meta repository
      *
@@ -53,8 +59,8 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository) {
-        return createVSUM(metaRepository, null);
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<Change2CommandTransforming> transformer) {
+        return createVSUM(metamodels, transformer, null);
     }
 
     /**
@@ -64,51 +70,17 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static VSUMImpl createVSUM(final MetaRepositoryImpl metaRepository, final ClassLoader classLoader) {
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository, classLoader);
-        return vsum;
-    }
-
-    /**
-     * creates a metarepository and adds mappings to it.
-     *
-     * @param mm1URIString
-     * @param fileExt1
-     * @param mm2URIString
-     * @param fileExt2
-     * @return
-     */
-    public static MetaRepositoryImpl createMetaRepositoryWithMapping(final String mm1URIString, final String fileExt1,
-            final String mm2URIString, final String fileExt2) {
-        final MetaRepositoryImpl metaRepository = new MetaRepositoryImpl();
-        addMappingToRepository(metaRepository, mm1URIString, fileExt1, mm2URIString, fileExt2);
-        return metaRepository;
-    }
-
-    /**
-     * Creates two Mappings. One from mm1 to mm2 and one from mm2 to mm1. Adds the mappings to the
-     * given Metarepository
-     *
-     * @param metaRepository
-     * @param mm1URIString
-     * @param fileExt1
-     * @param mm2URIString
-     * @param fileExt2
-     * @return
-     */
-    public static Mapping addMappingToRepository(final MetaRepositoryImpl metaRepository, final String mm1URIString,
-            final String fileExt1, final String mm2URIString, final String fileExt2) {
-        final VURI uri1 = VURI.getInstance(mm1URIString);
-        final Metamodel mm1 = createMetamodel(mm1URIString, uri1, fileExt1);
-        metaRepository.addMetamodel(mm1);
-
-        final VURI uri2 = VURI.getInstance(mm2URIString);
-        final Metamodel mm2 = createMetamodel(mm2URIString, uri2, fileExt2);
-        metaRepository.addMetamodel(mm2);
-
-        final Mapping mapping = new Mapping(mm1, mm2);
-        metaRepository.addMapping(mapping);
-        return mapping;
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<Change2CommandTransforming> transformers, final ClassLoader classLoader) {
+        VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
+        for (Metamodel metamodel : metamodels) {
+        	vmodelConfig.addMetamodel(metamodel);
+        }
+        for (Change2CommandTransforming transformer : transformers) {
+        	vmodelConfig.addChange2CommandTransforming(transformer);
+        }
+        // TODO HK Replace name with parameter
+    	final InternalVirtualModel vmodel = new VirtualModelImpl("vitruvius.meta", vmodelConfig, classLoader);
+        return vmodel;
     }
 
     /**

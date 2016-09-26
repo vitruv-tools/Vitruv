@@ -13,14 +13,18 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
+import tools.vitruv.framework.change.processing.Change2CommandTransforming;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.Mapping;
+import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
+import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.JavaHelper;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.VirtualModelConfiguration;
+import tools.vitruv.framework.vsum.VirtualModelImpl;
 
 /**
  * Utility class for the testing framework for the mapping language.
@@ -38,53 +42,10 @@ public final class MappingLanguageTestUtil {
 	 * @param mmURIs the URIs and extensions of the meta models to include in the VSUM.
 	 * @return the created VSUM
 	 */
-	public static VSUMImpl createEmptyVSUM(Collection<Metamodel> metamodels) {
-		MetaRepositoryImpl metarepository = createEmptyMetaRepository(metamodels);
-		return new VSUMImpl(metarepository, metarepository);
-	}
-	
-	/**
-	 * @see #createEmptyVSUM(List)
-	 */
-	public static VSUMImpl createEmptyVSUM(Metamodel... metamodels) {
-		return createEmptyVSUM(Arrays.asList(metamodels));
-	}
-	
-	/**
-	 * Constructs an empty meta repository that contains the meta models and mappings
-	 * between all meta models.
-	 * 
-	 * @param mmURIs the metamodels include in the meta repository.
-	 * @return the created meta repository
-	 * @see PCMJavaUtils#createPCMJavaMetarepository()
-	 */
-	public static MetaRepositoryImpl createEmptyMetaRepository(Collection<Metamodel> metamodels) {
-		final MetaRepositoryImpl metarepository = new MetaRepositoryImpl();
-		for (Metamodel metamodel : metamodels) {
-			metarepository.addMetamodel(metamodel);
-		}
-		
-		// create mappings for all pairs of metamodels
-		Metamodel[] repositoryMetamodels = metarepository.getAllMetamodels();
-		
-		for (int i = 0; i < repositoryMetamodels.length; i++)
-			for (int j = i + 1; j < repositoryMetamodels.length; j++)
-					metarepository.addMapping(new Mapping(repositoryMetamodels[i], repositoryMetamodels[j]));
-
-		return metarepository;
+	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<Change2CommandTransforming> transformer) {
+		return TestUtil.createVSUM(metamodels, transformer);
 	}
 
-	/**
-	 * @see #createEmptyMetarepository(List) 
-	 */
-	public static MetaRepositoryImpl createEmptyMetaRepository(Metamodel... metamodels) {
-		return createEmptyMetaRepository(Arrays.asList(metamodels));
-	}
-
-	public static VSUMImpl createEmptyVSUM(MetaRepositoryImpl metaRepository) {
-		return new VSUMImpl(metaRepository, metaRepository);
-	}
-	
 	public static Metamodel createMetamodel(String nsURI, String... extensions) {
 		return new Metamodel(nsURI, VURI.getInstance(nsURI), extensions);
 	}

@@ -1,12 +1,10 @@
 package tools.vitruv.applications.pcmjava.linkingintegration
 
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metamodel.ModelProviding
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EclipseBridge
-import tools.vitruv.framework.vsum.VSUMImpl
 import java.util.HashSet
 import java.util.List
 import java.util.Set
@@ -42,6 +40,7 @@ import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.extensions.integration.correspondence.util.IntegrationCorrespondenceHelper
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -66,14 +65,14 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 	@Accessors(PUBLIC_GETTER)
 	private CorrespondenceModel cInstance
 
-	private ModelProviding modelProviding
+	private InternalVirtualModel vmodel
 
 	private Set<Package> packages
 	private Package rootPackage
 
 	private IPath projectBase
 
-	new(String scdmPath, String pcmPath, List<IPath> jamoppPaths, VSUMImpl vsum, IPath projectBase) {
+	new(String scdmPath, String pcmPath, List<IPath> jamoppPaths, InternalVirtualModel vsum, IPath projectBase) {
 
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)
@@ -86,7 +85,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		this.jamoppPaths = jamoppPaths
 		this.packages = new HashSet<Package>()
 		this.projectBase = projectBase
-		this.modelProviding = vsum
+		this.vmodel = vsum
 		logger.level = Level.ALL
 	}
 
@@ -146,7 +145,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		findAndExecuteAfterTransformationExtensions()
 
 		// forces saving of correspondence instance
-		this.modelProviding.saveExistingModelInstanceOriginal(VURI.getInstance(pcmRepo.eResource))
+		this.vmodel.saveModelInstance(VURI.getInstance(pcmRepo.eResource))
 	}
 
 	def private findAndExecuteAfterTransformationExtensions() {
