@@ -14,7 +14,7 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.extensions.dslsruntime.response.helper.ResponseCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-abstract class AbstractEffectRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
+abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
 	private extension val ResponseExecutionState executionState;
 	
 	@Delegate
