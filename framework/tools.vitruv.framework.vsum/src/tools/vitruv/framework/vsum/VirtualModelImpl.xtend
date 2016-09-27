@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding
 import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;

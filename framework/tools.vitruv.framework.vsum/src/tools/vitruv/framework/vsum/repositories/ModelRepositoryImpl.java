@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum;
+package tools.vitruv.framework.vsum.repositories;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+public class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
     private static final Logger logger = Logger.getLogger(ModelRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
