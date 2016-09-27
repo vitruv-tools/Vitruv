@@ -57,10 +57,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository.createModelInstance(vuri, rootEObject);
 	}
 	
-	override reloadModelInstance(VURI vuri) {
-		this.modelRepository.forceReloadModelInstanceOriginalIfExisting(vuri);
-	}
-	
 	override executeCommand(Callable<Void> command) {
 		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}

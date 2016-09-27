@@ -78,7 +78,8 @@ public class VSUMTest extends AbstractVSUMTest {
         // this is fine, the component is contained in the resource
         assertTrue("Resource of component is null", null != component.eResource());
         // causes a unload and a load of the model
-        vsum.reloadModelInstance(vuri);
+        // TODO This is buillshit... Why should we reload a model in the VSUM?
+        // vsum.reloadModelInstance(vuri);
         mi = vsum.getModelInstance(vuri);
 
         // not fine anymore: component is not contained in the resource and it is a proxy

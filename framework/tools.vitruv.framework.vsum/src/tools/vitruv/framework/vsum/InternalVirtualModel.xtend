@@ -15,7 +15,6 @@ interface InternalVirtualModel extends VirtualModel {
 	def void save();
 	def void createModel(VURI vuri, EObject rootEObject);
 	def boolean existsModelInstance(VURI vuri);
-	def void reloadModelInstance(VURI vuri);
 	def void executeCommand(Callable<Void> command);
 	def void addChangeSynchronizationListener(SynchronisationListener synchronizationListener);
 	def void setUserInteractor(UserInteracting userInteractor);
