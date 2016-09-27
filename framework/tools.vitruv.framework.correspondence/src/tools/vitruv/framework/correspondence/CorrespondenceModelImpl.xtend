@@ -398,7 +398,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var EObject rootEObject = null
 		var ModelInstance modelInstance = null
 		if (vuri !== null) {
-			modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri)
+			modelInstance = this.modelProviding.getModel(vuri)
 			rootEObject = modelInstance.getFirstRootEObject()
 		}
 		var EObject resolvedEobject = null

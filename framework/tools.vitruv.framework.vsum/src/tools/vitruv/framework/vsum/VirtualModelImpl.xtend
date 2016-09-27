@@ -46,7 +46,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override getModelInstance(VURI modelVuri) {
-		return this.modelRepository.getAndLoadModelInstanceOriginal(modelVuri);
+		return this.modelRepository.getModel(modelVuri);
 	}
 	
 	override save() {
@@ -54,7 +54,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override createModel(VURI vuri, EObject rootEObject) {
-		this.modelRepository.createModelInstance(vuri, rootEObject);
+		this.modelRepository.createModel(vuri, rootEObject);
 	}
 	
 	override executeCommand(Callable<Void> command) {

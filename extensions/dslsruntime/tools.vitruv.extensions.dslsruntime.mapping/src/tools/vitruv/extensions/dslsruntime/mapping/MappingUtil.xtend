@@ -49,7 +49,7 @@ class MappingUtil {
 		} else {
 			val proxyUri = (potentialProxy as BasicEObjectImpl).eProxyURI
 			val vuri = VURI.getInstance(proxyUri.trimFragment)
-			val modelInstance = mp.getAndLoadModelInstanceOriginal(vuri)
+			val modelInstance = mp.getModel(vuri)
 			
 			val resolvedObject = modelInstance.resource.allContents.findFirst[it.id == proxyUri.fragment] as T
 			return resolvedObject

@@ -71,7 +71,7 @@ public class DefaultImplementations {
 
     public static final ModelProviding DEFAULT_MODEL_PROVIDING = new ModelProviding() {
         @Override
-        public ModelInstance getAndLoadModelInstanceOriginal(VURI uri) {
+        public ModelInstance getModel(VURI uri) {
             // TODO Auto-generated method stub
             return null;
         }
@@ -83,19 +83,19 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void deleteModelInstanceOriginal(VURI vuri) {
+        public void deleteModel(VURI vuri) {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void forceReloadModelInstanceOriginalIfExisting(VURI modelURI) {
+        public void forceReloadModelIfExisting(VURI modelURI) {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public void createModelInstance(VURI vuri, EObject rootEObject) {
+        public void createModel(VURI vuri, EObject rootEObject) {
             // TODO Auto-generated method stub
 
         }

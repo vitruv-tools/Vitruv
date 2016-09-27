@@ -47,11 +47,11 @@ class CommandExecutingImpl implements CommandExecuting {
 				return;
 			}
 			for (VURI vuriToDelete : transformationResult.getVUIRsToDelete()) {
-				blackboard.getModelProviding().deleteModelInstanceOriginal(vuriToDelete)
+				blackboard.getModelProviding().deleteModel(vuriToDelete)
 			}
 			for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
 				blackboard.getModelProviding().
-					createModelInstance(createdEObjectVURIPair.getSecond(),
+					createModel(createdEObjectVURIPair.getSecond(),
 						createdEObjectVURIPair.getFirst())
 			}
 		}

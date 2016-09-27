@@ -110,7 +110,7 @@ class MappingExecutionState {
 		for (res : resourcesToSave) {
 			// TODO Is this correct?
 			bb.modelProviding.saveAllModels()//(VURI::getInstance(res))
-			bb.modelProviding.forceReloadModelInstanceOriginalIfExisting(VURI::getInstance(res))
+			bb.modelProviding.forceReloadModelIfExisting(VURI::getInstance(res))
 			println("Saved: " + VURI::getInstance(res).toString)
 		}
 		

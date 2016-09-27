@@ -8,21 +8,12 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public interface ModelProviding {
-    ModelInstance getAndLoadModelInstanceOriginal(VURI uri);
-
+	void createModel(VURI modelVuri, EObject rootEObject);
+	void deleteModel(VURI modelVuri);
+	ModelInstance getModel(VURI modelVuri);
+	void forceReloadModelIfExisting(VURI modelVuri);
     void saveAllModels();
-
-    /**
-     * Convenience method
-     */
+    
     void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable);
-    
     void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command);
-    
-    void deleteModelInstanceOriginal(VURI vuri);
-
-    void createModelInstance(VURI vuri, EObject rootEObject);
-
-    void forceReloadModelInstanceOriginalIfExisting(VURI modelURI);
-
 }

@@ -85,12 +85,12 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public ModelInstance getAndLoadModelInstanceOriginal(final VURI modelURI) {
+    public ModelInstance getModel(final VURI modelURI) {
         return getAndLoadModelInstanceOriginal(modelURI, false);
     }
 
     @Override
-    public void forceReloadModelInstanceOriginalIfExisting(final VURI modelURI) {
+    public void forceReloadModelIfExisting(final VURI modelURI) {
         if (existsModelInstance(modelURI)) {
             getAndLoadModelInstanceOriginal(modelURI, true);
         }
@@ -136,8 +136,8 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public void createModelInstance(final VURI vuri, final EObject rootEObject) {
-        final ModelInstance modelInstance = getAndLoadModelInstanceOriginal(vuri);
+    public void createModel(final VURI vuri, final EObject rootEObject) {
+        final ModelInstance modelInstance = getModel(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -303,7 +303,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public void deleteModelInstanceOriginal(final VURI vuri) {
+    public void deleteModel(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
