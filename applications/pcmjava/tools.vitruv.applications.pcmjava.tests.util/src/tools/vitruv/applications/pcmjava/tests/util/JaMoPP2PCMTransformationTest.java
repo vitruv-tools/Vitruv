@@ -15,17 +15,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.core.internal.events.BuildCommand;
-import org.eclipse.core.internal.resources.Project;
-import org.eclipse.core.internal.resources.ProjectDescription;
-import org.eclipse.core.internal.resources.ProjectInfo;
-import org.eclipse.core.internal.resources.ResourceInfo;
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -93,20 +86,17 @@ import org.palladiosimulator.pcm.system.System;
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder;
 import tools.vitruv.domains.emf.util.BuildProjects;
 import tools.vitruv.domains.java.builder.JavaAddBuilder;
 import tools.vitruv.domains.java.builder.JavaBuilder;
 import tools.vitruv.domains.java.builder.JavaRemoveBuilder;
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
-import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
@@ -114,7 +104,6 @@ import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -157,17 +146,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 
 	@Override
 	protected void afterTest(final org.junit.runner.Description description) {
-		// tell the code monitor to not report changes any more
-		try {
-			final JavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-			if (null != pcmJavaBuilder) {
-				final MonitoredEditor monitoredEditor = JavaBridge.getFieldFromClass(JavaBuilder.class,
-						"javaMonitoredEditor", pcmJavaBuilder);
-				monitoredEditor.setReportChanges(false);
-			}
-		} catch (final Throwable e) {
-			// do nothing since we
-		}
 		// Remove PCM Java Builder
 		final JavaRemoveBuilder pcmJavaRemoveBuilder = new JavaRemoveBuilder();
 		pcmJavaRemoveBuilder.removeBuilderFromProject(this.currentTestProject);
@@ -181,24 +159,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return corresponcenceInstance;
 	}
 
-	private JavaBuilder getPCMJavaBuilderFromProject() throws CoreException  {
-		final Project project = (Project) this.currentTestProject;
-		final ResourceInfo info = project.getResourceInfo(false, false);
-		final ProjectDescription description = ((ProjectInfo) info).getDescription();
-		final boolean makeCopy = false;
-		for (final ICommand command : description.getBuildSpec(makeCopy)) {
-			if (command.getBuilderName().equals(JavaBuilder.BUILDER_ID)) {
-				final BuildCommand buildCommand = (BuildCommand) command;
-				final IncrementalProjectBuilder ipb = buildCommand
-						.getBuilder(this.currentTestProject.getActiveBuildConfig());
-				final JavaBuilder javaBuilder = (JavaBuilder) ipb;
-				return javaBuilder;
-			}
-		}
-		logger.warn("Could not find any JavaBuilder");
-		return null;
-	}
-	
 	public void editCompilationUnit(final ICompilationUnit cu, final TextEdit... edits)
             throws JavaModelException {
 		CompilationUnitManipulatorHelper.editCompilationUnit(cu, this, edits);
@@ -923,7 +883,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	/**
-	 * Create change for annotation manually and notify change synchonizer
+	 * Create change for annotation manually and notify change synchronizer
 	 *
 	 * @param annotableAndModifiable
 	 * @throws Throwable
@@ -946,11 +906,10 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		createChange.setAffectedFeature(containingReference);
 		createChange.setIndex(index);
 		createChange.setNewValue(newAnnotation);
-		final ChangeSynchronizing cs = this.getChangeSynchronizing();
 		final VURI vuri = VURI.getInstance(annotableAndModifiable.eResource());
 		final ConcreteChange change = VitruviusChangeFactory.getInstance()
 				.createConcreteChange(createChange, vuri);
-		cs.synchronizeChange(change);
+		getVirtualModel().propagateChange(change);
 	}
 
 	// add Annotation via the framework
@@ -980,13 +939,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final Set<T> eObjectsByType = CorrespondenceModelUtil
 				.getCorrespondingEObjectsByType(this.getCorrespondenceModel(), jaMoPPField, classOfCorrespondingObject);
 		return CollectionBridge.claimOne(eObjectsByType);
-	}
-
-	private ChangeSynchronizing getChangeSynchronizing() throws Throwable {
-		final JavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-		final ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
-				"changeSynchronizing", pcmJavaBuilder);
-		return changeSynchronizing;
 	}
 
 	private Classifier createClassifierFromName(final String annotationName) {
