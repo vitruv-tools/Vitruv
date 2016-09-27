@@ -46,6 +46,11 @@ public class DefaultImplementations {
         public ModelInstance getModelInstance(VURI modelVuri) {
             return null;
         }
+
+        @Override
+        public String getName() {
+            return null;
+        }
     };
 
     public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
@@ -157,6 +162,11 @@ public class DefaultImplementations {
 
         @Override
         public ModelInstance getModelInstance(VURI modelVuri) {
+            return null;
+        }
+
+        @Override
+        public String getName() {
             return null;
         }
 

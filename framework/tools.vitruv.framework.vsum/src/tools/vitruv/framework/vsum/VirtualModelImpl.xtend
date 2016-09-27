@@ -61,14 +61,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}
 	
-	override boolean existsModelInstance(VURI vuri) {
-		return modelRepository.existsModelInstance(vuri);
-	}
-	
-	override getAllModelInstances() {
-		return modelRepository.modelInstances.values;
-	}
-	
 	override addChangeSynchronizationListener(SynchronisationListener synchronizationListener) {
 		changeSynchronizer.addSynchronizationListener(synchronizationListener);
 	}

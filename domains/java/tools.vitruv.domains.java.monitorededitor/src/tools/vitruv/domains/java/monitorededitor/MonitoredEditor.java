@@ -117,6 +117,10 @@ public class MonitoredEditor extends AbstractMonitoredEditor
 			public ModelInstance getModelInstance(VURI modelVuri) {
 				return null;
 			}
+			@Override
+			public String getName() {
+				return null;
+			}
         }, MY_MONITORED_PROJECT);
         this.reportChanges = true;
     }
