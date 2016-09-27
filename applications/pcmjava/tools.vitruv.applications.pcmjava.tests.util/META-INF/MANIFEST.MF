@@ -4,7 +4,7 @@ Bundle-Name: Vitruvius PCM-Java Tests Utilities
 Bundle-SymbolicName: tools.vitruv.applications.pcmjava.tests.util
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.junit, 
+Require-Bundle: org.junit,
  org.apache.commons.lang,
  org.apache.log4j,
  org.eclipse.jdt.core.manipulation,
@@ -30,5 +30,5 @@ Require-Bundle: org.junit,
  tools.vitruv.domains.java.monitorededitor,
  tools.vitruv.domains.emf,
  tools.vitruv.applications.pcmjava.util,
- tools.vitruv.applications.pcmjava.builder
+ tools.vitruv.domains.java.builder
 Export-Package: tools.vitruv.applications.pcmjava.tests.util

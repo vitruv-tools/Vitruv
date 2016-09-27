@@ -2,11 +2,11 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder.id"
+         id="tools.vitruv.domains.java.builder.JavaBuilder.id"
          point="org.eclipse.core.resources.builders">
       <builder>
          <run
-               class="tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder">
+               class="tools.vitruv.domains.java.builder.JavaBuilder">
          </run>
        </builder>
    </extension>
@@ -17,7 +17,7 @@
 	    	   allPopups="false"
 	    	   locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
 	        <command
-	        	commandId="tools.vitruv.applications.pcmjava.builder.addbuilder.commandId"
+	        	commandId="tools.vitruv.domains.java.builder.addbuilder.commandId"
 	        	style="push">
 	        	<visibleWhen
                   checkEnabled="false">
@@ -36,7 +36,7 @@
                      <not>
                         <test
                               forcePluginActivation="true"
-                              property="tools.vitruv.applications.pcmjava.builder.isEnabled">
+                              property="tools.vitruv.domains.java.builder.isEnabled">
                         </test>
                      </not>
                   </iterate>
@@ -44,7 +44,7 @@
             </visibleWhen>
 	        </command>
 	        <command 
-	        	commandId="tools.vitruv.applications.pcmjava.builder.removebuilder.commandId"
+	        	commandId="tools.vitruv.domains.java.builder.removebuilder.commandId"
 	         	style="push">
 	         	<visibleWhen
                   checkEnabled="false">
@@ -62,7 +62,7 @@
                   <iterate>
                      <test
                            forcePluginActivation="true"
-                           property="tools.vitruv.applications.pcmjava.builder.isEnabled">
+                           property="tools.vitruv.domains.java.builder.isEnabled">
                      </test>
                   </iterate>
                </and>
@@ -73,13 +73,13 @@
 	
 	<extension point="org.eclipse.ui.commands">
     	<command
-    		 defaultHandler="tools.vitruv.applications.pcmjava.builder.PCMJavaAddBuilder" 
-    		 id="tools.vitruv.applications.pcmjava.builder.addbuilder.commandId" 
+    		 defaultHandler="tools.vitruv.domains.java.builder.JavaAddBuilder" 
+    		 id="tools.vitruv.domains.java.builder.addbuilder.commandId" 
     		 name="Add PCM Java Builder">
     	</command>
 	    <command
-	    	 defaultHandler="tools.vitruv.applications.pcmjava.builder.PCMJavaRemoveBuilder"
-	    	  id="tools.vitruv.applications.pcmjava.builder.removebuilder.commandId" 
+	    	 defaultHandler="tools.vitruv.domains.java.builder.JavaRemoveBuilder"
+	    	  id="tools.vitruv.domains.java.builder.removebuilder.commandId" 
 	    	  name="Remove PCM Java Builder">
 	    </command>
 	</extension>
@@ -87,9 +87,9 @@
 	<extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="tools.vitruv.applications.pcmjava.builder.PCMJavaTestBuilderEnabled"
-            id="tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder.id"
-            namespace="tools.vitruv.applications.pcmjava.builder"
+            class="tools.vitruv.domains.java.builder.JavaTestBuilderEnabled"
+            id="tools.vitruv.domains.java.builder.JavaBuilder.id"
+            namespace="tools.vitruv.domains.java.builder"
             properties="isEnabled"
             type="java.lang.Object">
       </propertyTester>
@@ -97,7 +97,7 @@
  <extension
        point="org.eclipse.ui.startup">
     <startup
-          class="tools.vitruv.applications.pcmjava.builder.BuildOnEclipseStartup">
+          class="tools.vitruv.domains.java.builder.JavaBuildOnEclipseStartup">
     </startup>
  </extension>
    

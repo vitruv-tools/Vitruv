@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius PCM-Java Builder
-Bundle-SymbolicName: tools.vitruv.applications.pcmjava.builder;singleton:=true
+Bundle-SymbolicName: tools.vitruv.domains.java.builder;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
@@ -23,4 +23,4 @@ Require-Bundle: org.eclipse.core.runtime,
  tools.vitruv.domains.java.monitorededitor,
  tools.vitruv.applications.pcmjava.util
 Bundle-ActivationPolicy: lazy
-Export-Package: tools.vitruv.applications.pcmjava.builder
+Export-Package: tools.vitruv.domains.java.builder

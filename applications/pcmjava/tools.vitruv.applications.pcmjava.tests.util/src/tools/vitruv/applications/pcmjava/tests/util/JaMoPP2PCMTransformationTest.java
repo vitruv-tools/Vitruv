@@ -92,12 +92,12 @@ import org.palladiosimulator.pcm.system.System;
 
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
-import tools.vitruv.applications.pcmjava.builder.PCMJavaAddBuilder;
-import tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder;
-import tools.vitruv.applications.pcmjava.builder.PCMJavaRemoveBuilder;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder;
 import tools.vitruv.domains.emf.util.BuildProjects;
+import tools.vitruv.domains.java.builder.JavaAddBuilder;
+import tools.vitruv.domains.java.builder.JavaBuilder;
+import tools.vitruv.domains.java.builder.JavaRemoveBuilder;
 import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
@@ -145,10 +145,10 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		super.beforeTest(description);
 		this.testUserInteractor = new TestUserInteractor();
 		// add PCM Java Builder to Project under test
-		final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
+		final JavaAddBuilder pcmJavaBuilder = new JavaAddBuilder();
 		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
 		// build the project
-		BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
+		BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(JavaBuilder.BUILDER_ID);
 
 		this.resourceSet = new ResourceSetImpl();
 		// set new user interactor
@@ -159,9 +159,9 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	protected void afterTest(final org.junit.runner.Description description) {
 		// tell the code monitor to not report changes any more
 		try {
-			final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+			final JavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
 			if (null != pcmJavaBuilder) {
-				final MonitoredEditor monitoredEditor = JavaBridge.getFieldFromClass(PCMJavaBuilder.class,
+				final MonitoredEditor monitoredEditor = JavaBridge.getFieldFromClass(JavaBuilder.class,
 						"javaMonitoredEditor", pcmJavaBuilder);
 				monitoredEditor.setReportChanges(false);
 			}
@@ -169,7 +169,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 			// do nothing since we
 		}
 		// Remove PCM Java Builder
-		final PCMJavaRemoveBuilder pcmJavaRemoveBuilder = new PCMJavaRemoveBuilder();
+		final JavaRemoveBuilder pcmJavaRemoveBuilder = new JavaRemoveBuilder();
 		pcmJavaRemoveBuilder.removeBuilderFromProject(this.currentTestProject);
 	}
 
@@ -181,17 +181,17 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		return corresponcenceInstance;
 	}
 
-	private PCMJavaBuilder getPCMJavaBuilderFromProject() throws CoreException  {
+	private JavaBuilder getPCMJavaBuilderFromProject() throws CoreException  {
 		final Project project = (Project) this.currentTestProject;
 		final ResourceInfo info = project.getResourceInfo(false, false);
 		final ProjectDescription description = ((ProjectInfo) info).getDescription();
 		final boolean makeCopy = false;
 		for (final ICommand command : description.getBuildSpec(makeCopy)) {
-			if (command.getBuilderName().equals(PCMJavaBuilder.BUILDER_ID)) {
+			if (command.getBuilderName().equals(JavaBuilder.BUILDER_ID)) {
 				final BuildCommand buildCommand = (BuildCommand) command;
 				final IncrementalProjectBuilder ipb = buildCommand
 						.getBuilder(this.currentTestProject.getActiveBuildConfig());
-				final PCMJavaBuilder javaBuilder = (PCMJavaBuilder) ipb;
+				final JavaBuilder javaBuilder = (JavaBuilder) ipb;
 				return javaBuilder;
 			}
 		}
@@ -983,7 +983,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 
 	private ChangeSynchronizing getChangeSynchronizing() throws Throwable {
-		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
+		final JavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
 		final ChangeSynchronizing changeSynchronizing = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class,
 				"changeSynchronizing", pcmJavaBuilder);
 		return changeSynchronizing;

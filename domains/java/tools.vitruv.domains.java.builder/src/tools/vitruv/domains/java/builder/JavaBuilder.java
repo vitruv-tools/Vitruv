@@ -1,4 +1,4 @@
-package tools.vitruv.applications.pcmjava.builder;
+package tools.vitruv.domains.java.builder;
 
 import java.util.Map;
 
@@ -10,18 +10,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
 import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
 
-public class PCMJavaBuilder extends VitruviusProjectBuilder {
+public class JavaBuilder extends VitruviusProjectBuilder {
     // ID of JavaBuilder
-    public static final String BUILDER_ID = "tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder.id";
+    public static final String BUILDER_ID = "tools.vitruv.domains.java.builder.JavaBuilder.id";
 
-    private static Logger logger = Logger.getLogger(PCMJavaBuilder.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(JavaBuilder.class.getSimpleName());
 
     @SuppressWarnings("unused")
     private MonitoredEditor javaMonitoredEditor;
 
-    public PCMJavaBuilder() {
+    public JavaBuilder() {
         super();
-        logger.trace("PCMJavaBuilder is ALIVE");
+        logger.trace("Vitruvius JavaBuilder is alive");
     }
 
     @Override
