@@ -49,10 +49,6 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 		this.changeRecorder = new AtomicEMFChangeRecorder();
 	}
 
-//	protected void setUserInteractor(UserInteracting newUserInteracting) throws Throwable {
-//		setUserInteractor(newUserInteracting, transformingProviding);
-//	}
-
 	protected abstract List<Metamodel> createMetamodels();
 
 	@Override

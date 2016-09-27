@@ -10,8 +10,6 @@ import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.domains.java.util.jamopp.JaMoPPTUIDCalculatorAndResolver;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelPair;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**

@@ -17,12 +17,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.applications.pcmjava.linkingintegration.PCMJaMoPPCorrespondenceModelTransformation;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
@@ -82,8 +79,6 @@ public class IntegrateProjectHandler extends AbstractHandler {
         }
         // TODO HK Use other name
         final InternalVirtualModel vsum = new VirtualModelImpl("virtuvius.meta", config);
-//        vsum.getOrCreateAllCorrespondenceModelsForMM(
-//                metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
 
         final PCMJaMoPPCorrespondenceModelTransformation transformation = new PCMJaMoPPCorrespondenceModelTransformation(
                 scdmPath.toString(), pcmPath.toString(), jamoppPaths, vsum, projectBase);

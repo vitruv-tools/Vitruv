@@ -2,7 +2,6 @@ package tools.vitruv.dsls.response.tests
 
 import tools.vitruv.dsls.response.tests.AbstractResponseTests
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays
 import java.util.HashSet
 import tools.vitruv.framework.metamodel.Metamodel
@@ -16,7 +15,6 @@ import java.util.List
 import allElementTypes.Identified
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.metamodel.MetamodelPair
 
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
