@@ -29,21 +29,21 @@ public final class BuildProjects {
      */
     public static void issueIncrementalBuildForAllProjectsWithBuilder(final String builderId) {
         for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-            try {
-                for (ICommand buildCommand : project.getDescription().getBuildSpec()) {
-                    if (buildCommand.getBuilderName().equals(builderId)) {
-                        issueIncrementalBuild(project, builderId);
-                    }
-                }
-            } catch (CoreException e) {
-                LOGGER.fatal("Could not issue initial build for project " + project.getName() + ":\n" + e);
-            }
+        	issueIncrementalBuild(project, builderId);
         }
     }
 
-    private static void issueIncrementalBuild(final IProject project, final String builderId) throws CoreException {
+    public static void issueIncrementalBuild(final IProject project, final String builderId) {
         LOGGER.trace("Issuing initial build for project " + project.getName());
-        project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, builderId, new HashMap<String, String>(),
-                new NullProgressMonitor());
+        try {
+            for (ICommand buildCommand : project.getDescription().getBuildSpec()) {
+                if (buildCommand.getBuilderName().equals(builderId)) {
+                	 project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, builderId, new HashMap<String, String>(),
+                             new NullProgressMonitor());
+                }
+            }
+        } catch (CoreException e) {
+            LOGGER.fatal("Could not issue initial build for project " + project.getName() + ":\n" + e);
+        }
     }
 }

@@ -148,7 +148,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final JavaAddBuilder pcmJavaBuilder = new JavaAddBuilder();
 		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
 		// build the project
-		BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(JavaBuilder.BUILDER_ID);
+		BuildProjects.issueIncrementalBuild(currentTestProject, JavaBuilder.BUILDER_ID);
 
 		this.resourceSet = new ResourceSetImpl();
 		// set new user interactor
