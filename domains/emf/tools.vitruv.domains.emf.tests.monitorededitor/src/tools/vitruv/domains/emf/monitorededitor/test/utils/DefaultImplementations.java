@@ -23,7 +23,7 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -69,7 +69,7 @@ public class DefaultImplementations {
         }
     };
 
-    public static final ModelProviding DEFAULT_MODEL_PROVIDING = new ModelProviding() {
+    public static final ModelRepository DEFAULT_MODEL_PROVIDING = new ModelRepository() {
         @Override
         public ModelInstance getModel(VURI uri) {
             // TODO Auto-generated method stub

@@ -24,7 +24,7 @@ import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.metamodel.ModelInstance;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
@@ -33,7 +33,7 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-class ModelRepositoryImpl implements ModelProviding, CorrespondenceProviding {
+class ModelRepositoryImpl implements ModelRepository, CorrespondenceProviding {
     private static final Logger logger = Logger.getLogger(ModelRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;

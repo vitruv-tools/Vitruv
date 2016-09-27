@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-public interface ModelProviding {
+public interface ModelRepository {
 	void createModel(VURI modelVuri, EObject rootEObject);
 	void deleteModel(VURI modelVuri);
 	ModelInstance getModel(VURI modelVuri);

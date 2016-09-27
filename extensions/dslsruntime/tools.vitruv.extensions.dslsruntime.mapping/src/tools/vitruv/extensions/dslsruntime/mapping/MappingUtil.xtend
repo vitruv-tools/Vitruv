@@ -1,7 +1,6 @@
 package tools.vitruv.extensions.dslsruntime.mapping
 
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metamodel.ModelProviding
 import tools.vitruv.extensions.dslsruntime.mapping.MIRMappingHelper
 import java.util.Collection
 import java.util.List
@@ -11,6 +10,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.metamodel.ModelRepository
 
 class MappingUtil {
 	public static def boolean isEChangeInPackage(EChange eChange, EPackage ePackage) {
@@ -43,7 +43,7 @@ class MappingUtil {
 	}
 	
 	@Deprecated
-	public static def <T extends EObject> T resolved(T potentialProxy, ModelProviding mp) {
+	public static def <T extends EObject> T resolved(T potentialProxy, ModelRepository mp) {
 		if (!potentialProxy.eIsProxy) {
 			return potentialProxy
 		} else {

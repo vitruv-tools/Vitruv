@@ -3,7 +3,7 @@ package tools.vitruv.framework.modelsynchronization.blackboard.impl;
 import java.util.List;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 
@@ -11,11 +11,11 @@ public class BlackboardImpl implements Blackboard {
 
     private BlackboardState state;
     private final CorrespondenceModel correspondenceModel;
-    private final ModelProviding modelProviding;
+    private final ModelRepository modelProviding;
     private List<VitruviusRecordingCommand> commands;
     private List<VitruviusRecordingCommand> archivedCommands;
 
-    public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelProviding modelProviding) {
+    public BlackboardImpl(final CorrespondenceModel correspondenceModel, final ModelRepository modelProviding) {
         this.state = BlackboardState.WAITING4COMMANDS;
         this.correspondenceModel = correspondenceModel;
         this.modelProviding = modelProviding;
@@ -37,7 +37,7 @@ public class BlackboardImpl implements Blackboard {
     }
 
     @Override
-    public ModelProviding getModelProviding() {
+    public ModelRepository getModelProviding() {
         return this.modelProviding;
     }
 

@@ -2,8 +2,6 @@ package tools.vitruv.framework.modelsynchronization.commandexecution
 
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metamodel.ModelProviding
-import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
 import tools.vitruv.framework.util.datatypes.Pair
 import java.util.ArrayList
 import java.util.Collections
@@ -16,12 +14,14 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
 
 	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
-		val ModelProviding modelProviding = blackboard.getModelProviding()
+		val ModelRepository modelProviding = blackboard.getModelProviding()
 		val ArrayList<Object> affectedObjects = new ArrayList()
 		val ArrayList<TransformationResult> transformationResults = new ArrayList()
 		for (VitruviusRecordingCommand command : blackboard.getAndArchiveCommandsForExecution()) {

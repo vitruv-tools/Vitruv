@@ -13,26 +13,26 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.Change2CommandTransforming
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.metamodel.ModelProviding
-import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.modelsynchronization.blackboard.impl.BlackboardImpl
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecuting
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecutingImpl
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.metamodel.MetamodelRepository
+import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 
 class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	static final int BLACKBOARD_HITORY_SIZE = 2
 	static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.getSimpleName())
 	final MetamodelRepository metamodelRepository;
-	final ModelProviding modelProviding
+	final ModelRepository modelProviding
 	final Change2CommandTransformingProviding change2CommandTransformingProviding
 	final CorrespondenceProviding correspondenceProviding
 	final CommandExecuting commandExecuting
 	Set<SynchronisationListener> synchronizationListeners
 	Queue<Blackboard> blackboardHistory
 
-	new(ModelProviding modelProviding, Change2CommandTransformingProviding change2CommandTransformingProviding,
+	new(ModelRepository modelProviding, Change2CommandTransformingProviding change2CommandTransformingProviding,
 		MetamodelRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
 		this.modelProviding = modelProviding
 		this.change2CommandTransformingProviding = change2CommandTransformingProviding

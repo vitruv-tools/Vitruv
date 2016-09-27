@@ -35,7 +35,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -107,7 +107,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            need to be monitored.
      */
     public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, VirtualModel virtualModel,
-            ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+            ModelRepository modelProviding, IVitruviusAccessor vitruvAccessor) {
         ResourceChangeSynchronizing internalChangeSync = createInternalChangeSynchronizing();
         changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(internalChangeSync, factory, monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
@@ -131,7 +131,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      *            A {@link IVitruviusAccessor} instance providing information about which EMF models
      *            need to be monitored.
      */
-    public VitruviusEMFEditorMonitorImpl(VirtualModel virtualModel, ModelProviding modelProviding,
+    public VitruviusEMFEditorMonitorImpl(VirtualModel virtualModel, ModelRepository modelProviding,
             IVitruviusAccessor vitruvAccessor) {
         this(new DefaultEditorPartAdapterFactoryImpl(), virtualModel, modelProviding, vitruvAccessor);
     }

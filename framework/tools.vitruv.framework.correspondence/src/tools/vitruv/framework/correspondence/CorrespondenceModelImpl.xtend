@@ -29,24 +29,24 @@ import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.metamodel.ModelInstance
-import tools.vitruv.framework.metamodel.ModelProviding
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.metamodel.MetamodelPair
 import tools.vitruv.framework.metamodel.Metamodel
+import tools.vitruv.framework.metamodel.ModelRepository
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
 	final MetamodelPair mapping
-	final ModelProviding modelProviding
+	final ModelRepository modelProviding
 	final Correspondences correspondences
 	final ClaimableMap<TUID,Set<List<TUID>>> tuid2tuidListsMap
 	protected final ClaimableMap<List<TUID>, Set<Correspondence>> tuid2CorrespondencesMap
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 
-	new(MetamodelPair mapping, ModelProviding modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(MetamodelPair mapping, ModelRepository modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
 		this.mapping = mapping
 		this.modelProviding = modelProviding

@@ -16,7 +16,7 @@ import java.util.Collection;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.vsum.VirtualModel;
 
@@ -40,7 +40,7 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(IEditorPartAdapterFactory factory,
-            VirtualModel virtualModel, ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+            VirtualModel virtualModel, ModelRepository modelProviding, IVitruviusAccessor vitruvAccessor) {
         return new VitruviusEMFEditorMonitorImpl(factory, virtualModel, modelProviding, vitruvAccessor);
     }
 
@@ -57,7 +57,7 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(VirtualModel virtualModel,
-            ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
+            ModelRepository modelProviding, IVitruviusAccessor vitruvAccessor) {
         return new VitruviusEMFEditorMonitorImpl(virtualModel, modelProviding, vitruvAccessor);
     }
 

@@ -3,7 +3,7 @@ package tools.vitruv.framework.modelsynchronization.blackboard;
 import java.util.List;
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.ModelProviding;
+import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 
 /*
@@ -55,7 +55,7 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 public interface Blackboard {
     CorrespondenceModel getCorrespondenceModel();
 
-    ModelProviding getModelProviding();
+    ModelRepository getModelProviding();
 
     void pushCommands(List<VitruviusRecordingCommand> commands);
 

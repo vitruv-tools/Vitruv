@@ -4,8 +4,6 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metamodel.ModelProviding
-import tools.vitruv.framework.correspondence.Correspondence
 import java.util.HashSet
 import java.util.List
 import java.util.Map
@@ -17,6 +15,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.correspondence.Correspondence
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {
@@ -119,7 +119,7 @@ class MappingExecutionState {
 	}
 	
 	// temporarily from CommandExecutingImpl
-	def private void saveAffectedEObjects(List<? extends Object> affectedObjects, ModelProviding modelProviding) {
+	def private void saveAffectedEObjects(List<? extends Object> affectedObjects, ModelRepository modelProviding) {
 		val Set<VURI> vurisToSave = new HashSet<VURI>()
 		for (Object object : affectedObjects) {
 			if (object instanceof EObject) {
