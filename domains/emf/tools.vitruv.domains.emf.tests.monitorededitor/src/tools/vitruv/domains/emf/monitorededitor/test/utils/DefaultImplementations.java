@@ -14,16 +14,12 @@ package tools.vitruv.domains.emf.monitorededitor.test.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metamodel.ModelRepository;
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -67,51 +63,6 @@ public class DefaultImplementations {
         public boolean isModelMonitored(VURI modelUri) {
             return false;
         }
-    };
-
-    public static final ModelRepository DEFAULT_MODEL_PROVIDING = new ModelRepository() {
-        @Override
-        public ModelInstance getModel(VURI uri) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public void saveAllModels() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void deleteModel(VURI vuri) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void forceReloadModelIfExisting(VURI modelURI) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void createModel(VURI vuri, EObject rootEObject) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
-            // TODO Auto-generated method stub
-
-        }
-
     };
 
     public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {

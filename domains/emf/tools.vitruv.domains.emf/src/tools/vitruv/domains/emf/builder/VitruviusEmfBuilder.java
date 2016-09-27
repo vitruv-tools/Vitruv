@@ -93,8 +93,7 @@ public abstract class VitruviusEmfBuilder extends VitruviusProjectBuilder {
     protected void createAndStartEMFMonitor() {
         final IVitruviusAccessor vitruviusAcc = this.createVitruviusAccessor();
         final IEditorPartAdapterFactory epaFactory = new DefaultEditorPartAdapterFactoryImpl(this.monitoredFileTypes);
-        this.emfMonitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.getVirtualModel(),
-                null /* TODO */, vitruviusAcc);
+        this.emfMonitor = this.monitorFactory.createVitruviusModelEditorSyncMgr(epaFactory, this.getVirtualModel(), vitruviusAcc);
     }
 
     private IVitruviusAccessor createVitruviusAccessor() {

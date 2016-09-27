@@ -42,8 +42,7 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     @Test
     public void EMFEditorsCanBeFoundByVURI() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
-                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, DefaultImplementations.DEFAULT_MODEL_PROVIDING,
-                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.initialize();
 
         IEditorPart exampleEditor = eclipseMockCtrl.openNewEMFDiagramEditorPart(Files.EXAMPLEMODEL_ECORE,
