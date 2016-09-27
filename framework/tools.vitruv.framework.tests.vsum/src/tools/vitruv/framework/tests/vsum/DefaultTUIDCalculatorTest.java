@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 

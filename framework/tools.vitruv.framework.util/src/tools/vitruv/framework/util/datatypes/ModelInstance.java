@@ -1,4 +1,4 @@
-package tools.vitruv.framework.metamodel;
+package tools.vitruv.framework.util.datatypes;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,8 +11,6 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
-import tools.vitruv.framework.util.datatypes.AbstractURIHaving;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public class ModelInstance extends AbstractURIHaving {
     private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());

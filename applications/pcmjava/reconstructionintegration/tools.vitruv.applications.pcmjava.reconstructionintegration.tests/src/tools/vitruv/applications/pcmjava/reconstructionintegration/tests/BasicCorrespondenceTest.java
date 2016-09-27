@@ -15,8 +15,8 @@ import org.palladiosimulator.pcm.repository.Repository;
 import tools.vitruv.applications.pcmjava.reconstructionintegration.transformations.PCMJaMoPPCorrespondenceModelTransformation;
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.PCM2JaMoPPTransformationTest;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /*

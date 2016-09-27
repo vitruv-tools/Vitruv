@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
 

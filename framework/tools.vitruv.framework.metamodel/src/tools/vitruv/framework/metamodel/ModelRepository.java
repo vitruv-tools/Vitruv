@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public interface ModelRepository {

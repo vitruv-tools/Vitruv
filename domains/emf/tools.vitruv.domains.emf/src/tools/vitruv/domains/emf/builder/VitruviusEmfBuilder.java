@@ -23,9 +23,9 @@ import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
 import tools.vitruv.framework.util.bridges.EMFBridge;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public abstract class VitruviusEmfBuilder extends VitruviusProjectBuilder {

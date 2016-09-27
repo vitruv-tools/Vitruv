@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.vsum
 
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
-import tools.vitruv.framework.metamodel.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
@@ -32,6 +31,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.util.datatypes.ModelInstance
 
 class CorrespondenceTest extends VSUMTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())

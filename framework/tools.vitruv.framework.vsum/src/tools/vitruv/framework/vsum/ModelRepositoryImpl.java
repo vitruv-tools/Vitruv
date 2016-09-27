@@ -23,13 +23,13 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.MetamodelRepository;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 

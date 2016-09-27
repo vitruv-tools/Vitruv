@@ -28,12 +28,12 @@ import tools.vitruv.framework.correspondence.Correspondences
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
-import tools.vitruv.framework.metamodel.ModelInstance
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.metamodel.MetamodelPair
 import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.util.datatypes.ModelInstance
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {

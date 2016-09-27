@@ -20,7 +20,7 @@ import pcm_mockup.Component;
 import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.metamodel.ModelInstance;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import uml_mockup.UClass;

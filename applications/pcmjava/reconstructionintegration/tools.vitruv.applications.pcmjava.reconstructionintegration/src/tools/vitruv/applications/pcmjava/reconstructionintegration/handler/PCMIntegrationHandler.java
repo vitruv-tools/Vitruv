@@ -29,8 +29,8 @@ import tools.vitruv.extensions.constructionsimulation.traversal.util.UnorderedRe
 import tools.vitruv.extensions.constructionsimulation.util.IntegrationUtil;
 import tools.vitruv.extensions.constructionsimulation.util.ResourceHelper;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.bridges.EMFBridge;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;

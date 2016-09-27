@@ -20,13 +20,13 @@ import tools.vitruv.domains.java.monitorededitor.refactoringlistener.Refactoring
 import tools.vitruv.domains.java.monitorededitor.refactoringlistener.RefactoringStatusListener;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.monitorededitor.AbstractMonitoredEditor;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
 
