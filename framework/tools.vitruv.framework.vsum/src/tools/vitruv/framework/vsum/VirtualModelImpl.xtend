@@ -14,7 +14,7 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding
 
 class VirtualModelImpl implements InternalVirtualModel {
-	private val VSUMImpl modelRepository;
+	private val ModelRepositoryImpl modelRepository;
 	private val MetamodelRepository metamodelRepository;
 	private val ChangeSynchronizing changeSynchronizer;
 	private val Change2CommandTransformingProviding transformingProviding;
@@ -30,7 +30,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addMetamodel(metamodel);
 		}
-		this.modelRepository = new VSUMImpl(metamodelRepository, classLoader);
+		this.modelRepository = new ModelRepositoryImpl(metamodelRepository, classLoader);
 //		for (transformer : modelConfiguration.change2CommandTransformings) {
 //			val transformableMetamodels = transformer.transformableMetamodels;
 //			// TODO HK This is ugly: get the correspondence model to initialize it

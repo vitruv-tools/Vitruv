@@ -14,7 +14,7 @@
 //import tools.vitruv.framework.changeynchronizer.ChangeSynchronizerImpl
 //import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 //import tools.vitruv.framework.vsum.VSUMConstants
-//import tools.vitruv.framework.vsum.VSUMImpl
+//import tools.vitruv.framework.vsum.ModelRepositoryImpl
 //import tools.vitruv.tests.util.TestUtil
 //import java.io.IOException
 //import java.time.LocalDateTime

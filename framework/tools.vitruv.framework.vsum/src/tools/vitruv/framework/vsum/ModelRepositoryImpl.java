@@ -33,8 +33,8 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
-class VSUMImpl implements ModelProviding, CorrespondenceProviding {
-    private static final Logger logger = Logger.getLogger(VSUMImpl.class.getSimpleName());
+class ModelRepositoryImpl implements ModelProviding, CorrespondenceProviding {
+    private static final Logger logger = Logger.getLogger(ModelRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
     private final MetamodelRepository metamodelRepository;
@@ -42,11 +42,11 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     private final Map<VURI, ModelInstance> modelInstances;
     private final List<InternalCorrespondenceModel> correspondenceModels;
 
-    public VSUMImpl(final MetamodelRepository metamodelRepository) {
+    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository) {
         this(metamodelRepository, null);
     }
 
-    public VSUMImpl(final MetamodelRepository metamodelRepository, final ClassLoader classLoader) {
+    public ModelRepositoryImpl(final MetamodelRepository metamodelRepository, final ClassLoader classLoader) {
         this.metamodelRepository = metamodelRepository;
 
         this.resourceSet = new ResourceSetImpl();
@@ -101,7 +101,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 public Void call() {
                     // case 2 or 3
                     ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
-                    VSUMImpl.this.modelInstances.put(modelURI, internalModelInstance);
+                    ModelRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
                     saveVURIsOfVSUMModelInstances();
                     return null;
                 }
@@ -144,7 +144,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
                 resource.getContents().clear();
                 resource.getContents().add(rootEObject);
 
-                VSUMImpl.this.saveModelInstance(modelInstance);
+                ModelRepositoryImpl.this.saveModelInstance(modelInstance);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
                 TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 return null;
@@ -171,7 +171,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                for (InternalCorrespondenceModel correspondenceModel : VSUMImpl.this.correspondenceModels) {
+                for (InternalCorrespondenceModel correspondenceModel : ModelRepositoryImpl.this.correspondenceModels) {
                     if (correspondenceModel.changedAfterLastSave()) {
                         correspondenceModel.saveModel();
                         correspondenceModel.resetChangedAfterLastSave();
@@ -293,7 +293,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
             public Void call() throws Exception {
                 try {
                     resource.delete(null);
-                    VSUMImpl.this.modelInstances.remove(modelInstance);
+                    ModelRepositoryImpl.this.modelInstances.remove(modelInstance);
                 } catch (final IOException e) {
                     logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
