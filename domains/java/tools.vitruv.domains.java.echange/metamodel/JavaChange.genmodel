@@ -29,21 +29,6 @@
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
           <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
         </genClasses>
-        <nestedGenPackages prefix="Attribute" basePackage="tools.vitruv.domains.java.echange.feature"
-            disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/attribute">
-          <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue">
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/A"/>
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaInsertEAttributeValue/T"/>
-          </genClasses>
-          <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue">
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue/A"/>
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaRemoveEAttributeValue/T"/>
-          </genClasses>
-          <genClasses ecoreClass="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute">
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/A"/>
-            <genTypeParameters ecoreTypeParameter="JavaChange.ecore#//feature/attribute/JavaReplaceSingleValuedEAttribute/T"/>
-          </genClasses>
-        </nestedGenPackages>
       </nestedGenPackages>
       <nestedGenPackages prefix="Reference" basePackage="tools.vitruv.domains.java.echange.feature"
           disposableProviderFactory="true" ecorePackage="JavaChange.ecore#//feature/reference">

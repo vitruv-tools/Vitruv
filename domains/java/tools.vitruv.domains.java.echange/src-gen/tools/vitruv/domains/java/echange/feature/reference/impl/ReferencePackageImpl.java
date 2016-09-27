@@ -99,19 +99,16 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		// Obtain or create and register interdependencies
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
-		AttributePackageImpl theAttributePackage_1 = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theReferencePackage.createPackageContents();
 		theFeaturePackage.createPackageContents();
 		theAttributePackage.createPackageContents();
-		theAttributePackage_1.createPackageContents();
 
 		// Initialize created meta-data
 		theReferencePackage.initializePackageContents();
 		theFeaturePackage.initializePackageContents();
 		theAttributePackage.initializePackageContents();
-		theAttributePackage_1.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theReferencePackage.freeze();
