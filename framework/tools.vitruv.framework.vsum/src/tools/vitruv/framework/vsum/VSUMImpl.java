@@ -25,12 +25,11 @@ import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.tuid.TUID;
+import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
-import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
@@ -82,7 +81,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
             // model is not existing yet
             logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
         }
-
         return modelInstance;
     }
 
@@ -120,33 +118,16 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         return this.modelInstances.containsKey(modelURI);
     }
 
-    /**
-     * Saves the resource for the given vuri. If the VURI is not existing yet it will be created.
-     *
-     * @param vuri
-     *            The VURI to save
-     */
-    @Override
-    public void saveExistingModelInstanceOriginal(final VURI vuri) {
-        saveExistingModelInstanceOriginal(vuri, null);
-    }
-
-    private void saveExistingModelInstanceOriginal(final VURI vuri,
-            final Pair<EObject, TUID> tuidToUpdateWithRootEObjectPair) {
+    private void saveModelInstance(final ModelInstance modelInstance) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                ModelInstance modelInstanceToSave = getModelInstanceOriginal(vuri);
-                Metamodel metamodel = getMetamodelByURI(vuri);
-                Resource resourceToSave = modelInstanceToSave.getResource();
+                Metamodel metamodel = getMetamodelByURI(modelInstance.getURI());
+                Resource resourceToSave = modelInstance.getResource();
                 try {
                     EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
                 } catch (IOException e) {
-                    throw new RuntimeException("Could not save VURI + " + vuri + ": " + e);
-                }
-                saveAllChangedCorrespondences(modelInstanceToSave, tuidToUpdateWithRootEObjectPair);
-                for (EObject root : modelInstanceToSave.getRootElements()) {
-                    metamodel.removeRootFromTUIDCache(root);
+                    throw new RuntimeException("Could not save VURI + " + modelInstance.getURI() + ": " + e);
                 }
                 return null;
             }
@@ -155,34 +136,53 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public void saveModelInstanceOriginalWithEObjectAsOnlyContent(final VURI vuri, final EObject rootEObject,
-            final TUID oldTUID) {
+    public void createModelInstance(final VURI vuri, final EObject rootEObject) {
         final ModelInstance modelInstance = getAndLoadModelInstanceOriginal(vuri);
-
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
+                TuidManager.getInstance().registerObjectUnderModification(rootEObject);
                 final Resource resource = modelInstance.getResource();
                 // clear the resource first
                 resource.getContents().clear();
                 resource.getContents().add(rootEObject);
-                VSUMImpl.this.saveExistingModelInstanceOriginal(vuri, new Pair<EObject, TUID>(rootEObject, oldTUID));
+
+                VSUMImpl.this.saveModelInstance(modelInstance);
+                TuidManager.getInstance().updateTuidsOfRegisteredObjects();
+                TuidManager.getInstance().flushRegisteredObjectsUnderModification();
                 return null;
             }
         });
     }
 
-    private void saveAllChangedCorrespondences(final ModelInstance modelInstanceToSave,
-            final Pair<EObject, TUID> tuidToUpdateNewRootEObjectPair) {
-        for (InternalCorrespondenceModel correspondenceModel : this.correspondenceModels) {
-            if (null != tuidToUpdateNewRootEObjectPair && tuidToUpdateNewRootEObjectPair.getSecond() != null) {
-                tuidToUpdateNewRootEObjectPair.getSecond().updateTuid(tuidToUpdateNewRootEObjectPair.getFirst());
-            }
-            if (correspondenceModel.changedAfterLastSave()) {
-                correspondenceModel.saveModel();
-                correspondenceModel.resetChangedAfterLastSave();
+    @Override
+    public void saveAllModels() {
+        saveAllChangedModels();
+        saveAllChangedCorrespondenceModels();
+    }
+
+    private void saveAllChangedModels() {
+        for (ModelInstance modelInstance : this.modelInstances.values()) {
+            Resource resourceToSave = modelInstance.getResource();
+            if (resourceToSave.isModified()) {
+                saveModelInstance(modelInstance);
             }
         }
+    }
+
+    private void saveAllChangedCorrespondenceModels() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                for (InternalCorrespondenceModel correspondenceModel : VSUMImpl.this.correspondenceModels) {
+                    if (correspondenceModel.changedAfterLastSave()) {
+                        correspondenceModel.saveModel();
+                        correspondenceModel.resetChangedAfterLastSave();
+                    }
+                }
+                return null;
+            }
+        });
     }
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {

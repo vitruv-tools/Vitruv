@@ -108,7 +108,8 @@ class MappingExecutionState {
 		saveAffectedEObjects(changedEObjects, bb.modelProviding)
 		
 		for (res : resourcesToSave) {
-			bb.modelProviding.saveExistingModelInstanceOriginal(VURI::getInstance(res))
+			// TODO Is this correct?
+			bb.modelProviding.saveAllModels()//(VURI::getInstance(res))
 			bb.modelProviding.forceReloadModelInstanceOriginalIfExisting(VURI::getInstance(res))
 			println("Saved: " + VURI::getInstance(res).toString)
 		}
@@ -132,7 +133,8 @@ class MappingExecutionState {
 		}
 		for (VURI vuri : vurisToSave) {
 			println("Saving: " + vuri.toString)
-			modelProviding.saveExistingModelInstanceOriginal(vuri)
+			// TODO Is this correct?
+			modelProviding.saveAllModels() //(vuri)
 		}
 
 	}

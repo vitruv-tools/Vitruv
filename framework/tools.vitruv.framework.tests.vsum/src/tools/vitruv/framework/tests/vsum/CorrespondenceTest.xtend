@@ -124,10 +124,8 @@ class CorrespondenceTest extends VSUMTest {
 
 	def private void saveUPackageInNewFileAndUpdateCorrespondence(InternalVirtualModel vsum, UPackage pkg,
 		CorrespondenceModel correspondenceModel) {
-		var TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(pkg)
 		var VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
-		vsum.saveModelInstanceWithRoot(newVURI, pkg, oldTUID)
-		oldTUID.updateTuid(pkg)
+		vsum.createModel(newVURI, pkg)
 	}
 
 	def private String getNewUMLInstanceURI() {
@@ -166,8 +164,8 @@ class CorrespondenceTest extends VSUMTest {
 			(corresp as MappedCorrespondenceModel).registerMappingForCorrespondence(repo2pkg, mapping)
 		}
 		// save instances in order to trigger saving for CorrespondenceModel(s)
-		var VURI pcmVURI = VURI.getInstance(getDefaultPCMInstanceURI())
-		vsum.saveModelInstance(pcmVURI)
+		//var VURI pcmVURI = VURI.getInstance(getDefaultPCMInstanceURI())
+		vsum.save()//(pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
 		var InternalVirtualModel vsum2 = createMetaRepositoryVSUMAndModelInstances(alternativePCMInstanceURI, alterantiveUMLInstanceURI);
 		var Repository repo2 = testLoadObject(vsum2, alternativePCMInstanceURI, Repository)

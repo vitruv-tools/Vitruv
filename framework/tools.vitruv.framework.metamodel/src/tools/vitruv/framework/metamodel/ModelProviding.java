@@ -4,14 +4,13 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public interface ModelProviding {
     ModelInstance getAndLoadModelInstanceOriginal(VURI uri);
 
-    void saveExistingModelInstanceOriginal(VURI vuri);
+    void saveAllModels();
 
     /**
      * Convenience method
@@ -24,7 +23,7 @@ public interface ModelProviding {
 
     void deleteModelInstanceOriginal(VURI vuri);
 
-    void saveModelInstanceOriginalWithEObjectAsOnlyContent(VURI vuri, EObject rootEObject, TUID oldTUID);
+    void createModelInstance(VURI vuri, EObject rootEObject);
 
     void forceReloadModelInstanceOriginalIfExisting(VURI modelURI);
 

@@ -4,7 +4,6 @@ import tools.vitruv.framework.metarepository.MetaRepositoryImpl
 import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.tuid.TUID
 import java.util.concurrent.Callable
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl
 import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
@@ -50,12 +49,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return this.modelRepository.getAndLoadModelInstanceOriginal(modelVuri);
 	}
 	
-	override saveModelInstance(VURI modelVuri) {
-		this.modelRepository.saveExistingModelInstanceOriginal(modelVuri);
+	override save() {
+		this.modelRepository.saveAllModels();
 	}
 	
-	override saveModelInstanceWithRoot(VURI vuri, EObject rootEObject, TUID oldRootTuid) {
-		this.modelRepository.saveModelInstanceOriginalWithEObjectAsOnlyContent(vuri, rootEObject, oldRootTuid);
+	override createModel(VURI vuri, EObject rootEObject) {
+		this.modelRepository.createModelInstance(vuri, rootEObject);
 	}
 	
 	override reloadModelInstance(VURI vuri) {

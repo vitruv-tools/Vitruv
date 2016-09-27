@@ -24,7 +24,6 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -73,7 +72,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void saveExistingModelInstanceOriginal(VURI vuri) {
+        public void saveAllModels() {
             // TODO Auto-generated method stub
 
         }
@@ -97,7 +96,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void saveModelInstanceOriginalWithEObjectAsOnlyContent(VURI vuri, EObject rootEObject, TUID oldTUID) {
+        public void createModelInstance(VURI vuri, EObject rootEObject) {
             // TODO Auto-generated method stub
 
         }

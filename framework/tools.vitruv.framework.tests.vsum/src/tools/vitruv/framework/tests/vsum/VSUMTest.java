@@ -62,7 +62,7 @@ public class VSUMTest extends AbstractVSUMTest {
         VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.saveModelInstanceWithRoot(vuri, repo, null);
+        vsum.createModel(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         vsum.executeCommand(new Callable<Void>() {
             @Override
@@ -73,7 +73,7 @@ public class VSUMTest extends AbstractVSUMTest {
         });
 
         // save test model
-        vsum.saveModelInstance(vuri);
+        vsum.save();// (vuri);
 
         // this is fine, the component is contained in the resource
         assertTrue("Resource of component is null", null != component.eResource());
@@ -103,7 +103,7 @@ public class VSUMTest extends AbstractVSUMTest {
         VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.saveModelInstanceWithRoot(vuri, repo, null);
+        vsum.createModel(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         vsum.executeCommand(new Callable<Void>() {
             @Override
@@ -112,7 +112,7 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(vuri);
+        vsum.save();// (vuri);
         // simulate external change
         changeTestModelExternally(vuri);
 
@@ -155,7 +155,7 @@ public class VSUMTest extends AbstractVSUMTest {
         VURI vuri = VURI.getInstance(getAlternativePCMInstanceURI());
         ModelInstance mi = vsum.getModelInstance(vuri);
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-        vsum.saveModelInstanceWithRoot(vuri, repo, null);
+        vsum.createModel(vuri, repo);
         vsum.executeCommand(new Callable<Void>() {
             @Override
             public Void call() {
@@ -164,7 +164,7 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(vuri);
+        vsum.save();// (vuri);
         vsum.executeCommand(new Callable<Void>() {
             @Override
             public Void call() {
@@ -173,12 +173,12 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(vuri);
+        vsum.save();// (vuri);
 
         // create UML
         VURI vuriUML = VURI.getInstance(getAlterantiveUMLInstanceURI());
         final UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage();
-        vsum.saveModelInstanceWithRoot(vuriUML, uPackage, null);
+        vsum.createModel(vuriUML, uPackage);
         vsum.executeCommand(new Callable<Void>() {
             @Override
             public Void call() {
@@ -189,7 +189,7 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(vuriUML);
+        vsum.save();// (vuriUML);
 
         return mi;
     }
@@ -266,7 +266,7 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(modelURI);
+        vsum.save();// (modelURI);
     }
 
     private void createUmlMockupModel(final String modelURIString, final InternalVirtualModel vsum) {
@@ -283,7 +283,7 @@ public class VSUMTest extends AbstractVSUMTest {
                 return null;
             }
         });
-        vsum.saveModelInstance(modelURI);
+        vsum.save();// (modelURI);
     }
 
     @Test

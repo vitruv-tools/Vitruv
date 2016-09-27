@@ -27,7 +27,7 @@ public class VSUMPersistentTest extends VSUMTest {
         Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolderName(), nrOfVURIs);
         // PersistentTestUtil.createResources(vuris);
         for (VURI vuri : vuris) {
-            vsum.saveModelInstanceWithRoot(vuri, Pcm_mockupFactory.eINSTANCE.createRepository(), null);
+            vsum.createModel(vuri, Pcm_mockupFactory.eINSTANCE.createRepository());
         }
 
         // 2.create VSUM again (should read all model instances from disk)

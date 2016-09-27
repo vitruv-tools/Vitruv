@@ -145,7 +145,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 		findAndExecuteAfterTransformationExtensions()
 
 		// forces saving of correspondence instance
-		this.vmodel.saveModelInstance(VURI.getInstance(pcmRepo.eResource))
+		this.vmodel.save()//VURI.getInstance(pcmRepo.eResource))
 	}
 
 	def private findAndExecuteAfterTransformationExtensions() {
