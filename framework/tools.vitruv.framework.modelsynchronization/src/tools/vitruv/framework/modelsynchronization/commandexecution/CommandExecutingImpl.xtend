@@ -33,10 +33,7 @@ class CommandExecutingImpl implements CommandExecuting {
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
 		}
 		this.executeTransformationResults(transformationResults, blackboard)
-		//this.saveAffectedEObjects(affectedObjects, blackboard.getModelProviding())
-		blackboard.modelProviding.saveAllModels();
 		modelProviding.detachTransactionalEditingDomain() // FIXME
-		blackboard.correspondenceModel.saveModel()
 		return Collections::emptyList()
 	}
 
@@ -58,29 +55,7 @@ class CommandExecutingImpl implements CommandExecuting {
 					createModelInstance(createdEObjectVURIPair.getSecond(),
 						createdEObjectVURIPair.getFirst())
 			}
- 
 		}
-
 	}
 
-//	def private void saveAffectedEObjects(ArrayList<Object> affectedObjects, ModelProviding modelProviding) {
-//		val Set<VURI> vurisToSave = new HashSet<VURI>()
-//		for (Object object : affectedObjects) {
-//			if (object instanceof EObject) {
-//				val EObject eObject = object as EObject
-//				if (null !== eObject.eResource()) {
-//					val vuri = VURI::getInstance(eObject.eResource());
-//					if (!vuri.toString.startsWith(VitruviusConstants.getPathmapPrefix()))
-//						vurisToSave.add(vuri)
-//				}
-//
-//			}
-//
-//		}
-//		for (VURI vuri : vurisToSave) {
-//			//modelProviding.saveExistingModelInstanceOriginal(vuri)
-//		}
-//
-//	}
-	
 }
