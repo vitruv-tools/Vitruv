@@ -303,15 +303,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     }
 
     @Override
-    public void detachTransactionalEditingDomain() {
-        TransactionalEditingDomain domain = TransactionalEditingDomain.Factory.INSTANCE
-                .getEditingDomain(this.resourceSet);
-        if (domain != null) {
-            domain.dispose();
-        }
-    }
-
-    @Override
     public void deleteModelInstanceOriginal(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
@@ -337,7 +328,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
     @Override
     public void executeRecordingCommandOnTransactionalDomain(final VitruviusRecordingCommand command) {
         EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command);
-
     }
 
 }

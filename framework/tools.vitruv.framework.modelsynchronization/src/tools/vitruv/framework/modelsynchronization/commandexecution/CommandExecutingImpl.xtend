@@ -33,7 +33,6 @@ class CommandExecutingImpl implements CommandExecuting {
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
 		}
 		this.executeTransformationResults(transformationResults, blackboard)
-		modelProviding.detachTransactionalEditingDomain() // FIXME
 		return Collections::emptyList()
 	}
 

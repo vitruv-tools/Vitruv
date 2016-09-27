@@ -19,8 +19,6 @@ public interface ModelProviding {
     
     void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command);
     
-    void detachTransactionalEditingDomain();
-
     void deleteModelInstanceOriginal(VURI vuri);
 
     void createModelInstance(VURI vuri, EObject rootEObject);

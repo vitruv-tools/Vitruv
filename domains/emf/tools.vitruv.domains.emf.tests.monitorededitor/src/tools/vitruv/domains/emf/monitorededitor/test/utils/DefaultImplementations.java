@@ -83,12 +83,6 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void detachTransactionalEditingDomain() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
         public void deleteModelInstanceOriginal(VURI vuri) {
             // TODO Auto-generated method stub
 
