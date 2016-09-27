@@ -34,22 +34,20 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 class VSUMImpl implements ModelProviding, CorrespondenceProviding {
-
     private static final Logger logger = Logger.getLogger(VSUMImpl.class.getSimpleName());
 
-    private final MetamodelRepository metamodelManaging;
-
-    protected final Map<VURI, ModelInstance> modelInstances;
     private final ResourceSet resourceSet;
+    private final MetamodelRepository metamodelRepository;
 
+    private final Map<VURI, ModelInstance> modelInstances;
     private final List<InternalCorrespondenceModel> correspondenceModels;
 
-    public VSUMImpl(final MetamodelRepository metamodelManaging) {
-        this(metamodelManaging, null);
+    public VSUMImpl(final MetamodelRepository metamodelRepository) {
+        this(metamodelRepository, null);
     }
 
-    public VSUMImpl(final MetamodelRepository metamodelManaging, final ClassLoader classLoader) {
-        this.metamodelManaging = metamodelManaging;
+    public VSUMImpl(final MetamodelRepository metamodelRepository, final ClassLoader classLoader) {
+        this.metamodelRepository = metamodelRepository;
 
         this.resourceSet = new ResourceSetImpl();
 
@@ -57,7 +55,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         this.correspondenceModels = new ArrayList<InternalCorrespondenceModel>();
 
         loadVURIsOfVSMUModelInstances();
-        loadAndMapCorrepondenceInstances();
     }
 
     /**
@@ -96,7 +93,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         }
     }
 
-    public ModelInstance getModelInstanceOriginal(final VURI modelURI) {
+    private ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
             createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
@@ -114,7 +111,7 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         return modelInstance;
     }
 
-    public boolean existsModelInstance(final VURI modelURI) {
+    private boolean existsModelInstance(final VURI modelURI) {
         return this.modelInstances.containsKey(modelURI);
     }
 
@@ -187,18 +184,12 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI) {
         String fileExtension = modelURI.getFileExtension();
-        Metamodel metamodel = this.metamodelManaging.getMetamodel(fileExtension);
+        Metamodel metamodel = this.metamodelRepository.getMetamodel(fileExtension);
         if (metamodel == null) {
             throw new RuntimeException("Cannot create a new model instance at the uri '" + modelURI
                     + "' because no metamodel is registered for the file extension '" + fileExtension + "'!");
         }
-        return getOrCreateUnregisteredModelInstance(modelURI, metamodel);
-    }
-
-    private ModelInstance getOrCreateUnregisteredModelInstance(final VURI modelURI, final Metamodel metamodel) {
-        ModelInstance modelInstance = loadModelInstance(modelURI, metamodel);
-        // getOrCreateAllCorrespondenceModelsForMM(metamodel);
-        return modelInstance;
+        return loadModelInstance(modelURI, metamodel);
     }
 
     private ModelInstance loadModelInstance(final VURI modelURI, final Metamodel metamodel) {
@@ -209,21 +200,16 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         return modelInstance;
     }
 
-    private void createAndRegisterCorrespondenceModel(final MetamodelPair mapping) {
+    private void createCorrespondenceModel(final MetamodelPair mapping) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
-            InternalCorrespondenceModel correspondenceModel;
             VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelA().getURI(),
                     mapping.getMetamodelB().getURI());
-            correspondenceModel = createCorrespondenceModel(mapping, correspondencesVURI);
+            Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
+            InternalCorrespondenceModel correspondenceModel = new CorrespondenceModelImpl(mapping, this,
+                    correspondencesVURI, correspondencesResource);
             this.correspondenceModels.add(correspondenceModel);
             return null;
         });
-    }
-
-    private InternalCorrespondenceModel createCorrespondenceModel(final MetamodelPair mapping,
-            final VURI correspondencesVURI) {
-        Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
-        return new CorrespondenceModelImpl(mapping, this, correspondencesVURI, correspondencesResource);
     }
 
     private boolean existsCorrespondenceModel(final MetamodelPair metamodelPair) {
@@ -243,15 +229,15 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
      */
     @Override
     public CorrespondenceModel getCorrespondenceModel(final VURI mmAVURI, final VURI mmBVURI) {
-        Metamodel mmA = this.metamodelManaging.getMetamodel(mmAVURI);
-        Metamodel mmB = this.metamodelManaging.getMetamodel(mmBVURI);
+        Metamodel mmA = this.metamodelRepository.getMetamodel(mmAVURI);
+        Metamodel mmB = this.metamodelRepository.getMetamodel(mmBVURI);
         if (mmA == null || mmB == null) {
             throw new IllegalArgumentException("Metamodel is not contained in the metamodel repository");
         }
         MetamodelPair metamodelPair = new MetamodelPair(mmA, mmB);
         if (!existsCorrespondenceModel(metamodelPair)) {
             // Correspondence model does not exist, so create it
-            createAndRegisterCorrespondenceModel(metamodelPair);
+            createCorrespondenceModel(metamodelPair);
         }
         for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
             if (correspondenceModel.getMapping().equals(metamodelPair)) {
@@ -277,29 +263,25 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
 
     private Metamodel getMetamodelByURI(final VURI uri) {
         String fileExtension = uri.getFileExtension();
-        return this.metamodelManaging.getMetamodel(fileExtension);
+        return this.metamodelRepository.getMetamodel(fileExtension);
     }
 
-    private void loadAndMapCorrepondenceInstances() {
-        for (Metamodel metamodel : this.metamodelManaging) {
-            for (Metamodel metamodel2 : this.metamodelManaging) {
-                if (metamodel != metamodel2
-                        && getCorrespondenceModel(metamodel.getURI(), metamodel2.getURI()) == null) {
-                    createAndRegisterCorrespondenceModel(new MetamodelPair(metamodel, metamodel2));
-                }
-            }
-        }
-    }
+    // private void loadAndMapCorrepondenceInstances() {
+    // for (Metamodel metamodel : this.metamodelManaging) {
+    // for (Metamodel metamodel2 : this.metamodelManaging) {
+    // if (metamodel != metamodel2
+    // && getCorrespondenceModel(metamodel.getURI(), metamodel2.getURI()) == null) {
+    // createCorrespondenceModel(new MetamodelPair(metamodel, metamodel2));
+    // }
+    // }
+    // }
+    // }
 
     private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
         if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet)) {
-            attachTransactionalEditingDomain();
+            TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
         }
         return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
-    }
-
-    private void attachTransactionalEditingDomain() {
-        TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resourceSet);
     }
 
     @Override
