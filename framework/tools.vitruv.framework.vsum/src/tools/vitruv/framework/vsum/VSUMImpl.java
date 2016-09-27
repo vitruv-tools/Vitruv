@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -210,54 +209,12 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         return modelInstance;
     }
 
-    @Override
-    public Set<CorrespondenceModel> getAllCorrespondenceModels(final VURI metamodelVURI) {
-        Set<CorrespondenceModel> result = new HashSet<CorrespondenceModel>();
-        // for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
-        // if (correspondenceModel.getMapping().getMetamodelA().isMetamodelFor(metamodelVURI)
-        // || correspondenceModel.getMapping().getMetamodelB().isMetamodelFor(metamodelVURI)) {
-        // result.add(correspondenceModel);
-        // }
-        // }
-        return result;
-    }
-
-    // public Set<CorrespondenceModel> getOrCreateAllCorrespondenceModelsForMM(final Metamodel
-    // metamodel) {
-    // return new
-    // HashSet<CorrespondenceModel>(getOrCreateAllInternalCorrespondenceModelsForMM(metamodel));
-    // }
-    //
-    // private Set<InternalCorrespondenceModel> getOrCreateAllInternalCorrespondenceModelsForMM(
-    // final Metamodel metamodel) {
-    // // Collection<MetamodelPair> mappings = getAllMappings(metamodel);
-    // // Set<InternalCorrespondenceModel> correspondenceModels = new
-    // // HashSet<InternalCorrespondenceModel>(
-    // // null == mappings ? 0 : mappings.size());
-    // if (null == mappings) {
-    // logger.warn("mappings == null. No correspondence instace for MM: " + metamodel + " created."
-    // + "Empty correspondence list will be returned");
-    // return this.correspondenceModels;
-    // }
-    // for (MetamodelPair mapping : mappings) {
-    // InternalCorrespondenceModel correspondenceModel = this.corr.get(mapping);
-    // if (correspondenceModel == null) {
-    // correspondenceModel = createAndRegisterCorrespondenceModel(mapping);
-    // }
-    // this.correspondenceModels.add(correspondenceModel);
-    // }
-    // return this.correspondenceModels;
-    // }
-
     private void createAndRegisterCorrespondenceModel(final MetamodelPair mapping) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
             InternalCorrespondenceModel correspondenceModel;
             VURI correspondencesVURI = FileSystemHelper.getCorrespondencesVURI(mapping.getMetamodelA().getURI(),
                     mapping.getMetamodelB().getURI());
             correspondenceModel = createCorrespondenceModel(mapping, correspondencesVURI);
-            // if (correspondenceModel instanceof InternalCorrespondenceModel) {
-            // loadAndInitializeCorrespondenceModelDecorators(correspondenceModel);
-            // }
             this.correspondenceModels.add(correspondenceModel);
             return null;
         });
@@ -268,20 +225,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         Resource correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
         return new CorrespondenceModelImpl(mapping, this, correspondencesVURI, correspondencesResource);
     }
-
-    // private void loadAndInitializeCorrespondenceModelDecorators(
-    // final InternalCorrespondenceModel correspondenceModel) {
-    // Set<String> fileExtPrefixesForObjects =
-    // correspondenceModel.getFileExtPrefixesForObjectsToLoad();
-    // Map<String, Object> fileExtPrefix2ObjectMap = new HashMap<String, Object>();
-    // for (String fileExtPrefix : fileExtPrefixesForObjects) {
-    // String fileName = getFileNameForCorrespondenceModelDecorator(correspondenceModel,
-    // fileExtPrefix);
-    // Object loadedObject = FileSystemHelper.loadObjectFromFile(fileName, this.classLoader);
-    // fileExtPrefix2ObjectMap.put(fileExtPrefix, loadedObject);
-    // }
-    // correspondenceModel.initialize(fileExtPrefix2ObjectMap);
-    // }
 
     private boolean existsCorrespondenceModel(final MetamodelPair metamodelPair) {
         for (CorrespondenceModel correspondenceModel : this.correspondenceModels) {
@@ -318,22 +261,6 @@ class VSUMImpl implements ModelProviding, CorrespondenceProviding {
         throw new IllegalStateException(
                 "Correspondence model does not exist, although it was existing or created before");
     }
-
-    /**
-     * Returns all correspondences instances for a given VURI. null will be returned. We are not
-     * creating new CorrespondenceModel here, cause we can not guess the linked model. The method
-     * {@link getCorrespondenceModelOriginal} must be called before to create the appropriate
-     * correspondence instance
-     *
-     * @see tools.vitruv.framework.correspondence.datatypes. CorrespondenceModel
-     * @return set that contains all CorrespondenceModels for the VURI or null if there is non
-     */
-    // @Override
-    // public Set<CorrespondenceModel> getOrCreateAllCorrespondenceModels(final VURI model1uri) {
-    // Metamodel metamodelForUri =
-    // this.metamodelManaging.getMetamodel(model1uri.getFileExtension());
-    // return getOrCreateAllCorrespondenceModelsForMM(metamodelForUri);
-    // }
 
     private void loadVURIsOfVSMUModelInstances() {
         Set<VURI> vuris = FileSystemHelper.loadVSUMvURIsFromFile();
