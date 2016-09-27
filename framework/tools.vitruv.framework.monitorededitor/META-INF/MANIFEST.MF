@@ -6,9 +6,16 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: tools.vitruv.framework.monitorededitor.Activator
-Require-Bundle: org.eclipse.osgi,
+Require-Bundle: org.apache.log4j,
+ org.eclipse.core.runtime,
+ org.eclipse.osgi,
  tools.vitruv.framework.metamodel;visibility:=reexport,
  tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.vsum
+ tools.vitruv.framework.vsum,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.monitorededitor,
  tools.vitruv.framework.monitorededitor.registries
+

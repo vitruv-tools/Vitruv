@@ -110,6 +110,7 @@ import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
+import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -1015,7 +1016,7 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				return null;
 			}
 		};
-		JavaBridge.setFieldInClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder,
+		JavaBridge.setFieldInClass(VitruviusProjectBuilder.class, "virtualModel", pcmJavaBuilder,
 				dummyVirtualModel);
 
 	}
