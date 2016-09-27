@@ -103,14 +103,11 @@ import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.domains.java.monitorededitor.MonitoredEditor;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
-import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -119,7 +116,6 @@ import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * Test class that contains utillity methods that can be used by JaMoPP2PCM
@@ -153,13 +149,10 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		pcmJavaBuilder.addBuilderToProject(this.currentTestProject, getVirtualModel().getName(), Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
 		// build the project
 		BuildProjects.issueIncrementalBuildForAllProjectsWithBuilder(PCMJavaBuilder.BUILDER_ID);
-		//injectChange2CommandTransformingProviding();
 
 		this.resourceSet = new ResourceSetImpl();
 		// set new user interactor
 		this.setUserInteractor(this.testUserInteractor);
-		// deactivate the EMF Monitor
-		this.deactivateEMFMonitor();
 	}
 
 	@Override
@@ -198,11 +191,11 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 				final BuildCommand buildCommand = (BuildCommand) command;
 				final IncrementalProjectBuilder ipb = buildCommand
 						.getBuilder(this.currentTestProject.getActiveBuildConfig());
-				final PCMJavaBuilder pcmJavaBuilder = (PCMJavaBuilder) ipb;
-				return pcmJavaBuilder;
+				final PCMJavaBuilder javaBuilder = (PCMJavaBuilder) ipb;
+				return javaBuilder;
 			}
 		}
-		logger.warn("Could not find any PCMJavaBuilder");
+		logger.warn("Could not find any JavaBuilder");
 		return null;
 	}
 	
@@ -1000,25 +993,6 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 		final org.emftext.language.java.classifiers.Class jaMoPPClass = ClassifiersFactory.eINSTANCE.createClass();
 		jaMoPPClass.setName(annotationName);
 		return jaMoPPClass;
-	}
-
-	private void deactivateEMFMonitor() throws Throwable {
-		final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-		final VirtualModel dummyVirtualModel = new VirtualModel() {
-			@Override
-			public void propagateChange(VitruviusChange change) {
-				final StringBuilder changeMessage = new StringBuilder();
-				change.getEChanges().forEach(eChange -> changeMessage.append(eChange).append(", "));
-				logger.info("Detected (but ignored) changes: " + changeMessage);
-			}
-			@Override
-			public ModelInstance getModelInstance(VURI modelVuri) {
-				return null;
-			}
-		};
-		JavaBridge.setFieldInClass(VitruviusProjectBuilder.class, "virtualModel", pcmJavaBuilder,
-				dummyVirtualModel);
-
 	}
 
 	protected void assertCorrespondingSEFF(final ResourceDemandingSEFF correspondingSeff, String methodName)

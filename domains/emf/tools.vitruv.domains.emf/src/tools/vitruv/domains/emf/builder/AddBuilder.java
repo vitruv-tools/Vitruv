@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
+
 public class AddBuilder extends AbstractHandler implements IHandler {
 
     private final String builderId;
@@ -47,12 +49,12 @@ public class AddBuilder extends AbstractHandler implements IHandler {
                 final ICommand buildCommand = description.newCommand();
                 buildCommand.setBuilderName(this.builderId);
                 Map<String, String> builderArguments = new HashMap<String, String>();
-                builderArguments.put("vmodelName", vmodelName);
+                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_VMODEL_NAME, vmodelName);
                 String fileExtensionsString = "";
                 for (String fileExtension : fileExtensions) {
                 	fileExtensionsString += fileExtension + ", ";
                 }
-                builderArguments.put("fileExtensions", fileExtensionsString);
+                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_FILE_EXTENSIONS, fileExtensionsString);
                 buildCommand.setArguments(builderArguments);
                 final List<ICommand> commands = new ArrayList<ICommand>();
                 commands.addAll(Arrays.asList(description.getBuildSpec()));

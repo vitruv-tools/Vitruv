@@ -11,33 +11,38 @@ import java.util.Map
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.CoreException
 
-abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder  {
+abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
 	private static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
-	public static final String ARGUMENT_VMODEL_NAME = "vmodelName";
+	
+	public static final String ARGUMENT_VMODEL_NAME = "virtualModelName";
 	public static final String ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
 	
-	Set<String> monitoredFileTypes
+	private Set<String> monitoredFileTypes
 	private VirtualModel virtualModel;
-	boolean initialized
+	private boolean initialized
 	
 	public new() {
 		this.initialized = false;
+		this.monitoredFileTypes = new HashSet<String>();
 	}
 	
 	private def void initializeBuilder() {
-		if (initialized) return;
-		this.virtualModel = VirtualModelManager.getInstance().getVirtualModel(getCommand().getArguments().get(ARGUMENT_VMODEL_NAME)) 
-		monitoredFileTypes = new HashSet<String>() 
+		val virtualModelName = getCommand().getArguments().get(ARGUMENT_VMODEL_NAME);
+		this.virtualModel = VirtualModelManager.getInstance().getVirtualModel(virtualModelName);
+
 		for (String fileExtension : getCommand().getArguments().get(ARGUMENT_FILE_EXTENSIONS).split(",")) {
 			monitoredFileTypes.add(fileExtension) 
 		}
+		
 		initialized = true
 		logger.debug("Initialized builder reference to virtual model");
 		this.startMonitoring(); 
 	}
 	
 	protected override IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-		initializeBuilder()
+		if (!initialized) {
+			initializeBuilder();
+		}
 		return null;
 	}
 	
