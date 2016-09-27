@@ -1,4 +1,4 @@
-package tools.vitruv.framework.metarepository;
+package tools.vitruv.framework.metamodel;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,12 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap;
 import tools.vitruv.framework.util.datatypes.ClaimableMap;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-public class MetaRepositoryImpl implements MetamodelRepository {
+public class MetamodelRepositoryImpl implements MetamodelRepository {
 
     private ClaimableMap<VURI, Metamodel> uri2MetamodelMap;
     /**
@@ -21,7 +20,7 @@ public class MetaRepositoryImpl implements MetamodelRepository {
      */
     private Map<String, Metamodel> fileExtension2MetamodelMap;
 
-    public MetaRepositoryImpl() {
+    public MetamodelRepositoryImpl() {
         this.uri2MetamodelMap = new ClaimableHashMap<VURI, Metamodel>();
         this.fileExtension2MetamodelMap = new HashMap<String, Metamodel>();
     }

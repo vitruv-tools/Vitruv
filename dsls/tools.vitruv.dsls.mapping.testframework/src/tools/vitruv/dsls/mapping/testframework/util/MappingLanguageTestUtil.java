@@ -14,9 +14,9 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 
 import tools.vitruv.framework.change.processing.Change2CommandTransforming;
+import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.MetamodelPair;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;

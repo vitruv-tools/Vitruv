@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import pcm_mockup.Pcm_mockupPackage;
+import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -41,13 +41,13 @@ public class MetaRepositoryTest {
         TuidManager.getInstance().reinitialize();
     }
 
-    public MetaRepositoryImpl createMetaRepository() {
-        MetaRepositoryImpl metaRepository = new MetaRepositoryImpl();
+    public MetamodelRepositoryImpl createMetaRepository() {
+        MetamodelRepositoryImpl metaRepository = new MetamodelRepositoryImpl();
         assertNotNull(metaRepository);
         return metaRepository;
     }
 
-    public Metamodel testAddMetamodel(final MetaRepositoryImpl metaRepository, final String nsURI, final VURI uri,
+    public Metamodel testAddMetamodel(final MetamodelRepositoryImpl metaRepository, final String nsURI, final VURI uri,
             final String fileExt) {
         Metamodel mm = TestUtil.createMetamodel(nsURI, uri, fileExt);
         metaRepository.addMetamodel(mm);

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl
 import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
@@ -12,6 +11,7 @@ import tools.vitruv.framework.modelsynchronization.SynchronisationListener
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding
+import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
@@ -26,7 +26,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	
 	public new(String name, VirtualModelConfiguration modelConfiguration, ClassLoader classLoader) {
 		this.name = name;
-		metamodelRepository = new MetaRepositoryImpl();
+		metamodelRepository = new MetamodelRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
 			metamodelRepository.addMetamodel(metamodel);
 		}
