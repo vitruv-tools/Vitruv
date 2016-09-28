@@ -1,15 +1,19 @@
 package mir.responses.responsesJavaTo5_1.ejbjava2pcm;
 
+import mir.routines.ejbjava2pcm.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.members.ClassMethod;
+import org.emftext.language.java.members.Member;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBAnnotationHelper;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.members.ClassMethod;
-import org.emftext.language.java.members.Member;
 
 @SuppressWarnings("all")
 class CreateClassMethodInEJBClassResponse extends AbstractResponseRealization {
@@ -19,7 +23,7 @@ class CreateClassMethodInEJBClassResponse extends AbstractResponseRealization {
   
   private boolean checkTriggerPrecondition(final InsertEReference<org.emftext.language.java.classifiers.Class, Member> change) {
     return (((change.getNewValue() instanceof ClassMethod) && EJBAnnotationHelper.isEJBClass(change.getAffectedEObject())) && 
-      EJBJava2PcmHelper.overridesInterfaceMethod(((ClassMethod) change.getNewValue()), ((org.emftext.language.java.classifiers.Class) change.getAffectedEObject())));
+      EJBJava2PcmHelper.overridesInterfaceMethod(((ClassMethod) change.getNewValue()), change.getAffectedEObject()));
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -57,7 +61,20 @@ class CreateClassMethodInEJBClassResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<org.emftext.language.java.classifiers.Class, Member> typedChange = (InsertEReference<org.emftext.language.java.classifiers.Class, Member>)change;
-    mir.routines.ejbjava2pcm.CreateClassMethodInEJBClassEffect effect = new mir.routines.ejbjava2pcm.CreateClassMethodInEJBClassEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.ejbjava2pcm.RoutinesFacade routinesFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<org.emftext.language.java.classifiers.Class, Member> change, @Extension final RoutinesFacade _routinesFacade) {
+      org.emftext.language.java.classifiers.Class _affectedEObject = change.getAffectedEObject();
+      Member _newValue = change.getNewValue();
+      _routinesFacade.createdClassMethodInEJBClass(_affectedEObject, ((ClassMethod) _newValue));
+    }
   }
 }

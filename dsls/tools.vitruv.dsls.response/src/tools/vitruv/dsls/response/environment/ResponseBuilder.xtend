@@ -9,20 +9,25 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
+import tools.vitruv.dsls.response.responseLanguage.Routine
 
 public class ResponseBuilder implements IResponseBuilder {
 	private ResponsesSegment responsesSegment;
+	private Routine routine;
 	private Response response;
 	
 	public new() {
 		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
-		this.response.routine = ResponseLanguageFactory.eINSTANCE.createImplicitRoutine();
+		this.routine = ResponseLanguageFactory.eINSTANCE.createRoutine();
 		this.responsesSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
 		responsesSegment.responses += this.response;
+		responsesSegment.routines += this.routine;
 	}
 	
 	public override setName(String name) {
-		this.response.name = name;	
+		this.response.name = name + "Response";
+		this.routine.name = name + "Routine";
+		this.response.callRoutine.code = new SimpleTextXBlockExpression('''«this.routine.name»(change); ''');
 		return this;
 	}
 	
@@ -41,13 +46,13 @@ public class ResponseBuilder implements IResponseBuilder {
 	}
 	
 	public override setExecutionBlock(StringConcatenationClient executionBlockCode) {
-		val executionBlock = ResponseLanguageFactory.eINSTANCE.createExecutionCodeBlock();
+		val executionBlock = ResponseLanguageFactory.eINSTANCE.createRoutineCallStatement();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
-		val matching = ResponseLanguageFactory.eINSTANCE.createMatching();
+		val matcher = ResponseLanguageFactory.eINSTANCE.createMatcher();
 		val effect = ResponseLanguageFactory.eINSTANCE.createEffect();
-		effect.codeBlock = executionBlock;
-		this.response.routine.effect = effect;
-		this.response.routine.matching = matching;
+		effect.effectStatements += executionBlock;
+		this.routine.effect = effect;
+		this.routine.matcher = matcher;
 		return this;
 	}
 	

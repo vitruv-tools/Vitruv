@@ -5,7 +5,6 @@ import java.io.IOException;
 import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.containers.CompilationUnit;
 import org.emftext.language.java.containers.impl.ContainersFactoryImpl;
@@ -17,51 +16,20 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateCompilationUnitEffect extends AbstractEffectRealization {
-  public CreateCompilationUnitEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage) {
-    super(responseExecutionState, calledBy);
-    				this.sourceElementMappedToClass = sourceElementMappedToClass;this.classifier = classifier;this.containingPackage = containingPackage;
-  }
+  private RoutinesFacade effectFacade;
   
-  private NamedElement sourceElementMappedToClass;
-  
-  private ConcreteClassifier classifier;
-  
-  private org.emftext.language.java.containers.Package containingPackage;
-  
-  private EObject getElement0(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
-    return compilationUnit;
-  }
-  
-  private EObject getElement1(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
-    return sourceElementMappedToClass;
-  }
-  
-  protected void executeRoutine() throws IOException {
-    getLogger().debug("Called routine CreateCompilationUnitEffect with input:");
-    getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
-    getLogger().debug("   ConcreteClassifier: " + this.classifier);
-    getLogger().debug("   Package: " + this.containingPackage);
-    
-    CompilationUnit compilationUnit = ContainersFactoryImpl.eINSTANCE.createCompilationUnit();
-    initializeCreateElementState(compilationUnit);
-    
-    addCorrespondenceBetween(getElement0(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), getElement1(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToClass, classifier, containingPackage, compilationUnit);
-    postprocessElementStates();
-  }
+  private CreateCompilationUnitEffect.EffectUserExecution userExecution;
   
   private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
     public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
     }
     
-    private void executeUserOperations(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
+    public EObject getElement1(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
+      return compilationUnit;
+    }
+    
+    public void updateCompilationUnitElement(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
       EList<String> _namespaces = compilationUnit.getNamespaces();
       EList<String> _namespaces_1 = containingPackage.getNamespaces();
       Iterables.<String>addAll(_namespaces, _namespaces_1);
@@ -75,5 +43,37 @@ public class CreateCompilationUnitEffect extends AbstractEffectRealization {
       String _buildJavaFilePath = Pcm2JavaHelper.buildJavaFilePath(compilationUnit);
       this.persistProjectRelative(sourceElementMappedToClass, compilationUnit, _buildJavaFilePath);
     }
+    
+    public EObject getElement2(final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage, final CompilationUnit compilationUnit) {
+      return sourceElementMappedToClass;
+    }
+  }
+  
+  public CreateCompilationUnitEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final ConcreteClassifier classifier, final org.emftext.language.java.containers.Package containingPackage) {
+    super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateCompilationUnitEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    				this.sourceElementMappedToClass = sourceElementMappedToClass;this.classifier = classifier;this.containingPackage = containingPackage;
+  }
+  
+  private NamedElement sourceElementMappedToClass;
+  
+  private ConcreteClassifier classifier;
+  
+  private org.emftext.language.java.containers.Package containingPackage;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine CreateCompilationUnitEffect with input:");
+    getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
+    getLogger().debug("   ConcreteClassifier: " + this.classifier);
+    getLogger().debug("   Package: " + this.containingPackage);
+    
+    CompilationUnit compilationUnit = ContainersFactoryImpl.eINSTANCE.createCompilationUnit();
+    initializeCreateElementState(compilationUnit);
+    userExecution.updateCompilationUnitElement(sourceElementMappedToClass, classifier, containingPackage, compilationUnit);
+    
+    addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), userExecution.getElement2(sourceElementMappedToClass, classifier, containingPackage, compilationUnit), "");
+    
+    postprocessElementStates();
   }
 }

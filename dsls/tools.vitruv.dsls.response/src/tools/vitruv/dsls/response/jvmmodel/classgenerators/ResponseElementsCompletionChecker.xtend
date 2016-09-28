@@ -1,10 +1,10 @@
 package tools.vitruv.dsls.response.jvmmodel.classgenerators
 
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 
 class ResponseElementsCompletionChecker {
-	public def boolean isComplete(RetrieveModelElement retrieveElement) {
+	public def boolean isComplete(RetrieveModelElementStatement retrieveElement) {
 		return retrieveElement?.correspondenceSource?.code != null && retrieveElement?.element.complete;
 	}
 	

@@ -11,8 +11,29 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private CreateRepositorySubPackagesEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
+      return repository;
+    }
+    
+    public void callRoutine1(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
+      _routinesFacade.createJavaPackage(repository, repositoryPackage, "contracts", "contracts");
+    }
+  }
+  
   public CreateRepositorySubPackagesEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.repository = repository;
   }
   
@@ -23,7 +44,7 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     getLogger().debug("   Repository: " + this.repository);
     
     org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
-    	getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceRepositoryPackage(repository), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
     	(org.emftext.language.java.containers.Package _element) -> true, // correspondence precondition checker
     	null);
@@ -31,29 +52,8 @@ public class CreateRepositorySubPackagesEffect extends AbstractEffectRealization
     	return;
     }
     initializeRetrieveElementState(repositoryPackage);
+    userExecution.callRoutine1(repository, repositoryPackage, effectFacade);
     
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateRepositorySubPackagesEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	repository, repositoryPackage);
     postprocessElementStates();
-  }
-  
-  private EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
-    return repository;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final Repository repository, final org.emftext.language.java.containers.Package repositoryPackage) {
-      this.effectFacade.callCreateJavaPackage(repository, repositoryPackage, "datatypes", "datatypes");
-      this.effectFacade.callCreateJavaPackage(repository, repositoryPackage, "contracts", "contracts");
-    }
   }
 }

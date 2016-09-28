@@ -14,8 +14,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatching <em>Matching</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getInput <em>Input</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatcher <em>Matcher</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getEffect <em>Effect</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine()
@@ -25,30 +28,82 @@ import org.eclipse.emf.ecore.EObject;
 public interface Routine extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Matching</b></em>' containment reference.
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Matching</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Matching</em>' containment reference.
-   * @see #setMatching(Matching)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Matching()
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Input</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Input</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Input</em>' containment reference.
+   * @see #setInput(RoutineInput)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Input()
    * @model containment="true"
    * @generated
    */
-  Matching getMatching();
+  RoutineInput getInput();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatching <em>Matching</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getInput <em>Input</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Matching</em>' containment reference.
-   * @see #getMatching()
+   * @param value the new value of the '<em>Input</em>' containment reference.
+   * @see #getInput()
    * @generated
    */
-  void setMatching(Matching value);
+  void setInput(RoutineInput value);
+
+  /**
+   * Returns the value of the '<em><b>Matcher</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Matcher</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Matcher</em>' containment reference.
+   * @see #setMatcher(Matcher)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Matcher()
+   * @model containment="true"
+   * @generated
+   */
+  Matcher getMatcher();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatcher <em>Matcher</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Matcher</em>' containment reference.
+   * @see #getMatcher()
+   * @generated
+   */
+  void setMatcher(Matcher value);
 
   /**
    * Returns the value of the '<em><b>Effect</b></em>' containment reference.
@@ -75,5 +130,33 @@ public interface Routine extends EObject
    * @generated
    */
   void setEffect(Effect value);
+
+  /**
+   * Returns the value of the '<em><b>Responses Segment</b></em>' container reference.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines <em>Routines</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Responses Segment</em>' container reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Responses Segment</em>' container reference.
+   * @see #setResponsesSegment(ResponsesSegment)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_ResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines
+   * @model opposite="routines" required="true" transient="false"
+   * @generated
+   */
+  ResponsesSegment getResponsesSegment();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Responses Segment</em>' container reference.
+   * @see #getResponsesSegment()
+   * @generated
+   */
+  void setResponsesSegment(ResponsesSegment value);
 
 } // Routine

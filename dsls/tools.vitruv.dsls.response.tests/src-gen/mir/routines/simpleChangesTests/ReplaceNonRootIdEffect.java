@@ -4,32 +4,52 @@ import allElementTypes.NonRoot;
 import java.io.IOException;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.response.AbstractEffectRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 
 @SuppressWarnings("all")
 public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
-  public ReplaceNonRootIdEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ReplaceSingleValuedEAttribute<NonRoot, String> change) {
+  private RoutinesFacade effectFacade;
+  
+  private ReplaceNonRootIdEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetElement(final NonRoot nonRoot, final String value) {
+      return nonRoot;
+    }
+    
+    public EObject getElement1(final NonRoot nonRoot, final String value, final NonRoot targetElement) {
+      return targetElement;
+    }
+    
+    public void update0Element(final NonRoot nonRoot, final String value, final NonRoot targetElement) {
+      targetElement.setId(value);
+    }
+  }
+  
+  public ReplaceNonRootIdEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot nonRoot, final String value) {
     super(responseExecutionState, calledBy);
-    				this.change = change;
+    this.userExecution = new mir.routines.simpleChangesTests.ReplaceNonRootIdEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.nonRoot = nonRoot;this.value = value;
   }
   
-  private ReplaceSingleValuedEAttribute<NonRoot, String> change;
+  private NonRoot nonRoot;
   
-  private EObject getCorrepondenceSourceTargetElement(final ReplaceSingleValuedEAttribute<NonRoot, String> change) {
-    NonRoot _affectedEObject = change.getAffectedEObject();
-    return _affectedEObject;
-  }
+  private String value;
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine ReplaceNonRootIdEffect with input:");
-    getLogger().debug("   ReplaceSingleValuedEAttribute: " + this.change);
+    getLogger().debug("   NonRoot: " + this.nonRoot);
+    getLogger().debug("   String: " + this.value);
     
     NonRoot targetElement = getCorrespondingElement(
-    	getCorrepondenceSourceTargetElement(change), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(nonRoot, value), // correspondence source supplier
     	NonRoot.class,
     	(NonRoot _element) -> true, // correspondence precondition checker
     	null);
@@ -37,25 +57,9 @@ public class ReplaceNonRootIdEffect extends AbstractEffectRealization {
     	return;
     }
     initializeRetrieveElementState(targetElement);
+    // val updatedElement userExecution.getElement1(nonRoot, value, targetElement);
+    userExecution.update0Element(nonRoot, value, targetElement);
     
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.ReplaceNonRootIdEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	change, targetElement);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final ReplaceSingleValuedEAttribute<NonRoot, String> change, final NonRoot targetElement) {
-      String _newValue = change.getNewValue();
-      targetElement.setId(_newValue);
-    }
   }
 }

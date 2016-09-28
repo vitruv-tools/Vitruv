@@ -1,9 +1,14 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -46,7 +51,19 @@ class DeletedSeffResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     RemoveEReference<BasicComponent, ServiceEffectSpecification> typedChange = (RemoveEReference<BasicComponent, ServiceEffectSpecification>)change;
-    mir.routines.pcm2java.DeletedSeffEffect effect = new mir.routines.pcm2java.DeletedSeffEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.DeletedSeffResponse.EffectUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.DeletedSeffResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final RemoveEReference<BasicComponent, ServiceEffectSpecification> change, @Extension final RoutinesFacade _routinesFacade) {
+      ServiceEffectSpecification _oldValue = change.getOldValue();
+      _routinesFacade.deleteMethodForSeff(_oldValue);
+    }
   }
 }

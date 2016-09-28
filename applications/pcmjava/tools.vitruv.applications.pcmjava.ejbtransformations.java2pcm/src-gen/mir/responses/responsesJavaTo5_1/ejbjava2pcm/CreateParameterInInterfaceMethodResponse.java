@@ -1,13 +1,17 @@
 package mir.responses.responsesJavaTo5_1.ejbjava2pcm;
 
+import mir.routines.ejbjava2pcm.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.members.InterfaceMethod;
+import org.emftext.language.java.parameters.Parameter;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.members.InterfaceMethod;
-import org.emftext.language.java.parameters.Parameter;
 
 @SuppressWarnings("all")
 class CreateParameterInInterfaceMethodResponse extends AbstractResponseRealization {
@@ -47,7 +51,20 @@ class CreateParameterInInterfaceMethodResponse extends AbstractResponseRealizati
   
   public void executeResponse(final EChange change) {
     InsertEReference<InterfaceMethod, Parameter> typedChange = (InsertEReference<InterfaceMethod, Parameter>)change;
-    mir.routines.ejbjava2pcm.CreateParameterInInterfaceMethodEffect effect = new mir.routines.ejbjava2pcm.CreateParameterInInterfaceMethodEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.ejbjava2pcm.RoutinesFacade routinesFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateParameterInInterfaceMethodResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateParameterInInterfaceMethodResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<InterfaceMethod, Parameter> change, @Extension final RoutinesFacade _routinesFacade) {
+      InterfaceMethod _affectedEObject = change.getAffectedEObject();
+      Parameter _newValue = change.getNewValue();
+      _routinesFacade.createdParameterInInterfaceMethod(_affectedEObject, _newValue);
+    }
   }
 }

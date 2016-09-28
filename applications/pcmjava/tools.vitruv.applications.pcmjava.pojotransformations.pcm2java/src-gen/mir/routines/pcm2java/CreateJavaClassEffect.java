@@ -14,8 +14,38 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateJavaClassEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private CreateJavaClassEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getElement1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
+      return javaClass;
+    }
+    
+    public void updateJavaClassElement(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
+      javaClass.setName(className);
+      Public _createPublic = ModifiersFactory.eINSTANCE.createPublic();
+      javaClass.addModifier(_createPublic);
+    }
+    
+    public EObject getElement2(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
+      return sourceElementMappedToClass;
+    }
+    
+    public void callRoutine1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass, @Extension final RoutinesFacade _routinesFacade) {
+      _routinesFacade.createCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage);
+    }
+  }
+  
   public CreateJavaClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.CreateJavaClassEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.sourceElementMappedToClass = sourceElementMappedToClass;this.containingPackage = containingPackage;this.className = className;
   }
   
@@ -25,14 +55,6 @@ public class CreateJavaClassEffect extends AbstractEffectRealization {
   
   private String className;
   
-  private EObject getElement0(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
-    return javaClass;
-  }
-  
-  private EObject getElement1(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
-    return sourceElementMappedToClass;
-  }
-  
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateJavaClassEffect with input:");
     getLogger().debug("   NamedElement: " + this.sourceElementMappedToClass);
@@ -41,28 +63,12 @@ public class CreateJavaClassEffect extends AbstractEffectRealization {
     
     org.emftext.language.java.classifiers.Class javaClass = ClassifiersFactoryImpl.eINSTANCE.createClass();
     initializeCreateElementState(javaClass);
+    userExecution.updateJavaClassElement(sourceElementMappedToClass, containingPackage, className, javaClass);
     
-    addCorrespondenceBetween(getElement0(sourceElementMappedToClass, containingPackage, className, javaClass), getElement1(sourceElementMappedToClass, containingPackage, className, javaClass), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.CreateJavaClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	sourceElementMappedToClass, containingPackage, className, javaClass);
+    addCorrespondenceBetween(userExecution.getElement1(sourceElementMappedToClass, containingPackage, className, javaClass), userExecution.getElement2(sourceElementMappedToClass, containingPackage, className, javaClass), "");
+    
+    userExecution.callRoutine1(sourceElementMappedToClass, containingPackage, className, javaClass, effectFacade);
+    
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final NamedElement sourceElementMappedToClass, final org.emftext.language.java.containers.Package containingPackage, final String className, final org.emftext.language.java.classifiers.Class javaClass) {
-      javaClass.setName(className);
-      Public _createPublic = ModifiersFactory.eINSTANCE.createPublic();
-      javaClass.addModifier(_createPublic);
-      this.effectFacade.callCreateCompilationUnit(sourceElementMappedToClass, javaClass, containingPackage);
-    }
   }
 }

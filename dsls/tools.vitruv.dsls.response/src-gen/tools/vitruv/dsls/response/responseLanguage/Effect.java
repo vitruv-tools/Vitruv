@@ -16,11 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getElementCreation <em>Element Creation</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getElementDeletion <em>Element Deletion</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCorrespondenceCreation <em>Correspondence Creation</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCorrespondenceDeletion <em>Correspondence Deletion</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCodeBlock <em>Code Block</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Effect#getEffectStatements <em>Effect Statements</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect()
@@ -30,93 +26,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface Effect extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Element Creation</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.CreateElement}.
+   * Returns the value of the '<em><b>Effect Statements</b></em>' containment reference list.
+   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.EffectStatement}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Element Creation</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Effect Statements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Element Creation</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_ElementCreation()
+   * @return the value of the '<em>Effect Statements</em>' containment reference list.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_EffectStatements()
    * @model containment="true"
    * @generated
    */
-  EList<CreateElement> getElementCreation();
-
-  /**
-   * Returns the value of the '<em><b>Element Deletion</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.DeleteElement}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Element Deletion</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Element Deletion</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_ElementDeletion()
-   * @model containment="true"
-   * @generated
-   */
-  EList<DeleteElement> getElementDeletion();
-
-  /**
-   * Returns the value of the '<em><b>Correspondence Creation</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Correspondence Creation</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Correspondence Creation</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_CorrespondenceCreation()
-   * @model containment="true"
-   * @generated
-   */
-  EList<CreateCorrespondence> getCorrespondenceCreation();
-
-  /**
-   * Returns the value of the '<em><b>Correspondence Deletion</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Correspondence Deletion</em>' containment reference list isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Correspondence Deletion</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_CorrespondenceDeletion()
-   * @model containment="true"
-   * @generated
-   */
-  EList<RemoveCorrespondence> getCorrespondenceDeletion();
-
-  /**
-   * Returns the value of the '<em><b>Code Block</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Code Block</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Code Block</em>' containment reference.
-   * @see #setCodeBlock(ExecutionCodeBlock)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getEffect_CodeBlock()
-   * @model containment="true"
-   * @generated
-   */
-  ExecutionCodeBlock getCodeBlock();
-
-  /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Effect#getCodeBlock <em>Code Block</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Code Block</em>' containment reference.
-   * @see #getCodeBlock()
-   * @generated
-   */
-  void setCodeBlock(ExecutionCodeBlock value);
+  EList<EffectStatement> getEffectStatements();
 
 } // Effect

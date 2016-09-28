@@ -13,25 +13,36 @@ ResponseFile:
 	(responsesSegments+=ResponsesSegment)+;
 	
 ResponsesSegment:
-	'responses from metamodel' fromMetamodel=MetamodelReference 'to metamodel' toMetamodel=MetamodelReference
-	'called' name=ValidID
+	'response collection:' name=ValidID
+	'from metamodel' fromMetamodel=MetamodelReference 
+	'to metamodel' toMetamodel=MetamodelReference
 	(responses+=Response |
-		routines+=ExplicitRoutine)*;
+		routines+=Routine)*;
+
+// *********************************
+// *********** RESPONSES ***********
+// *********************************
 
 Response:
 	(documentation=ML_COMMENT)?
-	'response:' name=ValidID
-	trigger=Trigger
-	routine=ImplicitRoutine;
+	'response:' name=ValidID '{'
+		trigger=Trigger
+		callRoutine=ResponseReactionRoutineCall
+	'}';
+	
+ResponseReactionRoutineCall:
+	{ResponseReactionRoutineCall}
+	RoutineCallBlock;
 
-// ****** TRIGGER ******
+// *********** TRIGGER ***********
 
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
 
 Trigger:
-	'trigger:' (ModelChange | InvariantViolationEvent)
-	('check:' precondition=PreconditionCodeBlock)?;
+	// TODO HK Extend this by "before" executing the transformation before applying the change
+	'after' (ModelChange | InvariantViolationEvent)
+	('with' precondition=PreconditionCodeBlock)?;
 
 ModelChange:
 	ConcreteModelElementChange | ArbitraryModelElementChange;
@@ -43,8 +54,8 @@ AtomicConcreteModelElementChange:
 	AtomicRootObjectChange | AtomicFeatureChange;
 
 AtomicRootObjectChange:
-	('created root' {InsertRootChange} |
-	'deleted root' {RemoveRootChange})
+	('root created' {InsertRootChange} |
+	'root deleted' {RemoveRootChange})
 	changedElement=ModelElement;
 
 AtomicFeatureChange:
@@ -52,82 +63,106 @@ AtomicFeatureChange:
 	changedFeature=FeatureOfElement;
 
 AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
-	'inserted into list' {MultiValuedFeatureInsertChange} |
-	'removed from list' {MultiValuedFeatureRemoveChange} |
-	'permuted list' {MultiValuedFeaturePermuteChange};
+	'list entry inserted' {MultiValuedFeatureInsertChange} |
+	'list entry removed' {MultiValuedFeatureRemoveChange} |
+	'list permuted' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	'replaced value' {SingleValuedFeatureReplace};
+	'value replaced' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	{ArbitraryModelElementChange} 'any change';
 
 
 
-// ****** EFFECTS ******
+// ***************************************
+// *********** REPAIR ROUTINES ***********
+// ***************************************
 
-
-fragment Routine:
-	matching=Matching?
-	effect=Effect;
-
-ImplicitRoutine:
-	Routine;	
-
-Matching:
-	{Matching}
-	'match:'
-	retrievedElements+=RetrieveModelElement*
-	('check:' condition=PreconditionCodeBlock)?;
-
-Effect:
-	{Effect}
-	'effect:'
-	(elementCreation += CreateElement |
-		elementDeletion += DeleteElement)*
-	(correspondenceCreation += CreateCorrespondence | 
-		correspondenceDeletion += RemoveCorrespondence)*
-	('execute:' codeBlock=ExecutionCodeBlock)?;
-
-ExplicitRoutine:
-	'routine:' name=ValidID
-	input=RoutineInput
-	Routine;
+Routine:
+	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
+		matcher=Matcher?
+		effect=Effect
+	'}';
 
 RoutineInput:
 	{RoutineInput}
-	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain:" javaInputElements+=NamedJavaElement))*)? ')';
+	 ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)?;
+
+// *********** MATCHER ***********
+
+Matcher:
+	{Matcher}
+	'match' '{'
+		(matcherStatements+=MatcherStatement)+
+	'}';
+
+MatcherStatement:
+	RetrieveModelElementStatement | MatcherCheckStatement;
+
+RetrieveModelElementStatement:
+	{RetrieveModelElementStatement}
+	(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
+	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+
+MatcherCheckStatement:
+	{MatcherCheckStatement}
+	'check' CodeBlock;
+
+// *********** EFFECTS ***********
+
+Effect:
+	{Effect}
+	'effect' '{'
+		(effectStatements+=EffectStatement)+
+	'}';
+
+RoutineCallStatement returns RoutineCallStatement:
+	{RoutineCallStatement}
+	RoutineCallBlock;
+
+EffectStatement:
+	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
 	
-// ****** CORRESPONDENCE SPECIFICATION ******	
+CreateElement returns EffectStatement:
+	{CreateElement}
+	"create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?;
+	
+DeleteElement returns EffectStatement:
+	{DeleteElement}
+	"delete element" element=ExistingElementReference;
+
+UpdateElement returns EffectStatement:
+	{UpdateElement}
+	"update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
+
+
+CreateCorrespondence returns EffectStatement:
+	{CreateCorrespondence}
+	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
+	('tag with' Taggable)?;
+	
+RemoveCorrespondence returns EffectStatement:
+	{RemoveCorrespondence}
+	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
+
+
+// ****** CODE BLOCKS ******
+
+fragment CodeBlock:
+	code=XExpression;
+
+fragment RoutineCallBlock:
+	'call' CodeBlock;
 
 fragment Taggable:
 	tag=TagCodeBlock;
 
-RetrieveModelElement:
-	(required?='retrieve required element:' | optional?='retrieve optional element:' | abscence?='require absence of element:') 
-	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
-	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
-
 ExistingElementReference:
 	CodeBlock;
-
-CreateElement:
-	"create element:" element=NamedModelElement;
-	
-DeleteElement:
-	"delete element:" element=ExistingElementReference;
-
-CreateCorrespondence:
-	"add correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference
-	('tag with' Taggable)?;
-	
-RemoveCorrespondence:
-	"remove correspondence:" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
-
-
-// ****** CODE BLOCKS ******
 
 TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
@@ -144,7 +179,3 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
-
-fragment CodeBlock:
-	code=XExpression;
-

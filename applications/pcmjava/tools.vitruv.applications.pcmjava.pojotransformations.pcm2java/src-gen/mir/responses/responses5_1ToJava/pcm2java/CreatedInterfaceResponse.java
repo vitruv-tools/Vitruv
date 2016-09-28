@@ -1,9 +1,14 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.Interface;
 import org.palladiosimulator.pcm.repository.Repository;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -46,7 +51,19 @@ class CreatedInterfaceResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<Repository, Interface> typedChange = (InsertEReference<Repository, Interface>)change;
-    mir.routines.pcm2java.CreatedInterfaceEffect effect = new mir.routines.pcm2java.CreatedInterfaceEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.CreatedInterfaceResponse.EffectUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.CreatedInterfaceResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<Repository, Interface> change, @Extension final RoutinesFacade _routinesFacade) {
+      Interface _newValue = change.getNewValue();
+      _routinesFacade.createInterfaceImplementation(_newValue);
+    }
   }
 }

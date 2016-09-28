@@ -74,11 +74,10 @@ import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
 import tools.vitruv.dsls.response.responseLanguage.Effect;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine;
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine;
 import tools.vitruv.dsls.response.responseLanguage.InsertRootChange;
 import tools.vitruv.dsls.response.responseLanguage.InvariantViolationEvent;
-import tools.vitruv.dsls.response.responseLanguage.Matching;
+import tools.vitruv.dsls.response.responseLanguage.Matcher;
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureInsertChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeaturePermuteChange;
 import tools.vitruv.dsls.response.responseLanguage.MultiValuedFeatureRemoveChange;
@@ -88,11 +87,15 @@ import tools.vitruv.dsls.response.responseLanguage.RemoveRootChange;
 import tools.vitruv.dsls.response.responseLanguage.Response;
 import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement;
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement;
+import tools.vitruv.dsls.response.responseLanguage.Routine;
+import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace;
 import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.UpdateElement;
 import tools.vitruv.dsls.response.services.ResponseLanguageGrammarAccess;
 
 @SuppressWarnings("all")
@@ -173,12 +176,6 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE:
 				sequence_CodeBlock(context, (ExistingElementReference) semanticObject); 
 				return; 
-			case ResponseLanguagePackage.EXPLICIT_ROUTINE:
-				sequence_ExplicitRoutine_Routine(context, (ExplicitRoutine) semanticObject); 
-				return; 
-			case ResponseLanguagePackage.IMPLICIT_ROUTINE:
-				sequence_Routine(context, (ImplicitRoutine) semanticObject); 
-				return; 
 			case ResponseLanguagePackage.INSERT_ROOT_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
 						|| rule == grammarAccess.getConcreteModelElementChangeRule()
@@ -202,8 +199,11 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 					return; 
 				}
 				else break;
-			case ResponseLanguagePackage.MATCHING:
-				sequence_Matching(context, (Matching) semanticObject); 
+			case ResponseLanguagePackage.MATCHER:
+				sequence_Matcher(context, (Matcher) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT:
+				sequence_CodeBlock_MatcherCheckStatement(context, (MatcherCheckStatement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE:
 				if (rule == grammarAccess.getModelChangeRule()
@@ -281,11 +281,20 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case ResponseLanguagePackage.RESPONSE_FILE:
 				sequence_MirBaseFile_ResponseFile(context, (ResponseFile) semanticObject); 
 				return; 
+			case ResponseLanguagePackage.RESPONSE_REACTION_ROUTINE_CALL:
+				sequence_CodeBlock_ResponseReactionRoutineCall(context, (ResponseReactionRoutineCall) semanticObject); 
+				return; 
 			case ResponseLanguagePackage.RESPONSES_SEGMENT:
 				sequence_ResponsesSegment(context, (ResponsesSegment) semanticObject); 
 				return; 
-			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
-				sequence_RetrieveModelElement_Taggable(context, (RetrieveModelElement) semanticObject); 
+			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT:
+				sequence_RetrieveModelElementStatement_Taggable(context, (RetrieveModelElementStatement) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.ROUTINE:
+				sequence_Routine(context, (Routine) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT:
+				sequence_CodeBlock_RoutineCallStatement(context, (RoutineCallStatement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.ROUTINE_INPUT:
 				sequence_RoutineInput(context, (RoutineInput) semanticObject); 
@@ -309,6 +318,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				else break;
 			case ResponseLanguagePackage.TAG_CODE_BLOCK:
 				sequence_CodeBlock_TagCodeBlock(context, (TagCodeBlock) semanticObject); 
+				return; 
+			case ResponseLanguagePackage.UPDATE_ELEMENT:
+				sequence_UpdateElement(context, (UpdateElement) semanticObject); 
 				return; 
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
@@ -881,12 +893,68 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     MatcherStatement returns MatcherCheckStatement
+	 *     MatcherCheckStatement returns MatcherCheckStatement
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_MatcherCheckStatement(ISerializationContext context, MatcherCheckStatement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     PreconditionCodeBlock returns PreconditionCodeBlock
 	 *
 	 * Constraint:
 	 *     code=XExpression
 	 */
 	protected void sequence_CodeBlock_PreconditionCodeBlock(ISerializationContext context, PreconditionCodeBlock semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ResponseReactionRoutineCall returns ResponseReactionRoutineCall
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_ResponseReactionRoutineCall(ISerializationContext context, ResponseReactionRoutineCall semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCodeBlockAccess().getCodeXExpressionParserRuleCall_0(), semanticObject.getCode());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     RoutineCallStatement returns RoutineCallStatement
+	 *     EffectStatement returns RoutineCallStatement
+	 *
+	 * Constraint:
+	 *     code=XExpression
+	 */
+	protected void sequence_CodeBlock_RoutineCallStatement(ISerializationContext context, RoutineCallStatement semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CODE_BLOCK__CODE));
@@ -917,6 +985,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns CreateCorrespondence
 	 *     CreateCorrespondence returns CreateCorrespondence
 	 *
 	 * Constraint:
@@ -929,24 +998,20 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns CreateElement
 	 *     CreateElement returns CreateElement
 	 *
 	 * Constraint:
-	 *     element=NamedModelElement
+	 *     (element=NamedModelElement initializationBlock=ExecutionCodeBlock?)
 	 */
 	protected void sequence_CreateElement(ISerializationContext context, CreateElement semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.CREATE_ELEMENT__ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.CREATE_ELEMENT__ELEMENT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getCreateElementAccess().getElementNamedModelElementParserRuleCall_1_0(), semanticObject.getElement());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns DeleteElement
 	 *     DeleteElement returns DeleteElement
 	 *
 	 * Constraint:
@@ -958,7 +1023,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.DELETE_ELEMENT__ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_1_0(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getDeleteElementAccess().getElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getElement());
 		feeder.finish();
 	}
 	
@@ -968,26 +1033,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Effect returns Effect
 	 *
 	 * Constraint:
-	 *     (
-	 *         (elementCreation+=CreateElement | elementDeletion+=DeleteElement)* 
-	 *         correspondenceCreation+=CreateCorrespondence? 
-	 *         (correspondenceDeletion+=RemoveCorrespondence? correspondenceCreation+=CreateCorrespondence?)* 
-	 *         codeBlock=ExecutionCodeBlock?
-	 *     )
+	 *     effectStatements+=EffectStatement+
 	 */
 	protected void sequence_Effect(ISerializationContext context, Effect semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ExplicitRoutine returns ExplicitRoutine
-	 *
-	 * Constraint:
-	 *     (name=ValidID input=RoutineInput matching=Matching? effect=Effect)
-	 */
-	protected void sequence_ExplicitRoutine_Routine(ISerializationContext context, ExplicitRoutine semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1024,12 +1072,12 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     Matching returns Matching
+	 *     Matcher returns Matcher
 	 *
 	 * Constraint:
-	 *     (retrievedElements+=RetrieveModelElement* condition=PreconditionCodeBlock?)
+	 *     matcherStatements+=MatcherStatement+
 	 */
-	protected void sequence_Matching(ISerializationContext context, Matching semanticObject) {
+	protected void sequence_Matcher(ISerializationContext context, Matcher semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1048,6 +1096,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
+	 *     EffectStatement returns RemoveCorrespondence
 	 *     RemoveCorrespondence returns RemoveCorrespondence
 	 *
 	 * Constraint:
@@ -1061,8 +1110,8 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.REMOVE_CORRESPONDENCE__SECOND_ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_1_0(), semanticObject.getFirstElement());
-		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_3_0(), semanticObject.getSecondElement());
+		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getFirstElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getFirstElement());
+		feeder.accept(grammarAccess.getRemoveCorrespondenceAccess().getSecondElementExistingElementReferenceParserRuleCall_4_0(), semanticObject.getSecondElement());
 		feeder.finish();
 	}
 	
@@ -1072,7 +1121,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Response returns Response
 	 *
 	 * Constraint:
-	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger routine=ImplicitRoutine)
+	 *     (documentation=ML_COMMENT? name=ValidID trigger=Trigger callRoutine=ResponseReactionRoutineCall)
 	 */
 	protected void sequence_Response(ISerializationContext context, Response semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1084,7 +1133,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     ResponsesSegment returns ResponsesSegment
 	 *
 	 * Constraint:
-	 *     (fromMetamodel=MetamodelReference toMetamodel=MetamodelReference name=ValidID (responses+=Response | routines+=ExplicitRoutine)*)
+	 *     (name=ValidID fromMetamodel=MetamodelReference toMetamodel=MetamodelReference (responses+=Response | routines+=Routine)*)
 	 */
 	protected void sequence_ResponsesSegment(ISerializationContext context, ResponsesSegment semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1093,18 +1142,19 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     RetrieveModelElement returns RetrieveModelElement
+	 *     MatcherStatement returns RetrieveModelElementStatement
+	 *     RetrieveModelElementStatement returns RetrieveModelElementStatement
 	 *
 	 * Constraint:
 	 *     (
-	 *         (required?='retrieve required element:' | optional?='retrieve optional element:' | abscence?='require absence of element:') 
+	 *         (required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
 	 *         element=NamedModelElement 
 	 *         correspondenceSource=CorrespondingObjectCodeBlock 
 	 *         tag=TagCodeBlock? 
 	 *         precondition=PreconditionCodeBlock?
 	 *     )
 	 */
-	protected void sequence_RetrieveModelElement_Taggable(ISerializationContext context, RetrieveModelElement semanticObject) {
+	protected void sequence_RetrieveModelElementStatement_Taggable(ISerializationContext context, RetrieveModelElementStatement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1127,13 +1177,35 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     ImplicitRoutine returns ImplicitRoutine
+	 *     Routine returns Routine
 	 *
 	 * Constraint:
-	 *     (matching=Matching? effect=Effect)
+	 *     (name=ValidID input=RoutineInput matcher=Matcher? effect=Effect)
 	 */
-	protected void sequence_Routine(ISerializationContext context, ImplicitRoutine semanticObject) {
+	protected void sequence_Routine(ISerializationContext context, Routine semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     EffectStatement returns UpdateElement
+	 *     UpdateElement returns UpdateElement
+	 *
+	 * Constraint:
+	 *     (element=ExistingElementReference updateBlock=ExecutionCodeBlock)
+	 */
+	protected void sequence_UpdateElement(ISerializationContext context, UpdateElement semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__ELEMENT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__ELEMENT));
+			if (transientValues.isValueTransient(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__UPDATE_BLOCK) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.UPDATE_ELEMENT__UPDATE_BLOCK));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getUpdateElementAccess().getElementExistingElementReferenceParserRuleCall_2_0(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getUpdateElementAccess().getUpdateBlockExecutionCodeBlockParserRuleCall_3_0(), semanticObject.getUpdateBlock());
+		feeder.finish();
 	}
 	
 	

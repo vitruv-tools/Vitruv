@@ -8,6 +8,5 @@ interface ResponseElementStatesHandler {
 	public def void deleteObject(EObject element);
 	public def void initializeCreateElementState(EObject element);
 	public def void initializeRetrieveElementState(EObject element);
-	public def void preprocessElementStates();
 	public def void postprocessElementStates();
 }

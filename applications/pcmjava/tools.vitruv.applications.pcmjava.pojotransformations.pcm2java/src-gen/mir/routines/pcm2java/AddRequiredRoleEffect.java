@@ -26,37 +26,93 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddRequiredRoleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private AddRequiredRoleEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceRequiredInterface(final OperationRequiredRole requiredRole) {
+      OperationInterface _requiredInterface__OperationRequiredRole = requiredRole.getRequiredInterface__OperationRequiredRole();
+      return _requiredInterface__OperationRequiredRole;
+    }
+    
+    public EObject getElement1(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport) {
+      return requiredInterfaceImport;
+    }
+    
+    public void update0Element(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      EList<Member> _members = javaClass.getMembers();
+      _members.add(requiredInterfaceField);
+      EList<Member> _members_1 = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members_1, Constructor.class);
+      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_filter);
+      if (_isNullOrEmpty) {
+        Pcm2JavaHelper.addConstructorToClass(javaClass);
+      }
+    }
+    
+    public EObject getCorrepondenceSourceJavaClass(final OperationRequiredRole requiredRole, final Interface requiredInterface) {
+      InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
+      return _requiringEntity_RequiredRole;
+    }
+    
+    public EObject getElement4(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      return requiredRole;
+    }
+    
+    public EObject getElement5(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      return javaClass;
+    }
+    
+    public EObject getElement2(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport) {
+      return requiredRole;
+    }
+    
+    public EObject getElement3(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      return requiredInterfaceField;
+    }
+    
+    public void updateRequiredInterfaceFieldElement(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      final String requiredRoleName = requiredRole.getEntityName();
+      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
+      Pcm2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
+    }
+    
+    public void updateRequiredInterfaceImportElement(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport) {
+      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
+    }
+    
+    public void callRoutine1(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField, @Extension final RoutinesFacade _routinesFacade) {
+      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
+      final String requiredRoleName = requiredRole.getEntityName();
+      EList<Member> _members = javaClass.getMembers();
+      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members, Constructor.class);
+      for (final Constructor ctor : _filter) {
+        _routinesFacade.addParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
+      }
+    }
+  }
+  
   public AddRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.requiredRole = requiredRole;
   }
   
   private OperationRequiredRole requiredRole;
-  
-  private EObject getCorrepondenceSourceRequiredInterface(final OperationRequiredRole requiredRole) {
-    OperationInterface _requiredInterface__OperationRequiredRole = requiredRole.getRequiredInterface__OperationRequiredRole();
-    return _requiredInterface__OperationRequiredRole;
-  }
-  
-  private EObject getElement0(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-    return requiredInterfaceImport;
-  }
-  
-  private EObject getElement1(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-    return requiredInterfaceField;
-  }
-  
-  private EObject getCorrepondenceSourceJavaClass(final OperationRequiredRole requiredRole) {
-    InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
-    return _requiringEntity_RequiredRole;
-  }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine AddRequiredRoleEffect with input:");
     getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
     
     Interface requiredInterface = getCorrespondingElement(
-    	getCorrepondenceSourceRequiredInterface(requiredRole), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceRequiredInterface(requiredRole), // correspondence source supplier
     	Interface.class,
     	(Interface _element) -> true, // correspondence precondition checker
     	null);
@@ -65,7 +121,7 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     }
     initializeRetrieveElementState(requiredInterface);
     org.emftext.language.java.classifiers.Class javaClass = getCorrespondingElement(
-    	getCorrepondenceSourceJavaClass(requiredRole), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceJavaClass(requiredRole, requiredInterface), // correspondence source supplier
     	org.emftext.language.java.classifiers.Class.class,
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
@@ -75,53 +131,21 @@ public class AddRequiredRoleEffect extends AbstractEffectRealization {
     initializeRetrieveElementState(javaClass);
     ClassifierImport requiredInterfaceImport = ImportsFactoryImpl.eINSTANCE.createClassifierImport();
     initializeCreateElementState(requiredInterfaceImport);
+    userExecution.updateRequiredInterfaceImportElement(requiredRole, requiredInterface, javaClass, requiredInterfaceImport);
+    
+    addCorrespondenceBetween(userExecution.getElement1(requiredRole, requiredInterface, javaClass, requiredInterfaceImport), userExecution.getElement2(requiredRole, requiredInterface, javaClass, requiredInterfaceImport), "");
+    
     Field requiredInterfaceField = MembersFactoryImpl.eINSTANCE.createField();
     initializeCreateElementState(requiredInterfaceField);
+    userExecution.updateRequiredInterfaceFieldElement(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
     
-    addCorrespondenceBetween(getElement0(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), getElement2(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), "");
-    addCorrespondenceBetween(getElement1(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), getElement3(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), "");
-    preprocessElementStates();
-    new mir.routines.pcm2java.AddRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    addCorrespondenceBetween(userExecution.getElement3(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), userExecution.getElement4(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField), "");
+    
+    // val updatedElement userExecution.getElement5(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    userExecution.update0Element(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
+    
+    userExecution.callRoutine1(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField, effectFacade);
+    
     postprocessElementStates();
-  }
-  
-  private EObject getElement2(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-    return requiredRole;
-  }
-  
-  private EObject getElement3(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-    return requiredRole;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final OperationRequiredRole requiredRole, final Interface requiredInterface, final org.emftext.language.java.classifiers.Class javaClass, final ClassifierImport requiredInterfaceImport, final Field requiredInterfaceField) {
-      final NamespaceClassifierReference typeRef = Pcm2JavaHelper.createNamespaceClassifierReference(requiredInterface);
-      Pcm2JavaHelper.addImportToCompilationUnitOfClassifier(requiredInterfaceImport, javaClass, requiredInterface);
-      final String requiredRoleName = requiredRole.getEntityName();
-      NamespaceClassifierReference _copy = EcoreUtil.<NamespaceClassifierReference>copy(typeRef);
-      Pcm2JavaHelper.createPrivateField(requiredInterfaceField, _copy, requiredRoleName);
-      EList<Member> _members = javaClass.getMembers();
-      _members.add(requiredInterfaceField);
-      EList<Member> _members_1 = javaClass.getMembers();
-      Iterable<Constructor> _filter = Iterables.<Constructor>filter(_members_1, Constructor.class);
-      boolean _isNullOrEmpty = IterableExtensions.isNullOrEmpty(_filter);
-      if (_isNullOrEmpty) {
-        Pcm2JavaHelper.addConstructorToClass(javaClass);
-      }
-      EList<Member> _members_2 = javaClass.getMembers();
-      Iterable<Constructor> _filter_1 = Iterables.<Constructor>filter(_members_2, Constructor.class);
-      for (final Constructor ctor : _filter_1) {
-        this.effectFacade.callAddParameterAndAssignmentToConstructor(requiredRole, ctor, typeRef, requiredInterfaceField, requiredRoleName);
-      }
-    }
   }
 }

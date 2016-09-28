@@ -12,27 +12,44 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private DeleteNonRootEObjectSingleEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetElement(final NonRoot containedObject) {
+      return containedObject;
+    }
+    
+    public EObject getElement1(final NonRoot containedObject, final NonRoot targetElement) {
+      return targetElement;
+    }
+    
+    public void callRoutine1(final NonRoot containedObject, final NonRoot targetElement, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectSingle);
+    }
+  }
+  
   public DeleteNonRootEObjectSingleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
-    				this.containedObject = containedObject;
+    this.userExecution = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this);
+    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.containedObject = containedObject;
   }
   
   private NonRoot containedObject;
-  
-  private EObject getElement0(final NonRoot containedObject, final NonRoot targetElement) {
-    return targetElement;
-  }
-  
-  private EObject getCorrepondenceSourceTargetElement(final NonRoot containedObject) {
-    return containedObject;
-  }
   
   protected void executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteNonRootEObjectSingleEffect with input:");
     getLogger().debug("   NonRoot: " + this.containedObject);
     
     NonRoot targetElement = getCorrespondingElement(
-    	getCorrepondenceSourceTargetElement(containedObject), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceTargetElement(containedObject), // correspondence source supplier
     	NonRoot.class,
     	(NonRoot _element) -> true, // correspondence precondition checker
     	null);
@@ -40,26 +57,10 @@ public class DeleteNonRootEObjectSingleEffect extends AbstractEffectRealization 
     	return;
     }
     initializeRetrieveElementState(targetElement);
-    deleteObject(getElement0(containedObject, targetElement));
+    deleteObject(userExecution.getElement1(containedObject, targetElement));
     
-    preprocessElementStates();
-    new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	containedObject, targetElement);
+    userExecution.callRoutine1(containedObject, targetElement, effectFacade);
+    
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final NonRoot containedObject, final NonRoot targetElement) {
-      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
-      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.DeleteNonRootEObjectSingle);
-    }
   }
 }

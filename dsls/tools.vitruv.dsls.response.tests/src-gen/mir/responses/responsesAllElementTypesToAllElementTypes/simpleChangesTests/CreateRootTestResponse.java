@@ -1,9 +1,13 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.Root;
-import com.google.common.base.Objects;
+import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -12,13 +16,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 class CreateRootTestResponse extends AbstractResponseRealization {
   public CreateRootTestResponse(final UserInteracting userInteracting) {
     super(userInteracting);
-  }
-  
-  private boolean checkTriggerPrecondition(final InsertRootEObject<Root> change) {
-    Root _newValue = change.getNewValue();
-    String _id = _newValue.getId();
-    boolean _equals = Objects.equal(_id, "Further_Source_Test_Model");
-    return _equals;
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -43,16 +40,25 @@ class CreateRootTestResponse extends AbstractResponseRealization {
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
-    if (!checkTriggerPrecondition(typedChange)) {
-    	return false;
-    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
   public void executeResponse(final EChange change) {
     InsertRootEObject<Root> typedChange = (InsertRootEObject<Root>)change;
-    mir.routines.simpleChangesTests.CreateRootTestEffect effect = new mir.routines.simpleChangesTests.CreateRootTestEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertRootEObject<Root> change, @Extension final RoutinesFacade _routinesFacade) {
+      Root _newValue = change.getNewValue();
+      _routinesFacade.createRoot(_newValue);
+    }
   }
 }

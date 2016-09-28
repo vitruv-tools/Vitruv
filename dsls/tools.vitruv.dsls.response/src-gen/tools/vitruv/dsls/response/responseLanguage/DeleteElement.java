@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface DeleteElement extends EObject
+public interface DeleteElement extends EffectStatement
 {
   /**
    * Returns the value of the '<em><b>Element</b></em>' containment reference.

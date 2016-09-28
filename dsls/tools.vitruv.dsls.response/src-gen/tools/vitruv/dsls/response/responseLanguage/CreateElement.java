@@ -3,8 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import org.eclipse.emf.ecore.EObject;
-
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 
 /**
@@ -17,13 +15,14 @@ import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.CreateElement#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.CreateElement#getInitializationBlock <em>Initialization Block</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getCreateElement()
  * @model
  * @generated
  */
-public interface CreateElement extends EObject
+public interface CreateElement extends EffectStatement
 {
   /**
    * Returns the value of the '<em><b>Element</b></em>' containment reference.
@@ -50,5 +49,31 @@ public interface CreateElement extends EObject
    * @generated
    */
   void setElement(ModelElement value);
+
+  /**
+   * Returns the value of the '<em><b>Initialization Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Initialization Block</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Initialization Block</em>' containment reference.
+   * @see #setInitializationBlock(ExecutionCodeBlock)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getCreateElement_InitializationBlock()
+   * @model containment="true"
+   * @generated
+   */
+  ExecutionCodeBlock getInitializationBlock();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement#getInitializationBlock <em>Initialization Block</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Initialization Block</em>' containment reference.
+   * @see #getInitializationBlock()
+   * @generated
+   */
+  void setInitializationBlock(ExecutionCodeBlock value);
 
 } // CreateElement

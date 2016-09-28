@@ -3,40 +3,61 @@ import static tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesT
 
 import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
 
-responses from metamodel minimal to metamodel minimal
-called simpleChangesTests 
+response collection: simpleChangesTests
+from metamodel minimal to metamodel minimal
 
 /*
  * UpdateSingleValuedEAttribute
  */
-response: SetSingleValuedEAttribute
-trigger: replaced value minimal.Root[singleValuedEAttribute]
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect: execute: {
-	targetElement.singleValuedEAttribute = change.newValue;
-	SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedEAttribute);
+response: ReplacedSingleValuedEAttribute {
+	after value replaced minimal.Root[singleValuedEAttribute]
+	call replaceSingleValuedEAttribute(change.affectedEObject, change.newValue)
+}
+
+routine: replaceSingleValuedEAttribute(minimal.Root root, Int value) {
+	match {
+		// The check statements do only test that multiple check statements work
+		check { ^root != null }
+		retrieve required element minimal.Root as targetElement corresponding to root
+		check { ^value != null }
+	}
+	effect {
+		update element targetElement {
+			targetElement.singleValuedEAttribute = value;
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedEAttribute);
+		}
+	} 
 }
 
 /*
  * UpdateSingleValuedEAttribute
  */
-response: ReplaceNonRootId
-trigger: replaced value minimal.NonRoot[id]
-match:
-	retrieve required element: minimal.NonRoot as targetElement corresponding to change.affectedEObject
-effect: execute: {
-	targetElement.id = change.newValue;
+response: ReplacedNonRootId {
+	after value replaced minimal.NonRoot[id]
+	call replaceNonRootId(change.affectedEObject, change.newValue)
+}
+
+routine: replaceNonRootId(minimal.NonRoot nonRoot, String value) {
+	match {
+		retrieve required element minimal.NonRoot as targetElement corresponding to nonRoot
+	}
+	effect {
+		update element targetElement {
+			targetElement.id = value;
+		}
+	}
 }
 
 ///*
 // * UnsetSingleValuedEAttribute
 // */
 //response: UnsetSingleValuedEAttribute
-//trigger: delete value of minimal.Root[singleValuedEAttribute] 
-//effect: update root minimal.Root corresponding to {
+//after delete value of minimal.Root[singleValuedEAttribute] 
+//effect { update root minimal.Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
-//} execute: {
+//} execute {
 //	targetElement.singleValuedEAttribute = null;
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 //		tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
@@ -46,92 +67,126 @@ effect: execute: {
 /*
  * CreateNonRootEObjectInList
  */
-response: CreateNonRootEObjectInList
-trigger: inserted into list minimal.Root[multiValuedContainmentEReference]
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect:
-	create element: minimal.NonRoot as newNonRoot
-	add correspondence: newNonRoot, change.newValue 
-	execute: {
-		newNonRoot.id = change.newValue.id
-		targetElement.multiValuedContainmentEReference += newNonRoot;
-		SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectInList);
+response: CreatedNonRootEObjectInList {
+	after list entry inserted minimal.Root[multiValuedContainmentEReference]
+	call insertNonRoot(change.affectedEObject, change.newValue)
+}
+
+routine: insertNonRoot(minimal.Root root, minimal.NonRoot insertedNonRoot) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to root
 	}
+	effect {
+		create element minimal.NonRoot as newNonRoot initialized as {
+			newNonRoot.id = insertedNonRoot.id
+		}
+		update element targetElement {
+			targetElement.multiValuedContainmentEReference += newNonRoot;
+		}
+		add correspondence between newNonRoot and insertedNonRoot 
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectInList);
+		}
+	}
+}
 
 /*
  * DeleteNonRootEObjectInList
  */
-response: DeleteNonRootEObjectInList
-trigger: removed from list minimal.Root[multiValuedContainmentEReference]
-match:
-	retrieve required element: minimal.NonRoot as targetElement corresponding to change.oldValue
-effect:
-	delete element: targetElement
-	execute: {
-		// It works, even if we remove element in the execute block and via effect as well
-		org.eclipse.emf.ecore.util.EcoreUtil.remove(targetElement);
-		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectInList);
+response: DeletedNonRootEObjectInList {
+	after list entry removed minimal.Root[multiValuedContainmentEReference]
+	call removeNonRoot(change.oldValue)
+}
+
+routine: removeNonRoot(minimal.NonRoot removedNonRoot) {
+	match {
+		retrieve required element minimal.NonRoot as targetElement corresponding to removedNonRoot
 	}
+	effect {
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectInList);
+		}
+		delete element targetElement
+	}
+}
 
 /*
  * ReplaceNonRootEObjectSingle
  */
-response: ReplacedNonRootEObjectSingleResponse
-trigger: replaced value minimal.Root[singleValuedContainmentEReference]
-effect: execute: {
-	if (change.fromNonDefaultValue) {
-		callDeleteNonRootEObjectSingle(change.oldValue);
+response: ReplacedNonRootEObjectSingleResponse {
+	after value replaced minimal.Root[singleValuedContainmentEReference]
+	call {
+		if (change.fromNonDefaultValue) {
+			deleteNonRootEObjectSingle(change.oldValue);
+		}
+		if (change.toNonDefaultValue) {
+			createNonRootEObjectSingle(change.affectedEObject, change.newValue);
+		}
+	} 
+}
+
+routine: deleteNonRootEObjectSingle(minimal.NonRoot containedObject) {
+	match {
+		retrieve required element minimal.NonRoot as targetElement corresponding to containedObject
 	}
-	if (change.toNonDefaultValue) {
-		callCreateNonRootEObjectSingle(change.affectedEObject, change.newValue);
+	effect {
+		delete element targetElement
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
+		}
 	}
 }
 
-routine: DeleteNonRootEObjectSingle(minimal.NonRoot containedObject)
-match:
-	retrieve required element: minimal.NonRoot as targetElement corresponding to containedObject
-effect:
-	delete element: targetElement
-	execute: {
-		SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);
+routine: createNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to sourceRoot
 	}
-
-routine: CreateNonRootEObjectSingle(minimal.Root sourceRoot, minimal.NonRoot containedObject)
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to sourceRoot
-effect:
-	create element: minimal.NonRoot as newNonRoot
-	add correspondence: newNonRoot, containedObject
-	execute: {
-		newNonRoot.id = containedObject.id;
-		targetElement.singleValuedContainmentEReference = newNonRoot;
-		SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectSingle);
+	effect {
+		create element minimal.NonRoot as newNonRoot initialized as {
+			newNonRoot.id = containedObject.id
+		}
+		update element targetElement {
+			targetElement.singleValuedContainmentEReference = newNonRoot;
+		}
+		add correspondence between newNonRoot and containedObject
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectSingle);
+		}
 	}
+}
 
 /*
  * UpdateSingleValuedNonContainmentEReference
  */
-response: UpdateSingleValuedNonContainmentEReference
-trigger: replaced value minimal.Root[singleValuedNonContainmentEReference] 
-match:
-	retrieve required element: minimal.Root as targetContainer corresponding to change.affectedEObject
-	retrieve required element: minimal.NonRoot as targetElement corresponding to change.newValue
-effect:
-	execute: {
-		targetContainer.singleValuedNonContainmentEReference = targetElement;    
-		SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedNonContainmentEReference);
+response: ReplacedSingleValuedNonContainmentEReference {
+	after value replaced minimal.Root[singleValuedNonContainmentEReference]
+	call replaceSingleValuedNonContainmentReference(change.affectedEObject, change.newValue)
+}
+
+routine: replaceSingleValuedNonContainmentReference(minimal.Root root, minimal.NonRoot newReferencedElement) {
+	match {
+		retrieve required element minimal.Root as targetContainer corresponding to root
+		retrieve required element minimal.NonRoot as targetElement corresponding to newReferencedElement
 	}
+	effect {
+		update element targetContainer {
+			targetContainer.singleValuedNonContainmentEReference = targetElement;
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedNonContainmentEReference);
+		}
+	}
+}
 
 ///*
 // * UnsetNonContainmentEReference
 // */
 //response: UnsetNonContainmentEReference
-//trigger: delete value minimal.Root[singleValuedNonContainmentEReference] 
-//effect: update root minimal.Root corresponding to {
+//after delete value minimal.Root[singleValuedNonContainmentEReference] 
+//effect { update root minimal.Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} 
-//execute: {
+//execute {
 //	targetElement.singleValuedNonContainmentEReference = null; 
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 //		tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
@@ -141,66 +196,103 @@ effect:
 /*
  * InsertEAttributeValue
  */
-response: InsertEAttributeValue
-trigger: inserted into list minimal.Root[multiValuedEAttribute] 
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect:
-	execute: {
-		targetElement.multiValuedEAttribute.add(change.newValue);    
-		SimpleChangesTestsExecutionMonitor.instance.set(InsertEAttributeValue);
+response: InsertedEAttributeValue {
+	after list entry inserted minimal.Root[multiValuedEAttribute] 
+	call insertEAttribute(change.affectedEObject, change.newValue)
+}
+
+routine: insertEAttribute(minimal.Root root, Int attributeValue) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to root
 	}
+	effect {
+		update element targetElement {
+			targetElement.multiValuedEAttribute.add(attributeValue);
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(InsertEAttributeValue);
+		}
+	}
+}
 
 /*
  * RemoveEAttributeValue
  */
-response: RemoveEAttributeValue
-trigger: removed from list minimal.Root[multiValuedEAttribute] 
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect:
-	execute: {
-		val sourceValueList = change.affectedEObject.multiValuedEAttribute;
-		targetElement.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
-		SimpleChangesTestsExecutionMonitor.instance.set(RemoveEAttributeValue);
+response: RemovedEAttributeValue {
+	after list entry removed minimal.Root[multiValuedEAttribute] 
+	call removeEAttribute(change.affectedEObject, change.oldValue)
+}
+
+routine: removeEAttribute(minimal.Root root, Int removedAttributeValue) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to root
 	}
+	effect {
+		update element targetElement {
+			val sourceValueList = root.multiValuedEAttribute;
+			targetElement.multiValuedEAttribute.removeIf[!sourceValueList.contains(it.intValue)];
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(RemoveEAttributeValue);
+		}
+	}
+}
 
 /*
  * InsertNonContainmentEReference
  */
-response: InsertNonContainmentEReference
-trigger: inserted into list minimal.Root[multiValuedNonContainmentEReference] 
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect:
-	execute: {
-		val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == change.newValue.id];
-		targetElement.multiValuedNonContainmentEReference.add(addedNonRoot);    
-		SimpleChangesTestsExecutionMonitor.instance.set(InsertNonContainmentEReference);
+response: InsertedNonContainmentEReference {
+	after list entry inserted minimal.Root[multiValuedNonContainmentEReference] 
+	call insertNonContainmentReference(change.affectedEObject, change.newValue)
+}
+
+routine: insertNonContainmentReference(minimal.Root root, minimal.NonRoot insertedNonRoot) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to root
 	}
+	effect {
+		update element targetElement {
+			val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == insertedNonRoot.id];
+			targetElement.multiValuedNonContainmentEReference.add(addedNonRoot);
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(InsertNonContainmentEReference);
+		}
+	}
+}
+
 
 /*
  * RemoveNonContainmentEReference
  */
-response: RemoveNonContainmentEReference
-trigger: removed from list minimal.Root[multiValuedNonContainmentEReference] 
-match:
-	retrieve required element: minimal.Root as targetRoot corresponding to change.affectedEObject
-effect:
-	execute: {
-		targetRoot.multiValuedNonContainmentEReference.removeIf[it.id == change.oldValue.id];
-		SimpleChangesTestsExecutionMonitor.instance.set(RemoveNonContainmentEReference);
+response: RemoveedNonContainmentEReference {
+	after list entry removed minimal.Root[multiValuedNonContainmentEReference] 
+	call removeNonContainmentReference(change.affectedEObject, change.oldValue)
+}
+
+routine: removeNonContainmentReference(minimal.Root root, minimal.NonRoot removedNonRoot) {
+	match {
+		retrieve required element minimal.Root as targetRoot corresponding to root
 	}
+	effect {
+		update element targetRoot {
+			targetRoot.multiValuedNonContainmentEReference.removeIf[it.id == removedNonRoot.id];
+		}
+		call {
+			SimpleChangesTestsExecutionMonitor.instance.set(RemoveNonContainmentEReference);
+		}
+	}
+}
 
 ///*
 // * ReplaceNonContainmentEReference
 // */
 //response: ReplaceNonContainmentEReference
-//trigger: element update of minimal.Root[multiValuedNonContainmentEReference] 
-//effect: update root minimal.Root corresponding to {
+//after element update of minimal.Root[multiValuedNonContainmentEReference] 
+//effect { update root minimal.Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
 //} 
-//execute: {
+//execute {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 //		tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
 //		ReplaceNonContainmentEReference);
@@ -209,97 +301,93 @@ effect:
 ///*
 // * PermuteNonContainmentEReference
 // */
-//response: trigger: element old change PermuteNonContainmentEReferenceValues of minimal.Root[multiValuedNonContainmentEReference] 
-//effect: update root minimal.Root corresponding to {
+//response: after element old change PermuteNonContainmentEReferenceValues of minimal.Root[multiValuedNonContainmentEReference] 
+//effect { update root minimal.Root corresponding to {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsUtils.findTypeInContainmentHierarchy(change.newAffectedEObject, allElementTypes.Root);
-//} execute: {
+//} execute {
 //	tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.instance.set(
 //		tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.
 //		PermuteNonContainmentEReference);
 //}
 
 
-/*
- * Creates the model for comparing the "TestModelSource", created in each test, with.
- */
-response: HelperResponseForCreateSecondTestModel
-trigger: created root minimal.Root
-check: change.newValue.id == "EachTestModelSource"
-effect:
-	create element: minimal.Root as newRoot
-	add correspondence: newRoot, change.newValue
-	// persist as root at project-relative location: "model/EachTestModelTarget"
-	execute: {
-		newRoot.id = change.newValue.id;
-		persistProjectRelative(change.newValue, newRoot, "model/EachTestModelTarget");
+routine: createRoot(minimal.Root root) {
+	effect {
+		create element minimal.Root as newRoot initialized as {
+			newRoot.id = root.id;
+		}
+		add correspondence between newRoot and root
+		call {
+			persistProjectRelative(root, newRoot, "model/" + root.id.replace("Source", "Target"));
+		}
 	}
+}
 
-response: HelperResponseForDeleteSecondTestModel
-trigger: deleted root minimal.Root
-check: change.oldValue.id == "EachTestModelSource"
-match:
-	retrieve required element: minimal.Root as oldModel corresponding to change.oldValue
-effect:
-	delete element: oldModel
+routine: deleteRoot(minimal.Root root) {
+	match {
+		retrieve required element minimal.Root as oldModel corresponding to root
+	}
+	effect {
+		delete element oldModel
+	}
+}
 
 /*
  * Creates the model for comparing the further test model with.
  */
-response: CreateRootTest
-trigger: created root minimal.Root
-check: change.newValue.id == "Further_Source_Test_Model"
-effect:
-	create element: minimal.Root as newRoot
-	add correspondence: newRoot, change.newValue
-	// persist as root at changed model relative location: "Further_Target_Test_Model"
-	execute: {
-		newRoot.id = change.newValue.id
-		persistProjectRelative(change.newValue, newRoot, "model/Further_Target_Test_Model");
-	}
-		
-//effect: create root minimal.Root at "Further_Target_Test_Model" auto-delete corresponding to change.newValue
+response: CreateRootTest {
+	after root created minimal.Root
+	call createRoot(change.newValue)
+}
 
-response: DeleteRootTest
-trigger: deleted root minimal.Root
-check: change.oldValue.id == "Further_Source_Test_Model"
-match:
-	retrieve required element: minimal.Root as oldModel corresponding to change.oldValue
-effect:
-	delete element: oldModel
-
-
-//response: DuplicateRootDelete
-//trigger: remove root minimal.Root
-//delete element: oldModel of type minimal.Root corresponding to change.oldValue
-
+response: DeleteRootTest {
+	after root deleted minimal.Root
+	call deleteRoot(change.oldValue)
+}
 
 /**
  * Initializes the nonRootObjectContainer for second model
  */
-response: HelperResponseForNonRootObjectContainerInitialization
-trigger: replaced value minimal.Root[nonRootObjectContainerHelper]
-check: change.isToNonDefaultValue
-match:
-	retrieve required element: minimal.Root as targetElement corresponding to change.affectedEObject
-effect:
-	create element: minimal.NonRootObjectContainerHelper as newNonRootContainer
-	add correspondence: newNonRootContainer, change.newValue
-	execute: {
-		newNonRootContainer.id = change.newValue.id;
-		targetElement.nonRootObjectContainerHelper = newNonRootContainer;
+response: HelperResponseForNonRootObjectContainerInitialization {
+	after value replaced minimal.Root[nonRootObjectContainerHelper]
+		with change.isToNonDefaultValue
+	call createNonRootObjectContainer(change.affectedEObject, change.newValue)
+}
+
+routine: createNonRootObjectContainer(minimal.Root root, minimal.NonRootObjectContainerHelper nonRootObjectContainer) {
+	match {
+		retrieve required element minimal.Root as targetElement corresponding to root
 	}
+	effect {
+		create element minimal.NonRootObjectContainerHelper as newNonRootContainer initialized as {
+			newNonRootContainer.id = nonRootObjectContainer.id;
+		}
+		update element targetElement {
+			targetElement.nonRootObjectContainerHelper = newNonRootContainer;
+		}
+		add correspondence between newNonRootContainer and nonRootObjectContainer
+	}
+}
 
 /**
  * Initializes the nonRootObjectContainer for second model
  */
-response: HelperResponseForNonRootObjectContainerContentsInitialization
-trigger: inserted into list minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
-match:
-	retrieve required element: minimal.NonRootObjectContainerHelper as nonRootContainer corresponding to change.affectedEObject
-effect:
-	create element: minimal.NonRoot as newNonRoot
-	add correspondence: newNonRoot, change.newValue
-	execute: {
-		newNonRoot.id = change.newValue.id;
-		nonRootContainer.nonRootObjectsContainment += newNonRoot;
+response: HelperResponseForNonRootObjectContainerContentsInitialization {
+	after list entry inserted minimal.NonRootObjectContainerHelper[nonRootObjectsContainment]
+	call createNonRootInContainer(change.affectedEObject, change.newValue)
+}
+
+routine: createNonRootInContainer(minimal.NonRootObjectContainerHelper container, minimal.NonRoot insertedNonRoot) {
+	match {
+		retrieve required element minimal.NonRootObjectContainerHelper as nonRootContainer corresponding to container
 	}
+	effect {
+		create element minimal.NonRoot as newNonRoot initialized as {
+			newNonRoot.id = insertedNonRoot.id;
+		}
+		update element nonRootContainer {
+			nonRootContainer.nonRootObjectsContainment += newNonRoot;	
+		}
+		add correspondence between newNonRoot and insertedNonRoot
+	}
+}

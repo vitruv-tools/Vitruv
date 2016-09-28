@@ -1,108 +1,111 @@
-'!'=79
-'!='=63
-'!=='=65
-'#'=85
-'%'=78
-'%='=56
-'&&'=61
-'&'=117
-'('=31
-')'=34
-'*'=75
-'**'=76
-'*='=54
-'+'=73
-'++'=80
-'+='=52
+'!'=84
+'!='=68
+'!=='=70
+'#'=90
+'%'=83
+'%='=61
+'&&'=66
+'&'=120
+'('=30
+')'=31
+'*'=80
+'**'=81
+'*='=59
+'+'=78
+'++'=85
+'+='=57
 ','=33
-'-'=74
-'--'=81
-'-='=53
-'->'=67
-'.'=82
-'..'=69
-'..<'=68
-'/'=77
-'/='=55
-':'=93
-'::'=83
-';'=89
-'<'=57
-'<>'=71
-'='=51
-'=='=62
-'==='=64
-'=>'=70
-'>'=58
-'>='=59
-'?'=116
-'?.'=84
-'?:'=72
-'['=49
-']'=50
-'add correspondence:'=43
-'any change'=26
-'as'=47
-'called'=15
-'case'=95
-'catch'=115
-'check:'=19
+'-'=79
+'--'=86
+'-='=58
+'->'=72
+'.'=87
+'..'=74
+'..<'=73
+'/'=82
+'/='=60
+':'=96
+'::'=88
+';'=92
+'<'=62
+'<>'=76
+'='=56
+'=='=67
+'==='=69
+'=>'=75
+'>'=63
+'>='=64
+'?'=119
+'?.'=89
+'?:'=77
+'['=54
+']'=55
+'add correspondence between'=46
+'after'=20
+'and'=47
+'any change'=28
+'as'=52
+'call'=50
+'case'=98
+'catch'=118
+'check'=40
 'corresponding to'=38
-'create element:'=41
-'created root'=20
-'default'=94
-'delete element:'=42
-'deleted root'=21
-'do'=98
-'effect:'=28
-'else'=91
-'execute:'=29
-'extends'=101
-'extension'=103
-'false'=106
-'finally'=113
-'for'=96
-'if'=90
-'import'=46
-'inserted into list'=22
-'instanceof'=66
-'invariant'=17
-'match:'=27
-'new'=105
-'null'=108
-'permuted list'=24
-'plain:'=32
-'remove correspondence:'=45
-'removed from list'=23
-'replaced value'=25
-'require absence of element:'=37
+'create element'=42
+'default'=97
+'delete element'=44
+'do'=101
+'effect'=41
+'else'=94
+'extends'=104
+'extension'=106
+'false'=109
+'finally'=116
+'for'=99
+'from metamodel'=14
+'if'=93
+'import'=51
+'initialized as'=43
+'instanceof'=71
+'invariant'=19
+'list entry inserted'=24
+'list entry removed'=25
+'list permuted'=26
+'match'=34
+'new'=108
+'null'=111
+'plain'=32
+'remove correspondence'=49
+'require absence of element'=37
+'response collection:'=13
 'response:'=16
-'responses from metamodel'=13
-'retrieve optional element:'=36
-'retrieve required element:'=35
-'return'=111
-'routine:'=30
-'static'=102
-'super'=104
-'switch'=92
-'synchronized'=114
-'tag with'=44
+'retrieve optional element'=36
+'retrieve required element'=35
+'return'=114
+'root created'=22
+'root deleted'=23
+'routine:'=29
+'static'=105
+'super'=107
+'switch'=95
+'synchronized'=117
+'tag with'=48
 'tagged with'=39
-'throw'=110
-'to metamodel'=14
-'trigger:'=18
-'true'=107
-'try'=112
-'typeof'=109
-'using simple names'=48
-'val'=100
-'var'=99
-'while'=97
-'with'=40
-'{'=86
-'|'=88
-'||'=60
-'}'=87
+'throw'=113
+'to metamodel'=15
+'true'=110
+'try'=115
+'typeof'=112
+'update element'=45
+'using simple names'=53
+'val'=103
+'value replaced'=27
+'var'=102
+'while'=100
+'with'=21
+'{'=17
+'|'=91
+'||'=65
+'}'=18
 RULE_ANY_OTHER=12
 RULE_DECIMAL=9
 RULE_HEX=7
@@ -130,6 +133,9 @@ T__114=114
 T__115=115
 T__116=116
 T__117=117
+T__118=118
+T__119=119
+T__120=120
 T__13=13
 T__14=14
 T__15=15

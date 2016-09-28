@@ -21,7 +21,7 @@ package tools.vitruv.dsls.response.responseLanguage;
  * @model
  * @generated
  */
-public interface CreateCorrespondence extends Taggable
+public interface CreateCorrespondence extends EffectStatement
 {
   /**
    * Returns the value of the '<em><b>First Element</b></em>' containment reference.

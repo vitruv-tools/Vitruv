@@ -22,9 +22,9 @@ import tools.vitruv.dsls.response.responseLanguage.Effect
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 
 /**
  * Outline structure definition for a response file.
@@ -79,12 +79,6 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (response.trigger?.precondition != null) {
 			createChildren(triggerNode, response.trigger.precondition)
 		}
-		val effectsNode = createEStructuralFeatureNode(responseNode, response, 
-			ResponseLanguagePackage.Literals.RESPONSE__ROUTINE,
-			imageDispatcher.invoke(response.routine), "effect", response.routine == null);
-		if (response.routine != null) {
-			createChildren(effectsNode, response.routine);
-		}
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionCodeBlock preconditionBlock) {
@@ -113,22 +107,22 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		for (element : routine.matching.retrievedElements) {
-			createEObjectNode(parentNode, element);	
-		}
-		
+		if (routine.matcher != null) {
+			for (element : routine.matcher.matcherStatements) {
+				createEObjectNode(parentNode, element);	
+			}
+		}		
 		createChildren(parentNode, routine.effect);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
-		for (element : effect.correspondenceCreation) {
+		// TODO HK Add missing elements: create / delete / update / call routine
+		for (element : effect.effectStatements.filter(CreateCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
-		for (element : effect.correspondenceDeletion) {
+		for (element : effect.effectStatements.filter(RemoveCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
-		
-		createChildren(parentNode, effect.codeBlock);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, CreateCorrespondence createCorrespondence) {
@@ -147,7 +141,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "response: " + response.name;
 	}
 	
-	protected def Object _text(ExplicitRoutine routine) {
+	protected def Object _text(Routine routine) {
 		return "effect: " + routine.name;
 	}
 	
@@ -187,8 +181,12 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Create element: " + elementCreate.elementText;
 //	}
 	
-	protected def Object _text(RetrieveModelElement elementRetrieve) {
+	protected def Object _text(RetrieveModelElementStatement elementRetrieve) {
 		"retrieve element: " + elementRetrieve.elementText;
+	}
+	
+	protected def Object _text(MatcherCheckStatement checkStatement) {
+		"custom check statement";
 	}
 	
 	protected def Object _text(CreateCorrespondence createCorrespondence) {
@@ -203,7 +201,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Delete element: " + elementDelete.elementText;
 //	}
 	
-	private def String getElementText(RetrieveModelElement retrieveElement) {
+	private def String getElementText(RetrieveModelElementStatement retrieveElement) {
 		return retrieveElement.element.name + " (" + retrieveElement.element?.element?.name + ")"
 	}
 	
@@ -219,7 +217,11 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(RetrieveModelElement element) {
+	protected def boolean _isLeaf(RetrieveModelElementStatement element) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(MatcherCheckStatement element) {
 		return true;
 	}
 	

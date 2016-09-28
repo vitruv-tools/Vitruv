@@ -12,8 +12,39 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameComponentPackageAndClassEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private RenameComponentPackageAndClassEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public boolean getCorrespondingModelElementsPreconditionRepositoryPackage(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
+      String _name = repositoryPackage.getName();
+      Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
+      String _entityName = _repository__RepositoryComponent.getEntityName();
+      boolean _equals = _name.equals(_entityName);
+      return _equals;
+    }
+    
+    public EObject getCorrepondenceSourceRepositoryPackage(final RepositoryComponent component) {
+      Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
+      return _repository__RepositoryComponent;
+    }
+    
+    public void callRoutine1(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage, @Extension final RoutinesFacade _routinesFacade) {
+      String _entityName = component.getEntityName();
+      _routinesFacade.renameJavaPackage(component, repositoryPackage, _entityName, null);
+      _routinesFacade.renameComponentClass(component);
+    }
+  }
+  
   public RenameComponentPackageAndClassEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.component = component;
   }
   
@@ -24,47 +55,16 @@ public class RenameComponentPackageAndClassEffect extends AbstractEffectRealizat
     getLogger().debug("   RepositoryComponent: " + this.component);
     
     org.emftext.language.java.containers.Package repositoryPackage = getCorrespondingElement(
-    	getCorrepondenceSourceRepositoryPackage(component), // correspondence source supplier
+    	userExecution.getCorrepondenceSourceRepositoryPackage(component), // correspondence source supplier
     	org.emftext.language.java.containers.Package.class,
-    	(org.emftext.language.java.containers.Package _element) -> getCorrespondingModelElementsPreconditionRepositoryPackage(component, _element), // correspondence precondition checker
+    	(org.emftext.language.java.containers.Package _element) -> userExecution.getCorrespondingModelElementsPreconditionRepositoryPackage(component, _element), // correspondence precondition checker
     	null);
     if (repositoryPackage == null) {
     	return;
     }
     initializeRetrieveElementState(repositoryPackage);
+    userExecution.callRoutine1(component, repositoryPackage, effectFacade);
     
-    preprocessElementStates();
-    new mir.routines.pcm2java.RenameComponentPackageAndClassEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	component, repositoryPackage);
     postprocessElementStates();
-  }
-  
-  private boolean getCorrespondingModelElementsPreconditionRepositoryPackage(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
-    String _name = repositoryPackage.getName();
-    Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
-    String _entityName = _repository__RepositoryComponent.getEntityName();
-    boolean _equals = _name.equals(_entityName);
-    return _equals;
-  }
-  
-  private EObject getCorrepondenceSourceRepositoryPackage(final RepositoryComponent component) {
-    Repository _repository__RepositoryComponent = component.getRepository__RepositoryComponent();
-    return _repository__RepositoryComponent;
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
-      String _entityName = component.getEntityName();
-      this.effectFacade.callRenameJavaPackage(component, repositoryPackage, _entityName, null);
-      this.effectFacade.callRenameComponentClass(component);
-    }
   }
 }

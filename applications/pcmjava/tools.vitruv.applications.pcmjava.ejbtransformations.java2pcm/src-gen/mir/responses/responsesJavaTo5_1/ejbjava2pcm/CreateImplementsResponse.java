@@ -1,12 +1,16 @@
 package mir.responses.responsesJavaTo5_1.ejbjava2pcm;
 
+import mir.routines.ejbjava2pcm.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.types.TypeReference;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.types.TypeReference;
 
 @SuppressWarnings("all")
 class CreateImplementsResponse extends AbstractResponseRealization {
@@ -46,7 +50,20 @@ class CreateImplementsResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<org.emftext.language.java.classifiers.Class, TypeReference> typedChange = (InsertEReference<org.emftext.language.java.classifiers.Class, TypeReference>)change;
-    mir.routines.ejbjava2pcm.CreateImplementsEffect effect = new mir.routines.ejbjava2pcm.CreateImplementsEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.ejbjava2pcm.RoutinesFacade routinesFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateImplementsResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.ejbjava2pcm.CreateImplementsResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<org.emftext.language.java.classifiers.Class, TypeReference> change, @Extension final RoutinesFacade _routinesFacade) {
+      org.emftext.language.java.classifiers.Class _affectedEObject = change.getAffectedEObject();
+      TypeReference _newValue = change.getNewValue();
+      _routinesFacade.createdImplements(_affectedEObject, _newValue);
+    }
   }
 }

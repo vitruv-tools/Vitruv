@@ -19,36 +19,42 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
+import static tools.vitruv.dsls.response.helper.ResponseLanguageConstants.*;
+import tools.vitruv.dsls.response.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
 
 class ResponseClassGenerator extends ClassGenerator {
 	protected final Response response;
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
 	private final ClassNameGenerator responseClassNameGenerator;
-	private final ClassNameGenerator routineClassNameGenerator;
+	private final UserExecutionClassGenerator userExecutionClassGenerator;
+	private final ClassNameGenerator routinesFacadeClassNameGenerator;
 	
 	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (response?.trigger == null || response?.routine == null) {
+		if (response?.trigger == null || response?.callRoutine == null) {
 			throw new IllegalArgumentException();
 		}
 		this.response = response;
 		this.hasPreconditionBlock = response.trigger.precondition != null;
 		this.change = response.trigger.generateEChangeInstanceClass();
 		this.responseClassNameGenerator = response.responseClassNameGenerator;
-		this.routineClassNameGenerator = response.routine.routineClassNameGenerator;
+		this.routinesFacadeClassNameGenerator = response.responsesSegment.routinesFacadeClassNameGenerator;
+		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, response, 
+			responseClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
 	public override JvmGenericType generateClass() {
 		generateMethodGetExpectedChangeType();
 		generateMethodCheckPrecondition();
 		generateMethodExecuteResponse();
-
+				
 		response.toClass(responseClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT;
 			superTypes += typeRef(AbstractResponseRealization);
 			addConstructor(it);
 			members += generatedMethods;
+			members += userExecutionClassGenerator.generateClass();
 		];
 	}
 	
@@ -81,7 +87,10 @@ class ResponseClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteResponse() {
 		val methodName = "executeResponse";
-		
+		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(response.callRoutine, 
+			#[new AccessibleElement("change", response.generateChangeParameter(response.trigger).parameterType)], 
+			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+			
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			val changeParameter = generateUntypedChangeParameter();
@@ -90,8 +99,10 @@ class ResponseClassGenerator extends ClassGenerator {
 			val typedChangeString = typedChangeString;
 			body = '''
 				«typedChangeString» «typedChangeName» = («typedChangeString»)«changeParameter.name»;
-				«routineClassNameGenerator.qualifiedName» effect = new «routineClassNameGenerator.qualifiedName»(this.executionState, this, «typedChangeName»);
-				effect.applyRoutine();'''
+				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
+				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
+				userExecution.«callRoutineMethod.simpleName»(«typedChangeName», routinesFacade);
+			'''
 		];
 	}
 			

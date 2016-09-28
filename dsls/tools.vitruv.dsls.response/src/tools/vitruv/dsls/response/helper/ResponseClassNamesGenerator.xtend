@@ -8,8 +8,6 @@ import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper
 import tools.vitruv.dsls.response.helper.XtendImportHelper
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
@@ -38,7 +36,7 @@ final class ResponseClassNamesGenerator {
 	public static def String getBasicResponsesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«RESPONSES_PACKAGE»'''
 	
-	public static def String getBasicEffectsPackageQualifiedName() '''
+	public static def String getBasicRoutinesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«ROUTINES_PACKAGE»'''	
 	
 	private static def String getMetamodelIdentifier(URI uri) {
@@ -130,7 +128,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«response.name»Response'''
+			«response.name.toFirstUpper»Response'''
 		
 		public override String getPackageName() '''
 			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name.toFirstLower»'''		
@@ -143,18 +141,10 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override String getSimpleName() '''
-			«routine.routineName»Effect'''
-		
-		private static def dispatch String getRoutineName(ImplicitRoutine routine) {
-			return routine.containingResponse.name
-		}
-		
-		private static def dispatch String getRoutineName(ExplicitRoutine routine) {
-			return routine.name
-		}
+			«routine.name.toFirstUpper»Routine'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
+			«basicRoutinesPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
 		
 	}
 	
@@ -168,6 +158,6 @@ final class ResponseClassNamesGenerator {
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicEffectsPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
+			«basicRoutinesPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
 	}
 }

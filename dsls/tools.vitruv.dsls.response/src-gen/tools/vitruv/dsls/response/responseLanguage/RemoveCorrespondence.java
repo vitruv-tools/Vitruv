@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RemoveCorrespondence extends EObject
+public interface RemoveCorrespondence extends EffectStatement
 {
   /**
    * Returns the value of the '<em><b>First Element</b></em>' containment reference.

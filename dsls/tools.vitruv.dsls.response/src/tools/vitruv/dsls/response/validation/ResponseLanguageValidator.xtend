@@ -7,14 +7,11 @@ import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage
 import java.util.HashMap
 import tools.vitruv.dsls.response.responseLanguage.Response
-import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.response.responseLanguage.Routine
-import tools.vitruv.dsls.response.responseLanguage.ImplicitRoutine
-import tools.vitruv.dsls.response.responseLanguage.ExplicitRoutine
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput
 
 /**
@@ -40,24 +37,19 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 			}
 			alreadyCheckedResponses.put(responseName, response);
 		}
-		val alreadyCheckedEffects = new HashMap<String, Routine>();
-		for (implicitRoutine : responseSegment.responses.map[routine]) {
-			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
-		}
+		val alreadyCheckedRoutines = new HashMap<String, Routine>();
+//		for (implicitRoutine : responseSegment.responses.map[routine]) {
+//			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
+//		}
 		for (routine : responseSegment.routines) {
 			val routineName = routine.routineClassNameGenerator.simpleName
-			if (alreadyCheckedEffects.containsKey(routineName)) {
+			if (alreadyCheckedRoutines.containsKey(routineName)) {
 				val errorMessage = "Duplicate effect name: " + routineName;
-				error(errorMessage, routine, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
-				val duplicateNameEffect = alreadyCheckedEffects.get(routineName);
-				if (duplicateNameEffect instanceof ImplicitRoutine) {
-					error(errorMessage, duplicateNameEffect.containingResponse,
-						ResponseLanguagePackage.Literals.RESPONSE__NAME);
-				} else if (duplicateNameEffect instanceof ExplicitRoutine) {
-					error(errorMessage, duplicateNameEffect, ResponseLanguagePackage.Literals.EXPLICIT_ROUTINE__NAME);
-				}
+				error(errorMessage, routine, ResponseLanguagePackage.Literals.ROUTINE__NAME);
+				val duplicateNameRoutine = alreadyCheckedRoutines.get(routineName);
+				error(errorMessage, duplicateNameRoutine, ResponseLanguagePackage.Literals.ROUTINE__NAME);
 			}
-			alreadyCheckedEffects.put(routineName, routine);
+			alreadyCheckedRoutines.put(routineName, routine);
 		}
 	}
 
@@ -82,6 +74,22 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 		if (!effectInput.javaInputElements.empty) {
 			warning("Using plain Java elements is discouraged. Try to use model elements and make list inputs to single valued input of other effect that is called for each element.",
 				ResponseLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
+		}
+	}
+	
+	@Check
+	def checkRoutine(Routine routine) {
+		if (!Character.isLowerCase(routine.name.charAt(0))) {
+			warning("Routine names should start lower case",
+				ResponseLanguagePackage.Literals.ROUTINE__NAME);
+		}
+	}
+	
+	@Check
+	def checkRoutine(Response response) {
+		if (!Character.isUpperCase(response.name.charAt(0))) {
+			warning("Response names should start upper case",
+				ResponseLanguagePackage.Literals.RESPONSE__NAME);
 		}
 	}
 

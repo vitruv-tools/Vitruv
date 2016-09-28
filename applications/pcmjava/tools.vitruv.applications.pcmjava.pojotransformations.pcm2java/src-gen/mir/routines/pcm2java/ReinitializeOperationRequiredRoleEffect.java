@@ -11,8 +11,26 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectRealization {
+  private RoutinesFacade effectFacade;
+  
+  private ReinitializeOperationRequiredRoleEffect.EffectUserExecution userExecution;
+  
+  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final OperationRequiredRole requiredRole, @Extension final RoutinesFacade _routinesFacade) {
+      InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
+      _routinesFacade.removeRequiredRole(requiredRole, _requiringEntity_RequiredRole);
+      _routinesFacade.addRequiredRole(requiredRole);
+    }
+  }
+  
   public ReinitializeOperationRequiredRoleEffect(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
+    				this.userExecution = new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.EffectUserExecution(getExecutionState(), this);
+    				this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     				this.requiredRole = requiredRole;
   }
   
@@ -22,26 +40,8 @@ public class ReinitializeOperationRequiredRoleEffect extends AbstractEffectReali
     getLogger().debug("Called routine ReinitializeOperationRequiredRoleEffect with input:");
     getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
     
+    userExecution.callRoutine1(requiredRole, effectFacade);
     
-    preprocessElementStates();
-    new mir.routines.pcm2java.ReinitializeOperationRequiredRoleEffect.EffectUserExecution(getExecutionState(), this).executeUserOperations(
-    	requiredRole);
     postprocessElementStates();
-  }
-  
-  private static class EffectUserExecution extends AbstractEffectRealization.UserExecution {
-    @Extension
-    private RoutinesFacade effectFacade;
-    
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
-      this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(responseExecutionState, calledBy);
-    }
-    
-    private void executeUserOperations(final OperationRequiredRole requiredRole) {
-      InterfaceRequiringEntity _requiringEntity_RequiredRole = requiredRole.getRequiringEntity_RequiredRole();
-      this.effectFacade.callRemoveRequiredRole(requiredRole, _requiringEntity_RequiredRole);
-      this.effectFacade.callAddRequiredRole(requiredRole);
-    }
   }
 }

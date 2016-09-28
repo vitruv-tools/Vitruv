@@ -1,9 +1,14 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -46,7 +51,19 @@ class ChangeOperationSignatureOfSeffResponse extends AbstractResponseRealization
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> typedChange = (ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature>)change;
-    mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect effect = new mir.routines.pcm2java.ChangeOperationSignatureOfSeffEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.responses.responses5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffResponse.EffectUserExecution userExecution = new mir.responses.responses5_1ToJava.pcm2java.ChangeOperationSignatureOfSeffResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final ReplaceSingleValuedEReference<ResourceDemandingSEFF, Signature> change, @Extension final RoutinesFacade _routinesFacade) {
+      ResourceDemandingSEFF _affectedEObject = change.getAffectedEObject();
+      _routinesFacade.changeMethodForSeff(_affectedEObject);
+    }
   }
 }
