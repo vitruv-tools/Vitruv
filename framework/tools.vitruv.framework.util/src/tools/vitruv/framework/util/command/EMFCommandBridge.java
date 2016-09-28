@@ -7,8 +7,6 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 public class EMFCommandBridge {
 
-    protected TransformationResult transformationResult;
-
     private EMFCommandBridge() {
     }
 
@@ -62,10 +60,6 @@ public class EMFCommandBridge {
     		final TransactionalEditingDomain domain) {
         final VitruviusRecordingCommand command = createVitruviusRecordingCommand(callable);
         executeVitruviusRecordingCommand(domain, command);
-    }
-
-    public TransformationResult getTransformationResult() {
-        return this.transformationResult;
     }
 
 }
