@@ -1,21 +1,20 @@
 package tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal
 
-import java.util.List
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.framework.util.command.TransformationResult
 
 class IntegrationChange2CommandResult {
 	
-	private List<? extends VitruviusRecordingCommand> commands
+	private TransformationResult propagationResult;
 	
-	new(List<? extends VitruviusRecordingCommand> commands) {
-		this.commands = commands
+	new(TransformationResult propagationResult) {
+		this.propagationResult = propagationResult;
 	}
 	
 	def isIntegrationChange() {
-		return commands.size > 0
+		return propagationResult != null;
 	}
 	
-	def getCommands() {
-		return commands
+	def getPropagationResult() {
+		return propagationResult
 	}
 }

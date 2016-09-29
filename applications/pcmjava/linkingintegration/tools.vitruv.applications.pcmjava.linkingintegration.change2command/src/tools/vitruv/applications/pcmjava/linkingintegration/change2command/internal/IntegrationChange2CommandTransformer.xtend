@@ -5,11 +5,9 @@ import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.bridges.CollectionBridge
 import java.util.ArrayList
 import java.util.HashSet
-import java.util.List
 import java.util.Set
 import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
@@ -17,7 +15,6 @@ import org.emftext.language.java.classifiers.Class
 import org.emftext.language.java.classifiers.Interface
 import org.emftext.language.java.containers.CompilationUnit
 
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import org.palladiosimulator.pcm.core.entity.NamedElement
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
@@ -25,7 +22,6 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
 import mir.responses.responsesJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1
 
@@ -38,41 +34,42 @@ class IntegrationChange2CommandTransformer {
 	}
 	
 	def compute(EChange change, CorrespondenceModel correspondenceModel) {
-		val commands = createCommandsList(change, correspondenceModel)
-		return new IntegrationChange2CommandResult(commands)
+		val propagationResult = executeIntegration(change, correspondenceModel)
+		return new IntegrationChange2CommandResult(propagationResult);
 	}
 	
-	private def createCommandsList(EChange change, CorrespondenceModel correspondenceModel) {
+	private def executeIntegration(EChange change, CorrespondenceModel correspondenceModel) {
 		// Since all correspondences are considered (not only IntegrationCorrespondences),
 		// only return response commands, if one of the other 2 checks are successful
-		val responseCommands = createResponseCommands(change, correspondenceModel)
+		val existsResponse = doesResponseHandleChange(change, correspondenceModel); 
 		val newClassOrInterfaceInIntegratedAreaCommand = createNewClassOrInterfaceInIntegratedAreaCommand(
 			change, correspondenceModel)
     	if (newClassOrInterfaceInIntegratedAreaCommand != null) {
-    		if (responseCommands != null) {
-				return responseCommands
+    		if (existsResponse) {
+				return executeResponses(change, correspondenceModel);
 			}
-    		val commands = newClassOrInterfaceInIntegratedAreaCommand.toList as List<? extends VitruviusRecordingCommand>
-    		return commands
+			val result = newClassOrInterfaceInIntegratedAreaCommand.call()
+    		return result;
     	}
     	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, correspondenceModel)
     	if (defaultIntegrationChangeCommand != null) {
-    		if (responseCommands != null) {
-				return responseCommands
+    		if (existsResponse) {
+				return executeResponses(change, correspondenceModel);
 			}
-    		val commands = defaultIntegrationChangeCommand.toList as List<? extends VitruviusRecordingCommand>
-    		return commands
+    		val result = defaultIntegrationChangeCommand.call()
+    		return result
     	}
-    	return new ArrayList()
+    	return null
 	}
 	
-	def createResponseCommands(EChange change, CorrespondenceModel correspondenceModel) {
+	def doesResponseHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
-		val commands = executor.transformChange(change, correspondenceModel)
-		if (commands != null && commands.size > 0) {
-			return commands
-		}
-		return null
+		return executor.doesHandleChange(change, correspondenceModel);
+	}
+	
+	def executeResponses(EChange change, CorrespondenceModel correspondenceModel) {
+		val executor = new ExecutorJavaTo5_1(userInteracting)
+		return executor.propagateChange(change, correspondenceModel)
 	}
 	
 	private def createNewClassOrInterfaceInIntegratedAreaCommand(EChange eChange, CorrespondenceModel correspondenceModel) {
@@ -102,12 +99,12 @@ class IntegrationChange2CommandTransformer {
 	    					for (TUID tuid : allTUIDs) {
 	    						val packagePart = getPackagePart(tuid)
 	    						if (packagePartOfNewTuid.startsWith(packagePart)) {
-	    							val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(new Callable<TransformationResult>() {
+	    							val command = new Callable<TransformationResult>() {
 										override call() throws Exception {
 											showNewTypeInIntegratedAreaDialog()
 											return new TransformationResult()
 										}
-	    							})
+									}
 	    							return command
 	    						}
 	    					}
@@ -143,13 +140,12 @@ class IntegrationChange2CommandTransformer {
 	    		buffer.append("\n")
 	    		buffer.append(name)
 	    	}
-			val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
-				new Callable<TransformationResult>() {
+			val command = new Callable<TransformationResult>() {
 					override call() throws Exception {
 						userInteracting.showMessage(UserInteractionType.MODAL, buffer.toString())
 						return new TransformationResult()
 					}
-				})
+				}
 	    	return command
         } 
         return null
