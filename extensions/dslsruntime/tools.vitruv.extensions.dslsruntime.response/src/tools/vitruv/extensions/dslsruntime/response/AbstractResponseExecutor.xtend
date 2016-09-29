@@ -1,16 +1,13 @@
 package tools.vitruv.extensions.dslsruntime.response
 
 import org.apache.log4j.Logger
-import java.util.List
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import java.util.ArrayList
 import tools.vitruv.extensions.dslsruntime.response.IResponseRealization
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.extensions.dslsruntime.response.helper.Change2ResponseMap
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangeProcessor
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import tools.vitruv.framework.util.command.TransformationResult
 
 abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
@@ -30,18 +27,26 @@ abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
 		this.changeToResponseMap.addResponse(eventType, response);
 	}
 	
-	public override List<VitruviusRecordingCommand> transformChange(EChange event, CorrespondenceModel correspondenceModel) {
-		val result = new ArrayList<VitruviusRecordingCommand>();
-		val relevantResponses = this.changeToResponseMap.getResponses(event).filter[checkPrecondition(event)];
+	private def Iterable<IResponseRealization> getRelevantResponses(EChange change) {
+		return this.changeToResponseMap.getResponses(change).filter[checkPrecondition(change)];
+	}
+	
+	public override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
+		return !change.relevantResponses.isEmpty
+	}
+	
+	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel) {
+		val propagationResult = new TransformationResult();
+		val relevantResponses = event.relevantResponses;
 		LOGGER.debug("Call relevant responses");
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
-			result.add(EMFCommandBridge
-					.createVitruviusTransformationRecordingCommand([| response.applyEvent(event, correspondenceModel)]));
+			val currentPropagationResult =response.applyEvent(event, correspondenceModel)
+			propagationResult.integrateTransformationResult(currentPropagationResult);
 		}
-		return result;
+		return propagationResult;
 	}
-
+	
 	protected abstract def void setup();
 	
 }

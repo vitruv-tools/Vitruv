@@ -42,4 +42,9 @@ public class TransformationResult {
     public void addRootEObjectToSave(final EObject eObject, final VURI vuri) {
         this.rootEObjectsToSave.add(new Pair<EObject, VURI>(eObject, vuri));
     }
+    
+    public void integrateTransformationResult(TransformationResult transformationResult) {
+    	this.vurisToDelete.addAll(transformationResult.vurisToDelete);
+    	this.rootEObjectsToSave.addAll(transformationResult.rootEObjectsToSave);
+    }
 }

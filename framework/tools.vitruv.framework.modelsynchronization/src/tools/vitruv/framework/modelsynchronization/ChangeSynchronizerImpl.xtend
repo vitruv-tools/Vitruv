@@ -20,6 +20,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
+import tools.vitruv.framework.util.command.EMFCommandBridge
 
 class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	static final int BLACKBOARD_HITORY_SIZE = 2
@@ -107,8 +108,8 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 		// each response that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		this.blackboardHistory.add(blackboard)
-		blackboard.pushCommands(transformer.transformChange2Commands(change, correspondenceModel))
-		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))		
+		blackboard.pushCommands(#[EMFCommandBridge.createVitruviusTransformationRecordingCommand([|return transformer.transformChange2Commands(change, correspondenceModel);])])
+		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))	
 	}
 	
 }

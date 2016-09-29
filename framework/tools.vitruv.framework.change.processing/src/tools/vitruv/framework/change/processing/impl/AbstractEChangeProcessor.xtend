@@ -4,13 +4,9 @@ import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.echange.EChange
 import org.apache.log4j.Logger
-import java.util.List
-import java.util.ArrayList
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.change.processing.ChangeProcessorResult
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.command.TransformationResult
 
 abstract class AbstractEChangeProcessor extends AbstractChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractEChangeProcessor);
@@ -19,17 +15,28 @@ abstract class AbstractEChangeProcessor extends AbstractChangeProcessor {
 		super(userInteracting);
 	}
 	
-	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val commandList = new ArrayList<VitruviusRecordingCommand>();
+	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		for (eChange : change.getEChanges) {
-			LOGGER.debug('''Transforming eChange  «eChange» of change «change»''');
-			commandList += transformChange(eChange, correspondenceModel);
+			if (doesHandleChange(eChange, correspondenceModel)) {
+				return true;
+			}
 		}
-		
-		return new ChangeProcessorResult(VitruviusChangeFactory.instance.createEmptyChange(change.getURI), commandList);
+		return false;
 	}
 	
-	protected def List<VitruviusRecordingCommand> transformChange(EChange change, CorrespondenceModel correspondenceModel);
+	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		val propagationResult = new TransformationResult();
+		for (eChange : change.getEChanges) {
+			LOGGER.debug('''Transforming eChange  «eChange» of change «change»''');
+			val currentPropagationResult = propagateChange(eChange, correspondenceModel);
+			propagationResult.integrateTransformationResult(currentPropagationResult);
+		}
+		
+		return propagationResult;
+	}
+	
+	protected def boolean doesHandleChange(EChange change, CorrespondenceModel correspondenceModel);
+	protected def TransformationResult propagateChange(EChange change, CorrespondenceModel correspondenceModel);
 	
 }
 			

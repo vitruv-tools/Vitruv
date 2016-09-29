@@ -8,9 +8,9 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangeProcessor
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.change.processing.Change2CommandTransforming
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.command.TransformationResult
 
 abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
@@ -50,16 +50,14 @@ abstract class AbstractChange2CommandTransforming implements Change2CommandTrans
 		this.changeMainprocessors += changeProcessor;
 	}
 	
-	override List<VitruviusRecordingCommand> transformChange2Commands(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val commands = new ArrayList<VitruviusRecordingCommand>();
-		var currentChange = change;
+	override transformChange2Commands(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		val propagationResult = new TransformationResult();
 		for (changeProcessor : changePreprocessors + changeMainprocessors) {
 			LOGGER.debug('''Calling change processor «changeProcessor» for change event «change»''');
-			val processingResult = changeProcessor.transformChange(currentChange, correspondenceModel);
-			currentChange = processingResult.resultingChange;
-			commands += processingResult.generatedCommands;
+			val currentPropagationResult = changeProcessor.propagateChange(change, correspondenceModel);
+			propagationResult.integrateTransformationResult(currentPropagationResult);
 		}
-		return commands;
+		return propagationResult;
 	}
 	
 	override setUserInteracting(UserInteracting userInteracting) {

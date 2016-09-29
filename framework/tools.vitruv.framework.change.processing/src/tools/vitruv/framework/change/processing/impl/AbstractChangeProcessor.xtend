@@ -13,4 +13,5 @@ abstract class AbstractChangeProcessor implements ChangeProcessor {
 	protected def UserInteracting getUserInteracting() {
 		return userInteracting;
 	}
+	
 }

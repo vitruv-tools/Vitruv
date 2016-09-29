@@ -2,8 +2,6 @@ package tools.vitruv.applications.pcmjava.seffstatements.code2seff
 
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import java.util.concurrent.Callable
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
 import org.somox.gast2seff.visitors.ResourceDemandingBehaviourForClassMethodFinding
@@ -16,7 +14,6 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.ChangeProcessorResult
 import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
@@ -31,22 +28,19 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
 		this.code2SEFFfactory = code2SEFFfactory
 	}
 
-	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		if (change instanceof CompositeTransactionalChange && match(change as CompositeTransactionalChange)) {
+	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		if (doesHandleChange(change, correspondenceModel)) {
 			val compositeChange = change as CompositeTransactionalChange;
-			val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand(
-				new Callable<TransformationResult>() {
-					public override TransformationResult call() {
-						return Java2PcmMethodBodyChangePreprocessor.this.
-							executeClassMethodBodyChangeRefiner(correspondenceModel, userInteracting, compositeChange);
-					}
-				});
-			return new ChangeProcessorResult(change, #[command]); // VitruviusChangeFactory.instance.createEmptyChange(change.URI), #[command]);
+			// TODO HK We should exchange the change with an empty one here
+			return executeClassMethodBodyChangeRefiner(correspondenceModel, userInteracting, compositeChange);
 		}
-		return new ChangeProcessorResult(change, #[]);
+		return new TransformationResult();
 	}
 
-	def match(CompositeTransactionalChange change) {
+	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		if (!(change instanceof CompositeTransactionalChange)) {
+			return false;
+		}
 		val eChanges = new ArrayList<JavaFeatureEChange<?, ?>>();
 		for (eChange : change.EChanges) {
 			if (eChange instanceof UpdateReferenceEChange<?>) {

@@ -2,24 +2,24 @@ package tools.vitruv.framework.change.processing
 
 import java.util.List
 import java.util.ArrayList
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.command.TransformationResult
 
 class ChangeProcessorResult {
 	val TransactionalChange resultingChange;
-	val List<VitruviusRecordingCommand> generatedCommands;
+	val List<TransformationResult> propagationResults;
 	
-	new(TransactionalChange resultingChange, List<VitruviusRecordingCommand> generatedCommands) {
+	new(TransactionalChange resultingChange, List<TransformationResult> propagationResults) {
 		this.resultingChange = resultingChange;
-		this.generatedCommands = generatedCommands;
+		this.propagationResults = propagationResults;
 	}
 	
 	def TransactionalChange getResultingChange() {
 		return resultingChange;
 	}
 	
-	def List<VitruviusRecordingCommand> getGeneratedCommands() {
-		return new ArrayList<VitruviusRecordingCommand>(generatedCommands);
+	def List<TransformationResult> getPropagationResults() {
+		return new ArrayList<TransformationResult>(propagationResults);
 	}
 	
 }

@@ -19,7 +19,7 @@ class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
 		this.integrationTransformer = new IntegrationChange2CommandTransformer(getUserInteracting());
 	}
 	
-	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		val nonIntegratedEChanges = new ArrayList<EChange>();
 		val commands = new ArrayList<VitruviusRecordingCommand>();
 		for (eChange : change.getEChanges) {
