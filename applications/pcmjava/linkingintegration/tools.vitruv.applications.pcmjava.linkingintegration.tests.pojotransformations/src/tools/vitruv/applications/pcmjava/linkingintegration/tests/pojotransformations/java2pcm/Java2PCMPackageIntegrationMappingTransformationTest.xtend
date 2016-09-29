@@ -12,11 +12,10 @@ import org.palladiosimulator.pcm.repository.RepositoryComponent
 import java.util.Set
 import org.palladiosimulator.pcm.repository.Repository
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
-import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
 import tools.vitruv.applications.pcmjava.linkingintegration.tests.util.CodeIntegrationUtils
 import tools.vitruv.applications.pcmjava.linkingintegration.tests.CodeIntegrationTestCBSNamespace
-import tools.vitruv.applications.pcmjava.linkingintegration.change2command.Java2PCMIntegrationChange2CommandTransforming
-import tools.vitruv.applications.pcmjava.linkingintegration.change2command.PCM2JavaIntegrationChange2CommandTransforming
+import tools.vitruv.applications.pcmjava.linkingintegration.change2command.Java2PcmIntegrationChangePropagationSpecification
+import tools.vitruv.applications.pcmjava.linkingintegration.change2command.Pcm2JavaIntegrationChangePropagationSpecification
 
 class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackageMappingTransformationTest {
 
@@ -26,10 +25,8 @@ class Java2PCMPackageIntegrationMappingTransformationTest extends Java2PCMPackag
 	val public static String INTEGRATED_METHOD_NAME = "integratedMethodName"
 	val public static String NON_INTEGRATED_METHOD_NAME = "nonIntegradedMethodName"
 
-	override protected createChange2CommandTransformingProviding() {
-		AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-			#[new Java2PCMIntegrationChange2CommandTransforming(), new PCM2JavaIntegrationChange2CommandTransforming()]
-		);
+	override protected createChangePropagationSpecifications() {
+		return #[new Java2PcmIntegrationChangePropagationSpecification(), new Pcm2JavaIntegrationChangePropagationSpecification()];
 	}
 
 	override protected void beforeTest(Description description) throws Throwable {

@@ -3,9 +3,7 @@ package tools.vitruv.dsls.mapping.testframework.util;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 
 import com.google.inject.Binder;
@@ -13,18 +11,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import tools.vitruv.framework.change.processing.Change2CommandTransforming;
-import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl;
+import tools.vitruv.framework.change.processing.ChangeProcessor;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.JavaHelper;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.vsum.VirtualModelConfiguration;
-import tools.vitruv.framework.vsum.VirtualModelImpl;
 
 /**
  * Utility class for the testing framework for the mapping language.
@@ -42,7 +36,7 @@ public final class MappingLanguageTestUtil {
 	 * @param mmURIs the URIs and extensions of the meta models to include in the VSUM.
 	 * @return the created VSUM
 	 */
-	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<Change2CommandTransforming> transformer) {
+	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<ChangeProcessor> transformer) {
 		return TestUtil.createVSUM(metamodels, transformer);
 	}
 

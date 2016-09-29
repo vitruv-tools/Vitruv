@@ -27,5 +27,10 @@ abstract class TransformationExecutorChangeProcessor extends AbstractEChangeProc
 		val executor = this.transformationExecutor;
 		return executor.executeTransformationForChange(change);
 	}
+	
+	override setUserInteracting(UserInteracting userInteracting) {
+		super.userInteracting = userInteracting;
+		if (transformationExecutor != null) this.transformationExecutor.userInteracting = userInteracting
+	}
 
 }

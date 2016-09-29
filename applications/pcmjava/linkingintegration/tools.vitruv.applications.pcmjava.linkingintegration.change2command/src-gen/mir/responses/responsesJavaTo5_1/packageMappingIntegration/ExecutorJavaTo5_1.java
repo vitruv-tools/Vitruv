@@ -1,27 +1,16 @@
 package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
 
-import org.emftext.language.java.JavaPackage;
-import org.palladiosimulator.pcm.PcmPackage;
-
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseExecutor;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import tools.vitruv.framework.util.datatypes.MetamodelPair;
 
 @SuppressWarnings("all")
 public class ExecutorJavaTo5_1 extends AbstractResponseExecutor {
-  private final MetamodelPair metamodelPair;
-	
   public ExecutorJavaTo5_1(final UserInteracting userInteracting) {
-    super(userInteracting);
-	this.metamodelPair = new MetamodelPair(JavaPackage.eNS_URI, PcmPackage.eNS_URI);
-  }
-  
-  @Override
-  public MetamodelPair getMetamodelPair() {
-    return metamodelPair;
+    super(userInteracting, new tools.vitruv.framework.util.datatypes.MetamodelPair(org.emftext.language.java.impl.JavaPackageImpl.eNS_URI, org.palladiosimulator.pcm.impl.PcmPackageImpl.eNS_URI));
   }
   
   protected void setup() {
+    tools.vitruv.framework.userinteraction.UserInteracting userInteracting = getUserInteracting();
     this.addResponse(mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddImportResponseResponse.getExpectedChangeType(), new mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddImportResponseResponse(userInteracting));
     this.addResponse(mir.responses.responsesJavaTo5_1.packageMappingIntegration.RemoveImportResponseResponse.getExpectedChangeType(), new mir.responses.responsesJavaTo5_1.packageMappingIntegration.RemoveImportResponseResponse(userInteracting));
     this.addResponse(mir.responses.responsesJavaTo5_1.packageMappingIntegration.RenameMethodResponse.getExpectedChangeType(), new mir.responses.responsesJavaTo5_1.packageMappingIntegration.RenameMethodResponse(userInteracting));

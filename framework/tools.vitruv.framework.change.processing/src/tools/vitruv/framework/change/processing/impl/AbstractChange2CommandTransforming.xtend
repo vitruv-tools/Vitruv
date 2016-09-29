@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.processing.Change2CommandTransforming
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.TransformationResult
 
-abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
+package abstract class AbstractChange2CommandTransforming implements Change2CommandTransforming {
 	private final static val LOGGER = Logger.getLogger(AbstractChange2CommandTransforming);
 	
 	private UserInteracting userInteracting;

@@ -28,6 +28,7 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	protected def addChangePreprocessor(ChangeProcessor changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changePreprocessors += changePropagationSpecifcation;
+		changePropagationSpecifcation.userInteracting = userInteracting;
 	}
 	
 	/** 
@@ -37,9 +38,10 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	protected def addChangeMainprocessor(ChangeProcessor changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changeMainprocessors += changePropagationSpecifcation;
+		changePropagationSpecifcation.userInteracting = userInteracting;
 	}
 	
-	private def boolean assertMetamodelsCompatible(ChangeProcessor potentialChangeProcessor) {
+	private def void assertMetamodelsCompatible(ChangeProcessor potentialChangeProcessor) {
 		if (!this.metamodelPair.equals(potentialChangeProcessor.metamodelPair)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
@@ -47,7 +49,7 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	
 	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		val propagationResult = new TransformationResult();
-		for (changeProcessor : changePreprocessors + changeMainprocessors) {
+		for (changeProcessor : allProcessors) {
 			logger.debug('''Calling change processor «changeProcessor» for change event «change»''');
 			val currentPropagationResult = changeProcessor.propagateChange(change, correspondenceModel);
 			propagationResult.integrateTransformationResult(currentPropagationResult);
@@ -56,12 +58,27 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	}
 	
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		for (changeProcessor : changePreprocessors + changeMainprocessors) {
+		for (changeProcessor : allProcessors) {
 			if (changeProcessor.doesHandleChange(change, correspondenceModel)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	override setUserInteracting(UserInteracting userInteracting) {
+		super.setUserInteracting(userInteracting)
+		for (changeProcessor : allProcessors) {
+			changeProcessor.setUserInteracting(userInteracting);
+		}
+	}
+	
+	private def getAllProcessors() {
+		val processors = new ArrayList<ChangeProcessor>();
+		// processor arrays can be null when calling setUserInteracting from the super constructor
+		if (changePreprocessors != null) processors += changePreprocessors;
+		if (changeMainprocessors != null) processors += changeMainprocessors;
+		return processors;
 	}
 	
 }

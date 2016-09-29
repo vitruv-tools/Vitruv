@@ -58,15 +58,14 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffFactory;
 import org.palladiosimulator.pcm.system.System;
 
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Change2CommandTransformingPcmToJava;
+import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.PcmToJavaChangePropagationSpecification;
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPPPCMTestUtil;
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils;
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils;
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
-import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding;
+import tools.vitruv.framework.change.processing.ChangeProcessor;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.VitruviusEMFCasestudyTest;
@@ -84,9 +83,8 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 	
 	@Override
-	protected Change2CommandTransformingProviding createChange2CommandTransformingProviding() {
-		return AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-				Collections.singletonList(new Change2CommandTransformingPcmToJava()));
+	protected List<ChangeProcessor> createChangePropagationSpecifications() {
+		return Collections.singletonList(new PcmToJavaChangePropagationSpecification());
 	}
 	
     @SuppressWarnings("unchecked")

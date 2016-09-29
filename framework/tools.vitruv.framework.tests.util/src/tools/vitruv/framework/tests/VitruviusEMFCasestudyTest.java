@@ -14,7 +14,6 @@ import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
@@ -32,7 +31,6 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements SynchronisationListener {
 
 	protected AtomicEMFChangeRecorder changeRecorder;
-	protected Change2CommandTransformingProviding transformingProviding;
 
 	/**
 	 * Set up SyncMangaer and metaRepository facility. Creates a fresh VSUM,

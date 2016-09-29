@@ -7,19 +7,17 @@ import org.palladiosimulator.pcm.repository.OperationRequiredRole
 import org.palladiosimulator.pcm.repository.Repository
 import tools.vitruv.applications.pcmjava.tests.util.PCM2JaMoPPTestUtils
 import org.junit.runner.Description
-import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
 import tools.vitruv.applications.pcmjava.seffstatements.tests.pojotransformations.IncrementalSEFFReconstructionTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBClassMappingTest
 import tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm.EJBJaMoPP2PCMTransformationTest
-import tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations.Change2CommandTransformingEjbJavaToPcmWithSeffstatements
 import org.junit.Test
 import org.junit.Ignore
+import tools.vitruv.applications.pcmjava.seffstatements.ejbtransformations.JavaToPcmEjbWithSeffstatmentsChangePropagationSpecification
 
 class EJBIncrementalSEFFReconstructionTest extends IncrementalSEFFReconstructionTest {
 
-	override protected createChange2CommandTransformingProviding() {
-		AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-			#[new Change2CommandTransformingEjbJavaToPcmWithSeffstatements()]);
+	override protected createChangePropagationSpecifications() {
+		return #[new JavaToPcmEjbWithSeffstatmentsChangePropagationSpecification()];
 	}
 
 	@Override

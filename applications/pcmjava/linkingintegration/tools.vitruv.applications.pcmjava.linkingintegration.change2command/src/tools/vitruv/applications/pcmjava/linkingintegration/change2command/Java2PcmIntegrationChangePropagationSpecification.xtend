@@ -1,8 +1,8 @@
 package tools.vitruv.applications.pcmjava.linkingintegration.change2command
 
-import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Change2CommandTransformingPcmToJava
+import tools.vitruv.applications.pcmjava.pojotransformations.java2pcm.JavaToPcmChangePropagationSpecification
 
-class PCM2JavaIntegrationChange2CommandTransforming extends Change2CommandTransformingPcmToJava {
+class Java2PcmIntegrationChangePropagationSpecification extends JavaToPcmChangePropagationSpecification {
 	
 	override protected setup() {
 		super.setup();
