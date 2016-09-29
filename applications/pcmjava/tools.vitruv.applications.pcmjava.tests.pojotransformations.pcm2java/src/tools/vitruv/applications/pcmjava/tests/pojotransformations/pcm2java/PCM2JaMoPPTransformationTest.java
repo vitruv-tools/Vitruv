@@ -65,7 +65,7 @@ import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils;
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper;
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.VitruviusEMFCasestudyTest;
@@ -83,7 +83,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public class PCM2JaMoPPTransformationTest extends VitruviusEMFCasestudyTest {
 	
 	@Override
-	protected List<ChangeProcessor> createChangePropagationSpecifications() {
+	protected List<ChangePropagationSpecification> createChangePropagationSpecifications() {
 		return Collections.singletonList(new PcmToJavaChangePropagationSpecification());
 	}
 	

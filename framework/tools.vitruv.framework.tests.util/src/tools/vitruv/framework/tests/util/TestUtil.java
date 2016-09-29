@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -49,7 +49,7 @@ public final class TestUtil {
     }
 
     public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
-        return createVSUM(metamodels, new ArrayList<ChangeProcessor>(), null);
+        return createVSUM(metamodels, new ArrayList<ChangePropagationSpecification>(), null);
     }
     
     /**
@@ -59,7 +59,7 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangeProcessor> changePropagationSpecifications) {
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications) {
         return createVSUM(metamodels, changePropagationSpecifications, null);
     }
 
@@ -70,12 +70,12 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangeProcessor> changePropagationSpecifications, final ClassLoader classLoader) {
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangePropagationSpecification> changePropagationSpecifications, final ClassLoader classLoader) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
         	vmodelConfig.addMetamodel(metamodel);
         }
-        for (ChangeProcessor changePropagationSpecification : changePropagationSpecifications) {
+        for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
         	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
         // TODO HK Replace name with parameter

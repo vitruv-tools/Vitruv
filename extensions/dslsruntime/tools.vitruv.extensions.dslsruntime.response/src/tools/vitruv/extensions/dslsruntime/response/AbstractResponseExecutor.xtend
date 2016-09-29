@@ -6,11 +6,11 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.extensions.dslsruntime.response.helper.Change2ResponseMap
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.impl.AbstractEChangeProcessor
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
+import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
 
-abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
+abstract class AbstractResponseExecutor extends AbstractEChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;

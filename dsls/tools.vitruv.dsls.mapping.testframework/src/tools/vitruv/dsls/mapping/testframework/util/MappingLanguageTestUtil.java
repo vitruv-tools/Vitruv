@@ -11,7 +11,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTUIDCalculatorAndResolver;
@@ -36,7 +36,7 @@ public final class MappingLanguageTestUtil {
 	 * @param mmURIs the URIs and extensions of the meta models to include in the VSUM.
 	 * @return the created VSUM
 	 */
-	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<ChangeProcessor> transformer) {
+	public static VirtualModel createEmptyVSUM(Collection<Metamodel> metamodels, Collection<ChangePropagationSpecification> transformer) {
 		return TestUtil.createVSUM(metamodels, transformer);
 	}
 

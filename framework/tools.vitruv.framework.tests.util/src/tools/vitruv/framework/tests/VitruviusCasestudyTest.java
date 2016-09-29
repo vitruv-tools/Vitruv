@@ -21,7 +21,7 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
@@ -55,7 +55,7 @@ public abstract class VitruviusCasestudyTest implements SynchronisationListener 
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
-    protected abstract Iterable<ChangeProcessor> createChangePropagationSpecifications();
+    protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
     protected abstract Iterable<Metamodel> createMetamodels();
     
     protected void beforeTest(final Description description) throws Throwable {

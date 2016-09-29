@@ -14,15 +14,15 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import org.emftext.language.java.statements.Statement
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import java.util.ArrayList
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import org.emftext.language.java.JavaPackage
 import org.palladiosimulator.pcm.PcmPackage
+import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
 
-class Java2PcmMethodBodyChangePreprocessor extends AbstractChangeProcessor {
+class Java2PcmMethodBodyChangePreprocessor extends AbstractChangePropagationSpecification {
 	private val Code2SEFFFactory code2SEFFfactory;
 	private val MetamodelPair metamodelPair;
 	

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.processing.impl
 
-import tools.vitruv.framework.change.processing.ChangeProcessor
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.List
@@ -8,24 +7,25 @@ import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.util.command.TransformationResult
 import org.apache.log4j.Logger
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
-abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
-	private static val logger = Logger.getLogger(CompositeChangeProcessor);
+abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification {
+	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 	
-	private val List<ChangeProcessor> changePreprocessors;
-	private val List<ChangeProcessor> changeMainprocessors;
+	private val List<ChangePropagationSpecification> changePreprocessors;
+	private val List<ChangePropagationSpecification> changeMainprocessors;
 
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
-		changePreprocessors = new ArrayList<ChangeProcessor>();
-		changeMainprocessors = new ArrayList<ChangeProcessor>();
+		changePreprocessors = new ArrayList<ChangePropagationSpecification>();
+		changeMainprocessors = new ArrayList<ChangePropagationSpecification>();
 	}
 	
 	/** 
 	 * Adds the specified change processor as a preprocessor, which is executed before the mainprocessors.
 	 * The preprocessors are executed in the order in which they are added.
 	 */
-	protected def addChangePreprocessor(ChangeProcessor changePropagationSpecifcation) {
+	protected def addChangePreprocessor(ChangePropagationSpecification changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changePreprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
@@ -35,13 +35,13 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	 * Adds the specified change processor as a main processor, which is executed after the preprocessors.
 	 * The main processors are executed in the order in which they are added.
 	 */
-	protected def addChangeMainprocessor(ChangeProcessor changePropagationSpecifcation) {
+	protected def addChangeMainprocessor(ChangePropagationSpecification changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changeMainprocessors += changePropagationSpecifcation;
 		changePropagationSpecifcation.userInteracting = userInteracting;
 	}
 	
-	private def void assertMetamodelsCompatible(ChangeProcessor potentialChangeProcessor) {
+	private def void assertMetamodelsCompatible(ChangePropagationSpecification potentialChangeProcessor) {
 		if (!this.metamodelPair.equals(potentialChangeProcessor.metamodelPair)) {
 			throw new IllegalArgumentException("ChangeProcessor metamodels are not compatible");
 		}
@@ -74,7 +74,7 @@ abstract class CompositeChangeProcessor extends AbstractChangeProcessor {
 	}
 	
 	private def getAllProcessors() {
-		val processors = new ArrayList<ChangeProcessor>();
+		val processors = new ArrayList<ChangePropagationSpecification>();
 		// processor arrays can be null when calling setUserInteracting from the super constructor
 		if (changePreprocessors != null) processors += changePreprocessors;
 		if (changeMainprocessors != null) processors += changeMainprocessors;

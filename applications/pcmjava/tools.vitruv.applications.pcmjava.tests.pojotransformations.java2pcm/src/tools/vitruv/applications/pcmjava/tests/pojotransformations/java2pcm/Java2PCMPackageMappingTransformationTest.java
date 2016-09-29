@@ -8,12 +8,12 @@ import org.palladiosimulator.pcm.repository.CompositeDataType;
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations.ClassMappingTransformation;
 import tools.vitruv.applications.pcmjava.pojotransformations.java2pcm.JavaToPcmChangePropagationSpecification;
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 
 public class Java2PCMPackageMappingTransformationTest extends JaMoPP2PCMTransformationTest {
 
 	@Override
-	protected List<ChangeProcessor> createChangePropagationSpecifications() {
+	protected List<ChangePropagationSpecification> createChangePropagationSpecifications() {
 		return Collections.singletonList(new JavaToPcmChangePropagationSpecification());
 	}
 

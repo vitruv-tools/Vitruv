@@ -10,15 +10,15 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.domains.java.echange.feature.attribute.JavaReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
 
-class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
+class Java2PcmPackagePreprocessor extends AbstractChangePropagationSpecification {
    private val MetamodelPair metamodelPair;
 	
 	new(UserInteracting userInteracting) {

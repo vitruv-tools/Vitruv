@@ -20,7 +20,7 @@ import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.change.processing.ChangeProcessor
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	static final int BLACKBOARD_HITORY_SIZE = 2
@@ -99,7 +99,7 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 		}
 	}
 	
-	private def void synchronizeChangeForChangePropagationSpecification(TransactionalChange change, ChangeProcessor propagationSpecification,
+	private def void synchronizeChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
 			List<List<VitruviusChange>> commandExecutionChanges) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding)

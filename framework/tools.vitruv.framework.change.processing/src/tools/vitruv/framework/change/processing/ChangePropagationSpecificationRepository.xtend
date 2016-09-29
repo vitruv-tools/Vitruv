@@ -7,24 +7,24 @@ import java.util.HashMap
 import java.util.ArrayList
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	private Map<VURI, List<ChangeProcessor>> metamodelToPropagationSpecifications;
+	private Map<VURI, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications;
 
 	public new() {
-		metamodelToPropagationSpecifications = new HashMap<VURI, List<ChangeProcessor>>();
+		metamodelToPropagationSpecifications = new HashMap<VURI, List<ChangePropagationSpecification>>();
 	}
 	
-	public override List<ChangeProcessor> getChangePropagationSpecifications(VURI metamodelVuri) {
-		val result = new ArrayList<ChangeProcessor>();
+	public override List<ChangePropagationSpecification> getChangePropagationSpecifications(VURI metamodelVuri) {
+		val result = new ArrayList<ChangePropagationSpecification>();
 		if (metamodelToPropagationSpecifications.containsKey(metamodelVuri)) {
 			result.addAll(metamodelToPropagationSpecifications.get(metamodelVuri));
 		}
 		return result;
 	}
 	
-	public def void putChangePropagationSpecification(ChangeProcessor changePropagationSpecification) {
+	public def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
 		val changedMetamodel = changePropagationSpecification.metamodelPair.first;
 		if (!this.metamodelToPropagationSpecifications.containsKey(changedMetamodel)) {
-			this.metamodelToPropagationSpecifications.put(changedMetamodel, new ArrayList<ChangeProcessor>());
+			this.metamodelToPropagationSpecifications.put(changedMetamodel, new ArrayList<ChangePropagationSpecification>());
 		}
 		val propagationSpecifications = this.metamodelToPropagationSpecifications.get(changedMetamodel);
 		propagationSpecifications.add(changePropagationSpecification);

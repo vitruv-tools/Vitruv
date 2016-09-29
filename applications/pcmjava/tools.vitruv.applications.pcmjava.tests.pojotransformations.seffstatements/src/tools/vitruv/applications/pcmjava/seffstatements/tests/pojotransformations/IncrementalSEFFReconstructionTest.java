@@ -34,7 +34,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.applications.pcmjava.seffstatements.pojotransformations.JavaToPcmWithSeffstatmantsChangePropagationSpecification;
 import tools.vitruv.applications.pcmjava.tests.util.CompilationUnitManipulatorHelper;
 import tools.vitruv.applications.pcmjava.tests.util.JaMoPP2PCMTransformationTest;
-import tools.vitruv.framework.change.processing.ChangeProcessor;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 
 public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationTest {
@@ -55,7 +55,7 @@ public class IncrementalSEFFReconstructionTest extends JaMoPP2PCMTransformationT
     protected static final String WEBGUI_CLASSNAME = WEBGUI + "Impl";;
 
     @Override
-    protected List<ChangeProcessor> createChangePropagationSpecifications() {
+    protected List<ChangePropagationSpecification> createChangePropagationSpecifications() {
     	return Collections.singletonList(new JavaToPcmWithSeffstatmantsChangePropagationSpecification());
     }
     

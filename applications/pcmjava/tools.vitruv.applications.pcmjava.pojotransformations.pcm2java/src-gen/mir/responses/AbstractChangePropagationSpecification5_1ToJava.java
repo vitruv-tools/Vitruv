@@ -1,12 +1,12 @@
 package mir.responses;
 
-import tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor;
+import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification;
 
 /**
  * The {@link class tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor} for transformations between the metamodels http://palladiosimulator.org/PalladioComponentModel/5.1 and http://www.emftext.org/java.
  * To add further change processors overwrite the setup method.
  */
-public abstract class AbstractChangePropagationSpecification5_1ToJava extends CompositeChangeProcessor {
+public abstract class AbstractChangePropagationSpecification5_1ToJava extends CompositeChangePropagationSpecification {
 	private final tools.vitruv.framework.util.datatypes.MetamodelPair metamodelPair;
 	
 	public AbstractChangePropagationSpecification5_1ToJava() {

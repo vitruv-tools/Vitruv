@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.linkingintegration.change2command
 
-import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.ArrayList
@@ -13,8 +12,9 @@ import tools.vitruv.applications.pcmjava.linkingintegration.change2command.inter
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
 
-class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
+class CodeIntegrationChangeProcessor extends AbstractChangePropagationSpecification {
 	private val IntegrationChange2CommandTransformer integrationTransformer;
 	private val MetamodelPair metamodelPair;
 	

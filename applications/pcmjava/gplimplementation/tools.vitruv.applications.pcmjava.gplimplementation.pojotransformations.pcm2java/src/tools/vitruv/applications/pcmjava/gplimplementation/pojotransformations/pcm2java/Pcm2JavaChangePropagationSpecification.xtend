@@ -1,12 +1,12 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java
 
-import tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor
 import org.palladiosimulator.pcm.PcmPackage
 import org.emftext.language.java.JavaPackage
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
+import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 
-class Pcm2JavaChangePropagationSpecification extends CompositeChangeProcessor {
+class Pcm2JavaChangePropagationSpecification extends CompositeChangePropagationSpecification {
 	private MetamodelPair metamodelPair;
 	
 	new() {

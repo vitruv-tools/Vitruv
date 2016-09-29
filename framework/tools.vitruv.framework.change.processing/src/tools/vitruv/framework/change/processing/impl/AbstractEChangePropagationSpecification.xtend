@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.processing.impl
 
-import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.echange.EChange
 import org.apache.log4j.Logger
@@ -8,8 +7,8 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.TransformationResult
 
-abstract class AbstractEChangeProcessor extends AbstractChangeProcessor {
-	private final static val LOGGER = Logger.getLogger(AbstractEChangeProcessor);
+abstract class AbstractEChangePropagationSpecification extends AbstractChangePropagationSpecification {
+	private final static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);
 	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);

@@ -24,9 +24,9 @@ import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
-import tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
+import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
@@ -195,10 +195,10 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
 		/**
-		 * The {@link «CompositeChangeProcessor»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
+		 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
 		 * To add further change processors overwrite the setup method.
 		 */
-		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangeProcessor)» {
+		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangePropagationSpecification)» {
 			private final «MetamodelPair.name» metamodelPair;
 			
 			public «changePropagationSpecificationNameGenerator.simpleName»() {

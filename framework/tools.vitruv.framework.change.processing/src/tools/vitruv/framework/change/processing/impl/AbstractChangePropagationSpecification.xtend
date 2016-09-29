@@ -1,9 +1,9 @@
 package tools.vitruv.framework.change.processing.impl
 
-import tools.vitruv.framework.change.processing.ChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
-abstract class AbstractChangeProcessor implements ChangeProcessor {
+abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
 	private var UserInteracting userInteracting;
 	
 	new(UserInteracting userInteracting) {

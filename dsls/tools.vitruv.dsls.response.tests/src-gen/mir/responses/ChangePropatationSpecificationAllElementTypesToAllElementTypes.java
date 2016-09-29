@@ -1,12 +1,12 @@
 package mir.responses;
 
-import tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor;
+import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification;
 
 /**
  * The {@link class tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor} for transformations between the metamodels http://tools.vitruv.tests.metamodels.allElementTypes and http://tools.vitruv.tests.metamodels.allElementTypes.
  * To add further change processors overwrite the setup method.
  */
-public abstract class ChangePropatationSpecificationAllElementTypesToAllElementTypes extends CompositeChangeProcessor {
+public abstract class ChangePropatationSpecificationAllElementTypesToAllElementTypes extends CompositeChangePropagationSpecification {
 	private final tools.vitruv.framework.util.datatypes.MetamodelPair metamodelPair;
 	
 	public ChangePropatationSpecificationAllElementTypesToAllElementTypes() {

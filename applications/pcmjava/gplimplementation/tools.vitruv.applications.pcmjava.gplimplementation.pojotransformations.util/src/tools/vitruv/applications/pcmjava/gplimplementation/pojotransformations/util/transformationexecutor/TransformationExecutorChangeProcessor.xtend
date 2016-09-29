@@ -2,10 +2,10 @@ package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.
 
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.impl.AbstractEChangeProcessor
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
 
-abstract class TransformationExecutorChangeProcessor extends AbstractEChangeProcessor {
+abstract class TransformationExecutorChangeProcessor extends AbstractEChangePropagationSpecification {
 	private val TransformationExecutor transformationExecutor;
 
 	new(UserInteracting userInteracting) {

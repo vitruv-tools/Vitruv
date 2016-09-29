@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import tools.vitruv.framework.metamodel.Metamodel
-import tools.vitruv.framework.change.processing.ChangeProcessor
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 class VirtualModelConfigurationBuilder {
 	private val VirtualModelConfiguration modelConfiguration;
@@ -15,7 +15,7 @@ class VirtualModelConfigurationBuilder {
 		return this;
 	}
 	
-	public def VirtualModelConfigurationBuilder addChangePropagationSpecification(ChangeProcessor changePropagationSpecification) {
+	public def VirtualModelConfigurationBuilder addChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
 		modelConfiguration.addChangePropagationSpecification(changePropagationSpecification);
 		return this;
 	}
