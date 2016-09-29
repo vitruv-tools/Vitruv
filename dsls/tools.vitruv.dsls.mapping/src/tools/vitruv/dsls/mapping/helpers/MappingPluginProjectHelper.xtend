@@ -3,7 +3,6 @@ package tools.vitruv.dsls.mapping.helpers
 import org.eclipse.xtext.generator.IFileSystemAccess
 import java.util.Collection
 import tools.vitruv.framework.util.VitruviusConstants
-import tools.vitruv.framework.change.processing.Change2CommandTransforming
 
 /**
  * Helper class containing methods for setting up the plugin project to generate
@@ -29,22 +28,22 @@ class MappingPluginProjectHelper {
 	/**
 	 * Creates the plugin.xml for extending the correct extension point
 	 */
-	public static def createPluginXML(IFileSystemAccess fsa, String classFQN) {
-		fsa.generateFile("plugin.xml",
-		'''
-		<?xml version="1.0" encoding="UTF-8"?>
-		<?eclipse version="3.4"?>
-		<plugin>
-		   <extension
-		         point="«Change2CommandTransforming.ExtensionPointID»">
-		      <provides
-		            «VitruviusConstants.getExtensionPropertyName()»="«classFQN»">
-		      </provides>
-		   </extension>
-		</plugin>
-		'''
-		)
-	}
+//	public static def createPluginXML(IFileSystemAccess fsa, String classFQN) {
+//		fsa.generateFile("plugin.xml",
+//		'''
+//		<?xml version="1.0" encoding="UTF-8"?>
+//		<?eclipse version="3.4"?>
+//		<plugin>
+//		   <extension
+//		         point="«Change2CommandTransforming.ExtensionPointID»">
+//		      <provides
+//		            «VitruviusConstants.getExtensionPropertyName()»="«classFQN»">
+//		      </provides>
+//		   </extension>
+//		</plugin>
+//		'''
+//		)
+//	}
 	
 	/**
 	 * Creates the META-INF/MANIFEST.MF file for the plugin project.
