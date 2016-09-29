@@ -22,15 +22,15 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
-class ChangeSynchronizerImpl implements ChangeSynchronizing {
+class ChangePropagatorImpl implements ChangePropagator {
 	static final int BLACKBOARD_HITORY_SIZE = 2
-	static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.getSimpleName())
+	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
 	final MetamodelRepository metamodelRepository;
 	final ModelRepository modelProviding
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
 	final CommandExecuting commandExecuting
-	Set<SynchronisationListener> synchronizationListeners
+	Set<ChangePropagationListener> changePropagationListeners
 	Queue<Blackboard> blackboardHistory
 
 	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
@@ -38,23 +38,23 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 		this.modelProviding = modelProviding
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceProviding = correspondenceProviding
-		this.synchronizationListeners = new HashSet<SynchronisationListener>()
+		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.commandExecuting = new CommandExecutingImpl()
 		this.metamodelRepository = metamodelRepository;
 		this.blackboardHistory = EvictingQueue.create(BLACKBOARD_HITORY_SIZE)
 	}
 
-	override void addSynchronizationListener(SynchronisationListener synchronizationListener) {
+	override void addChangePropagationListener(ChangePropagationListener synchronizationListener) {
 		if (synchronizationListener !== null) {
-			this.synchronizationListeners.add(synchronizationListener)
+			this.changePropagationListeners.add(synchronizationListener)
 		}
 	}
 
-	override void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
-		this.synchronizationListeners.remove(synchronizationListener)
+	override void removeChangePropagationListener(ChangePropagationListener synchronizationListener) {
+		this.changePropagationListeners.remove(synchronizationListener)
 	}
 
-	override synchronized List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
+	override synchronized List<List<VitruviusChange>> propagateChange(VitruviusChange change) {
 		if (change == null || !change.containsConcreteChange()) {
 			logger.info('''The change does not contain any changes to synchronize: «change»''')
 			return Collections.emptyList()
@@ -63,43 +63,43 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 			throw new IllegalArgumentException('''Change contains changes from different models: «change»''')
 		}
 		
-		startSynchronization(change);
+		startChangePropagation(change);
 		change.applyBackward()
 		var List<List<VitruviusChange>> result = new ArrayList<List<VitruviusChange>>()
-		synchronizeSingleChange(change, result)
-		finishSynchronization(change)
+		propagateSingleChange(change, result)
+		finishChangePropagation(change)
 		return result
 	}
 
-	private def void startSynchronization(VitruviusChange change) {
+	private def void startChangePropagation(VitruviusChange change) {
 		logger.info('''Started synchronizing change: «change»''')
-		for (SynchronisationListener syncListener : this.synchronizationListeners) {
-			syncListener.syncStarted()
+		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
+			syncListener.startedChangePropagation()
 		}	
 	}
 
-	private def void finishSynchronization(VitruviusChange change) {
-		for (SynchronisationListener syncListener : this.synchronizationListeners) {
-			syncListener.syncFinished()
+	private def void finishChangePropagation(VitruviusChange change) {
+		for (ChangePropagationListener syncListener : this.changePropagationListeners) {
+			syncListener.finishedChangePropagation()
 		}
 		logger.info('''Finished synchronizing change: «change»''')
 	}
 
-	private def dispatch void synchronizeSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges) {
+	private def dispatch void propagateSingleChange(CompositeContainerChange change, List<List<VitruviusChange>> commandExecutionChanges) {
 		for (VitruviusChange innerChange : ((change as CompositeContainerChange)).getChanges()) {
-			synchronizeSingleChange(innerChange, commandExecutionChanges)
+			propagateSingleChange(innerChange, commandExecutionChanges)
 		}
 	}
 
-	private def dispatch void synchronizeSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges) {
+	private def dispatch void propagateSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges) {
 		change.applyForward();
 		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
 		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
-			synchronizeChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges);
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges);
 		}
 	}
 	
-	private def void synchronizeChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
+	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change, ChangePropagationSpecification propagationSpecification,
 			List<List<VitruviusChange>> commandExecutionChanges) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding)

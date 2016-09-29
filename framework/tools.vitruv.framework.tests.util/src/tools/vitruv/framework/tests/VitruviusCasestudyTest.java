@@ -24,7 +24,7 @@ import org.junit.runner.Description;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -36,7 +36,7 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
  * @author langhamm
  *
  */
-public abstract class VitruviusCasestudyTest implements SynchronisationListener {
+public abstract class VitruviusCasestudyTest implements ChangePropagationListener {
 
 	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
 	
@@ -79,7 +79,7 @@ public abstract class VitruviusCasestudyTest implements SynchronisationListener 
 	private void createVirtualModel() {
 		this.metamodels = this.createMetamodels();
 		this.virtualModel = TestUtil.createVSUM(metamodels, createChangePropagationSpecifications());
-		this.virtualModel.addChangeSynchronizationListener(this);
+		this.virtualModel.addChangePropagationListener(this);
 	}
 
 	protected InternalVirtualModel getVirtualModel() {

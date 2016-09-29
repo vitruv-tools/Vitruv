@@ -4,20 +4,20 @@ import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.metamodel.MetamodelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
+import tools.vitruv.framework.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.modelsynchronization.ChangePropagatorImpl
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ModelRepositoryImpl modelRepository;
 	private val MetamodelRepository metamodelRepository;
-	private val ChangeSynchronizing changeSynchronizer;
+	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val String name;
 	
@@ -42,7 +42,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
-		this.changeSynchronizer = new ChangeSynchronizerImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository);
+		this.changePropagator = new ChangePropagatorImpl(modelRepository, changePropagationSpecificationProvider, metamodelRepository, modelRepository);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}
 	
@@ -66,12 +66,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
 	}
 	
-	override addChangeSynchronizationListener(SynchronisationListener synchronizationListener) {
-		changeSynchronizer.addSynchronizationListener(synchronizationListener);
+	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
+		changePropagator.addChangePropagationListener(changePropagationListener);
 	}
 	
 	override propagateChange(VitruviusChange change) {
-		changeSynchronizer.synchronizeChange(change);
+		changePropagator.propagateChange(change);
 		save();
 	}
 	

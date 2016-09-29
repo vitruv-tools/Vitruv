@@ -4,7 +4,7 @@ import java.util.List;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
 
-public interface ChangeSynchronizing {
+public interface ChangePropagator {
     /**
      * Resort changes and igores undos/redos.
      *
@@ -12,9 +12,9 @@ public interface ChangeSynchronizing {
      *            list of changes
      * @return TODO
      */
-    List<List<VitruviusChange>> synchronizeChange(VitruviusChange change);
+    List<List<VitruviusChange>> propagateChange(VitruviusChange change);
 
-    void addSynchronizationListener(SynchronisationListener synchronizationListener);
+    void addChangePropagationListener(ChangePropagationListener synchronizationListener);
 
-    void removeSynchronizationListener(SynchronisationListener synchronizationListener);
+    void removeChangePropagationListener(ChangePropagationListener synchronizationListener);
 }

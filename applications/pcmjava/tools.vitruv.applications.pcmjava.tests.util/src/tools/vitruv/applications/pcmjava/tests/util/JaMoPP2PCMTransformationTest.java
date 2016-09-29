@@ -97,7 +97,7 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
 import tools.vitruv.framework.tests.TestUserInteractor;
 import tools.vitruv.framework.tests.VitruviusCasestudyTest;
 import tools.vitruv.framework.tests.util.TestUtil;
@@ -189,17 +189,17 @@ public abstract class JaMoPP2PCMTransformationTest extends VitruviusCasestudyTes
 	}
 	
 	@Override
-	public synchronized void syncStarted() {
+	public synchronized void startedChangePropagation() {
 	}
 	
 	@Override
-	public synchronized void syncFinished() {
+	public synchronized void finishedChangePropagation() {
 		expectedNumberOfSyncs--;
 		this.notifyAll();
 	}
 
 	@Override
-	public synchronized void syncAborted(TransformationAbortCause cause) {
+	public synchronized void abortedChangePropagation(ChangePropagationAbortCause cause) {
 		expectedNumberOfSyncs--;
 		this.notifyAll();
 	}

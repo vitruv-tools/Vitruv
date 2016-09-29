@@ -17,8 +17,8 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChan
 import tools.vitruv.framework.change.recording.AtomicEMFChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
-import tools.vitruv.framework.modelsynchronization.TransformationAbortCause;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -28,7 +28,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
  *
  */
 
-public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements SynchronisationListener {
+public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest implements ChangePropagationListener {
 
 	protected AtomicEMFChangeRecorder changeRecorder;
 
@@ -80,17 +80,17 @@ public abstract class VitruviusEMFCasestudyTest extends VitruviusCasestudyTest i
 	}
 
 	@Override
-	public void syncStarted() {
+	public void startedChangePropagation() {
 
 	}
 
 	@Override
-	public void syncFinished() {
+	public void finishedChangePropagation() {
 
 	}
 
 	@Override
-	public void syncAborted(final TransformationAbortCause cause) {
+	public void abortedChangePropagation(final ChangePropagationAbortCause cause) {
 
 	}
 

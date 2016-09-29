@@ -16,7 +16,7 @@ import java.util.Collection;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.ChangePropagator;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
@@ -30,7 +30,7 @@ public class EMFEditorMonitorFactory {
      * @param factory
      *            The {@link IEditorPartAdapterFactory} used to adapt Eclipse editors.
      * @param changeSync
-     *            The Vitruvius {@link ChangeSynchronizing} object receiving change synchronization
+     *            The Vitruvius {@link ChangePropagator} object receiving change synchronization
      *            calls.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
@@ -47,7 +47,7 @@ public class EMFEditorMonitorFactory {
      * Creates a new {@link IVitruviusEMFEditorMonitor} instance able to adapt all EMF/GMF editors.
      * 
      * @param changeSync
-     *            The Vitruvius {@link ChangeSynchronizing} object receiving change synchronization
+     *            The Vitruvius {@link ChangePropagator} object receiving change synchronization
      *            calls.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.

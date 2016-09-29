@@ -22,7 +22,7 @@ import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.monitorededitor.AbstractMonitoredEditor;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.ChangePropagator;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
@@ -38,7 +38,7 @@ import tools.vitruv.framework.vsum.VirtualModel;
  *         {@link ASTChangeListener} and the {@link RefactoringChangeListener} to monitor changes in
  *         Java source code. Both listeners generate {@link ChangeClassifyingEvent}s which are
  *         transferred to the {@link ChangeResponder} who builds and returns {@link EMFModelChange}
- *         objects. These change objects are then used by the {@link ChangeSynchronizing} to
+ *         objects. These change objects are then used by the {@link ChangePropagator} to
  *         propagate changes to other with the code affiliated EMF models.
  *
  */

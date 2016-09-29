@@ -35,7 +35,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.ChangePropagator;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -45,7 +45,7 @@ import tools.vitruv.framework.vsum.VirtualModel;
  * object to determine whether a resource needs to be monitored.
  * 
  * Whenever the user saves the model, the changes since the last save event rsp. the beginning of
- * the editing session are passed to the provided {@link ChangeSynchronizing} object.
+ * the editing session are passed to the provided {@link ChangePropagator} object.
  * 
  */
 public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor {
@@ -97,7 +97,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * @param factory
      *            The {@link IEditorPartAdapterFactory} providing access to the EMF editors.
      * @param changeSync
-     *            The {@link ChangeSynchronizing} object getting passed the changes to the EMF model
+     *            The {@link ChangePropagator} object getting passed the changes to the EMF model
      *            when the user saves the editing session.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
@@ -122,7 +122,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * whose resource set contains an EMF model registered with the Vitruvius framework.
      * 
      * @param changeSync
-     *            The {@link ChangeSynchronizing} object getting passed the changes to the EMF model
+     *            The {@link ChangePropagator} object getting passed the changes to the EMF model
      *            when the user saves the editing session.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
