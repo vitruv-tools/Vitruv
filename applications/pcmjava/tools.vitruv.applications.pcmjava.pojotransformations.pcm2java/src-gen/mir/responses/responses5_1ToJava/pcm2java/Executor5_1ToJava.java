@@ -1,12 +1,24 @@
 package mir.responses.responses5_1ToJava.pcm2java;
 
+import org.emftext.language.java.JavaPackage;
+import org.palladiosimulator.pcm.PcmPackage;
+
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseExecutor;
 import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.util.datatypes.MetamodelPair;
 
 @SuppressWarnings("all")
 public class Executor5_1ToJava extends AbstractResponseExecutor {
+  private final MetamodelPair metamodelPair;
+	
   public Executor5_1ToJava(final UserInteracting userInteracting) {
     super(userInteracting);
+	this.metamodelPair = new MetamodelPair(PcmPackage.eNS_URI, JavaPackage.eNS_URI);
+  }
+  
+  @Override
+  public MetamodelPair getMetamodelPair() {
+    return metamodelPair;
   }
   
   protected void setup() {

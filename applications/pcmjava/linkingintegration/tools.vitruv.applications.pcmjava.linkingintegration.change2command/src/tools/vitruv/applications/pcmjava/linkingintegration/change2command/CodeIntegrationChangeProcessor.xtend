@@ -10,13 +10,22 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal.IntegrationChange2CommandResult
+import tools.vitruv.framework.util.datatypes.MetamodelPair
+import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.pcm.util.PCMNamespace
 
 class CodeIntegrationChangeProcessor extends AbstractChangeProcessor {
 	private val IntegrationChange2CommandTransformer integrationTransformer;
+	private val MetamodelPair metamodelPair;
 	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
+		this.metamodelPair = new MetamodelPair(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE, PCMNamespace.PCM_METAMODEL_NAMESPACE);
 		this.integrationTransformer = new IntegrationChange2CommandTransformer(getUserInteracting());
+	}
+	
+	override getMetamodelPair() {
+		return metamodelPair;
 	}
 	
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {

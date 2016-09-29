@@ -14,11 +14,20 @@ import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.TransformationResult
+import tools.vitruv.framework.util.datatypes.MetamodelPair
+import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.pcm.util.PCMNamespace
 
 class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
-    
+   private val MetamodelPair metamodelPair;
+	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
+		this.metamodelPair = new MetamodelPair(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE, PCMNamespace.PCM_METAMODEL_NAMESPACE);
+	}
+	
+	override getMetamodelPair() {
+		return metamodelPair;
 	}
 	
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {

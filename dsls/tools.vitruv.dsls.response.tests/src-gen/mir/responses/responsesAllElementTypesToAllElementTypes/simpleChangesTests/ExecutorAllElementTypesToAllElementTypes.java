@@ -1,12 +1,22 @@
 package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
 
+import allElementTypes2.AllElementTypes2Package;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseExecutor;
 import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.util.datatypes.MetamodelPair;
 
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractResponseExecutor {
+  private final MetamodelPair metamodelPair;
+	
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
     super(userInteracting);
+	this.metamodelPair = new MetamodelPair(AllElementTypes2Package.eNS_URI, AllElementTypes2Package.eNS_URI);
+  }
+  
+  @Override
+  public MetamodelPair getMetamodelPair() {
+    return metamodelPair;
   }
   
   protected void setup() {

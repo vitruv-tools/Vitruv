@@ -7,6 +7,9 @@ abstract class AbstractChangeProcessor implements ChangeProcessor {
 	private val UserInteracting userInteracting;
 	
 	new(UserInteracting userInteracting) {
+		if (userInteracting == null) {
+			throw new IllegalArgumentException("UserInteracting must not be null");
+		}
 		this.userInteracting = userInteracting;
 	}
 	

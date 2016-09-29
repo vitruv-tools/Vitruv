@@ -5,14 +5,13 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangeProcessor
 import tools.vitruv.framework.change.echange.EChange
 
-class TransformationExecutorChangeProcessor extends AbstractEChangeProcessor {
+abstract class TransformationExecutorChangeProcessor extends AbstractEChangeProcessor {
 	private val TransformationExecutor transformationExecutor;
 
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
 		this.transformationExecutor = new TransformationExecutor();
-
-	}
+	} 
 
 	public def void addMapping(EObjectMappingTransformation transformation) {
 		this.transformationExecutor.addMapping(transformation);
