@@ -16,6 +16,7 @@ import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
+import tools.vitruv.framework.util.VitruviusConstants
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
@@ -32,11 +33,25 @@ class CommandExecutingImpl implements CommandExecuting {
 			affectedObjects.addAll(command.getAffectedObjects().filter [ eObj |
 				!(eObj instanceof Correspondence) && !(eObj instanceof Correspondences)])
 		}
-		this.executeTransformationResults(transformationResults, blackboard)
+		this.executeTransformationResults(transformationResults, affectedObjects.filter(EObject), blackboard)
 		return Collections::emptyList()
 	}
 
-	def private void executeTransformationResults(ArrayList<TransformationResult> transformationResults,
+	def private void saveChangedModels(Iterable<EObject> affectedObjects, ModelRepository modelRepository) {
+		for (EObject eObject : affectedObjects) {
+			if (null !== eObject.eResource()) {
+				val vuri = VURI::getInstance(eObject.eResource());
+				// FIXME HK We do not save Java files at the moment, because AST changes are not correctly
+				// reflected in the JaMoPP models, so that saving JaMoPP models overwrites AST changes
+				if (!vuri.toString.startsWith(VitruviusConstants.getPathmapPrefix()) && !vuri.fileExtension.endsWith("java")) {
+					eObject.eResource.modified = true;
+				}
+			}
+		}
+		modelRepository.saveAllModels();
+	}
+
+	def private void executeTransformationResults(ArrayList<TransformationResult> transformationResults, Iterable<EObject> modifiedEObjects,
 		Blackboard blackboard) {
 		if (null === transformationResults) {
 			return;
@@ -49,6 +64,7 @@ class CommandExecutingImpl implements CommandExecuting {
 			for (VURI vuriToDelete : transformationResult.getVUIRsToDelete()) {
 				blackboard.getModelProviding().deleteModel(vuriToDelete)
 			}
+			saveChangedModels(modifiedEObjects, blackboard.modelProviding)
 			for (Pair<EObject, VURI> createdEObjectVURIPair : transformationResult.getRootEObjectsToSave()) {
 				blackboard.getModelProviding().
 					createModel(createdEObjectVURIPair.getSecond(),
