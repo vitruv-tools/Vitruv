@@ -61,7 +61,7 @@ class CommandExecutingImpl implements CommandExecuting {
 				logger.info("Current TransformationResult is null. Can not save new root EObjects or delete VURIs.")
 				return;
 			}
-			for (VURI vuriToDelete : transformationResult.getVUIRsToDelete()) {
+			for (VURI vuriToDelete : transformationResult.getVurisToDelete()) {
 				blackboard.getModelProviding().deleteModel(vuriToDelete)
 			}
 			saveChangedModels(modifiedEObjects, blackboard.modelProviding)

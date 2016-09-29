@@ -21,17 +21,13 @@ public class ChangePropagationResult {
         this.rootEObjectsToSave = new ArrayList<Pair<EObject, VURI>>();
     }
 
-    public Set<VURI> getVUIRsToDelete() {
+    public Set<VURI> getVurisToDelete() {
         return this.vurisToDelete;
     }
 
-    public void addVURIToDeleteIfNotNull(final VURI... vuriToDelete) {
-        if (null != vuriToDelete) {
-            for (VURI vuri : vuriToDelete) {
-                if (null != vuri) {
-                    this.vurisToDelete.addAll(Arrays.asList(vuri));
-                }
-            }
+    public void addVuriToDeleteIfNotNull(final VURI vuriToDelete) {
+    	if (null != vuriToDelete) {
+    		this.vurisToDelete.addAll(Arrays.asList(vuriToDelete));
         }
     }
 

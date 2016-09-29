@@ -83,7 +83,7 @@ public final class MIRMappingHelper {
 			ChangePropagationResult result) {
 		for (Resource res : resources) {
 			if (res.getContents().isEmpty()) {
-				result.addVURIToDeleteIfNotNull(VURI.getInstance(res));
+				result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
 			}
 		}
 	}

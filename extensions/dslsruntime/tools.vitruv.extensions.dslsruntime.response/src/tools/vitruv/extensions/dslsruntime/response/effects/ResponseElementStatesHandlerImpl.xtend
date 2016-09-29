@@ -42,7 +42,7 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 		if (element.eContainer() == null) {
 			if (element.eResource() != null) {
 				logger.debug("Deleting root object: " + element);
-				transformationResult.addVURIToDeleteIfNotNull(VURI.getInstance(element.eResource()));
+				transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 			} else {
 				logger.warn("The element to delete was already removed: " + element);
 			}

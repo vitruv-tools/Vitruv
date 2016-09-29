@@ -82,7 +82,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceModel);
 			EcoreUtil.remove(element);
 			transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
-			transformationResult.addVURIToDeleteIfNotNull(oldVURI);
+			transformationResult.addVuriToDeleteIfNotNull(oldVURI);
 		}
 		
 	}

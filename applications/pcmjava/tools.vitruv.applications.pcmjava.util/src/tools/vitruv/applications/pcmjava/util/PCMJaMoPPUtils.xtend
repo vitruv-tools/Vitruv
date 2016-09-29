@@ -177,7 +177,7 @@ class PCMJaMoPPUtils {
 		PCMJaMoPPUtils.addRootChangeToTransformationResult(eObject, correspondenceModel, sourceModelVURI,
 			transformationResult)
 		oldTUID.updateTuid(eObject)
-		transformationResult.addVURIToDeleteIfNotNull(vuriToDelete)
+		transformationResult.addVuriToDeleteIfNotNull(vuriToDelete)
 	}
 
 	private static def String getFolderPathInProjectOfResource(VURI sourceModelVURI, String folderName) {
@@ -245,7 +245,7 @@ class PCMJaMoPPUtils {
 				}
 				if (eObject.isInstanceOfARootClass(rootObjectClasses)) {
 					val vuri = tuid.getVURIFromTUID()
-					transformationResult.addVURIToDeleteIfNotNull(vuri)
+					transformationResult.addVuriToDeleteIfNotNull(vuri)
 				}
 			} catch (RuntimeException e) {
 				// ignore runtime exception during object deletion
