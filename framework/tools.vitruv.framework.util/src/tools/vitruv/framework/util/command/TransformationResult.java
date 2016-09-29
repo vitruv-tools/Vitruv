@@ -44,6 +44,9 @@ public class TransformationResult {
     }
     
     public void integrateTransformationResult(TransformationResult transformationResult) {
+    	if (transformationResult == null) {
+    		return;
+    	}
     	this.vurisToDelete.addAll(transformationResult.vurisToDelete);
     	this.rootEObjectsToSave.addAll(transformationResult.rootEObjectsToSave);
     }
