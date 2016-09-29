@@ -24,8 +24,9 @@ import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
-import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransforming
-import tools.vitruv.framework.change.processing.Change2CommandTransforming
+import tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor
+import tools.vitruv.framework.util.datatypes.MetamodelPair
+import tools.vitruv.framework.userinteraction.impl.UserInteractor
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
@@ -183,34 +184,35 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	
 	private def void generateChange2CommandTransformings(Map<Pair<VURI, VURI>, List<String>> modelCorrepondenceToExecutors, IFileSystemAccess fsa) {
 		for (modelCombination : modelCorrepondenceToExecutors.keySet) {
-			val change2ComandTransformingContent = generateChangeToCommandTransforming(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
-			val change2CommandTransformingNameGenerator = modelCombination.change2CommandTransformingClassNameGenerator;
-			fsa.generateFile(change2CommandTransformingNameGenerator.qualifiedName.filePath, change2ComandTransformingContent);
+			val changePropagationSpecificationContent = generateChangePropagationSpecification(modelCombination, modelCorrepondenceToExecutors.get(modelCombination));
+			val changePropagationSpecificationNameGenerator = modelCombination.changePropagationSpecificationClassNameGenerator;
+			fsa.generateFile(changePropagationSpecificationNameGenerator.qualifiedName.filePath, changePropagationSpecificationContent);
 		}
 	}
 		
-	private def generateChangeToCommandTransforming(Pair<VURI, VURI> modelPair, List<String> executorsNames) {
+	private def generateChangePropagationSpecification(Pair<VURI, VURI> modelPair, List<String> executorsNames) {
 		val ih = new XtendImportHelper();	
-		val change2CommandTransformingNameGenerator = modelPair.change2CommandTransformingClassNameGenerator;
+		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator;
 		val classImplementation = '''
 		/**
-		 * The {@link «Change2CommandTransforming»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
+		 * The {@link «CompositeChangeProcessor»} for transformations between the metamodels «modelPair.first.EMFUri.toString» and «modelPair.second.EMFUri.toString».
 		 * To add further change processors overwrite the setup method.
 		 */
-		public abstract class «change2CommandTransformingNameGenerator.simpleName» extends «ih.typeRef(AbstractChange2CommandTransforming)» {
-			public «change2CommandTransformingNameGenerator.simpleName»() {
-				super («ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»"),
-					«ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»"));
+		public abstract class «changePropagationSpecificationNameGenerator.simpleName» extends «ih.typeRef(CompositeChangeProcessor)» {
+			private final «MetamodelPair.name» metamodelPair;
+			
+			public «changePropagationSpecificationNameGenerator.simpleName»() {
+				super(new «UserInteractor.name»());
+				this.metamodelPair = new «MetamodelPair.name»("«modelPair.first.EMFUri.toString»", "«modelPair.second.EMFUri.toString»");
+				setup();
 			}
-«««			public «ih.typeRef(List)»<«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>> getTransformableMetamodels() {
-«««				«ih.typeRef(VURI)» sourceVURI = «ih.typeRef(VURI)».getInstance("«modelPair.first.EMFUri.toString»");
-«««				«ih.typeRef(VURI)» targetVURI = «ih.typeRef(VURI)».getInstance("«modelPair.second.EMFUri.toString»");
-«««				«ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»> pair = new «ih.typeRef(Pair)»<«ih.typeRef(VURI)», «ih.typeRef(VURI)»>(sourceVURI, targetVURI);
-«««				return «ih.typeRef(Collections)».singletonList(pair);
-«««			}
+			
+			public «MetamodelPair.name» getMetamodelPair() {
+				return metamodelPair;
+			}	
 			
 			/**
-			 * Adds the response change processors to this {@link «change2CommandTransformingNameGenerator.simpleName»}.
+			 * Adds the response change processors to this {@link «changePropagationSpecificationNameGenerator.simpleName»}.
 			 * For adding further change processors overwrite this method and call the super method at the right place.
 			 */
 			protected void setup() {
@@ -222,7 +224,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		}
 		'''
 		
-		return generateClass(change2CommandTransformingNameGenerator.packageName, ih, classImplementation);
+		return generateClass(changePropagationSpecificationNameGenerator.packageName, ih, classImplementation);
 	}
 	
 	private def void generateResponses(Resource responseResource, IFileSystemAccess fsa) {

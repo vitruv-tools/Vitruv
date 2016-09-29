@@ -8,19 +8,23 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangeProcessor
 import tools.vitruv.framework.util.command.TransformationResult
+import tools.vitruv.framework.util.datatypes.MetamodelPair
 
 abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
 
 	private Change2ResponseMap changeToResponseMap;
-
-	protected UserInteracting userInteracting;
+	private final MetamodelPair metamodelPair;
 	
-	new (UserInteracting userInteracting) {
+	new (UserInteracting userInteracting, MetamodelPair metamodelPair) {
 		super(userInteracting);
 		this.changeToResponseMap = new Change2ResponseMap();
-		this.userInteracting = userInteracting;
+		this.metamodelPair = metamodelPair;
 		this.setup();
+	}
+	
+	override getMetamodelPair() {
+		return metamodelPair;
 	}
 
 	protected def void addResponse(Class<? extends EChange> eventType, IResponseRealization response) {
@@ -45,6 +49,12 @@ abstract class AbstractResponseExecutor extends AbstractEChangeProcessor {
 			propagationResult.integrateTransformationResult(currentPropagationResult);
 		}
 		return propagationResult;
+	}
+	
+	override setUserInteracting(UserInteracting userInteracting) {
+		super.setUserInteracting(userInteracting);
+		changeToResponseMap = new Change2ResponseMap();
+		setup();
 	}
 	
 	protected abstract def void setup();
