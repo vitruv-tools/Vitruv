@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -20,6 +19,7 @@ import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 /**
  * Maps a composite DataType to a class in the data types package.
@@ -71,7 +71,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	 */
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
@@ -91,7 +91,7 @@ class CompositeDataTypeMappingTransformation extends EmptyEObjectMappingTransfor
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (!affectedReference.name.equals(PCMNamespace.INNER_DECLARATION_COMPOSITE_DATA_TYPE)) {
 			return transformationResult
 		}

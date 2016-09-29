@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.util.java2pcm
 
 import com.google.common.collect.Sets
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.userinteraction.UserInteracting
@@ -40,6 +39,7 @@ import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	private new() {
@@ -89,7 +89,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 
 	def static void updateNameAttributeForPCMRootObjects(Iterable<NamedElement> pcmRootElements,
 		EStructuralFeature affectedFeature, Object newValue, CorrespondenceModel correspondenceModel,
-		TransformationResult transformationResult) {
+		ChangePropagationResult transformationResult) {
 			for (pcmRoot : pcmRootElements) {
 				if (!(pcmRoot instanceof Repository) && !(pcmRoot instanceof System)) {
 					logger.warn("EObject " + pcmRoot + " is not an instance of a PCM Root object - element" + pcmRoot +
@@ -111,7 +111,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	def static void updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue,
 		ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap, CorrespondenceModel correspondenceModel, 
-		TransformationResult transformationResult) {
+		ChangePropagationResult transformationResult) {
 		val correspondingEObjects = PCMJaMoPPUtils.checkKeyAndCorrespondingObjects(eObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceModel)
 		if (correspondingEObjects.nullOrEmpty) {
@@ -134,7 +134,7 @@ abstract class JaMoPP2PCMUtils extends PCMJaMoPPUtils {
 	}
 	
 	def static createNewCorrespondingEObjects(EObject newEObject, EObject[] newCorrespondingEObjects,
-		CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
+		CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return
 		}

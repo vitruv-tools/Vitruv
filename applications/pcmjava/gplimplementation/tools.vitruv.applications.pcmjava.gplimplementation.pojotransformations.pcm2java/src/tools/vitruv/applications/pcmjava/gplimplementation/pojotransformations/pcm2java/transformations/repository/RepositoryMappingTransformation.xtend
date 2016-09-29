@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
@@ -18,6 +17,7 @@ import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -58,7 +58,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}
@@ -77,7 +77,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 	}
 
 	override deleteRootEObject(EObject oldRootEObject, EObject[] oldCorrespondingEObjectsToDelete) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldRootEObject, null, correspondenceModel)
 		return transformationResult 
 	}
@@ -95,7 +95,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if(newCorrespondingEObjects.nullOrEmpty){
 			return transformationResult
 		}
@@ -123,7 +123,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
 		EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + RepositoryMappingTransformation.simpleName +
 				" transformation")
@@ -134,7 +134,7 @@ class RepositoryMappingTransformation extends EmptyEObjectMappingTransformation 
 				EObject[] oldCorrespondingEObjectsToDelete) {
 
 				// Called everytime a BasicComponent is removed - does nothing because the actual removing is already done in deleteNonRootEObjectInList
-				return new TransformationResult
+				return new ChangePropagationResult
 			}
 
 		}

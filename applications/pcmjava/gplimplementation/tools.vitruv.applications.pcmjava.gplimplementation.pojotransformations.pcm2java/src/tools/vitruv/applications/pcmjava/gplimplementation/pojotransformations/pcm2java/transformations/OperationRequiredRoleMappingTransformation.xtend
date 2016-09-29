@@ -17,11 +17,11 @@ import org.emftext.language.java.parameters.Parameter
 import org.emftext.language.java.statements.Statement
 import org.emftext.language.java.types.TypeReference
 import org.palladiosimulator.pcm.repository.OperationRequiredRole
-import tools.vitruv.framework.util.command.TransformationResult
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -99,14 +99,14 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val orrComponent = orr.requiringEntity_RequiredRole
 		if(oldValue == newValue || orrInterface == newValue || orrComponent == newValue){
 			// if the value has not changed we do nothing
-			return new TransformationResult
+			return new ChangePropagationResult
 		}
 		
 		val EObject[] oldEObjects = removeEObject(affectedEObject)
 		for (oldEObject : oldEObjects) {
 			correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(oldEObject.toSet)
 			if (null != oldEObject.eContainer) {
-				return new TransformationResult
+				return new ChangePropagationResult
 			}
 			EcoreUtil.remove(oldEObject)
 		}
@@ -116,7 +116,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 				correspondenceModel.createAndAddCorrespondence(newEObject, affectedEObject)
 			}
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	/**
@@ -127,7 +127,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
-			return new TransformationResult 
+			return new ChangePropagationResult 
 		}
 		val affectedField = affectedEObjects.filter(typeof(Field))
 		PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedField), newValue, affectedAttribute,
@@ -135,7 +135,7 @@ class OperationRequiredRoleMappingTransformation extends EmptyEObjectMappingTran
 		val affectedParam = affectedEObjects.filter(typeof(Parameter))
 			PCM2JaMoPPUtils.updateNameAttribute(Sets.newHashSet(affectedParam), newValue, affectedAttribute,
 				featureCorrespondenceMap, correspondenceModel, true)
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 }
 	

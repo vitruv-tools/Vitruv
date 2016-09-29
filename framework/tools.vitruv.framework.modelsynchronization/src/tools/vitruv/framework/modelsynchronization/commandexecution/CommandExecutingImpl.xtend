@@ -1,6 +1,5 @@
 package tools.vitruv.framework.modelsynchronization.commandexecution
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair
 import java.util.ArrayList
@@ -17,6 +16,7 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.util.command.VitruviusTransformationRecordingCommand
 import tools.vitruv.framework.util.VitruviusConstants
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class CommandExecutingImpl implements CommandExecuting {
 	static final Logger logger = Logger::getLogger(typeof(CommandExecutingImpl).getSimpleName())
@@ -24,7 +24,7 @@ class CommandExecutingImpl implements CommandExecuting {
 	override List<VitruviusChange> executeCommands(Blackboard blackboard) {
 		val ModelRepository modelProviding = blackboard.getModelProviding()
 		val ArrayList<Object> affectedObjects = new ArrayList()
-		val ArrayList<TransformationResult> transformationResults = new ArrayList()
+		val ArrayList<ChangePropagationResult> transformationResults = new ArrayList()
 		for (VitruviusRecordingCommand command : blackboard.getAndArchiveCommandsForExecution()) {
 			modelProviding.executeRecordingCommandOnTransactionalDomain(command);
 			if (command instanceof VitruviusTransformationRecordingCommand) {
@@ -51,12 +51,12 @@ class CommandExecutingImpl implements CommandExecuting {
 		modelRepository.saveAllModels();
 	}
 
-	def private void executeTransformationResults(ArrayList<TransformationResult> transformationResults, Iterable<EObject> modifiedEObjects,
+	def private void executeTransformationResults(ArrayList<ChangePropagationResult> transformationResults, Iterable<EObject> modifiedEObjects,
 		Blackboard blackboard) {
 		if (null === transformationResults) {
 			return;
 		}
-		for (TransformationResult transformationResult : transformationResults) {
+		for (ChangePropagationResult transformationResult : transformationResults) {
 			if (null === transformationResult) {
 				logger.info("Current TransformationResult is null. Can not save new root EObjects or delete VURIs.")
 				return;

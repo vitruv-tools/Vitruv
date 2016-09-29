@@ -7,12 +7,12 @@ import tools.vitruv.applications.pcmjava.linkingintegration.change2command.inter
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.ConcreteChange
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal.IntegrationChange2CommandResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class CodeIntegrationChangeProcessor extends AbstractChangePropagationSpecification {
 	private val IntegrationChange2CommandTransformer integrationTransformer;
@@ -33,20 +33,20 @@ class CodeIntegrationChangeProcessor extends AbstractChangePropagationSpecificat
 	}
 	
 	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new TransformationResult();
+		val propagationResult = new ChangePropagationResult();
 		val integrationResult = change.performIntegration(correspondenceModel);
-		propagationResult.integrateTransformationResult(integrationResult.propagationResult);
+		propagationResult.integrateResult(integrationResult.propagationResult);
 		return propagationResult;
 	}
 	
 	def dispatch IntegrationChange2CommandResult performIntegration(CompositeTransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new TransformationResult();
+		val propagationResult = new ChangePropagationResult();
 		val integratedChanges = new ArrayList<TransactionalChange>();
 		for (innerChange : change.changes) {
 			val integrationResult = innerChange.performIntegration(correspondenceModel);
 			if (integrationResult.isIntegrationChange) {
 				integratedChanges += innerChange;
-				propagationResult.integrateTransformationResult(integrationResult.propagationResult);
+				propagationResult.integrateResult(integrationResult.propagationResult);
 			}
 		}
 		for (integratedChange : integratedChanges) {

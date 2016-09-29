@@ -11,12 +11,12 @@ import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-public class TransformationResult {
+public class ChangePropagationResult {
 
     private final Set<VURI> vurisToDelete;
     private final List<Pair<EObject, VURI>> rootEObjectsToSave;
 
-    public TransformationResult() {
+    public ChangePropagationResult() {
         this.vurisToDelete = new HashSet<VURI>();
         this.rootEObjectsToSave = new ArrayList<Pair<EObject, VURI>>();
     }
@@ -43,7 +43,7 @@ public class TransformationResult {
         this.rootEObjectsToSave.add(new Pair<EObject, VURI>(eObject, vuri));
     }
     
-    public void integrateTransformationResult(TransformationResult transformationResult) {
+    public void integrateResult(ChangePropagationResult transformationResult) {
     	if (transformationResult == null) {
     		return;
     	}

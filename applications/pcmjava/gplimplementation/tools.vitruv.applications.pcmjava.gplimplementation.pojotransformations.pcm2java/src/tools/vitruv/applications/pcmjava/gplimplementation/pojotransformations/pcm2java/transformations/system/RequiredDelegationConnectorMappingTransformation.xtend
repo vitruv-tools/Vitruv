@@ -11,11 +11,11 @@ import org.emftext.language.java.members.Constructor
 import org.emftext.language.java.members.Field
 import org.emftext.language.java.parameters.Parameter
 import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector
-import tools.vitruv.framework.util.command.TransformationResult
 
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -73,7 +73,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 	
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
@@ -82,7 +82,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -91,7 +91,7 @@ class RequiredDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 }

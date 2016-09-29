@@ -5,9 +5,9 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.List
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.util.command.TransformationResult
-import org.apache.log4j.Logger
+import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import org.apache.log4j.Logger
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification {
 	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
@@ -48,11 +48,11 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	}
 	
 	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new TransformationResult();
+		val propagationResult = new ChangePropagationResult();
 		for (changeProcessor : allProcessors) {
 			logger.debug('''Calling change processor «changeProcessor» for change event «change»''');
 			val currentPropagationResult = changeProcessor.propagateChange(change, correspondenceModel);
-			propagationResult.integrateTransformationResult(currentPropagationResult);
+			propagationResult.integrateResult(currentPropagationResult);
 		}
 		return propagationResult;
 	}

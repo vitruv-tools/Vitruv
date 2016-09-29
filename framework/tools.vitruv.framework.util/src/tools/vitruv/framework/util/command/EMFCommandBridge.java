@@ -11,12 +11,12 @@ public class EMFCommandBridge {
     }
 
     public static VitruviusTransformationRecordingCommand createVitruviusTransformationRecordingCommand(
-            final Callable<TransformationResult> callable) {
+            final Callable<ChangePropagationResult> callable) {
         final VitruviusTransformationRecordingCommand recordingCommand = new VitruviusTransformationRecordingCommand() {
             @Override
             protected void doExecute() {
                 try {
-                    TransformationResult transformationResult = callable.call();
+                    ChangePropagationResult transformationResult = callable.call();
                     if (null == transformationResult) {
                         logger.warn(
                                 "Transformation change result is null. This indicates that the previous transformation had an error.");

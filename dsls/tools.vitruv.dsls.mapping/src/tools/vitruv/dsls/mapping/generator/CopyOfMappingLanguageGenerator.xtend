@@ -25,7 +25,7 @@
 //import tools.vitruv.dsls.response.api.generator.ResponseBuilderFactory
 //import tools.vitruv.dsls.response.responseLanguage.Response
 //import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
-//import tools.vitruv.framework.util.command.TransformationResult
+//import tools.vitruv.framework.util.command.ChangePropagationResult
 //import tools.vitruv.framework.util.datatypes.VURI
 //import tools.vitruv.framework.correspondence.Correspondence
 //import tools.vitruv.framework.meta.change.EChange

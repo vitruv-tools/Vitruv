@@ -1,12 +1,12 @@
 package tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal
 
-import tools.vitruv.framework.util.command.TransformationResult
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class IntegrationChange2CommandResult {
 	
-	private TransformationResult propagationResult;
+	private ChangePropagationResult propagationResult;
 	
-	new(TransformationResult propagationResult) {
+	new(ChangePropagationResult propagationResult) {
 		this.propagationResult = propagationResult;
 	}
 	

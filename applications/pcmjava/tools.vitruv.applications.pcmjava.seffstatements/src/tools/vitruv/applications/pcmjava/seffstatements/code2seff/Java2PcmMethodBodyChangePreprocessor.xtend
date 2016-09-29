@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.seffstatements.code2seff
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteracting
 import org.palladiosimulator.pcm.repository.BasicComponent
 import org.somox.gast2seff.visitors.InterfaceOfExternalCallFinding
@@ -21,6 +20,7 @@ import tools.vitruv.framework.util.datatypes.MetamodelPair
 import org.emftext.language.java.JavaPackage
 import org.palladiosimulator.pcm.PcmPackage
 import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class Java2PcmMethodBodyChangePreprocessor extends AbstractChangePropagationSpecification {
 	private val Code2SEFFFactory code2SEFFfactory;
@@ -42,7 +42,7 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangePropagationSpec
 			// TODO HK We should exchange the change with an empty one here
 			return executeClassMethodBodyChangeRefiner(correspondenceModel, userInteracting, compositeChange);
 		}
-		return new TransformationResult();
+		return new ChangePropagationResult();
 	}
 
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
@@ -106,7 +106,7 @@ class Java2PcmMethodBodyChangePreprocessor extends AbstractChangePropagationSpec
 		return true
 	}
 
-	private def TransformationResult executeClassMethodBodyChangeRefiner(CorrespondenceModel correspondenceModel,
+	private def ChangePropagationResult executeClassMethodBodyChangeRefiner(CorrespondenceModel correspondenceModel,
 		UserInteracting userInteracting, CompositeTransactionalChange compositeChange) {
 		val ConcreteChange emfChange = compositeChange.getChanges().get(0) as ConcreteChange;
 		val JavaFeatureEChange<?, ?> eFeatureChange = emfChange.getEChanges().get(0) as JavaFeatureEChange<?, ?>;

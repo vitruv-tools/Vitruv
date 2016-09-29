@@ -6,9 +6,9 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.extensions.dslsruntime.response.helper.Change2ResponseMap
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 abstract class AbstractResponseExecutor extends AbstractEChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractResponseExecutor);
@@ -40,13 +40,13 @@ abstract class AbstractResponseExecutor extends AbstractEChangePropagationSpecif
 	}
 	
 	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new TransformationResult();
+		val propagationResult = new ChangePropagationResult();
 		val relevantResponses = event.relevantResponses;
 		LOGGER.debug("Call relevant responses");
 		for (response : relevantResponses) {
 			LOGGER.debug(response.toString());
 			val currentPropagationResult =response.applyEvent(event, correspondenceModel)
-			propagationResult.integrateTransformationResult(currentPropagationResult);
+			propagationResult.integrateResult(currentPropagationResult);
 		}
 		return propagationResult;
 	}

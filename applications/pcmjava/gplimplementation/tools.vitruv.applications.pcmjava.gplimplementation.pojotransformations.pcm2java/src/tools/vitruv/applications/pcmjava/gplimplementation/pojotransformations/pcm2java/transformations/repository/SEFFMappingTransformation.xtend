@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -16,6 +15,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.DefaultEObjectMappingTransformation
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 
@@ -42,14 +42,14 @@ class SEFFMappingTransformation extends DefaultEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		// a RDSEFF does not have an entity name - hence we do nothing here 
 		return transformationResult
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (oldValue == newValue) {
 			return transformationResult
 		}

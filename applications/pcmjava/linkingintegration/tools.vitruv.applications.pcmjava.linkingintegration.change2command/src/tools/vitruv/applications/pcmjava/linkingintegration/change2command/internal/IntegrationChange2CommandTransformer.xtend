@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.linkingintegration.change2command.internal
 
 import tools.vitruv.framework.tuid.TUID
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.Correspondence
@@ -24,6 +23,7 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
 import mir.responses.responsesJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class IntegrationChange2CommandTransformer {
 	
@@ -99,10 +99,10 @@ class IntegrationChange2CommandTransformer {
 	    					for (TUID tuid : allTUIDs) {
 	    						val packagePart = getPackagePart(tuid)
 	    						if (packagePartOfNewTuid.startsWith(packagePart)) {
-	    							val command = new Callable<TransformationResult>() {
+	    							val command = new Callable<ChangePropagationResult>() {
 										override call() throws Exception {
 											showNewTypeInIntegratedAreaDialog()
-											return new TransformationResult()
+											return new ChangePropagationResult()
 										}
 									}
 	    							return command
@@ -140,10 +140,10 @@ class IntegrationChange2CommandTransformer {
 	    		buffer.append("\n")
 	    		buffer.append(name)
 	    	}
-			val command = new Callable<TransformationResult>() {
+			val command = new Callable<ChangePropagationResult>() {
 					override call() throws Exception {
 						userInteracting.showMessage(UserInteractionType.MODAL, buffer.toString())
-						return new TransformationResult()
+						return new ChangePropagationResult()
 					}
 				}
 	    	return command

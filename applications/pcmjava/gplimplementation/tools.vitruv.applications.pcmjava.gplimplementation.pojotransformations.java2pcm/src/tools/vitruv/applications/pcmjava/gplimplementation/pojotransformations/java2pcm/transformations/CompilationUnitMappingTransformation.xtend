@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -13,6 +12,7 @@ import org.palladiosimulator.pcm.system.System
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -36,7 +36,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 		logger.trace(
 			"Compilation unit " + newRootEObject +
 				" created as root EObject. Currently nothing is done for compilation unit")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	/**
@@ -45,7 +45,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (newValue instanceof Class || newValue instanceof Interface) {
 
 			// if it is a class that should correspond to a system and the system already has a container 
@@ -76,7 +76,7 @@ class CompilationUnitMappingTransformation extends EmptyEObjectMappingTransforma
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		PCMJaMoPPUtils.removeCorrespondenceAndAllObjects(oldValue, oldAffectedEObject, correspondenceModel)
-		return new TransformationResult 
+		return new ChangePropagationResult 
 	}
 
 }

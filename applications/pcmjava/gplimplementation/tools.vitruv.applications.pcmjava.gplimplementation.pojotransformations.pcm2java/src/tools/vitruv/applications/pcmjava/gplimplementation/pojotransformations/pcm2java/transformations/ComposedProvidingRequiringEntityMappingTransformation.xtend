@@ -8,8 +8,8 @@ import org.eclipse.emf.ecore.EReference
 import org.emftext.language.java.containers.Package
 import org.palladiosimulator.pcm.core.entity.ComposedProvidingRequiringEntity
 import org.palladiosimulator.pcm.core.entity.NamedElement
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 /**
  * base class for RepositoryComponentMappingTransformation and SystemMappingTransformation
@@ -59,7 +59,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 				handleAssemblyContextAddedAsNonRootEObjectInList(newAffectedEObject as ComposedProvidingRequiringEntity,
 					newValue as NamedElement, newCorrespondingEObjects, correspondenceModel)
 		} 
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 	
 	/**
@@ -73,7 +73,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	/**
@@ -86,7 +86,7 @@ abstract class ComposedProvidingRequiringEntityMappingTransformation extends Emp
 			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 }

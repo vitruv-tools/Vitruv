@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.system
 
 import com.google.common.collect.Lists
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
@@ -20,6 +19,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -66,7 +66,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 		EReference affectedReference, EObject oldValue, EObject newValue, int index) {
 		if(oldValue == newValue){
 			// if the object has not changed we do not do anything
-			return new TransformationResult 
+			return new ChangePropagationResult 
 		}
 		if (affectedReference.name.equals(PCMNamespace.ASSEMBLY_CONTEXT_ENCAPSULATED_COMPONENT) &&
 			newValue instanceof RepositoryComponent && affectedEObject instanceof AssemblyContext) {
@@ -95,7 +95,7 @@ class AssemblyContextMappingTransformation extends EmptyEObjectMappingTransforma
 				}
 			}
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,

@@ -12,9 +12,9 @@ import tools.vitruv.framework.util.bridges.JavaBridge;
 
 public abstract class VitruviusTransformationRecordingCommand extends VitruviusRecordingCommand {
 
-    protected TransformationResult transformationResult;
+    protected ChangePropagationResult transformationResult;
 
-    public TransformationResult getTransformationResult() {
+    public ChangePropagationResult getTransformationResult() {
         return this.transformationResult;
     }
 

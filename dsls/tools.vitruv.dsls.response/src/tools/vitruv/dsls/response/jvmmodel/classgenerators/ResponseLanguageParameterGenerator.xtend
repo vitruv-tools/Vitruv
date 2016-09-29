@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.response.responseLanguage.Trigger
 import tools.vitruv.dsls.response.responseLanguage.ConcreteModelElementChange
@@ -18,6 +17,7 @@ import tools.vitruv.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -46,7 +46,7 @@ class ResponseLanguageParameterGenerator {
 	}
 	
 	protected def JvmFormalParameter generateTransformationResultParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, TRANSFORMATION_RESULT_PARAMETER_NAME, TransformationResult);
+		return generateParameter(parameterContext, TRANSFORMATION_RESULT_PARAMETER_NAME, ChangePropagationResult);
 	}
 	
 	protected def JvmFormalParameter generateUserInteractingParameter(EObject parameterContext) {

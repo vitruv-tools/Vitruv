@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
@@ -16,6 +15,7 @@ import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -39,7 +39,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (null == newCorrespondingEObjects) {
 			return transformationResult
 		}
@@ -88,7 +88,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	 */
 	override removeNonContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int index) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		//provided role removed - deletion of eobject should already be done in OperationProvidedRoleMappingTransformation - mark bc to save
 		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
@@ -102,7 +102,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	 */
 	override insertNonRootEObjectInContainmentList(EObject oldAffectedEObject, EObject newAffectedEObject,
 		EReference affectedReference, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			return transformationResult
@@ -114,7 +114,7 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 	 */
 	override unsetContainmentEReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		EObject[] oldCorrespondingEObjectsToDelete) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (affectedReference.name.equals(PCMNamespace.COMPONENT_PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY) ||
 			affectedReference.name.equals(PCMNamespace.COMPONENT_REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY)) {
 			if (null != affectedEObject) {
@@ -130,6 +130,6 @@ class BasicComponentMappingTransformation extends EmptyEObjectMappingTransformat
 			"method " + new Object() {
 			}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 				"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 }

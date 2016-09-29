@@ -12,11 +12,11 @@ import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class Java2PcmPackagePreprocessor extends AbstractChangePropagationSpecification {
    private val MetamodelPair metamodelPair;
@@ -82,7 +82,7 @@ class Java2PcmPackagePreprocessor extends AbstractChangePropagationSpecification
         	} // TODO: package deletion
         }
 		
-		return new TransformationResult();
+		return new ChangePropagationResult();
 	}
 				
 }

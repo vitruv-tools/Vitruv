@@ -5,18 +5,18 @@ import tools.vitruv.domains.java.echange.feature.JavaFeatureEChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.util.command.TransformationResult
-import tools.vitruv.framework.util.datatypes.MetamodelPair
-import tools.vitruv.domains.java.util.JaMoPPNamespace
-import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.util.datatypes.MetamodelPair
+import org.emftext.language.java.JavaPackage
+import org.palladiosimulator.pcm.PcmPackage
 
 class TUIDUpdatePreprocessor extends AbstractEChangePropagationSpecification {
 	private val MetamodelPair metamodelPair;
 	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
-		this.metamodelPair = new MetamodelPair(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE, PCMNamespace.PCM_METAMODEL_NAMESPACE);
+		this.metamodelPair = new MetamodelPair(JavaPackage.eNS_URI, PcmPackage.eNS_URI);
 	}
 	
 	override getMetamodelPair() {
@@ -35,7 +35,7 @@ class TUIDUpdatePreprocessor extends AbstractEChangePropagationSpecification {
 				TuidManager.instance.updateTuid(oldAffectedEObject, newAffectedEObject);
 			}
 		}
-		return new TransformationResult();
+		return new ChangePropagationResult();
 	}
 
 }

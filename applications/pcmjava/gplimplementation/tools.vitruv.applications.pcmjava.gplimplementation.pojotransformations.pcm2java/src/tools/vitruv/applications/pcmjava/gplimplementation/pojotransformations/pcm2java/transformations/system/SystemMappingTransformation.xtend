@@ -3,11 +3,11 @@ package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.ComposedProvidingRequiringEntityMappingTransformation
 import org.eclipse.emf.ecore.EObject
 import org.palladiosimulator.pcm.system.System
-import tools.vitruv.framework.util.command.TransformationResult
 import org.emftext.language.java.containers.JavaRoot
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappingTransformation {
 
@@ -24,7 +24,7 @@ class SystemMappingTransformation extends ComposedProvidingRequiringEntityMappin
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (newCorrespondingEObjects.nullOrEmpty) {
 			return transformationResult
 		}

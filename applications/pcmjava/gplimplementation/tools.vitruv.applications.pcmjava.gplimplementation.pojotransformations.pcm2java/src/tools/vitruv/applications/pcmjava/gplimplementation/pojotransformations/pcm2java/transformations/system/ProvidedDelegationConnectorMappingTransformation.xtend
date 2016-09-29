@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.system
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.Collection
 import java.util.Set
@@ -26,6 +25,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -82,7 +82,7 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference, EObject newValue,
@@ -90,7 +90,7 @@ class ProvidedDelegationConnectorMappingTransformation extends EmptyEObjectMappi
 		logger.warn("method " + new Object() {
 		}.getClass().getEnclosingMethod().getName() + " should not be called for " + this.class.simpleName +
 			"transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	/**
