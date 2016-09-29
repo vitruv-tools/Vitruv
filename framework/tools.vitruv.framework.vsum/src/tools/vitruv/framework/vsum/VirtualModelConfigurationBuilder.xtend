@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import tools.vitruv.framework.metamodel.Metamodel
-import tools.vitruv.framework.change.processing.Change2CommandTransforming
+import tools.vitruv.framework.change.processing.ChangeProcessor
 
 class VirtualModelConfigurationBuilder {
 	private val VirtualModelConfiguration modelConfiguration;
@@ -15,8 +15,8 @@ class VirtualModelConfigurationBuilder {
 		return this;
 	}
 	
-	public def VirtualModelConfigurationBuilder addChange2CommandTransforming(Change2CommandTransforming transforming) {
-		modelConfiguration.addChange2CommandTransforming(transforming);
+	public def VirtualModelConfigurationBuilder addChangePropagationSpecification(ChangeProcessor changePropagationSpecification) {
+		modelConfiguration.addChangePropagationSpecification(changePropagationSpecification);
 		return this;
 	}
 

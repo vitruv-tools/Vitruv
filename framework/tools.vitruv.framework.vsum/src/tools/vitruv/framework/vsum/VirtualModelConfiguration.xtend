@@ -3,17 +3,17 @@ package tools.vitruv.framework.vsum
 import tools.vitruv.framework.metamodel.Metamodel
 import java.util.List
 import org.apache.log4j.Logger
-import tools.vitruv.framework.change.processing.Change2CommandTransforming
 import java.util.ArrayList
+import tools.vitruv.framework.change.processing.ChangeProcessor
 
 class VirtualModelConfiguration {
 	private static val logger = Logger.getLogger(VirtualModelConfiguration);
 	private val List<Metamodel> metamodels;
-	private val List<Change2CommandTransforming> transformers;
+	private val List<ChangeProcessor> changePropagationSpecifications;
 	
 	public new() {
 		this.metamodels = new ArrayList();
-		this.transformers = new ArrayList();
+		this.changePropagationSpecifications = new ArrayList();
 	}
 	
 	private def boolean checkForMetamodelConflict(Metamodel newMetamodel) {
@@ -41,29 +41,29 @@ class VirtualModelConfiguration {
 		metamodels += metamodel;	
 	}
 	
-	private def boolean checkForTransformerConflict(Change2CommandTransforming transformer) {
-		for (existingTransformer : transformers) {
-			if (existingTransformer.transformableMetamodels.equals(transformer.transformableMetamodels)) {
-				logger.error("Model configuration already contains change2command transformer " + existingTransformer + " for the metamodel pair: " + existingTransformer.transformableMetamodels);
+	private def boolean checkForTransformerConflict(ChangeProcessor changePropagationSpecification) {
+		for (existingPropagationSpecification : changePropagationSpecifications) {
+			if (existingPropagationSpecification.metamodelPair.equals(changePropagationSpecification.metamodelPair)) {
+				logger.error("Model configuration already contains propagation specification " + existingPropagationSpecification + " for the metamodel pair: " + existingPropagationSpecification.metamodelPair);
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public def void addChange2CommandTransforming(Change2CommandTransforming change2CommandTransforming) {
-		if (!checkForTransformerConflict(change2CommandTransforming)) {
-			throw new IllegalArgumentException("Given transformer is defined for metamodel pair which another transformer already defines");
+	public def void addChangePropagationSpecification(ChangeProcessor changePropagationSpecification) {
+		if (!checkForTransformerConflict(changePropagationSpecification)) {
+			throw new IllegalArgumentException("Given propagation specification is defined for metamodel pair which another specification already defines");
 		}
-		transformers += change2CommandTransforming;	
+		changePropagationSpecifications += changePropagationSpecification;	
 	}
 	
 	public def Iterable<Metamodel> getMetamodels() {
 		return metamodels;
 	}
 	
-	public def Iterable<Change2CommandTransforming> getChange2CommandTransformings() {
-		return transformers;
+	public def Iterable<ChangeProcessor> getChangePropagationSpecifications() {
+		return changePropagationSpecifications;
 	}
 }
 

@@ -21,8 +21,7 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import tools.vitruv.framework.change.processing.Change2CommandTransforming;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
+import tools.vitruv.framework.change.processing.ChangeProcessor;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
@@ -56,7 +55,7 @@ public abstract class VitruviusCasestudyTest implements SynchronisationListener 
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
-    protected abstract Change2CommandTransformingProviding createChange2CommandTransformingProviding();
+    protected abstract Iterable<ChangeProcessor> createChangePropagationSpecifications();
     protected abstract Iterable<Metamodel> createMetamodels();
     
     protected void beforeTest(final Description description) throws Throwable {
@@ -78,12 +77,8 @@ public abstract class VitruviusCasestudyTest implements SynchronisationListener 
 	}
 	
 	private void createVirtualModel() {
-		List<Change2CommandTransforming> transformers = new ArrayList<Change2CommandTransforming>();
-		for (Change2CommandTransforming transformer : createChange2CommandTransformingProviding()) {
-			transformers.add(transformer);
-		}
 		this.metamodels = this.createMetamodels();
-		this.virtualModel = TestUtil.createVSUM(metamodels, transformers);
+		this.virtualModel = TestUtil.createVSUM(metamodels, createChangePropagationSpecifications());
 		this.virtualModel.addChangeSynchronizationListener(this);
 	}
 

@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 
-import tools.vitruv.framework.change.processing.Change2CommandTransforming;
+import tools.vitruv.framework.change.processing.ChangeProcessor;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -49,7 +49,7 @@ public final class TestUtil {
     }
 
     public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels) {
-        return createVSUM(metamodels, new ArrayList<Change2CommandTransforming>(), null);
+        return createVSUM(metamodels, new ArrayList<ChangeProcessor>(), null);
     }
     
     /**
@@ -59,8 +59,8 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<Change2CommandTransforming> transformer) {
-        return createVSUM(metamodels, transformer, null);
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangeProcessor> changePropagationSpecifications) {
+        return createVSUM(metamodels, changePropagationSpecifications, null);
     }
 
     /**
@@ -70,13 +70,13 @@ public final class TestUtil {
      *            metaRepository for the VSUM
      * @return vsum
      */
-    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<Change2CommandTransforming> transformers, final ClassLoader classLoader) {
+    public static InternalVirtualModel createVSUM(final Iterable<Metamodel> metamodels, final Iterable<ChangeProcessor> changePropagationSpecifications, final ClassLoader classLoader) {
         VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration();
         for (Metamodel metamodel : metamodels) {
         	vmodelConfig.addMetamodel(metamodel);
         }
-        for (Change2CommandTransforming transformer : transformers) {
-        	vmodelConfig.addChange2CommandTransforming(transformer);
+        for (ChangeProcessor changePropagationSpecification : changePropagationSpecifications) {
+        	vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
         }
         // TODO HK Replace name with parameter
     	final InternalVirtualModel vmodel = new VirtualModelImpl("vitruvius.meta", vmodelConfig, classLoader);

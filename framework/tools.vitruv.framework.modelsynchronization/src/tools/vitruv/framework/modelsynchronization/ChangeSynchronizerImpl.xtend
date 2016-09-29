@@ -10,8 +10,6 @@ import org.apache.log4j.Logger
 import com.google.common.collect.EvictingQueue
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.processing.Change2CommandTransforming
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.modelsynchronization.blackboard.impl.BlackboardImpl
 import tools.vitruv.framework.modelsynchronization.commandexecution.CommandExecuting
@@ -21,22 +19,24 @@ import tools.vitruv.framework.metamodel.MetamodelRepository
 import tools.vitruv.framework.metamodel.ModelRepository
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.command.EMFCommandBridge
+import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
+import tools.vitruv.framework.change.processing.ChangeProcessor
 
 class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	static final int BLACKBOARD_HITORY_SIZE = 2
 	static Logger logger = Logger.getLogger(ChangeSynchronizerImpl.getSimpleName())
 	final MetamodelRepository metamodelRepository;
 	final ModelRepository modelProviding
-	final Change2CommandTransformingProviding change2CommandTransformingProviding
+	final ChangePropagationSpecificationProvider changePropagationProvider
 	final CorrespondenceProviding correspondenceProviding
 	final CommandExecuting commandExecuting
 	Set<SynchronisationListener> synchronizationListeners
 	Queue<Blackboard> blackboardHistory
 
-	new(ModelRepository modelProviding, Change2CommandTransformingProviding change2CommandTransformingProviding,
+	new(ModelRepository modelProviding, ChangePropagationSpecificationProvider changePropagationProvider,
 		MetamodelRepository metamodelRepository, CorrespondenceProviding correspondenceProviding) {
 		this.modelProviding = modelProviding
-		this.change2CommandTransformingProviding = change2CommandTransformingProviding
+		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceProviding = correspondenceProviding
 		this.synchronizationListeners = new HashSet<SynchronisationListener>()
 		this.commandExecuting = new CommandExecutingImpl()
@@ -92,23 +92,27 @@ class ChangeSynchronizerImpl implements ChangeSynchronizing {
 	}
 
 	private def dispatch void synchronizeSingleChange(TransactionalChange change, List<List<VitruviusChange>> commandExecutionChanges) {
-		change.applyForward()
-		for (transformer : change2CommandTransformingProviding) {
-			if (metamodelRepository.getMetamodel(transformer.transformableMetamodels.first).isMetamodelFor(change.URI)) {
-				synchronizeChangeForChange2CommandTransforming(change, transformer, commandExecutionChanges);
-			}
+		change.applyForward();
+		val changeMetamodel = metamodelRepository.getMetamodel(change.URI.fileExtension);
+		for (propagationSpecification : changePropagationProvider.getChangePropagationSpecifications(changeMetamodel.URI)) {
+			synchronizeChangeForChangePropagationSpecification(change, propagationSpecification, commandExecutionChanges);
 		}
 	}
 	
-	private def void synchronizeChangeForChange2CommandTransforming(TransactionalChange change, Change2CommandTransforming transformer,
+	private def void synchronizeChangeForChangePropagationSpecification(TransactionalChange change, ChangeProcessor propagationSpecification,
 			List<List<VitruviusChange>> commandExecutionChanges) {
-		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(transformer.transformableMetamodels.first, transformer.transformableMetamodels.second);
+		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding)
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each response that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		this.blackboardHistory.add(blackboard)
-		blackboard.pushCommands(#[EMFCommandBridge.createVitruviusTransformationRecordingCommand([|return transformer.transformChange2Commands(change, correspondenceModel);])])
+		blackboard.pushCommands(
+			#[
+				EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
+					return propagationSpecification.propagateChange(change, correspondenceModel);
+				])
+			])
 		commandExecutionChanges.add(this.commandExecuting.executeCommands(blackboard))	
 	}
 	
