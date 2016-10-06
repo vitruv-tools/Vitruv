@@ -3,7 +3,6 @@
 <provider id="org.eclipse.egit.core.GitProvider">
 <project reference="1.0,git@github.com:kit-sdq/SDQ-Commons.git,master,edu.kit.ipd.sdq.commons.util.emf"/>
 <project reference="1.0,git@github.com:kit-sdq/SDQ-Commons.git,master,edu.kit.ipd.sdq.commons.util.java"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,applications/pcmjava/tools.vitruv.applications.pcmjava.builder"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,applications/pcmjava/tools.vitruv.applications.pcmjava.ejbtransformations"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,applications/pcmjava/tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,applications/pcmjava/gplimplementation/tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm"/>
@@ -23,6 +22,7 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/emf/tools.vitruv.domains.emf"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/emf/tools.vitruv.domains.emf.monitorededitor"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/emf/tools.vitruv.domains.emf.tests.monitorededitor"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/java/tools.vitruv.domains.java.builder"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/java/tools.vitruv.domains.java.echange"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/java/tools.vitruv.domains.java.monitorededitor"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,domains/java/tools.vitruv.domains.java.monitorededitor.astchangelistener"/>
@@ -67,7 +67,6 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.change.processing"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.correspondence"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.metamodel"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.metarepository"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.modelsynchronization"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.monitorededitor"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.change"/>
@@ -78,59 +77,30 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.userinteracting"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.util"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.vsum"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,views/java/tools.vitruv.views.java.projumled4j.annotations"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,views/java/tools.vitruv.views.java.projumled4j.editor.diagramgeneration"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,views/java/tools.vitruv.views.java.projumled4j.editor.viewpoint"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,views/java/tools.vitruv.views.java.projumled4j.util"/>
 </provider>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241828351_15" label="Application: PCM-Java" name="Application: PCM-Java">
-<item elementID="=tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.builder" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.ejbtransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230493433_5" label="Framework" name="Framework">
+<item elementID="=tools.vitruv.framework.tests.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.metamodel" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tests.util.metamodels" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tuid" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tests.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change.processing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.userinteraction" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.modelsynchronization" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241916851_17" label="Application: PCM-Java GPL Implementation" name="Application: PCM-Java GPL Implementation">
-<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.tests.pojotransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230426495_2" label="Commons" name="Commons">
-<item elementID="=edu.kit.ipd.sdq.commons.util.java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=edu.kit.ipd.sdq.commons.util.emf" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230541411_8" label="Domain: EMF" name="Domain: EMF">
-<item elementID="=tools.vitruv.domains.emf" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.emf.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.emf.tests.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230523531_7" label="Domain: Java" name="Domain: Java">
-<item elementID="=tools.vitruv.domains.java.util.gitchangereplay" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor.refactoringlistener" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.tests.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.util.gitchangereplay.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.util.gitchangereplay.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.util.jamoppparser" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor.changeclassification" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor.javamodel2ast" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor.methodchange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.java.monitorededitor.astchangelistener" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-</workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230565715_10" label="Domain: PCM" name="Domain: PCM">
-<item elementID="=tools.vitruv.domains.pcm.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.domains.pcm.external.palladiosimulator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241760628_13" label="Extensions" name="Extensions">
+<item elementID="=tools.vitruv.extensions.dslsruntime.response" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.extensions.integration.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.extensions.constructionsimulation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.extensions.constructionsimulation.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.extensions.dslsruntime.mapping" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230508038_6" label="DSLs" name="DSLs">
 <item elementID="=tools.vitruv.dsls.response.ui.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -153,35 +123,53 @@
 <item elementID="=tools.vitruv.dsls.mapping.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241760628_13" label="Extensions" name="Extensions">
-<item elementID="=tools.vitruv.extensions.dslsruntime.response" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.extensions.integration.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.extensions.constructionsimulation" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.extensions.constructionsimulation.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.extensions.dslsruntime.mapping" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241916851_17" label="Application: PCM-Java GPL Implementation" name="Application: PCM-Java GPL Implementation">
+<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.tests.pojotransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230493433_5" label="Framework" name="Framework">
-<item elementID="=tools.vitruv.framework.tests.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.metamodel" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tests.util.metamodels" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.metarepository" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tuid" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tests.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.change.processing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.userinteraction" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.change.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.modelsynchronization" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241828351_15" label="Application: PCM-Java" name="Application: PCM-Java">
+<item elementID="=tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.tests.ejbtransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.ejbtransformations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations.pcm2java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
-<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473241730405_12" label="View: Java" name="View: Java">
-<item elementID="=tools.vitruv.views.java.projumled4j.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.views.java.projumled4j.annotations" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.views.java.projumled4j.editor.diagramgeneration" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.views.java.projumled4j.editor.viewpoint" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230523531_7" label="Domain: Java" name="Domain: Java">
+<item elementID="=tools.vitruv.domains.java.util.gitchangereplay" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor.refactoringlistener" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.builder" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.tests.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.util.gitchangereplay.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.util.gitchangereplay.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.util.jamoppparser" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor.changeclassification" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor.javamodel2ast" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor.methodchange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.java.monitorededitor.astchangelistener" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230565715_10" label="Domain: PCM" name="Domain: PCM">
+<item elementID="=tools.vitruv.domains.pcm.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.pcm.external.palladiosimulator" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230541411_8" label="Domain: EMF" name="Domain: EMF">
+<item elementID="=tools.vitruv.domains.emf" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.emf.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.domains.emf.tests.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1473230426495_2" label="Commons" name="Commons">
+<item elementID="=edu.kit.ipd.sdq.commons.util.java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=edu.kit.ipd.sdq.commons.util.emf" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 </psf>
