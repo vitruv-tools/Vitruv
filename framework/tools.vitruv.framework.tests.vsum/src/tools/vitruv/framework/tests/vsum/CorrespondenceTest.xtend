@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.vsum
 
-import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
@@ -23,11 +22,7 @@ import static org.junit.Assert.assertTrue
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
-import tools.vitruv.extensions.dslsruntime.mapping.MappedCorrespondenceModel
-import tools.vitruv.extensions.dslsruntime.mapping.interfaces.MappingRealization
-import tools.vitruv.extensions.dslsruntime.mapping.MappingExecutionState
 import pcm_mockup.PInterface
-import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -146,23 +141,10 @@ class CorrespondenceTest extends VSUMTest {
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
 		CorrespondenceModel corresp) {
 		// recreate the same correspondence as before
-		var Correspondence repo2pkg = createRepo2PkgCorrespondence(repo, pkg, corresp)
+		//var Correspondence repo2pkg = 
+		createRepo2PkgCorrespondence(repo, pkg, corresp)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		assertNotNull("Correspondence instance is null", corresp)
-		if (corresp instanceof MappedCorrespondenceModel) {
-			var MappingRealization mapping = new MappingRealization() {
-				protected static final long serialVersionUID = 1L
-
-				override String getMappingID() {
-					return null
-				}
-				
-				override applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {
-					
-				}
-			}
-			(corresp as MappedCorrespondenceModel).registerMappingForCorrespondence(repo2pkg, mapping)
-		}
 		// save instances in order to trigger saving for CorrespondenceModel(s)
 		//var VURI pcmVURI = VURI.getInstance(getDefaultPCMInstanceURI())
 		vsum.save()//(pcmVURI)
