@@ -112,7 +112,8 @@ MatcherStatement:
 
 RetrieveModelElementStatement:
 	{RetrieveModelElementStatement}
-	(('val' name=ValidID '= retrieve' optional?='optional' required?=!optional) | abscence?='require absence of') 
+	// TODO remove uses of required property or set it to something like required?=!optional
+	(('val' name=ValidID '= retrieve' optional?='optional') | abscence?='require absence of') 
 	element=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
@@ -137,7 +138,7 @@ EffectStatement:
 	
 CreateElement returns EffectStatement:
 	{CreateElement}
-	'val' name=ValidID '= create" element=ModelElement ("and initialize" initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '= create' element=ModelElement ("and initialize" initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteElement returns EffectStatement:
 	{DeleteElement}
