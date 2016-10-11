@@ -13,9 +13,9 @@ ResponseFile:
 	(responsesSegments+=ResponsesSegment)+;
 	
 ResponsesSegment:
-	'response collection:' name=ValidID
-	'from metamodel' fromMetamodel=MetamodelReference 
-	'to metamodel' toMetamodel=MetamodelReference
+	'reactions:' name=ValidID
+	'in reaction to changes in' fromMetamodel=MetamodelReference 
+	'execute actions in' toMetamodel=MetamodelReference
 	(responses+=Response |
 		routines+=Routine)*;
 
@@ -25,7 +25,7 @@ ResponsesSegment:
 
 Response:
 	(documentation=ML_COMMENT)?
-	'response:' name=ValidID '{'
+	'reaction' (name=ValidID)? '{'
 		trigger=Trigger
 		callRoutine=ResponseReactionRoutineCall
 	'}';
@@ -54,8 +54,11 @@ AtomicConcreteModelElementChange:
 	AtomicRootObjectChange | AtomicFeatureChange;
 
 AtomicRootObjectChange:
-	('root created' {InsertRootChange} |
-	'root deleted' {RemoveRootChange})
+	('root created and inserted' {InsertRootChange} |
+	'root deleted and removed' {RemoveRootChange})
+//	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
+//	'root inserted' {InsertRootChange} |
+//	'root removed' {RemoveRootChange})
 	changedElement=ModelElement;
 
 AtomicFeatureChange:
@@ -63,13 +66,17 @@ AtomicFeatureChange:
 	changedFeature=FeatureOfElement;
 
 AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
-	'list entry inserted' {MultiValuedFeatureInsertChange} |
-	'list entry removed' {MultiValuedFeatureRemoveChange} |
+	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
+	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
+// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 	'list permuted' {MultiValuedFeaturePermuteChange};
 
 AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
 	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	'value replaced' {SingleValuedFeatureReplace};
+	'value replaced for' {SingleValuedFeatureReplace};
 
 ArbitraryModelElementChange:
 	{ArbitraryModelElementChange} 'any change';
@@ -81,9 +88,10 @@ ArbitraryModelElementChange:
 // ***************************************
 
 Routine:
-	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
+	'routine' name=ValidID '(' input=RoutineInput ')' '{'
 		matcher=Matcher?
 		effect=Effect
+		(return=ReturnStatement)?
 	'}';
 
 RoutineInput:
@@ -104,8 +112,8 @@ MatcherStatement:
 
 RetrieveModelElementStatement:
 	{RetrieveModelElementStatement}
-	(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element') 
-	element=NamedModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	(('val' name=ValidID '= retrieve' optional?='optional' required?=!optional) | abscence?='require absence of') 
+	element=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
 MatcherCheckStatement:
@@ -116,7 +124,7 @@ MatcherCheckStatement:
 
 Effect:
 	{Effect}
-	'effect' '{'
+	'action' '{'
 		(effectStatements+=EffectStatement)+
 	'}';
 
@@ -125,19 +133,19 @@ RoutineCallStatement returns RoutineCallStatement:
 	RoutineCallBlock;
 
 EffectStatement:
-	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
+	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | ExecuteActionBlock | RoutineCallStatement;
 	
 CreateElement returns EffectStatement:
 	{CreateElement}
-	"create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '= create" element=ModelElement ("and initialize" initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteElement returns EffectStatement:
 	{DeleteElement}
-	"delete element" element=ExistingElementReference;
+	"delete" element=ExistingElementReference;
 
 UpdateElement returns EffectStatement:
 	{UpdateElement}
-	"update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
+	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
 
 
 CreateCorrespondence returns EffectStatement:
@@ -154,9 +162,13 @@ RemoveCorrespondence returns EffectStatement:
 
 fragment CodeBlock:
 	code=XExpression;
+	
+fragment ExecuteActionBlock:
+	'execute' CodeBlock;
 
 fragment RoutineCallBlock:
-	'call' CodeBlock;
+// TODO move the variable declaration and assignment for routine returns inside the code block not before it!
+	('val' name=ValidID '=')? 'call' CodeBlock;
 
 fragment Taggable:
 	tag=TagCodeBlock;
@@ -179,3 +191,7 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
+	
+ReturnStatement returns ReturnStatement:
+	{ReturnStatement}
+	'return' element=ExistingElementReference;
