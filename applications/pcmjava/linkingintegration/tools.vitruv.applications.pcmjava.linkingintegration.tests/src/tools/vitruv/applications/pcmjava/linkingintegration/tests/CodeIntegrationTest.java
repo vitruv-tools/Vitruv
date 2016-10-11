@@ -12,12 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.internal.events.BuildCommand;
-import org.eclipse.core.internal.resources.Project;
-import org.eclipse.core.internal.resources.ProjectDescription;
-import org.eclipse.core.internal.resources.ProjectInfo;
-import org.eclipse.core.internal.resources.ResourceInfo;
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -33,28 +27,30 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import tools.vitruv.applications.pcmjava.builder.PCMJavaAddBuilder;
-import tools.vitruv.applications.pcmjava.builder.PCMJavaBuilder;
 import tools.vitruv.applications.pcmjava.linkingintegration.tests.util.CodeIntegrationUtils;
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilder;
+import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
+import tools.vitruv.domains.java.builder.JavaAddBuilder;
+import tools.vitruv.domains.java.builder.JavaBuilder;
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
+import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.tuid.TUID;
-import tools.vitruv.framework.util.bridges.JavaBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModelConfiguration;
+import tools.vitruv.framework.vsum.VirtualModelImpl;
 
-@SuppressWarnings("restriction")
 public class CodeIntegrationTest {
-
+	@SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(CodeIntegrationTest.class.getSimpleName());
 
     private static final String META_PROJECT_NAME = "vitruvius.meta";
     private IProject testProject;
     private IWorkspace workspace;
-
+    private InternalVirtualModel virtualModel;
+    
     @Before
     public void beforeTest() throws InvocationTargetException, InterruptedException, IOException, URISyntaxException {
         this.workspace = ResourcesPlugin.getWorkspace();
@@ -129,12 +125,17 @@ public class CodeIntegrationTest {
         final IFolder vsumFolder = metaProject.getFolder("vsum");
         Assert.assertNotNull(vsumFolder);
 
+        VirtualModelConfiguration config = new VirtualModelConfiguration();
+        for (Metamodel metamodel : PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels()) {
+        	config.addMetamodel(metamodel);
+        }
+        virtualModel = new VirtualModelImpl(META_PROJECT_NAME, config);
         // add PCM Java Builder to Project under test
-        final PCMJavaAddBuilder pcmJavaBuilder = new PCMJavaAddBuilder();
-        pcmJavaBuilder.addBuilderToProject(this.testProject);
+        final JavaAddBuilder pcmJavaBuilder = new JavaAddBuilder();
+        pcmJavaBuilder.addBuilderToProject(this.testProject, META_PROJECT_NAME, Collections.singletonList(PCMNamespace.REPOSITORY_FILE_EXTENSION));
         // build the project
         progress = new DoneFlagProgressMonitor();
-        this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, PCMJavaBuilder.BUILDER_ID,
+        this.testProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, JavaBuilder.BUILDER_ID,
                 new HashMap<String, String>(), progress);
         while (!progress.isDone()) {
             Thread.sleep(100);
@@ -187,38 +188,11 @@ public class CodeIntegrationTest {
     }
 
     protected CorrespondenceModel getCorrespondenceModel() throws Throwable {
-        final VSUMImpl vsum = this.getVSUM();
         final VURI jaMoPPVURI = VURI.getInstance(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE);
         final VURI pcmVURI = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE);
-        final CorrespondenceModel corresponcenceInstance = vsum
+        final CorrespondenceModel corresponcenceInstance = virtualModel
                 .getCorrespondenceModel(pcmVURI, jaMoPPVURI);
         return corresponcenceInstance;
-    }
-
-    private VSUMImpl getVSUM() throws Throwable {
-        final PCMJavaBuilder pcmJavaBuilder = this.getPCMJavaBuilderFromProject();
-        if (null == pcmJavaBuilder) {
-            return null;
-        }
-        final VSUMImpl vsum = JavaBridge.getFieldFromClass(VitruviusEmfBuilder.class, "vsum", pcmJavaBuilder);
-        return vsum;
-    }
-
-    private PCMJavaBuilder getPCMJavaBuilderFromProject() throws Throwable {
-        final Project project = (Project) this.testProject;
-        final ResourceInfo info = project.getResourceInfo(false, false);
-        final ProjectDescription description = ((ProjectInfo) info).getDescription();
-        final boolean makeCopy = false;
-        for (final ICommand command : description.getBuildSpec(makeCopy)) {
-            if (command.getBuilderName().equals(PCMJavaBuilder.BUILDER_ID)) {
-                final BuildCommand buildCommand = (BuildCommand) command;
-                final IncrementalProjectBuilder ipb = buildCommand.getBuilder(this.testProject.getActiveBuildConfig());
-                final PCMJavaBuilder pcmJavaBuilder = (PCMJavaBuilder) ipb;
-                return pcmJavaBuilder;
-            }
-        }
-        logger.warn("Could not find any PCMJavaBuilder");
-        return null;
     }
 
     /**

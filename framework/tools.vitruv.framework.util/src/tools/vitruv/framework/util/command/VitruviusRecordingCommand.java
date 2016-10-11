@@ -11,7 +11,7 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
 
     protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
 
-    protected TransformationResult transformationResult;
+    protected ChangePropagationResult transformationResult;
     private RuntimeException runtimeException;
 
     public VitruviusRecordingCommand() {

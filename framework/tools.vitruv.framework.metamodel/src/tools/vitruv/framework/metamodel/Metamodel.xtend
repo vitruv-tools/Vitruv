@@ -176,5 +176,13 @@ class Metamodel extends AbstractURIHaving implements TuidCalculator, TuidUpdateL
 	override toString() {
 		return "Metamodel for namespaces: " + nsURIs;
 	}
+
+	def boolean isMetamodelForVuri(VURI metamodelVURI) {
+		return nsURIs.exists[VURI.getInstance(it).equals(metamodelVURI)];
+	}
+	
+	def boolean isMetamodelFor(VURI modelVuri) {
+		return fileExtensions.contains(modelVuri.fileExtension);
+	}
 	
 }

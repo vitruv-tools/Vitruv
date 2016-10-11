@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
@@ -25,6 +24,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -113,7 +113,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		// to interface methods does not cause an update of the resource.
 		// I guess only members list is a containment list (this is why we do it 2 lines above)
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 	/**
@@ -141,7 +141,7 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		var Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(eObject, affectedAttribute, featureCorrespondenceMap,
 				correspondenceModel);
@@ -178,6 +178,6 @@ class OperationInterfaceMappingTransformation extends EmptyEObjectMappingTransfo
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " +
 				OperationInterfaceMappingTransformation.simpleName + " transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 }

@@ -10,35 +10,34 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.domains.java.echange.feature.attribute.JavaReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.ChangeProcessorResult
-import tools.vitruv.framework.change.processing.impl.AbstractChangeProcessor
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.datatypes.MetamodelPair
+import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.domains.pcm.util.PCMNamespace
+import tools.vitruv.framework.change.processing.impl.AbstractChangePropagationSpecification
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
-class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
-    
+class Java2PcmPackagePreprocessor extends AbstractChangePropagationSpecification {
+   private val MetamodelPair metamodelPair;
+	
 	new(UserInteracting userInteracting) {
 		super(userInteracting);
+		this.metamodelPair = new MetamodelPair(JaMoPPNamespace.JAMOPP_METAMODEL_NAMESPACE, PCMNamespace.PCM_METAMODEL_NAMESPACE);
 	}
-
-	/**
-     * Special treatment for packages: we have to use the package-info file as input for the
-     * transformation and make sure that the packages have resources attached
-     *
-     * @param change
-     *            the change that may contain the newly created package
-     */	
-	private def void handlePackageInEChange(ConcreteChange change) {
-    	if (change.getEChanges.size == 1) {
+	
+	override getMetamodelPair() {
+		return metamodelPair;
+	}
+	
+	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		if (change instanceof ConcreteChange && change.getEChanges.size == 1) {
     		val eChange = change.getEChanges.get(0);
-        	if (eChange instanceof InsertRootEObject<?>) {
-	            attachPackageToResource(eChange.getNewValue(), change.getURI());
-        	} else if (eChange instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
-	            prepareRenamePackageInfos(eChange, change.getURI());
-        	} // TODO: package deletion
+        	return eChange instanceof InsertRootEObject<?> || eChange instanceof JavaReplaceSingleValuedEAttribute<?,?>;
         }
-    }
-
+        return false;
+	}
+	
     private def void prepareRenamePackageInfos(JavaReplaceSingleValuedEAttribute<?,?> updateSingleValuedEAttribute,
             VURI vuri) {
         if (updateSingleValuedEAttribute.getOldAffectedEObject() instanceof Package
@@ -65,14 +64,25 @@ class Java2PcmPackagePreprocessor extends AbstractChangeProcessor {
             resource.getContents().add(newPackage);
         }
     }
-				
-	override transformChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val result = new ChangeProcessorResult(change, #[]);
-		if (change instanceof ConcreteChange) {
-			handlePackageInEChange(change);	
-		}
+	
+	/**
+     * Special treatment for packages: we have to use the package-info file as input for the
+     * transformation and make sure that the packages have resources attached
+     *
+     * @param change
+     *            the change that may contain the newly created package
+     */	
+	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
+		if (doesHandleChange(change, correspondenceModel)) {
+    		val eChange = change.getEChanges.get(0);
+        	if (eChange instanceof InsertRootEObject<?>) {
+	            attachPackageToResource(eChange.getNewValue(), change.getURI());
+        	} else if (eChange instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
+	            prepareRenamePackageInfos(eChange, change.getURI());
+        	} // TODO: package deletion
+        }
 		
-		return result;
+		return new ChangePropagationResult();
 	}
 				
 }

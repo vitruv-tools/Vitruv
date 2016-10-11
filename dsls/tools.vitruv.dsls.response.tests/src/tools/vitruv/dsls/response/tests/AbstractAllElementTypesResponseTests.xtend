@@ -2,11 +2,9 @@ package tools.vitruv.dsls.response.tests
 
 import tools.vitruv.dsls.response.tests.AbstractResponseTests
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl
 import java.util.Arrays
 import java.util.HashSet
 import tools.vitruv.framework.metamodel.Metamodel
-import tools.vitruv.framework.metamodel.Mapping
 import allElementTypes.Root
 import allElementTypes.AllElementTypesPackage
 import static org.junit.Assert.assertEquals
@@ -21,8 +19,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTests {
 	protected static val MODEL_FILE_EXTENSION = "minimalAllElements";
 	
-	protected override createMetaRepository() {
-		val metarepository = new MetaRepositoryImpl();
+	protected override createMetamodels() {
 		// Simple changes model
 		val metamodelUri = VURI.getInstance(AllElementTypesPackage.eNS_URI);
 		val metamodelNSUris = new HashSet<String>();
@@ -30,11 +27,7 @@ abstract class AbstractAllElementTypesResponseTests extends AbstractResponseTest
 		val String[] fileExtensions = newArrayOfSize(1);
 		fileExtensions.set(0, MODEL_FILE_EXTENSION);
 		val minimalMetamodel = new Metamodel(metamodelNSUris, metamodelUri, fileExtensions);
-		metarepository.addMetamodel(minimalMetamodel);
-
-		val minimalMinimalMapping = new Mapping(minimalMetamodel, minimalMetamodel);
-		metarepository.addMapping(minimalMinimalMapping);
-		return metarepository;
+		return #[minimalMetamodel];
 	}
 
 	protected override void assertModelsEqual(String modelNameWithExtension1, String modelNameWithExtension2) {

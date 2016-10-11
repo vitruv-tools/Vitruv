@@ -1,12 +1,17 @@
 package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
 
+import mir.routines.packageMappingIntegration.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.members.Field;
+import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.members.Field;
-import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
 
 @SuppressWarnings("all")
 class ChangeFieldModifierEventResponse extends AbstractResponseRealization {
@@ -46,7 +51,17 @@ class ChangeFieldModifierEventResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<Field, AnnotationInstanceOrModifier> typedChange = (InsertEReference<Field, AnnotationInstanceOrModifier>)change;
-    mir.routines.packageMappingIntegration.ChangeFieldModifierEventEffect effect = new mir.routines.packageMappingIntegration.ChangeFieldModifierEventEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
+    }
   }
 }

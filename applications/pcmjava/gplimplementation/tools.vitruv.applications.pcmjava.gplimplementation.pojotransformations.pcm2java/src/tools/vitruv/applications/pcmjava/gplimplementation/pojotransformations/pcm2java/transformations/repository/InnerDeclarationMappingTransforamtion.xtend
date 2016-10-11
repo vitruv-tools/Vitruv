@@ -2,7 +2,6 @@ package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.
 
 import com.google.common.collect.Sets
 import tools.vitruv.framework.tuid.TUID
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
 import java.util.List
@@ -24,6 +23,7 @@ import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransformation {
 
@@ -147,7 +147,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if(oldValue == newValue){
 			return transformationResult  
 		}
@@ -191,7 +191,7 @@ class InnerDeclarationMappingTransforamtion extends EmptyEObjectMappingTransform
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedReference,
 			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {

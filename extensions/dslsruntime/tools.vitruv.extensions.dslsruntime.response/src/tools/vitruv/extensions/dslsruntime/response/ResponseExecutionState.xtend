@@ -1,15 +1,15 @@
 package tools.vitruv.extensions.dslsruntime.response
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ResponseExecutionState {
 	private val UserInteracting userInteracting;
 	private val CorrespondenceModel correspondenceModel;
-	private val TransformationResult transformationResult;
+	private val ChangePropagationResult transformationResult;
 	
-	public new(UserInteracting userInteracting, CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
+	public new(UserInteracting userInteracting, CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
 		this.userInteracting = userInteracting;
 		this.correspondenceModel = correspondenceModel;
 		this.transformationResult = transformationResult;
@@ -23,7 +23,7 @@ class ResponseExecutionState {
 		return this.correspondenceModel;
 	}
 	
-	public def TransformationResult getTransformationResult() {
+	public def ChangePropagationResult getTransformationResult() {
 		return transformationResult;
 	}
 }

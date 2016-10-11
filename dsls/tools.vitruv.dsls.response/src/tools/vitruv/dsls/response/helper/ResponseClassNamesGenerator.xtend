@@ -65,8 +65,8 @@ final class ResponseClassNamesGenerator {
 	private static def String getQualifiedPackageName(ResponsesSegment responsesSegment) '''
 		«basicResponsesPackageQualifiedName».«responsesSegment.packageName»'''
 	
-	public static def ClassNameGenerator getChange2CommandTransformingClassNameGenerator(Pair<VURI, VURI> metamodelPair) {
-		return new Change2CommandTransformingClassNameGenerator(metamodelPair);
+	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VURI, VURI> metamodelPair) {
+		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
 	}
 	
 	public static def ClassNameGenerator getExecutorClassNameGenerator(ResponsesSegment responsesSegment) {
@@ -93,7 +93,7 @@ final class ResponseClassNamesGenerator {
 		public def String getPackageName();
 	}
 	
-	private static class Change2CommandTransformingClassNameGenerator extends ClassNameGenerator {
+	private static class ChangePropagationSpecificationClassNameGenerator extends ClassNameGenerator {
 		private val String metamodelPairName;
 		
 		public new(Pair<VURI, VURI> metamodelPair) {
@@ -101,7 +101,7 @@ final class ResponseClassNamesGenerator {
 		}
 		
 		public override getSimpleName() '''
-			AbstractChange2CommandTransforming«metamodelPairName»'''
+			AbstractChangePropagationSpecification«metamodelPairName»'''
 		
 		public override getPackageName() '''
 			«basicResponsesPackageQualifiedName»'''	

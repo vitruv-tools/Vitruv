@@ -11,16 +11,12 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
-import tools.vitruv.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
+import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.applications.pcmjava.reconstructionintegration.repository.RepositoryTraversalStrategy;
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.domains.pcm.util.RepositoryModelLoader;
 import tools.vitruv.extensions.constructionsimulation.traversal.ITraversalStrategy;
 
@@ -29,8 +25,7 @@ import tools.vitruv.extensions.constructionsimulation.traversal.ITraversalStrate
  */
 public class TraversalHandlerTest {
 
-    private VSUMImpl vsum;
-    private ChangeSynchronizing changeSynchronizing;
+    private InternalVirtualModel vsum;
 
     protected ResourceSet resourceSet;
 
@@ -51,10 +46,10 @@ public class TraversalHandlerTest {
     @Before
     public void setUpTest() throws Exception {
 
-        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        this.vsum = new VSUMImpl(metaRepository, metaRepository);
-        final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        this.changeSynchronizing = new ChangeSynchronizerImpl(this.vsum, change2CommandTransformingProviding, this.vsum);
+        final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+        // TODO Use the correct change2command transformings here
+//        final Change2CommandTransformingProviding change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
+        this.vsum = TestUtil.createVSUM(metamodels);
         this.resourceSet = new ResourceSetImpl();
     }
 
@@ -81,7 +76,7 @@ public class TraversalHandlerTest {
             e.printStackTrace();
         }
         VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
-        this.changeSynchronizing.synchronizeChange(compositeChange);
+        this.vsum.propagateChange(compositeChange);
 
     }
 

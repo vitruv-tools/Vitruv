@@ -1094,27 +1094,27 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RemoveCorrespondence");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cRemoveCorrespondenceAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cRemoveCorrespondenceKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cRemoveCorrespondenceBetweenKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cFirstElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cFirstElementExistingElementReferenceParserRuleCall_2_0 = (RuleCall)cFirstElementAssignment_2.eContents().get(0);
-		private final Keyword cCommaKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cAndKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cSecondElementAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cSecondElementExistingElementReferenceParserRuleCall_4_0 = (RuleCall)cSecondElementAssignment_4.eContents().get(0);
 		
 		//RemoveCorrespondence EffectStatement:
 		//	{RemoveCorrespondence}
-		//	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference
+		//	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{RemoveCorrespondence} "remove correspondence" firstElement=ExistingElementReference ","
+		//{RemoveCorrespondence} "remove correspondence between" firstElement=ExistingElementReference "and"
 		//secondElement=ExistingElementReference
 		public Group getGroup() { return cGroup; }
 		
 		//{RemoveCorrespondence}
 		public Action getRemoveCorrespondenceAction_0() { return cRemoveCorrespondenceAction_0; }
 		
-		//"remove correspondence"
-		public Keyword getRemoveCorrespondenceKeyword_1() { return cRemoveCorrespondenceKeyword_1; }
+		//"remove correspondence between"
+		public Keyword getRemoveCorrespondenceBetweenKeyword_1() { return cRemoveCorrespondenceBetweenKeyword_1; }
 		
 		//firstElement=ExistingElementReference
 		public Assignment getFirstElementAssignment_2() { return cFirstElementAssignment_2; }
@@ -1122,8 +1122,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ExistingElementReference
 		public RuleCall getFirstElementExistingElementReferenceParserRuleCall_2_0() { return cFirstElementExistingElementReferenceParserRuleCall_2_0; }
 		
-		//","
-		public Keyword getCommaKeyword_3() { return cCommaKeyword_3; }
+		//"and"
+		public Keyword getAndKeyword_3() { return cAndKeyword_3; }
 		
 		//secondElement=ExistingElementReference
 		public Assignment getSecondElementAssignment_4() { return cSecondElementAssignment_4; }
@@ -1708,7 +1708,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	
 	//RemoveCorrespondence EffectStatement:
 	//	{RemoveCorrespondence}
-	//	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference
+	//	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 	public RemoveCorrespondenceElements getRemoveCorrespondenceAccess() {
 		return pRemoveCorrespondence;
 	}

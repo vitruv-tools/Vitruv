@@ -6,10 +6,11 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 @SuppressWarnings("all")
 public class Executor5_1ToJava extends AbstractResponseExecutor {
   public Executor5_1ToJava(final UserInteracting userInteracting) {
-    super(userInteracting);
+    super(userInteracting, new tools.vitruv.framework.util.datatypes.MetamodelPair(org.palladiosimulator.pcm.impl.PcmPackageImpl.eNS_URI, org.emftext.language.java.impl.JavaPackageImpl.eNS_URI));
   }
   
   protected void setup() {
+    tools.vitruv.framework.userinteraction.UserInteracting userInteracting = getUserInteracting();
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.CreatedRepositoryResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.RenamedRepositoryResponse(userInteracting));
     this.addResponse(mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse.getExpectedChangeType(), new mir.responses.responses5_1ToJava.pcm2java.CreatedSystemResponse(userInteracting));

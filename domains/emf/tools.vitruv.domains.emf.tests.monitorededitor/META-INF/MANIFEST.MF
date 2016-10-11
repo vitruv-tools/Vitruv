@@ -17,7 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.7.0",
  org.eclipse.gmf.runtime.diagram.ui.resources.editor,
  org.palladiosimulator.pcm,
- tools.vitruv.framework.metarepository;bundle-version="1.0.0",
  tools.vitruv.domains.emf.monitorededitor,
  org.palladiosimulator.pcm.resources;bundle-version="1.0.0",
  tools.vitruv.framework.util,
@@ -25,7 +24,8 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.tuid,
- tools.vitruv.framework.modelsynchronization
+ tools.vitruv.framework.modelsynchronization,
+ tools.vitruv.framework.vsum
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures,

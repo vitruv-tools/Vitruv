@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.eclipse.emf.ecore.EAttribute
@@ -22,6 +21,7 @@ import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.TypeReferenceCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -64,7 +64,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue, newValue,
 			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult
@@ -75,7 +75,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override replaceNonRootEObjectSingle(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (oldAffectedEObject instanceof Method &&
 			affectedReference.name.equals(JaMoPPNamespace.JAMOPP_REFERENCE_TYPE_REFERENCE) &&
 			newValue instanceof TypeReference) {
@@ -106,7 +106,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (!newCorrespondingEObjects.nullOrEmpty) {
 			var operationSignatues = correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject, OperationSignature)
 			if(operationSignatues.nullOrEmpty){
@@ -147,7 +147,7 @@ class MethodMappingTransformation extends EmptyEObjectMappingTransformation {
 			PCMJaMoPPUtils.deleteNonRootEObjectInList(oldAffectedEObject, oldValue, correspondenceModel)
 			oldTUID.updateTuid(oldAffectedEObject)
 		}
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 }

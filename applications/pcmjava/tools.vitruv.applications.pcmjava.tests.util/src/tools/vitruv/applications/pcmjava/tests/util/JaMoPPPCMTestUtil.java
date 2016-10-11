@@ -17,9 +17,7 @@ import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.java.util.JaMoPPNamespace;
 import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.tests.util.TestUtil;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.metamodel.Metamodel;
 
 /**
  * Class for JaMoPPPCM utility testing
@@ -60,20 +58,11 @@ public final class JaMoPPPCMTestUtil {
     }
 
     /**
-     * creates a VSUM that can deal with JaMoPP and PCM elements
-     *
-     * @return
-     */
-    public static VSUMImpl createJaMoPPPCMVSUM() {
-        return TestUtil.createVSUM(JaMoPPPCMTestUtil.createJaMoPPPCMMetaRepository());
-    }
-
-    /**
      * creates a MetaRepository using JaMoPP and PCM as metamodels
      *
      * @return
      */
-    public static MetaRepositoryImpl createJaMoPPPCMMetaRepository() {
-        return PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
+    public static Iterable<Metamodel> createPcmJamoppMetamodels() {
+        return PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
     }
 }

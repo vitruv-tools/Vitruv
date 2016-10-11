@@ -2,10 +2,7 @@ package tools.vitruv.extensions.dslsruntime.mapping
 
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 import tools.vitruv.framework.tuid.TUID
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.metamodel.ModelProviding
-import tools.vitruv.framework.correspondence.Correspondence
 import java.util.HashSet
 import java.util.List
 import java.util.Map
@@ -17,10 +14,13 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.correspondence.Correspondence
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {
-	private final TransformationResult transformationResult
+	private final ChangePropagationResult transformationResult
 	private final UserInteracting userInteracting
 	
 	private Map<EObject, Map<CorrespondenceModel, List<TUID>>> oldTUIDMap = newHashMap
@@ -35,7 +35,7 @@ class MappingExecutionState {
 	
 	private final List<Resource> resourcesToSave = newArrayList
 	
-	new(TransformationResult transformationResult, UserInteracting userInteracting, Blackboard bb) {
+	new(ChangePropagationResult transformationResult, UserInteracting userInteracting, Blackboard bb) {
 		super()
 		this.transformationResult = transformationResult
 		this.userInteracting = userInteracting
@@ -108,8 +108,9 @@ class MappingExecutionState {
 		saveAffectedEObjects(changedEObjects, bb.modelProviding)
 		
 		for (res : resourcesToSave) {
-			bb.modelProviding.saveExistingModelInstanceOriginal(VURI::getInstance(res))
-			bb.modelProviding.forceReloadModelInstanceOriginalIfExisting(VURI::getInstance(res))
+			// TODO Is this correct?
+			bb.modelProviding.saveAllModels()//(VURI::getInstance(res))
+			bb.modelProviding.forceReloadModelIfExisting(VURI::getInstance(res))
 			println("Saved: " + VURI::getInstance(res).toString)
 		}
 		
@@ -118,7 +119,7 @@ class MappingExecutionState {
 	}
 	
 	// temporarily from CommandExecutingImpl
-	def private void saveAffectedEObjects(List<? extends Object> affectedObjects, ModelProviding modelProviding) {
+	def private void saveAffectedEObjects(List<? extends Object> affectedObjects, ModelRepository modelProviding) {
 		val Set<VURI> vurisToSave = new HashSet<VURI>()
 		for (Object object : affectedObjects) {
 			if (object instanceof EObject) {
@@ -132,7 +133,8 @@ class MappingExecutionState {
 		}
 		for (VURI vuri : vurisToSave) {
 			println("Saving: " + vuri.toString)
-			modelProviding.saveExistingModelInstanceOriginal(vuri)
+			// TODO Is this correct?
+			modelProviding.saveAllModels() //(vuri)
 		}
 
 	}

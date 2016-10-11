@@ -24,7 +24,7 @@ import org.somox.gast2seff.visitors.VisitorUtils;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import tools.vitruv.framework.util.command.TransformationResult;
+import tools.vitruv.framework.util.command.ChangePropagationResult;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.util.bridges.CollectionBridge;
 
@@ -73,11 +73,11 @@ public class ClassMethodBodyChangedTransformation {
      * correspondences for the new method (and its inner methods)
      *
      */
-    public TransformationResult execute(final CorrespondenceModel correspondenceModel, final UserInteracting userInteracting) {
+    public ChangePropagationResult execute(final CorrespondenceModel correspondenceModel, final UserInteracting userInteracting) {
         if (!this.isArchitectureRelevantChange(correspondenceModel)) {
             logger.debug("Change with oldMethod " + this.oldMethod + " and newMethod: " + this.newMethod
                     + " is not an architecture relevant change");
-            return new TransformationResult();
+            return new ChangePropagationResult();
         }
         // 1)
         this.removeCorrespondingAbstractActions(correspondenceModel);
@@ -97,7 +97,7 @@ public class ClassMethodBodyChangedTransformation {
         this.createNewCorrespondences(correspondenceModel, resourceDemandingBehaviour,
                 basicComponent);
 
-        return new TransformationResult();
+        return new ChangePropagationResult();
     }
 
     /**

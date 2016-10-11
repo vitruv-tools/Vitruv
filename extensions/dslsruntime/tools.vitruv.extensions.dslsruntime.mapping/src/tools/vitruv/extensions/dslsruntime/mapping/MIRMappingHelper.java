@@ -21,7 +21,7 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
-import tools.vitruv.framework.util.command.TransformationResult;
+import tools.vitruv.framework.util.command.ChangePropagationResult;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -80,10 +80,10 @@ public final class MIRMappingHelper {
 	}
 
 	public static void addEmptyResourcesToTransformationResult(Iterable<Resource> resources,
-			TransformationResult result) {
+			ChangePropagationResult result) {
 		for (Resource res : resources) {
 			if (res.getContents().isEmpty()) {
-				result.addVURIToDeleteIfNotNull(VURI.getInstance(res));
+				result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
 			}
 		}
 	}
@@ -98,7 +98,7 @@ public final class MIRMappingHelper {
 		return (eObject.eContainer() != null || eObject.eResource() != null);
 	}
 
-	public static boolean hasContainment(EObject eObject, TransformationResult result) {
+	public static boolean hasContainment(EObject eObject, ChangePropagationResult result) {
 		return (hasContainment(eObject) || ((result != null)
 				&& (result.getRootEObjectsToSave().stream().anyMatch(it -> it.getFirst().equals(eObject)))));
 	}
@@ -106,9 +106,9 @@ public final class MIRMappingHelper {
 	/**
 	 * Checks the {@link EObject EObjects} supplied by <code>elementSupplier</code> for containment. If no containment is
 	 * found for an object, a containment is requested from the <code>vuriProvider</code> and appended to the given
-	 * {@link TransformationResult} as well as to the return value of the function.
+	 * {@link ChangePropagationResult} as well as to the return value of the function.
 	 */
-	public static Set<EObject> ensureContainments(TransformationResult transformationResult,
+	public static Set<EObject> ensureContainments(ChangePropagationResult transformationResult,
 			Supplier<Iterable<EObject>> elementSupplier, Consumer<EObject> containmentEnsurer) {
 		
 		Set<EObject> result = new HashSet<EObject>();

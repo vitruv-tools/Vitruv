@@ -16,8 +16,8 @@ import java.util.Collection;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
+import tools.vitruv.framework.modelsynchronization.ChangePropagator;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * A factory for classes residing in this package.
@@ -30,7 +30,7 @@ public class EMFEditorMonitorFactory {
      * @param factory
      *            The {@link IEditorPartAdapterFactory} used to adapt Eclipse editors.
      * @param changeSync
-     *            The Vitruvius {@link ChangeSynchronizing} object receiving change synchronization
+     *            The Vitruvius {@link ChangePropagator} object receiving change synchronization
      *            calls.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
@@ -39,15 +39,15 @@ public class EMFEditorMonitorFactory {
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
     public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(IEditorPartAdapterFactory factory,
-            ChangeSynchronizing changeSync, ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(factory, changeSync, modelProviding, vitruvAccessor);
+            VirtualModel virtualModel, IVitruviusAccessor vitruvAccessor) {
+        return new VitruviusEMFEditorMonitorImpl(factory, virtualModel, vitruvAccessor);
     }
 
     /**
      * Creates a new {@link IVitruviusEMFEditorMonitor} instance able to adapt all EMF/GMF editors.
      * 
      * @param changeSync
-     *            The Vitruvius {@link ChangeSynchronizing} object receiving change synchronization
+     *            The Vitruvius {@link ChangePropagator} object receiving change synchronization
      *            calls.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
@@ -55,9 +55,9 @@ public class EMFEditorMonitorFactory {
      *            An {@link IVitruviusAccessor} object providing access to Vitruvius facilities.
      * @return A new {@link IVitruviusEMFEditorMonitor} object.
      */
-    public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(ChangeSynchronizing changeSync,
-            ModelProviding modelProviding, IVitruviusAccessor vitruvAccessor) {
-        return new VitruviusEMFEditorMonitorImpl(changeSync, modelProviding, vitruvAccessor);
+    public IVitruviusEMFEditorMonitor createVitruviusModelEditorSyncMgr(VirtualModel virtualModel,
+            IVitruviusAccessor vitruvAccessor) {
+        return new VitruviusEMFEditorMonitorImpl(virtualModel, vitruvAccessor);
     }
 
     public IEditorPartAdapterFactory createDefaultEditorPartAdapterFactory(Collection<String> acceptedFileSuffixes) {

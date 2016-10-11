@@ -21,12 +21,14 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
-import tools.vitruv.framework.change.processing.Change2CommandTransforming;
-import tools.vitruv.framework.change.processing.Change2CommandTransformingProviding;
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
+import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.modelsynchronization.ChangePropagationListener;
 import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 /**
  * Base class for all Vitruvius case study tests
@@ -34,7 +36,7 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
  * @author langhamm
  *
  */
-public abstract class VitruviusCasestudyTest {
+public abstract class VitruviusCasestudyTest implements ChangePropagationListener {
 
 	private static final boolean ADD_TIMESTAMP_TO_PROJECT_NAMES = true;
 	
@@ -46,15 +48,20 @@ public abstract class VitruviusCasestudyTest {
 
     protected IProject currentTestProject;
 
+    private InternalVirtualModel virtualModel;
+    protected Iterable<Metamodel> metamodels;
+    
     protected abstract void afterTest(Description description);
 
     protected abstract CorrespondenceModel getCorrespondenceModel() throws Throwable;
     
-    protected abstract Change2CommandTransformingProviding createChange2CommandTransformingProviding();
+    protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications();
+    protected abstract Iterable<Metamodel> createMetamodels();
     
     protected void beforeTest(final Description description) throws Throwable {
     	TuidManager.getInstance().reinitialize();
         createTestProject(description);
+        createVirtualModel();
     }
 
     // ensure that MockupProject is existing
@@ -68,7 +75,17 @@ public abstract class VitruviusCasestudyTest {
             this.createProject(this.currentTestProject);
         }
 	}
+	
+	private void createVirtualModel() {
+		this.metamodels = this.createMetamodels();
+		this.virtualModel = TestUtil.createVSUM(metamodels, createChangePropagationSpecifications());
+		this.virtualModel.addChangePropagationListener(this);
+	}
 
+	protected InternalVirtualModel getVirtualModel() {
+		return virtualModel;
+	}
+	
     @BeforeClass
     public static void setUpAllTests() {
         TestUtil.initializeLogger();
@@ -106,11 +123,8 @@ public abstract class VitruviusCasestudyTest {
         return this.currentTestProjectName + "/";
     }
 
-    protected void setUserInteractor(final UserInteracting newUserInteracting,
-            final Change2CommandTransformingProviding transformingProviding) throws Throwable {
-    	for (Change2CommandTransforming change2CommandTransforming : transformingProviding) {
-    		change2CommandTransforming.setUserInteracting(newUserInteracting);
-    	}
+    protected void setUserInteractor(final UserInteracting newUserInteracting) throws Throwable {
+    	this.virtualModel.setUserInteractor(newUserInteracting);
     }
 
     /**

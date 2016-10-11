@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -17,6 +16,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 /**
  * Maps a JaMoPP interface to a PCM interface 
@@ -75,7 +75,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject, EReference affectedReference, EObject newValue,
 		int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newValue, newCorrespondingEObjects,
 				correspondenceModel, transformationResult)
@@ -102,7 +102,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 
 	override updateSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newValue,
 			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult
@@ -121,7 +121,7 @@ class InterfaceMappingTransformation extends EmptyEObjectMappingTransformation {
 		logger.warn(
 			"method createNonRootEObjectSingle should not be called for " + InterfaceMappingTransformation.simpleName +
 				" transformation")
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 }

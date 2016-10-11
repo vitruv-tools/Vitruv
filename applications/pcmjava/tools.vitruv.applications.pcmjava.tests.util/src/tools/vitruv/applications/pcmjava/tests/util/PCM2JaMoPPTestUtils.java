@@ -19,9 +19,9 @@ import tools.vitruv.domains.java.echange.feature.reference.JavaInsertEReference;
 import tools.vitruv.domains.java.echange.feature.reference.ReferenceFactory;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public class PCM2JaMoPPTestUtils {

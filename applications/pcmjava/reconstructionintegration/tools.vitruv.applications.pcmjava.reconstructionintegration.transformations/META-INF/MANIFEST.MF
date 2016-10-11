@@ -30,7 +30,6 @@ Require-Bundle: org.apache.commons.logging,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.vsum,
- tools.vitruv.framework.metarepository,
  tools.vitruv.extensions.constructionsimulation.util,
  tools.vitruv.extensions.constructionsimulation,
  tools.vitruv.applications.pcmjava.util

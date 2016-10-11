@@ -77,7 +77,7 @@ public class MethodMappingTransformationTest extends Java2PCMPackageMappingTrans
                 opSig.getInterface__OperationSignature().getId(), opInterface.getId());
         this.assertPCMNamedElement(opSig, expectedName);
 
-        this.getVSUM().createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        this.getVirtualModel().executeCommand(new Callable<Void>() {
 
             @Override
             public Void call() {

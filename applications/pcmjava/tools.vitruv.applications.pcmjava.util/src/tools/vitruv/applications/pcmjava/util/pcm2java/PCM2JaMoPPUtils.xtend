@@ -2,7 +2,6 @@ package tools.vitruv.applications.pcmjava.util.pcm2java
 
 import com.google.common.collect.Sets
 import tools.vitruv.domains.java.util.jamoppparser.JaMoPPParser
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.userinteraction.UserInteracting
@@ -73,6 +72,7 @@ import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 	private static val Logger logger = Logger.getLogger(PCM2JaMoPPUtils.simpleName)
@@ -178,7 +178,7 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 
 	def public static void handleJavaRootNameChange(JavaRoot javaRoot, EStructuralFeature affectedFeature,
 		Object newValue, CorrespondenceModel correspondenceModel, boolean changeNamespanceIfCompilationUnit,
-		TransformationResult transformationResult, EObject affectedEObject) {
+		ChangePropagationResult transformationResult, EObject affectedEObject) {
 		val TUID oldTUID = correspondenceModel.calculateTUIDFromEObject(javaRoot)
 		var TUID oldClassifierTUID = null
 		if (javaRoot instanceof CompilationUnit && !(javaRoot as CompilationUnit).classifiers.nullOrEmpty) {
@@ -492,10 +492,10 @@ abstract class PCM2JaMoPPUtils extends PCMJaMoPPUtils {
 		return newEObjects
 	}
 
-	def static TransformationResult updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute,
+	def static ChangePropagationResult updateNameAsSingleValuedEAttribute(EObject eObject, EAttribute affectedAttribute,
 		Object oldValue, Object newValue, ClaimableMap<EStructuralFeature, EStructuralFeature> featureCorrespondenceMap,
 		CorrespondenceModel correspondenceModel) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (oldValue == newValue) {
 			return transformationResult
 		}

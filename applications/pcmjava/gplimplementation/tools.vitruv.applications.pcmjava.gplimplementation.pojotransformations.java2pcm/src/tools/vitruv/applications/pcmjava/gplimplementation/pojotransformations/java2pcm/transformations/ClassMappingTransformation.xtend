@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
@@ -28,6 +27,7 @@ import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 /**
  * Maps a JaMoPP class to a PCM Components or System. 
@@ -156,7 +156,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.createNewCorrespondingEObjects(newValue, newCorrespondingEObjects, correspondenceModel,
 			transformationResult)
 		return transformationResult
@@ -197,7 +197,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val components = correspondenceModel.getCorrespondingEObjectsByType(oldAffectedEObject,
 			RepositoryComponent)
 		var EObject eObjectToSave = null
@@ -237,7 +237,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				 */
 				override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute,
 					Object oldValue, Object newValue) {
-					val transformationResult = new TransformationResult
+					val transformationResult = new ChangePropagationResult
 					JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(affectedEObject, affectedAttribute, oldValue,
 						newValue, featureCorrespondenceMap, correspondenceModel, transformationResult)
 					return transformationResult
@@ -246,7 +246,7 @@ class ClassMappingTransformation extends EmptyEObjectMappingTransformation {
 				override createNonRootEObjectSingle(EObject affectedEObject, EReference affectedReference,
 					EObject newValue, EObject[] newCorrespondingEObjects) {
 					logger.warn("method should not be called for ClassMappingTransformation transformation")
-					return new TransformationResult
+					return new ChangePropagationResult
 				}
 
 				def private createDatatype(Classifier jaMoPPClass) {

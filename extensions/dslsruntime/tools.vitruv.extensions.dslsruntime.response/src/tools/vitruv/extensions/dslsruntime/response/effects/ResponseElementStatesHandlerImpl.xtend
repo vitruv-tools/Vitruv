@@ -6,20 +6,20 @@ import org.eclipse.emf.ecore.EObject
 import java.util.HashMap
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.extensions.dslsruntime.response.helper.ResponseCorrespondenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.apache.log4j.Logger
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 	private static val logger = Logger.getLogger(ResponseElementStatesHandlerImpl);
 	
 	private final Map<EObject, AbstractResponseElementState> elementStates;
 	private final CorrespondenceModel correspondenceModel;
-	private final TransformationResult transformationResult;
+	private final ChangePropagationResult transformationResult;
 	
-	public new(CorrespondenceModel correspondenceModel, TransformationResult transformationResult) {
+	public new(CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
 		this.correspondenceModel = correspondenceModel;
 		this.elementStates = new HashMap<EObject, AbstractResponseElementState>();
 		this.transformationResult = transformationResult;
@@ -42,7 +42,7 @@ class ResponseElementStatesHandlerImpl implements ResponseElementStatesHandler {
 		if (element.eContainer() == null) {
 			if (element.eResource() != null) {
 				logger.debug("Deleting root object: " + element);
-				transformationResult.addVURIToDeleteIfNotNull(VURI.getInstance(element.eResource()));
+				transformationResult.addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
 			} else {
 				logger.warn("The element to delete was already removed: " + element);
 			}

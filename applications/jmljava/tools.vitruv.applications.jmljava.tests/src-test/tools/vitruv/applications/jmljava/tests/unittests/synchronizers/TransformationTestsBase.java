@@ -53,7 +53,7 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
-import tools.vitruv.framework.metamodel.Mapping;
+import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.tuid.TUID;
@@ -141,7 +141,7 @@ public abstract class TransformationTestsBase {
         }
     }
 
-    private static final Mapping MAPPING_JAVA2JML = constructMapping();
+    private static final MetamodelPair MAPPING_JAVA2JML = constructMapping();
     private ModelProvidingMock modelProviding;
     private CorrespondenceModelProxy correspondenceInstanceUpdateRecorder;
     protected CSSynchronizer synchronizer;
@@ -150,14 +150,14 @@ public abstract class TransformationTestsBase {
     protected SynchronisationAbortedListener syncAbortedListener;
     private Blackboard blackboard;
 
-    private static Mapping constructMapping() {
+    private static MetamodelPair constructMapping() {
         Initializer.initLogging();
         Initializer.initJaMoPP();
         Initializer.initJML();
 
         final Metamodel mmJava = new JaMoPPMetaModelProvider().getMetaModel();
         final Metamodel mmJml = new JMLMetaModelProvider().getMetaModel();
-        return new Mapping(mmJava, mmJml);
+        return new MetamodelPair(mmJava, mmJml);
     }
 
     @Before

@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -18,6 +17,7 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -137,7 +137,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 	}
 
 	override createRootEObject(EObject newRootEObject, EObject[] newCorrespondingEObjects) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.
 			createNewCorrespondingEObjects(newRootEObject, newCorrespondingEObjects,
 				correspondenceModel, transformationResult)
@@ -183,7 +183,7 @@ class PackageMappingTransformation extends EmptyEObjectMappingTransformation {
 				newVarValue = newStringValue.toString()
 			}
 		}
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		JaMoPP2PCMUtils.updateNameAsSingleValuedEAttribute(eObject, affectedAttribute, oldValue, newVarValue,
 			featureCorrespondenceMap, correspondenceModel, transformationResult)
 		return transformationResult

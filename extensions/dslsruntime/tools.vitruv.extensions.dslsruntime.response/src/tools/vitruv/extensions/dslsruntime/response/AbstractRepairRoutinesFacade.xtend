@@ -3,7 +3,7 @@ package tools.vitruv.extensions.dslsruntime.response
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.response.structure.Loggable
 
-class AbstractEffectsFacade extends Loggable {
+class AbstractRepairRoutinesFacade extends Loggable {
 	protected val ResponseExecutionState executionState;
 	protected val CallHierarchyHaving calledBy;
 	

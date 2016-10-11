@@ -3,7 +3,7 @@ package tools.vitruv.applications.pcmjava.gplimplementation.tests.pojotransforma
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.java2pcm.MethodMappingTransformationTest
 
 class MethodMappingGplTransformationTest extends MethodMappingTransformationTest {
-	override protected createChange2CommandTransformingProviding() {
-		Change2CommandTransformingProvidingFactory.createJava2PcmGplImplementationTransformingProviding();
+	override protected createChangePropagationSpecifications() {
+		ChangePropagationSpecificationFactory.createJava2PcmGplImplementationChangePropagationSpecification();
 	}
 }

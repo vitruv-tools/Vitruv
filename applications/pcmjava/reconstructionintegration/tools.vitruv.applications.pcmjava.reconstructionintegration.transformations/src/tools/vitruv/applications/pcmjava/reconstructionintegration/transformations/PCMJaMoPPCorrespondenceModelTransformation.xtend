@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.reconstructionintegration.transformations
 
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.vsum.VSUMImpl
 import tools.vitruv.applications.pcmjava.reconstructionintegration.transformations.util.JaMoPPResourceHelper
 import java.util.HashSet
 import java.util.Set
@@ -28,6 +27,7 @@ import org.somox.sourcecodedecorator.impl.SourceCodeDecoratorRepositoryImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.domains.pcm.util.PCMNamespace
 import tools.vitruv.domains.java.util.JaMoPPNamespace
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 /**
  * Class that creates correspondences between PCM and JaMopp model elements.
@@ -51,7 +51,7 @@ class PCMJaMoPPCorrespondenceModelTransformation extends BasicCorrespondenceMode
 	private Set<Package> packages
 	private Package rootPackage
 
-	new(String scdmPath, String pcmPath, String jamoppPath, VSUMImpl vsum) {
+	new(String scdmPath, String pcmPath, String jamoppPath, InternalVirtualModel vsum) {
 		
 		// Initialize CorrepondenceInstance for PCM <-> JaMoPP mappings
 		var mmUriA = VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)

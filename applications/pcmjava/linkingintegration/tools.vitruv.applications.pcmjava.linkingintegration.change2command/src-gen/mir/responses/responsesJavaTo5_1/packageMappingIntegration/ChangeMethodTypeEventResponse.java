@@ -1,12 +1,17 @@
 package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
 
+import mir.routines.packageMappingIntegration.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.members.Method;
+import org.emftext.language.java.types.TypeReference;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.members.Method;
-import org.emftext.language.java.types.TypeReference;
 
 @SuppressWarnings("all")
 class ChangeMethodTypeEventResponse extends AbstractResponseRealization {
@@ -46,7 +51,20 @@ class ChangeMethodTypeEventResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Method, TypeReference> typedChange = (ReplaceSingleValuedEReference<Method, TypeReference>)change;
-    mir.routines.packageMappingIntegration.ChangeMethodTypeEventEffect effect = new mir.routines.packageMappingIntegration.ChangeMethodTypeEventEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeMethodTypeEventResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeMethodTypeEventResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final ReplaceSingleValuedEReference<Method, TypeReference> change, @Extension final RoutinesFacade _routinesFacade) {
+      Method _affectedEObject = change.getAffectedEObject();
+      TypeReference _newValue = change.getNewValue();
+      _routinesFacade.changedMethodType(_affectedEObject, _newValue);
+    }
   }
 }

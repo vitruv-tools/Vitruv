@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.java2pcm.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.ArrayList
 import java.util.LinkedList
@@ -23,6 +22,7 @@ import org.palladiosimulator.pcm.seff.SeffFactory
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -56,7 +56,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 		val oldAffectedEObject = EcoreUtil.copy(affectedEObject) as ClassMethod
 		oldAffectedEObject.eSet(affectedAttribute, oldValue)
 		checkAndUpdateCorrespondence(affectedEObject, oldAffectedEObject)
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 	
 	
@@ -67,7 +67,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingEObjects) {
 		checkAndUpdateCorrespondence(newAffectedEObject, oldAffectedEObject)
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 	
 
@@ -78,7 +78,7 @@ class ClassMethodMappingTransformation extends EmptyEObjectMappingTransformation
 	override deleteNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject oldValue, int index, EObject[] oldCorrespondingEObjectsToDelete) {
 		checkAndUpdateCorrespondence(newAffectedEObject, oldAffectedEObject)
-		return new TransformationResult
+		return new ChangePropagationResult
 	}
 
 

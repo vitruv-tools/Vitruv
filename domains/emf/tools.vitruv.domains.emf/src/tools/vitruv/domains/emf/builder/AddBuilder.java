@@ -2,7 +2,9 @@ package tools.vitruv.domains.emf.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -16,6 +18,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import tools.vitruv.framework.monitorededitor.VitruviusProjectBuilder;
+
 public class AddBuilder extends AbstractHandler implements IHandler {
 
     private final String builderId;
@@ -26,12 +30,12 @@ public class AddBuilder extends AbstractHandler implements IHandler {
 
     @Override
     public Object execute(final ExecutionEvent event) {
-        final IProject project = getProject(event);
-
-        return this.addBuilderToProject(project);
+    	throw new UnsupportedOperationException("We need to get the vsum name here");
+        // final IProject project = getProject(event);
+        // return this.addBuilderToProject(project);
     }
 
-    public Object addBuilderToProject(final IProject project) {
+    public Object addBuilderToProject(final IProject project, String vmodelName, List<String> fileExtensions) {
         if (project != null) {
             try {
                 // verify already registered builders
@@ -44,7 +48,14 @@ public class AddBuilder extends AbstractHandler implements IHandler {
                 final IProjectDescription description = project.getDescription();
                 final ICommand buildCommand = description.newCommand();
                 buildCommand.setBuilderName(this.builderId);
-
+                Map<String, String> builderArguments = new HashMap<String, String>();
+                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_VMODEL_NAME, vmodelName);
+                String fileExtensionsString = "";
+                for (String fileExtension : fileExtensions) {
+                	fileExtensionsString += fileExtension + ", ";
+                }
+                builderArguments.put(VitruviusProjectBuilder.ARGUMENT_FILE_EXTENSIONS, fileExtensionsString);
+                buildCommand.setArguments(builderArguments);
                 final List<ICommand> commands = new ArrayList<ICommand>();
                 commands.addAll(Arrays.asList(description.getBuildSpec()));
                 commands.add(buildCommand);

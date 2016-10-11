@@ -3,7 +3,7 @@ package tools.vitruv.applications.pcmjava.gplimplementation.tests.pojotransforma
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.repository.CompositeComponentMappingTransformationTest
 
 class CompositeComponentMappingGplTransformationTest extends CompositeComponentMappingTransformationTest {
-	override protected createChange2CommandTransformingProviding() {
-		Change2CommandTransformingProvidingFactory.createPcm2JavaGplImplementationTransformingProviding();
+	override protected createChangePropagationSpecifications() {
+		ChangePropagationSpecificationFactory.createPcm2JavaGplImplementationChangePropagationSpecification();
 	}
 }

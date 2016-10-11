@@ -1,13 +1,18 @@
 package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
 
-import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
-import tools.vitruv.framework.userinteraction.UserInteracting;
+import mir.routines.packageMappingIntegration.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.Member;
 import org.emftext.language.java.members.Method;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
 class AddMethodEventResponse extends AbstractResponseRealization {
@@ -55,7 +60,20 @@ class AddMethodEventResponse extends AbstractResponseRealization {
   
   public void executeResponse(final EChange change) {
     InsertEReference<ConcreteClassifier, Member> typedChange = (InsertEReference<ConcreteClassifier, Member>)change;
-    mir.routines.packageMappingIntegration.AddMethodEventEffect effect = new mir.routines.packageMappingIntegration.AddMethodEventEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddMethodEventResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddMethodEventResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final InsertEReference<ConcreteClassifier, Member> change, @Extension final RoutinesFacade _routinesFacade) {
+      ConcreteClassifier _affectedEObject = change.getAffectedEObject();
+      Member _newValue = change.getNewValue();
+      _routinesFacade.addedMethodEvent(_affectedEObject, ((Method) _newValue));
+    }
   }
 }

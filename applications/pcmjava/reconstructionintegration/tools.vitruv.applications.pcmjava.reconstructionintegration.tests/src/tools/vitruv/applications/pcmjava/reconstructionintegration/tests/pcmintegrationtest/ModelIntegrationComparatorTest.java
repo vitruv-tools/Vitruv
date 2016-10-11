@@ -28,8 +28,8 @@ import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.extensions.constructionsimulation.traversal.util.UnorderedReferencesRespectingEqualityHelper;
 import tools.vitruv.extensions.constructionsimulation.util.IntegrationUtil;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
 import tools.vitruv.framework.util.bridges.EMFBridge;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * Compares the inputmodel with the integrated model. These should be equivalent in most of their
@@ -104,15 +104,13 @@ public class ModelIntegrationComparatorTest {
         // update the PCM parameter definitions
         resource = this.updateParameterDef(resource, uri);
         final PCMRepositoryIntegrationStrategy integrator = new PCMRepositoryIntegrationStrategy();
-        ChangeSynchronizing changeSynchronizing = null;
-        if (changeSynchronizing == null) {
-            changeSynchronizing = IntegrationUtil.createVitruviusCore(PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository());
-        }
+        // TODO This vsum has no change transformers, we have to add the correct ones!
+        VirtualModel vsum = IntegrationUtil.createVSUM(PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels());
 
         List<VitruviusChange> changes = null;
 
         try {
-            changes = integrator.integrateModel(resource, changeSynchronizing);
+            changes = integrator.integrateModel(resource, vsum);
         } catch (final Exception e) {
             e.printStackTrace();
         }

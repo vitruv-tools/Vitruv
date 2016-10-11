@@ -1,8 +1,6 @@
 package tools.vitruv.framework.correspondence
 
 import com.google.common.collect.Sets
-import tools.vitruv.framework.metamodel.Mapping
-import tools.vitruv.framework.metamodel.Metamodel
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
@@ -30,23 +28,25 @@ import tools.vitruv.framework.correspondence.Correspondences
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.TUID
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
-import tools.vitruv.framework.metamodel.ModelInstance
-import tools.vitruv.framework.metamodel.ModelProviding
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.metamodel.MetamodelPair
+import tools.vitruv.framework.metamodel.Metamodel
+import tools.vitruv.framework.metamodel.ModelRepository
+import tools.vitruv.framework.util.datatypes.ModelInstance
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(CorrespondenceModelImpl).getSimpleName())
-	final Mapping mapping
-	final ModelProviding modelProviding
+	final MetamodelPair mapping
+	final ModelRepository modelProviding
 	final Correspondences correspondences
 	final ClaimableMap<TUID,Set<List<TUID>>> tuid2tuidListsMap
 	protected final ClaimableMap<List<TUID>, Set<Correspondence>> tuid2CorrespondencesMap
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 
-	new(Mapping mapping, ModelProviding modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(MetamodelPair mapping, ModelRepository modelProviding, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
 		this.mapping = mapping
 		this.modelProviding = modelProviding
@@ -229,7 +229,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 	}
 
-	override Mapping getMapping() {
+	override MetamodelPair getMapping() {
 		return this.mapping
 	}
 
@@ -398,7 +398,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var EObject rootEObject = null
 		var ModelInstance modelInstance = null
 		if (vuri !== null) {
-			modelInstance = this.modelProviding.getAndLoadModelInstanceOriginal(vuri)
+			modelInstance = this.modelProviding.getModel(vuri)
 			rootEObject = modelInstance.getFirstRootEObject()
 		}
 		var EObject resolvedEobject = null
@@ -516,9 +516,9 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 * @author Dominik Werle 
 	 */
 	override getTUIDsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
-	 	if (mapping.metamodelA.nsURIs.contains(metamodelNamespaceUri)) {
+	 	if (mapping.getMetamodelA.nsURIs.contains(metamodelNamespaceUri)) {
 	 		return correspondence.getATUIDs
-	 	} else if (mapping.metamodelB.nsURIs.contains(metamodelNamespaceUri)) {
+	 	} else if (mapping.getMetamodelB.nsURIs.contains(metamodelNamespaceUri)) {
 	 		return correspondence.getBTUIDs
 	 	} else {
 	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')

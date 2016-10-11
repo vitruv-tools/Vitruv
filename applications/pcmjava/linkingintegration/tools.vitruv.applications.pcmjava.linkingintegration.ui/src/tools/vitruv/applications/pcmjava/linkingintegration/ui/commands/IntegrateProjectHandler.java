@@ -17,12 +17,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.ws.internal.common.ResourceUtils;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import tools.vitruv.domains.pcm.util.PCMNamespace;
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.applications.pcmjava.linkingintegration.PCMJaMoPPCorrespondenceModelTransformation;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.metamodel.Metamodel;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModelConfiguration;
+import tools.vitruv.framework.vsum.VirtualModelImpl;
 
 @SuppressWarnings("restriction")
 public class IntegrateProjectHandler extends AbstractHandler {
@@ -72,10 +72,13 @@ public class IntegrateProjectHandler extends AbstractHandler {
             throw new IllegalArgumentException("Run SoMoX first!");
         }
 
-        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
-        vsum.getOrCreateAllCorrespondenceModelsForMM(
-                metaRepository.getMetamodel(VURI.getInstance(PCMNamespace.PCM_METAMODEL_NAMESPACE)));
+        final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+        VirtualModelConfiguration config = new VirtualModelConfiguration();
+        for (Metamodel metamodel : metamodels) {
+        	config.addMetamodel(metamodel);
+        }
+        // TODO HK Use other name
+        final InternalVirtualModel vsum = new VirtualModelImpl("virtuvius.meta", config);
 
         final PCMJaMoPPCorrespondenceModelTransformation transformation = new PCMJaMoPPCorrespondenceModelTransformation(
                 scdmPath.toString(), pcmPath.toString(), jamoppPaths, vsum, projectBase);

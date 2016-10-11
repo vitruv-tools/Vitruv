@@ -18,8 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
-import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
-import tools.vitruv.domains.emf.monitorededitor.monitor.VitruviusEMFEditorMonitorImpl;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
@@ -44,9 +42,7 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     @Test
     public void EMFEditorsCanBeFoundByVURI() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
-                DefaultImplementations.EFFECTLESS_EXTERNAL_CHANGESYNC,
-                DefaultImplementations.DEFAULT_MODEL_PROVIDING,
-                DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.initialize();
 
         IEditorPart exampleEditor = eclipseMockCtrl.openNewEMFDiagramEditorPart(Files.EXAMPLEMODEL_ECORE,

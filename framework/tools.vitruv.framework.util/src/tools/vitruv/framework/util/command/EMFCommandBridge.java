@@ -7,18 +7,16 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 public class EMFCommandBridge {
 
-    protected TransformationResult transformationResult;
-
     private EMFCommandBridge() {
     }
 
     public static VitruviusTransformationRecordingCommand createVitruviusTransformationRecordingCommand(
-            final Callable<TransformationResult> callable) {
+            final Callable<ChangePropagationResult> callable) {
         final VitruviusTransformationRecordingCommand recordingCommand = new VitruviusTransformationRecordingCommand() {
             @Override
             protected void doExecute() {
                 try {
-                    TransformationResult transformationResult = callable.call();
+                    ChangePropagationResult transformationResult = callable.call();
                     if (null == transformationResult) {
                         logger.warn(
                                 "Transformation change result is null. This indicates that the previous transformation had an error.");
@@ -62,10 +60,6 @@ public class EMFCommandBridge {
     		final TransactionalEditingDomain domain) {
         final VitruviusRecordingCommand command = createVitruviusRecordingCommand(callable);
         executeVitruviusRecordingCommand(domain, command);
-    }
-
-    public TransformationResult getTransformationResult() {
-        return this.transformationResult;
     }
 
 }

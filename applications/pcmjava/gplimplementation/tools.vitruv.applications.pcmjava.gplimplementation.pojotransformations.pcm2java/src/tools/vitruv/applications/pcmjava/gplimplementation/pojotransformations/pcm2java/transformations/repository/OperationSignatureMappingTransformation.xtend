@@ -1,7 +1,6 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
 import com.google.common.collect.Sets
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.Set
 import org.apache.log4j.Logger
@@ -29,6 +28,7 @@ import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHel
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.PCMJaMoPPUtils
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -74,7 +74,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override createNonRootEObjectInList(EObject newAffectedEObject, EObject oldAffectedEObject,
 		EReference affectedReference, EObject newValue, int index, EObject[] newCorrespondingParameter) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		if (newCorrespondingParameter.nullOrEmpty) {
 			return transformationResult
 		}
@@ -115,7 +115,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		var Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject,
 			affectedAttribute, featureCorrespondenceMap, correspondenceModel);
 		if (correspondingEObjects.nullOrEmpty) {
@@ -158,7 +158,7 @@ class OperationSignatureMappingTransformation extends EmptyEObjectMappingTransfo
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject,
 			affectedReference, featureCorrespondenceMap, correspondenceModel)
 		if (newValue == oldValue) {

@@ -6,10 +6,11 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 @SuppressWarnings("all")
 public class ExecutorAllElementTypesToAllElementTypes extends AbstractResponseExecutor {
   public ExecutorAllElementTypesToAllElementTypes(final UserInteracting userInteracting) {
-    super(userInteracting);
+    super(userInteracting, new tools.vitruv.framework.util.datatypes.MetamodelPair(allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI, allElementTypes.impl.AllElementTypesPackageImpl.eNS_URI));
   }
   
   protected void setup() {
+    tools.vitruv.framework.userinteraction.UserInteracting userInteracting = getUserInteracting();
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeResponse(userInteracting));
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootIdResponse(userInteracting));
     this.addResponse(mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.getExpectedChangeType(), new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse(userInteracting));

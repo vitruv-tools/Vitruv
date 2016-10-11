@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.userinteraction.UserInteractionType
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.lang.reflect.Modifier
@@ -28,6 +27,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.java2pcm.JaMoPP2PCMUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class CollectionDataTypeMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -131,7 +131,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val affectedEObjects = PCM2JaMoPPUtils.checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute,
 			featureCorrespondenceMap, correspondenceModel)
 		if (affectedEObjects.nullOrEmpty) {
@@ -148,7 +148,7 @@ public class «cdt.entityName» extends «selectedClass.simpleName»<«jaMoPPInn
 
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val innerType = DataTypeCorrespondenceHelper.
 			claimUniqueCorrespondingJaMoPPDataType(newValue as DataType, correspondenceModel)
 		if (null == innerType || !(innerType instanceof ConcreteClassifier)) {

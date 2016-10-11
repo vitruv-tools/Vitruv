@@ -8,13 +8,13 @@
 //import tools.vitruv.framework.change.description.GeneralChange
 //import tools.vitruv.framework.util.datatypes.VURI
 //import tools.vitruv.framework.change.processing.Change2CommandTransforming
-//import tools.vitruv.framework.modelsynchronization.SynchronisationListener
-//import tools.vitruv.framework.modelsynchronization.TransformationAbortCause
+//import tools.vitruv.framework.modelsynchronization.ChangePropagationListener
+//import tools.vitruv.framework.modelsynchronization.ChangePropagationAbortCause
 //import tools.vitruv.framework.metarepository.MetaRepositoryImpl
 //import tools.vitruv.framework.changeynchronizer.ChangeSynchronizerImpl
 //import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 //import tools.vitruv.framework.vsum.VSUMConstants
-//import tools.vitruv.framework.vsum.VSUMImpl
+//import tools.vitruv.framework.vsum.ModelRepositoryImpl
 //import tools.vitruv.tests.util.TestUtil
 //import java.io.IOException
 //import java.time.LocalDateTime

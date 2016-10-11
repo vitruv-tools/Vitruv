@@ -3,7 +3,7 @@ package tools.vitruv.applications.pcmjava.gplimplementation.tests.pojotransforma
 import tools.vitruv.applications.pcmjava.tests.pojotransformations.pcm2java.repository.OperationRequiredRoleMappingTransformationTest
 
 class OperationRequiredRoleMappingGplTransformationTest extends OperationRequiredRoleMappingTransformationTest {
-	override protected createChange2CommandTransformingProviding() {
-		Change2CommandTransformingProvidingFactory.createPcm2JavaGplImplementationTransformingProviding();
+	override protected createChangePropagationSpecifications() {
+		ChangePropagationSpecificationFactory.createPcm2JavaGplImplementationChangePropagationSpecification();
 	}
 }

@@ -14,21 +14,15 @@ package tools.vitruv.domains.emf.monitorededitor.test.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metamodel.ModelInstance;
-import tools.vitruv.framework.metamodel.ModelProviding;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizing;
-import tools.vitruv.framework.modelsynchronization.SynchronisationListener;
-import tools.vitruv.framework.tuid.TUID;
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -39,18 +33,19 @@ public class DefaultImplementations {
 
     };
 
-    public static final ChangeSynchronizing EFFECTLESS_EXTERNAL_CHANGESYNC = new ChangeSynchronizing() {
+    public static final VirtualModel EFFECTLESS_VIRTUAL_MODEL = new VirtualModel() {
         @Override
-        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange change) {
+        public void propagateChange(VitruviusChange change) {
+        }
+
+        @Override
+        public ModelInstance getModelInstance(VURI modelVuri) {
             return null;
         }
 
         @Override
-        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
-        }
-
-        @Override
-        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+        public String getName() {
+            return null;
         }
     };
 
@@ -70,58 +65,7 @@ public class DefaultImplementations {
         }
     };
 
-    public static final ModelProviding DEFAULT_MODEL_PROVIDING = new ModelProviding() {
-        @Override
-        public ModelInstance getAndLoadModelInstanceOriginal(VURI uri) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public void saveExistingModelInstanceOriginal(VURI vuri) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void detachTransactionalEditingDomain() {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void deleteModelInstanceOriginal(VURI vuri) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void forceReloadModelInstanceOriginalIfExisting(VURI modelURI) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void saveModelInstanceOriginalWithEObjectAsOnlyContent(VURI vuri, EObject rootEObject, TUID oldTUID) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(Callable<Void> callable) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void executeRecordingCommandOnTransactionalDomain(VitruviusRecordingCommand command) {
-            // TODO Auto-generated method stub
-
-        }
-
-    };
-
-    public static class TestChangeSynchronizing implements ResourceChangeSynchronizing, ChangeSynchronizing {
+    public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {
         private VURI lastVURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
@@ -152,22 +96,23 @@ public class DefaultImplementations {
             return lastVURI;
         }
 
-        public static TestChangeSynchronizing createInstance() {
-            return new TestChangeSynchronizing();
+        public static TestVirtualModel createInstance() {
+            return new TestVirtualModel();
         }
 
         @Override
-        public List<List<VitruviusChange>> synchronizeChange(VitruviusChange changes) {
-            synchronizeChanges(Collections.singletonList(changes), null, null);
+        public void propagateChange(VitruviusChange change) {
+            synchronizeChanges(Collections.singletonList(change), null, null);
+        }
+
+        @Override
+        public ModelInstance getModelInstance(VURI modelVuri) {
             return null;
         }
 
         @Override
-        public void addSynchronizationListener(SynchronisationListener synchronizationListener) {
-        }
-
-        @Override
-        public void removeSynchronizationListener(SynchronisationListener synchronizationListener) {
+        public String getName() {
+            return null;
         }
 
     }

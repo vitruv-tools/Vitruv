@@ -147,7 +147,7 @@ CreateCorrespondence returns EffectStatement:
 	
 RemoveCorrespondence returns EffectStatement:
 	{RemoveCorrespondence}
-	"remove correspondence" firstElement=ExistingElementReference "," secondElement=ExistingElementReference;
+	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference;
 
 
 // ****** CODE BLOCKS ******

@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.EObject
 import java.io.IOException
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.util.command.TransformationResult
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslsruntime.response.helper.PersistenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
@@ -13,8 +12,9 @@ import java.util.function.Function
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.extensions.dslsruntime.response.helper.ResponseCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
-abstract class AbstractEffectRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
+abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ResponseElementStatesHandler {
 	private extension val ResponseExecutionState executionState;
 	
 	@Delegate
@@ -63,7 +63,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 	
 	public static class UserExecution {
 		protected final UserInteracting userInteracting;
-		protected final TransformationResult transformationResult;
+		protected final ChangePropagationResult transformationResult;
 		protected final CorrespondenceModel correspondenceModel;
 	
 		new(ResponseExecutionState executionState) {
@@ -82,7 +82,7 @@ abstract class AbstractEffectRealization extends CallHierarchyHaving implements 
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath, correspondenceModel);
 			EcoreUtil.remove(element);
 			transformationResult.addRootEObjectToSave(element, VURI.getInstance(_resourceURI));
-			transformationResult.addVURIToDeleteIfNotNull(oldVURI);
+			transformationResult.addVuriToDeleteIfNotNull(oldVURI);
 		}
 		
 	}

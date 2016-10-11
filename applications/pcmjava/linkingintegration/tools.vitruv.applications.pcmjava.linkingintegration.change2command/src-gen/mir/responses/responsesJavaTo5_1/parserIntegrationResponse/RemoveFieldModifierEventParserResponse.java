@@ -1,12 +1,17 @@
 package mir.responses.responsesJavaTo5_1.parserIntegrationResponse;
 
+import mir.routines.parserIntegrationResponse.RoutinesFacade;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.members.Field;
+import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import org.eclipse.emf.ecore.EObject;
-import org.emftext.language.java.members.Field;
-import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
 
 @SuppressWarnings("all")
 class RemoveFieldModifierEventParserResponse extends AbstractResponseRealization {
@@ -46,7 +51,17 @@ class RemoveFieldModifierEventParserResponse extends AbstractResponseRealization
   
   public void executeResponse(final EChange change) {
     RemoveEReference<Field, AnnotationInstanceOrModifier> typedChange = (RemoveEReference<Field, AnnotationInstanceOrModifier>)change;
-    mir.routines.parserIntegrationResponse.RemoveFieldModifierEventParserEffect effect = new mir.routines.parserIntegrationResponse.RemoveFieldModifierEventParserEffect(this.executionState, this, typedChange);
-    effect.applyRoutine();
+    mir.routines.parserIntegrationResponse.RoutinesFacade routinesFacade = new mir.routines.parserIntegrationResponse.RoutinesFacade(this.executionState, this);
+    mir.responses.responsesJavaTo5_1.parserIntegrationResponse.RemoveFieldModifierEventParserResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.parserIntegrationResponse.RemoveFieldModifierEventParserResponse.EffectUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
+  }
+  
+  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public void callRoutine1(final RemoveEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
+    }
   }
 }

@@ -7,14 +7,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.pcm.repository.Repository;
 
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.change.processing.impl.Change2CommandTransformingProvidingImpl;
+import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.applications.pcmjava.util.PCMJavaRepositoryCreationUtil;
 import tools.vitruv.domains.pcm.util.RepositoryModelLoader;
 import tools.vitruv.extensions.constructionsimulation.traversal.ITraversalStrategy;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.metarepository.MetaRepositoryImpl;
-import tools.vitruv.framework.modelsynchronization.ChangeSynchronizerImpl;
-import tools.vitruv.framework.vsum.VSUMImpl;
+import tools.vitruv.framework.tests.util.TestUtil;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 /**
  * Test class for the usage of traversal strategies.
@@ -52,16 +51,14 @@ public class TraversalTestcase {
         }
 
         // create syncManager
-        final MetaRepositoryImpl metaRepository = PCMJavaRepositoryCreationUtil.createPCMJavaMetarepository();
-        final VSUMImpl vsum = new VSUMImpl(metaRepository, metaRepository);
+        final Iterable<Metamodel> metamodels = PCMJavaRepositoryCreationUtil.createPcmJamoppMetamodels();
+        // TODO Create correct change2command transformings here
+        //final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
+        final InternalVirtualModel vsum = TestUtil.createVSUM(metamodels);
 
-        final Change2CommandTransformingProvidingImpl change2CommandTransformingProviding = new Change2CommandTransformingProvidingImpl();
-        final ChangeSynchronizerImpl changeSynchronizing = new ChangeSynchronizerImpl(vsum,
-                change2CommandTransformingProviding, vsum);
-        
         final VitruviusChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
         // propagate changes
-        changeSynchronizing.synchronizeChange(compositeChange);
+        vsum.propagateChange(compositeChange);
 
         logger.info("Integration done");
 

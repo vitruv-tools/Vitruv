@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations.repository
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import java.util.Set
 import org.apache.log4j.Logger
@@ -21,6 +20,7 @@ import tools.vitruv.domains.java.util.JaMoPPNamespace
 import tools.vitruv.applications.pcmjava.util.pcm2java.DataTypeCorrespondenceHelper
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -62,7 +62,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override updateSingleValuedEAttribute(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue,
 		Object newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val Set<EObject> correspondingObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(affectedEObject, affectedAttribute, featureCorrespondenceMap,
 				correspondenceModel)
@@ -82,7 +82,7 @@ class ParameterMappingTransformation extends EmptyEObjectMappingTransformation {
 	 */
 	override updateSingleValuedNonContainmentEReference(EObject affectedEObject, EReference affectedReference,
 		EObject oldValue, EObject newValue) {
-		val transformationResult = new TransformationResult
+		val transformationResult = new ChangePropagationResult
 		val Set<EObject> correspondingEObjects = PCM2JaMoPPUtils.
 			checkKeyAndCorrespondingObjects(affectedEObject, affectedReference, featureCorrespondenceMap,
 				correspondenceModel)

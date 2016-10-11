@@ -32,7 +32,7 @@ import tools.vitruv.applications.jmljava.correspondences.Java2JMLCorrespondenceA
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
-import tools.vitruv.framework.metamodel.Mapping;
+import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.Metamodel;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -72,7 +72,7 @@ public class CommonTasks {
         };
     }
     
-    public static CorrespondenceModel createCorrespondenceModel(Mapping mapping, ModelProviding modelProviding,
+    public static CorrespondenceModel createCorrespondenceModel(MetamodelPair mapping, ModelProviding modelProviding,
             Pair<ModelInstance, ModelInstance> modelInstances) throws IOException {
         URI dummyURICorrespondenceModel = getDummyURI();
 
@@ -98,10 +98,10 @@ public class CommonTasks {
         return modelProviding;
     }
     
-    public static Mapping createMapping() {
+    public static MetamodelPair createMapping() {
         Metamodel mmJava = new JaMoPPMetaModelProvider().getMetaModel();
         Metamodel mmJml = new JMLMetaModelProvider().getMetaModel();
-        return new Mapping(mmJava, mmJml);
+        return new MetamodelPair(mmJava, mmJml);
     }
     
     public static URI getDummyURI() throws IOException {

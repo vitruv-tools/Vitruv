@@ -1,6 +1,5 @@
 package tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.pcm2java.transformations
 
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.applications.pcmjava.gplimplementation.pojotransformations.util.transformationexecutor.EmptyEObjectMappingTransformation
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EAttribute
@@ -15,6 +14,7 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import tools.vitruv.applications.pcmjava.util.pcm2java.PCM2JaMoPPUtils
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTransformation {
 
@@ -67,7 +67,7 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 		EObject oldValue, EObject newValue) {
 		if (oldValue == newValue) {
 			logger.debug("oldValue == newValue (value: )" + oldValue + ". Nothing has to be done here.")
-			return new TransformationResult
+			return new ChangePropagationResult
 		}
 		if (null != oldValue) {
 			val EObject[] oldEObjects = removeEObject(affectedEObject)
@@ -84,7 +84,7 @@ class OperationProvidedRoleMappingTransformation extends EmptyEObjectMappingTran
 					correspondenceModel.createAndAddCorrespondence(newEObject.toList, affectedEObject.toList)
 				}
 			}
-			return new TransformationResult
+			return new ChangePropagationResult
 		}
 	}
 

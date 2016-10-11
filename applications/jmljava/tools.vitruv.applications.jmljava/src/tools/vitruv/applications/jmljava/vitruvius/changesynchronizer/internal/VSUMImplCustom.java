@@ -4,12 +4,12 @@ import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.applications.jmljava.vitruvius.changesynchronizer.ModelProvidingDirtyMarker;
 import tools.vitruv.framework.metamodel.MappingManaging;
-import tools.vitruv.framework.metamodel.MetamodelManaging;
+import tools.vitruv.framework.metamodel.MetamodelRepository;
 import tools.vitruv.framework.vsum.VSUMImpl;
 
 public class VSUMImplCustom extends VSUMImpl implements ModelProvidingDirtyMarker {
 
-	public VSUMImplCustom(MetamodelManaging metamodelManaging,
+	public VSUMImplCustom(MetamodelRepository metamodelManaging,
 			MappingManaging mappingManaging) {
 		super(metamodelManaging, mappingManaging);
 	}

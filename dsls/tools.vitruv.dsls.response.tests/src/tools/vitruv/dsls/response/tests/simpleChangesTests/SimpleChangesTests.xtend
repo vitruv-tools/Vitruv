@@ -15,8 +15,7 @@ import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
-import tools.vitruv.framework.change.processing.impl.AbstractChange2CommandTransformingProviding
-import mir.responses.AbstractChange2CommandTransformingAllElementTypesToAllElementTypes
+import mir.responses.ChangePropatationSpecificationAllElementTypesToAllElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -24,9 +23,8 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
-	override protected createChange2CommandTransformingProviding() {
-		return AbstractChange2CommandTransformingProviding.createChange2CommandTransformingProviding(
-			#[new AbstractChange2CommandTransformingAllElementTypesToAllElementTypes() {}]);
+	override protected createChangePropagationSpecifications() {
+		return #[new ChangePropatationSpecificationAllElementTypesToAllElementTypes() {}];
 	}
 	
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];

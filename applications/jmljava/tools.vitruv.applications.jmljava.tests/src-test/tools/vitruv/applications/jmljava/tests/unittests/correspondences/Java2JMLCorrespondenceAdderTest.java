@@ -23,7 +23,7 @@ import tools.vitruv.domains.jml.language.jML.MemberDeclaration;
 import tools.vitruv.domains.jml.language.jML.NormalClassDeclaration;
 import tools.vitruv.applications.jmljava.helper.Utilities;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.metamodel.Mapping;
+import tools.vitruv.framework.metamodel.MetamodelPair;
 import tools.vitruv.framework.metamodel.ModelInstance;
 import tools.vitruv.framework.metamodel.ModelProviding;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
@@ -69,7 +69,7 @@ public class Java2JMLCorrespondenceAdderTest {
         }
     }
 
-    private static Mapping MAPPING;
+    private static MetamodelPair MAPPING;
     private CorrespondenceModel ci;
     private CompilationUnit javaCu;
     private tools.vitruv.domains.jml.language.jML.CompilationUnit jmlCu;

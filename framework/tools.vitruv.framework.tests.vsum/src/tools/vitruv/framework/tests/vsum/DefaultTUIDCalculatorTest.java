@@ -7,22 +7,22 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
-import tools.vitruv.framework.metamodel.ModelInstance;
+import pcm_mockup.Component;
+import pcm_mockup.Repository;
 import tools.vitruv.framework.tuid.DefaultTUIDCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TUID;
 import tools.vitruv.framework.tuid.TUIDCalculatorAndResolver;
+import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
-import tools.vitruv.framework.vsum.VSUMImpl;
-import pcm_mockup.Component;
-import pcm_mockup.Repository;
+import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 public class DefaultTUIDCalculatorTest extends VSUMTest {
     @Override
     @Test
     public void testAll() {
-        VSUMImpl vsum = createMetaRepositoryVSUMAndModelInstances();
+        InternalVirtualModel vsum = createMetaRepositoryVSUMAndModelInstances();
         VURI model1URI = VURI.getInstance(getDefaultPCMInstanceURI());
-        ModelInstance model1 = vsum.getAndLoadModelInstanceOriginal(model1URI);
+        ModelInstance model1 = vsum.getModelInstance(model1URI);
         Repository pcmRoot = (Repository) model1.getResource().getContents().get(0);
         String expectedTUID = pcmRoot.getId();
         EObject resolvedEObject = testTUIDCalculator(PCM_MM_URI, pcmRoot, pcmRoot, expectedTUID);

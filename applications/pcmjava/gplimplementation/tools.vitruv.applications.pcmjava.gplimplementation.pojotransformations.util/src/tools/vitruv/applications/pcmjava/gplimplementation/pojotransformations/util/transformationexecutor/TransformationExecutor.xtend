@@ -7,7 +7,6 @@ import java.util.Deque
 import java.util.LinkedList
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.command.TransformationResult
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.domains.java.echange.feature.JavaFeatureEChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
@@ -26,6 +25,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeV
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.util.command.ChangePropagationResult
 
 public class TransformationExecutor {
 
@@ -51,8 +51,8 @@ public class TransformationExecutor {
 		}
 	}
 
-	def public TransformationResult executeTransformationForChange(EChange change) {
-		val TransformationResult transformationResult = executeTransformation(change)
+	def public ChangePropagationResult executeTransformationForChange(EChange change) {
+		val ChangePropagationResult transformationResult = executeTransformation(change)
 		updateTUIDOfAffectedEObjectInEChange(change)
 		return transformationResult
 	}
@@ -68,12 +68,12 @@ public class TransformationExecutor {
 		}
 	}
 
-	def private dispatch TransformationResult executeTransformation(EChange change) {
+	def private dispatch ChangePropagationResult executeTransformation(EChange change) {
 		logger.error("No executeTransformation method found for change " + change + ". Change not synchronized")
 		return null
 	}
 
-	def private dispatch TransformationResult executeTransformation(InsertRootEObject<?> createRootEObject) {
+	def private dispatch ChangePropagationResult executeTransformation(InsertRootEObject<?> createRootEObject) {
 		val EObject[] createdObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(createRootEObject.newValue.class).createEObject(
 				createRootEObject.newValue)
@@ -81,7 +81,7 @@ public class TransformationExecutor {
 			createRootEObject(createRootEObject.newValue, createdObjects)
 	}
 
-	def private dispatch TransformationResult executeTransformation(RemoveRootEObject<?> deleteRootEObject) {
+	def private dispatch ChangePropagationResult executeTransformation(RemoveRootEObject<?> deleteRootEObject) {
 		val EObject[] removedEObjects = mappingTransformations.
 			claimForMappedClassOrImplementingInterface(deleteRootEObject.oldValue.class).removeEObject(
 				deleteRootEObject.oldValue)
@@ -100,7 +100,7 @@ public class TransformationExecutor {
 //			replaceRoot(replaceRootEObject.oldValue, replaceRootEObject.newValue, removedEObjects, createdObjects)
 //	}
 
-	def private dispatch TransformationResult executeTransformation(InsertEReference<?,?> insertEReference) {
+	def private dispatch ChangePropagationResult executeTransformation(InsertEReference<?,?> insertEReference) {
 		val oldAffectedEObject = if (insertEReference instanceof JavaInsertEReference<?,?>) {
 			insertEReference.oldAffectedEObject
 		} else {
@@ -126,7 +126,7 @@ public class TransformationExecutor {
 		}
 	}
 
-	def private dispatch TransformationResult executeTransformation(RemoveEReference<?,?> removeEReference) {
+	def private dispatch ChangePropagationResult executeTransformation(RemoveEReference<?,?> removeEReference) {
 		val oldAffectedEObject = if (removeEReference instanceof JavaRemoveEReference<?,?>) {
 			removeEReference.oldAffectedEObject
 		} else {
@@ -174,7 +174,7 @@ public class TransformationExecutor {
 //			replaceNonRootEObjectInList.index, eObjectsToDelete, createdEObjects)
 //	}
 
-	def private dispatch TransformationResult executeTransformation(ReplaceSingleValuedEReference<?,?> replaceSingleValuedEReference) {
+	def private dispatch ChangePropagationResult executeTransformation(ReplaceSingleValuedEReference<?,?> replaceSingleValuedEReference) {
 		val oldAffectedEObject = if (replaceSingleValuedEReference instanceof JavaReplaceSingleValuedEReference<?,?>) {
 			replaceSingleValuedEReference.oldAffectedEObject
 		} else {
@@ -251,7 +251,7 @@ public class TransformationExecutor {
 //				permuteNonContainmentEReferenceValues.newIndexForElementAt)
 //	}
 
-	def private dispatch TransformationResult executeTransformation(
+	def private dispatch ChangePropagationResult executeTransformation(
 		ReplaceSingleValuedEAttribute<?,?> replaceSingleValuedEAttribute) {
 		val oldAffectedEObject = if (replaceSingleValuedEAttribute instanceof JavaReplaceSingleValuedEAttribute<?,?>) {
 			replaceSingleValuedEAttribute.oldAffectedEObject
@@ -264,7 +264,7 @@ public class TransformationExecutor {
 			replaceSingleValuedEAttribute.oldValue, replaceSingleValuedEAttribute.newValue)
 	}
 
-	def private dispatch TransformationResult executeTransformation(InsertEAttributeValue<?,?> insertEAttributeValue) {
+	def private dispatch ChangePropagationResult executeTransformation(InsertEAttributeValue<?,?> insertEAttributeValue) {
 		val oldAffectedEObject = if (insertEAttributeValue instanceof JavaInsertEAttributeValue<?,?>) {
 			insertEAttributeValue.oldAffectedEObject
 		} else {
@@ -275,7 +275,7 @@ public class TransformationExecutor {
 				insertEAttributeValue.newValue, insertEAttributeValue.index)
 	}
 
-	def private dispatch TransformationResult executeTransformation(RemoveEAttributeValue<?,?> removeEAttributeValue) {
+	def private dispatch ChangePropagationResult executeTransformation(RemoveEAttributeValue<?,?> removeEAttributeValue) {
 		val oldAffectedEObject = if (removeEAttributeValue instanceof JavaRemoveEAttributeValue<?,?>) {
 			removeEAttributeValue.oldAffectedEObject
 		} else {
