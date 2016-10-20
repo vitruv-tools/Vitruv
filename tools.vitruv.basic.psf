@@ -36,7 +36,6 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.change"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.util"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.util.metamodels"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.vsum"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tuid"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.userinteracting"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.util"/>
@@ -76,20 +75,19 @@
 <item elementID="=tools.vitruv.extensions.dslsruntime.mapping" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1475739513934_1" label="Framework" name="Framework">
-<item elementID="=tools.vitruv.framework.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.change.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.change.processing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.metamodel" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.modelsynchronization" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.tests.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.metamodel" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.correspondence" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.tests.util.metamodels" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tests.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.tuid" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.userinteraction" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tuid" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change.processing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.userinteraction" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.change.echange" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tests.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.modelsynchronization" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 </psf>
