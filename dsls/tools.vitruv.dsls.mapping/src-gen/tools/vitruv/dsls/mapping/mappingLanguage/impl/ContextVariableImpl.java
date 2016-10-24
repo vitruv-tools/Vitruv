@@ -16,7 +16,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.ContextVariable;
 import tools.vitruv.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMappingPathBase;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,7 +52,7 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * @generated
    * @ordered
    */
-  protected ModelElement targetClass;
+  protected NamedModelElement targetClass;
 
   /**
    * <!-- begin-user-doc -->
@@ -128,12 +128,12 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public ModelElement getTargetClass()
+  public NamedModelElement getTargetClass()
   {
     if (targetClass != null && targetClass.eIsProxy())
     {
       InternalEObject oldTargetClass = (InternalEObject)targetClass;
-      targetClass = (ModelElement)eResolveProxy(oldTargetClass);
+      targetClass = (NamedModelElement)eResolveProxy(oldTargetClass);
       if (targetClass != oldTargetClass)
       {
         if (eNotificationRequired())
@@ -148,7 +148,7 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public ModelElement basicGetTargetClass()
+  public NamedModelElement basicGetTargetClass()
   {
     return targetClass;
   }
@@ -158,9 +158,9 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setTargetClass(ModelElement newTargetClass)
+  public void setTargetClass(NamedModelElement newTargetClass)
   {
-    ModelElement oldTargetClass = targetClass;
+    NamedModelElement oldTargetClass = targetClass;
     targetClass = newTargetClass;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS, oldTargetClass, targetClass));
@@ -215,7 +215,7 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
         setRequiredMappingPath((RequiredMappingPathBase)newValue);
         return;
       case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
-        setTargetClass((ModelElement)newValue);
+        setTargetClass((NamedModelElement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -235,7 +235,7 @@ public class ContextVariableImpl extends MinimalEObjectImpl.Container implements
         setRequiredMappingPath((RequiredMappingPathBase)null);
         return;
       case MappingLanguagePackage.CONTEXT_VARIABLE__TARGET_CLASS:
-        setTargetClass((ModelElement)null);
+        setTargetClass((NamedModelElement)null);
         return;
     }
     super.eUnset(featureID);

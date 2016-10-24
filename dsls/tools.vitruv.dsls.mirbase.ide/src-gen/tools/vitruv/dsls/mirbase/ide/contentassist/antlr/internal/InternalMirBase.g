@@ -117,6 +117,23 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+
+// Rule ModelElement
+ruleModelElement 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getModelElementAccess().getElementAssignment()); }
+		(rule__ModelElement__ElementAssignment)
+		{ after(grammarAccess.getModelElementAccess().getElementAssignment()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleXExpression
 entryRuleXExpression
 :
@@ -14925,6 +14942,25 @@ rule__MetamodelImport__UseSimpleNamesAssignment_4
 			{ after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
 		)
 		{ after(grammarAccess.getMetamodelImportAccess().getUseSimpleNamesUsingSimpleNamesKeyword_4_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__ModelElement__ElementAssignment
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
+		(
+			{ before(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
+			ruleQualifiedName
+			{ after(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
+		)
+		{ after(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
 	)
 ;
 finally {

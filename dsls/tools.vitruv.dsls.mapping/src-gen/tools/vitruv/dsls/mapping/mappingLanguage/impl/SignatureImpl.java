@@ -23,7 +23,7 @@ import tools.vitruv.dsls.mapping.mappingLanguage.MappingLanguagePackage;
 import tools.vitruv.dsls.mapping.mappingLanguage.Signature;
 
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,7 +59,7 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
    * @generated
    * @ordered
    */
-  protected EList<ModelElement> elements;
+  protected EList<NamedModelElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -135,11 +135,11 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ModelElement> getElements()
+  public EList<NamedModelElement> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<ModelElement>(ModelElement.class, this, MappingLanguagePackage.SIGNATURE__ELEMENTS);
+      elements = new EObjectContainmentEList<NamedModelElement>(NamedModelElement.class, this, MappingLanguagePackage.SIGNATURE__ELEMENTS);
     }
     return elements;
   }
@@ -196,7 +196,7 @@ public class SignatureImpl extends MinimalEObjectImpl.Container implements Signa
         return;
       case MappingLanguagePackage.SIGNATURE__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends ModelElement>)newValue);
+        getElements().addAll((Collection<? extends NamedModelElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

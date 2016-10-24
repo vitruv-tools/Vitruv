@@ -136,7 +136,7 @@ FeatureOfContextVariable:
 ;
 
 ContextVariable:
-	(requiredMappingPath=RequiredMappingPathBase '::')? (targetClass=[mirBase::ModelElement|ValidID])
+	(requiredMappingPath=RequiredMappingPathBase '::')? (targetClass=[mirBase::NamedModelElement|ValidID])
 ;
 
 RequiredMappingPathBase:

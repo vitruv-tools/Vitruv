@@ -216,22 +216,50 @@ public interface MirBasePackage extends EPackage
   int MODEL_ELEMENT__ELEMENT = 0;
 
   /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MODEL_ELEMENT__NAME = 1;
-
-  /**
    * The number of structural features of the '<em>Model Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MODEL_ELEMENT_FEATURE_COUNT = 2;
+  int MODEL_ELEMENT_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.NamedModelElementImpl <em>Named Model Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.NamedModelElementImpl
+   * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedModelElement()
+   * @generated
+   */
+  int NAMED_MODEL_ELEMENT = 5;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_MODEL_ELEMENT__ELEMENT = MODEL_ELEMENT__ELEMENT;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_MODEL_ELEMENT__NAME = MODEL_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Named Model Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NAMED_MODEL_ELEMENT_FEATURE_COUNT = MODEL_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.FeatureOfElementImpl <em>Feature Of Element</em>}' class.
@@ -241,7 +269,7 @@ public interface MirBasePackage extends EPackage
    * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getFeatureOfElement()
    * @generated
    */
-  int FEATURE_OF_ELEMENT = 5;
+  int FEATURE_OF_ELEMENT = 6;
 
   /**
    * The feature id for the '<em><b>Element</b></em>' reference.
@@ -278,7 +306,7 @@ public interface MirBasePackage extends EPackage
    * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getMetamodelReference()
    * @generated
    */
-  int METAMODEL_REFERENCE = 6;
+  int METAMODEL_REFERENCE = 7;
 
   /**
    * The feature id for the '<em><b>Model</b></em>' reference.
@@ -427,15 +455,25 @@ public interface MirBasePackage extends EPackage
   EReference getModelElement_Element();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.ModelElement#getName <em>Name</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement <em>Named Model Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Named Model Element</em>'.
+   * @see tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+   * @generated
+   */
+  EClass getNamedModelElement();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see tools.vitruv.dsls.mirbase.mirBase.ModelElement#getName()
-   * @see #getModelElement()
+   * @see tools.vitruv.dsls.mirbase.mirBase.NamedModelElement#getName()
+   * @see #getNamedModelElement()
    * @generated
    */
-  EAttribute getModelElement_Name();
+  EAttribute getNamedModelElement_Name();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement <em>Feature Of Element</em>}'.
@@ -620,12 +658,22 @@ public interface MirBasePackage extends EPackage
     EReference MODEL_ELEMENT__ELEMENT = eINSTANCE.getModelElement_Element();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.NamedModelElementImpl <em>Named Model Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.NamedModelElementImpl
+     * @see tools.vitruv.dsls.mirbase.mirBase.impl.MirBasePackageImpl#getNamedModelElement()
+     * @generated
+     */
+    EClass NAMED_MODEL_ELEMENT = eINSTANCE.getNamedModelElement();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute MODEL_ELEMENT__NAME = eINSTANCE.getModelElement_Name();
+    EAttribute NAMED_MODEL_ELEMENT__NAME = eINSTANCE.getNamedModelElement_Name();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.mirbase.mirBase.impl.FeatureOfElementImpl <em>Feature Of Element</em>}' class.

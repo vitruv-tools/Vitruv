@@ -21,6 +21,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -64,6 +65,13 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * @generated
    */
   private EClass modelElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass namedModelElementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -270,9 +278,19 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getModelElement_Name()
+  public EClass getNamedModelElement()
   {
-    return (EAttribute)modelElementEClass.getEStructuralFeatures().get(1);
+    return namedModelElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNamedModelElement_Name()
+  {
+    return (EAttribute)namedModelElementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -371,7 +389,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     modelElementEClass = createEClass(MODEL_ELEMENT);
     createEReference(modelElementEClass, MODEL_ELEMENT__ELEMENT);
-    createEAttribute(modelElementEClass, MODEL_ELEMENT__NAME);
+
+    namedModelElementEClass = createEClass(NAMED_MODEL_ELEMENT);
+    createEAttribute(namedModelElementEClass, NAMED_MODEL_ELEMENT__NAME);
 
     featureOfElementEClass = createEClass(FEATURE_OF_ELEMENT);
     createEReference(featureOfElementEClass, FEATURE_OF_ELEMENT__ELEMENT);
@@ -414,6 +434,7 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     // Add supertypes to classes
     dummyEntryRuleEClass.getESuperTypes().add(this.getMirBaseFile());
+    namedModelElementEClass.getESuperTypes().add(this.getModelElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(dummyEntryRuleEClass, DummyEntryRule.class, "DummyEntryRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -432,7 +453,9 @@ public class MirBasePackageImpl extends EPackageImpl implements MirBasePackage
 
     initEClass(modelElementEClass, ModelElement.class, "ModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getModelElement_Element(), ecorePackage.getEClass(), null, "element", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getModelElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, ModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(namedModelElementEClass, NamedModelElement.class, "NamedModelElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNamedModelElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, NamedModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(featureOfElementEClass, FeatureOfElement.class, "FeatureOfElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFeatureOfElement_Element(), ecorePackage.getEClass(), null, "element", null, 0, 1, FeatureOfElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
