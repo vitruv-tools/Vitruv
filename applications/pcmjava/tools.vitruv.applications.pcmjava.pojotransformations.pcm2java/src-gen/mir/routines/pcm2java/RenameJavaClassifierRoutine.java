@@ -15,12 +15,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameJavaClassifierRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RenameJavaClassifierRoutine.EffectUserExecution userExecution;
+  private RenameJavaClassifierRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -61,8 +61,8 @@ public class RenameJavaClassifierRoutine extends AbstractRepairRoutineRealizatio
   
   public RenameJavaClassifierRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NamedElement classSourceElement, final org.emftext.language.java.containers.Package containingPackage, final String className) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RenameJavaClassifierRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RenameJavaClassifierRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.classSourceElement = classSourceElement;this.containingPackage = containingPackage;this.className = className;
   }
   

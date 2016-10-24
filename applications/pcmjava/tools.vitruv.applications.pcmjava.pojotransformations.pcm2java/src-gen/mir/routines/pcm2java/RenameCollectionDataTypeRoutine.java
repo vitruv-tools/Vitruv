@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameCollectionDataTypeRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RenameCollectionDataTypeRoutine.EffectUserExecution userExecution;
+  private RenameCollectionDataTypeRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -41,8 +41,8 @@ public class RenameCollectionDataTypeRoutine extends AbstractRepairRoutineRealiz
   
   public RenameCollectionDataTypeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CollectionDataType collectionDataType) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RenameCollectionDataTypeRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RenameCollectionDataTypeRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.collectionDataType = collectionDataType;
   }
   
@@ -61,7 +61,7 @@ public class RenameCollectionDataTypeRoutine extends AbstractRepairRoutineRealiz
     	return;
     }
     initializeRetrieveElementState(datatypesPackage);
-    userExecution.callRoutine1(collectionDataType, datatypesPackage, effectFacade);
+    userExecution.callRoutine1(collectionDataType, datatypesPackage, actionsFacade);
     
     postprocessElementStates();
   }

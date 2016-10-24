@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ChangeReturnTypeOfMethodForOperationSignatureRoutine.EffectUserExecution userExecution;
+  private ChangeReturnTypeOfMethodForOperationSignatureRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -34,8 +34,8 @@ public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends Abstra
   
   public ChangeReturnTypeOfMethodForOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.ChangeReturnTypeOfMethodForOperationSignatureRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.ChangeReturnTypeOfMethodForOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.operationSignature = operationSignature;
   }
   
@@ -54,7 +54,7 @@ public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends Abstra
     	return;
     }
     initializeRetrieveElementState(interfaceMethod);
-    userExecution.callRoutine1(operationSignature, interfaceMethod, effectFacade);
+    userExecution.callRoutine1(operationSignature, interfaceMethod, actionsFacade);
     
     postprocessElementStates();
   }

@@ -18,12 +18,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateParameterRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateParameterRoutine.EffectUserExecution userExecution;
+  private CreateParameterRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -65,8 +65,8 @@ public class CreateParameterRoutine extends AbstractRepairRoutineRealization {
   
   public CreateParameterRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter parameter) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateParameterRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateParameterRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.parameter = parameter;
   }
   

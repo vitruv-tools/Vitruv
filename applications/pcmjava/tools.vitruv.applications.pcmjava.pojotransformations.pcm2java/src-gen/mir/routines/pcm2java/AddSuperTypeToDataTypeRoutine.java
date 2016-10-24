@@ -25,12 +25,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddSuperTypeToDataTypeRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private AddSuperTypeToDataTypeRoutine.EffectUserExecution userExecution;
+  private AddSuperTypeToDataTypeRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -85,8 +85,8 @@ public class AddSuperTypeToDataTypeRoutine extends AbstractRepairRoutineRealizat
   
   public AddSuperTypeToDataTypeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.AddSuperTypeToDataTypeRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.AddSuperTypeToDataTypeRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.dataType = dataType;this.innerTypeReference = innerTypeReference;this.superTypeQualifiedName = superTypeQualifiedName;
   }
   

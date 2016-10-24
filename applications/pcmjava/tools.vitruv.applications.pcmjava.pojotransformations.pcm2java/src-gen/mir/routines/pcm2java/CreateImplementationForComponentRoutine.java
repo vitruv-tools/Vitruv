@@ -11,12 +11,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateImplementationForComponentRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateImplementationForComponentRoutine.EffectUserExecution userExecution;
+  private CreateImplementationForComponentRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -33,8 +33,8 @@ public class CreateImplementationForComponentRoutine extends AbstractRepairRouti
   
   public CreateImplementationForComponentRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateImplementationForComponentRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateImplementationForComponentRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.component = component;
   }
   
@@ -53,7 +53,7 @@ public class CreateImplementationForComponentRoutine extends AbstractRepairRouti
     	return;
     }
     initializeRetrieveElementState(componentPackage);
-    userExecution.callRoutine1(component, componentPackage, effectFacade);
+    userExecution.callRoutine1(component, componentPackage, actionsFacade);
     
     postprocessElementStates();
   }

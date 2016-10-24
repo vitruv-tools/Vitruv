@@ -26,12 +26,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddRequiredRoleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private AddRequiredRoleRoutine.EffectUserExecution userExecution;
+  private AddRequiredRoleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -100,8 +100,8 @@ public class AddRequiredRoleRoutine extends AbstractRepairRoutineRealization {
   
   public AddRequiredRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.AddRequiredRoleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.AddRequiredRoleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.requiredRole = requiredRole;
   }
   
@@ -144,7 +144,7 @@ public class AddRequiredRoleRoutine extends AbstractRepairRoutineRealization {
     // val updatedElement userExecution.getElement5(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
     userExecution.update0Element(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField);
     
-    userExecution.callRoutine1(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField, effectFacade);
+    userExecution.callRoutine1(requiredRole, requiredInterface, javaClass, requiredInterfaceImport, requiredInterfaceField, actionsFacade);
     
     postprocessElementStates();
   }

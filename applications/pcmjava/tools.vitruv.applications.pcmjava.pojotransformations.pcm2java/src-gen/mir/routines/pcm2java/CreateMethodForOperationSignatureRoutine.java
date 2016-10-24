@@ -18,12 +18,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateMethodForOperationSignatureRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateMethodForOperationSignatureRoutine.EffectUserExecution userExecution;
+  private CreateMethodForOperationSignatureRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -52,8 +52,8 @@ public class CreateMethodForOperationSignatureRoutine extends AbstractRepairRout
   
   public CreateMethodForOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateMethodForOperationSignatureRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateMethodForOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.operationSignature = operationSignature;
   }
   
@@ -77,7 +77,7 @@ public class CreateMethodForOperationSignatureRoutine extends AbstractRepairRout
     
     addCorrespondenceBetween(userExecution.getElement1(operationSignature, javaInterface, interfaceMethod), userExecution.getElement2(operationSignature, javaInterface, interfaceMethod), "");
     
-    userExecution.callRoutine1(operationSignature, javaInterface, interfaceMethod, effectFacade);
+    userExecution.callRoutine1(operationSignature, javaInterface, interfaceMethod, actionsFacade);
     
     postprocessElementStates();
   }

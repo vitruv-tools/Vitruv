@@ -14,12 +14,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateOperationRequiredRoleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateOperationRequiredRoleRoutine.EffectUserExecution userExecution;
+  private CreateOperationRequiredRoleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -44,8 +44,8 @@ public class CreateOperationRequiredRoleRoutine extends AbstractRepairRoutineRea
   
   public CreateOperationRequiredRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final BasicComponent basicComponent, final OperationInterface opInterface, final Field field) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreateOperationRequiredRoleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreateOperationRequiredRoleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.basicComponent = basicComponent;this.opInterface = opInterface;this.field = field;
   }
   

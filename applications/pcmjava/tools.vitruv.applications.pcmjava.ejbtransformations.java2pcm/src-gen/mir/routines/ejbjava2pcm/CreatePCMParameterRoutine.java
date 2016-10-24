@@ -18,12 +18,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreatePCMParameterRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatePCMParameterRoutine.EffectUserExecution userExecution;
+  private CreatePCMParameterRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -61,8 +61,8 @@ public class CreatePCMParameterRoutine extends AbstractRepairRoutineRealization 
   
   public CreatePCMParameterRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Parameter jaMoPPParam, final OperationSignature opSignature) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatePCMParameterRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatePCMParameterRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.jaMoPPParam = jaMoPPParam;this.opSignature = opSignature;
   }
   

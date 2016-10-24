@@ -21,12 +21,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenamePackageForRepositoryRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RenamePackageForRepositoryRoutine.EffectUserExecution userExecution;
+  private RenamePackageForRepositoryRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -77,8 +77,8 @@ public class RenamePackageForRepositoryRoutine extends AbstractRepairRoutineReal
   
   public RenamePackageForRepositoryRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RenamePackageForRepositoryRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RenamePackageForRepositoryRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.repository = repository;
   }
   
@@ -100,7 +100,7 @@ public class RenamePackageForRepositoryRoutine extends AbstractRepairRoutineReal
     // val updatedElement userExecution.getElement1(repository, rootPackage);
     userExecution.update0Element(repository, rootPackage);
     
-    userExecution.callRoutine1(repository, rootPackage, effectFacade);
+    userExecution.callRoutine1(repository, rootPackage, actionsFacade);
     
     postprocessElementStates();
   }

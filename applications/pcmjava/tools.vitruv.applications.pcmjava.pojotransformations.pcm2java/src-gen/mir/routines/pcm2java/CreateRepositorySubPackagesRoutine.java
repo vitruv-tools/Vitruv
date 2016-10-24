@@ -11,12 +11,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateRepositorySubPackagesRoutine.EffectUserExecution userExecution;
+  private CreateRepositorySubPackagesRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -32,8 +32,8 @@ public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRea
   
   public CreateRepositorySubPackagesRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.repository = repository;
   }
   
@@ -52,7 +52,7 @@ public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRea
     	return;
     }
     initializeRetrieveElementState(repositoryPackage);
-    userExecution.callRoutine1(repository, repositoryPackage, effectFacade);
+    userExecution.callRoutine1(repository, repositoryPackage, actionsFacade);
     
     postprocessElementStates();
   }

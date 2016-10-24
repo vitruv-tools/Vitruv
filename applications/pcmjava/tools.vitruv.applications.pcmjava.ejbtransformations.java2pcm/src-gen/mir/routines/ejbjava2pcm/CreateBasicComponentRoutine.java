@@ -15,12 +15,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateBasicComponentRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateBasicComponentRoutine.EffectUserExecution userExecution;
+  private CreateBasicComponentRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -49,8 +49,8 @@ public class CreateBasicComponentRoutine extends AbstractRepairRoutineRealizatio
   
   public CreateBasicComponentRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repo, final NamedElement namedElement) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreateBasicComponentRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreateBasicComponentRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.repo = repo;this.namedElement = namedElement;
   }
   

@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatedInterfaceMethodRoutine.EffectUserExecution userExecution;
+  private CreatedInterfaceMethodRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -33,8 +33,8 @@ public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealizat
   
   public CreatedInterfaceMethodRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Interface interf, final InterfaceMethod method) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatedInterfaceMethodRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatedInterfaceMethodRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.interf = interf;this.method = method;
   }
   
@@ -56,7 +56,7 @@ public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealizat
     	return;
     }
     initializeRetrieveElementState(opInterface);
-    userExecution.callRoutine1(interf, method, opInterface, effectFacade);
+    userExecution.callRoutine1(interf, method, opInterface, actionsFacade);
     
     postprocessElementStates();
   }

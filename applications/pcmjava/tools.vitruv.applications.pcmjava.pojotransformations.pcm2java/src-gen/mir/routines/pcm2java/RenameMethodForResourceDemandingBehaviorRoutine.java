@@ -11,12 +11,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameMethodForResourceDemandingBehaviorRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RenameMethodForResourceDemandingBehaviorRoutine.EffectUserExecution userExecution;
+  private RenameMethodForResourceDemandingBehaviorRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -36,8 +36,8 @@ public class RenameMethodForResourceDemandingBehaviorRoutine extends AbstractRep
   
   public RenameMethodForResourceDemandingBehaviorRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RenameMethodForResourceDemandingBehaviorRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RenameMethodForResourceDemandingBehaviorRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.behavior = behavior;
   }
   

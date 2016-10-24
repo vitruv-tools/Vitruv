@@ -18,12 +18,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveRequiredRoleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RemoveRequiredRoleRoutine.EffectUserExecution userExecution;
+  private RemoveRequiredRoleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -62,8 +62,8 @@ public class RemoveRequiredRoleRoutine extends AbstractRepairRoutineRealization 
   
   public RemoveRequiredRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RequiredRole requiredRole, final InterfaceRequiringEntity requiringEntity) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RemoveRequiredRoleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RemoveRequiredRoleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.requiredRole = requiredRole;this.requiringEntity = requiringEntity;
   }
   
@@ -107,7 +107,7 @@ public class RemoveRequiredRoleRoutine extends AbstractRepairRoutineRealization 
     
     deleteObject(userExecution.getElement2(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass));
     
-    userExecution.callRoutine1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass, effectFacade);
+    userExecution.callRoutine1(requiredRole, requiringEntity, requiredInterfaceImport, requiredInterfaceField, javaClass, actionsFacade);
     
     postprocessElementStates();
   }
