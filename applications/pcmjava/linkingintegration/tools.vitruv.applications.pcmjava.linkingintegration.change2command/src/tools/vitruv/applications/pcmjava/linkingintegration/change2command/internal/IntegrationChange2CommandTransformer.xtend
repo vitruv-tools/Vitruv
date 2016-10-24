@@ -22,7 +22,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
-import mir.responses.responsesJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1
+import mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1
 import tools.vitruv.framework.util.command.ChangePropagationResult
 
 class IntegrationChange2CommandTransformer {

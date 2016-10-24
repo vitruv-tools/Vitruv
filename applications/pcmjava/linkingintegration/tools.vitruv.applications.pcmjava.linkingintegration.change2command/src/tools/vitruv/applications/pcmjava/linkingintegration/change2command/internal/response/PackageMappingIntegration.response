@@ -17,39 +17,40 @@ import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
 
 // TODO We can convert several custom statements to response language statements, e.g. correspondence creation, element creation
-response collection: PackageMappingIntegration
-from metamodel java to metamodel pcm
+reactions: PackageMappingIntegration
+in reaction to changes in java
+execute actions in pcm
 
 //empty implementation for add and remove imports
-response: AddImportResponse {
-	after list entry inserted java.JavaRoot[imports]
+reaction AddImportResponse {
+	after list entry created and inserted in java.JavaRoot[imports]
 	call {}
 }
 
-response: RemoveImportResponse {
-	after list entry removed java.JavaRoot[imports]
+reaction RemoveImportResponse {
+	after list entry deleted and removed in java.JavaRoot[imports]
 	call {}
 }
 
-response: RenameMethod {
-	after value replaced java.Method[name]
+reaction RenameMethod {
+	after value replaced for java.Method[name]
 	call renamedMethod(change.affectedEObject, change.newValue)
 }
 
-routine: renamedMethod(java.Method method, String newMethodName) {
+routine renamedMethod(java.Method method, String newMethodName) {
 	match {
-		retrieve required element pcm.OperationSignature as operationSignature corresponding to method
+		val operationSignature = retrieve pcm.OperationSignature corresponding to method
 	}
-	effect {
-		update element operationSignature {
+	action {
+		update operationSignature {
 			operationSignature.entityName = newMethodName
 			//EvaluationHelper.instance.logChange2ActionHandeldByIntegrationResponse(change, "renamed operation signature " + operationSignature + " to " + change.newValue)
 		}
 	} 
 }
 
-response: RemoveMethodEvent {
-	after list entry removed java.ConcreteClassifier[members]
+reaction RemoveMethodEvent {
+	after list entry deleted and removed in java.ConcreteClassifier[members]
 		with { 
 			if (change.oldValue instanceof Method){
 			// EvaluationHelper.
@@ -60,38 +61,38 @@ response: RemoveMethodEvent {
 	call removedMethodEvent(change.oldValue as Method)
 } 
 
-routine: removedMethodEvent(java.Method method) {
+routine removedMethodEvent(java.Method method) {
 	match {
-		retrieve required element pcm.OperationSignature as opSig corresponding to method
+		val opSig = retrieve pcm.OperationSignature corresponding to method
 	}
-	effect {
+	action {
 		remove correspondence between opSig and method
-		update element opSig {
+		update opSig {
 			EcoreUtil.remove(opSig)
 		}
 	}
 }
 
-response: AddMethodEvent {
-	after list entry inserted java.ConcreteClassifier[members]
+reaction AddMethodEvent {
+	after list entry created and inserted in java.ConcreteClassifier[members]
 		with change.newValue instanceof Method
 	call addedMethodEvent(change.affectedEObject, change.newValue as Method)
 }
 
-routine: addedMethodEvent(java.ConcreteClassifier clazz, java.Method method) {
+routine addedMethodEvent(java.ConcreteClassifier clazz, java.Method method) {
 	match {
-		retrieve required element pcm.OperationInterface as opInterface corresponding to clazz
+		val opInterface = retrieve pcm.OperationInterface corresponding to clazz
 	}
-	effect {
+	action {
 		call {	
 			createOperationSignature(opInterface, method)
 		}
 	}
 }
 
-routine: createOperationSignature(pcm.OperationInterface opInterface, java.Method newMethod) {
-	effect {
-		update element newMethod {
+routine createOperationSignature(pcm.OperationInterface opInterface, java.Method newMethod) {
+	action {
+		update newMethod {
 			// ask user whether to add the new method to the operationInterface
 			val selection = userInteracting.selectFromMessage(UserInteractionType.MODAL, "Should the new method " + 
 				newMethod.name + " be part of the OperationInterface "+ opInterface.entityName+ "? " , "Yes", "No")
@@ -105,18 +106,18 @@ routine: createOperationSignature(pcm.OperationInterface opInterface, java.Metho
 	}
 }
 
-response: CreateMetodParameterEvent {
-	after list entry inserted java.Method[parameters]
+reaction CreateMetodParameterEvent {
+	after list entry created and inserted in java.Method[parameters]
 	call createdMethodParameterEvent(change.affectedEObject, change.newValue)
 }
 
-routine: createdMethodParameterEvent(java.Method method, java.Parameter parameter) {
+routine createdMethodParameterEvent(java.Method method, java.Parameter parameter) {
 	match {
-		retrieve required element pcm.OperationSignature as opSignature corresponding to method
+		val opSignature = retrieve pcm.OperationSignature corresponding to method
 	}
-	effect {
+	action {
 		add correspondence between opSignature and parameter
-		update element opSignature {
+		update opSignature {
 			userInteracting.showMessage(UserInteractionType.MODAL, "Created new parameter for OperationSiganture" + opSignature)
 			val pcmParameter = RepositoryFactory.eINSTANCE.createParameter
 			pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.
@@ -127,34 +128,34 @@ routine: createdMethodParameterEvent(java.Method method, java.Parameter paramete
 	}
 }
 
-response: MethodParameterNameChangeEvent {
-	after value replaced java.Parameter[name]
+reaction MethodParameterNameChangeEvent {
+	after value replaced for java.Parameter[name]
 	call methodParameterNameChangedEvent(change.affectedEObject, change.oldValue, change.newValue)
 }
 
-routine: methodParameterNameChangedEvent(java.Parameter parameter, String oldParameterName, String newParameterName) {
+routine methodParameterNameChangedEvent(java.Parameter parameter, String oldParameterName, String newParameterName) {
 	match { 
-		retrieve required element pcm.Parameter as pcmParam corresponding to parameter
+		val pcmParam = retrieve pcm.Parameter corresponding to parameter
 	}
-	effect {
-		update element pcmParam {
+	action {
+		update pcmParam {
 			userInteracting.showMessage(UserInteractionType.MODAL, "Renamed method parameter " + oldParameterName +  " to " + newParameterName)
 			pcmParam.entityName = newParameterName
 		}
 	}
 }	
 
-response: ChangeMethodTypeEvent {
-	after value replaced java.Method[typeReference]
+reaction ChangeMethodTypeEvent {
+	after value replaced for java.Method[typeReference]
 	call changedMethodType(change.affectedEObject, change.newValue)
 }
 	
-routine: changedMethodType(java.Method method, java.TypeReference newType) {
+routine changedMethodType(java.Method method, java.TypeReference newType) {
 	match { 	
-		retrieve required element pcm.OperationSignature as opSignature corresponding to method
+		val opSignature = retrieve pcm.OperationSignature corresponding to method
 	}
-	effect {
-		update element opSignature {
+	action {
+		update opSignature {
 			val Repository repo = opSignature.interface__OperationSignature.repository__Interface
 			val DataType newReturnValue = TypeReferenceCorrespondenceHelper.
 				getCorrespondingPCMDataTypeForTypeReference(newType,
@@ -165,19 +166,19 @@ routine: changedMethodType(java.Method method, java.TypeReference newType) {
 	}
 }
 
-response: RemoveFieldEvent {
-	after list entry removed java.ConcreteClassifier[members]
+reaction RemoveFieldEvent {
+	after list entry deleted and removed in java.ConcreteClassifier[members]
 		with change.oldValue instanceof Field
 	call removedFieldEvent(change.oldValue as Field)
 }
 	
-routine: removedFieldEvent(java.Field field) {
+routine removedFieldEvent(java.Field field) {
 	match { 
-		retrieve required element pcm.NamedElement as namedElement corresponding to field
+		val namedElement = retrieve pcm.NamedElement corresponding to field
 	}	
-	effect {
+	action {
 		remove correspondence between field and namedElement
-		update element field {
+		update field {
 			userInteracting.showMessage(UserInteractionType.MODAL, "Removed " + namedElement + " because the corresponding field " + field + " has been removed"  )
 			// TODO This is wrong, isnt't it? Should be "namedElement"!?
 			EcoreUtil.remove(field)
@@ -185,18 +186,18 @@ routine: removedFieldEvent(java.Field field) {
 	}
 }
 	
-response: AddFieldEvent {
-	after list entry inserted java.ConcreteClassifier[members]
+reaction AddFieldEvent {
+	after list entry created and inserted in java.ConcreteClassifier[members]
 		with change.newValue instanceof Field
 	call addedFieldEvent(change.affectedEObject, change.newValue as Field)
 }
 
-routine: addedFieldEvent(java.ConcreteClassifier clazz, java.Field field) {
+routine addedFieldEvent(java.ConcreteClassifier clazz, java.Field field) {
 	match {
-		retrieve required element pcm.BasicComponent as basicComponent corresponding to clazz
-		retrieve required element pcm.OperationInterface as opInterface corresponding to field.typeReference
+		val basicComponent = retrieve pcm.BasicComponent corresponding to clazz
+		val opInterface = retrieve pcm.OperationInterface corresponding to field.typeReference
 	}
-	effect {
+	action {
 		call {
 			//new Field with PCM Type corresponding to an OperationInterface has been added in basic component --> created requrired role
 			createRequiredRole(basicComponent, opInterface, field)
@@ -204,11 +205,11 @@ routine: addedFieldEvent(java.ConcreteClassifier clazz, java.Field field) {
 	}
 }
 
-routine: createRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInterface opInterface, java.Field field) {
-	effect {
-		create element pcm.OperationRequiredRole as opRequiredRole
+routine createRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInterface opInterface, java.Field field) {
+	action {
+		val opRequiredRole = create pcm.OperationRequiredRole
 		add correspondence between opRequiredRole and field
-		update element opRequiredRole {
+		update opRequiredRole {
 			opRequiredRole.requiredInterface__OperationRequiredRole = opInterface
 			opRequiredRole.requiringEntity_RequiredRole = basicComponent
 			userInteracting.showMessage(UserInteractionType.MODAL, "Create OperationRequiredRole between Component " + 
@@ -217,19 +218,19 @@ routine: createRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInte
 	}
 }
 
-response: ChangeFieldTypeEvent {
-	after value replaced java.Field[typeReference]
+reaction ChangeFieldTypeEvent {
+	after value replaced for java.Field[typeReference]
 	call changedFieldTypeEvent(change.affectedEObject, change.oldValue, change.newValue)
 }
 
-routine: changedFieldTypeEvent(java.Field field, java.TypeReference oldType, java.TypeReference newType) {
+routine changedFieldTypeEvent(java.Field field, java.TypeReference oldType, java.TypeReference newType) {
 	match {
-		retrieve optional element pcm.OperationInterface as oldCorrespondingOpInterface corresponding to oldType
-		retrieve optional element pcm.OperationInterface as opInterface corresponding to newType
-		retrieve optional element pcm.OperationRequiredRole as opRequiredRole corresponding to field
-		retrieve required element pcm.BasicComponent as basicComponent corresponding to field.containingConcreteClassifier
+		val oldCorrespondingOpInterface = retrieve optional pcm.OperationInterface corresponding to oldType
+		val opInterface = retrieve optional pcm.OperationInterface corresponding to newType
+		val opRequiredRole = retrieve optional pcm.OperationRequiredRole corresponding to field
+		val basicComponent = retrieve pcm.BasicComponent corresponding to field.containingConcreteClassifier
 	}
-	effect {
+	action {
 		call {
 			if(null != oldCorrespondingOpInterface && null != opInterface && null != opRequiredRole){
 				// reset required role 
@@ -255,40 +256,40 @@ routine: changedFieldTypeEvent(java.Field field, java.TypeReference oldType, jav
 }
 	
 
-routine: removeRequiredRoleAndCorrespondence(pcm.OperationRequiredRole orr, java.Field field) {
-	effect {
+routine removeRequiredRoleAndCorrespondence(pcm.OperationRequiredRole orr, java.Field field) {
+	action {
 		remove correspondence between orr and field
-		update element orr {
-			EcoreUtil.delete(orr)
+		update orr {
+			EcoreUtil.^delete(orr)
 		}
 	}
 }
 
 // empty implementation for changeFieldModifier, because the change is not architectural relevant
-response: ChangeFieldModifierEvent {
-	after list entry inserted java.Field[annotationsAndModifiers]
+reaction ChangeFieldModifierEvent {
+	after list entry created and inserted in java.Field[annotationsAndModifiers]
 	call { }
 }
 
-response: RemoveFieldModifierEvent {
-	after list entry removed java.Field[annotationsAndModifiers]
+reaction RemoveFieldModifierEvent {
+	after list entry deleted and removed in java.Field[annotationsAndModifiers]
 	call { }
 }
 
 // if the method was public and had a corresponding opSig--> ask user whether to delete the correspondence
 // if the method was non-public and is public now and the classifier has a corresponding interface 
 //--> ask user whether to add the signature to the corresponding interface 
-response: ChangeMethodModifierEvent {
-	after list entry inserted java.Method[annotationsAndModifiers]
+reaction ChangeMethodModifierEvent {
+	after list entry created and inserted in java.Method[annotationsAndModifiers]
 	call changedMethodModifierEvent(change.affectedEObject, change.newValue)
 }
 
-routine: changedMethodModifierEvent(java.Method method, java.AnnotationInstanceOrModifier annotationOrModifier) {
+routine changedMethodModifierEvent(java.Method method, java.AnnotationInstanceOrModifier annotationOrModifier) {
 	match {
-		retrieve optional element pcm.OperationSignature as operationSignature corresponding to method
-		retrieve required element pcm.OperationInterface as operationInterface corresponding to method.containingConcreteClassifier
+		val operationSignature = retrieve optional pcm.OperationSignature corresponding to method
+		val operationInterface = retrieve pcm.OperationInterface corresponding to method.containingConcreteClassifier
 	}
-	effect {
+	action {
 		call {
 			if (annotationOrModifier instanceof Public){ 
 				//new public method created	

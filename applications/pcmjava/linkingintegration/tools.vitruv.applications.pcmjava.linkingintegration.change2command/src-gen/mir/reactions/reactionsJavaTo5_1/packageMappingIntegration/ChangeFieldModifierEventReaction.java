@@ -1,10 +1,10 @@
-package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
+package mir.reactions.reactionsJavaTo5_1.packageMappingIntegration;
 
 import mir.routines.packageMappingIntegration.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.emftext.language.java.containers.JavaRoot;
-import org.emftext.language.java.imports.Import;
+import org.emftext.language.java.members.Field;
+import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
@@ -14,8 +14,8 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class AddImportResponseResponse extends AbstractResponseRealization {
-  public AddImportResponseResponse(final UserInteracting userInteracting) {
+class ChangeFieldModifierEventReaction extends AbstractResponseRealization {
+  public ChangeFieldModifierEventReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -23,15 +23,15 @@ class AddImportResponseResponse extends AbstractResponseRealization {
     return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<JavaRoot, Import> change) {
+  private boolean checkChangeProperties(final InsertEReference<Field, AnnotationInstanceOrModifier> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
-    if (!(changedElement instanceof JavaRoot)) {
+    if (!(changedElement instanceof Field)) {
     	return false;
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("imports")) {
+    if (!change.getAffectedFeature().getName().equals("annotationsAndModifiers")) {
     	return false;
     }
     return true;
@@ -50,18 +50,18 @@ class AddImportResponseResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    InsertEReference<JavaRoot, Import> typedChange = (InsertEReference<JavaRoot, Import>)change;
+    InsertEReference<Field, AnnotationInstanceOrModifier> typedChange = (InsertEReference<Field, AnnotationInstanceOrModifier>)change;
     mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddImportResponseResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.packageMappingIntegration.AddImportResponseResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<JavaRoot, Import> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
     }
   }
 }

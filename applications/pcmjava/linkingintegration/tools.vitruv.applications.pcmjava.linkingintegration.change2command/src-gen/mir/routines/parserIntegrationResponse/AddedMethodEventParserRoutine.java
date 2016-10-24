@@ -15,12 +15,12 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 
 @SuppressWarnings("all")
 public class AddedMethodEventParserRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private AddedMethodEventParserRoutine.EffectUserExecution userExecution;
+  private AddedMethodEventParserRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -38,8 +38,8 @@ public class AddedMethodEventParserRoutine extends AbstractRepairRoutineRealizat
   
   public AddedMethodEventParserRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ConcreteClassifier clazz, final Method method) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.parserIntegrationResponse.AddedMethodEventParserRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.parserIntegrationResponse.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.parserIntegrationResponse.AddedMethodEventParserRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.parserIntegrationResponse.RoutinesFacade(getExecutionState(), this);
     this.clazz = clazz;this.method = method;
   }
   
