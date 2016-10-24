@@ -16,12 +16,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RemoveNonContainmentReferenceRoutine.EffectUserExecution userExecution;
+  private RemoveNonContainmentReferenceRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -51,8 +51,8 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
   
   public RemoveNonContainmentReferenceRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;this.removedNonRoot = removedNonRoot;
   }
   
@@ -77,7 +77,7 @@ public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineR
     // val updatedElement userExecution.getElement1(root, removedNonRoot, targetRoot);
     userExecution.update0Element(root, removedNonRoot, targetRoot);
     
-    userExecution.callRoutine1(root, removedNonRoot, targetRoot, effectFacade);
+    userExecution.callRoutine1(root, removedNonRoot, targetRoot, actionsFacade);
     
     postprocessElementStates();
   }

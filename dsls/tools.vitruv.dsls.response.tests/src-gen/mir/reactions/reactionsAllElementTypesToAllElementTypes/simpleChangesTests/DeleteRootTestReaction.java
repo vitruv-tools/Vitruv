@@ -1,4 +1,4 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
@@ -9,21 +9,21 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.root.InsertRootEObject;
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class CreateRootTestResponse extends AbstractResponseRealization {
-  public CreateRootTestResponse(final UserInteracting userInteracting) {
+class DeleteRootTestReaction extends AbstractResponseRealization {
+  public DeleteRootTestReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return InsertRootEObject.class;
+    return RemoveRootEObject.class;
   }
   
-  private boolean checkChangeProperties(final InsertRootEObject<Root> change) {
-    EObject changedElement = change.getNewValue();
+  private boolean checkChangeProperties(final RemoveRootEObject<Root> change) {
+    EObject changedElement = change.getOldValue();
     // Check model element type
     if (!(changedElement instanceof Root)) {
     	return false;
@@ -33,10 +33,10 @@ class CreateRootTestResponse extends AbstractResponseRealization {
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertRootEObject<?>)) {
+    if (!(change instanceof RemoveRootEObject<?>)) {
     	return false;
     }
-    InsertRootEObject typedChange = (InsertRootEObject)change;
+    RemoveRootEObject typedChange = (RemoveRootEObject)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -45,20 +45,20 @@ class CreateRootTestResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    InsertRootEObject<Root> typedChange = (InsertRootEObject<Root>)change;
+    RemoveRootEObject<Root> typedChange = (RemoveRootEObject<Root>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreateRootTestResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeleteRootTestReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertRootEObject<Root> change, @Extension final RoutinesFacade _routinesFacade) {
-      Root _newValue = change.getNewValue();
-      _routinesFacade.createRoot(_newValue);
+    public void callRoutine1(final RemoveRootEObject<Root> change, @Extension final RoutinesFacade _routinesFacade) {
+      Root _oldValue = change.getOldValue();
+      _routinesFacade.deleteRoot(_oldValue);
     }
   }
 }

@@ -1,4 +1,4 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
@@ -10,20 +10,20 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class CreatedNonRootEObjectInListResponse extends AbstractResponseRealization {
-  public CreatedNonRootEObjectInListResponse(final UserInteracting userInteracting) {
+class RemoveedNonContainmentEReferenceReaction extends AbstractResponseRealization {
+  public RemoveedNonContainmentEReferenceReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return InsertEReference.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
+  private boolean checkChangeProperties(final RemoveEReference<Root, NonRoot> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
@@ -31,17 +31,17 @@ class CreatedNonRootEObjectInListResponse extends AbstractResponseRealization {
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
+    if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertEReference<?, ?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    InsertEReference typedChange = (InsertEReference)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -50,21 +50,21 @@ class CreatedNonRootEObjectInListResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
+    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final RemoveEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
       Root _affectedEObject = change.getAffectedEObject();
-      NonRoot _newValue = change.getNewValue();
-      _routinesFacade.insertNonRoot(_affectedEObject, _newValue);
+      NonRoot _oldValue = change.getOldValue();
+      _routinesFacade.removeNonContainmentReference(_affectedEObject, _oldValue);
     }
   }
 }

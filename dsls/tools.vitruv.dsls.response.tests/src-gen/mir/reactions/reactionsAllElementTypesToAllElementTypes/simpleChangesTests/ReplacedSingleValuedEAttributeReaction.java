@@ -1,6 +1,5 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
-import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -10,20 +9,20 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class RemoveedNonContainmentEReferenceResponse extends AbstractResponseRealization {
-  public RemoveedNonContainmentEReferenceResponse(final UserInteracting userInteracting) {
+class ReplacedSingleValuedEAttributeReaction extends AbstractResponseRealization {
+  public ReplacedSingleValuedEAttributeReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return RemoveEReference.class;
+    return ReplaceSingleValuedEAttribute.class;
   }
   
-  private boolean checkChangeProperties(final RemoveEReference<Root, NonRoot> change) {
+  private boolean checkChangeProperties(final ReplaceSingleValuedEAttribute<Root, Integer> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
@@ -31,17 +30,17 @@ class RemoveedNonContainmentEReferenceResponse extends AbstractResponseRealizati
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
+    if (!change.getAffectedFeature().getName().equals("singleValuedEAttribute")) {
     	return false;
     }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof RemoveEReference<?, ?>)) {
+    if (!(change instanceof ReplaceSingleValuedEAttribute<?, ?>)) {
     	return false;
     }
-    RemoveEReference typedChange = (RemoveEReference)change;
+    ReplaceSingleValuedEAttribute typedChange = (ReplaceSingleValuedEAttribute)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -50,21 +49,21 @@ class RemoveedNonContainmentEReferenceResponse extends AbstractResponseRealizati
   }
   
   public void executeResponse(final EChange change) {
-    RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
+    ReplaceSingleValuedEAttribute<Root, Integer> typedChange = (ReplaceSingleValuedEAttribute<Root, Integer>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemoveedNonContainmentEReferenceResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedSingleValuedEAttributeReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final RemoveEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final ReplaceSingleValuedEAttribute<Root, Integer> change, @Extension final RoutinesFacade _routinesFacade) {
       Root _affectedEObject = change.getAffectedEObject();
-      NonRoot _oldValue = change.getOldValue();
-      _routinesFacade.removeNonContainmentReference(_affectedEObject, _oldValue);
+      Integer _newValue = change.getNewValue();
+      _routinesFacade.replaceSingleValuedEAttribute(_affectedEObject, _newValue);
     }
   }
 }

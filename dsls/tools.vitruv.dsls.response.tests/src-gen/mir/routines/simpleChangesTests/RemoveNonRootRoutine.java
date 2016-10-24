@@ -12,12 +12,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveNonRootRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RemoveNonRootRoutine.EffectUserExecution userExecution;
+  private RemoveNonRootRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -37,8 +37,8 @@ public class RemoveNonRootRoutine extends AbstractRepairRoutineRealization {
   
   public RemoveNonRootRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot removedNonRoot) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonRootRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.removedNonRoot = removedNonRoot;
   }
   
@@ -57,7 +57,7 @@ public class RemoveNonRootRoutine extends AbstractRepairRoutineRealization {
     	return;
     }
     initializeRetrieveElementState(targetElement);
-    userExecution.callRoutine1(removedNonRoot, targetElement, effectFacade);
+    userExecution.callRoutine1(removedNonRoot, targetElement, actionsFacade);
     
     deleteObject(userExecution.getElement1(removedNonRoot, targetElement));
     

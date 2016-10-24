@@ -14,12 +14,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateNonRootEObjectSingleRoutine.EffectUserExecution userExecution;
+  private CreateNonRootEObjectSingleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -56,8 +56,8 @@ public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
   
   public CreateNonRootEObjectSingleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root sourceRoot, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.CreateNonRootEObjectSingleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.sourceRoot = sourceRoot;this.containedObject = containedObject;
   }
   
@@ -88,7 +88,7 @@ public class CreateNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     
     addCorrespondenceBetween(userExecution.getElement2(sourceRoot, containedObject, targetElement, newNonRoot), userExecution.getElement3(sourceRoot, containedObject, targetElement, newNonRoot), "");
     
-    userExecution.callRoutine1(sourceRoot, containedObject, targetElement, newNonRoot, effectFacade);
+    userExecution.callRoutine1(sourceRoot, containedObject, targetElement, newNonRoot, actionsFacade);
     
     postprocessElementStates();
   }

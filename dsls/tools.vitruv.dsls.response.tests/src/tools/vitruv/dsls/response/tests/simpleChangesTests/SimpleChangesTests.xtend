@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
-import mir.responses.ChangePropatationSpecificationAllElementTypesToAllElementTypes
+import mir.reactions.AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -24,7 +24,7 @@ class SimpleChangesTests extends AbstractAllElementTypesResponseTests {
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
 	override protected createChangePropagationSpecifications() {
-		return #[new ChangePropatationSpecificationAllElementTypesToAllElementTypes() {}];
+		return #[new AbstractChangePropagationSpecificationAllElementTypesToAllElementTypes() {}];
 	}
 	
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];

@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ReplaceSingleValuedNonContainmentReferenceRoutine.EffectUserExecution userExecution;
+  private ReplaceSingleValuedNonContainmentReferenceRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -46,8 +46,8 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
   
   public ReplaceSingleValuedNonContainmentReferenceRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot newReferencedElement) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedNonContainmentReferenceRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;this.newReferencedElement = newReferencedElement;
   }
   
@@ -81,7 +81,7 @@ public class ReplaceSingleValuedNonContainmentReferenceRoutine extends AbstractR
     // val updatedElement userExecution.getElement1(root, newReferencedElement, targetContainer, targetElement);
     userExecution.update0Element(root, newReferencedElement, targetContainer, targetElement);
     
-    userExecution.callRoutine1(root, newReferencedElement, targetContainer, targetElement, effectFacade);
+    userExecution.callRoutine1(root, newReferencedElement, targetContainer, targetElement, actionsFacade);
     
     postprocessElementStates();
   }

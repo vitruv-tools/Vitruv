@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ReplaceSingleValuedEAttributeRoutine.EffectUserExecution userExecution;
+  private ReplaceSingleValuedEAttributeRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -50,8 +50,8 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
   
   public ReplaceSingleValuedEAttributeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer value) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.ReplaceSingleValuedEAttributeRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;this.value = value;
   }
   
@@ -82,7 +82,7 @@ public class ReplaceSingleValuedEAttributeRoutine extends AbstractRepairRoutineR
     // val updatedElement userExecution.getElement1(root, value, targetElement);
     userExecution.update0Element(root, value, targetElement);
     
-    userExecution.callRoutine1(root, value, targetElement, effectFacade);
+    userExecution.callRoutine1(root, value, targetElement, actionsFacade);
     
     postprocessElementStates();
   }
