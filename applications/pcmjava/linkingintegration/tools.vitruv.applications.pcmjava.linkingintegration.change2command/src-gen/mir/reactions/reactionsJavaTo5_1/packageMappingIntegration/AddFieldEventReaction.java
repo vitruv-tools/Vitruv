@@ -1,10 +1,11 @@
-package mir.responses.responsesJavaTo5_1.packageMappingIntegration;
+package mir.reactions.reactionsJavaTo5_1.packageMappingIntegration;
 
 import mir.routines.packageMappingIntegration.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.emftext.language.java.classifiers.ConcreteClassifier;
 import org.emftext.language.java.members.Field;
-import org.emftext.language.java.modifiers.AnnotationInstanceOrModifier;
+import org.emftext.language.java.members.Member;
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
@@ -14,24 +15,29 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class ChangeFieldModifierEventResponse extends AbstractResponseRealization {
-  public ChangeFieldModifierEventResponse(final UserInteracting userInteracting) {
+class AddFieldEventReaction extends AbstractResponseRealization {
+  public AddFieldEventReaction(final UserInteracting userInteracting) {
     super(userInteracting);
+  }
+  
+  private boolean checkTriggerPrecondition(final InsertEReference<ConcreteClassifier, Member> change) {
+    Member _newValue = change.getNewValue();
+    return (_newValue instanceof Field);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
     return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<Field, AnnotationInstanceOrModifier> change) {
+  private boolean checkChangeProperties(final InsertEReference<ConcreteClassifier, Member> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
-    if (!(changedElement instanceof Field)) {
+    if (!(changedElement instanceof ConcreteClassifier)) {
     	return false;
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("annotationsAndModifiers")) {
+    if (!change.getAffectedFeature().getName().equals("members")) {
     	return false;
     }
     return true;
@@ -45,23 +51,29 @@ class ChangeFieldModifierEventResponse extends AbstractResponseRealization {
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
+    if (!checkTriggerPrecondition(typedChange)) {
+    	return false;
+    }
     getLogger().debug("Passed precondition check of response " + this.getClass().getName());
     return true;
   }
   
   public void executeResponse(final EChange change) {
-    InsertEReference<Field, AnnotationInstanceOrModifier> typedChange = (InsertEReference<Field, AnnotationInstanceOrModifier>)change;
+    InsertEReference<ConcreteClassifier, Member> typedChange = (InsertEReference<ConcreteClassifier, Member>)change;
     mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.packageMappingIntegration.ChangeFieldModifierEventResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.AddFieldEventReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.AddFieldEventReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertEReference<ConcreteClassifier, Member> change, @Extension final RoutinesFacade _routinesFacade) {
+      ConcreteClassifier _affectedEObject = change.getAffectedEObject();
+      Member _newValue = change.getNewValue();
+      _routinesFacade.addedFieldEvent(_affectedEObject, ((Field) _newValue));
     }
   }
 }

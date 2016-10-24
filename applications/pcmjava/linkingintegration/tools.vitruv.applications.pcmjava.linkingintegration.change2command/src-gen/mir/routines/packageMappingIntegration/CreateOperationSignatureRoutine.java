@@ -15,12 +15,12 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class CreateOperationSignatureRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateOperationSignatureRoutine.EffectUserExecution userExecution;
+  private CreateOperationSignatureRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -48,8 +48,8 @@ public class CreateOperationSignatureRoutine extends AbstractRepairRoutineRealiz
   
   public CreateOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationInterface opInterface, final Method newMethod) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.packageMappingIntegration.CreateOperationSignatureRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.packageMappingIntegration.CreateOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.opInterface = opInterface;this.newMethod = newMethod;
   }
   

@@ -18,12 +18,12 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class ChangedFieldTypeEventRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ChangedFieldTypeEventRoutine.EffectUserExecution userExecution;
+  private ChangedFieldTypeEventRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -74,8 +74,8 @@ public class ChangedFieldTypeEventRoutine extends AbstractRepairRoutineRealizati
   
   public ChangedFieldTypeEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Field field, final TypeReference oldType, final TypeReference newType) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.packageMappingIntegration.ChangedFieldTypeEventRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.packageMappingIntegration.ChangedFieldTypeEventRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.field = field;this.oldType = oldType;this.newType = newType;
   }
   
@@ -118,7 +118,7 @@ public class ChangedFieldTypeEventRoutine extends AbstractRepairRoutineRealizati
     	return;
     }
     initializeRetrieveElementState(basicComponent);
-    userExecution.callRoutine1(field, oldType, newType, oldCorrespondingOpInterface, opInterface, opRequiredRole, basicComponent, effectFacade);
+    userExecution.callRoutine1(field, oldType, newType, oldCorrespondingOpInterface, opInterface, opRequiredRole, basicComponent, actionsFacade);
     
     postprocessElementStates();
   }

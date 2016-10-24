@@ -1,4 +1,4 @@
-package mir.responses.responsesJavaTo5_1.parserIntegrationResponse;
+package mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse;
 
 import mir.routines.parserIntegrationResponse.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -10,20 +10,20 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class ChangeFieldModifierEventParserResponse extends AbstractResponseRealization {
-  public ChangeFieldModifierEventParserResponse(final UserInteracting userInteracting) {
+class RemoveFieldModifierEventParserReaction extends AbstractResponseRealization {
+  public RemoveFieldModifierEventParserReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return InsertEReference.class;
+    return RemoveEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<Field, AnnotationInstanceOrModifier> change) {
+  private boolean checkChangeProperties(final RemoveEReference<Field, AnnotationInstanceOrModifier> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Field)) {
@@ -38,10 +38,10 @@ class ChangeFieldModifierEventParserResponse extends AbstractResponseRealization
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof InsertEReference<?, ?>)) {
+    if (!(change instanceof RemoveEReference<?, ?>)) {
     	return false;
     }
-    InsertEReference typedChange = (InsertEReference)change;
+    RemoveEReference typedChange = (RemoveEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -50,18 +50,18 @@ class ChangeFieldModifierEventParserResponse extends AbstractResponseRealization
   }
   
   public void executeResponse(final EChange change) {
-    InsertEReference<Field, AnnotationInstanceOrModifier> typedChange = (InsertEReference<Field, AnnotationInstanceOrModifier>)change;
+    RemoveEReference<Field, AnnotationInstanceOrModifier> typedChange = (RemoveEReference<Field, AnnotationInstanceOrModifier>)change;
     mir.routines.parserIntegrationResponse.RoutinesFacade routinesFacade = new mir.routines.parserIntegrationResponse.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesJavaTo5_1.parserIntegrationResponse.ChangeFieldModifierEventParserResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.parserIntegrationResponse.ChangeFieldModifierEventParserResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse.RemoveFieldModifierEventParserReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse.RemoveFieldModifierEventParserReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final RemoveEReference<Field, AnnotationInstanceOrModifier> change, @Extension final RoutinesFacade _routinesFacade) {
     }
   }
 }

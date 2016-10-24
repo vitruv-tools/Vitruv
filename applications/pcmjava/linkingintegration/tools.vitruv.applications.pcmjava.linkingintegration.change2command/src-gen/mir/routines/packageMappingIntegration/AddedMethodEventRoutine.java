@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class AddedMethodEventRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private AddedMethodEventRoutine.EffectUserExecution userExecution;
+  private AddedMethodEventRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -33,8 +33,8 @@ public class AddedMethodEventRoutine extends AbstractRepairRoutineRealization {
   
   public AddedMethodEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ConcreteClassifier clazz, final Method method) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.packageMappingIntegration.AddedMethodEventRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.packageMappingIntegration.AddedMethodEventRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.clazz = clazz;this.method = method;
   }
   
@@ -56,7 +56,7 @@ public class AddedMethodEventRoutine extends AbstractRepairRoutineRealization {
     	return;
     }
     initializeRetrieveElementState(opInterface);
-    userExecution.callRoutine1(clazz, method, opInterface, effectFacade);
+    userExecution.callRoutine1(clazz, method, opInterface, actionsFacade);
     
     postprocessElementStates();
   }

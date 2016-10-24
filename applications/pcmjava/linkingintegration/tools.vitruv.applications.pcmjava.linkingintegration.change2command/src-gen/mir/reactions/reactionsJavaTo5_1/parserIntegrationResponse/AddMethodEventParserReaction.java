@@ -1,4 +1,4 @@
-package mir.responses.responsesJavaTo5_1.parserIntegrationResponse;
+package mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse;
 
 import mir.routines.parserIntegrationResponse.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -15,8 +15,8 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class AddMethodEventParserResponse extends AbstractResponseRealization {
-  public AddMethodEventParserResponse(final UserInteracting userInteracting) {
+class AddMethodEventParserReaction extends AbstractResponseRealization {
+  public AddMethodEventParserReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -61,12 +61,12 @@ class AddMethodEventParserResponse extends AbstractResponseRealization {
   public void executeResponse(final EChange change) {
     InsertEReference<ConcreteClassifier, Member> typedChange = (InsertEReference<ConcreteClassifier, Member>)change;
     mir.routines.parserIntegrationResponse.RoutinesFacade routinesFacade = new mir.routines.parserIntegrationResponse.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesJavaTo5_1.parserIntegrationResponse.AddMethodEventParserResponse.EffectUserExecution userExecution = new mir.responses.responsesJavaTo5_1.parserIntegrationResponse.AddMethodEventParserResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse.AddMethodEventParserReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse.AddMethodEventParserReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

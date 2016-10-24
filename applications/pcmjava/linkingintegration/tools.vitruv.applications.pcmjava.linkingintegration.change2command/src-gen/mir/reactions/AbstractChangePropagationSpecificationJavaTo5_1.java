@@ -1,9 +1,9 @@
-package mir.responses;
+package mir.reactions;
 
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification;
 
 /**
- * The {@link class tools.vitruv.framework.change.processing.impl.CompositeChangeProcessor} for transformations between the metamodels http://www.emftext.org/java and http://palladiosimulator.org/PalladioComponentModel/5.1.
+ * The {@link class tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification} for transformations between the metamodels http://www.emftext.org/java and http://palladiosimulator.org/PalladioComponentModel/5.1.
  * To add further change processors overwrite the setup method.
  */
 public abstract class AbstractChangePropagationSpecificationJavaTo5_1 extends CompositeChangePropagationSpecification {
@@ -24,8 +24,8 @@ public abstract class AbstractChangePropagationSpecificationJavaTo5_1 extends Co
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {
-		this.addChangeMainprocessor(new mir.responses.responsesJavaTo5_1.parserIntegrationResponse.ExecutorJavaTo5_1(getUserInteracting()));
-		this.addChangeMainprocessor(new mir.responses.responsesJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.reactions.reactionsJavaTo5_1.parserIntegrationResponse.ExecutorJavaTo5_1(getUserInteracting()));
+		this.addChangeMainprocessor(new mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ExecutorJavaTo5_1(getUserInteracting()));
 	}
 	
 }

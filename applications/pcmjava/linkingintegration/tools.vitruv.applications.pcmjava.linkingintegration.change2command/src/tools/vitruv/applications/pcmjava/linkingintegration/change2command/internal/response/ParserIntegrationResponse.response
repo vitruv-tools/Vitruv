@@ -4,31 +4,32 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
 
-response collection: ParserIntegrationResponse
-from metamodel java to metamodel pcm
+reactions: ParserIntegrationResponse
+in reaction to changes in java
+execute actions in pcm
 
-response: ChangeFieldModifierEventParser {
-	after list entry inserted java.Field[annotationsAndModifiers]
+reaction ChangeFieldModifierEventParser {
+	after list entry created and inserted in java.Field[annotationsAndModifiers]
 	call { }
 }
 
-response: RemoveFieldModifierEventParser {
-	after list entry removed java.Field[annotationsAndModifiers]
+reaction RemoveFieldModifierEventParser {
+	after list entry deleted and removed in java.Field[annotationsAndModifiers]
 	call { }
 }
 
-response: AddMethodEventParser {
-	after list entry inserted java.ConcreteClassifier[members]
+reaction AddMethodEventParser {
+	after list entry created and inserted in java.ConcreteClassifier[members]
 		with  change.newValue instanceof Method
 	call addedMethodEventParser(change.affectedEObject, change.newValue as Method)
 }
 
-routine: addedMethodEventParser(java.ConcreteClassifier clazz, java.Method method) {
+routine addedMethodEventParser(java.ConcreteClassifier clazz, java.Method method) {
 	match {
-		retrieve required element pcm.OperationInterface as opInterface corresponding to clazz
+		val opInterface = retrieve pcm.OperationInterface corresponding to clazz
 	}
-	effect {
-		create element pcm.OperationSignature as opSig initialized as {
+	action {
+		val opSig = create pcm.OperationSignature and initialize {
 			opSig.entityName = method.name
 			opSig.interface__OperationSignature = opInterface
 			// TODO is this necessary or can we use the add correspondence statement creating a ResponseCorrespondence?

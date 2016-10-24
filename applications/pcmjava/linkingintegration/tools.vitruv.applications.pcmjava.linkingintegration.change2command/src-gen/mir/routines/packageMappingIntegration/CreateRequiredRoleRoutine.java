@@ -15,12 +15,12 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class CreateRequiredRoleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateRequiredRoleRoutine.EffectUserExecution userExecution;
+  private CreateRequiredRoleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -50,8 +50,8 @@ public class CreateRequiredRoleRoutine extends AbstractRepairRoutineRealization 
   
   public CreateRequiredRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final BasicComponent basicComponent, final OperationInterface opInterface, final Field field) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.packageMappingIntegration.CreateRequiredRoleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.packageMappingIntegration.CreateRequiredRoleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.basicComponent = basicComponent;this.opInterface = opInterface;this.field = field;
   }
   

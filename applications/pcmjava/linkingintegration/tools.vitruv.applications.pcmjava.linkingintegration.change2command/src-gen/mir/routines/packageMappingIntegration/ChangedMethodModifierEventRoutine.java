@@ -23,12 +23,12 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class ChangedMethodModifierEventRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ChangedMethodModifierEventRoutine.EffectUserExecution userExecution;
+  private ChangedMethodModifierEventRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -62,8 +62,8 @@ public class ChangedMethodModifierEventRoutine extends AbstractRepairRoutineReal
   
   public ChangedMethodModifierEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Method method, final AnnotationInstanceOrModifier annotationOrModifier) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.packageMappingIntegration.ChangedMethodModifierEventRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.packageMappingIntegration.ChangedMethodModifierEventRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.method = method;this.annotationOrModifier = annotationOrModifier;
   }
   
@@ -91,7 +91,7 @@ public class ChangedMethodModifierEventRoutine extends AbstractRepairRoutineReal
     	return;
     }
     initializeRetrieveElementState(operationInterface);
-    userExecution.callRoutine1(method, annotationOrModifier, operationSignature, operationInterface, effectFacade);
+    userExecution.callRoutine1(method, annotationOrModifier, operationSignature, operationInterface, actionsFacade);
     
     postprocessElementStates();
   }
