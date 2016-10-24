@@ -15,12 +15,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class InsertNonRootRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private InsertNonRootRoutine.EffectUserExecution userExecution;
+  private InsertNonRootRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -58,8 +58,8 @@ public class InsertNonRootRoutine extends AbstractRepairRoutineRealization {
   
   public InsertNonRootRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot insertedNonRoot) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.InsertNonRootRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.InsertNonRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;this.insertedNonRoot = insertedNonRoot;
   }
   
@@ -90,7 +90,7 @@ public class InsertNonRootRoutine extends AbstractRepairRoutineRealization {
     
     addCorrespondenceBetween(userExecution.getElement2(root, insertedNonRoot, targetElement, newNonRoot), userExecution.getElement3(root, insertedNonRoot, targetElement, newNonRoot), "");
     
-    userExecution.callRoutine1(root, insertedNonRoot, targetElement, newNonRoot, effectFacade);
+    userExecution.callRoutine1(root, insertedNonRoot, targetElement, newNonRoot, actionsFacade);
     
     postprocessElementStates();
   }

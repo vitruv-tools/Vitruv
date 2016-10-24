@@ -1,5 +1,6 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
+import allElementTypes.NonRoot;
 import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -9,20 +10,20 @@ import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue;
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class RemovedEAttributeValueResponse extends AbstractResponseRealization {
-  public RemovedEAttributeValueResponse(final UserInteracting userInteracting) {
+class CreatedNonRootEObjectInListReaction extends AbstractResponseRealization {
+  public CreatedNonRootEObjectInListReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
-    return RemoveEAttributeValue.class;
+    return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final RemoveEAttributeValue<Root, Integer> change) {
+  private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
     if (!(changedElement instanceof Root)) {
@@ -30,17 +31,17 @@ class RemovedEAttributeValueResponse extends AbstractResponseRealization {
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("multiValuedEAttribute")) {
+    if (!change.getAffectedFeature().getName().equals("multiValuedContainmentEReference")) {
     	return false;
     }
     return true;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof RemoveEAttributeValue<?, ?>)) {
+    if (!(change instanceof InsertEReference<?, ?>)) {
     	return false;
     }
-    RemoveEAttributeValue typedChange = (RemoveEAttributeValue)change;
+    InsertEReference typedChange = (InsertEReference)change;
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
@@ -49,21 +50,21 @@ class RemovedEAttributeValueResponse extends AbstractResponseRealization {
   }
   
   public void executeResponse(final EChange change) {
-    RemoveEAttributeValue<Root, Integer> typedChange = (RemoveEAttributeValue<Root, Integer>)change;
+    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.RemovedEAttributeValueResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.CreatedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final RemoveEAttributeValue<Root, Integer> change, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
       Root _affectedEObject = change.getAffectedEObject();
-      Integer _oldValue = change.getOldValue();
-      _routinesFacade.removeEAttribute(_affectedEObject, _oldValue);
+      NonRoot _newValue = change.getNewValue();
+      _routinesFacade.insertNonRoot(_affectedEObject, _newValue);
     }
   }
 }

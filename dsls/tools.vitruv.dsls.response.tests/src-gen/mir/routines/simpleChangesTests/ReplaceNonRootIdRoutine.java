@@ -10,12 +10,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReplaceNonRootIdRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ReplaceNonRootIdRoutine.EffectUserExecution userExecution;
+  private ReplaceNonRootIdRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -34,8 +34,8 @@ public class ReplaceNonRootIdRoutine extends AbstractRepairRoutineRealization {
   
   public ReplaceNonRootIdRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot nonRoot, final String value) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.ReplaceNonRootIdRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.ReplaceNonRootIdRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.nonRoot = nonRoot;this.value = value;
   }
   

@@ -1,4 +1,4 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
@@ -14,8 +14,8 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class ReplacedNonRootEObjectSingleResponseResponse extends AbstractResponseRealization {
-  public ReplacedNonRootEObjectSingleResponseResponse(final UserInteracting userInteracting) {
+class ReplacedNonRootEObjectSingleResponseReaction extends AbstractResponseRealization {
+  public ReplacedNonRootEObjectSingleResponseReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -52,12 +52,12 @@ class ReplacedNonRootEObjectSingleResponseResponse extends AbstractResponseReali
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRoot> typedChange = (ReplaceSingleValuedEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ReplacedNonRootEObjectSingleResponseReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

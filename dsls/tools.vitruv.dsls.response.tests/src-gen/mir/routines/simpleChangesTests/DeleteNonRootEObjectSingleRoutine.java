@@ -12,12 +12,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class DeleteNonRootEObjectSingleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private DeleteNonRootEObjectSingleRoutine.EffectUserExecution userExecution;
+  private DeleteNonRootEObjectSingleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -37,8 +37,8 @@ public class DeleteNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
   
   public DeleteNonRootEObjectSingleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final NonRoot containedObject) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.DeleteNonRootEObjectSingleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.containedObject = containedObject;
   }
   
@@ -59,7 +59,7 @@ public class DeleteNonRootEObjectSingleRoutine extends AbstractRepairRoutineReal
     initializeRetrieveElementState(targetElement);
     deleteObject(userExecution.getElement1(containedObject, targetElement));
     
-    userExecution.callRoutine1(containedObject, targetElement, effectFacade);
+    userExecution.callRoutine1(containedObject, targetElement, actionsFacade);
     
     postprocessElementStates();
   }

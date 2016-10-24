@@ -12,12 +12,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateRootRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateRootRoutine.EffectUserExecution userExecution;
+  private CreateRootRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -44,8 +44,8 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
   
   public CreateRootRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.CreateRootRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.CreateRootRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;
   }
   
@@ -61,7 +61,7 @@ public class CreateRootRoutine extends AbstractRepairRoutineRealization {
     
     addCorrespondenceBetween(userExecution.getElement1(root, newRoot), userExecution.getElement2(root, newRoot), "");
     
-    userExecution.callRoutine1(root, newRoot, effectFacade);
+    userExecution.callRoutine1(root, newRoot, actionsFacade);
     
     postprocessElementStates();
   }

@@ -1,4 +1,4 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
 import allElementTypes.Root;
@@ -14,8 +14,8 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class DeletedNonRootEObjectInListResponse extends AbstractResponseRealization {
-  public DeletedNonRootEObjectInListResponse(final UserInteracting userInteracting) {
+class DeletedNonRootEObjectInListReaction extends AbstractResponseRealization {
+  public DeletedNonRootEObjectInListReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -52,12 +52,12 @@ class DeletedNonRootEObjectInListResponse extends AbstractResponseRealization {
   public void executeResponse(final EChange change) {
     RemoveEReference<Root, NonRoot> typedChange = (RemoveEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.DeletedNonRootEObjectInListReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

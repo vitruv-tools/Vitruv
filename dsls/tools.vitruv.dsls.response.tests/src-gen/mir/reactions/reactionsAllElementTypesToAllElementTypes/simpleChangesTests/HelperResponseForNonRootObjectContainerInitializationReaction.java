@@ -1,4 +1,4 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRootObjectContainerHelper;
 import allElementTypes.Root;
@@ -14,8 +14,8 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class HelperResponseForNonRootObjectContainerInitializationResponse extends AbstractResponseRealization {
-  public HelperResponseForNonRootObjectContainerInitializationResponse(final UserInteracting userInteracting) {
+class HelperResponseForNonRootObjectContainerInitializationReaction extends AbstractResponseRealization {
+  public HelperResponseForNonRootObjectContainerInitializationReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -60,12 +60,12 @@ class HelperResponseForNonRootObjectContainerInitializationResponse extends Abst
   public void executeResponse(final EChange change) {
     ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper> typedChange = (ReplaceSingleValuedEReference<Root, NonRootObjectContainerHelper>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerInitializationReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     

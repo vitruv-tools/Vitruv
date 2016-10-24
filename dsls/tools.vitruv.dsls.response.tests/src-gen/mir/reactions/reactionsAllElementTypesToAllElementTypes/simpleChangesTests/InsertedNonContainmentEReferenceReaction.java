@@ -1,7 +1,7 @@
-package mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests;
+package mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests;
 
 import allElementTypes.NonRoot;
-import allElementTypes.NonRootObjectContainerHelper;
+import allElementTypes.Root;
 import mir.routines.simpleChangesTests.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -14,8 +14,8 @@ import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class HelperResponseForNonRootObjectContainerContentsInitializationResponse extends AbstractResponseRealization {
-  public HelperResponseForNonRootObjectContainerContentsInitializationResponse(final UserInteracting userInteracting) {
+class InsertedNonContainmentEReferenceReaction extends AbstractResponseRealization {
+  public InsertedNonContainmentEReferenceReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
   
@@ -23,15 +23,15 @@ class HelperResponseForNonRootObjectContainerContentsInitializationResponse exte
     return InsertEReference.class;
   }
   
-  private boolean checkChangeProperties(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change) {
+  private boolean checkChangeProperties(final InsertEReference<Root, NonRoot> change) {
     EObject changedElement = change.getAffectedEObject();
     // Check model element type
-    if (!(changedElement instanceof NonRootObjectContainerHelper)) {
+    if (!(changedElement instanceof Root)) {
     	return false;
     }
     
     // Check feature
-    if (!change.getAffectedFeature().getName().equals("nonRootObjectsContainment")) {
+    if (!change.getAffectedFeature().getName().equals("multiValuedNonContainmentEReference")) {
     	return false;
     }
     return true;
@@ -50,21 +50,21 @@ class HelperResponseForNonRootObjectContainerContentsInitializationResponse exte
   }
   
   public void executeResponse(final EChange change) {
-    InsertEReference<NonRootObjectContainerHelper, NonRoot> typedChange = (InsertEReference<NonRootObjectContainerHelper, NonRoot>)change;
+    InsertEReference<Root, NonRoot> typedChange = (InsertEReference<Root, NonRoot>)change;
     mir.routines.simpleChangesTests.RoutinesFacade routinesFacade = new mir.routines.simpleChangesTests.RoutinesFacade(this.executionState, this);
-    mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationResponse.EffectUserExecution userExecution = new mir.responses.responsesAllElementTypesToAllElementTypes.simpleChangesTests.HelperResponseForNonRootObjectContainerContentsInitializationResponse.EffectUserExecution(this.executionState, this);
+    mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.InsertedNonContainmentEReferenceReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
-    public void callRoutine1(final InsertEReference<NonRootObjectContainerHelper, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
-      NonRootObjectContainerHelper _affectedEObject = change.getAffectedEObject();
+    public void callRoutine1(final InsertEReference<Root, NonRoot> change, @Extension final RoutinesFacade _routinesFacade) {
+      Root _affectedEObject = change.getAffectedEObject();
       NonRoot _newValue = change.getNewValue();
-      _routinesFacade.createNonRootInContainer(_affectedEObject, _newValue);
+      _routinesFacade.insertNonContainmentReference(_affectedEObject, _newValue);
     }
   }
 }

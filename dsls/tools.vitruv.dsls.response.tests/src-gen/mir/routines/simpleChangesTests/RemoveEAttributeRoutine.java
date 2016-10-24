@@ -14,12 +14,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RemoveEAttributeRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RemoveEAttributeRoutine.EffectUserExecution userExecution;
+  private RemoveEAttributeRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -50,8 +50,8 @@ public class RemoveEAttributeRoutine extends AbstractRepairRoutineRealization {
   
   public RemoveEAttributeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final Integer removedAttributeValue) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.simpleChangesTests.RemoveEAttributeRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveEAttributeRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
     this.root = root;this.removedAttributeValue = removedAttributeValue;
   }
   
@@ -76,7 +76,7 @@ public class RemoveEAttributeRoutine extends AbstractRepairRoutineRealization {
     // val updatedElement userExecution.getElement1(root, removedAttributeValue, targetElement);
     userExecution.update0Element(root, removedAttributeValue, targetElement);
     
-    userExecution.callRoutine1(root, removedAttributeValue, targetElement, effectFacade);
+    userExecution.callRoutine1(root, removedAttributeValue, targetElement, actionsFacade);
     
     postprocessElementStates();
   }
