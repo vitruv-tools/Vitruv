@@ -28,12 +28,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class RenameMethodForOperationSignatureRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private RenameMethodForOperationSignatureRoutine.EffectUserExecution userExecution;
+  private RenameMethodForOperationSignatureRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -86,8 +86,8 @@ public class RenameMethodForOperationSignatureRoutine extends AbstractRepairRout
   
   public RenameMethodForOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.RenameMethodForOperationSignatureRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.RenameMethodForOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.operationSignature = operationSignature;
   }
   
@@ -109,7 +109,7 @@ public class RenameMethodForOperationSignatureRoutine extends AbstractRepairRout
     // val updatedElement userExecution.getElement1(operationSignature, interfaceMethod);
     userExecution.update0Element(operationSignature, interfaceMethod);
     
-    userExecution.callRoutine1(operationSignature, interfaceMethod, effectFacade);
+    userExecution.callRoutine1(operationSignature, interfaceMethod, actionsFacade);
     
     postprocessElementStates();
   }

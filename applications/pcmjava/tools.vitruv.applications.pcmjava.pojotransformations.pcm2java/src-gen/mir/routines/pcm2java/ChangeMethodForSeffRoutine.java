@@ -12,12 +12,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeMethodForSeffRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ChangeMethodForSeffRoutine.EffectUserExecution userExecution;
+  private ChangeMethodForSeffRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -36,8 +36,8 @@ public class ChangeMethodForSeffRoutine extends AbstractRepairRoutineRealization
   
   public ChangeMethodForSeffRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingSEFF seff) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.ChangeMethodForSeffRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.ChangeMethodForSeffRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.seff = seff;
   }
   
@@ -55,7 +55,7 @@ public class ChangeMethodForSeffRoutine extends AbstractRepairRoutineRealization
     initializeRetrieveElementState(oldClassMethod);
     deleteObject(userExecution.getElement1(seff, oldClassMethod));
     
-    userExecution.callRoutine1(seff, oldClassMethod, effectFacade);
+    userExecution.callRoutine1(seff, oldClassMethod, actionsFacade);
     
     postprocessElementStates();
   }

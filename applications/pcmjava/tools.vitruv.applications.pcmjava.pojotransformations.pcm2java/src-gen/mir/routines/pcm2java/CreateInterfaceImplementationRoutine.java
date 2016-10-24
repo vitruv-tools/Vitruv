@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateInterfaceImplementationRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateInterfaceImplementationRoutine.EffectUserExecution userExecution;
+  private CreateInterfaceImplementationRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -41,8 +41,8 @@ public class CreateInterfaceImplementationRoutine extends AbstractRepairRoutineR
   
   public CreateInterfaceImplementationRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Interface interf) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateInterfaceImplementationRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateInterfaceImplementationRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.interf = interf;
   }
   
@@ -61,7 +61,7 @@ public class CreateInterfaceImplementationRoutine extends AbstractRepairRoutineR
     	return;
     }
     initializeRetrieveElementState(contractsPackage);
-    userExecution.callRoutine1(interf, contractsPackage, effectFacade);
+    userExecution.callRoutine1(interf, contractsPackage, actionsFacade);
     
     postprocessElementStates();
   }

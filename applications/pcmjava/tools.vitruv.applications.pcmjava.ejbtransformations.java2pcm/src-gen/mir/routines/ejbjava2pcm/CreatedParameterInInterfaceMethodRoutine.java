@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatedParameterInInterfaceMethodRoutine.EffectUserExecution userExecution;
+  private CreatedParameterInInterfaceMethodRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -33,8 +33,8 @@ public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRout
   
   public CreatedParameterInInterfaceMethodRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod method, final Parameter parameter) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatedParameterInInterfaceMethodRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatedParameterInInterfaceMethodRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.method = method;this.parameter = parameter;
   }
   
@@ -56,7 +56,7 @@ public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRout
     	return;
     }
     initializeRetrieveElementState(opSignature);
-    userExecution.callRoutine1(method, parameter, opSignature, effectFacade);
+    userExecution.callRoutine1(method, parameter, opSignature, actionsFacade);
     
     postprocessElementStates();
   }

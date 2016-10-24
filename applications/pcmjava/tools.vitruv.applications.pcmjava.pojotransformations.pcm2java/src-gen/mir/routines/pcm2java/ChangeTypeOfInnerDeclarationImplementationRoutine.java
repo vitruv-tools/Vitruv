@@ -14,12 +14,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ChangeTypeOfInnerDeclarationImplementationRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ChangeTypeOfInnerDeclarationImplementationRoutine.EffectUserExecution userExecution;
+  private ChangeTypeOfInnerDeclarationImplementationRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -37,8 +37,8 @@ public class ChangeTypeOfInnerDeclarationImplementationRoutine extends AbstractR
   
   public ChangeTypeOfInnerDeclarationImplementationRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.ChangeTypeOfInnerDeclarationImplementationRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.innerDeclaration = innerDeclaration;
   }
   
@@ -54,7 +54,7 @@ public class ChangeTypeOfInnerDeclarationImplementationRoutine extends AbstractR
     	(org.emftext.language.java.classifiers.Class _element) -> true, // correspondence precondition checker
     	null);
     initializeRetrieveElementState(newJavaDataType);
-    userExecution.callRoutine1(innerDeclaration, newJavaDataType, effectFacade);
+    userExecution.callRoutine1(innerDeclaration, newJavaDataType, actionsFacade);
     
     postprocessElementStates();
   }

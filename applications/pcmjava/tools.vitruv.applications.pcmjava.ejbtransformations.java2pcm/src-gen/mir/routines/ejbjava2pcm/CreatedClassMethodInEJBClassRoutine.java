@@ -20,12 +20,12 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 
 @SuppressWarnings("all")
 public class CreatedClassMethodInEJBClassRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatedClassMethodInEJBClassRoutine.EffectUserExecution userExecution;
+  private CreatedClassMethodInEJBClassRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -49,8 +49,8 @@ public class CreatedClassMethodInEJBClassRoutine extends AbstractRepairRoutineRe
   
   public CreatedClassMethodInEJBClassRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.emftext.language.java.classifiers.Class clazz, final ClassMethod classMethod) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatedClassMethodInEJBClassRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatedClassMethodInEJBClassRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.clazz = clazz;this.classMethod = classMethod;
   }
   
@@ -72,7 +72,7 @@ public class CreatedClassMethodInEJBClassRoutine extends AbstractRepairRoutineRe
     	return;
     }
     initializeRetrieveElementState(basicComponent);
-    userExecution.callRoutine1(clazz, classMethod, basicComponent, effectFacade);
+    userExecution.callRoutine1(clazz, classMethod, basicComponent, actionsFacade);
     
     postprocessElementStates();
   }

@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreateCompositeDataTypeImplementationRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreateCompositeDataTypeImplementationRoutine.EffectUserExecution userExecution;
+  private CreateCompositeDataTypeImplementationRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -41,8 +41,8 @@ public class CreateCompositeDataTypeImplementationRoutine extends AbstractRepair
   
   public CreateCompositeDataTypeImplementationRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final CompositeDataType dataType) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.CreateCompositeDataTypeImplementationRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.CreateCompositeDataTypeImplementationRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.dataType = dataType;
   }
   
@@ -61,7 +61,7 @@ public class CreateCompositeDataTypeImplementationRoutine extends AbstractRepair
     	return;
     }
     initializeRetrieveElementState(datatypesPackage);
-    userExecution.callRoutine1(dataType, datatypesPackage, effectFacade);
+    userExecution.callRoutine1(dataType, datatypesPackage, actionsFacade);
     
     postprocessElementStates();
   }

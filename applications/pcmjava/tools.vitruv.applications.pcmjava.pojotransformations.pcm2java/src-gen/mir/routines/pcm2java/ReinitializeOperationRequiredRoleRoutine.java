@@ -11,12 +11,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class ReinitializeOperationRequiredRoleRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private ReinitializeOperationRequiredRoleRoutine.EffectUserExecution userExecution;
+  private ReinitializeOperationRequiredRoleRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -29,8 +29,8 @@ public class ReinitializeOperationRequiredRoleRoutine extends AbstractRepairRout
   
   public ReinitializeOperationRequiredRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole requiredRole) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.pcm2java.ReinitializeOperationRequiredRoleRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.pcm2java.ReinitializeOperationRequiredRoleRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.requiredRole = requiredRole;
   }
   
@@ -40,7 +40,7 @@ public class ReinitializeOperationRequiredRoleRoutine extends AbstractRepairRout
     getLogger().debug("Called routine ReinitializeOperationRequiredRoleRoutine with input:");
     getLogger().debug("   OperationRequiredRole: " + this.requiredRole);
     
-    userExecution.callRoutine1(requiredRole, effectFacade);
+    userExecution.callRoutine1(requiredRole, actionsFacade);
     
     postprocessElementStates();
   }

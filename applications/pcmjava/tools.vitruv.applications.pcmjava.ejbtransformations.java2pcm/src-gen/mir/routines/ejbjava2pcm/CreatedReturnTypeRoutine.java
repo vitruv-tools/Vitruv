@@ -13,12 +13,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreatedReturnTypeRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatedReturnTypeRoutine.EffectUserExecution userExecution;
+  private CreatedReturnTypeRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -33,8 +33,8 @@ public class CreatedReturnTypeRoutine extends AbstractRepairRoutineRealization {
   
   public CreatedReturnTypeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod method, final TypeReference type) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatedReturnTypeRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatedReturnTypeRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.method = method;this.type = type;
   }
   
@@ -56,7 +56,7 @@ public class CreatedReturnTypeRoutine extends AbstractRepairRoutineRealization {
     	return;
     }
     initializeRetrieveElementState(opSignature);
-    userExecution.callRoutine1(method, type, opSignature, effectFacade);
+    userExecution.callRoutine1(method, type, opSignature, actionsFacade);
     
     postprocessElementStates();
   }

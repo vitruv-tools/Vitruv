@@ -23,12 +23,12 @@ import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHavin
 
 @SuppressWarnings("all")
 public class CreatedAnnotationForFieldRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade effectFacade;
+  private RoutinesFacade actionsFacade;
   
-  private CreatedAnnotationForFieldRoutine.EffectUserExecution userExecution;
+  private CreatedAnnotationForFieldRoutine.ActionUserExecution userExecution;
   
-  private static class EffectUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public EffectUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
       super(responseExecutionState);
     }
     
@@ -55,8 +55,8 @@ public class CreatedAnnotationForFieldRoutine extends AbstractRepairRoutineReali
   
   public CreatedAnnotationForFieldRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Field annotatedField) {
     super(responseExecutionState, calledBy);
-    this.userExecution = new mir.routines.ejbjava2pcm.CreatedAnnotationForFieldRoutine.EffectUserExecution(getExecutionState(), this);
-    this.effectFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
+    this.userExecution = new mir.routines.ejbjava2pcm.CreatedAnnotationForFieldRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.annotatedField = annotatedField;
   }
   
@@ -75,7 +75,7 @@ public class CreatedAnnotationForFieldRoutine extends AbstractRepairRoutineReali
     	return;
     }
     initializeRetrieveElementState(basicComponent);
-    userExecution.callRoutine1(annotatedField, basicComponent, effectFacade);
+    userExecution.callRoutine1(annotatedField, basicComponent, actionsFacade);
     
     postprocessElementStates();
   }
