@@ -41,10 +41,13 @@ class EMFModelChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange
         return this.changeDescription;
     }
 
-    override String toString() {
-        return EMFModelChangeImpl.getSimpleName() + ": VURI: " + this.URI + " EChange: " + this.changeDescription;
-    }
-
+    override String toString() '''
+    	«EMFModelChangeImpl.simpleName»: VURI «this.vuri», EChanges:
+    		«FOR eChange : EChanges»
+    			Inner change: «eChange»
+    		«ENDFOR»
+    '''
+        
 	override getURI() {
 		return vuri;
 	}
