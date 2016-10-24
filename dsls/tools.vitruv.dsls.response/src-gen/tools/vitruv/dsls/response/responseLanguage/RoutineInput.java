@@ -7,8 +7,8 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +31,7 @@ public interface RoutineInput extends EObject
 {
   /**
    * Returns the value of the '<em><b>Model Input Elements</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mirbase.mirBase.ModelElement}.
+   * The list contents are of type {@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Model Input Elements</em>' containment reference list isn't clear,
@@ -43,7 +43,7 @@ public interface RoutineInput extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<ModelElement> getModelInputElements();
+  EList<NamedModelElement> getModelInputElements();
 
   /**
    * Returns the value of the '<em><b>Java Input Elements</b></em>' containment reference list.

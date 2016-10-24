@@ -29,7 +29,7 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  *
  * @generated
  */
-public class RemoveCorrespondenceImpl extends EffectStatementImpl implements RemoveCorrespondence
+public class RemoveCorrespondenceImpl extends ActionStatementImpl implements RemoveCorrespondence
 {
   /**
    * The cached value of the '{@link #getFirstElement() <em>First Element</em>}' containment reference.

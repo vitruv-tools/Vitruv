@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.response.api.generator;
 
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.response.responseLanguage.Response
 import org.eclipse.xtend2.lib.StringConcatenationClient
+import tools.vitruv.dsls.response.responseLanguage.Reaction
 
 interface IResponseBuilder {
-	def Response generateResponse();
+	def Reaction generateResponse();
 	def IResponseBuilder setName(String name);
 	def IResponseBuilder setTrigger(EPackage sourceMetamodel);
 	def IResponseBuilder setTargetChange(EPackage targetMetamodel);

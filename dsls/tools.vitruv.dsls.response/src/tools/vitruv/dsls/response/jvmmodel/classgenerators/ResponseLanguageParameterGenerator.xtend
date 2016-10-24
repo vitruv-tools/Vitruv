@@ -18,6 +18,7 @@ import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -34,9 +35,9 @@ class ResponseLanguageParameterGenerator {
 		_typesBuilder = typesBuilder;
 	}
 	
-	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, ModelElement element) {
+	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, ModelElement element, String elementName) {
 		if (element?.element != null) {
-			return parameterContext.generateParameter(element.name, element.element.instanceClass);
+			return parameterContext.generateParameter(elementName, element.element.instanceClass);
 		}	
 		return null;
 	}
@@ -72,7 +73,7 @@ class ResponseLanguageParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
-	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<ModelElement> modelElements, Iterable<NamedJavaElement> javaElements) {
+	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedModelElement> modelElements, Iterable<NamedJavaElement> javaElements) {
 		return modelElements.map[
 			generateParameter(contextObject, it.name, it.element.mappedInstanceClass)
 		] + javaElements.map[toParameter(contextObject, it.name, it.type)];

@@ -5,8 +5,6 @@ package tools.vitruv.dsls.response.ui.outline
 
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import tools.vitruv.dsls.response.responseLanguage.ResponseFile
-import tools.vitruv.dsls.response.responseLanguage.Response
 import tools.vitruv.dsls.response.responseLanguage.Trigger
 import static extension tools.vitruv.dsls.response.helper.EChangeHelper.*;
 import tools.vitruv.dsls.response.responseLanguage.CodeBlock
@@ -18,13 +16,15 @@ import tools.vitruv.dsls.response.responseLanguage.AtomicRootObjectChange
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.response.responseLanguage.PreconditionCodeBlock
-import tools.vitruv.dsls.response.responseLanguage.Effect
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
+import tools.vitruv.dsls.response.responseLanguage.ReactionsFile
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
+import tools.vitruv.dsls.response.responseLanguage.Reaction
+import tools.vitruv.dsls.response.responseLanguage.Action
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 
 /**
  * Outline structure definition for a response file.
@@ -32,24 +32,24 @@ import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
  * @author Heiko Klare
  */
 class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
-	protected def void _createChildren(DocumentRootNode root, ResponseFile responseFile) {
-		val importsNode = createEStructuralFeatureNode(root, responseFile, 
+	protected def void _createChildren(DocumentRootNode root, ReactionsFile reactionsFile) {
+		val importsNode = createEStructuralFeatureNode(root, reactionsFile, 
 			MirBasePackage.Literals.MIR_BASE_FILE__METAMODEL_IMPORTS,
-			imageDispatcher.invoke(responseFile), "imports", false);
-		for (imp : responseFile.metamodelImports) {
+			imageDispatcher.invoke(reactionsFile), "imports", false);
+		for (imp : reactionsFile.metamodelImports) {
 			createChildren(importsNode, imp);
 		}
-		for (responseSegment : responseFile.responsesSegments) {
+		for (responseSegment : reactionsFile.reactionsSegments) {
 			createChildren(root, responseSegment);
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ResponsesSegment responsesSegment) {
-		val segmentNode = createEObjectNode(parentNode, responsesSegment);
-		for (response: responsesSegment.responses) {
-			createChildren(segmentNode, response);	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsSegment reactionsSegment) {
+		val segmentNode = createEObjectNode(parentNode, reactionsSegment);
+		for (reaction : reactionsSegment.reactions) {
+			createChildren(segmentNode, reaction);	
 		}
-		for (routine : responsesSegment.routines) {
+		for (routine : reactionsSegment.routines) {
 			createChildren(segmentNode, routine);	
 		}
 	}
@@ -62,22 +62,22 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			imp.package.name, true);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Response response) {
-		val responseNode = createEObjectNode(parentNode, response);
-		if (response.documentation != null) {
-			createEStructuralFeatureNode(responseNode, response,
-				ResponseLanguagePackage.Literals.RESPONSE__DOCUMENTATION,
-				imageDispatcher.invoke(response.documentation),
+	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
+		val responseNode = createEObjectNode(parentNode, reaction);
+		if (reaction.documentation != null) {
+			createEStructuralFeatureNode(responseNode, reaction,
+				ResponseLanguagePackage.Literals.REACTION__DOCUMENTATION,
+				imageDispatcher.invoke(reaction.documentation),
 				"documentation", true);
 		}
-		val triggerNode = createEStructuralFeatureNode(responseNode, response, 
-			ResponseLanguagePackage.Literals.RESPONSE__TRIGGER,
-			imageDispatcher.invoke(response.trigger), "trigger", response.trigger == null);
-		if (response.trigger != null) {
-			createChildren(triggerNode, response.trigger);
+		val triggerNode = createEStructuralFeatureNode(responseNode, reaction, 
+			ResponseLanguagePackage.Literals.REACTION__TRIGGER,
+			imageDispatcher.invoke(reaction.trigger), "trigger", reaction.trigger == null);
+		if (reaction.trigger != null) {
+			createChildren(triggerNode, reaction.trigger);
 		}
-		if (response.trigger?.precondition != null) {
-			createChildren(triggerNode, response.trigger.precondition)
+		if (reaction.trigger?.precondition != null) {
+			createChildren(triggerNode, reaction.trigger.precondition)
 		}
 	}
 	
@@ -112,15 +112,15 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 				createEObjectNode(parentNode, element);	
 			}
 		}		
-		createChildren(parentNode, routine.effect);
+		createChildren(parentNode, routine.action);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Effect effect) {
+	protected def void _createChildren(EStructuralFeatureNode parentNode, Action action) {
 		// TODO HK Add missing elements: create / delete / update / call routine
-		for (element : effect.effectStatements.filter(CreateCorrespondence)) {
+		for (element : action.actionStatements.filter(CreateCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
-		for (element : effect.effectStatements.filter(RemoveCorrespondence)) {
+		for (element : action.actionStatements.filter(RemoveCorrespondence)) {
 			createEObjectNode(parentNode, element);	
 		}
 	}
@@ -137,16 +137,16 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return imp?.name;
 	}
 	
-	protected def Object _text(Response response) {
-		return "response: " + response.name;
+	protected def Object _text(Reaction reaction) {
+		return "reaction: " + reaction.name;
 	}
 	
 	protected def Object _text(Routine routine) {
-		return "effect: " + routine.name;
+		return "action: " + routine.name;
 	}
 	
-	protected def Object _text(ResponsesSegment responsesSegment) {
-		return "segment: " + responsesSegment.name;
+	protected def Object _text(ReactionsSegment reactionsSegment) {
+		return "segment: " + reactionsSegment.name;
 	}
 	
 	protected def Object _text(Trigger trigger) {
@@ -181,7 +181,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Create element: " + elementCreate.elementText;
 //	}
 	
-	protected def Object _text(RetrieveModelElementStatement elementRetrieve) {
+	protected def Object _text(RetrieveModelElement elementRetrieve) {
 		"retrieve element: " + elementRetrieve.elementText;
 	}
 	
@@ -201,8 +201,8 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //		"Delete element: " + elementDelete.elementText;
 //	}
 	
-	private def String getElementText(RetrieveModelElementStatement retrieveElement) {
-		return retrieveElement.element.name + " (" + retrieveElement.element?.element?.name + ")"
+	private def String getElementText(RetrieveModelElement retrieveElement) {
+		return retrieveElement.name + " (" + retrieveElement.element?.name + ")"
 	}
 	
 	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {
@@ -217,7 +217,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(RetrieveModelElementStatement element) {
+	protected def boolean _isLeaf(RetrieveModelElement element) {
 		return true;
 	}
 	

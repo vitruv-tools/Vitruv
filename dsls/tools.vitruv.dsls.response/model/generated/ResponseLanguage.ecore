@@ -2,32 +2,32 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="responseLanguage" nsURI="http://www.kit.edu/ipd/sdq/vitruvius/dsls/response/ResponseLanguage"
     nsPrefix="responseLanguage">
-  <eClassifiers xsi:type="ecore:EClass" name="ResponseFile" eSuperTypes="platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MirBaseFile">
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionsFile" eSuperTypes="platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MirBaseFile">
     <eStructuralFeatures xsi:type="ecore:EReference" name="namespaceImports" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegments" upperBound="-1"
-        eType="#//ResponsesSegment" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegments" upperBound="-1"
+        eType="#//ReactionsSegment" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ResponsesSegment">
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionsSegment">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fromMetamodel" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toMetamodel" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responses" upperBound="-1"
-        eType="#//Response" containment="true" eOpposite="#//Response/responsesSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactions" upperBound="-1"
+        eType="#//Reaction" containment="true" eOpposite="#//Reaction/reactionsSegment"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="routines" upperBound="-1"
-        eType="#//Routine" containment="true" eOpposite="#//Routine/responsesSegment"/>
+        eType="#//Routine" containment="true" eOpposite="#//Routine/reactionsSegment"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Response">
+  <eClassifiers xsi:type="ecore:EClass" name="Reaction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//ResponseReactionRoutineCall"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
-        eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/responses"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegment" lowerBound="1"
+        eType="#//ReactionsSegment" eOpposite="#//ReactionsSegment/reactions"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResponseReactionRoutineCall" eSuperTypes="#//RoutineCallBlock #//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="InvariantViolationEvent" eSuperTypes="#//Trigger">
@@ -57,14 +57,16 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" eType="#//Matcher"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effect" eType="#//Effect"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="action" eType="#//Action"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="responsesSegment" lowerBound="1"
-        eType="#//ResponsesSegment" eOpposite="#//ResponsesSegment/routines"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="return" eType="#//ReturnStatement"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegment" lowerBound="1"
+        eType="#//ReactionsSegment" eOpposite="#//ReactionsSegment/routines"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoutineInput">
     <eStructuralFeatures xsi:type="ecore:EReference" name="modelInputElements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedModelElement"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="javaInputElements" upperBound="-1"
         eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedJavaElement"
@@ -75,29 +77,57 @@
         eType="#//MatcherStatement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MatcherStatement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RetrieveModelElementStatement" eSuperTypes="#//MatcherStatement #//Taggable">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="required" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RetrieveModelElement" eSuperTypes="#//MatcherStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement #//Taggable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="abscence" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="correspondenceSource" eType="#//CorrespondingObjectCodeBlock"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="precondition" eType="#//PreconditionCodeBlock"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MatcherCheckStatement" eSuperTypes="#//MatcherStatement #//CodeBlock"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Effect">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="effectStatements" upperBound="-1"
-        eType="#//EffectStatement" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Action">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actionStatements" upperBound="-1"
+        eType="#//ActionStatement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//RoutineCallBlock #//CodeBlock #//EffectStatement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EffectStatement" eSuperTypes="#//Taggable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallStatement" eSuperTypes="#//RoutineCallBlock #//CodeBlock #//ActionStatement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionStatement" eSuperTypes="#//ExecuteActionBlock #//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateModelElement" eSuperTypes="#//ActionStatement platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initializationBlock" eType="#//ExecutionCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteModelElement" eSuperTypes="#//ActionStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateModelElement" eSuperTypes="#//ActionStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="updateBlock" eType="#//ExecutionCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateCorrespondence" eSuperTypes="#//ActionStatement #//Taggable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveCorrespondence" eSuperTypes="#//ActionStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
     <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecuteActionBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Taggable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="tag" eType="#//TagCodeBlock"
         containment="true"/>
@@ -107,38 +137,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="CorrespondingObjectCodeBlock" eSuperTypes="#//CodeBlock"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExecutionCodeBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ReturnStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InsertRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="RemoveRootChange" eSuperTypes="#//AtomicRootObjectChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureInsertChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeatureRemoveChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="MultiValuedFeaturePermuteChange" eSuperTypes="#//AtomicMultiValuedFeatureChange"/>
   <eClassifiers xsi:type="ecore:EClass" name="SingleValuedFeatureReplace" eSuperTypes="#//AtomicSingleValuedFeatureChange"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CreateElement" eSuperTypes="#//EffectStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//ModelElement"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initializationBlock" eType="#//ExecutionCodeBlock"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DeleteElement" eSuperTypes="#//EffectStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UpdateElement" eSuperTypes="#//EffectStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//ExistingElementReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="updateBlock" eType="#//ExecutionCodeBlock"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CreateCorrespondence" eSuperTypes="#//EffectStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RemoveCorrespondence" eSuperTypes="#//EffectStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstElement" eType="#//ExistingElementReference"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="secondElement" eType="#//ExistingElementReference"
-        containment="true"/>
-  </eClassifiers>
 </ecore:EPackage>

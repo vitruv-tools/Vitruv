@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.response.jvmmodel.classgenerators
 
 import org.eclipse.xtext.common.types.JvmGenericType
-import tools.vitruv.dsls.response.responseLanguage.Response
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
@@ -21,26 +20,27 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
 import static tools.vitruv.dsls.response.helper.ResponseLanguageConstants.*;
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
+import tools.vitruv.dsls.response.responseLanguage.Reaction
 
 class ResponseClassGenerator extends ClassGenerator {
-	protected final Response response;
+	protected final Reaction reaction;
 	protected final Class<? extends EChange> change;
 	protected final boolean hasPreconditionBlock;
 	private final ClassNameGenerator responseClassNameGenerator;
 	private final UserExecutionClassGenerator userExecutionClassGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
 	
-	new(Response response, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (response?.trigger == null || response?.callRoutine == null) {
+		if (reaction?.trigger == null || reaction?.callRoutine == null) {
 			throw new IllegalArgumentException();
 		}
-		this.response = response;
-		this.hasPreconditionBlock = response.trigger.precondition != null;
-		this.change = response.trigger.generateEChangeInstanceClass();
-		this.responseClassNameGenerator = response.responseClassNameGenerator;
-		this.routinesFacadeClassNameGenerator = response.responsesSegment.routinesFacadeClassNameGenerator;
-		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, response, 
+		this.reaction = reaction;
+		this.hasPreconditionBlock = reaction.trigger.precondition != null;
+		this.change = reaction.trigger.generateEChangeInstanceClass();
+		this.responseClassNameGenerator = reaction.reactionClassNameGenerator;
+		this.routinesFacadeClassNameGenerator = reaction.reactionsSegment.routinesFacadeClassNameGenerator;
+		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, reaction, 
 			responseClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
@@ -49,7 +49,7 @@ class ResponseClassGenerator extends ClassGenerator {
 		generateMethodCheckPrecondition();
 		generateMethodExecuteResponse();
 				
-		response.toClass(responseClassNameGenerator.qualifiedName) [
+		reaction.toClass(responseClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT;
 			superTypes += typeRef(AbstractResponseRealization);
 			addConstructor(it);
@@ -87,8 +87,8 @@ class ResponseClassGenerator extends ClassGenerator {
 	 */
 	protected def generateMethodExecuteResponse() {
 		val methodName = "executeResponse";
-		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(response.callRoutine, 
-			#[new AccessibleElement("change", response.generateChangeParameter(response.trigger).parameterType)], 
+		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(reaction.callRoutine, 
+			#[new AccessibleElement("change", reaction.generateChangeParameter(reaction.trigger).parameterType)], 
 			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
 			
 		return getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
@@ -107,7 +107,7 @@ class ResponseClassGenerator extends ClassGenerator {
 	}
 			
 	private def StringConcatenationClient getTypedChangeString() '''
-		«val trigger = response.trigger
+		«val trigger = reaction.trigger
 		»«change»«IF trigger instanceof ConcreteModelElementChange»<«FOR typeParam : getGenericTypeParametersOfChange(trigger) SEPARATOR ', '»«typeParam»«ENDFOR»>«ENDIF»'''
 		
 		
@@ -123,7 +123,7 @@ class ResponseClassGenerator extends ClassGenerator {
 				typeRef(change);
 			}
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
-			val changeParameter = generateUntypedChangeParameter(response);
+			val changeParameter = generateUntypedChangeParameter(reaction);
 			val typedChangeClass = change;
 			visibility = JvmVisibility.PUBLIC;
 			parameters += changeParameter
@@ -148,18 +148,18 @@ class ResponseClassGenerator extends ClassGenerator {
 		
 		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			parameters += preconditionBlock.generateChangeParameter(response.trigger);
+			parameters += preconditionBlock.generateChangeParameter(reaction.trigger);
 			body = preconditionBlock.code;
 		];		
 	}
 	
 	protected def Iterable<JvmOperation> getPreconditionMethods() {
 		val methods = <JvmOperation>newArrayList();
-		if (response.trigger instanceof ConcreteModelElementChange) {
+		if (reaction.trigger instanceof ConcreteModelElementChange) {
 			methods += generateMethodCheckChangedObject();
 		}
 		if (hasPreconditionBlock) {
-			methods += generateMethodCheckUserDefinedPrecondition(response.trigger.precondition);	
+			methods += generateMethodCheckUserDefinedPrecondition(reaction.trigger.precondition);	
 		}
 		return methods;
 	}
@@ -175,15 +175,15 @@ class ResponseClassGenerator extends ClassGenerator {
 	protected def generateMethodCheckChangedObject() {
 		val methodName = "checkChangeProperties";
 		
-		if (!(response.trigger instanceof ConcreteModelElementChange)) {
+		if (!(reaction.trigger instanceof ConcreteModelElementChange)) {
 			throw new IllegalStateException();
 		}
 		
-		val changeEvent = response.trigger;
-		val changedElement = response.trigger.changedModelElementClass;
+		val changeEvent = reaction.trigger;
+		val changedElement = reaction.trigger.changedModelElementClass;
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
-			val changeParameter = generateChangeParameter(response.trigger);
+			val changeParameter = generateChangeParameter(reaction.trigger);
 			parameters += changeParameter;
 //			val typedChangeName = "typedChange";
 //			val typedChangeClassGenericString = if (!change.equals(EChange)) "<?>" else ""

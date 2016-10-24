@@ -26,22 +26,22 @@ import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess;
 @Singleton
 public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
-	public class ResponseFileElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ResponseFile");
+	public class ReactionsFileElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ReactionsFile");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cNamespaceImportsAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cNamespaceImportsXImportSectionParserRuleCall_0_0 = (RuleCall)cNamespaceImportsAssignment_0.eContents().get(0);
 		private final RuleCall cMirBaseFileParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final Assignment cResponsesSegmentsAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cResponsesSegmentsResponsesSegmentParserRuleCall_2_0 = (RuleCall)cResponsesSegmentsAssignment_2.eContents().get(0);
+		private final Assignment cReactionsSegmentsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cReactionsSegmentsReactionsSegmentParserRuleCall_2_0 = (RuleCall)cReactionsSegmentsAssignment_2.eContents().get(0);
 		
-		//ResponseFile:
+		//ReactionsFile:
 		//	namespaceImports=XImportSection?
 		//	MirBaseFile
-		//	responsesSegments+=ResponsesSegment+;
+		//	reactionsSegments+=ReactionsSegment+;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//namespaceImports=XImportSection? MirBaseFile responsesSegments+=ResponsesSegment+
+		//namespaceImports=XImportSection? MirBaseFile reactionsSegments+=ReactionsSegment+
 		public Group getGroup() { return cGroup; }
 		
 		//namespaceImports=XImportSection?
@@ -53,42 +53,42 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//MirBaseFile
 		public RuleCall getMirBaseFileParserRuleCall_1() { return cMirBaseFileParserRuleCall_1; }
 		
-		//responsesSegments+=ResponsesSegment+
-		public Assignment getResponsesSegmentsAssignment_2() { return cResponsesSegmentsAssignment_2; }
+		//reactionsSegments+=ReactionsSegment+
+		public Assignment getReactionsSegmentsAssignment_2() { return cReactionsSegmentsAssignment_2; }
 		
-		//ResponsesSegment
-		public RuleCall getResponsesSegmentsResponsesSegmentParserRuleCall_2_0() { return cResponsesSegmentsResponsesSegmentParserRuleCall_2_0; }
+		//ReactionsSegment
+		public RuleCall getReactionsSegmentsReactionsSegmentParserRuleCall_2_0() { return cReactionsSegmentsReactionsSegmentParserRuleCall_2_0; }
 	}
-	public class ResponsesSegmentElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ResponsesSegment");
+	public class ReactionsSegmentElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ReactionsSegment");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cResponseCollectionKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cReactionsKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cFromMetamodelKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cInReactionToChangesInKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cFromMetamodelAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cFromMetamodelMetamodelReferenceParserRuleCall_3_0 = (RuleCall)cFromMetamodelAssignment_3.eContents().get(0);
-		private final Keyword cToMetamodelKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Keyword cExecuteActionsInKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Assignment cToMetamodelAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final RuleCall cToMetamodelMetamodelReferenceParserRuleCall_5_0 = (RuleCall)cToMetamodelAssignment_5.eContents().get(0);
 		private final Alternatives cAlternatives_6 = (Alternatives)cGroup.eContents().get(6);
-		private final Assignment cResponsesAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
-		private final RuleCall cResponsesResponseParserRuleCall_6_0_0 = (RuleCall)cResponsesAssignment_6_0.eContents().get(0);
+		private final Assignment cReactionsAssignment_6_0 = (Assignment)cAlternatives_6.eContents().get(0);
+		private final RuleCall cReactionsReactionParserRuleCall_6_0_0 = (RuleCall)cReactionsAssignment_6_0.eContents().get(0);
 		private final Assignment cRoutinesAssignment_6_1 = (Assignment)cAlternatives_6.eContents().get(1);
 		private final RuleCall cRoutinesRoutineParserRuleCall_6_1_0 = (RuleCall)cRoutinesAssignment_6_1.eContents().get(0);
 		
-		//ResponsesSegment:
-		//	'response collection:' name=ValidID
-		//	'from metamodel' fromMetamodel=MetamodelReference
-		//	'to metamodel' toMetamodel=MetamodelReference (responses+=Response | routines+=Routine)*;
+		//ReactionsSegment:
+		//	'reactions:' name=ValidID
+		//	'in reaction to changes in' fromMetamodel=MetamodelReference
+		//	'execute actions in' toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'response collection:' name=ValidID 'from metamodel' fromMetamodel=MetamodelReference 'to metamodel'
-		//toMetamodel=MetamodelReference (responses+=Response | routines+=Routine)*
+		//'reactions:' name=ValidID 'in reaction to changes in' fromMetamodel=MetamodelReference 'execute actions in'
+		//toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*
 		public Group getGroup() { return cGroup; }
 		
-		//'response collection:'
-		public Keyword getResponseCollectionKeyword_0() { return cResponseCollectionKeyword_0; }
+		//'reactions:'
+		public Keyword getReactionsKeyword_0() { return cReactionsKeyword_0; }
 		
 		//name=ValidID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -96,8 +96,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
 		
-		//'from metamodel'
-		public Keyword getFromMetamodelKeyword_2() { return cFromMetamodelKeyword_2; }
+		//'in reaction to changes in'
+		public Keyword getInReactionToChangesInKeyword_2() { return cInReactionToChangesInKeyword_2; }
 		
 		//fromMetamodel=MetamodelReference
 		public Assignment getFromMetamodelAssignment_3() { return cFromMetamodelAssignment_3; }
@@ -105,8 +105,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//MetamodelReference
 		public RuleCall getFromMetamodelMetamodelReferenceParserRuleCall_3_0() { return cFromMetamodelMetamodelReferenceParserRuleCall_3_0; }
 		
-		//'to metamodel'
-		public Keyword getToMetamodelKeyword_4() { return cToMetamodelKeyword_4; }
+		//'execute actions in'
+		public Keyword getExecuteActionsInKeyword_4() { return cExecuteActionsInKeyword_4; }
 		
 		//toMetamodel=MetamodelReference
 		public Assignment getToMetamodelAssignment_5() { return cToMetamodelAssignment_5; }
@@ -114,14 +114,14 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//MetamodelReference
 		public RuleCall getToMetamodelMetamodelReferenceParserRuleCall_5_0() { return cToMetamodelMetamodelReferenceParserRuleCall_5_0; }
 		
-		//(responses+=Response | routines+=Routine)*
+		//(reactions+=Reaction | routines+=Routine)*
 		public Alternatives getAlternatives_6() { return cAlternatives_6; }
 		
-		//responses+=Response
-		public Assignment getResponsesAssignment_6_0() { return cResponsesAssignment_6_0; }
+		//reactions+=Reaction
+		public Assignment getReactionsAssignment_6_0() { return cReactionsAssignment_6_0; }
 		
-		//Response
-		public RuleCall getResponsesResponseParserRuleCall_6_0_0() { return cResponsesResponseParserRuleCall_6_0_0; }
+		//Reaction
+		public RuleCall getReactionsReactionParserRuleCall_6_0_0() { return cReactionsReactionParserRuleCall_6_0_0; }
 		
 		//routines+=Routine
 		public Assignment getRoutinesAssignment_6_1() { return cRoutinesAssignment_6_1; }
@@ -129,12 +129,12 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Routine
 		public RuleCall getRoutinesRoutineParserRuleCall_6_1_0() { return cRoutinesRoutineParserRuleCall_6_1_0; }
 	}
-	public class ResponseElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Response");
+	public class ReactionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Reaction");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cDocumentationAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cDocumentationML_COMMENTTerminalRuleCall_0_0 = (RuleCall)cDocumentationAssignment_0.eContents().get(0);
-		private final Keyword cResponseKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cReactionKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
@@ -147,15 +147,15 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//// *********************************
 		//// *********** RESPONSES ***********
 		//// *********************************
-		//Response:
+		//Reaction:
 		//	documentation=ML_COMMENT?
-		//	'response:' name=ValidID '{'
+		//	'reaction' name=ValidID? '{'
 		//	trigger=Trigger
 		//	callRoutine=ResponseReactionRoutineCall
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//documentation=ML_COMMENT? 'response:' name=ValidID '{' trigger=Trigger callRoutine=ResponseReactionRoutineCall '}'
+		//documentation=ML_COMMENT? 'reaction' name=ValidID? '{' trigger=Trigger callRoutine=ResponseReactionRoutineCall '}'
 		public Group getGroup() { return cGroup; }
 		
 		//documentation=ML_COMMENT?
@@ -164,10 +164,10 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ML_COMMENT
 		public RuleCall getDocumentationML_COMMENTTerminalRuleCall_0_0() { return cDocumentationML_COMMENTTerminalRuleCall_0_0; }
 		
-		//'response:'
-		public Keyword getResponseKeyword_1() { return cResponseKeyword_1; }
+		//'reaction'
+		public Keyword getReactionKeyword_1() { return cReactionKeyword_1; }
 		
-		//name=ValidID
+		//name=ValidID?
 		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//ValidID
@@ -337,48 +337,52 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
 		private final Group cGroup_0_0 = (Group)cAlternatives_0.eContents().get(0);
-		private final Keyword cRootCreatedKeyword_0_0_0 = (Keyword)cGroup_0_0.eContents().get(0);
+		private final Keyword cRootCreatedAndInsertedKeyword_0_0_0 = (Keyword)cGroup_0_0.eContents().get(0);
 		private final Action cInsertRootChangeAction_0_0_1 = (Action)cGroup_0_0.eContents().get(1);
 		private final Group cGroup_0_1 = (Group)cAlternatives_0.eContents().get(1);
-		private final Keyword cRootDeletedKeyword_0_1_0 = (Keyword)cGroup_0_1.eContents().get(0);
+		private final Keyword cRootDeletedAndRemovedKeyword_0_1_0 = (Keyword)cGroup_0_1.eContents().get(0);
 		private final Action cRemoveRootChangeAction_0_1_1 = (Action)cGroup_0_1.eContents().get(1);
 		private final Assignment cChangedElementAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cChangedElementModelElementParserRuleCall_1_0 = (RuleCall)cChangedElementAssignment_1.eContents().get(0);
+		private final RuleCall cChangedElementUnnamedModelElementParserRuleCall_1_0 = (RuleCall)cChangedElementAssignment_1.eContents().get(0);
 		
 		//AtomicRootObjectChange:
-		//	('root created' {InsertRootChange} |
-		//	'root deleted' {RemoveRootChange}) changedElement=ModelElement;
+		//	('root created and inserted' {InsertRootChange} |
+		//	'root deleted and removed' {RemoveRootChange}) changedElement=UnnamedModelElement;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//('root created' {InsertRootChange} | 'root deleted' {RemoveRootChange}) changedElement=ModelElement
+		//('root created and inserted' {InsertRootChange} | 'root deleted and removed' {RemoveRootChange})
+		//changedElement=UnnamedModelElement
 		public Group getGroup() { return cGroup; }
 		
-		//('root created' {InsertRootChange} | 'root deleted' {RemoveRootChange})
+		//('root created and inserted' {InsertRootChange} | 'root deleted and removed' {RemoveRootChange})
 		public Alternatives getAlternatives_0() { return cAlternatives_0; }
 		
-		//'root created' {InsertRootChange}
+		//'root created and inserted' {InsertRootChange}
 		public Group getGroup_0_0() { return cGroup_0_0; }
 		
-		//'root created'
-		public Keyword getRootCreatedKeyword_0_0_0() { return cRootCreatedKeyword_0_0_0; }
+		//'root created and inserted'
+		public Keyword getRootCreatedAndInsertedKeyword_0_0_0() { return cRootCreatedAndInsertedKeyword_0_0_0; }
 		
 		//{InsertRootChange}
 		public Action getInsertRootChangeAction_0_0_1() { return cInsertRootChangeAction_0_0_1; }
 		
-		//'root deleted' {RemoveRootChange}
+		//'root deleted and removed' {RemoveRootChange}
 		public Group getGroup_0_1() { return cGroup_0_1; }
 		
-		//'root deleted'
-		public Keyword getRootDeletedKeyword_0_1_0() { return cRootDeletedKeyword_0_1_0; }
+		//'root deleted and removed'
+		public Keyword getRootDeletedAndRemovedKeyword_0_1_0() { return cRootDeletedAndRemovedKeyword_0_1_0; }
 		
 		//{RemoveRootChange}
 		public Action getRemoveRootChangeAction_0_1_1() { return cRemoveRootChangeAction_0_1_1; }
 		
-		//changedElement=ModelElement
+		////	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
+		////	'root inserted' {InsertRootChange} |
+		////	'root removed' {RemoveRootChange})
+		//changedElement=UnnamedModelElement
 		public Assignment getChangedElementAssignment_1() { return cChangedElementAssignment_1; }
 		
-		//ModelElement
-		public RuleCall getChangedElementModelElementParserRuleCall_1_0() { return cChangedElementModelElementParserRuleCall_1_0; }
+		//UnnamedModelElement
+		public RuleCall getChangedElementUnnamedModelElementParserRuleCall_1_0() { return cChangedElementUnnamedModelElementParserRuleCall_1_0; }
 	}
 	public class AtomicFeatureChangeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.AtomicFeatureChange");
@@ -415,46 +419,62 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.AtomicMultiValuedFeatureChange");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Keyword cListEntryInsertedKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
+		private final Keyword cListEntryCreatedAndInsertedInKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
 		private final Action cMultiValuedFeatureInsertChangeAction_0_1 = (Action)cGroup_0.eContents().get(1);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Keyword cListEntryRemovedKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Keyword cListEntryDeletedAndRemovedInKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final Action cMultiValuedFeatureRemoveChangeAction_1_1 = (Action)cGroup_1.eContents().get(1);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final Keyword cListPermutedKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Action cMultiValuedFeaturePermuteChangeAction_2_1 = (Action)cGroup_2.eContents().get(1);
 		
 		//AtomicMultiValuedFeatureChange:
-		//	'list entry inserted' {MultiValuedFeatureInsertChange} |
-		//	'list entry removed' {MultiValuedFeatureRemoveChange} |
+		//	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
+		//	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
+		//	// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+		//	// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+		//	// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+		//	// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 		//	'list permuted' {MultiValuedFeaturePermuteChange};
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'list entry inserted' {MultiValuedFeatureInsertChange} | 'list entry removed' {MultiValuedFeatureRemoveChange} |
+		//'list entry created and inserted in' {MultiValuedFeatureInsertChange} | 'list entry deleted and removed in'
+		//{MultiValuedFeatureRemoveChange} | // TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 		//'list permuted' {MultiValuedFeaturePermuteChange}
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//'list entry inserted' {MultiValuedFeatureInsertChange}
+		//'list entry created and inserted in' {MultiValuedFeatureInsertChange}
 		public Group getGroup_0() { return cGroup_0; }
 		
-		//'list entry inserted'
-		public Keyword getListEntryInsertedKeyword_0_0() { return cListEntryInsertedKeyword_0_0; }
+		//'list entry created and inserted in'
+		public Keyword getListEntryCreatedAndInsertedInKeyword_0_0() { return cListEntryCreatedAndInsertedInKeyword_0_0; }
 		
 		//{MultiValuedFeatureInsertChange}
 		public Action getMultiValuedFeatureInsertChangeAction_0_1() { return cMultiValuedFeatureInsertChangeAction_0_1; }
 		
-		//'list entry removed' {MultiValuedFeatureRemoveChange}
+		//'list entry deleted and removed in' {MultiValuedFeatureRemoveChange}
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//'list entry removed'
-		public Keyword getListEntryRemovedKeyword_1_0() { return cListEntryRemovedKeyword_1_0; }
+		//'list entry deleted and removed in'
+		public Keyword getListEntryDeletedAndRemovedInKeyword_1_0() { return cListEntryDeletedAndRemovedInKeyword_1_0; }
 		
 		//{MultiValuedFeatureRemoveChange}
 		public Action getMultiValuedFeatureRemoveChangeAction_1_1() { return cMultiValuedFeatureRemoveChangeAction_1_1; }
 		
+		//// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 		//'list permuted' {MultiValuedFeaturePermuteChange}
 		public Group getGroup_2() { return cGroup_2; }
 		
+		//// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+		//// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+		//// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+		//// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 		//'list permuted'
 		public Keyword getListPermutedKeyword_2_0() { return cListPermutedKeyword_2_0; }
 		
@@ -464,20 +484,20 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	public class AtomicSingleValuedFeatureChangeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.AtomicSingleValuedFeatureChange");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cValueReplacedKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cValueReplacedForKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Action cSingleValuedFeatureReplaceAction_1 = (Action)cGroup.eContents().get(1);
 		
 		//AtomicSingleValuedFeatureChange: //'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//	'value replaced' {SingleValuedFeatureReplace};
+		//	'value replaced for' {SingleValuedFeatureReplace};
 		@Override public ParserRule getRule() { return rule; }
 		
 		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//'value replaced' {SingleValuedFeatureReplace}
+		//'value replaced for' {SingleValuedFeatureReplace}
 		public Group getGroup() { return cGroup; }
 		
 		////'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-		//'value replaced'
-		public Keyword getValueReplacedKeyword_0() { return cValueReplacedKeyword_0; }
+		//'value replaced for'
+		public Keyword getValueReplacedForKeyword_0() { return cValueReplacedForKeyword_0; }
 		
 		//{SingleValuedFeatureReplace}
 		public Action getSingleValuedFeatureReplaceAction_1() { return cSingleValuedFeatureReplaceAction_1; }
@@ -513,25 +533,29 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		private final Assignment cMatcherAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cMatcherMatcherParserRuleCall_6_0 = (RuleCall)cMatcherAssignment_6.eContents().get(0);
-		private final Assignment cEffectAssignment_7 = (Assignment)cGroup.eContents().get(7);
-		private final RuleCall cEffectEffectParserRuleCall_7_0 = (RuleCall)cEffectAssignment_7.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final RuleCall cMatcherMatcherBlockParserRuleCall_6_0 = (RuleCall)cMatcherAssignment_6.eContents().get(0);
+		private final Assignment cActionAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cActionActionBlockParserRuleCall_7_0 = (RuleCall)cActionAssignment_7.eContents().get(0);
+		private final Assignment cReturnAssignment_8 = (Assignment)cGroup.eContents().get(8);
+		private final RuleCall cReturnReturnStatementParserRuleCall_8_0 = (RuleCall)cReturnAssignment_8.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//// ***************************************
 		//// *********** REPAIR ROUTINES ***********
 		//// ***************************************
 		//Routine:
-		//	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
-		//	matcher=Matcher?
-		//	effect=Effect
+		//	'routine' name=ValidID '(' input=RoutineInput ')' '{'
+		//	matcher=MatcherBlock?
+		//	action=ActionBlock
+		//	return=ReturnStatement?
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'routine:' name=ValidID '(' input=RoutineInput ')' '{' matcher=Matcher? effect=Effect '}'
+		//'routine' name=ValidID '(' input=RoutineInput ')' '{' matcher=MatcherBlock? action=ActionBlock return=ReturnStatement?
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
-		//'routine:'
+		//'routine'
 		public Keyword getRoutineKeyword_0() { return cRoutineKeyword_0; }
 		
 		//name=ValidID
@@ -555,20 +579,26 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
 		
-		//matcher=Matcher?
+		//matcher=MatcherBlock?
 		public Assignment getMatcherAssignment_6() { return cMatcherAssignment_6; }
 		
-		//Matcher
-		public RuleCall getMatcherMatcherParserRuleCall_6_0() { return cMatcherMatcherParserRuleCall_6_0; }
+		//MatcherBlock
+		public RuleCall getMatcherMatcherBlockParserRuleCall_6_0() { return cMatcherMatcherBlockParserRuleCall_6_0; }
 		
-		//effect=Effect
-		public Assignment getEffectAssignment_7() { return cEffectAssignment_7; }
+		//action=ActionBlock
+		public Assignment getActionAssignment_7() { return cActionAssignment_7; }
 		
-		//Effect
-		public RuleCall getEffectEffectParserRuleCall_7_0() { return cEffectEffectParserRuleCall_7_0; }
+		//ActionBlock
+		public RuleCall getActionActionBlockParserRuleCall_7_0() { return cActionActionBlockParserRuleCall_7_0; }
+		
+		//return=ReturnStatement?
+		public Assignment getReturnAssignment_8() { return cReturnAssignment_8; }
+		
+		//ReturnStatement
+		public RuleCall getReturnReturnStatementParserRuleCall_8_0() { return cReturnReturnStatementParserRuleCall_8_0; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
+		public Keyword getRightCurlyBracketKeyword_9() { return cRightCurlyBracketKeyword_9; }
 	}
 	public class RoutineInputElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineInput");
@@ -656,8 +686,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//NamedJavaElement
 		public RuleCall getJavaInputElementsNamedJavaElementParserRuleCall_1_1_1_1_1_0() { return cJavaInputElementsNamedJavaElementParserRuleCall_1_1_1_1_1_0; }
 	}
-	public class MatcherElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Matcher");
+	public class MatcherBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.MatcherBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cMatcherAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cMatchKeyword_1 = (Keyword)cGroup.eContents().get(1);
@@ -667,11 +697,11 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//// *********** MATCHER ***********
-		//Matcher:
+		//MatcherBlock Matcher:
 		//	{Matcher}
 		//	'match' '{'
 		//	matcherStatements+=MatcherStatement+
-		//	'}';
+		//	'}'
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{Matcher} 'match' '{' matcherStatements+=MatcherStatement+ '}'
@@ -717,16 +747,20 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	public class RetrieveModelElementStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RetrieveModelElementStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cRetrieveModelElementStatementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Action cRetrieveModelElementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Assignment cRequiredAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
-		private final Keyword cRequiredRetrieveRequiredElementKeyword_1_0_0 = (Keyword)cRequiredAssignment_1_0.eContents().get(0);
-		private final Assignment cOptionalAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
-		private final Keyword cOptionalRetrieveOptionalElementKeyword_1_1_0 = (Keyword)cOptionalAssignment_1_1.eContents().get(0);
-		private final Assignment cAbscenceAssignment_1_2 = (Assignment)cAlternatives_1.eContents().get(2);
-		private final Keyword cAbscenceRequireAbsenceOfElementKeyword_1_2_0 = (Keyword)cAbscenceAssignment_1_2.eContents().get(0);
-		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cElementNamedModelElementParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
+		private final Group cGroup_1_0 = (Group)cAlternatives_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Keyword cValKeyword_1_0_0_0 = (Keyword)cGroup_1_0_0.eContents().get(0);
+		private final Assignment cNameAssignment_1_0_0_1 = (Assignment)cGroup_1_0_0.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_1_0_0_1_0 = (RuleCall)cNameAssignment_1_0_0_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_1_0_0_2 = (Keyword)cGroup_1_0_0.eContents().get(2);
+		private final Keyword cRetrieveKeyword_1_0_1 = (Keyword)cGroup_1_0.eContents().get(1);
+		private final Assignment cOptionalAssignment_1_0_2 = (Assignment)cGroup_1_0.eContents().get(2);
+		private final Keyword cOptionalOptionalKeyword_1_0_2_0 = (Keyword)cOptionalAssignment_1_0_2.eContents().get(0);
+		private final Assignment cAbscenceAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final Keyword cAbscenceRequireAbsenceOfKeyword_1_1_0 = (Keyword)cAbscenceAssignment_1_1.eContents().get(0);
+		private final RuleCall cModelElementParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
 		private final Keyword cCorrespondingToKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cCorrespondenceSourceAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cCorrespondenceSourceCorrespondingObjectCodeBlockParserRuleCall_4_0 = (RuleCall)cCorrespondenceSourceAssignment_4.eContents().get(0);
@@ -738,48 +772,58 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cPreconditionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
 		private final RuleCall cPreconditionPreconditionCodeBlockParserRuleCall_6_1_0 = (RuleCall)cPreconditionAssignment_6_1.eContents().get(0);
 		
-		//RetrieveModelElementStatement:
-		//	{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
-		//	abscence?='require absence of element') element=NamedModelElement 'corresponding to'
-		//	correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
-		//	precondition=PreconditionCodeBlock)?;
+		//RetrieveModelElementStatement RetrieveModelElement:
+		//	{RetrieveModelElement} (('val' name=ValidID '=')? 'retrieve' optional?='optional'? | abscence?='require absence of')
+		//	ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
+		//	precondition=PreconditionCodeBlock)?
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
-		//abscence?='require absence of element') element=NamedModelElement 'corresponding to'
-		//correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
+		//{RetrieveModelElement} (('val' name=ValidID '=')? 'retrieve' optional?='optional'? | abscence?='require absence of')
+		//ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
 		//precondition=PreconditionCodeBlock)?
 		public Group getGroup() { return cGroup; }
 		
-		//{RetrieveModelElementStatement}
-		public Action getRetrieveModelElementStatementAction_0() { return cRetrieveModelElementStatementAction_0; }
+		//{RetrieveModelElement}
+		public Action getRetrieveModelElementAction_0() { return cRetrieveModelElementAction_0; }
 		
-		//(required?='retrieve required element' | optional?='retrieve optional element' | abscence?='require absence of element')
+		//(('val' name=ValidID '=')? 'retrieve' optional?='optional'? | abscence?='require absence of')
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
 		
-		//required?='retrieve required element'
-		public Assignment getRequiredAssignment_1_0() { return cRequiredAssignment_1_0; }
+		//('val' name=ValidID '=')? 'retrieve' optional?='optional'?
+		public Group getGroup_1_0() { return cGroup_1_0; }
 		
-		//'retrieve required element'
-		public Keyword getRequiredRetrieveRequiredElementKeyword_1_0_0() { return cRequiredRetrieveRequiredElementKeyword_1_0_0; }
+		//('val' name=ValidID '=')?
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
 		
-		//optional?='retrieve optional element'
-		public Assignment getOptionalAssignment_1_1() { return cOptionalAssignment_1_1; }
+		//'val'
+		public Keyword getValKeyword_1_0_0_0() { return cValKeyword_1_0_0_0; }
 		
-		//'retrieve optional element'
-		public Keyword getOptionalRetrieveOptionalElementKeyword_1_1_0() { return cOptionalRetrieveOptionalElementKeyword_1_1_0; }
+		//name=ValidID
+		public Assignment getNameAssignment_1_0_0_1() { return cNameAssignment_1_0_0_1; }
 		
-		//abscence?='require absence of element'
-		public Assignment getAbscenceAssignment_1_2() { return cAbscenceAssignment_1_2; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_1_0_0_1_0() { return cNameValidIDParserRuleCall_1_0_0_1_0; }
 		
-		//'require absence of element'
-		public Keyword getAbscenceRequireAbsenceOfElementKeyword_1_2_0() { return cAbscenceRequireAbsenceOfElementKeyword_1_2_0; }
+		//'='
+		public Keyword getEqualsSignKeyword_1_0_0_2() { return cEqualsSignKeyword_1_0_0_2; }
 		
-		//element=NamedModelElement
-		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
+		//'retrieve'
+		public Keyword getRetrieveKeyword_1_0_1() { return cRetrieveKeyword_1_0_1; }
 		
-		//NamedModelElement
-		public RuleCall getElementNamedModelElementParserRuleCall_2_0() { return cElementNamedModelElementParserRuleCall_2_0; }
+		//optional?='optional'?
+		public Assignment getOptionalAssignment_1_0_2() { return cOptionalAssignment_1_0_2; }
+		
+		//'optional'
+		public Keyword getOptionalOptionalKeyword_1_0_2_0() { return cOptionalOptionalKeyword_1_0_2_0; }
+		
+		//abscence?='require absence of'
+		public Assignment getAbscenceAssignment_1_1() { return cAbscenceAssignment_1_1; }
+		
+		//'require absence of'
+		public Keyword getAbscenceRequireAbsenceOfKeyword_1_1_0() { return cAbscenceRequireAbsenceOfKeyword_1_1_0; }
+		
+		//ModelElement
+		public RuleCall getModelElementParserRuleCall_2() { return cModelElementParserRuleCall_2; }
 		
 		//'corresponding to'
 		public Keyword getCorrespondingToKeyword_3() { return cCorrespondingToKeyword_3; }
@@ -835,41 +879,41 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//CodeBlock
 		public RuleCall getCodeBlockParserRuleCall_2() { return cCodeBlockParserRuleCall_2; }
 	}
-	public class EffectElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Effect");
+	public class ActionBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ActionBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cEffectAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cEffectKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Action cActionAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cActionKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cEffectStatementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cEffectStatementsEffectStatementParserRuleCall_3_0 = (RuleCall)cEffectStatementsAssignment_3.eContents().get(0);
+		private final Assignment cActionStatementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cActionStatementsActionStatementParserRuleCall_3_0 = (RuleCall)cActionStatementsAssignment_3.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//// *********** EFFECTS ***********
-		//Effect:
-		//	{Effect}
-		//	'effect' '{'
-		//	effectStatements+=EffectStatement+
-		//	'}';
+		//ActionBlock Action:
+		//	{Action}
+		//	'action' '{'
+		//	actionStatements+=ActionStatement+
+		//	'}'
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Effect} 'effect' '{' effectStatements+=EffectStatement+ '}'
+		//{Action} 'action' '{' actionStatements+=ActionStatement+ '}'
 		public Group getGroup() { return cGroup; }
 		
-		//{Effect}
-		public Action getEffectAction_0() { return cEffectAction_0; }
+		//{Action}
+		public Action getActionAction_0() { return cActionAction_0; }
 		
-		//'effect'
-		public Keyword getEffectKeyword_1() { return cEffectKeyword_1; }
+		//'action'
+		public Keyword getActionKeyword_1() { return cActionKeyword_1; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 		
-		//effectStatements+=EffectStatement+
-		public Assignment getEffectStatementsAssignment_3() { return cEffectStatementsAssignment_3; }
+		//actionStatements+=ActionStatement+
+		public Assignment getActionStatementsAssignment_3() { return cActionStatementsAssignment_3; }
 		
-		//EffectStatement
-		public RuleCall getEffectStatementsEffectStatementParserRuleCall_3_0() { return cEffectStatementsEffectStatementParserRuleCall_3_0; }
+		//ActionStatement
+		public RuleCall getActionStatementsActionStatementParserRuleCall_3_0() { return cActionStatementsActionStatementParserRuleCall_3_0; }
 		
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
@@ -893,106 +937,129 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//RoutineCallBlock
 		public RuleCall getRoutineCallBlockParserRuleCall_1() { return cRoutineCallBlockParserRuleCall_1; }
 	}
-	public class EffectStatementElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.EffectStatement");
+	public class ActionStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ActionStatement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cCreateElementParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cDeleteElementParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cUpdateElementParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cCreateCorrespondenceParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cRemoveCorrespondenceParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		private final RuleCall cRoutineCallStatementParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cCreateModelElementStatementParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cDeleteModelElementStatementParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cUpdateModelElementStatementParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cCreateCorrespondenceStatementParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cRemoveCorrespondenceStatementParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cExecuteActionBlockParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cRoutineCallStatementParserRuleCall_6 = (RuleCall)cAlternatives.eContents().get(6);
 		
-		//EffectStatement:
-		//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
+		//ActionStatement:
+		//	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement |
+		//	CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement
+		//CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement
+		//| RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//CreateElement
-		public RuleCall getCreateElementParserRuleCall_0() { return cCreateElementParserRuleCall_0; }
+		//CreateModelElementStatement
+		public RuleCall getCreateModelElementStatementParserRuleCall_0() { return cCreateModelElementStatementParserRuleCall_0; }
 		
-		//DeleteElement
-		public RuleCall getDeleteElementParserRuleCall_1() { return cDeleteElementParserRuleCall_1; }
+		//DeleteModelElementStatement
+		public RuleCall getDeleteModelElementStatementParserRuleCall_1() { return cDeleteModelElementStatementParserRuleCall_1; }
 		
-		//UpdateElement
-		public RuleCall getUpdateElementParserRuleCall_2() { return cUpdateElementParserRuleCall_2; }
+		//UpdateModelElementStatement
+		public RuleCall getUpdateModelElementStatementParserRuleCall_2() { return cUpdateModelElementStatementParserRuleCall_2; }
 		
-		//CreateCorrespondence
-		public RuleCall getCreateCorrespondenceParserRuleCall_3() { return cCreateCorrespondenceParserRuleCall_3; }
+		//CreateCorrespondenceStatement
+		public RuleCall getCreateCorrespondenceStatementParserRuleCall_3() { return cCreateCorrespondenceStatementParserRuleCall_3; }
 		
-		//RemoveCorrespondence
-		public RuleCall getRemoveCorrespondenceParserRuleCall_4() { return cRemoveCorrespondenceParserRuleCall_4; }
+		//RemoveCorrespondenceStatement
+		public RuleCall getRemoveCorrespondenceStatementParserRuleCall_4() { return cRemoveCorrespondenceStatementParserRuleCall_4; }
+		
+		//ExecuteActionBlock
+		public RuleCall getExecuteActionBlockParserRuleCall_5() { return cExecuteActionBlockParserRuleCall_5; }
 		
 		//RoutineCallStatement
-		public RuleCall getRoutineCallStatementParserRuleCall_5() { return cRoutineCallStatementParserRuleCall_5; }
+		public RuleCall getRoutineCallStatementParserRuleCall_6() { return cRoutineCallStatementParserRuleCall_6; }
 	}
-	public class CreateElementElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.CreateElement");
+	public class CreateModelElementStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.CreateModelElementStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cCreateElementAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cCreateElementKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cElementNamedModelElementParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cInitializedAsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cInitializationBlockAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cInitializationBlockExecutionCodeBlockParserRuleCall_3_1_0 = (RuleCall)cInitializationBlockAssignment_3_1.eContents().get(0);
+		private final Action cCreateModelElementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cValKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Keyword cCreateKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final RuleCall cModelElementParserRuleCall_5 = (RuleCall)cGroup.eContents().get(5);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cAndKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Keyword cInitializeKeyword_6_1 = (Keyword)cGroup_6.eContents().get(1);
+		private final Assignment cInitializationBlockAssignment_6_2 = (Assignment)cGroup_6.eContents().get(2);
+		private final RuleCall cInitializationBlockExecutionCodeBlockParserRuleCall_6_2_0 = (RuleCall)cInitializationBlockAssignment_6_2.eContents().get(0);
 		
-		//CreateElement EffectStatement:
-		//	{CreateElement}
-		//	"create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?
+		//CreateModelElementStatement CreateModelElement:
+		//	{CreateModelElement}
+		//	'val' name=ValidID '=' 'create' ModelElement ("and" "initialize" initializationBlock=ExecutionCodeBlock)?
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{CreateElement} "create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?
+		//{CreateModelElement} 'val' name=ValidID '=' 'create' ModelElement ("and" "initialize"
+		//initializationBlock=ExecutionCodeBlock)?
 		public Group getGroup() { return cGroup; }
 		
-		//{CreateElement}
-		public Action getCreateElementAction_0() { return cCreateElementAction_0; }
+		//{CreateModelElement}
+		public Action getCreateModelElementAction_0() { return cCreateModelElementAction_0; }
 		
-		//"create element"
-		public Keyword getCreateElementKeyword_1() { return cCreateElementKeyword_1; }
+		//'val'
+		public Keyword getValKeyword_1() { return cValKeyword_1; }
 		
-		//element=NamedModelElement
-		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
+		//name=ValidID
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
-		//NamedModelElement
-		public RuleCall getElementNamedModelElementParserRuleCall_2_0() { return cElementNamedModelElementParserRuleCall_2_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 		
-		//("initialized as" initializationBlock=ExecutionCodeBlock)?
-		public Group getGroup_3() { return cGroup_3; }
+		//'='
+		public Keyword getEqualsSignKeyword_3() { return cEqualsSignKeyword_3; }
 		
-		//"initialized as"
-		public Keyword getInitializedAsKeyword_3_0() { return cInitializedAsKeyword_3_0; }
+		//'create'
+		public Keyword getCreateKeyword_4() { return cCreateKeyword_4; }
+		
+		//ModelElement
+		public RuleCall getModelElementParserRuleCall_5() { return cModelElementParserRuleCall_5; }
+		
+		//("and" "initialize" initializationBlock=ExecutionCodeBlock)?
+		public Group getGroup_6() { return cGroup_6; }
+		
+		//"and"
+		public Keyword getAndKeyword_6_0() { return cAndKeyword_6_0; }
+		
+		//"initialize"
+		public Keyword getInitializeKeyword_6_1() { return cInitializeKeyword_6_1; }
 		
 		//initializationBlock=ExecutionCodeBlock
-		public Assignment getInitializationBlockAssignment_3_1() { return cInitializationBlockAssignment_3_1; }
+		public Assignment getInitializationBlockAssignment_6_2() { return cInitializationBlockAssignment_6_2; }
 		
 		//ExecutionCodeBlock
-		public RuleCall getInitializationBlockExecutionCodeBlockParserRuleCall_3_1_0() { return cInitializationBlockExecutionCodeBlockParserRuleCall_3_1_0; }
+		public RuleCall getInitializationBlockExecutionCodeBlockParserRuleCall_6_2_0() { return cInitializationBlockExecutionCodeBlockParserRuleCall_6_2_0; }
 	}
-	public class DeleteElementElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.DeleteElement");
+	public class DeleteModelElementStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.DeleteModelElementStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cDeleteElementAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cDeleteElementKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Action cDeleteModelElementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cDeleteKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cElementExistingElementReferenceParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
 		
-		//DeleteElement EffectStatement:
-		//	{DeleteElement}
-		//	"delete element" element=ExistingElementReference
+		//DeleteModelElementStatement DeleteModelElement:
+		//	{DeleteModelElement}
+		//	"delete" element=ExistingElementReference
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{DeleteElement} "delete element" element=ExistingElementReference
+		//{DeleteModelElement} "delete" element=ExistingElementReference
 		public Group getGroup() { return cGroup; }
 		
-		//{DeleteElement}
-		public Action getDeleteElementAction_0() { return cDeleteElementAction_0; }
+		//{DeleteModelElement}
+		public Action getDeleteModelElementAction_0() { return cDeleteModelElementAction_0; }
 		
-		//"delete element"
-		public Keyword getDeleteElementKeyword_1() { return cDeleteElementKeyword_1; }
+		//"delete"
+		public Keyword getDeleteKeyword_1() { return cDeleteKeyword_1; }
 		
 		//element=ExistingElementReference
 		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
@@ -1000,29 +1067,29 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ExistingElementReference
 		public RuleCall getElementExistingElementReferenceParserRuleCall_2_0() { return cElementExistingElementReferenceParserRuleCall_2_0; }
 	}
-	public class UpdateElementElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.UpdateElement");
+	public class UpdateModelElementStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.UpdateModelElementStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cUpdateElementAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cUpdateElementKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Action cUpdateModelElementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cUpdateKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cElementExistingElementReferenceParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
 		private final Assignment cUpdateBlockAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cUpdateBlockExecutionCodeBlockParserRuleCall_3_0 = (RuleCall)cUpdateBlockAssignment_3.eContents().get(0);
 		
-		//UpdateElement EffectStatement:
-		//	{UpdateElement}
-		//	"update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock
+		//UpdateModelElementStatement UpdateModelElement:
+		//	{UpdateModelElement}
+		//	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{UpdateElement} "update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock
+		//{UpdateModelElement} "update" element=ExistingElementReference updateBlock=ExecutionCodeBlock
 		public Group getGroup() { return cGroup; }
 		
-		//{UpdateElement}
-		public Action getUpdateElementAction_0() { return cUpdateElementAction_0; }
+		//{UpdateModelElement}
+		public Action getUpdateModelElementAction_0() { return cUpdateModelElementAction_0; }
 		
-		//"update element"
-		public Keyword getUpdateElementKeyword_1() { return cUpdateElementKeyword_1; }
+		//"update"
+		public Keyword getUpdateKeyword_1() { return cUpdateKeyword_1; }
 		
 		//element=ExistingElementReference
 		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
@@ -1036,8 +1103,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//ExecutionCodeBlock
 		public RuleCall getUpdateBlockExecutionCodeBlockParserRuleCall_3_0() { return cUpdateBlockExecutionCodeBlockParserRuleCall_3_0; }
 	}
-	public class CreateCorrespondenceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.CreateCorrespondence");
+	public class CreateCorrespondenceStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.CreateCorrespondenceStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cCreateCorrespondenceAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cAddCorrespondenceBetweenKeyword_1 = (Keyword)cGroup.eContents().get(1);
@@ -1050,7 +1117,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Keyword cTagWithKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
 		private final RuleCall cTaggableParserRuleCall_5_1 = (RuleCall)cGroup_5.eContents().get(1);
 		
-		//CreateCorrespondence EffectStatement:
+		//CreateCorrespondenceStatement CreateCorrespondence:
 		//	{CreateCorrespondence}
 		//	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 		//	('tag with' Taggable)?
@@ -1090,8 +1157,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//Taggable
 		public RuleCall getTaggableParserRuleCall_5_1() { return cTaggableParserRuleCall_5_1; }
 	}
-	public class RemoveCorrespondenceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RemoveCorrespondence");
+	public class RemoveCorrespondenceStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RemoveCorrespondenceStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cRemoveCorrespondenceAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cRemoveCorrespondenceBetweenKeyword_1 = (Keyword)cGroup.eContents().get(1);
@@ -1101,7 +1168,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		private final Assignment cSecondElementAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cSecondElementExistingElementReferenceParserRuleCall_4_0 = (RuleCall)cSecondElementAssignment_4.eContents().get(0);
 		
-		//RemoveCorrespondence EffectStatement:
+		//RemoveCorrespondenceStatement RemoveCorrespondence:
 		//	{RemoveCorrespondence}
 		//	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 		@Override public ParserRule getRule() { return rule; }
@@ -1147,24 +1214,63 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//XExpression
 		public RuleCall getCodeXExpressionParserRuleCall_0() { return cCodeXExpressionParserRuleCall_0; }
 	}
-	public class RoutineCallBlockElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+	public class ExecuteActionBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ExecuteActionBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cCallKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cExecuteKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cCodeBlockParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//fragment RoutineCallBlock:
-		//	'call' CodeBlock;
+		//fragment ExecuteActionBlock:
+		//	'execute' CodeBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'call' CodeBlock
+		//'execute' CodeBlock
 		public Group getGroup() { return cGroup; }
 		
-		//'call'
-		public Keyword getCallKeyword_0() { return cCallKeyword_0; }
+		//'execute'
+		public Keyword getExecuteKeyword_0() { return cExecuteKeyword_0; }
 		
 		//CodeBlock
 		public RuleCall getCodeBlockParserRuleCall_1() { return cCodeBlockParserRuleCall_1; }
+	}
+	public class RoutineCallBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.RoutineCallBlock");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
+		private final Keyword cValKeyword_0_0 = (Keyword)cGroup_0.eContents().get(0);
+		private final Assignment cNameAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_0_1_0 = (RuleCall)cNameAssignment_0_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_0_2 = (Keyword)cGroup_0.eContents().get(2);
+		private final Keyword cCallKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final RuleCall cCodeBlockParserRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		
+		//fragment RoutineCallBlock:
+		//	('val' name=ValidID '=')? 'call' CodeBlock;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//('val' name=ValidID '=')? 'call' CodeBlock
+		public Group getGroup() { return cGroup; }
+		
+		//('val' name=ValidID '=')?
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//'val'
+		public Keyword getValKeyword_0_0() { return cValKeyword_0_0; }
+		
+		//name=ValidID
+		public Assignment getNameAssignment_0_1() { return cNameAssignment_0_1; }
+		
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_0_1_0() { return cNameValidIDParserRuleCall_0_1_0; }
+		
+		//'='
+		public Keyword getEqualsSignKeyword_0_2() { return cEqualsSignKeyword_0_2; }
+		
+		//'call'
+		public Keyword getCallKeyword_1() { return cCallKeyword_1; }
+		
+		//CodeBlock
+		public RuleCall getCodeBlockParserRuleCall_2() { return cCodeBlockParserRuleCall_2; }
 	}
 	public class TaggableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.Taggable");
@@ -1268,11 +1374,39 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		//CodeBlock
 		public RuleCall getCodeBlockParserRuleCall_1() { return cCodeBlockParserRuleCall_1; }
 	}
+	public class ReturnStatementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.response.ResponseLanguage.ReturnStatement");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cReturnStatementAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cReturnKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cElementAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cElementExistingElementReferenceParserRuleCall_2_0 = (RuleCall)cElementAssignment_2.eContents().get(0);
+		
+		//ReturnStatement:
+		//	{ReturnStatement}
+		//	'return' element=ExistingElementReference;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{ReturnStatement} 'return' element=ExistingElementReference
+		public Group getGroup() { return cGroup; }
+		
+		//{ReturnStatement}
+		public Action getReturnStatementAction_0() { return cReturnStatementAction_0; }
+		
+		//'return'
+		public Keyword getReturnKeyword_1() { return cReturnKeyword_1; }
+		
+		//element=ExistingElementReference
+		public Assignment getElementAssignment_2() { return cElementAssignment_2; }
+		
+		//ExistingElementReference
+		public RuleCall getElementExistingElementReferenceParserRuleCall_2_0() { return cElementExistingElementReferenceParserRuleCall_2_0; }
+	}
 	
 	
-	private final ResponseFileElements pResponseFile;
-	private final ResponsesSegmentElements pResponsesSegment;
-	private final ResponseElements pResponse;
+	private final ReactionsFileElements pReactionsFile;
+	private final ReactionsSegmentElements pReactionsSegment;
+	private final ReactionElements pReaction;
 	private final ResponseReactionRoutineCallElements pResponseReactionRoutineCall;
 	private final InvariantViolationEventElements pInvariantViolationEvent;
 	private final TriggerElements pTrigger;
@@ -1286,19 +1420,20 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final ArbitraryModelElementChangeElements pArbitraryModelElementChange;
 	private final RoutineElements pRoutine;
 	private final RoutineInputElements pRoutineInput;
-	private final MatcherElements pMatcher;
+	private final MatcherBlockElements pMatcherBlock;
 	private final MatcherStatementElements pMatcherStatement;
 	private final RetrieveModelElementStatementElements pRetrieveModelElementStatement;
 	private final MatcherCheckStatementElements pMatcherCheckStatement;
-	private final EffectElements pEffect;
+	private final ActionBlockElements pActionBlock;
 	private final RoutineCallStatementElements pRoutineCallStatement;
-	private final EffectStatementElements pEffectStatement;
-	private final CreateElementElements pCreateElement;
-	private final DeleteElementElements pDeleteElement;
-	private final UpdateElementElements pUpdateElement;
-	private final CreateCorrespondenceElements pCreateCorrespondence;
-	private final RemoveCorrespondenceElements pRemoveCorrespondence;
+	private final ActionStatementElements pActionStatement;
+	private final CreateModelElementStatementElements pCreateModelElementStatement;
+	private final DeleteModelElementStatementElements pDeleteModelElementStatement;
+	private final UpdateModelElementStatementElements pUpdateModelElementStatement;
+	private final CreateCorrespondenceStatementElements pCreateCorrespondenceStatement;
+	private final RemoveCorrespondenceStatementElements pRemoveCorrespondenceStatement;
 	private final CodeBlockElements pCodeBlock;
+	private final ExecuteActionBlockElements pExecuteActionBlock;
 	private final RoutineCallBlockElements pRoutineCallBlock;
 	private final TaggableElements pTaggable;
 	private final ExistingElementReferenceElements pExistingElementReference;
@@ -1306,6 +1441,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	private final PreconditionCodeBlockElements pPreconditionCodeBlock;
 	private final CorrespondingObjectCodeBlockElements pCorrespondingObjectCodeBlock;
 	private final ExecutionCodeBlockElements pExecutionCodeBlock;
+	private final ReturnStatementElements pReturnStatement;
 	
 	private final Grammar grammar;
 	
@@ -1324,9 +1460,9 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.gaMirBase = gaMirBase;
 		this.gaXbase = gaXbase;
 		this.gaXtype = gaXtype;
-		this.pResponseFile = new ResponseFileElements();
-		this.pResponsesSegment = new ResponsesSegmentElements();
-		this.pResponse = new ResponseElements();
+		this.pReactionsFile = new ReactionsFileElements();
+		this.pReactionsSegment = new ReactionsSegmentElements();
+		this.pReaction = new ReactionElements();
 		this.pResponseReactionRoutineCall = new ResponseReactionRoutineCallElements();
 		this.pInvariantViolationEvent = new InvariantViolationEventElements();
 		this.pTrigger = new TriggerElements();
@@ -1340,19 +1476,20 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pArbitraryModelElementChange = new ArbitraryModelElementChangeElements();
 		this.pRoutine = new RoutineElements();
 		this.pRoutineInput = new RoutineInputElements();
-		this.pMatcher = new MatcherElements();
+		this.pMatcherBlock = new MatcherBlockElements();
 		this.pMatcherStatement = new MatcherStatementElements();
 		this.pRetrieveModelElementStatement = new RetrieveModelElementStatementElements();
 		this.pMatcherCheckStatement = new MatcherCheckStatementElements();
-		this.pEffect = new EffectElements();
+		this.pActionBlock = new ActionBlockElements();
 		this.pRoutineCallStatement = new RoutineCallStatementElements();
-		this.pEffectStatement = new EffectStatementElements();
-		this.pCreateElement = new CreateElementElements();
-		this.pDeleteElement = new DeleteElementElements();
-		this.pUpdateElement = new UpdateElementElements();
-		this.pCreateCorrespondence = new CreateCorrespondenceElements();
-		this.pRemoveCorrespondence = new RemoveCorrespondenceElements();
+		this.pActionStatement = new ActionStatementElements();
+		this.pCreateModelElementStatement = new CreateModelElementStatementElements();
+		this.pDeleteModelElementStatement = new DeleteModelElementStatementElements();
+		this.pUpdateModelElementStatement = new UpdateModelElementStatementElements();
+		this.pCreateCorrespondenceStatement = new CreateCorrespondenceStatementElements();
+		this.pRemoveCorrespondenceStatement = new RemoveCorrespondenceStatementElements();
 		this.pCodeBlock = new CodeBlockElements();
+		this.pExecuteActionBlock = new ExecuteActionBlockElements();
 		this.pRoutineCallBlock = new RoutineCallBlockElements();
 		this.pTaggable = new TaggableElements();
 		this.pExistingElementReference = new ExistingElementReferenceElements();
@@ -1360,6 +1497,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		this.pPreconditionCodeBlock = new PreconditionCodeBlockElements();
 		this.pCorrespondingObjectCodeBlock = new CorrespondingObjectCodeBlockElements();
 		this.pExecutionCodeBlock = new ExecutionCodeBlockElements();
+		this.pReturnStatement = new ReturnStatementElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -1397,45 +1535,45 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 
 	
-	//ResponseFile:
+	//ReactionsFile:
 	//	namespaceImports=XImportSection?
 	//	MirBaseFile
-	//	responsesSegments+=ResponsesSegment+;
-	public ResponseFileElements getResponseFileAccess() {
-		return pResponseFile;
+	//	reactionsSegments+=ReactionsSegment+;
+	public ReactionsFileElements getReactionsFileAccess() {
+		return pReactionsFile;
 	}
 	
-	public ParserRule getResponseFileRule() {
-		return getResponseFileAccess().getRule();
+	public ParserRule getReactionsFileRule() {
+		return getReactionsFileAccess().getRule();
 	}
 	
-	//ResponsesSegment:
-	//	'response collection:' name=ValidID
-	//	'from metamodel' fromMetamodel=MetamodelReference
-	//	'to metamodel' toMetamodel=MetamodelReference (responses+=Response | routines+=Routine)*;
-	public ResponsesSegmentElements getResponsesSegmentAccess() {
-		return pResponsesSegment;
+	//ReactionsSegment:
+	//	'reactions:' name=ValidID
+	//	'in reaction to changes in' fromMetamodel=MetamodelReference
+	//	'execute actions in' toMetamodel=MetamodelReference (reactions+=Reaction | routines+=Routine)*;
+	public ReactionsSegmentElements getReactionsSegmentAccess() {
+		return pReactionsSegment;
 	}
 	
-	public ParserRule getResponsesSegmentRule() {
-		return getResponsesSegmentAccess().getRule();
+	public ParserRule getReactionsSegmentRule() {
+		return getReactionsSegmentAccess().getRule();
 	}
 	
 	//// *********************************
 	//// *********** RESPONSES ***********
 	//// *********************************
-	//Response:
+	//Reaction:
 	//	documentation=ML_COMMENT?
-	//	'response:' name=ValidID '{'
+	//	'reaction' name=ValidID? '{'
 	//	trigger=Trigger
 	//	callRoutine=ResponseReactionRoutineCall
 	//	'}';
-	public ResponseElements getResponseAccess() {
-		return pResponse;
+	public ReactionElements getReactionAccess() {
+		return pReaction;
 	}
 	
-	public ParserRule getResponseRule() {
-		return getResponseAccess().getRule();
+	public ParserRule getReactionRule() {
+		return getReactionAccess().getRule();
 	}
 	
 	//ResponseReactionRoutineCall:
@@ -1500,8 +1638,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//AtomicRootObjectChange:
-	//	('root created' {InsertRootChange} |
-	//	'root deleted' {RemoveRootChange}) changedElement=ModelElement;
+	//	('root created and inserted' {InsertRootChange} |
+	//	'root deleted and removed' {RemoveRootChange}) changedElement=UnnamedModelElement;
 	public AtomicRootObjectChangeElements getAtomicRootObjectChangeAccess() {
 		return pAtomicRootObjectChange;
 	}
@@ -1521,8 +1659,12 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//AtomicMultiValuedFeatureChange:
-	//	'list entry inserted' {MultiValuedFeatureInsertChange} |
-	//	'list entry removed' {MultiValuedFeatureRemoveChange} |
+	//	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
+	//	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
+	//	// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+	//	// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+	//	// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+	//	// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
 	//	'list permuted' {MultiValuedFeaturePermuteChange};
 	public AtomicMultiValuedFeatureChangeElements getAtomicMultiValuedFeatureChangeAccess() {
 		return pAtomicMultiValuedFeatureChange;
@@ -1533,7 +1675,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//AtomicSingleValuedFeatureChange: //'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
-	//	'value replaced' {SingleValuedFeatureReplace};
+	//	'value replaced for' {SingleValuedFeatureReplace};
 	public AtomicSingleValuedFeatureChangeElements getAtomicSingleValuedFeatureChangeAccess() {
 		return pAtomicSingleValuedFeatureChange;
 	}
@@ -1556,9 +1698,10 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	//// *********** REPAIR ROUTINES ***********
 	//// ***************************************
 	//Routine:
-	//	'routine:' name=ValidID '(' input=RoutineInput ')' '{'
-	//	matcher=Matcher?
-	//	effect=Effect
+	//	'routine' name=ValidID '(' input=RoutineInput ')' '{'
+	//	matcher=MatcherBlock?
+	//	action=ActionBlock
+	//	return=ReturnStatement?
 	//	'}';
 	public RoutineElements getRoutineAccess() {
 		return pRoutine;
@@ -1580,17 +1723,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//// *********** MATCHER ***********
-	//Matcher:
+	//MatcherBlock Matcher:
 	//	{Matcher}
 	//	'match' '{'
 	//	matcherStatements+=MatcherStatement+
-	//	'}';
-	public MatcherElements getMatcherAccess() {
-		return pMatcher;
+	//	'}'
+	public MatcherBlockElements getMatcherBlockAccess() {
+		return pMatcherBlock;
 	}
 	
-	public ParserRule getMatcherRule() {
-		return getMatcherAccess().getRule();
+	public ParserRule getMatcherBlockRule() {
+		return getMatcherBlockAccess().getRule();
 	}
 	
 	//MatcherStatement:
@@ -1603,11 +1746,10 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getMatcherStatementAccess().getRule();
 	}
 	
-	//RetrieveModelElementStatement:
-	//	{RetrieveModelElementStatement} (required?='retrieve required element' | optional?='retrieve optional element' |
-	//	abscence?='require absence of element') element=NamedModelElement 'corresponding to'
-	//	correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
-	//	precondition=PreconditionCodeBlock)?;
+	//RetrieveModelElementStatement RetrieveModelElement:
+	//	{RetrieveModelElement} (('val' name=ValidID '=')? 'retrieve' optional?='optional'? | abscence?='require absence of')
+	//	ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? ('with'
+	//	precondition=PreconditionCodeBlock)?
 	public RetrieveModelElementStatementElements getRetrieveModelElementStatementAccess() {
 		return pRetrieveModelElementStatement;
 	}
@@ -1628,17 +1770,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 	}
 	
 	//// *********** EFFECTS ***********
-	//Effect:
-	//	{Effect}
-	//	'effect' '{'
-	//	effectStatements+=EffectStatement+
-	//	'}';
-	public EffectElements getEffectAccess() {
-		return pEffect;
+	//ActionBlock Action:
+	//	{Action}
+	//	'action' '{'
+	//	actionStatements+=ActionStatement+
+	//	'}'
+	public ActionBlockElements getActionBlockAccess() {
+		return pActionBlock;
 	}
 	
-	public ParserRule getEffectRule() {
-		return getEffectAccess().getRule();
+	public ParserRule getActionBlockRule() {
+		return getActionBlockAccess().getRule();
 	}
 	
 	//RoutineCallStatement:
@@ -1651,70 +1793,71 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getRoutineCallStatementAccess().getRule();
 	}
 	
-	//EffectStatement:
-	//	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | RoutineCallStatement;
-	public EffectStatementElements getEffectStatementAccess() {
-		return pEffectStatement;
+	//ActionStatement:
+	//	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement |
+	//	CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
+	public ActionStatementElements getActionStatementAccess() {
+		return pActionStatement;
 	}
 	
-	public ParserRule getEffectStatementRule() {
-		return getEffectStatementAccess().getRule();
+	public ParserRule getActionStatementRule() {
+		return getActionStatementAccess().getRule();
 	}
 	
-	//CreateElement EffectStatement:
-	//	{CreateElement}
-	//	"create element" element=NamedModelElement ("initialized as" initializationBlock=ExecutionCodeBlock)?
-	public CreateElementElements getCreateElementAccess() {
-		return pCreateElement;
+	//CreateModelElementStatement CreateModelElement:
+	//	{CreateModelElement}
+	//	'val' name=ValidID '=' 'create' ModelElement ("and" "initialize" initializationBlock=ExecutionCodeBlock)?
+	public CreateModelElementStatementElements getCreateModelElementStatementAccess() {
+		return pCreateModelElementStatement;
 	}
 	
-	public ParserRule getCreateElementRule() {
-		return getCreateElementAccess().getRule();
+	public ParserRule getCreateModelElementStatementRule() {
+		return getCreateModelElementStatementAccess().getRule();
 	}
 	
-	//DeleteElement EffectStatement:
-	//	{DeleteElement}
-	//	"delete element" element=ExistingElementReference
-	public DeleteElementElements getDeleteElementAccess() {
-		return pDeleteElement;
+	//DeleteModelElementStatement DeleteModelElement:
+	//	{DeleteModelElement}
+	//	"delete" element=ExistingElementReference
+	public DeleteModelElementStatementElements getDeleteModelElementStatementAccess() {
+		return pDeleteModelElementStatement;
 	}
 	
-	public ParserRule getDeleteElementRule() {
-		return getDeleteElementAccess().getRule();
+	public ParserRule getDeleteModelElementStatementRule() {
+		return getDeleteModelElementStatementAccess().getRule();
 	}
 	
-	//UpdateElement EffectStatement:
-	//	{UpdateElement}
-	//	"update element" element=ExistingElementReference updateBlock=ExecutionCodeBlock
-	public UpdateElementElements getUpdateElementAccess() {
-		return pUpdateElement;
+	//UpdateModelElementStatement UpdateModelElement:
+	//	{UpdateModelElement}
+	//	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock
+	public UpdateModelElementStatementElements getUpdateModelElementStatementAccess() {
+		return pUpdateModelElementStatement;
 	}
 	
-	public ParserRule getUpdateElementRule() {
-		return getUpdateElementAccess().getRule();
+	public ParserRule getUpdateModelElementStatementRule() {
+		return getUpdateModelElementStatementAccess().getRule();
 	}
 	
-	//CreateCorrespondence EffectStatement:
+	//CreateCorrespondenceStatement CreateCorrespondence:
 	//	{CreateCorrespondence}
 	//	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 	//	('tag with' Taggable)?
-	public CreateCorrespondenceElements getCreateCorrespondenceAccess() {
-		return pCreateCorrespondence;
+	public CreateCorrespondenceStatementElements getCreateCorrespondenceStatementAccess() {
+		return pCreateCorrespondenceStatement;
 	}
 	
-	public ParserRule getCreateCorrespondenceRule() {
-		return getCreateCorrespondenceAccess().getRule();
+	public ParserRule getCreateCorrespondenceStatementRule() {
+		return getCreateCorrespondenceStatementAccess().getRule();
 	}
 	
-	//RemoveCorrespondence EffectStatement:
+	//RemoveCorrespondenceStatement RemoveCorrespondence:
 	//	{RemoveCorrespondence}
 	//	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
-	public RemoveCorrespondenceElements getRemoveCorrespondenceAccess() {
-		return pRemoveCorrespondence;
+	public RemoveCorrespondenceStatementElements getRemoveCorrespondenceStatementAccess() {
+		return pRemoveCorrespondenceStatement;
 	}
 	
-	public ParserRule getRemoveCorrespondenceRule() {
-		return getRemoveCorrespondenceAccess().getRule();
+	public ParserRule getRemoveCorrespondenceStatementRule() {
+		return getRemoveCorrespondenceStatementAccess().getRule();
 	}
 	
 	//// ****** CODE BLOCKS ******
@@ -1728,8 +1871,18 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getCodeBlockAccess().getRule();
 	}
 	
+	//fragment ExecuteActionBlock:
+	//	'execute' CodeBlock;
+	public ExecuteActionBlockElements getExecuteActionBlockAccess() {
+		return pExecuteActionBlock;
+	}
+	
+	public ParserRule getExecuteActionBlockRule() {
+		return getExecuteActionBlockAccess().getRule();
+	}
+	
 	//fragment RoutineCallBlock:
-	//	'call' CodeBlock;
+	//	('val' name=ValidID '=')? 'call' CodeBlock;
 	public RoutineCallBlockElements getRoutineCallBlockAccess() {
 		return pRoutineCallBlock;
 	}
@@ -1798,6 +1951,17 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getExecutionCodeBlockAccess().getRule();
 	}
 	
+	//ReturnStatement:
+	//	{ReturnStatement}
+	//	'return' element=ExistingElementReference;
+	public ReturnStatementElements getReturnStatementAccess() {
+		return pReturnStatement;
+	}
+	
+	public ParserRule getReturnStatementRule() {
+		return getReturnStatementAccess().getRule();
+	}
+	
 	//DummyEntryRule:
 	//	MirBaseFile;
 	public MirBaseGrammarAccess.DummyEntryRuleElements getDummyEntryRuleAccess() {
@@ -1838,7 +2002,7 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getNamedJavaElementAccess().getRule();
 	}
 	
-	//ModelElement:
+	//fragment ModelElement:
 	//	element=[ecore::EClass|QualifiedName];
 	public MirBaseGrammarAccess.ModelElementElements getModelElementAccess() {
 		return gaMirBase.getModelElementAccess();
@@ -1848,8 +2012,18 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getModelElementAccess().getRule();
 	}
 	
-	//NamedModelElement ModelElement:
-	//	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
+	//UnnamedModelElement ModelElement:
+	//	ModelElement
+	public MirBaseGrammarAccess.UnnamedModelElementElements getUnnamedModelElementAccess() {
+		return gaMirBase.getUnnamedModelElementAccess();
+	}
+	
+	public ParserRule getUnnamedModelElementRule() {
+		return getUnnamedModelElementAccess().getRule();
+	}
+	
+	//NamedModelElement:
+	//	ModelElement ('as' name=ValidID)?;
 	public MirBaseGrammarAccess.NamedModelElementElements getNamedModelElementAccess() {
 		return gaMirBase.getNamedModelElementAccess();
 	}
@@ -1858,8 +2032,8 @@ public class ResponseLanguageGrammarAccess extends AbstractGrammarElementFinder 
 		return getNamedModelElementAccess().getRule();
 	}
 	
-	//ClassicallyNamedModelElement ModelElement:
-	//	element=[ecore::EClass|QualifiedName] name=ValidID
+	//ClassicallyNamedModelElement NamedModelElement:
+	//	ModelElement name=ValidID
 	public MirBaseGrammarAccess.ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
 		return gaMirBase.getClassicallyNamedModelElementAccess();
 	}

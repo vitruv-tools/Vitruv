@@ -3,24 +3,25 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Delete Element</b></em>'.
+ * A representation of the model object '<em><b>Return Statement</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReturnStatement#getElement <em>Element</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getDeleteElement()
+ * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReturnStatement()
  * @model
  * @generated
  */
-public interface DeleteElement extends EffectStatement
+public interface ReturnStatement extends EObject
 {
   /**
    * Returns the value of the '<em><b>Element</b></em>' containment reference.
@@ -32,14 +33,14 @@ public interface DeleteElement extends EffectStatement
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element</em>' containment reference.
    * @see #setElement(ExistingElementReference)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getDeleteElement_Element()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReturnStatement_Element()
    * @model containment="true"
    * @generated
    */
   ExistingElementReference getElement();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement#getElement <em>Element</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ReturnStatement#getElement <em>Element</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element</em>' containment reference.
@@ -48,4 +49,4 @@ public interface DeleteElement extends EffectStatement
    */
   void setElement(ExistingElementReference value);
 
-} // DeleteElement
+} // ReturnStatement

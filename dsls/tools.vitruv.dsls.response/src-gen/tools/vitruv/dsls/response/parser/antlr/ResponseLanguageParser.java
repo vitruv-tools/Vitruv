@@ -27,7 +27,7 @@ public class ResponseLanguageParser extends AbstractAntlrParser {
 
 	@Override 
 	protected String getDefaultRuleName() {
-		return "ResponseFile";
+		return "ReactionsFile";
 	}
 
 	public ResponseLanguageGrammarAccess getGrammarAccess() {

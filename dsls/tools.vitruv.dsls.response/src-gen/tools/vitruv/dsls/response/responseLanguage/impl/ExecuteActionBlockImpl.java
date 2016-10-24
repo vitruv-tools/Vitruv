@@ -5,24 +5,24 @@ package tools.vitruv.dsls.response.responseLanguage.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import tools.vitruv.dsls.response.responseLanguage.ExecuteActionBlock;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Routine Call Statement</b></em>'.
+ * An implementation of the model object '<em><b>Execute Action Block</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class RoutineCallStatementImpl extends RoutineCallBlockImpl implements RoutineCallStatement
+public class ExecuteActionBlockImpl extends CodeBlockImpl implements ExecuteActionBlock
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected RoutineCallStatementImpl()
+  protected ExecuteActionBlockImpl()
   {
     super();
   }
@@ -35,7 +35,7 @@ public class RoutineCallStatementImpl extends RoutineCallBlockImpl implements Ro
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.ROUTINE_CALL_STATEMENT;
+    return ResponseLanguagePackage.Literals.EXECUTE_ACTION_BLOCK;
   }
 
-} //RoutineCallStatementImpl
+} //ExecuteActionBlockImpl

@@ -4,16 +4,16 @@
 package tools.vitruv.dsls.response.jvmmodel
 
 import com.google.inject.Inject
-import tools.vitruv.dsls.response.responseLanguage.Response
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import tools.vitruv.dsls.response.responseLanguage.ResponseFile
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.ResponseClassGenerator
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.ExecutorClassGenerator
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.RoutineFacadeClassGenerator
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.RoutineClassGenerator
 import tools.vitruv.dsls.response.responseLanguage.Routine
+import tools.vitruv.dsls.response.responseLanguage.Reaction
+import tools.vitruv.dsls.response.responseLanguage.ReactionsFile
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the response file model.</p> 
@@ -31,14 +31,14 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		typesBuilderExtensionProvider.setBuilders(_typesBuilder, _typeReferenceBuilder, _annotationTypesBuilder);
 	}
 	
-	def dispatch void generate(Response response, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void generate(Reaction reaction, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		
 		//val effectClass = new ImplicitRoutineClassGenerator(response.routine, typesBuilderExtensionProvider).generateClass();
 		//acceptor.accept(effectClass);
-		val responseClassGenerator = new ResponseClassGenerator(response, typesBuilderExtensionProvider);
+		val responseClassGenerator = new ResponseClassGenerator(reaction, typesBuilderExtensionProvider);
 		acceptor.accept(responseClassGenerator.generateClass());
 	}
 	
@@ -50,18 +50,18 @@ class ResponseLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider).generateClass());
 	}
 	
-	def dispatch void infer(ResponseFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		if (isPreIndexingPhase) {
 			return;
 		}
 		updateBuilders();
 		
-		for (responsesSegment : file.responsesSegments) {
+		for (responsesSegment : file.reactionsSegments) {
 			acceptor.accept(new RoutineFacadeClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());
 			for (effect : responsesSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
-			for (response : responsesSegment.responses) {
+			for (response : responsesSegment.reactions) {
 				generate(response, acceptor, isPreIndexingPhase);
 			}
 			acceptor.accept(new ExecutorClassGenerator(responsesSegment, typesBuilderExtensionProvider).generateClass());			

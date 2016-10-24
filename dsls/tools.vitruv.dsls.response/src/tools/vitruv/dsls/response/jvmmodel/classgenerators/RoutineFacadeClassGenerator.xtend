@@ -5,20 +5,20 @@ import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
 import static tools.vitruv.dsls.response.helper.ResponseLanguageConstants.*;
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutinesFacade
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	private val List<Routine> routines;
 	private val ClassNameGenerator routinesFacadeNameGenerator;
 	
-	new(ResponsesSegment responsesSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		this.routines = responsesSegment.routines;
-		this.routinesFacadeNameGenerator = responsesSegment.routinesFacadeClassNameGenerator;
+		this.routines = reactionsSegment.routines;
+		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator;
 	}
 	
 	public override generateClass() {

@@ -1,47 +1,47 @@
 package tools.vitruv.dsls.response.environment;
 
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.dsls.response.responseLanguage.Response
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguageFactory
 import tools.vitruv.dsls.response.api.generator.IResponseBuilder
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
+import tools.vitruv.dsls.response.responseLanguage.Reaction
 
 public class ResponseBuilder implements IResponseBuilder {
-	private ResponsesSegment responsesSegment;
+	private ReactionsSegment reactionsSegment;
 	private Routine routine;
-	private Response response;
+	private Reaction reaction;
 	
 	public new() {
-		this.response = ResponseLanguageFactory.eINSTANCE.createResponse();
+		this.reaction = ResponseLanguageFactory.eINSTANCE.createReaction();
 		this.routine = ResponseLanguageFactory.eINSTANCE.createRoutine();
-		this.responsesSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
-		responsesSegment.responses += this.response;
-		responsesSegment.routines += this.routine;
+		this.reactionsSegment = ResponseLanguageFactory.eINSTANCE.createReactionsSegment();
+		reactionsSegment.reactions += this.reaction;
+		reactionsSegment.routines += this.routine;
 	}
 	
 	public override setName(String name) {
-		this.response.name = name + "Response";
+		this.reaction.name = name + "Response";
 		this.routine.name = name + "Routine";
-		this.response.callRoutine.code = new SimpleTextXBlockExpression('''«this.routine.name»(change); ''');
+		this.reaction.callRoutine.code = new SimpleTextXBlockExpression('''«this.routine.name»(change); ''');
 		return this;
 	}
 	
 	public override setTrigger(EPackage sourceMetamodel) {
 		val trigger = ResponseLanguageFactory.eINSTANCE.createArbitraryModelElementChange();
 		val metamodelImport = generateMetamodelImport(sourceMetamodel);
-		this.responsesSegment.fromMetamodel = generateMetamodelReference(metamodelImport);
-		this.response.trigger = trigger;
+		this.reactionsSegment.fromMetamodel = generateMetamodelReference(metamodelImport);
+		this.reaction.trigger = trigger;
 		return this;
 	}
 	
 	public override setTargetChange(EPackage targetMetamodel) {
 		val metamodelImport = generateMetamodelImport(targetMetamodel);
-		this.responsesSegment.toMetamodel = generateMetamodelReference(metamodelImport);
+		this.reactionsSegment.toMetamodel = generateMetamodelReference(metamodelImport);
 		return this;
 	}
 	
@@ -49,9 +49,9 @@ public class ResponseBuilder implements IResponseBuilder {
 		val executionBlock = ResponseLanguageFactory.eINSTANCE.createRoutineCallStatement();
 		executionBlock.code = new SimpleTextXBlockExpression(executionBlockCode);
 		val matcher = ResponseLanguageFactory.eINSTANCE.createMatcher();
-		val effect = ResponseLanguageFactory.eINSTANCE.createEffect();
-		effect.effectStatements += executionBlock;
-		this.routine.effect = effect;
+		val action = ResponseLanguageFactory.eINSTANCE.createAction();
+		action.actionStatements += executionBlock;
+		this.routine.action = action;
 		this.routine.matcher = matcher;
 		return this;
 	}
@@ -69,7 +69,7 @@ public class ResponseBuilder implements IResponseBuilder {
 		return metamodelRef;
 	}
 	
-	public override Response generateResponse() {
-		return response;	
+	public override Reaction generateResponse() {
+		return reaction;	
 	}
 }

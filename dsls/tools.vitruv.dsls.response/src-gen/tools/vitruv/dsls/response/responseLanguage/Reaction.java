@@ -7,25 +7,25 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Response</b></em>'.
+ * A representation of the model object '<em><b>Reaction</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getDocumentation <em>Documentation</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getTrigger <em>Trigger</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getDocumentation <em>Documentation</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getTrigger <em>Trigger</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getCallRoutine <em>Call Routine</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse()
+ * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction()
  * @model
  * @generated
  */
-public interface Response extends EObject
+public interface Reaction extends EObject
 {
   /**
    * Returns the value of the '<em><b>Documentation</b></em>' attribute.
@@ -37,14 +37,14 @@ public interface Response extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Documentation</em>' attribute.
    * @see #setDocumentation(String)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_Documentation()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction_Documentation()
    * @model
    * @generated
    */
   String getDocumentation();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getDocumentation <em>Documentation</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getDocumentation <em>Documentation</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Documentation</em>' attribute.
@@ -63,14 +63,14 @@ public interface Response extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_Name()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -89,14 +89,14 @@ public interface Response extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Trigger</em>' containment reference.
    * @see #setTrigger(Trigger)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_Trigger()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction_Trigger()
    * @model containment="true"
    * @generated
    */
   Trigger getTrigger();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getTrigger <em>Trigger</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getTrigger <em>Trigger</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Trigger</em>' containment reference.
@@ -115,14 +115,14 @@ public interface Response extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Call Routine</em>' containment reference.
    * @see #setCallRoutine(ResponseReactionRoutineCall)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_CallRoutine()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction_CallRoutine()
    * @model containment="true"
    * @generated
    */
   ResponseReactionRoutineCall getCallRoutine();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getCallRoutine <em>Call Routine</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Call Routine</em>' containment reference.
@@ -132,31 +132,31 @@ public interface Response extends EObject
   void setCallRoutine(ResponseReactionRoutineCall value);
 
   /**
-   * Returns the value of the '<em><b>Responses Segment</b></em>' container reference.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses <em>Responses</em>}'.
+   * Returns the value of the '<em><b>Reactions Segment</b></em>' container reference.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getReactions <em>Reactions</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Responses Segment</em>' container reference isn't clear,
+   * If the meaning of the '<em>Reactions Segment</em>' container reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Responses Segment</em>' container reference.
-   * @see #setResponsesSegment(ResponsesSegment)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponse_ResponsesSegment()
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses
-   * @model opposite="responses" required="true" transient="false"
+   * @return the value of the '<em>Reactions Segment</em>' container reference.
+   * @see #setReactionsSegment(ReactionsSegment)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReaction_ReactionsSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getReactions
+   * @model opposite="reactions" required="true" transient="false"
    * @generated
    */
-  ResponsesSegment getResponsesSegment();
+  ReactionsSegment getReactionsSegment();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}' container reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}' container reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Responses Segment</em>' container reference.
-   * @see #getResponsesSegment()
+   * @param value the new value of the '<em>Reactions Segment</em>' container reference.
+   * @see #getReactionsSegment()
    * @generated
    */
-  void setResponsesSegment(ResponsesSegment value);
+  void setReactionsSegment(ReactionsSegment value);
 
-} // Response
+} // Reaction

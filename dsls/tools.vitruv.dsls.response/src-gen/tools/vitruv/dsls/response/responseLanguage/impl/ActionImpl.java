@@ -17,41 +17,41 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import tools.vitruv.dsls.response.responseLanguage.Effect;
-import tools.vitruv.dsls.response.responseLanguage.EffectStatement;
+import tools.vitruv.dsls.response.responseLanguage.Action;
+import tools.vitruv.dsls.response.responseLanguage.ActionStatement;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Effect</b></em>'.
+ * An implementation of the model object '<em><b>Action</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl#getEffectStatements <em>Effect Statements</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ActionImpl#getActionStatements <em>Action Statements</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
+public class ActionImpl extends MinimalEObjectImpl.Container implements Action
 {
   /**
-   * The cached value of the '{@link #getEffectStatements() <em>Effect Statements</em>}' containment reference list.
+   * The cached value of the '{@link #getActionStatements() <em>Action Statements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEffectStatements()
+   * @see #getActionStatements()
    * @generated
    * @ordered
    */
-  protected EList<EffectStatement> effectStatements;
+  protected EList<ActionStatement> actionStatements;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EffectImpl()
+  protected ActionImpl()
   {
     super();
   }
@@ -64,7 +64,7 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.EFFECT;
+    return ResponseLanguagePackage.Literals.ACTION;
   }
 
   /**
@@ -72,13 +72,13 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<EffectStatement> getEffectStatements()
+  public EList<ActionStatement> getActionStatements()
   {
-    if (effectStatements == null)
+    if (actionStatements == null)
     {
-      effectStatements = new EObjectContainmentEList<EffectStatement>(EffectStatement.class, this, ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS);
+      actionStatements = new EObjectContainmentEList<ActionStatement>(ActionStatement.class, this, ResponseLanguagePackage.ACTION__ACTION_STATEMENTS);
     }
-    return effectStatements;
+    return actionStatements;
   }
 
   /**
@@ -91,8 +91,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
-        return ((InternalEList<?>)getEffectStatements()).basicRemove(otherEnd, msgs);
+      case ResponseLanguagePackage.ACTION__ACTION_STATEMENTS:
+        return ((InternalEList<?>)getActionStatements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +107,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
-        return getEffectStatements();
+      case ResponseLanguagePackage.ACTION__ACTION_STATEMENTS:
+        return getActionStatements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +124,9 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
-        getEffectStatements().clear();
-        getEffectStatements().addAll((Collection<? extends EffectStatement>)newValue);
+      case ResponseLanguagePackage.ACTION__ACTION_STATEMENTS:
+        getActionStatements().clear();
+        getActionStatements().addAll((Collection<? extends ActionStatement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +142,8 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
-        getEffectStatements().clear();
+      case ResponseLanguagePackage.ACTION__ACTION_STATEMENTS:
+        getActionStatements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,10 +159,10 @@ public class EffectImpl extends MinimalEObjectImpl.Container implements Effect
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.EFFECT__EFFECT_STATEMENTS:
-        return effectStatements != null && !effectStatements.isEmpty();
+      case ResponseLanguagePackage.ACTION__ACTION_STATEMENTS:
+        return actionStatements != null && !actionStatements.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //EffectImpl
+} //ActionImpl

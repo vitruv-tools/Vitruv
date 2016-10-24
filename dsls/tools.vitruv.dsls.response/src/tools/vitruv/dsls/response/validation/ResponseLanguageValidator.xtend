@@ -6,13 +6,13 @@ package tools.vitruv.dsls.response.validation
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage
 import java.util.HashMap
-import tools.vitruv.dsls.response.responseLanguage.Response
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
-import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.response.responseLanguage.Routine
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import tools.vitruv.dsls.response.responseLanguage.CreateModelElement
+import tools.vitruv.dsls.response.responseLanguage.Reaction
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
 
 /**
  * This class contains custom validation rules. 
@@ -22,26 +22,26 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineInput
 class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 
 	@Check
-	def checkResponseFile(ResponsesSegment responseSegment) {
-		val alreadyCheckedResponses = new HashMap<String, Response>();
-		for (response : responseSegment.responses) {
-			val responseName = response.responseClassNameGenerator.simpleName;
-			if (alreadyCheckedResponses.containsKey(responseName)) {
-				val errorMessage = "Duplicate response name: " + responseName;
-				error(errorMessage, response, ResponseLanguagePackage.Literals.RESPONSE__NAME);
+	def checkResponseFile(ReactionsSegment reactionsSegment) {
+		val alreadyCheckedResponses = new HashMap<String, Reaction>();
+		for (reaction : reactionsSegment.reactions) {
+			val reactionName = reaction.reactionClassNameGenerator.simpleName;
+			if (alreadyCheckedResponses.containsKey(reactionName)) {
+				val errorMessage = "Duplicate reaction name: " + reactionName;
+				error(errorMessage, reaction, ResponseLanguagePackage.Literals.REACTION__NAME);
 				error(
 					errorMessage,
-					alreadyCheckedResponses.get(responseName),
-					ResponseLanguagePackage.Literals.RESPONSE__NAME
+					alreadyCheckedResponses.get(reactionName),
+					ResponseLanguagePackage.Literals.REACTION__NAME
 				);
 			}
-			alreadyCheckedResponses.put(responseName, response);
+			alreadyCheckedResponses.put(reactionName, reaction);
 		}
 		val alreadyCheckedRoutines = new HashMap<String, Routine>();
-//		for (implicitRoutine : responseSegment.responses.map[routine]) {
+//		for (implicitRoutine : reactionSegment.reactions.map[routine]) {
 //			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 //		}
-		for (routine : responseSegment.routines) {
+		for (routine : reactionsSegment.routines) {
 			val routineName = routine.routineClassNameGenerator.simpleName
 			if (alreadyCheckedRoutines.containsKey(routineName)) {
 				val errorMessage = "Duplicate effect name: " + routineName;
@@ -54,10 +54,18 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	}
 
 	@Check
-	def checkCorrespondingElementSpecification(ModelElement element) {
+	def checkRetrieveElementName(RetrieveModelElement element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.",
-				MirBasePackage.Literals.MODEL_ELEMENT__NAME);
+				ResponseLanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT__NAME);
+		}
+	}
+	
+		@Check
+	def checkCreateElementName(CreateModelElement element) {
+		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
+			error("Element names must not start with an underscore.",
+				ResponseLanguagePackage.Literals.CREATE_MODEL_ELEMENT__NAME);
 		}
 	}
 
@@ -86,10 +94,10 @@ class ResponseLanguageValidator extends AbstractResponseLanguageValidator {
 	}
 	
 	@Check
-	def checkRoutine(Response response) {
-		if (!Character.isUpperCase(response.name.charAt(0))) {
+	def checkRoutine(Reaction reaction) {
+		if (!Character.isUpperCase(reaction.name.charAt(0))) {
 			warning("Response names should start upper case",
-				ResponseLanguagePackage.Literals.RESPONSE__NAME);
+				ResponseLanguagePackage.Literals.REACTION__NAME);
 		}
 	}
 
