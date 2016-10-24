@@ -38,7 +38,7 @@ import com.google.inject.name.Named;
 
 import tools.vitruv.dsls.mapping.generator.IMappingLanguageGenerator;
 import tools.vitruv.dsls.response.api.generator.IResponseEnvironmentGenerator;
-import tools.vitruv.dsls.response.responseLanguage.Response;
+import tools.vitruv.dsls.response.responseLanguage.Reaction;
 
 import static com.google.common.collect.Maps.uniqueIndex;
 
@@ -157,7 +157,7 @@ public class GenerationHandler extends AbstractHandler {
 				responseEnvironmentGenerator.cleanAndSetProject(project);
 				mappingScope.mappingLanguageGenerator.initialize();
 
-				final Map<Resource, Collection<Response>> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(resourceVisitor.getMappingResources(), srcGenFSA);
+				final Map<Resource, Collection<Reaction>> generatedResponses = mappingScope.mappingLanguageGenerator.generateAndCreateResponses(resourceVisitor.getMappingResources(), srcGenFSA);
 				for (Resource mappingResource : generatedResponses.keySet()) {
 					responseEnvironmentGenerator.addResponses(mappingResource.getURI().segments()[mappingResource.getURI().segmentCount() - 1].split("\\.")[0], generatedResponses.get(mappingResource));
 				}

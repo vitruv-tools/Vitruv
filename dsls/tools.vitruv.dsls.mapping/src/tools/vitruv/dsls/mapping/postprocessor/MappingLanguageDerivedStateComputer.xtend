@@ -8,7 +8,7 @@ import org.eclipse.xtext.resource.DerivedStateAwareResource
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
 import tools.vitruv.dsls.mapping.mappingLanguage.MappingFile
 import static extension tools.vitruv.dsls.mapping.helpers.MappingLanguageHelper.*
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
 
 class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 	override discardDerivedState(DerivedStateAwareResource resource) {
@@ -56,7 +56,7 @@ class MappingLanguageDerivedStateComputer extends JvmModelAssociator {
 			
 		]
 
-		mappingFile.eAllContents.filter(ModelElement).filter[name == null || name.isEmpty].forEach [
+		mappingFile.eAllContents.filter(NamedModelElement).filter[name == null || name.isEmpty].forEach [
 			it.name = MappingLanguageHelper.toSensibleDefaultName(it)
 		]
 

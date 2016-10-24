@@ -66,6 +66,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess;
 
 @SuppressWarnings("all")
@@ -95,22 +96,21 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
-				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
-					sequence_ClassicallyNamedModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getModelElementRule()) {
-					sequence_ModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_NamedModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_ModelElement(context, (ModelElement) semanticObject); 
+				return; 
 			case MirBasePackage.NAMED_JAVA_ELEMENT:
 				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
 				return; 
+			case MirBasePackage.NAMED_MODEL_ELEMENT:
+				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
+					sequence_ClassicallyNamedModelElement_ModelElement(context, (NamedModelElement) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getNamedModelElementRule()) {
+					sequence_ModelElement_NamedModelElement(context, (NamedModelElement) semanticObject); 
+					return; 
+				}
+				else break;
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -357,20 +357,20 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     ClassicallyNamedModelElement returns ModelElement
+	 *     ClassicallyNamedModelElement returns NamedModelElement
 	 *
 	 * Constraint:
 	 *     (element=[EClass|QualifiedName] name=ValidID)
 	 */
-	protected void sequence_ClassicallyNamedModelElement(ISerializationContext context, ModelElement semanticObject) {
+	protected void sequence_ClassicallyNamedModelElement_ModelElement(ISerializationContext context, NamedModelElement semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT));
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__NAME));
+			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.NAMED_MODEL_ELEMENT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.NAMED_MODEL_ELEMENT__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getClassicallyNamedModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_0_1(), semanticObject.getElement());
+		feeder.accept(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getElement());
 		feeder.accept(grammarAccess.getClassicallyNamedModelElementAccess().getNameValidIDParserRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
 	}
@@ -441,7 +441,7 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     ModelElement returns ModelElement
+	 *     UnnamedModelElement returns ModelElement
 	 *
 	 * Constraint:
 	 *     element=[EClass|QualifiedName]
@@ -454,6 +454,18 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getElement());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     NamedModelElement returns NamedModelElement
+	 *
+	 * Constraint:
+	 *     (element=[EClass|QualifiedName] name=ValidID?)
+	 */
+	protected void sequence_ModelElement_NamedModelElement(ISerializationContext context, NamedModelElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -475,18 +487,6 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 		feeder.accept(grammarAccess.getNamedJavaElementAccess().getTypeJvmTypeReferenceParserRuleCall_0_0(), semanticObject.getType());
 		feeder.accept(grammarAccess.getNamedJavaElementAccess().getNameValidIDParserRuleCall_2_0(), semanticObject.getName());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     NamedModelElement returns ModelElement
-	 *
-	 * Constraint:
-	 *     (element=[EClass|QualifiedName] name=ValidID?)
-	 */
-	protected void sequence_NamedModelElement(ISerializationContext context, ModelElement semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

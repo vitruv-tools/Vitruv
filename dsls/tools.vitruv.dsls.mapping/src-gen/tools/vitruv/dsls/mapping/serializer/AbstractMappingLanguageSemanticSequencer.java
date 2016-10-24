@@ -89,6 +89,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
 import tools.vitruv.dsls.mirbase.serializer.MirBaseSemanticSequencer;
 
 @SuppressWarnings("all")
@@ -194,22 +195,21 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
 			case MirBasePackage.MODEL_ELEMENT:
-				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
-					sequence_ClassicallyNamedModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getModelElementRule()) {
-					sequence_ModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_NamedModelElement(context, (ModelElement) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_ModelElement(context, (ModelElement) semanticObject); 
+				return; 
 			case MirBasePackage.NAMED_JAVA_ELEMENT:
 				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
 				return; 
+			case MirBasePackage.NAMED_MODEL_ELEMENT:
+				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
+					sequence_ClassicallyNamedModelElement_ModelElement(context, (NamedModelElement) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getNamedModelElementRule()) {
+					sequence_ModelElement_NamedModelElement(context, (NamedModelElement) semanticObject); 
+					return; 
+				}
+				else break;
 			}
 		else if (epackage == TypesPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -559,7 +559,7 @@ public abstract class AbstractMappingLanguageSemanticSequencer extends MirBaseSe
 	 *     ContextVariable returns ContextVariable
 	 *
 	 * Constraint:
-	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[ModelElement|ValidID])
+	 *     (requiredMappingPath=RequiredMappingPathBase? targetClass=[NamedModelElement|ValidID])
 	 */
 	protected void sequence_ContextVariable(ISerializationContext context, ContextVariable semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

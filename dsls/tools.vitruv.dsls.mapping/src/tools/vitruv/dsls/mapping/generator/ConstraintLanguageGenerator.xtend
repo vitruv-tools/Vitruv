@@ -28,10 +28,10 @@ import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import static extension java.util.Objects.*
 //import tools.vitruv.dsls.mapping.mappingLanguage.NotNullExpression
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
 import tools.vitruv.framework.util.bridges.EMFBridge
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
 
 class ConstraintLanguageGenerator {
 	private final extension EMFGeneratorHelper emfGeneratorHelper
@@ -214,7 +214,7 @@ class ConstraintLanguageGenerator {
 		'''/* unnamed «object.toString» */'''
 	}
 
-	private static def dispatch String tryGetName(ModelElement object) {
+	private static def dispatch String tryGetName(NamedModelElement object) {
 		object.name
 	}
 

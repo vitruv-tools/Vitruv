@@ -1627,7 +1627,7 @@ ruleContextVariable returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getContextVariableAccess().getTargetClassModelElementCrossReference_1_0());
+					newCompositeNode(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementCrossReference_1_0());
 				}
 				ruleValidID
 				{
@@ -2073,6 +2073,33 @@ ruleMetamodelImport returns [EObject current=null]
 	)
 ;
 
+
+// Rule ModelElement
+ruleModelElement[EObject in_current]  returns [EObject current=in_current]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getModelElementRule());
+				}
+			}
+			{
+				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
+			}
+			ruleQualifiedName
+			{
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)
+;
+
 // Entry rule entryRuleNamedModelElement
 entryRuleNamedModelElement returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getNamedModelElementRule()); }
@@ -2089,22 +2116,17 @@ ruleNamedModelElement returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		(
-			(
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getNamedModelElementRule());
-					}
-				}
-				{
-					newCompositeNode(grammarAccess.getNamedModelElementAccess().getElementEClassCrossReference_0_0());
-				}
-				ruleQualifiedName
-				{
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
+		{
+			if ($current==null) {
+				$current = createModelElement(grammarAccess.getNamedModelElementRule());
+			}
+			newCompositeNode(grammarAccess.getNamedModelElementAccess().getModelElementParserRuleCall_0());
+		}
+		this_ModelElement_0=ruleModelElement[$current]
+		{
+			$current = $this_ModelElement_0.current;
+			afterParserOrEnumRuleCall();
+		}
 		(
 			otherlv_1='as'
 			{

@@ -21,7 +21,9 @@
     </genClasses>
     <genClasses ecoreClass="MirBase.ecore#//ModelElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//ModelElement/element"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//ModelElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="MirBase.ecore#//NamedModelElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//NamedModelElement/name"/>
     </genClasses>
     <genClasses ecoreClass="MirBase.ecore#//FeatureOfElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//FeatureOfElement/element"/>

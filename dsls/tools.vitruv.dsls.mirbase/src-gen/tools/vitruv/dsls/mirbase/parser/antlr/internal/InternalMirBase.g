@@ -191,6 +191,33 @@ ruleMetamodelImport returns [EObject current=null]
 	)
 ;
 
+
+// Rule ModelElement
+ruleModelElement[EObject in_current]  returns [EObject current=in_current]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getModelElementRule());
+				}
+			}
+			{
+				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
+			}
+			ruleQualifiedName
+			{
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)
+;
+
 // Entry rule entryRuleXExpression
 entryRuleXExpression returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getXExpressionRule()); }

@@ -101,6 +101,11 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
         return createModelElementAdapter();
       }
       @Override
+      public Adapter caseNamedModelElement(NamedModelElement object)
+      {
+        return createNamedModelElementAdapter();
+      }
+      @Override
       public Adapter caseFeatureOfElement(FeatureOfElement object)
       {
         return createFeatureOfElementAdapter();
@@ -203,6 +208,21 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createModelElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement <em>Named Model Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+   * @generated
+   */
+  public Adapter createNamedModelElementAdapter()
   {
     return null;
   }

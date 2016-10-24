@@ -25,6 +25,7 @@ import static extension java.util.Objects.*
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mapping.mappingLanguage.SignatureConstraintBlock
 import tools.vitruv.dsls.mapping.mappingLanguage.ConstraintExpression
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
 
 class MappingLanguageHelper {
 	public static def inferPackagesForSignaturesAndConstraints(Mapping mapping) {
@@ -125,7 +126,7 @@ class MappingLanguageHelper {
 		return imports.get(index)
 	}
 
-	public static def getTypesAndNames(ImportHelper ih, List<ModelElement> elements) {
+	public static def getTypesAndNames(ImportHelper ih, List<NamedModelElement> elements) {
 		elements?.map[new Pair(ih.typeRef(element.instanceTypeName), name.toFirstLower)] ?: #[]
 	}
 

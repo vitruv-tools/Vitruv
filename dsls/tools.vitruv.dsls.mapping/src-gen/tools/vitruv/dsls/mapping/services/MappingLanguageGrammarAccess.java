@@ -1064,14 +1064,14 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRequiredMappingPathRequiredMappingPathBaseParserRuleCall_0_0_0 = (RuleCall)cRequiredMappingPathAssignment_0_0.eContents().get(0);
 		private final Keyword cColonColonKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
 		private final Assignment cTargetClassAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cTargetClassModelElementCrossReference_1_0 = (CrossReference)cTargetClassAssignment_1.eContents().get(0);
-		private final RuleCall cTargetClassModelElementValidIDParserRuleCall_1_0_1 = (RuleCall)cTargetClassModelElementCrossReference_1_0.eContents().get(1);
+		private final CrossReference cTargetClassNamedModelElementCrossReference_1_0 = (CrossReference)cTargetClassAssignment_1.eContents().get(0);
+		private final RuleCall cTargetClassNamedModelElementValidIDParserRuleCall_1_0_1 = (RuleCall)cTargetClassNamedModelElementCrossReference_1_0.eContents().get(1);
 		
 		//ContextVariable:
-		//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::ModelElement|ValidID];
+		//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID];
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::ModelElement|ValidID]
+		//(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID]
 		public Group getGroup() { return cGroup; }
 		
 		//(requiredMappingPath=RequiredMappingPathBase '::')?
@@ -1086,14 +1086,14 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//'::'
 		public Keyword getColonColonKeyword_0_1() { return cColonColonKeyword_0_1; }
 		
-		//targetClass=[mirBase::ModelElement|ValidID]
+		//targetClass=[mirBase::NamedModelElement|ValidID]
 		public Assignment getTargetClassAssignment_1() { return cTargetClassAssignment_1; }
 		
-		//[mirBase::ModelElement|ValidID]
-		public CrossReference getTargetClassModelElementCrossReference_1_0() { return cTargetClassModelElementCrossReference_1_0; }
+		//[mirBase::NamedModelElement|ValidID]
+		public CrossReference getTargetClassNamedModelElementCrossReference_1_0() { return cTargetClassNamedModelElementCrossReference_1_0; }
 		
 		//ValidID
-		public RuleCall getTargetClassModelElementValidIDParserRuleCall_1_0_1() { return cTargetClassModelElementValidIDParserRuleCall_1_0_1; }
+		public RuleCall getTargetClassNamedModelElementValidIDParserRuleCall_1_0_1() { return cTargetClassNamedModelElementValidIDParserRuleCall_1_0_1; }
 	}
 	public class RequiredMappingPathBaseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mapping.MappingLanguage.RequiredMappingPathBase");
@@ -1626,7 +1626,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ContextVariable:
-	//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::ModelElement|ValidID];
+	//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID];
 	public ContextVariableElements getContextVariableAccess() {
 		return pContextVariable;
 	}
@@ -1746,7 +1746,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedJavaElementAccess().getRule();
 	}
 	
-	//ModelElement:
+	//fragment ModelElement:
 	//	element=[ecore::EClass|QualifiedName];
 	public MirBaseGrammarAccess.ModelElementElements getModelElementAccess() {
 		return gaMirBase.getModelElementAccess();
@@ -1756,8 +1756,18 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getModelElementAccess().getRule();
 	}
 	
-	//NamedModelElement ModelElement:
-	//	element=[ecore::EClass|QualifiedName] ('as' name=ValidID)?
+	//UnnamedModelElement ModelElement:
+	//	ModelElement
+	public MirBaseGrammarAccess.UnnamedModelElementElements getUnnamedModelElementAccess() {
+		return gaMirBase.getUnnamedModelElementAccess();
+	}
+	
+	public ParserRule getUnnamedModelElementRule() {
+		return getUnnamedModelElementAccess().getRule();
+	}
+	
+	//NamedModelElement:
+	//	ModelElement ('as' name=ValidID)?;
 	public MirBaseGrammarAccess.NamedModelElementElements getNamedModelElementAccess() {
 		return gaMirBase.getNamedModelElementAccess();
 	}
@@ -1766,8 +1776,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedModelElementAccess().getRule();
 	}
 	
-	//ClassicallyNamedModelElement ModelElement:
-	//	element=[ecore::EClass|QualifiedName] name=ValidID?
+	//ClassicallyNamedModelElement NamedModelElement:
+	//	ModelElement name=ValidID
 	public MirBaseGrammarAccess.ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
 		return gaMirBase.getClassicallyNamedModelElementAccess();
 	}

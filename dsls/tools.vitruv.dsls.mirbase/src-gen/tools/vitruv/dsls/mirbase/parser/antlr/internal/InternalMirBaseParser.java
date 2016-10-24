@@ -528,8 +528,75 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleMetamodelImport"
 
 
+    // $ANTLR start "ruleModelElement"
+    // InternalMirBase.g:196:1: ruleModelElement[EObject in_current] returns [EObject current=in_current] : ( ( ruleQualifiedName ) ) ;
+    public final EObject ruleModelElement(EObject in_current) throws RecognitionException {
+        EObject current = in_current;
+
+
+        	enterRule();
+
+        try {
+            // InternalMirBase.g:202:2: ( ( ( ruleQualifiedName ) ) )
+            // InternalMirBase.g:203:2: ( ( ruleQualifiedName ) )
+            {
+            // InternalMirBase.g:203:2: ( ( ruleQualifiedName ) )
+            // InternalMirBase.g:204:3: ( ruleQualifiedName )
+            {
+            // InternalMirBase.g:204:3: ( ruleQualifiedName )
+            // InternalMirBase.g:205:4: ruleQualifiedName
+            {
+            if ( state.backtracking==0 ) {
+
+              				if (current==null) {
+              					current = createModelElement(grammarAccess.getModelElementRule());
+              				}
+              			
+            }
+            if ( state.backtracking==0 ) {
+
+              				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
+              			
+            }
+            pushFollow(FOLLOW_2);
+            ruleQualifiedName();
+
+            state._fsp--;
+            if (state.failed) return current;
+            if ( state.backtracking==0 ) {
+
+              				afterParserOrEnumRuleCall();
+              			
+            }
+
+            }
+
+
+            }
+
+
+            }
+
+            if ( state.backtracking==0 ) {
+
+              	leaveRule();
+
+            }
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "ruleModelElement"
+
+
     // $ANTLR start "entryRuleXExpression"
-    // InternalMirBase.g:195:1: entryRuleXExpression returns [EObject current=null] : iv_ruleXExpression= ruleXExpression EOF ;
+    // InternalMirBase.g:222:1: entryRuleXExpression returns [EObject current=null] : iv_ruleXExpression= ruleXExpression EOF ;
     public final EObject entryRuleXExpression() throws RecognitionException {
         EObject current = null;
 
@@ -537,8 +604,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:195:52: (iv_ruleXExpression= ruleXExpression EOF )
-            // InternalMirBase.g:196:2: iv_ruleXExpression= ruleXExpression EOF
+            // InternalMirBase.g:222:52: (iv_ruleXExpression= ruleXExpression EOF )
+            // InternalMirBase.g:223:2: iv_ruleXExpression= ruleXExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXExpressionRule()); 
@@ -569,7 +636,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXExpression"
-    // InternalMirBase.g:202:1: ruleXExpression returns [EObject current=null] : this_XAssignment_0= ruleXAssignment ;
+    // InternalMirBase.g:229:1: ruleXExpression returns [EObject current=null] : this_XAssignment_0= ruleXAssignment ;
     public final EObject ruleXExpression() throws RecognitionException {
         EObject current = null;
 
@@ -580,8 +647,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:208:2: (this_XAssignment_0= ruleXAssignment )
-            // InternalMirBase.g:209:2: this_XAssignment_0= ruleXAssignment
+            // InternalMirBase.g:235:2: (this_XAssignment_0= ruleXAssignment )
+            // InternalMirBase.g:236:2: this_XAssignment_0= ruleXAssignment
             {
             if ( state.backtracking==0 ) {
 
@@ -621,7 +688,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXAssignment"
-    // InternalMirBase.g:220:1: entryRuleXAssignment returns [EObject current=null] : iv_ruleXAssignment= ruleXAssignment EOF ;
+    // InternalMirBase.g:247:1: entryRuleXAssignment returns [EObject current=null] : iv_ruleXAssignment= ruleXAssignment EOF ;
     public final EObject entryRuleXAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -629,8 +696,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:220:52: (iv_ruleXAssignment= ruleXAssignment EOF )
-            // InternalMirBase.g:221:2: iv_ruleXAssignment= ruleXAssignment EOF
+            // InternalMirBase.g:247:52: (iv_ruleXAssignment= ruleXAssignment EOF )
+            // InternalMirBase.g:248:2: iv_ruleXAssignment= ruleXAssignment EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXAssignmentRule()); 
@@ -661,7 +728,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXAssignment"
-    // InternalMirBase.g:227:1: ruleXAssignment returns [EObject current=null] : ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) ) ;
+    // InternalMirBase.g:254:1: ruleXAssignment returns [EObject current=null] : ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) ) ;
     public final EObject ruleXAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -676,21 +743,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:233:2: ( ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) ) )
-            // InternalMirBase.g:234:2: ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) )
+            // InternalMirBase.g:260:2: ( ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) ) )
+            // InternalMirBase.g:261:2: ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) )
             {
-            // InternalMirBase.g:234:2: ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) )
+            // InternalMirBase.g:261:2: ( ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) ) | (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? ) )
             int alt4=2;
             switch ( input.LA(1) ) {
             case RULE_ID:
                 {
                 int LA4_1 = input.LA(2);
 
-                if ( (LA4_1==16) ) {
-                    alt4=1;
-                }
-                else if ( (LA4_1==EOF||(LA4_1>=RULE_STRING && LA4_1<=RULE_ID)||(LA4_1>=13 && LA4_1<=14)||(LA4_1>=17 && LA4_1<=57)||(LA4_1>=59 && LA4_1<=85)) ) {
+                if ( (LA4_1==EOF||(LA4_1>=RULE_STRING && LA4_1<=RULE_ID)||(LA4_1>=13 && LA4_1<=14)||(LA4_1>=17 && LA4_1<=57)||(LA4_1>=59 && LA4_1<=85)) ) {
                     alt4=2;
+                }
+                else if ( (LA4_1==16) ) {
+                    alt4=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -724,11 +791,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                 {
                 int LA4_3 = input.LA(2);
 
-                if ( (LA4_3==16) ) {
-                    alt4=1;
-                }
-                else if ( (LA4_3==EOF||(LA4_3>=RULE_STRING && LA4_3<=RULE_ID)||(LA4_3>=13 && LA4_3<=14)||(LA4_3>=17 && LA4_3<=57)||(LA4_3>=59 && LA4_3<=85)) ) {
+                if ( (LA4_3==EOF||(LA4_3>=RULE_STRING && LA4_3<=RULE_ID)||(LA4_3>=13 && LA4_3<=14)||(LA4_3>=17 && LA4_3<=57)||(LA4_3>=59 && LA4_3<=85)) ) {
                     alt4=2;
+                }
+                else if ( (LA4_3==16) ) {
+                    alt4=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -743,11 +810,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                 {
                 int LA4_4 = input.LA(2);
 
-                if ( (LA4_4==16) ) {
-                    alt4=1;
-                }
-                else if ( (LA4_4==EOF||(LA4_4>=RULE_STRING && LA4_4<=RULE_ID)||(LA4_4>=13 && LA4_4<=14)||(LA4_4>=17 && LA4_4<=57)||(LA4_4>=59 && LA4_4<=85)) ) {
+                if ( (LA4_4==EOF||(LA4_4>=RULE_STRING && LA4_4<=RULE_ID)||(LA4_4>=13 && LA4_4<=14)||(LA4_4>=17 && LA4_4<=57)||(LA4_4>=59 && LA4_4<=85)) ) {
                     alt4=2;
+                }
+                else if ( (LA4_4==16) ) {
+                    alt4=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -818,13 +885,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt4) {
                 case 1 :
-                    // InternalMirBase.g:235:3: ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) )
+                    // InternalMirBase.g:262:3: ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) )
                     {
-                    // InternalMirBase.g:235:3: ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) )
-                    // InternalMirBase.g:236:4: () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) )
+                    // InternalMirBase.g:262:3: ( () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) ) )
+                    // InternalMirBase.g:263:4: () ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ( (lv_value_3_0= ruleXAssignment ) )
                     {
-                    // InternalMirBase.g:236:4: ()
-                    // InternalMirBase.g:237:5: 
+                    // InternalMirBase.g:263:4: ()
+                    // InternalMirBase.g:264:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -836,11 +903,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:243:4: ( ( ruleFeatureCallID ) )
-                    // InternalMirBase.g:244:5: ( ruleFeatureCallID )
+                    // InternalMirBase.g:270:4: ( ( ruleFeatureCallID ) )
+                    // InternalMirBase.g:271:5: ( ruleFeatureCallID )
                     {
-                    // InternalMirBase.g:244:5: ( ruleFeatureCallID )
-                    // InternalMirBase.g:245:6: ruleFeatureCallID
+                    // InternalMirBase.g:271:5: ( ruleFeatureCallID )
+                    // InternalMirBase.g:272:6: ruleFeatureCallID
                     {
                     if ( state.backtracking==0 ) {
 
@@ -885,11 +952,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				afterParserOrEnumRuleCall();
                       			
                     }
-                    // InternalMirBase.g:266:4: ( (lv_value_3_0= ruleXAssignment ) )
-                    // InternalMirBase.g:267:5: (lv_value_3_0= ruleXAssignment )
+                    // InternalMirBase.g:293:4: ( (lv_value_3_0= ruleXAssignment ) )
+                    // InternalMirBase.g:294:5: (lv_value_3_0= ruleXAssignment )
                     {
-                    // InternalMirBase.g:267:5: (lv_value_3_0= ruleXAssignment )
-                    // InternalMirBase.g:268:6: lv_value_3_0= ruleXAssignment
+                    // InternalMirBase.g:294:5: (lv_value_3_0= ruleXAssignment )
+                    // InternalMirBase.g:295:6: lv_value_3_0= ruleXAssignment
                     {
                     if ( state.backtracking==0 ) {
 
@@ -927,10 +994,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:287:3: (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? )
+                    // InternalMirBase.g:314:3: (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? )
                     {
-                    // InternalMirBase.g:287:3: (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? )
-                    // InternalMirBase.g:288:4: this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?
+                    // InternalMirBase.g:314:3: (this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )? )
+                    // InternalMirBase.g:315:4: this_XOrExpression_4= ruleXOrExpression ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?
                     {
                     if ( state.backtracking==0 ) {
 
@@ -948,21 +1015,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				afterParserOrEnumRuleCall();
                       			
                     }
-                    // InternalMirBase.g:296:4: ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?
+                    // InternalMirBase.g:323:4: ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?
                     int alt3=2;
                     alt3 = dfa3.predict(input);
                     switch (alt3) {
                         case 1 :
-                            // InternalMirBase.g:297:5: ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) )
+                            // InternalMirBase.g:324:5: ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) )
                             {
-                            // InternalMirBase.g:297:5: ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) )
-                            // InternalMirBase.g:298:6: ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) )
+                            // InternalMirBase.g:324:5: ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) )
+                            // InternalMirBase.g:325:6: ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) )
                             {
-                            // InternalMirBase.g:308:6: ( () ( ( ruleOpMultiAssign ) ) )
-                            // InternalMirBase.g:309:7: () ( ( ruleOpMultiAssign ) )
+                            // InternalMirBase.g:335:6: ( () ( ( ruleOpMultiAssign ) ) )
+                            // InternalMirBase.g:336:7: () ( ( ruleOpMultiAssign ) )
                             {
-                            // InternalMirBase.g:309:7: ()
-                            // InternalMirBase.g:310:8: 
+                            // InternalMirBase.g:336:7: ()
+                            // InternalMirBase.g:337:8: 
                             {
                             if ( state.backtracking==0 ) {
 
@@ -974,11 +1041,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:316:7: ( ( ruleOpMultiAssign ) )
-                            // InternalMirBase.g:317:8: ( ruleOpMultiAssign )
+                            // InternalMirBase.g:343:7: ( ( ruleOpMultiAssign ) )
+                            // InternalMirBase.g:344:8: ( ruleOpMultiAssign )
                             {
-                            // InternalMirBase.g:317:8: ( ruleOpMultiAssign )
-                            // InternalMirBase.g:318:9: ruleOpMultiAssign
+                            // InternalMirBase.g:344:8: ( ruleOpMultiAssign )
+                            // InternalMirBase.g:345:9: ruleOpMultiAssign
                             {
                             if ( state.backtracking==0 ) {
 
@@ -1014,11 +1081,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:334:5: ( (lv_rightOperand_7_0= ruleXAssignment ) )
-                            // InternalMirBase.g:335:6: (lv_rightOperand_7_0= ruleXAssignment )
+                            // InternalMirBase.g:361:5: ( (lv_rightOperand_7_0= ruleXAssignment ) )
+                            // InternalMirBase.g:362:6: (lv_rightOperand_7_0= ruleXAssignment )
                             {
-                            // InternalMirBase.g:335:6: (lv_rightOperand_7_0= ruleXAssignment )
-                            // InternalMirBase.g:336:7: lv_rightOperand_7_0= ruleXAssignment
+                            // InternalMirBase.g:362:6: (lv_rightOperand_7_0= ruleXAssignment )
+                            // InternalMirBase.g:363:7: lv_rightOperand_7_0= ruleXAssignment
                             {
                             if ( state.backtracking==0 ) {
 
@@ -1086,7 +1153,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpSingleAssign"
-    // InternalMirBase.g:359:1: entryRuleOpSingleAssign returns [String current=null] : iv_ruleOpSingleAssign= ruleOpSingleAssign EOF ;
+    // InternalMirBase.g:386:1: entryRuleOpSingleAssign returns [String current=null] : iv_ruleOpSingleAssign= ruleOpSingleAssign EOF ;
     public final String entryRuleOpSingleAssign() throws RecognitionException {
         String current = null;
 
@@ -1094,8 +1161,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:359:54: (iv_ruleOpSingleAssign= ruleOpSingleAssign EOF )
-            // InternalMirBase.g:360:2: iv_ruleOpSingleAssign= ruleOpSingleAssign EOF
+            // InternalMirBase.g:386:54: (iv_ruleOpSingleAssign= ruleOpSingleAssign EOF )
+            // InternalMirBase.g:387:2: iv_ruleOpSingleAssign= ruleOpSingleAssign EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpSingleAssignRule()); 
@@ -1126,7 +1193,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpSingleAssign"
-    // InternalMirBase.g:366:1: ruleOpSingleAssign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '=' ;
+    // InternalMirBase.g:393:1: ruleOpSingleAssign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '=' ;
     public final AntlrDatatypeRuleToken ruleOpSingleAssign() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -1136,8 +1203,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:372:2: (kw= '=' )
-            // InternalMirBase.g:373:2: kw= '='
+            // InternalMirBase.g:399:2: (kw= '=' )
+            // InternalMirBase.g:400:2: kw= '='
             {
             kw=(Token)match(input,16,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -1168,7 +1235,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpMultiAssign"
-    // InternalMirBase.g:381:1: entryRuleOpMultiAssign returns [String current=null] : iv_ruleOpMultiAssign= ruleOpMultiAssign EOF ;
+    // InternalMirBase.g:408:1: entryRuleOpMultiAssign returns [String current=null] : iv_ruleOpMultiAssign= ruleOpMultiAssign EOF ;
     public final String entryRuleOpMultiAssign() throws RecognitionException {
         String current = null;
 
@@ -1176,8 +1243,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:381:53: (iv_ruleOpMultiAssign= ruleOpMultiAssign EOF )
-            // InternalMirBase.g:382:2: iv_ruleOpMultiAssign= ruleOpMultiAssign EOF
+            // InternalMirBase.g:408:53: (iv_ruleOpMultiAssign= ruleOpMultiAssign EOF )
+            // InternalMirBase.g:409:2: iv_ruleOpMultiAssign= ruleOpMultiAssign EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpMultiAssignRule()); 
@@ -1208,7 +1275,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpMultiAssign"
-    // InternalMirBase.g:388:1: ruleOpMultiAssign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) ) ;
+    // InternalMirBase.g:415:1: ruleOpMultiAssign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) ) ;
     public final AntlrDatatypeRuleToken ruleOpMultiAssign() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -1218,10 +1285,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:394:2: ( (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) ) )
-            // InternalMirBase.g:395:2: (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) )
+            // InternalMirBase.g:421:2: ( (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) ) )
+            // InternalMirBase.g:422:2: (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) )
             {
-            // InternalMirBase.g:395:2: (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) )
+            // InternalMirBase.g:422:2: (kw= '+=' | kw= '-=' | kw= '*=' | kw= '/=' | kw= '%=' | (kw= '<' kw= '<' kw= '=' ) | (kw= '>' (kw= '>' )? kw= '>=' ) )
             int alt6=7;
             switch ( input.LA(1) ) {
             case 17:
@@ -1269,7 +1336,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt6) {
                 case 1 :
-                    // InternalMirBase.g:396:3: kw= '+='
+                    // InternalMirBase.g:423:3: kw= '+='
                     {
                     kw=(Token)match(input,17,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1282,7 +1349,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:402:3: kw= '-='
+                    // InternalMirBase.g:429:3: kw= '-='
                     {
                     kw=(Token)match(input,18,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1295,7 +1362,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:408:3: kw= '*='
+                    // InternalMirBase.g:435:3: kw= '*='
                     {
                     kw=(Token)match(input,19,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1308,7 +1375,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:414:3: kw= '/='
+                    // InternalMirBase.g:441:3: kw= '/='
                     {
                     kw=(Token)match(input,20,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1321,7 +1388,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMirBase.g:420:3: kw= '%='
+                    // InternalMirBase.g:447:3: kw= '%='
                     {
                     kw=(Token)match(input,21,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1334,10 +1401,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalMirBase.g:426:3: (kw= '<' kw= '<' kw= '=' )
+                    // InternalMirBase.g:453:3: (kw= '<' kw= '<' kw= '=' )
                     {
-                    // InternalMirBase.g:426:3: (kw= '<' kw= '<' kw= '=' )
-                    // InternalMirBase.g:427:4: kw= '<' kw= '<' kw= '='
+                    // InternalMirBase.g:453:3: (kw= '<' kw= '<' kw= '=' )
+                    // InternalMirBase.g:454:4: kw= '<' kw= '<' kw= '='
                     {
                     kw=(Token)match(input,22,FOLLOW_11); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1367,10 +1434,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalMirBase.g:444:3: (kw= '>' (kw= '>' )? kw= '>=' )
+                    // InternalMirBase.g:471:3: (kw= '>' (kw= '>' )? kw= '>=' )
                     {
-                    // InternalMirBase.g:444:3: (kw= '>' (kw= '>' )? kw= '>=' )
-                    // InternalMirBase.g:445:4: kw= '>' (kw= '>' )? kw= '>='
+                    // InternalMirBase.g:471:3: (kw= '>' (kw= '>' )? kw= '>=' )
+                    // InternalMirBase.g:472:4: kw= '>' (kw= '>' )? kw= '>='
                     {
                     kw=(Token)match(input,23,FOLLOW_12); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -1379,7 +1446,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(kw, grammarAccess.getOpMultiAssignAccess().getGreaterThanSignKeyword_6_0());
                       			
                     }
-                    // InternalMirBase.g:450:4: (kw= '>' )?
+                    // InternalMirBase.g:477:4: (kw= '>' )?
                     int alt5=2;
                     int LA5_0 = input.LA(1);
 
@@ -1388,7 +1455,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt5) {
                         case 1 :
-                            // InternalMirBase.g:451:5: kw= '>'
+                            // InternalMirBase.g:478:5: kw= '>'
                             {
                             kw=(Token)match(input,23,FOLLOW_13); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -1441,7 +1508,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXOrExpression"
-    // InternalMirBase.g:467:1: entryRuleXOrExpression returns [EObject current=null] : iv_ruleXOrExpression= ruleXOrExpression EOF ;
+    // InternalMirBase.g:494:1: entryRuleXOrExpression returns [EObject current=null] : iv_ruleXOrExpression= ruleXOrExpression EOF ;
     public final EObject entryRuleXOrExpression() throws RecognitionException {
         EObject current = null;
 
@@ -1449,8 +1516,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:467:54: (iv_ruleXOrExpression= ruleXOrExpression EOF )
-            // InternalMirBase.g:468:2: iv_ruleXOrExpression= ruleXOrExpression EOF
+            // InternalMirBase.g:494:54: (iv_ruleXOrExpression= ruleXOrExpression EOF )
+            // InternalMirBase.g:495:2: iv_ruleXOrExpression= ruleXOrExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXOrExpressionRule()); 
@@ -1481,7 +1548,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXOrExpression"
-    // InternalMirBase.g:474:1: ruleXOrExpression returns [EObject current=null] : (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* ) ;
+    // InternalMirBase.g:501:1: ruleXOrExpression returns [EObject current=null] : (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* ) ;
     public final EObject ruleXOrExpression() throws RecognitionException {
         EObject current = null;
 
@@ -1494,11 +1561,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:480:2: ( (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* ) )
-            // InternalMirBase.g:481:2: (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* )
+            // InternalMirBase.g:507:2: ( (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* ) )
+            // InternalMirBase.g:508:2: (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* )
             {
-            // InternalMirBase.g:481:2: (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* )
-            // InternalMirBase.g:482:3: this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )*
+            // InternalMirBase.g:508:2: (this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )* )
+            // InternalMirBase.g:509:3: this_XAndExpression_0= ruleXAndExpression ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -1516,7 +1583,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:490:3: ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )*
+            // InternalMirBase.g:517:3: ( ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) ) )*
             loop7:
             do {
                 int alt7=2;
@@ -1535,16 +1602,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt7) {
             	case 1 :
-            	    // InternalMirBase.g:491:4: ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) )
+            	    // InternalMirBase.g:518:4: ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) ) ( (lv_rightOperand_3_0= ruleXAndExpression ) )
             	    {
-            	    // InternalMirBase.g:491:4: ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) )
-            	    // InternalMirBase.g:492:5: ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) )
+            	    // InternalMirBase.g:518:4: ( ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) ) )
+            	    // InternalMirBase.g:519:5: ( ( () ( ( ruleOpOr ) ) ) )=> ( () ( ( ruleOpOr ) ) )
             	    {
-            	    // InternalMirBase.g:502:5: ( () ( ( ruleOpOr ) ) )
-            	    // InternalMirBase.g:503:6: () ( ( ruleOpOr ) )
+            	    // InternalMirBase.g:529:5: ( () ( ( ruleOpOr ) ) )
+            	    // InternalMirBase.g:530:6: () ( ( ruleOpOr ) )
             	    {
-            	    // InternalMirBase.g:503:6: ()
-            	    // InternalMirBase.g:504:7: 
+            	    // InternalMirBase.g:530:6: ()
+            	    // InternalMirBase.g:531:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1556,11 +1623,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:510:6: ( ( ruleOpOr ) )
-            	    // InternalMirBase.g:511:7: ( ruleOpOr )
+            	    // InternalMirBase.g:537:6: ( ( ruleOpOr ) )
+            	    // InternalMirBase.g:538:7: ( ruleOpOr )
             	    {
-            	    // InternalMirBase.g:511:7: ( ruleOpOr )
-            	    // InternalMirBase.g:512:8: ruleOpOr
+            	    // InternalMirBase.g:538:7: ( ruleOpOr )
+            	    // InternalMirBase.g:539:8: ruleOpOr
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1596,11 +1663,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:528:4: ( (lv_rightOperand_3_0= ruleXAndExpression ) )
-            	    // InternalMirBase.g:529:5: (lv_rightOperand_3_0= ruleXAndExpression )
+            	    // InternalMirBase.g:555:4: ( (lv_rightOperand_3_0= ruleXAndExpression ) )
+            	    // InternalMirBase.g:556:5: (lv_rightOperand_3_0= ruleXAndExpression )
             	    {
-            	    // InternalMirBase.g:529:5: (lv_rightOperand_3_0= ruleXAndExpression )
-            	    // InternalMirBase.g:530:6: lv_rightOperand_3_0= ruleXAndExpression
+            	    // InternalMirBase.g:556:5: (lv_rightOperand_3_0= ruleXAndExpression )
+            	    // InternalMirBase.g:557:6: lv_rightOperand_3_0= ruleXAndExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1665,7 +1732,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpOr"
-    // InternalMirBase.g:552:1: entryRuleOpOr returns [String current=null] : iv_ruleOpOr= ruleOpOr EOF ;
+    // InternalMirBase.g:579:1: entryRuleOpOr returns [String current=null] : iv_ruleOpOr= ruleOpOr EOF ;
     public final String entryRuleOpOr() throws RecognitionException {
         String current = null;
 
@@ -1673,8 +1740,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:552:44: (iv_ruleOpOr= ruleOpOr EOF )
-            // InternalMirBase.g:553:2: iv_ruleOpOr= ruleOpOr EOF
+            // InternalMirBase.g:579:44: (iv_ruleOpOr= ruleOpOr EOF )
+            // InternalMirBase.g:580:2: iv_ruleOpOr= ruleOpOr EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpOrRule()); 
@@ -1705,7 +1772,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpOr"
-    // InternalMirBase.g:559:1: ruleOpOr returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '||' ;
+    // InternalMirBase.g:586:1: ruleOpOr returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '||' ;
     public final AntlrDatatypeRuleToken ruleOpOr() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -1715,8 +1782,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:565:2: (kw= '||' )
-            // InternalMirBase.g:566:2: kw= '||'
+            // InternalMirBase.g:592:2: (kw= '||' )
+            // InternalMirBase.g:593:2: kw= '||'
             {
             kw=(Token)match(input,25,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -1747,7 +1814,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXAndExpression"
-    // InternalMirBase.g:574:1: entryRuleXAndExpression returns [EObject current=null] : iv_ruleXAndExpression= ruleXAndExpression EOF ;
+    // InternalMirBase.g:601:1: entryRuleXAndExpression returns [EObject current=null] : iv_ruleXAndExpression= ruleXAndExpression EOF ;
     public final EObject entryRuleXAndExpression() throws RecognitionException {
         EObject current = null;
 
@@ -1755,8 +1822,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:574:55: (iv_ruleXAndExpression= ruleXAndExpression EOF )
-            // InternalMirBase.g:575:2: iv_ruleXAndExpression= ruleXAndExpression EOF
+            // InternalMirBase.g:601:55: (iv_ruleXAndExpression= ruleXAndExpression EOF )
+            // InternalMirBase.g:602:2: iv_ruleXAndExpression= ruleXAndExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXAndExpressionRule()); 
@@ -1787,7 +1854,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXAndExpression"
-    // InternalMirBase.g:581:1: ruleXAndExpression returns [EObject current=null] : (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* ) ;
+    // InternalMirBase.g:608:1: ruleXAndExpression returns [EObject current=null] : (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* ) ;
     public final EObject ruleXAndExpression() throws RecognitionException {
         EObject current = null;
 
@@ -1800,11 +1867,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:587:2: ( (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* ) )
-            // InternalMirBase.g:588:2: (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* )
+            // InternalMirBase.g:614:2: ( (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* ) )
+            // InternalMirBase.g:615:2: (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* )
             {
-            // InternalMirBase.g:588:2: (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* )
-            // InternalMirBase.g:589:3: this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )*
+            // InternalMirBase.g:615:2: (this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )* )
+            // InternalMirBase.g:616:3: this_XEqualityExpression_0= ruleXEqualityExpression ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -1822,7 +1889,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:597:3: ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )*
+            // InternalMirBase.g:624:3: ( ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) ) )*
             loop8:
             do {
                 int alt8=2;
@@ -1841,16 +1908,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt8) {
             	case 1 :
-            	    // InternalMirBase.g:598:4: ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) )
+            	    // InternalMirBase.g:625:4: ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) ) ( (lv_rightOperand_3_0= ruleXEqualityExpression ) )
             	    {
-            	    // InternalMirBase.g:598:4: ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) )
-            	    // InternalMirBase.g:599:5: ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) )
+            	    // InternalMirBase.g:625:4: ( ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) ) )
+            	    // InternalMirBase.g:626:5: ( ( () ( ( ruleOpAnd ) ) ) )=> ( () ( ( ruleOpAnd ) ) )
             	    {
-            	    // InternalMirBase.g:609:5: ( () ( ( ruleOpAnd ) ) )
-            	    // InternalMirBase.g:610:6: () ( ( ruleOpAnd ) )
+            	    // InternalMirBase.g:636:5: ( () ( ( ruleOpAnd ) ) )
+            	    // InternalMirBase.g:637:6: () ( ( ruleOpAnd ) )
             	    {
-            	    // InternalMirBase.g:610:6: ()
-            	    // InternalMirBase.g:611:7: 
+            	    // InternalMirBase.g:637:6: ()
+            	    // InternalMirBase.g:638:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1862,11 +1929,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:617:6: ( ( ruleOpAnd ) )
-            	    // InternalMirBase.g:618:7: ( ruleOpAnd )
+            	    // InternalMirBase.g:644:6: ( ( ruleOpAnd ) )
+            	    // InternalMirBase.g:645:7: ( ruleOpAnd )
             	    {
-            	    // InternalMirBase.g:618:7: ( ruleOpAnd )
-            	    // InternalMirBase.g:619:8: ruleOpAnd
+            	    // InternalMirBase.g:645:7: ( ruleOpAnd )
+            	    // InternalMirBase.g:646:8: ruleOpAnd
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1902,11 +1969,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:635:4: ( (lv_rightOperand_3_0= ruleXEqualityExpression ) )
-            	    // InternalMirBase.g:636:5: (lv_rightOperand_3_0= ruleXEqualityExpression )
+            	    // InternalMirBase.g:662:4: ( (lv_rightOperand_3_0= ruleXEqualityExpression ) )
+            	    // InternalMirBase.g:663:5: (lv_rightOperand_3_0= ruleXEqualityExpression )
             	    {
-            	    // InternalMirBase.g:636:5: (lv_rightOperand_3_0= ruleXEqualityExpression )
-            	    // InternalMirBase.g:637:6: lv_rightOperand_3_0= ruleXEqualityExpression
+            	    // InternalMirBase.g:663:5: (lv_rightOperand_3_0= ruleXEqualityExpression )
+            	    // InternalMirBase.g:664:6: lv_rightOperand_3_0= ruleXEqualityExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -1971,7 +2038,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpAnd"
-    // InternalMirBase.g:659:1: entryRuleOpAnd returns [String current=null] : iv_ruleOpAnd= ruleOpAnd EOF ;
+    // InternalMirBase.g:686:1: entryRuleOpAnd returns [String current=null] : iv_ruleOpAnd= ruleOpAnd EOF ;
     public final String entryRuleOpAnd() throws RecognitionException {
         String current = null;
 
@@ -1979,8 +2046,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:659:45: (iv_ruleOpAnd= ruleOpAnd EOF )
-            // InternalMirBase.g:660:2: iv_ruleOpAnd= ruleOpAnd EOF
+            // InternalMirBase.g:686:45: (iv_ruleOpAnd= ruleOpAnd EOF )
+            // InternalMirBase.g:687:2: iv_ruleOpAnd= ruleOpAnd EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpAndRule()); 
@@ -2011,7 +2078,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpAnd"
-    // InternalMirBase.g:666:1: ruleOpAnd returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '&&' ;
+    // InternalMirBase.g:693:1: ruleOpAnd returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : kw= '&&' ;
     public final AntlrDatatypeRuleToken ruleOpAnd() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -2021,8 +2088,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:672:2: (kw= '&&' )
-            // InternalMirBase.g:673:2: kw= '&&'
+            // InternalMirBase.g:699:2: (kw= '&&' )
+            // InternalMirBase.g:700:2: kw= '&&'
             {
             kw=(Token)match(input,26,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -2053,7 +2120,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXEqualityExpression"
-    // InternalMirBase.g:681:1: entryRuleXEqualityExpression returns [EObject current=null] : iv_ruleXEqualityExpression= ruleXEqualityExpression EOF ;
+    // InternalMirBase.g:708:1: entryRuleXEqualityExpression returns [EObject current=null] : iv_ruleXEqualityExpression= ruleXEqualityExpression EOF ;
     public final EObject entryRuleXEqualityExpression() throws RecognitionException {
         EObject current = null;
 
@@ -2061,8 +2128,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:681:60: (iv_ruleXEqualityExpression= ruleXEqualityExpression EOF )
-            // InternalMirBase.g:682:2: iv_ruleXEqualityExpression= ruleXEqualityExpression EOF
+            // InternalMirBase.g:708:60: (iv_ruleXEqualityExpression= ruleXEqualityExpression EOF )
+            // InternalMirBase.g:709:2: iv_ruleXEqualityExpression= ruleXEqualityExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXEqualityExpressionRule()); 
@@ -2093,7 +2160,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXEqualityExpression"
-    // InternalMirBase.g:688:1: ruleXEqualityExpression returns [EObject current=null] : (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* ) ;
+    // InternalMirBase.g:715:1: ruleXEqualityExpression returns [EObject current=null] : (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* ) ;
     public final EObject ruleXEqualityExpression() throws RecognitionException {
         EObject current = null;
 
@@ -2106,11 +2173,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:694:2: ( (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* ) )
-            // InternalMirBase.g:695:2: (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* )
+            // InternalMirBase.g:721:2: ( (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* ) )
+            // InternalMirBase.g:722:2: (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* )
             {
-            // InternalMirBase.g:695:2: (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* )
-            // InternalMirBase.g:696:3: this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )*
+            // InternalMirBase.g:722:2: (this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )* )
+            // InternalMirBase.g:723:3: this_XRelationalExpression_0= ruleXRelationalExpression ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -2128,7 +2195,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:704:3: ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )*
+            // InternalMirBase.g:731:3: ( ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) ) )*
             loop9:
             do {
                 int alt9=2;
@@ -2182,16 +2249,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt9) {
             	case 1 :
-            	    // InternalMirBase.g:705:4: ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) )
+            	    // InternalMirBase.g:732:4: ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) ) ( (lv_rightOperand_3_0= ruleXRelationalExpression ) )
             	    {
-            	    // InternalMirBase.g:705:4: ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) )
-            	    // InternalMirBase.g:706:5: ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) )
+            	    // InternalMirBase.g:732:4: ( ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) ) )
+            	    // InternalMirBase.g:733:5: ( ( () ( ( ruleOpEquality ) ) ) )=> ( () ( ( ruleOpEquality ) ) )
             	    {
-            	    // InternalMirBase.g:716:5: ( () ( ( ruleOpEquality ) ) )
-            	    // InternalMirBase.g:717:6: () ( ( ruleOpEquality ) )
+            	    // InternalMirBase.g:743:5: ( () ( ( ruleOpEquality ) ) )
+            	    // InternalMirBase.g:744:6: () ( ( ruleOpEquality ) )
             	    {
-            	    // InternalMirBase.g:717:6: ()
-            	    // InternalMirBase.g:718:7: 
+            	    // InternalMirBase.g:744:6: ()
+            	    // InternalMirBase.g:745:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2203,11 +2270,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:724:6: ( ( ruleOpEquality ) )
-            	    // InternalMirBase.g:725:7: ( ruleOpEquality )
+            	    // InternalMirBase.g:751:6: ( ( ruleOpEquality ) )
+            	    // InternalMirBase.g:752:7: ( ruleOpEquality )
             	    {
-            	    // InternalMirBase.g:725:7: ( ruleOpEquality )
-            	    // InternalMirBase.g:726:8: ruleOpEquality
+            	    // InternalMirBase.g:752:7: ( ruleOpEquality )
+            	    // InternalMirBase.g:753:8: ruleOpEquality
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2243,11 +2310,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:742:4: ( (lv_rightOperand_3_0= ruleXRelationalExpression ) )
-            	    // InternalMirBase.g:743:5: (lv_rightOperand_3_0= ruleXRelationalExpression )
+            	    // InternalMirBase.g:769:4: ( (lv_rightOperand_3_0= ruleXRelationalExpression ) )
+            	    // InternalMirBase.g:770:5: (lv_rightOperand_3_0= ruleXRelationalExpression )
             	    {
-            	    // InternalMirBase.g:743:5: (lv_rightOperand_3_0= ruleXRelationalExpression )
-            	    // InternalMirBase.g:744:6: lv_rightOperand_3_0= ruleXRelationalExpression
+            	    // InternalMirBase.g:770:5: (lv_rightOperand_3_0= ruleXRelationalExpression )
+            	    // InternalMirBase.g:771:6: lv_rightOperand_3_0= ruleXRelationalExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2312,7 +2379,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpEquality"
-    // InternalMirBase.g:766:1: entryRuleOpEquality returns [String current=null] : iv_ruleOpEquality= ruleOpEquality EOF ;
+    // InternalMirBase.g:793:1: entryRuleOpEquality returns [String current=null] : iv_ruleOpEquality= ruleOpEquality EOF ;
     public final String entryRuleOpEquality() throws RecognitionException {
         String current = null;
 
@@ -2320,8 +2387,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:766:50: (iv_ruleOpEquality= ruleOpEquality EOF )
-            // InternalMirBase.g:767:2: iv_ruleOpEquality= ruleOpEquality EOF
+            // InternalMirBase.g:793:50: (iv_ruleOpEquality= ruleOpEquality EOF )
+            // InternalMirBase.g:794:2: iv_ruleOpEquality= ruleOpEquality EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpEqualityRule()); 
@@ -2352,7 +2419,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpEquality"
-    // InternalMirBase.g:773:1: ruleOpEquality returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' ) ;
+    // InternalMirBase.g:800:1: ruleOpEquality returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' ) ;
     public final AntlrDatatypeRuleToken ruleOpEquality() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -2362,10 +2429,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:779:2: ( (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' ) )
-            // InternalMirBase.g:780:2: (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' )
+            // InternalMirBase.g:806:2: ( (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' ) )
+            // InternalMirBase.g:807:2: (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' )
             {
-            // InternalMirBase.g:780:2: (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' )
+            // InternalMirBase.g:807:2: (kw= '==' | kw= '!=' | kw= '===' | kw= '!==' )
             int alt10=4;
             switch ( input.LA(1) ) {
             case 27:
@@ -2398,7 +2465,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt10) {
                 case 1 :
-                    // InternalMirBase.g:781:3: kw= '=='
+                    // InternalMirBase.g:808:3: kw= '=='
                     {
                     kw=(Token)match(input,27,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2411,7 +2478,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:787:3: kw= '!='
+                    // InternalMirBase.g:814:3: kw= '!='
                     {
                     kw=(Token)match(input,28,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2424,7 +2491,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:793:3: kw= '==='
+                    // InternalMirBase.g:820:3: kw= '==='
                     {
                     kw=(Token)match(input,29,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2437,7 +2504,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:799:3: kw= '!=='
+                    // InternalMirBase.g:826:3: kw= '!=='
                     {
                     kw=(Token)match(input,30,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2474,7 +2541,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXRelationalExpression"
-    // InternalMirBase.g:808:1: entryRuleXRelationalExpression returns [EObject current=null] : iv_ruleXRelationalExpression= ruleXRelationalExpression EOF ;
+    // InternalMirBase.g:835:1: entryRuleXRelationalExpression returns [EObject current=null] : iv_ruleXRelationalExpression= ruleXRelationalExpression EOF ;
     public final EObject entryRuleXRelationalExpression() throws RecognitionException {
         EObject current = null;
 
@@ -2482,8 +2549,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:808:62: (iv_ruleXRelationalExpression= ruleXRelationalExpression EOF )
-            // InternalMirBase.g:809:2: iv_ruleXRelationalExpression= ruleXRelationalExpression EOF
+            // InternalMirBase.g:835:62: (iv_ruleXRelationalExpression= ruleXRelationalExpression EOF )
+            // InternalMirBase.g:836:2: iv_ruleXRelationalExpression= ruleXRelationalExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXRelationalExpressionRule()); 
@@ -2514,7 +2581,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXRelationalExpression"
-    // InternalMirBase.g:815:1: ruleXRelationalExpression returns [EObject current=null] : (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* ) ;
+    // InternalMirBase.g:842:1: ruleXRelationalExpression returns [EObject current=null] : (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* ) ;
     public final EObject ruleXRelationalExpression() throws RecognitionException {
         EObject current = null;
 
@@ -2530,11 +2597,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:821:2: ( (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* ) )
-            // InternalMirBase.g:822:2: (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* )
+            // InternalMirBase.g:848:2: ( (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* ) )
+            // InternalMirBase.g:849:2: (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* )
             {
-            // InternalMirBase.g:822:2: (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* )
-            // InternalMirBase.g:823:3: this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )*
+            // InternalMirBase.g:849:2: (this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )* )
+            // InternalMirBase.g:850:3: this_XOtherOperatorExpression_0= ruleXOtherOperatorExpression ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -2552,7 +2619,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:831:3: ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )*
+            // InternalMirBase.g:858:3: ( ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) ) | ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) ) )*
             loop11:
             do {
                 int alt11=3;
@@ -2606,19 +2673,19 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt11) {
             	case 1 :
-            	    // InternalMirBase.g:832:4: ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )
+            	    // InternalMirBase.g:859:4: ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )
             	    {
-            	    // InternalMirBase.g:832:4: ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )
-            	    // InternalMirBase.g:833:5: ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) )
+            	    // InternalMirBase.g:859:4: ( ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )
+            	    // InternalMirBase.g:860:5: ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) )
             	    {
-            	    // InternalMirBase.g:833:5: ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) )
-            	    // InternalMirBase.g:834:6: ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' )
+            	    // InternalMirBase.g:860:5: ( ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' ) )
+            	    // InternalMirBase.g:861:6: ( ( () 'instanceof' ) )=> ( () otherlv_2= 'instanceof' )
             	    {
-            	    // InternalMirBase.g:840:6: ( () otherlv_2= 'instanceof' )
-            	    // InternalMirBase.g:841:7: () otherlv_2= 'instanceof'
+            	    // InternalMirBase.g:867:6: ( () otherlv_2= 'instanceof' )
+            	    // InternalMirBase.g:868:7: () otherlv_2= 'instanceof'
             	    {
-            	    // InternalMirBase.g:841:7: ()
-            	    // InternalMirBase.g:842:8: 
+            	    // InternalMirBase.g:868:7: ()
+            	    // InternalMirBase.g:869:8: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2642,11 +2709,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:854:5: ( (lv_type_3_0= ruleJvmTypeReference ) )
-            	    // InternalMirBase.g:855:6: (lv_type_3_0= ruleJvmTypeReference )
+            	    // InternalMirBase.g:881:5: ( (lv_type_3_0= ruleJvmTypeReference ) )
+            	    // InternalMirBase.g:882:6: (lv_type_3_0= ruleJvmTypeReference )
             	    {
-            	    // InternalMirBase.g:855:6: (lv_type_3_0= ruleJvmTypeReference )
-            	    // InternalMirBase.g:856:7: lv_type_3_0= ruleJvmTypeReference
+            	    // InternalMirBase.g:882:6: (lv_type_3_0= ruleJvmTypeReference )
+            	    // InternalMirBase.g:883:7: lv_type_3_0= ruleJvmTypeReference
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2684,19 +2751,19 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalMirBase.g:875:4: ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) )
+            	    // InternalMirBase.g:902:4: ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) )
             	    {
-            	    // InternalMirBase.g:875:4: ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) )
-            	    // InternalMirBase.g:876:5: ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) )
+            	    // InternalMirBase.g:902:4: ( ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) ) )
+            	    // InternalMirBase.g:903:5: ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) ) ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) )
             	    {
-            	    // InternalMirBase.g:876:5: ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) )
-            	    // InternalMirBase.g:877:6: ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) )
+            	    // InternalMirBase.g:903:5: ( ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) ) )
+            	    // InternalMirBase.g:904:6: ( ( () ( ( ruleOpCompare ) ) ) )=> ( () ( ( ruleOpCompare ) ) )
             	    {
-            	    // InternalMirBase.g:887:6: ( () ( ( ruleOpCompare ) ) )
-            	    // InternalMirBase.g:888:7: () ( ( ruleOpCompare ) )
+            	    // InternalMirBase.g:914:6: ( () ( ( ruleOpCompare ) ) )
+            	    // InternalMirBase.g:915:7: () ( ( ruleOpCompare ) )
             	    {
-            	    // InternalMirBase.g:888:7: ()
-            	    // InternalMirBase.g:889:8: 
+            	    // InternalMirBase.g:915:7: ()
+            	    // InternalMirBase.g:916:8: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2708,11 +2775,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:895:7: ( ( ruleOpCompare ) )
-            	    // InternalMirBase.g:896:8: ( ruleOpCompare )
+            	    // InternalMirBase.g:922:7: ( ( ruleOpCompare ) )
+            	    // InternalMirBase.g:923:8: ( ruleOpCompare )
             	    {
-            	    // InternalMirBase.g:896:8: ( ruleOpCompare )
-            	    // InternalMirBase.g:897:9: ruleOpCompare
+            	    // InternalMirBase.g:923:8: ( ruleOpCompare )
+            	    // InternalMirBase.g:924:9: ruleOpCompare
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2748,11 +2815,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:913:5: ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) )
-            	    // InternalMirBase.g:914:6: (lv_rightOperand_6_0= ruleXOtherOperatorExpression )
+            	    // InternalMirBase.g:940:5: ( (lv_rightOperand_6_0= ruleXOtherOperatorExpression ) )
+            	    // InternalMirBase.g:941:6: (lv_rightOperand_6_0= ruleXOtherOperatorExpression )
             	    {
-            	    // InternalMirBase.g:914:6: (lv_rightOperand_6_0= ruleXOtherOperatorExpression )
-            	    // InternalMirBase.g:915:7: lv_rightOperand_6_0= ruleXOtherOperatorExpression
+            	    // InternalMirBase.g:941:6: (lv_rightOperand_6_0= ruleXOtherOperatorExpression )
+            	    // InternalMirBase.g:942:7: lv_rightOperand_6_0= ruleXOtherOperatorExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -2820,7 +2887,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpCompare"
-    // InternalMirBase.g:938:1: entryRuleOpCompare returns [String current=null] : iv_ruleOpCompare= ruleOpCompare EOF ;
+    // InternalMirBase.g:965:1: entryRuleOpCompare returns [String current=null] : iv_ruleOpCompare= ruleOpCompare EOF ;
     public final String entryRuleOpCompare() throws RecognitionException {
         String current = null;
 
@@ -2828,8 +2895,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:938:49: (iv_ruleOpCompare= ruleOpCompare EOF )
-            // InternalMirBase.g:939:2: iv_ruleOpCompare= ruleOpCompare EOF
+            // InternalMirBase.g:965:49: (iv_ruleOpCompare= ruleOpCompare EOF )
+            // InternalMirBase.g:966:2: iv_ruleOpCompare= ruleOpCompare EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpCompareRule()); 
@@ -2860,7 +2927,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpCompare"
-    // InternalMirBase.g:945:1: ruleOpCompare returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' ) ;
+    // InternalMirBase.g:972:1: ruleOpCompare returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' ) ;
     public final AntlrDatatypeRuleToken ruleOpCompare() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -2870,10 +2937,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:951:2: ( (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' ) )
-            // InternalMirBase.g:952:2: (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' )
+            // InternalMirBase.g:978:2: ( (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' ) )
+            // InternalMirBase.g:979:2: (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' )
             {
-            // InternalMirBase.g:952:2: (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' )
+            // InternalMirBase.g:979:2: (kw= '>=' | (kw= '<' kw= '=' ) | kw= '>' | kw= '<' )
             int alt12=4;
             switch ( input.LA(1) ) {
             case 24:
@@ -2915,7 +2982,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt12) {
                 case 1 :
-                    // InternalMirBase.g:953:3: kw= '>='
+                    // InternalMirBase.g:980:3: kw= '>='
                     {
                     kw=(Token)match(input,24,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2928,10 +2995,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:959:3: (kw= '<' kw= '=' )
+                    // InternalMirBase.g:986:3: (kw= '<' kw= '=' )
                     {
-                    // InternalMirBase.g:959:3: (kw= '<' kw= '=' )
-                    // InternalMirBase.g:960:4: kw= '<' kw= '='
+                    // InternalMirBase.g:986:3: (kw= '<' kw= '=' )
+                    // InternalMirBase.g:987:4: kw= '<' kw= '='
                     {
                     kw=(Token)match(input,22,FOLLOW_8); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2954,7 +3021,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:972:3: kw= '>'
+                    // InternalMirBase.g:999:3: kw= '>'
                     {
                     kw=(Token)match(input,23,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -2967,7 +3034,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:978:3: kw= '<'
+                    // InternalMirBase.g:1005:3: kw= '<'
                     {
                     kw=(Token)match(input,22,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3004,7 +3071,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXOtherOperatorExpression"
-    // InternalMirBase.g:987:1: entryRuleXOtherOperatorExpression returns [EObject current=null] : iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF ;
+    // InternalMirBase.g:1014:1: entryRuleXOtherOperatorExpression returns [EObject current=null] : iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF ;
     public final EObject entryRuleXOtherOperatorExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3012,8 +3079,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:987:65: (iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF )
-            // InternalMirBase.g:988:2: iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF
+            // InternalMirBase.g:1014:65: (iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF )
+            // InternalMirBase.g:1015:2: iv_ruleXOtherOperatorExpression= ruleXOtherOperatorExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXOtherOperatorExpressionRule()); 
@@ -3044,7 +3111,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXOtherOperatorExpression"
-    // InternalMirBase.g:994:1: ruleXOtherOperatorExpression returns [EObject current=null] : (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* ) ;
+    // InternalMirBase.g:1021:1: ruleXOtherOperatorExpression returns [EObject current=null] : (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* ) ;
     public final EObject ruleXOtherOperatorExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3057,11 +3124,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1000:2: ( (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* ) )
-            // InternalMirBase.g:1001:2: (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* )
+            // InternalMirBase.g:1027:2: ( (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* ) )
+            // InternalMirBase.g:1028:2: (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* )
             {
-            // InternalMirBase.g:1001:2: (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* )
-            // InternalMirBase.g:1002:3: this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*
+            // InternalMirBase.g:1028:2: (this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )* )
+            // InternalMirBase.g:1029:3: this_XAdditiveExpression_0= ruleXAdditiveExpression ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -3079,23 +3146,23 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1010:3: ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*
+            // InternalMirBase.g:1037:3: ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*
             loop13:
             do {
                 int alt13=2;
                 alt13 = dfa13.predict(input);
                 switch (alt13) {
             	case 1 :
-            	    // InternalMirBase.g:1011:4: ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) )
+            	    // InternalMirBase.g:1038:4: ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) )
             	    {
-            	    // InternalMirBase.g:1011:4: ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) )
-            	    // InternalMirBase.g:1012:5: ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) )
+            	    // InternalMirBase.g:1038:4: ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) )
+            	    // InternalMirBase.g:1039:5: ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) )
             	    {
-            	    // InternalMirBase.g:1022:5: ( () ( ( ruleOpOther ) ) )
-            	    // InternalMirBase.g:1023:6: () ( ( ruleOpOther ) )
+            	    // InternalMirBase.g:1049:5: ( () ( ( ruleOpOther ) ) )
+            	    // InternalMirBase.g:1050:6: () ( ( ruleOpOther ) )
             	    {
-            	    // InternalMirBase.g:1023:6: ()
-            	    // InternalMirBase.g:1024:7: 
+            	    // InternalMirBase.g:1050:6: ()
+            	    // InternalMirBase.g:1051:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3107,11 +3174,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1030:6: ( ( ruleOpOther ) )
-            	    // InternalMirBase.g:1031:7: ( ruleOpOther )
+            	    // InternalMirBase.g:1057:6: ( ( ruleOpOther ) )
+            	    // InternalMirBase.g:1058:7: ( ruleOpOther )
             	    {
-            	    // InternalMirBase.g:1031:7: ( ruleOpOther )
-            	    // InternalMirBase.g:1032:8: ruleOpOther
+            	    // InternalMirBase.g:1058:7: ( ruleOpOther )
+            	    // InternalMirBase.g:1059:8: ruleOpOther
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3147,11 +3214,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1048:4: ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) )
-            	    // InternalMirBase.g:1049:5: (lv_rightOperand_3_0= ruleXAdditiveExpression )
+            	    // InternalMirBase.g:1075:4: ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) )
+            	    // InternalMirBase.g:1076:5: (lv_rightOperand_3_0= ruleXAdditiveExpression )
             	    {
-            	    // InternalMirBase.g:1049:5: (lv_rightOperand_3_0= ruleXAdditiveExpression )
-            	    // InternalMirBase.g:1050:6: lv_rightOperand_3_0= ruleXAdditiveExpression
+            	    // InternalMirBase.g:1076:5: (lv_rightOperand_3_0= ruleXAdditiveExpression )
+            	    // InternalMirBase.g:1077:6: lv_rightOperand_3_0= ruleXAdditiveExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3216,7 +3283,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpOther"
-    // InternalMirBase.g:1072:1: entryRuleOpOther returns [String current=null] : iv_ruleOpOther= ruleOpOther EOF ;
+    // InternalMirBase.g:1099:1: entryRuleOpOther returns [String current=null] : iv_ruleOpOther= ruleOpOther EOF ;
     public final String entryRuleOpOther() throws RecognitionException {
         String current = null;
 
@@ -3224,8 +3291,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1072:47: (iv_ruleOpOther= ruleOpOther EOF )
-            // InternalMirBase.g:1073:2: iv_ruleOpOther= ruleOpOther EOF
+            // InternalMirBase.g:1099:47: (iv_ruleOpOther= ruleOpOther EOF )
+            // InternalMirBase.g:1100:2: iv_ruleOpOther= ruleOpOther EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpOtherRule()); 
@@ -3256,7 +3323,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpOther"
-    // InternalMirBase.g:1079:1: ruleOpOther returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' ) ;
+    // InternalMirBase.g:1106:1: ruleOpOther returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' ) ;
     public final AntlrDatatypeRuleToken ruleOpOther() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -3266,15 +3333,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1085:2: ( (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' ) )
-            // InternalMirBase.g:1086:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )
+            // InternalMirBase.g:1112:2: ( (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' ) )
+            // InternalMirBase.g:1113:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )
             {
-            // InternalMirBase.g:1086:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )
+            // InternalMirBase.g:1113:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )
             int alt16=9;
             alt16 = dfa16.predict(input);
             switch (alt16) {
                 case 1 :
-                    // InternalMirBase.g:1087:3: kw= '->'
+                    // InternalMirBase.g:1114:3: kw= '->'
                     {
                     kw=(Token)match(input,32,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3287,7 +3354,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1093:3: kw= '..<'
+                    // InternalMirBase.g:1120:3: kw= '..<'
                     {
                     kw=(Token)match(input,33,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3300,10 +3367,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:1099:3: (kw= '>' kw= '..' )
+                    // InternalMirBase.g:1126:3: (kw= '>' kw= '..' )
                     {
-                    // InternalMirBase.g:1099:3: (kw= '>' kw= '..' )
-                    // InternalMirBase.g:1100:4: kw= '>' kw= '..'
+                    // InternalMirBase.g:1126:3: (kw= '>' kw= '..' )
+                    // InternalMirBase.g:1127:4: kw= '>' kw= '..'
                     {
                     kw=(Token)match(input,23,FOLLOW_20); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3326,7 +3393,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:1112:3: kw= '..'
+                    // InternalMirBase.g:1139:3: kw= '..'
                     {
                     kw=(Token)match(input,34,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3339,7 +3406,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMirBase.g:1118:3: kw= '=>'
+                    // InternalMirBase.g:1145:3: kw= '=>'
                     {
                     kw=(Token)match(input,35,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3352,10 +3419,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalMirBase.g:1124:3: (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) )
+                    // InternalMirBase.g:1151:3: (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) )
                     {
-                    // InternalMirBase.g:1124:3: (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) )
-                    // InternalMirBase.g:1125:4: kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' )
+                    // InternalMirBase.g:1151:3: (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) )
+                    // InternalMirBase.g:1152:4: kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' )
                     {
                     kw=(Token)match(input,23,FOLLOW_21); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3364,7 +3431,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(kw, grammarAccess.getOpOtherAccess().getGreaterThanSignKeyword_5_0());
                       			
                     }
-                    // InternalMirBase.g:1130:4: ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' )
+                    // InternalMirBase.g:1157:4: ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' )
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -3394,13 +3461,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt14) {
                         case 1 :
-                            // InternalMirBase.g:1131:5: ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) )
+                            // InternalMirBase.g:1158:5: ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) )
                             {
-                            // InternalMirBase.g:1131:5: ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) )
-                            // InternalMirBase.g:1132:6: ( ( '>' '>' ) )=> (kw= '>' kw= '>' )
+                            // InternalMirBase.g:1158:5: ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) )
+                            // InternalMirBase.g:1159:6: ( ( '>' '>' ) )=> (kw= '>' kw= '>' )
                             {
-                            // InternalMirBase.g:1137:6: (kw= '>' kw= '>' )
-                            // InternalMirBase.g:1138:7: kw= '>' kw= '>'
+                            // InternalMirBase.g:1164:6: (kw= '>' kw= '>' )
+                            // InternalMirBase.g:1165:7: kw= '>' kw= '>'
                             {
                             kw=(Token)match(input,23,FOLLOW_21); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3426,7 +3493,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:1151:5: kw= '>'
+                            // InternalMirBase.g:1178:5: kw= '>'
                             {
                             kw=(Token)match(input,23,FOLLOW_2); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3448,10 +3515,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalMirBase.g:1159:3: (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) )
+                    // InternalMirBase.g:1186:3: (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) )
                     {
-                    // InternalMirBase.g:1159:3: (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) )
-                    // InternalMirBase.g:1160:4: kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' )
+                    // InternalMirBase.g:1186:3: (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) )
+                    // InternalMirBase.g:1187:4: kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' )
                     {
                     kw=(Token)match(input,22,FOLLOW_22); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3460,7 +3527,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(kw, grammarAccess.getOpOtherAccess().getLessThanSignKeyword_6_0());
                       			
                     }
-                    // InternalMirBase.g:1165:4: ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' )
+                    // InternalMirBase.g:1192:4: ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' )
                     int alt15=3;
                     int LA15_0 = input.LA(1);
 
@@ -3493,13 +3560,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt15) {
                         case 1 :
-                            // InternalMirBase.g:1166:5: ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) )
+                            // InternalMirBase.g:1193:5: ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) )
                             {
-                            // InternalMirBase.g:1166:5: ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) )
-                            // InternalMirBase.g:1167:6: ( ( '<' '<' ) )=> (kw= '<' kw= '<' )
+                            // InternalMirBase.g:1193:5: ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) )
+                            // InternalMirBase.g:1194:6: ( ( '<' '<' ) )=> (kw= '<' kw= '<' )
                             {
-                            // InternalMirBase.g:1172:6: (kw= '<' kw= '<' )
-                            // InternalMirBase.g:1173:7: kw= '<' kw= '<'
+                            // InternalMirBase.g:1199:6: (kw= '<' kw= '<' )
+                            // InternalMirBase.g:1200:7: kw= '<' kw= '<'
                             {
                             kw=(Token)match(input,22,FOLLOW_11); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3525,7 +3592,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:1186:5: kw= '<'
+                            // InternalMirBase.g:1213:5: kw= '<'
                             {
                             kw=(Token)match(input,22,FOLLOW_2); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3538,7 +3605,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 3 :
-                            // InternalMirBase.g:1192:5: kw= '=>'
+                            // InternalMirBase.g:1219:5: kw= '=>'
                             {
                             kw=(Token)match(input,35,FOLLOW_2); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -3560,7 +3627,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // InternalMirBase.g:1200:3: kw= '<>'
+                    // InternalMirBase.g:1227:3: kw= '<>'
                     {
                     kw=(Token)match(input,36,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3573,7 +3640,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 9 :
-                    // InternalMirBase.g:1206:3: kw= '?:'
+                    // InternalMirBase.g:1233:3: kw= '?:'
                     {
                     kw=(Token)match(input,37,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3610,7 +3677,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXAdditiveExpression"
-    // InternalMirBase.g:1215:1: entryRuleXAdditiveExpression returns [EObject current=null] : iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF ;
+    // InternalMirBase.g:1242:1: entryRuleXAdditiveExpression returns [EObject current=null] : iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF ;
     public final EObject entryRuleXAdditiveExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3618,8 +3685,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1215:60: (iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF )
-            // InternalMirBase.g:1216:2: iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF
+            // InternalMirBase.g:1242:60: (iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF )
+            // InternalMirBase.g:1243:2: iv_ruleXAdditiveExpression= ruleXAdditiveExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXAdditiveExpressionRule()); 
@@ -3650,7 +3717,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXAdditiveExpression"
-    // InternalMirBase.g:1222:1: ruleXAdditiveExpression returns [EObject current=null] : (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* ) ;
+    // InternalMirBase.g:1249:1: ruleXAdditiveExpression returns [EObject current=null] : (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* ) ;
     public final EObject ruleXAdditiveExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3663,11 +3730,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1228:2: ( (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* ) )
-            // InternalMirBase.g:1229:2: (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* )
+            // InternalMirBase.g:1255:2: ( (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* ) )
+            // InternalMirBase.g:1256:2: (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* )
             {
-            // InternalMirBase.g:1229:2: (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* )
-            // InternalMirBase.g:1230:3: this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )*
+            // InternalMirBase.g:1256:2: (this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )* )
+            // InternalMirBase.g:1257:3: this_XMultiplicativeExpression_0= ruleXMultiplicativeExpression ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -3685,7 +3752,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1238:3: ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )*
+            // InternalMirBase.g:1265:3: ( ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -3713,16 +3780,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt17) {
             	case 1 :
-            	    // InternalMirBase.g:1239:4: ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) )
+            	    // InternalMirBase.g:1266:4: ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) ) ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) )
             	    {
-            	    // InternalMirBase.g:1239:4: ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) )
-            	    // InternalMirBase.g:1240:5: ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) )
+            	    // InternalMirBase.g:1266:4: ( ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) ) )
+            	    // InternalMirBase.g:1267:5: ( ( () ( ( ruleOpAdd ) ) ) )=> ( () ( ( ruleOpAdd ) ) )
             	    {
-            	    // InternalMirBase.g:1250:5: ( () ( ( ruleOpAdd ) ) )
-            	    // InternalMirBase.g:1251:6: () ( ( ruleOpAdd ) )
+            	    // InternalMirBase.g:1277:5: ( () ( ( ruleOpAdd ) ) )
+            	    // InternalMirBase.g:1278:6: () ( ( ruleOpAdd ) )
             	    {
-            	    // InternalMirBase.g:1251:6: ()
-            	    // InternalMirBase.g:1252:7: 
+            	    // InternalMirBase.g:1278:6: ()
+            	    // InternalMirBase.g:1279:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3734,11 +3801,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1258:6: ( ( ruleOpAdd ) )
-            	    // InternalMirBase.g:1259:7: ( ruleOpAdd )
+            	    // InternalMirBase.g:1285:6: ( ( ruleOpAdd ) )
+            	    // InternalMirBase.g:1286:7: ( ruleOpAdd )
             	    {
-            	    // InternalMirBase.g:1259:7: ( ruleOpAdd )
-            	    // InternalMirBase.g:1260:8: ruleOpAdd
+            	    // InternalMirBase.g:1286:7: ( ruleOpAdd )
+            	    // InternalMirBase.g:1287:8: ruleOpAdd
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3774,11 +3841,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1276:4: ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) )
-            	    // InternalMirBase.g:1277:5: (lv_rightOperand_3_0= ruleXMultiplicativeExpression )
+            	    // InternalMirBase.g:1303:4: ( (lv_rightOperand_3_0= ruleXMultiplicativeExpression ) )
+            	    // InternalMirBase.g:1304:5: (lv_rightOperand_3_0= ruleXMultiplicativeExpression )
             	    {
-            	    // InternalMirBase.g:1277:5: (lv_rightOperand_3_0= ruleXMultiplicativeExpression )
-            	    // InternalMirBase.g:1278:6: lv_rightOperand_3_0= ruleXMultiplicativeExpression
+            	    // InternalMirBase.g:1304:5: (lv_rightOperand_3_0= ruleXMultiplicativeExpression )
+            	    // InternalMirBase.g:1305:6: lv_rightOperand_3_0= ruleXMultiplicativeExpression
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -3843,7 +3910,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpAdd"
-    // InternalMirBase.g:1300:1: entryRuleOpAdd returns [String current=null] : iv_ruleOpAdd= ruleOpAdd EOF ;
+    // InternalMirBase.g:1327:1: entryRuleOpAdd returns [String current=null] : iv_ruleOpAdd= ruleOpAdd EOF ;
     public final String entryRuleOpAdd() throws RecognitionException {
         String current = null;
 
@@ -3851,8 +3918,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1300:45: (iv_ruleOpAdd= ruleOpAdd EOF )
-            // InternalMirBase.g:1301:2: iv_ruleOpAdd= ruleOpAdd EOF
+            // InternalMirBase.g:1327:45: (iv_ruleOpAdd= ruleOpAdd EOF )
+            // InternalMirBase.g:1328:2: iv_ruleOpAdd= ruleOpAdd EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpAddRule()); 
@@ -3883,7 +3950,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpAdd"
-    // InternalMirBase.g:1307:1: ruleOpAdd returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+' | kw= '-' ) ;
+    // InternalMirBase.g:1334:1: ruleOpAdd returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+' | kw= '-' ) ;
     public final AntlrDatatypeRuleToken ruleOpAdd() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -3893,10 +3960,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1313:2: ( (kw= '+' | kw= '-' ) )
-            // InternalMirBase.g:1314:2: (kw= '+' | kw= '-' )
+            // InternalMirBase.g:1340:2: ( (kw= '+' | kw= '-' ) )
+            // InternalMirBase.g:1341:2: (kw= '+' | kw= '-' )
             {
-            // InternalMirBase.g:1314:2: (kw= '+' | kw= '-' )
+            // InternalMirBase.g:1341:2: (kw= '+' | kw= '-' )
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -3915,7 +3982,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt18) {
                 case 1 :
-                    // InternalMirBase.g:1315:3: kw= '+'
+                    // InternalMirBase.g:1342:3: kw= '+'
                     {
                     kw=(Token)match(input,38,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3928,7 +3995,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1321:3: kw= '-'
+                    // InternalMirBase.g:1348:3: kw= '-'
                     {
                     kw=(Token)match(input,39,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -3965,7 +4032,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXMultiplicativeExpression"
-    // InternalMirBase.g:1330:1: entryRuleXMultiplicativeExpression returns [EObject current=null] : iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF ;
+    // InternalMirBase.g:1357:1: entryRuleXMultiplicativeExpression returns [EObject current=null] : iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF ;
     public final EObject entryRuleXMultiplicativeExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3973,8 +4040,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1330:66: (iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF )
-            // InternalMirBase.g:1331:2: iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF
+            // InternalMirBase.g:1357:66: (iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF )
+            // InternalMirBase.g:1358:2: iv_ruleXMultiplicativeExpression= ruleXMultiplicativeExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXMultiplicativeExpressionRule()); 
@@ -4005,7 +4072,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXMultiplicativeExpression"
-    // InternalMirBase.g:1337:1: ruleXMultiplicativeExpression returns [EObject current=null] : (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* ) ;
+    // InternalMirBase.g:1364:1: ruleXMultiplicativeExpression returns [EObject current=null] : (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* ) ;
     public final EObject ruleXMultiplicativeExpression() throws RecognitionException {
         EObject current = null;
 
@@ -4018,11 +4085,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1343:2: ( (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* ) )
-            // InternalMirBase.g:1344:2: (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* )
+            // InternalMirBase.g:1370:2: ( (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* ) )
+            // InternalMirBase.g:1371:2: (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* )
             {
-            // InternalMirBase.g:1344:2: (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* )
-            // InternalMirBase.g:1345:3: this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )*
+            // InternalMirBase.g:1371:2: (this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )* )
+            // InternalMirBase.g:1372:3: this_XUnaryOperation_0= ruleXUnaryOperation ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -4040,7 +4107,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1353:3: ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )*
+            // InternalMirBase.g:1380:3: ( ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) ) )*
             loop19:
             do {
                 int alt19=2;
@@ -4094,16 +4161,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt19) {
             	case 1 :
-            	    // InternalMirBase.g:1354:4: ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) )
+            	    // InternalMirBase.g:1381:4: ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) ) ( (lv_rightOperand_3_0= ruleXUnaryOperation ) )
             	    {
-            	    // InternalMirBase.g:1354:4: ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) )
-            	    // InternalMirBase.g:1355:5: ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) )
+            	    // InternalMirBase.g:1381:4: ( ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) ) )
+            	    // InternalMirBase.g:1382:5: ( ( () ( ( ruleOpMulti ) ) ) )=> ( () ( ( ruleOpMulti ) ) )
             	    {
-            	    // InternalMirBase.g:1365:5: ( () ( ( ruleOpMulti ) ) )
-            	    // InternalMirBase.g:1366:6: () ( ( ruleOpMulti ) )
+            	    // InternalMirBase.g:1392:5: ( () ( ( ruleOpMulti ) ) )
+            	    // InternalMirBase.g:1393:6: () ( ( ruleOpMulti ) )
             	    {
-            	    // InternalMirBase.g:1366:6: ()
-            	    // InternalMirBase.g:1367:7: 
+            	    // InternalMirBase.g:1393:6: ()
+            	    // InternalMirBase.g:1394:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -4115,11 +4182,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1373:6: ( ( ruleOpMulti ) )
-            	    // InternalMirBase.g:1374:7: ( ruleOpMulti )
+            	    // InternalMirBase.g:1400:6: ( ( ruleOpMulti ) )
+            	    // InternalMirBase.g:1401:7: ( ruleOpMulti )
             	    {
-            	    // InternalMirBase.g:1374:7: ( ruleOpMulti )
-            	    // InternalMirBase.g:1375:8: ruleOpMulti
+            	    // InternalMirBase.g:1401:7: ( ruleOpMulti )
+            	    // InternalMirBase.g:1402:8: ruleOpMulti
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -4155,11 +4222,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1391:4: ( (lv_rightOperand_3_0= ruleXUnaryOperation ) )
-            	    // InternalMirBase.g:1392:5: (lv_rightOperand_3_0= ruleXUnaryOperation )
+            	    // InternalMirBase.g:1418:4: ( (lv_rightOperand_3_0= ruleXUnaryOperation ) )
+            	    // InternalMirBase.g:1419:5: (lv_rightOperand_3_0= ruleXUnaryOperation )
             	    {
-            	    // InternalMirBase.g:1392:5: (lv_rightOperand_3_0= ruleXUnaryOperation )
-            	    // InternalMirBase.g:1393:6: lv_rightOperand_3_0= ruleXUnaryOperation
+            	    // InternalMirBase.g:1419:5: (lv_rightOperand_3_0= ruleXUnaryOperation )
+            	    // InternalMirBase.g:1420:6: lv_rightOperand_3_0= ruleXUnaryOperation
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -4224,7 +4291,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpMulti"
-    // InternalMirBase.g:1415:1: entryRuleOpMulti returns [String current=null] : iv_ruleOpMulti= ruleOpMulti EOF ;
+    // InternalMirBase.g:1442:1: entryRuleOpMulti returns [String current=null] : iv_ruleOpMulti= ruleOpMulti EOF ;
     public final String entryRuleOpMulti() throws RecognitionException {
         String current = null;
 
@@ -4232,8 +4299,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1415:47: (iv_ruleOpMulti= ruleOpMulti EOF )
-            // InternalMirBase.g:1416:2: iv_ruleOpMulti= ruleOpMulti EOF
+            // InternalMirBase.g:1442:47: (iv_ruleOpMulti= ruleOpMulti EOF )
+            // InternalMirBase.g:1443:2: iv_ruleOpMulti= ruleOpMulti EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpMultiRule()); 
@@ -4264,7 +4331,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpMulti"
-    // InternalMirBase.g:1422:1: ruleOpMulti returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '*' | kw= '**' | kw= '/' | kw= '%' ) ;
+    // InternalMirBase.g:1449:1: ruleOpMulti returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '*' | kw= '**' | kw= '/' | kw= '%' ) ;
     public final AntlrDatatypeRuleToken ruleOpMulti() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -4274,10 +4341,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1428:2: ( (kw= '*' | kw= '**' | kw= '/' | kw= '%' ) )
-            // InternalMirBase.g:1429:2: (kw= '*' | kw= '**' | kw= '/' | kw= '%' )
+            // InternalMirBase.g:1455:2: ( (kw= '*' | kw= '**' | kw= '/' | kw= '%' ) )
+            // InternalMirBase.g:1456:2: (kw= '*' | kw= '**' | kw= '/' | kw= '%' )
             {
-            // InternalMirBase.g:1429:2: (kw= '*' | kw= '**' | kw= '/' | kw= '%' )
+            // InternalMirBase.g:1456:2: (kw= '*' | kw= '**' | kw= '/' | kw= '%' )
             int alt20=4;
             switch ( input.LA(1) ) {
             case 40:
@@ -4310,7 +4377,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt20) {
                 case 1 :
-                    // InternalMirBase.g:1430:3: kw= '*'
+                    // InternalMirBase.g:1457:3: kw= '*'
                     {
                     kw=(Token)match(input,40,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4323,7 +4390,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1436:3: kw= '**'
+                    // InternalMirBase.g:1463:3: kw= '**'
                     {
                     kw=(Token)match(input,41,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4336,7 +4403,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:1442:3: kw= '/'
+                    // InternalMirBase.g:1469:3: kw= '/'
                     {
                     kw=(Token)match(input,42,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4349,7 +4416,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:1448:3: kw= '%'
+                    // InternalMirBase.g:1475:3: kw= '%'
                     {
                     kw=(Token)match(input,43,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4386,7 +4453,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXUnaryOperation"
-    // InternalMirBase.g:1457:1: entryRuleXUnaryOperation returns [EObject current=null] : iv_ruleXUnaryOperation= ruleXUnaryOperation EOF ;
+    // InternalMirBase.g:1484:1: entryRuleXUnaryOperation returns [EObject current=null] : iv_ruleXUnaryOperation= ruleXUnaryOperation EOF ;
     public final EObject entryRuleXUnaryOperation() throws RecognitionException {
         EObject current = null;
 
@@ -4394,8 +4461,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1457:56: (iv_ruleXUnaryOperation= ruleXUnaryOperation EOF )
-            // InternalMirBase.g:1458:2: iv_ruleXUnaryOperation= ruleXUnaryOperation EOF
+            // InternalMirBase.g:1484:56: (iv_ruleXUnaryOperation= ruleXUnaryOperation EOF )
+            // InternalMirBase.g:1485:2: iv_ruleXUnaryOperation= ruleXUnaryOperation EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXUnaryOperationRule()); 
@@ -4426,7 +4493,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXUnaryOperation"
-    // InternalMirBase.g:1464:1: ruleXUnaryOperation returns [EObject current=null] : ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression ) ;
+    // InternalMirBase.g:1491:1: ruleXUnaryOperation returns [EObject current=null] : ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression ) ;
     public final EObject ruleXUnaryOperation() throws RecognitionException {
         EObject current = null;
 
@@ -4439,10 +4506,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1470:2: ( ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression ) )
-            // InternalMirBase.g:1471:2: ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression )
+            // InternalMirBase.g:1497:2: ( ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression ) )
+            // InternalMirBase.g:1498:2: ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression )
             {
-            // InternalMirBase.g:1471:2: ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression )
+            // InternalMirBase.g:1498:2: ( ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) ) | this_XCastedExpression_3= ruleXCastedExpression )
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -4461,13 +4528,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt21) {
                 case 1 :
-                    // InternalMirBase.g:1472:3: ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) )
+                    // InternalMirBase.g:1499:3: ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) )
                     {
-                    // InternalMirBase.g:1472:3: ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) )
-                    // InternalMirBase.g:1473:4: () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) )
+                    // InternalMirBase.g:1499:3: ( () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) ) )
+                    // InternalMirBase.g:1500:4: () ( ( ruleOpUnary ) ) ( (lv_operand_2_0= ruleXUnaryOperation ) )
                     {
-                    // InternalMirBase.g:1473:4: ()
-                    // InternalMirBase.g:1474:5: 
+                    // InternalMirBase.g:1500:4: ()
+                    // InternalMirBase.g:1501:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -4479,11 +4546,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:1480:4: ( ( ruleOpUnary ) )
-                    // InternalMirBase.g:1481:5: ( ruleOpUnary )
+                    // InternalMirBase.g:1507:4: ( ( ruleOpUnary ) )
+                    // InternalMirBase.g:1508:5: ( ruleOpUnary )
                     {
-                    // InternalMirBase.g:1481:5: ( ruleOpUnary )
-                    // InternalMirBase.g:1482:6: ruleOpUnary
+                    // InternalMirBase.g:1508:5: ( ruleOpUnary )
+                    // InternalMirBase.g:1509:6: ruleOpUnary
                     {
                     if ( state.backtracking==0 ) {
 
@@ -4513,11 +4580,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:1496:4: ( (lv_operand_2_0= ruleXUnaryOperation ) )
-                    // InternalMirBase.g:1497:5: (lv_operand_2_0= ruleXUnaryOperation )
+                    // InternalMirBase.g:1523:4: ( (lv_operand_2_0= ruleXUnaryOperation ) )
+                    // InternalMirBase.g:1524:5: (lv_operand_2_0= ruleXUnaryOperation )
                     {
-                    // InternalMirBase.g:1497:5: (lv_operand_2_0= ruleXUnaryOperation )
-                    // InternalMirBase.g:1498:6: lv_operand_2_0= ruleXUnaryOperation
+                    // InternalMirBase.g:1524:5: (lv_operand_2_0= ruleXUnaryOperation )
+                    // InternalMirBase.g:1525:6: lv_operand_2_0= ruleXUnaryOperation
                     {
                     if ( state.backtracking==0 ) {
 
@@ -4555,7 +4622,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1517:3: this_XCastedExpression_3= ruleXCastedExpression
+                    // InternalMirBase.g:1544:3: this_XCastedExpression_3= ruleXCastedExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -4601,7 +4668,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpUnary"
-    // InternalMirBase.g:1529:1: entryRuleOpUnary returns [String current=null] : iv_ruleOpUnary= ruleOpUnary EOF ;
+    // InternalMirBase.g:1556:1: entryRuleOpUnary returns [String current=null] : iv_ruleOpUnary= ruleOpUnary EOF ;
     public final String entryRuleOpUnary() throws RecognitionException {
         String current = null;
 
@@ -4609,8 +4676,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1529:47: (iv_ruleOpUnary= ruleOpUnary EOF )
-            // InternalMirBase.g:1530:2: iv_ruleOpUnary= ruleOpUnary EOF
+            // InternalMirBase.g:1556:47: (iv_ruleOpUnary= ruleOpUnary EOF )
+            // InternalMirBase.g:1557:2: iv_ruleOpUnary= ruleOpUnary EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpUnaryRule()); 
@@ -4641,7 +4708,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpUnary"
-    // InternalMirBase.g:1536:1: ruleOpUnary returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '!' | kw= '-' | kw= '+' ) ;
+    // InternalMirBase.g:1563:1: ruleOpUnary returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '!' | kw= '-' | kw= '+' ) ;
     public final AntlrDatatypeRuleToken ruleOpUnary() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -4651,10 +4718,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1542:2: ( (kw= '!' | kw= '-' | kw= '+' ) )
-            // InternalMirBase.g:1543:2: (kw= '!' | kw= '-' | kw= '+' )
+            // InternalMirBase.g:1569:2: ( (kw= '!' | kw= '-' | kw= '+' ) )
+            // InternalMirBase.g:1570:2: (kw= '!' | kw= '-' | kw= '+' )
             {
-            // InternalMirBase.g:1543:2: (kw= '!' | kw= '-' | kw= '+' )
+            // InternalMirBase.g:1570:2: (kw= '!' | kw= '-' | kw= '+' )
             int alt22=3;
             switch ( input.LA(1) ) {
             case 44:
@@ -4682,7 +4749,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt22) {
                 case 1 :
-                    // InternalMirBase.g:1544:3: kw= '!'
+                    // InternalMirBase.g:1571:3: kw= '!'
                     {
                     kw=(Token)match(input,44,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4695,7 +4762,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1550:3: kw= '-'
+                    // InternalMirBase.g:1577:3: kw= '-'
                     {
                     kw=(Token)match(input,39,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4708,7 +4775,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:1556:3: kw= '+'
+                    // InternalMirBase.g:1583:3: kw= '+'
                     {
                     kw=(Token)match(input,38,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -4745,7 +4812,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXCastedExpression"
-    // InternalMirBase.g:1565:1: entryRuleXCastedExpression returns [EObject current=null] : iv_ruleXCastedExpression= ruleXCastedExpression EOF ;
+    // InternalMirBase.g:1592:1: entryRuleXCastedExpression returns [EObject current=null] : iv_ruleXCastedExpression= ruleXCastedExpression EOF ;
     public final EObject entryRuleXCastedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -4753,8 +4820,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1565:58: (iv_ruleXCastedExpression= ruleXCastedExpression EOF )
-            // InternalMirBase.g:1566:2: iv_ruleXCastedExpression= ruleXCastedExpression EOF
+            // InternalMirBase.g:1592:58: (iv_ruleXCastedExpression= ruleXCastedExpression EOF )
+            // InternalMirBase.g:1593:2: iv_ruleXCastedExpression= ruleXCastedExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXCastedExpressionRule()); 
@@ -4785,7 +4852,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXCastedExpression"
-    // InternalMirBase.g:1572:1: ruleXCastedExpression returns [EObject current=null] : (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* ) ;
+    // InternalMirBase.g:1599:1: ruleXCastedExpression returns [EObject current=null] : (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* ) ;
     public final EObject ruleXCastedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -4799,11 +4866,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1578:2: ( (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* ) )
-            // InternalMirBase.g:1579:2: (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* )
+            // InternalMirBase.g:1605:2: ( (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* ) )
+            // InternalMirBase.g:1606:2: (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* )
             {
-            // InternalMirBase.g:1579:2: (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* )
-            // InternalMirBase.g:1580:3: this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )*
+            // InternalMirBase.g:1606:2: (this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )* )
+            // InternalMirBase.g:1607:3: this_XPostfixOperation_0= ruleXPostfixOperation ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -4821,7 +4888,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1588:3: ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )*
+            // InternalMirBase.g:1615:3: ( ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) ) )*
             loop23:
             do {
                 int alt23=2;
@@ -4840,16 +4907,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt23) {
             	case 1 :
-            	    // InternalMirBase.g:1589:4: ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) )
+            	    // InternalMirBase.g:1616:4: ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) ) ( (lv_type_3_0= ruleJvmTypeReference ) )
             	    {
-            	    // InternalMirBase.g:1589:4: ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) )
-            	    // InternalMirBase.g:1590:5: ( ( () 'as' ) )=> ( () otherlv_2= 'as' )
+            	    // InternalMirBase.g:1616:4: ( ( ( () 'as' ) )=> ( () otherlv_2= 'as' ) )
+            	    // InternalMirBase.g:1617:5: ( ( () 'as' ) )=> ( () otherlv_2= 'as' )
             	    {
-            	    // InternalMirBase.g:1596:5: ( () otherlv_2= 'as' )
-            	    // InternalMirBase.g:1597:6: () otherlv_2= 'as'
+            	    // InternalMirBase.g:1623:5: ( () otherlv_2= 'as' )
+            	    // InternalMirBase.g:1624:6: () otherlv_2= 'as'
             	    {
-            	    // InternalMirBase.g:1597:6: ()
-            	    // InternalMirBase.g:1598:7: 
+            	    // InternalMirBase.g:1624:6: ()
+            	    // InternalMirBase.g:1625:7: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -4873,11 +4940,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1610:4: ( (lv_type_3_0= ruleJvmTypeReference ) )
-            	    // InternalMirBase.g:1611:5: (lv_type_3_0= ruleJvmTypeReference )
+            	    // InternalMirBase.g:1637:4: ( (lv_type_3_0= ruleJvmTypeReference ) )
+            	    // InternalMirBase.g:1638:5: (lv_type_3_0= ruleJvmTypeReference )
             	    {
-            	    // InternalMirBase.g:1611:5: (lv_type_3_0= ruleJvmTypeReference )
-            	    // InternalMirBase.g:1612:6: lv_type_3_0= ruleJvmTypeReference
+            	    // InternalMirBase.g:1638:5: (lv_type_3_0= ruleJvmTypeReference )
+            	    // InternalMirBase.g:1639:6: lv_type_3_0= ruleJvmTypeReference
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -4942,7 +5009,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXPostfixOperation"
-    // InternalMirBase.g:1634:1: entryRuleXPostfixOperation returns [EObject current=null] : iv_ruleXPostfixOperation= ruleXPostfixOperation EOF ;
+    // InternalMirBase.g:1661:1: entryRuleXPostfixOperation returns [EObject current=null] : iv_ruleXPostfixOperation= ruleXPostfixOperation EOF ;
     public final EObject entryRuleXPostfixOperation() throws RecognitionException {
         EObject current = null;
 
@@ -4950,8 +5017,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1634:58: (iv_ruleXPostfixOperation= ruleXPostfixOperation EOF )
-            // InternalMirBase.g:1635:2: iv_ruleXPostfixOperation= ruleXPostfixOperation EOF
+            // InternalMirBase.g:1661:58: (iv_ruleXPostfixOperation= ruleXPostfixOperation EOF )
+            // InternalMirBase.g:1662:2: iv_ruleXPostfixOperation= ruleXPostfixOperation EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXPostfixOperationRule()); 
@@ -4982,7 +5049,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXPostfixOperation"
-    // InternalMirBase.g:1641:1: ruleXPostfixOperation returns [EObject current=null] : (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? ) ;
+    // InternalMirBase.g:1668:1: ruleXPostfixOperation returns [EObject current=null] : (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? ) ;
     public final EObject ruleXPostfixOperation() throws RecognitionException {
         EObject current = null;
 
@@ -4993,11 +5060,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1647:2: ( (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? ) )
-            // InternalMirBase.g:1648:2: (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? )
+            // InternalMirBase.g:1674:2: ( (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? ) )
+            // InternalMirBase.g:1675:2: (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? )
             {
-            // InternalMirBase.g:1648:2: (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? )
-            // InternalMirBase.g:1649:3: this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )?
+            // InternalMirBase.g:1675:2: (this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )? )
+            // InternalMirBase.g:1676:3: this_XMemberFeatureCall_0= ruleXMemberFeatureCall ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )?
             {
             if ( state.backtracking==0 ) {
 
@@ -5015,7 +5082,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1657:3: ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )?
+            // InternalMirBase.g:1684:3: ( ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) ) )?
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -5035,13 +5102,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt24) {
                 case 1 :
-                    // InternalMirBase.g:1658:4: ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) )
+                    // InternalMirBase.g:1685:4: ( ( () ( ( ruleOpPostfix ) ) ) )=> ( () ( ( ruleOpPostfix ) ) )
                     {
-                    // InternalMirBase.g:1668:4: ( () ( ( ruleOpPostfix ) ) )
-                    // InternalMirBase.g:1669:5: () ( ( ruleOpPostfix ) )
+                    // InternalMirBase.g:1695:4: ( () ( ( ruleOpPostfix ) ) )
+                    // InternalMirBase.g:1696:5: () ( ( ruleOpPostfix ) )
                     {
-                    // InternalMirBase.g:1669:5: ()
-                    // InternalMirBase.g:1670:6: 
+                    // InternalMirBase.g:1696:5: ()
+                    // InternalMirBase.g:1697:6: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5053,11 +5120,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:1676:5: ( ( ruleOpPostfix ) )
-                    // InternalMirBase.g:1677:6: ( ruleOpPostfix )
+                    // InternalMirBase.g:1703:5: ( ( ruleOpPostfix ) )
+                    // InternalMirBase.g:1704:6: ( ruleOpPostfix )
                     {
-                    // InternalMirBase.g:1677:6: ( ruleOpPostfix )
-                    // InternalMirBase.g:1678:7: ruleOpPostfix
+                    // InternalMirBase.g:1704:6: ( ruleOpPostfix )
+                    // InternalMirBase.g:1705:7: ruleOpPostfix
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5121,7 +5188,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleOpPostfix"
-    // InternalMirBase.g:1698:1: entryRuleOpPostfix returns [String current=null] : iv_ruleOpPostfix= ruleOpPostfix EOF ;
+    // InternalMirBase.g:1725:1: entryRuleOpPostfix returns [String current=null] : iv_ruleOpPostfix= ruleOpPostfix EOF ;
     public final String entryRuleOpPostfix() throws RecognitionException {
         String current = null;
 
@@ -5129,8 +5196,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1698:49: (iv_ruleOpPostfix= ruleOpPostfix EOF )
-            // InternalMirBase.g:1699:2: iv_ruleOpPostfix= ruleOpPostfix EOF
+            // InternalMirBase.g:1725:49: (iv_ruleOpPostfix= ruleOpPostfix EOF )
+            // InternalMirBase.g:1726:2: iv_ruleOpPostfix= ruleOpPostfix EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getOpPostfixRule()); 
@@ -5161,7 +5228,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOpPostfix"
-    // InternalMirBase.g:1705:1: ruleOpPostfix returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '++' | kw= '--' ) ;
+    // InternalMirBase.g:1732:1: ruleOpPostfix returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '++' | kw= '--' ) ;
     public final AntlrDatatypeRuleToken ruleOpPostfix() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -5171,10 +5238,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1711:2: ( (kw= '++' | kw= '--' ) )
-            // InternalMirBase.g:1712:2: (kw= '++' | kw= '--' )
+            // InternalMirBase.g:1738:2: ( (kw= '++' | kw= '--' ) )
+            // InternalMirBase.g:1739:2: (kw= '++' | kw= '--' )
             {
-            // InternalMirBase.g:1712:2: (kw= '++' | kw= '--' )
+            // InternalMirBase.g:1739:2: (kw= '++' | kw= '--' )
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -5193,7 +5260,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt25) {
                 case 1 :
-                    // InternalMirBase.g:1713:3: kw= '++'
+                    // InternalMirBase.g:1740:3: kw= '++'
                     {
                     kw=(Token)match(input,45,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -5206,7 +5273,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:1719:3: kw= '--'
+                    // InternalMirBase.g:1746:3: kw= '--'
                     {
                     kw=(Token)match(input,46,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -5243,7 +5310,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXMemberFeatureCall"
-    // InternalMirBase.g:1728:1: entryRuleXMemberFeatureCall returns [EObject current=null] : iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF ;
+    // InternalMirBase.g:1755:1: entryRuleXMemberFeatureCall returns [EObject current=null] : iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF ;
     public final EObject entryRuleXMemberFeatureCall() throws RecognitionException {
         EObject current = null;
 
@@ -5251,8 +5318,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:1728:59: (iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF )
-            // InternalMirBase.g:1729:2: iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF
+            // InternalMirBase.g:1755:59: (iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF )
+            // InternalMirBase.g:1756:2: iv_ruleXMemberFeatureCall= ruleXMemberFeatureCall EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXMemberFeatureCallRule()); 
@@ -5283,7 +5350,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXMemberFeatureCall"
-    // InternalMirBase.g:1735:1: ruleXMemberFeatureCall returns [EObject current=null] : (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* ) ;
+    // InternalMirBase.g:1762:1: ruleXMemberFeatureCall returns [EObject current=null] : (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* ) ;
     public final EObject ruleXMemberFeatureCall() throws RecognitionException {
         EObject current = null;
 
@@ -5319,11 +5386,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:1741:2: ( (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* ) )
-            // InternalMirBase.g:1742:2: (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* )
+            // InternalMirBase.g:1768:2: ( (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* ) )
+            // InternalMirBase.g:1769:2: (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* )
             {
-            // InternalMirBase.g:1742:2: (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* )
-            // InternalMirBase.g:1743:3: this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )*
+            // InternalMirBase.g:1769:2: (this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )* )
+            // InternalMirBase.g:1770:3: this_XPrimaryExpression_0= ruleXPrimaryExpression ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )*
             {
             if ( state.backtracking==0 ) {
 
@@ -5341,7 +5408,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:1751:3: ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )*
+            // InternalMirBase.g:1778:3: ( ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) ) | ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? ) )*
             loop34:
             do {
                 int alt34=3;
@@ -5390,19 +5457,19 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt34) {
             	case 1 :
-            	    // InternalMirBase.g:1752:4: ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) )
+            	    // InternalMirBase.g:1779:4: ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) )
             	    {
-            	    // InternalMirBase.g:1752:4: ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) )
-            	    // InternalMirBase.g:1753:5: ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) )
+            	    // InternalMirBase.g:1779:4: ( ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) ) )
+            	    // InternalMirBase.g:1780:5: ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) ) ( (lv_value_6_0= ruleXAssignment ) )
             	    {
-            	    // InternalMirBase.g:1753:5: ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )
-            	    // InternalMirBase.g:1754:6: ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
+            	    // InternalMirBase.g:1780:5: ( ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )
+            	    // InternalMirBase.g:1781:6: ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )=> ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
             	    {
-            	    // InternalMirBase.g:1774:6: ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
-            	    // InternalMirBase.g:1775:7: () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign
+            	    // InternalMirBase.g:1801:6: ( () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
+            	    // InternalMirBase.g:1802:7: () (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign
             	    {
-            	    // InternalMirBase.g:1775:7: ()
-            	    // InternalMirBase.g:1776:8: 
+            	    // InternalMirBase.g:1802:7: ()
+            	    // InternalMirBase.g:1803:8: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -5414,7 +5481,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1782:7: (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) )
+            	    // InternalMirBase.g:1809:7: (otherlv_2= '.' | ( (lv_explicitStatic_3_0= '::' ) ) )
             	    int alt26=2;
             	    int LA26_0 = input.LA(1);
 
@@ -5433,7 +5500,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt26) {
             	        case 1 :
-            	            // InternalMirBase.g:1783:8: otherlv_2= '.'
+            	            // InternalMirBase.g:1810:8: otherlv_2= '.'
             	            {
             	            otherlv_2=(Token)match(input,47,FOLLOW_28); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5445,13 +5512,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalMirBase.g:1788:8: ( (lv_explicitStatic_3_0= '::' ) )
+            	            // InternalMirBase.g:1815:8: ( (lv_explicitStatic_3_0= '::' ) )
             	            {
-            	            // InternalMirBase.g:1788:8: ( (lv_explicitStatic_3_0= '::' ) )
-            	            // InternalMirBase.g:1789:9: (lv_explicitStatic_3_0= '::' )
+            	            // InternalMirBase.g:1815:8: ( (lv_explicitStatic_3_0= '::' ) )
+            	            // InternalMirBase.g:1816:9: (lv_explicitStatic_3_0= '::' )
             	            {
-            	            // InternalMirBase.g:1789:9: (lv_explicitStatic_3_0= '::' )
-            	            // InternalMirBase.g:1790:10: lv_explicitStatic_3_0= '::'
+            	            // InternalMirBase.g:1816:9: (lv_explicitStatic_3_0= '::' )
+            	            // InternalMirBase.g:1817:10: lv_explicitStatic_3_0= '::'
             	            {
             	            lv_explicitStatic_3_0=(Token)match(input,48,FOLLOW_28); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5479,11 +5546,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1803:7: ( ( ruleFeatureCallID ) )
-            	    // InternalMirBase.g:1804:8: ( ruleFeatureCallID )
+            	    // InternalMirBase.g:1830:7: ( ( ruleFeatureCallID ) )
+            	    // InternalMirBase.g:1831:8: ( ruleFeatureCallID )
             	    {
-            	    // InternalMirBase.g:1804:8: ( ruleFeatureCallID )
-            	    // InternalMirBase.g:1805:9: ruleFeatureCallID
+            	    // InternalMirBase.g:1831:8: ( ruleFeatureCallID )
+            	    // InternalMirBase.g:1832:9: ruleFeatureCallID
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -5534,11 +5601,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1828:5: ( (lv_value_6_0= ruleXAssignment ) )
-            	    // InternalMirBase.g:1829:6: (lv_value_6_0= ruleXAssignment )
+            	    // InternalMirBase.g:1855:5: ( (lv_value_6_0= ruleXAssignment ) )
+            	    // InternalMirBase.g:1856:6: (lv_value_6_0= ruleXAssignment )
             	    {
-            	    // InternalMirBase.g:1829:6: (lv_value_6_0= ruleXAssignment )
-            	    // InternalMirBase.g:1830:7: lv_value_6_0= ruleXAssignment
+            	    // InternalMirBase.g:1856:6: (lv_value_6_0= ruleXAssignment )
+            	    // InternalMirBase.g:1857:7: lv_value_6_0= ruleXAssignment
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -5576,19 +5643,19 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalMirBase.g:1849:4: ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? )
+            	    // InternalMirBase.g:1876:4: ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? )
             	    {
-            	    // InternalMirBase.g:1849:4: ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? )
-            	    // InternalMirBase.g:1850:5: ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?
+            	    // InternalMirBase.g:1876:4: ( ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )? )
+            	    // InternalMirBase.g:1877:5: ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) ) (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )? ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?
             	    {
-            	    // InternalMirBase.g:1850:5: ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) )
-            	    // InternalMirBase.g:1851:6: ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) )
+            	    // InternalMirBase.g:1877:5: ( ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) ) )
+            	    // InternalMirBase.g:1878:6: ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )=> ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) )
             	    {
-            	    // InternalMirBase.g:1871:6: ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) )
-            	    // InternalMirBase.g:1872:7: () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) )
+            	    // InternalMirBase.g:1898:6: ( () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) ) )
+            	    // InternalMirBase.g:1899:7: () (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) )
             	    {
-            	    // InternalMirBase.g:1872:7: ()
-            	    // InternalMirBase.g:1873:8: 
+            	    // InternalMirBase.g:1899:7: ()
+            	    // InternalMirBase.g:1900:8: 
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -5600,7 +5667,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1879:7: (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) )
+            	    // InternalMirBase.g:1906:7: (otherlv_8= '.' | ( (lv_nullSafe_9_0= '?.' ) ) | ( (lv_explicitStatic_10_0= '::' ) ) )
             	    int alt27=3;
             	    switch ( input.LA(1) ) {
             	    case 47:
@@ -5628,7 +5695,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    switch (alt27) {
             	        case 1 :
-            	            // InternalMirBase.g:1880:8: otherlv_8= '.'
+            	            // InternalMirBase.g:1907:8: otherlv_8= '.'
             	            {
             	            otherlv_8=(Token)match(input,47,FOLLOW_29); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5640,13 +5707,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalMirBase.g:1885:8: ( (lv_nullSafe_9_0= '?.' ) )
+            	            // InternalMirBase.g:1912:8: ( (lv_nullSafe_9_0= '?.' ) )
             	            {
-            	            // InternalMirBase.g:1885:8: ( (lv_nullSafe_9_0= '?.' ) )
-            	            // InternalMirBase.g:1886:9: (lv_nullSafe_9_0= '?.' )
+            	            // InternalMirBase.g:1912:8: ( (lv_nullSafe_9_0= '?.' ) )
+            	            // InternalMirBase.g:1913:9: (lv_nullSafe_9_0= '?.' )
             	            {
-            	            // InternalMirBase.g:1886:9: (lv_nullSafe_9_0= '?.' )
-            	            // InternalMirBase.g:1887:10: lv_nullSafe_9_0= '?.'
+            	            // InternalMirBase.g:1913:9: (lv_nullSafe_9_0= '?.' )
+            	            // InternalMirBase.g:1914:10: lv_nullSafe_9_0= '?.'
             	            {
             	            lv_nullSafe_9_0=(Token)match(input,49,FOLLOW_29); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5672,13 +5739,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 3 :
-            	            // InternalMirBase.g:1900:8: ( (lv_explicitStatic_10_0= '::' ) )
+            	            // InternalMirBase.g:1927:8: ( (lv_explicitStatic_10_0= '::' ) )
             	            {
-            	            // InternalMirBase.g:1900:8: ( (lv_explicitStatic_10_0= '::' ) )
-            	            // InternalMirBase.g:1901:9: (lv_explicitStatic_10_0= '::' )
+            	            // InternalMirBase.g:1927:8: ( (lv_explicitStatic_10_0= '::' ) )
+            	            // InternalMirBase.g:1928:9: (lv_explicitStatic_10_0= '::' )
             	            {
-            	            // InternalMirBase.g:1901:9: (lv_explicitStatic_10_0= '::' )
-            	            // InternalMirBase.g:1902:10: lv_explicitStatic_10_0= '::'
+            	            // InternalMirBase.g:1928:9: (lv_explicitStatic_10_0= '::' )
+            	            // InternalMirBase.g:1929:10: lv_explicitStatic_10_0= '::'
             	            {
             	            lv_explicitStatic_10_0=(Token)match(input,48,FOLLOW_29); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5712,7 +5779,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1917:5: (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )?
+            	    // InternalMirBase.g:1944:5: (otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>' )?
             	    int alt29=2;
             	    int LA29_0 = input.LA(1);
 
@@ -5721,7 +5788,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt29) {
             	        case 1 :
-            	            // InternalMirBase.g:1918:6: otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>'
+            	            // InternalMirBase.g:1945:6: otherlv_11= '<' ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) ) (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )* otherlv_15= '>'
             	            {
             	            otherlv_11=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5729,11 +5796,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	              						newLeafNode(otherlv_11, grammarAccess.getXMemberFeatureCallAccess().getLessThanSignKeyword_1_1_1_0());
             	              					
             	            }
-            	            // InternalMirBase.g:1922:6: ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) )
-            	            // InternalMirBase.g:1923:7: (lv_typeArguments_12_0= ruleJvmArgumentTypeReference )
+            	            // InternalMirBase.g:1949:6: ( (lv_typeArguments_12_0= ruleJvmArgumentTypeReference ) )
+            	            // InternalMirBase.g:1950:7: (lv_typeArguments_12_0= ruleJvmArgumentTypeReference )
             	            {
-            	            // InternalMirBase.g:1923:7: (lv_typeArguments_12_0= ruleJvmArgumentTypeReference )
-            	            // InternalMirBase.g:1924:8: lv_typeArguments_12_0= ruleJvmArgumentTypeReference
+            	            // InternalMirBase.g:1950:7: (lv_typeArguments_12_0= ruleJvmArgumentTypeReference )
+            	            // InternalMirBase.g:1951:8: lv_typeArguments_12_0= ruleJvmArgumentTypeReference
             	            {
             	            if ( state.backtracking==0 ) {
 
@@ -5764,7 +5831,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	            }
 
-            	            // InternalMirBase.g:1941:6: (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )*
+            	            // InternalMirBase.g:1968:6: (otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) ) )*
             	            loop28:
             	            do {
             	                int alt28=2;
@@ -5777,7 +5844,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	                switch (alt28) {
             	            	case 1 :
-            	            	    // InternalMirBase.g:1942:7: otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) )
+            	            	    // InternalMirBase.g:1969:7: otherlv_13= ',' ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) )
             	            	    {
             	            	    otherlv_13=(Token)match(input,50,FOLLOW_30); if (state.failed) return current;
             	            	    if ( state.backtracking==0 ) {
@@ -5785,11 +5852,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	            	      							newLeafNode(otherlv_13, grammarAccess.getXMemberFeatureCallAccess().getCommaKeyword_1_1_1_2_0());
             	            	      						
             	            	    }
-            	            	    // InternalMirBase.g:1946:7: ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) )
-            	            	    // InternalMirBase.g:1947:8: (lv_typeArguments_14_0= ruleJvmArgumentTypeReference )
+            	            	    // InternalMirBase.g:1973:7: ( (lv_typeArguments_14_0= ruleJvmArgumentTypeReference ) )
+            	            	    // InternalMirBase.g:1974:8: (lv_typeArguments_14_0= ruleJvmArgumentTypeReference )
             	            	    {
-            	            	    // InternalMirBase.g:1947:8: (lv_typeArguments_14_0= ruleJvmArgumentTypeReference )
-            	            	    // InternalMirBase.g:1948:9: lv_typeArguments_14_0= ruleJvmArgumentTypeReference
+            	            	    // InternalMirBase.g:1974:8: (lv_typeArguments_14_0= ruleJvmArgumentTypeReference )
+            	            	    // InternalMirBase.g:1975:9: lv_typeArguments_14_0= ruleJvmArgumentTypeReference
             	            	    {
             	            	    if ( state.backtracking==0 ) {
 
@@ -5841,11 +5908,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1971:5: ( ( ruleIdOrSuper ) )
-            	    // InternalMirBase.g:1972:6: ( ruleIdOrSuper )
+            	    // InternalMirBase.g:1998:5: ( ( ruleIdOrSuper ) )
+            	    // InternalMirBase.g:1999:6: ( ruleIdOrSuper )
             	    {
-            	    // InternalMirBase.g:1972:6: ( ruleIdOrSuper )
-            	    // InternalMirBase.g:1973:7: ruleIdOrSuper
+            	    // InternalMirBase.g:1999:6: ( ruleIdOrSuper )
+            	    // InternalMirBase.g:2000:7: ruleIdOrSuper
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -5875,18 +5942,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:1987:5: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )?
+            	    // InternalMirBase.g:2014:5: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )?
             	    int alt32=2;
             	    alt32 = dfa32.predict(input);
             	    switch (alt32) {
             	        case 1 :
-            	            // InternalMirBase.g:1988:6: ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')'
+            	            // InternalMirBase.g:2015:6: ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')'
             	            {
-            	            // InternalMirBase.g:1988:6: ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) )
-            	            // InternalMirBase.g:1989:7: ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' )
+            	            // InternalMirBase.g:2015:6: ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) )
+            	            // InternalMirBase.g:2016:7: ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' )
             	            {
-            	            // InternalMirBase.g:1993:7: (lv_explicitOperationCall_17_0= '(' )
-            	            // InternalMirBase.g:1994:8: lv_explicitOperationCall_17_0= '('
+            	            // InternalMirBase.g:2020:7: (lv_explicitOperationCall_17_0= '(' )
+            	            // InternalMirBase.g:2021:8: lv_explicitOperationCall_17_0= '('
             	            {
             	            lv_explicitOperationCall_17_0=(Token)match(input,51,FOLLOW_33); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -5908,18 +5975,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	            }
 
-            	            // InternalMirBase.g:2006:6: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )?
+            	            // InternalMirBase.g:2033:6: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )?
             	            int alt31=3;
             	            alt31 = dfa31.predict(input);
             	            switch (alt31) {
             	                case 1 :
-            	                    // InternalMirBase.g:2007:7: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) )
+            	                    // InternalMirBase.g:2034:7: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) )
             	                    {
-            	                    // InternalMirBase.g:2007:7: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) )
-            	                    // InternalMirBase.g:2008:8: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure )
+            	                    // InternalMirBase.g:2034:7: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) )
+            	                    // InternalMirBase.g:2035:8: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure )
             	                    {
-            	                    // InternalMirBase.g:2033:8: (lv_memberCallArguments_18_0= ruleXShortClosure )
-            	                    // InternalMirBase.g:2034:9: lv_memberCallArguments_18_0= ruleXShortClosure
+            	                    // InternalMirBase.g:2060:8: (lv_memberCallArguments_18_0= ruleXShortClosure )
+            	                    // InternalMirBase.g:2061:9: lv_memberCallArguments_18_0= ruleXShortClosure
             	                    {
             	                    if ( state.backtracking==0 ) {
 
@@ -5954,16 +6021,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	                    }
             	                    break;
             	                case 2 :
-            	                    // InternalMirBase.g:2052:7: ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* )
+            	                    // InternalMirBase.g:2079:7: ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* )
             	                    {
-            	                    // InternalMirBase.g:2052:7: ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* )
-            	                    // InternalMirBase.g:2053:8: ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )*
+            	                    // InternalMirBase.g:2079:7: ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* )
+            	                    // InternalMirBase.g:2080:8: ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )*
             	                    {
-            	                    // InternalMirBase.g:2053:8: ( (lv_memberCallArguments_19_0= ruleXExpression ) )
-            	                    // InternalMirBase.g:2054:9: (lv_memberCallArguments_19_0= ruleXExpression )
+            	                    // InternalMirBase.g:2080:8: ( (lv_memberCallArguments_19_0= ruleXExpression ) )
+            	                    // InternalMirBase.g:2081:9: (lv_memberCallArguments_19_0= ruleXExpression )
             	                    {
-            	                    // InternalMirBase.g:2054:9: (lv_memberCallArguments_19_0= ruleXExpression )
-            	                    // InternalMirBase.g:2055:10: lv_memberCallArguments_19_0= ruleXExpression
+            	                    // InternalMirBase.g:2081:9: (lv_memberCallArguments_19_0= ruleXExpression )
+            	                    // InternalMirBase.g:2082:10: lv_memberCallArguments_19_0= ruleXExpression
             	                    {
             	                    if ( state.backtracking==0 ) {
 
@@ -5994,7 +6061,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	                    }
 
-            	                    // InternalMirBase.g:2072:8: (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )*
+            	                    // InternalMirBase.g:2099:8: (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )*
             	                    loop30:
             	                    do {
             	                        int alt30=2;
@@ -6007,7 +6074,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	                        switch (alt30) {
             	                    	case 1 :
-            	                    	    // InternalMirBase.g:2073:9: otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) )
+            	                    	    // InternalMirBase.g:2100:9: otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) )
             	                    	    {
             	                    	    otherlv_20=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
             	                    	    if ( state.backtracking==0 ) {
@@ -6015,11 +6082,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	                    	      									newLeafNode(otherlv_20, grammarAccess.getXMemberFeatureCallAccess().getCommaKeyword_1_1_3_1_1_1_0());
             	                    	      								
             	                    	    }
-            	                    	    // InternalMirBase.g:2077:9: ( (lv_memberCallArguments_21_0= ruleXExpression ) )
-            	                    	    // InternalMirBase.g:2078:10: (lv_memberCallArguments_21_0= ruleXExpression )
+            	                    	    // InternalMirBase.g:2104:9: ( (lv_memberCallArguments_21_0= ruleXExpression ) )
+            	                    	    // InternalMirBase.g:2105:10: (lv_memberCallArguments_21_0= ruleXExpression )
             	                    	    {
-            	                    	    // InternalMirBase.g:2078:10: (lv_memberCallArguments_21_0= ruleXExpression )
-            	                    	    // InternalMirBase.g:2079:11: lv_memberCallArguments_21_0= ruleXExpression
+            	                    	    // InternalMirBase.g:2105:10: (lv_memberCallArguments_21_0= ruleXExpression )
+            	                    	    // InternalMirBase.g:2106:11: lv_memberCallArguments_21_0= ruleXExpression
             	                    	    {
             	                    	    if ( state.backtracking==0 ) {
 
@@ -6080,15 +6147,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:2104:5: ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?
+            	    // InternalMirBase.g:2131:5: ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?
             	    int alt33=2;
             	    alt33 = dfa33.predict(input);
             	    switch (alt33) {
             	        case 1 :
-            	            // InternalMirBase.g:2105:6: ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure )
+            	            // InternalMirBase.g:2132:6: ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure )
             	            {
-            	            // InternalMirBase.g:2111:6: (lv_memberCallArguments_23_0= ruleXClosure )
-            	            // InternalMirBase.g:2112:7: lv_memberCallArguments_23_0= ruleXClosure
+            	            // InternalMirBase.g:2138:6: (lv_memberCallArguments_23_0= ruleXClosure )
+            	            // InternalMirBase.g:2139:7: lv_memberCallArguments_23_0= ruleXClosure
             	            {
             	            if ( state.backtracking==0 ) {
 
@@ -6159,7 +6226,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXPrimaryExpression"
-    // InternalMirBase.g:2135:1: entryRuleXPrimaryExpression returns [EObject current=null] : iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF ;
+    // InternalMirBase.g:2162:1: entryRuleXPrimaryExpression returns [EObject current=null] : iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF ;
     public final EObject entryRuleXPrimaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -6167,8 +6234,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2135:59: (iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF )
-            // InternalMirBase.g:2136:2: iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF
+            // InternalMirBase.g:2162:59: (iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF )
+            // InternalMirBase.g:2163:2: iv_ruleXPrimaryExpression= ruleXPrimaryExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXPrimaryExpressionRule()); 
@@ -6199,7 +6266,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXPrimaryExpression"
-    // InternalMirBase.g:2142:1: ruleXPrimaryExpression returns [EObject current=null] : (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression ) ;
+    // InternalMirBase.g:2169:1: ruleXPrimaryExpression returns [EObject current=null] : (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression ) ;
     public final EObject ruleXPrimaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -6238,15 +6305,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2148:2: ( (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression ) )
-            // InternalMirBase.g:2149:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )
+            // InternalMirBase.g:2175:2: ( (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression ) )
+            // InternalMirBase.g:2176:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )
             {
-            // InternalMirBase.g:2149:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )
+            // InternalMirBase.g:2176:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )
             int alt35=15;
             alt35 = dfa35.predict(input);
             switch (alt35) {
                 case 1 :
-                    // InternalMirBase.g:2150:3: this_XConstructorCall_0= ruleXConstructorCall
+                    // InternalMirBase.g:2177:3: this_XConstructorCall_0= ruleXConstructorCall
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6268,7 +6335,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:2159:3: this_XBlockExpression_1= ruleXBlockExpression
+                    // InternalMirBase.g:2186:3: this_XBlockExpression_1= ruleXBlockExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6290,7 +6357,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:2168:3: this_XSwitchExpression_2= ruleXSwitchExpression
+                    // InternalMirBase.g:2195:3: this_XSwitchExpression_2= ruleXSwitchExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6312,10 +6379,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:2177:3: ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression )
+                    // InternalMirBase.g:2204:3: ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression )
                     {
-                    // InternalMirBase.g:2177:3: ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression )
-                    // InternalMirBase.g:2178:4: ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression
+                    // InternalMirBase.g:2204:3: ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression )
+                    // InternalMirBase.g:2205:4: ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6340,7 +6407,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMirBase.g:2195:3: this_XFeatureCall_4= ruleXFeatureCall
+                    // InternalMirBase.g:2222:3: this_XFeatureCall_4= ruleXFeatureCall
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6362,7 +6429,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalMirBase.g:2204:3: this_XLiteral_5= ruleXLiteral
+                    // InternalMirBase.g:2231:3: this_XLiteral_5= ruleXLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6384,7 +6451,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalMirBase.g:2213:3: this_XIfExpression_6= ruleXIfExpression
+                    // InternalMirBase.g:2240:3: this_XIfExpression_6= ruleXIfExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6406,10 +6473,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // InternalMirBase.g:2222:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression )
+                    // InternalMirBase.g:2249:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression )
                     {
-                    // InternalMirBase.g:2222:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression )
-                    // InternalMirBase.g:2223:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression
+                    // InternalMirBase.g:2249:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression )
+                    // InternalMirBase.g:2250:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6434,7 +6501,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 9 :
-                    // InternalMirBase.g:2246:3: this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression
+                    // InternalMirBase.g:2273:3: this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6456,7 +6523,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 10 :
-                    // InternalMirBase.g:2255:3: this_XWhileExpression_9= ruleXWhileExpression
+                    // InternalMirBase.g:2282:3: this_XWhileExpression_9= ruleXWhileExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6478,7 +6545,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 11 :
-                    // InternalMirBase.g:2264:3: this_XDoWhileExpression_10= ruleXDoWhileExpression
+                    // InternalMirBase.g:2291:3: this_XDoWhileExpression_10= ruleXDoWhileExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6500,7 +6567,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 12 :
-                    // InternalMirBase.g:2273:3: this_XThrowExpression_11= ruleXThrowExpression
+                    // InternalMirBase.g:2300:3: this_XThrowExpression_11= ruleXThrowExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6522,7 +6589,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 13 :
-                    // InternalMirBase.g:2282:3: this_XReturnExpression_12= ruleXReturnExpression
+                    // InternalMirBase.g:2309:3: this_XReturnExpression_12= ruleXReturnExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6544,7 +6611,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 14 :
-                    // InternalMirBase.g:2291:3: this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression
+                    // InternalMirBase.g:2318:3: this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6566,7 +6633,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 15 :
-                    // InternalMirBase.g:2300:3: this_XParenthesizedExpression_14= ruleXParenthesizedExpression
+                    // InternalMirBase.g:2327:3: this_XParenthesizedExpression_14= ruleXParenthesizedExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6612,7 +6679,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXLiteral"
-    // InternalMirBase.g:2312:1: entryRuleXLiteral returns [EObject current=null] : iv_ruleXLiteral= ruleXLiteral EOF ;
+    // InternalMirBase.g:2339:1: entryRuleXLiteral returns [EObject current=null] : iv_ruleXLiteral= ruleXLiteral EOF ;
     public final EObject entryRuleXLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -6620,8 +6687,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2312:49: (iv_ruleXLiteral= ruleXLiteral EOF )
-            // InternalMirBase.g:2313:2: iv_ruleXLiteral= ruleXLiteral EOF
+            // InternalMirBase.g:2339:49: (iv_ruleXLiteral= ruleXLiteral EOF )
+            // InternalMirBase.g:2340:2: iv_ruleXLiteral= ruleXLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXLiteralRule()); 
@@ -6652,7 +6719,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXLiteral"
-    // InternalMirBase.g:2319:1: ruleXLiteral returns [EObject current=null] : (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral ) ;
+    // InternalMirBase.g:2346:1: ruleXLiteral returns [EObject current=null] : (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral ) ;
     public final EObject ruleXLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -6675,10 +6742,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2325:2: ( (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral ) )
-            // InternalMirBase.g:2326:2: (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral )
+            // InternalMirBase.g:2352:2: ( (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral ) )
+            // InternalMirBase.g:2353:2: (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral )
             {
-            // InternalMirBase.g:2326:2: (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral )
+            // InternalMirBase.g:2353:2: (this_XCollectionLiteral_0= ruleXCollectionLiteral | ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure ) | this_XBooleanLiteral_2= ruleXBooleanLiteral | this_XNumberLiteral_3= ruleXNumberLiteral | this_XNullLiteral_4= ruleXNullLiteral | this_XStringLiteral_5= ruleXStringLiteral | this_XTypeLiteral_6= ruleXTypeLiteral )
             int alt36=7;
             int LA36_0 = input.LA(1);
 
@@ -6712,7 +6779,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt36) {
                 case 1 :
-                    // InternalMirBase.g:2327:3: this_XCollectionLiteral_0= ruleXCollectionLiteral
+                    // InternalMirBase.g:2354:3: this_XCollectionLiteral_0= ruleXCollectionLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6734,10 +6801,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:2336:3: ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure )
+                    // InternalMirBase.g:2363:3: ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure )
                     {
-                    // InternalMirBase.g:2336:3: ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure )
-                    // InternalMirBase.g:2337:4: ( ( () '[' ) )=>this_XClosure_1= ruleXClosure
+                    // InternalMirBase.g:2363:3: ( ( ( () '[' ) )=>this_XClosure_1= ruleXClosure )
+                    // InternalMirBase.g:2364:4: ( ( () '[' ) )=>this_XClosure_1= ruleXClosure
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6762,7 +6829,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:2353:3: this_XBooleanLiteral_2= ruleXBooleanLiteral
+                    // InternalMirBase.g:2380:3: this_XBooleanLiteral_2= ruleXBooleanLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6784,7 +6851,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:2362:3: this_XNumberLiteral_3= ruleXNumberLiteral
+                    // InternalMirBase.g:2389:3: this_XNumberLiteral_3= ruleXNumberLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6806,7 +6873,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMirBase.g:2371:3: this_XNullLiteral_4= ruleXNullLiteral
+                    // InternalMirBase.g:2398:3: this_XNullLiteral_4= ruleXNullLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6828,7 +6895,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalMirBase.g:2380:3: this_XStringLiteral_5= ruleXStringLiteral
+                    // InternalMirBase.g:2407:3: this_XStringLiteral_5= ruleXStringLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6850,7 +6917,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalMirBase.g:2389:3: this_XTypeLiteral_6= ruleXTypeLiteral
+                    // InternalMirBase.g:2416:3: this_XTypeLiteral_6= ruleXTypeLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -6896,7 +6963,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXCollectionLiteral"
-    // InternalMirBase.g:2401:1: entryRuleXCollectionLiteral returns [EObject current=null] : iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF ;
+    // InternalMirBase.g:2428:1: entryRuleXCollectionLiteral returns [EObject current=null] : iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF ;
     public final EObject entryRuleXCollectionLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -6904,8 +6971,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2401:59: (iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF )
-            // InternalMirBase.g:2402:2: iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF
+            // InternalMirBase.g:2428:59: (iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF )
+            // InternalMirBase.g:2429:2: iv_ruleXCollectionLiteral= ruleXCollectionLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXCollectionLiteralRule()); 
@@ -6936,7 +7003,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXCollectionLiteral"
-    // InternalMirBase.g:2408:1: ruleXCollectionLiteral returns [EObject current=null] : (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral ) ;
+    // InternalMirBase.g:2435:1: ruleXCollectionLiteral returns [EObject current=null] : (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral ) ;
     public final EObject ruleXCollectionLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -6949,21 +7016,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2414:2: ( (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral ) )
-            // InternalMirBase.g:2415:2: (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral )
+            // InternalMirBase.g:2441:2: ( (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral ) )
+            // InternalMirBase.g:2442:2: (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral )
             {
-            // InternalMirBase.g:2415:2: (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral )
+            // InternalMirBase.g:2442:2: (this_XSetLiteral_0= ruleXSetLiteral | this_XListLiteral_1= ruleXListLiteral )
             int alt37=2;
             int LA37_0 = input.LA(1);
 
             if ( (LA37_0==53) ) {
                 int LA37_1 = input.LA(2);
 
-                if ( (LA37_1==54) ) {
-                    alt37=1;
-                }
-                else if ( (LA37_1==56) ) {
+                if ( (LA37_1==56) ) {
                     alt37=2;
+                }
+                else if ( (LA37_1==54) ) {
+                    alt37=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -6982,7 +7049,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt37) {
                 case 1 :
-                    // InternalMirBase.g:2416:3: this_XSetLiteral_0= ruleXSetLiteral
+                    // InternalMirBase.g:2443:3: this_XSetLiteral_0= ruleXSetLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -7004,7 +7071,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:2425:3: this_XListLiteral_1= ruleXListLiteral
+                    // InternalMirBase.g:2452:3: this_XListLiteral_1= ruleXListLiteral
                     {
                     if ( state.backtracking==0 ) {
 
@@ -7050,7 +7117,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXSetLiteral"
-    // InternalMirBase.g:2437:1: entryRuleXSetLiteral returns [EObject current=null] : iv_ruleXSetLiteral= ruleXSetLiteral EOF ;
+    // InternalMirBase.g:2464:1: entryRuleXSetLiteral returns [EObject current=null] : iv_ruleXSetLiteral= ruleXSetLiteral EOF ;
     public final EObject entryRuleXSetLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -7058,8 +7125,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2437:52: (iv_ruleXSetLiteral= ruleXSetLiteral EOF )
-            // InternalMirBase.g:2438:2: iv_ruleXSetLiteral= ruleXSetLiteral EOF
+            // InternalMirBase.g:2464:52: (iv_ruleXSetLiteral= ruleXSetLiteral EOF )
+            // InternalMirBase.g:2465:2: iv_ruleXSetLiteral= ruleXSetLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXSetLiteralRule()); 
@@ -7090,7 +7157,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXSetLiteral"
-    // InternalMirBase.g:2444:1: ruleXSetLiteral returns [EObject current=null] : ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' ) ;
+    // InternalMirBase.g:2471:1: ruleXSetLiteral returns [EObject current=null] : ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' ) ;
     public final EObject ruleXSetLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -7107,14 +7174,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2450:2: ( ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' ) )
-            // InternalMirBase.g:2451:2: ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' )
+            // InternalMirBase.g:2477:2: ( ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' ) )
+            // InternalMirBase.g:2478:2: ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' )
             {
-            // InternalMirBase.g:2451:2: ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' )
-            // InternalMirBase.g:2452:3: () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}'
+            // InternalMirBase.g:2478:2: ( () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}' )
+            // InternalMirBase.g:2479:3: () otherlv_1= '#' otherlv_2= '{' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= '}'
             {
-            // InternalMirBase.g:2452:3: ()
-            // InternalMirBase.g:2453:4: 
+            // InternalMirBase.g:2479:3: ()
+            // InternalMirBase.g:2480:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -7138,7 +7205,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXSetLiteralAccess().getLeftCurlyBracketKeyword_2());
               		
             }
-            // InternalMirBase.g:2467:3: ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )?
+            // InternalMirBase.g:2494:3: ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )?
             int alt39=2;
             int LA39_0 = input.LA(1);
 
@@ -7147,13 +7214,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt39) {
                 case 1 :
-                    // InternalMirBase.g:2468:4: ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:2495:4: ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
                     {
-                    // InternalMirBase.g:2468:4: ( (lv_elements_3_0= ruleXExpression ) )
-                    // InternalMirBase.g:2469:5: (lv_elements_3_0= ruleXExpression )
+                    // InternalMirBase.g:2495:4: ( (lv_elements_3_0= ruleXExpression ) )
+                    // InternalMirBase.g:2496:5: (lv_elements_3_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:2469:5: (lv_elements_3_0= ruleXExpression )
-                    // InternalMirBase.g:2470:6: lv_elements_3_0= ruleXExpression
+                    // InternalMirBase.g:2496:5: (lv_elements_3_0= ruleXExpression )
+                    // InternalMirBase.g:2497:6: lv_elements_3_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -7184,7 +7251,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:2487:4: (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:2514:4: (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
                     loop38:
                     do {
                         int alt38=2;
@@ -7197,7 +7264,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt38) {
                     	case 1 :
-                    	    // InternalMirBase.g:2488:5: otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:2515:5: otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) )
                     	    {
                     	    otherlv_4=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -7205,11 +7272,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_4, grammarAccess.getXSetLiteralAccess().getCommaKeyword_3_1_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:2492:5: ( (lv_elements_5_0= ruleXExpression ) )
-                    	    // InternalMirBase.g:2493:6: (lv_elements_5_0= ruleXExpression )
+                    	    // InternalMirBase.g:2519:5: ( (lv_elements_5_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:2520:6: (lv_elements_5_0= ruleXExpression )
                     	    {
-                    	    // InternalMirBase.g:2493:6: (lv_elements_5_0= ruleXExpression )
-                    	    // InternalMirBase.g:2494:7: lv_elements_5_0= ruleXExpression
+                    	    // InternalMirBase.g:2520:6: (lv_elements_5_0= ruleXExpression )
+                    	    // InternalMirBase.g:2521:7: lv_elements_5_0= ruleXExpression
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -7286,7 +7353,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXListLiteral"
-    // InternalMirBase.g:2521:1: entryRuleXListLiteral returns [EObject current=null] : iv_ruleXListLiteral= ruleXListLiteral EOF ;
+    // InternalMirBase.g:2548:1: entryRuleXListLiteral returns [EObject current=null] : iv_ruleXListLiteral= ruleXListLiteral EOF ;
     public final EObject entryRuleXListLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -7294,8 +7361,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2521:53: (iv_ruleXListLiteral= ruleXListLiteral EOF )
-            // InternalMirBase.g:2522:2: iv_ruleXListLiteral= ruleXListLiteral EOF
+            // InternalMirBase.g:2548:53: (iv_ruleXListLiteral= ruleXListLiteral EOF )
+            // InternalMirBase.g:2549:2: iv_ruleXListLiteral= ruleXListLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXListLiteralRule()); 
@@ -7326,7 +7393,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXListLiteral"
-    // InternalMirBase.g:2528:1: ruleXListLiteral returns [EObject current=null] : ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' ) ;
+    // InternalMirBase.g:2555:1: ruleXListLiteral returns [EObject current=null] : ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' ) ;
     public final EObject ruleXListLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -7343,14 +7410,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2534:2: ( ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' ) )
-            // InternalMirBase.g:2535:2: ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' )
+            // InternalMirBase.g:2561:2: ( ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' ) )
+            // InternalMirBase.g:2562:2: ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' )
             {
-            // InternalMirBase.g:2535:2: ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' )
-            // InternalMirBase.g:2536:3: () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']'
+            // InternalMirBase.g:2562:2: ( () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']' )
+            // InternalMirBase.g:2563:3: () otherlv_1= '#' otherlv_2= '[' ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )? otherlv_6= ']'
             {
-            // InternalMirBase.g:2536:3: ()
-            // InternalMirBase.g:2537:4: 
+            // InternalMirBase.g:2563:3: ()
+            // InternalMirBase.g:2564:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -7374,7 +7441,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXListLiteralAccess().getLeftSquareBracketKeyword_2());
               		
             }
-            // InternalMirBase.g:2551:3: ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )?
+            // InternalMirBase.g:2578:3: ( ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )* )?
             int alt41=2;
             int LA41_0 = input.LA(1);
 
@@ -7383,13 +7450,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt41) {
                 case 1 :
-                    // InternalMirBase.g:2552:4: ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:2579:4: ( (lv_elements_3_0= ruleXExpression ) ) (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
                     {
-                    // InternalMirBase.g:2552:4: ( (lv_elements_3_0= ruleXExpression ) )
-                    // InternalMirBase.g:2553:5: (lv_elements_3_0= ruleXExpression )
+                    // InternalMirBase.g:2579:4: ( (lv_elements_3_0= ruleXExpression ) )
+                    // InternalMirBase.g:2580:5: (lv_elements_3_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:2553:5: (lv_elements_3_0= ruleXExpression )
-                    // InternalMirBase.g:2554:6: lv_elements_3_0= ruleXExpression
+                    // InternalMirBase.g:2580:5: (lv_elements_3_0= ruleXExpression )
+                    // InternalMirBase.g:2581:6: lv_elements_3_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -7420,7 +7487,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:2571:4: (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:2598:4: (otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) ) )*
                     loop40:
                     do {
                         int alt40=2;
@@ -7433,7 +7500,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt40) {
                     	case 1 :
-                    	    // InternalMirBase.g:2572:5: otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:2599:5: otherlv_4= ',' ( (lv_elements_5_0= ruleXExpression ) )
                     	    {
                     	    otherlv_4=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -7441,11 +7508,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_4, grammarAccess.getXListLiteralAccess().getCommaKeyword_3_1_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:2576:5: ( (lv_elements_5_0= ruleXExpression ) )
-                    	    // InternalMirBase.g:2577:6: (lv_elements_5_0= ruleXExpression )
+                    	    // InternalMirBase.g:2603:5: ( (lv_elements_5_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:2604:6: (lv_elements_5_0= ruleXExpression )
                     	    {
-                    	    // InternalMirBase.g:2577:6: (lv_elements_5_0= ruleXExpression )
-                    	    // InternalMirBase.g:2578:7: lv_elements_5_0= ruleXExpression
+                    	    // InternalMirBase.g:2604:6: (lv_elements_5_0= ruleXExpression )
+                    	    // InternalMirBase.g:2605:7: lv_elements_5_0= ruleXExpression
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -7522,7 +7589,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXClosure"
-    // InternalMirBase.g:2605:1: entryRuleXClosure returns [EObject current=null] : iv_ruleXClosure= ruleXClosure EOF ;
+    // InternalMirBase.g:2632:1: entryRuleXClosure returns [EObject current=null] : iv_ruleXClosure= ruleXClosure EOF ;
     public final EObject entryRuleXClosure() throws RecognitionException {
         EObject current = null;
 
@@ -7530,8 +7597,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2605:49: (iv_ruleXClosure= ruleXClosure EOF )
-            // InternalMirBase.g:2606:2: iv_ruleXClosure= ruleXClosure EOF
+            // InternalMirBase.g:2632:49: (iv_ruleXClosure= ruleXClosure EOF )
+            // InternalMirBase.g:2633:2: iv_ruleXClosure= ruleXClosure EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXClosureRule()); 
@@ -7562,7 +7629,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXClosure"
-    // InternalMirBase.g:2612:1: ruleXClosure returns [EObject current=null] : ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' ) ;
+    // InternalMirBase.g:2639:1: ruleXClosure returns [EObject current=null] : ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' ) ;
     public final EObject ruleXClosure() throws RecognitionException {
         EObject current = null;
 
@@ -7581,20 +7648,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2618:2: ( ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' ) )
-            // InternalMirBase.g:2619:2: ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' )
+            // InternalMirBase.g:2645:2: ( ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' ) )
+            // InternalMirBase.g:2646:2: ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' )
             {
-            // InternalMirBase.g:2619:2: ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' )
-            // InternalMirBase.g:2620:3: ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']'
+            // InternalMirBase.g:2646:2: ( ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']' )
+            // InternalMirBase.g:2647:3: ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) ) ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )? ( (lv_expression_6_0= ruleXExpressionInClosure ) ) otherlv_7= ']'
             {
-            // InternalMirBase.g:2620:3: ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) )
-            // InternalMirBase.g:2621:4: ( ( () '[' ) )=> ( () otherlv_1= '[' )
+            // InternalMirBase.g:2647:3: ( ( ( () '[' ) )=> ( () otherlv_1= '[' ) )
+            // InternalMirBase.g:2648:4: ( ( () '[' ) )=> ( () otherlv_1= '[' )
             {
-            // InternalMirBase.g:2627:4: ( () otherlv_1= '[' )
-            // InternalMirBase.g:2628:5: () otherlv_1= '['
+            // InternalMirBase.g:2654:4: ( () otherlv_1= '[' )
+            // InternalMirBase.g:2655:5: () otherlv_1= '['
             {
-            // InternalMirBase.g:2628:5: ()
-            // InternalMirBase.g:2629:6: 
+            // InternalMirBase.g:2655:5: ()
+            // InternalMirBase.g:2656:6: 
             {
             if ( state.backtracking==0 ) {
 
@@ -7618,17 +7685,17 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2641:3: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )?
+            // InternalMirBase.g:2668:3: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )?
             int alt44=2;
             alt44 = dfa44.predict(input);
             switch (alt44) {
                 case 1 :
-                    // InternalMirBase.g:2642:4: ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) )
+                    // InternalMirBase.g:2669:4: ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) )
                     {
-                    // InternalMirBase.g:2665:4: ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) )
-                    // InternalMirBase.g:2666:5: ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) )
+                    // InternalMirBase.g:2692:4: ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) )
+                    // InternalMirBase.g:2693:5: ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) )
                     {
-                    // InternalMirBase.g:2666:5: ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )?
+                    // InternalMirBase.g:2693:5: ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )?
                     int alt43=2;
                     int LA43_0 = input.LA(1);
 
@@ -7637,13 +7704,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt43) {
                         case 1 :
-                            // InternalMirBase.g:2667:6: ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )*
+                            // InternalMirBase.g:2694:6: ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )*
                             {
-                            // InternalMirBase.g:2667:6: ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) )
-                            // InternalMirBase.g:2668:7: (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter )
+                            // InternalMirBase.g:2694:6: ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) )
+                            // InternalMirBase.g:2695:7: (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter )
                             {
-                            // InternalMirBase.g:2668:7: (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter )
-                            // InternalMirBase.g:2669:8: lv_declaredFormalParameters_2_0= ruleJvmFormalParameter
+                            // InternalMirBase.g:2695:7: (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter )
+                            // InternalMirBase.g:2696:8: lv_declaredFormalParameters_2_0= ruleJvmFormalParameter
                             {
                             if ( state.backtracking==0 ) {
 
@@ -7674,7 +7741,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:2686:6: (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )*
+                            // InternalMirBase.g:2713:6: (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )*
                             loop42:
                             do {
                                 int alt42=2;
@@ -7687,7 +7754,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                                 switch (alt42) {
                             	case 1 :
-                            	    // InternalMirBase.g:2687:7: otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) )
+                            	    // InternalMirBase.g:2714:7: otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) )
                             	    {
                             	    otherlv_3=(Token)match(input,50,FOLLOW_18); if (state.failed) return current;
                             	    if ( state.backtracking==0 ) {
@@ -7695,11 +7762,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             	      							newLeafNode(otherlv_3, grammarAccess.getXClosureAccess().getCommaKeyword_1_0_0_1_0());
                             	      						
                             	    }
-                            	    // InternalMirBase.g:2691:7: ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) )
-                            	    // InternalMirBase.g:2692:8: (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter )
+                            	    // InternalMirBase.g:2718:7: ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) )
+                            	    // InternalMirBase.g:2719:8: (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter )
                             	    {
-                            	    // InternalMirBase.g:2692:8: (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter )
-                            	    // InternalMirBase.g:2693:9: lv_declaredFormalParameters_4_0= ruleJvmFormalParameter
+                            	    // InternalMirBase.g:2719:8: (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter )
+                            	    // InternalMirBase.g:2720:9: lv_declaredFormalParameters_4_0= ruleJvmFormalParameter
                             	    {
                             	    if ( state.backtracking==0 ) {
 
@@ -7745,11 +7812,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:2712:5: ( (lv_explicitSyntax_5_0= '|' ) )
-                    // InternalMirBase.g:2713:6: (lv_explicitSyntax_5_0= '|' )
+                    // InternalMirBase.g:2739:5: ( (lv_explicitSyntax_5_0= '|' ) )
+                    // InternalMirBase.g:2740:6: (lv_explicitSyntax_5_0= '|' )
                     {
-                    // InternalMirBase.g:2713:6: (lv_explicitSyntax_5_0= '|' )
-                    // InternalMirBase.g:2714:7: lv_explicitSyntax_5_0= '|'
+                    // InternalMirBase.g:2740:6: (lv_explicitSyntax_5_0= '|' )
+                    // InternalMirBase.g:2741:7: lv_explicitSyntax_5_0= '|'
                     {
                     lv_explicitSyntax_5_0=(Token)match(input,58,FOLLOW_45); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -7780,11 +7847,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2728:3: ( (lv_expression_6_0= ruleXExpressionInClosure ) )
-            // InternalMirBase.g:2729:4: (lv_expression_6_0= ruleXExpressionInClosure )
+            // InternalMirBase.g:2755:3: ( (lv_expression_6_0= ruleXExpressionInClosure ) )
+            // InternalMirBase.g:2756:4: (lv_expression_6_0= ruleXExpressionInClosure )
             {
-            // InternalMirBase.g:2729:4: (lv_expression_6_0= ruleXExpressionInClosure )
-            // InternalMirBase.g:2730:5: lv_expression_6_0= ruleXExpressionInClosure
+            // InternalMirBase.g:2756:4: (lv_expression_6_0= ruleXExpressionInClosure )
+            // InternalMirBase.g:2757:5: lv_expression_6_0= ruleXExpressionInClosure
             {
             if ( state.backtracking==0 ) {
 
@@ -7846,7 +7913,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXExpressionInClosure"
-    // InternalMirBase.g:2755:1: entryRuleXExpressionInClosure returns [EObject current=null] : iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF ;
+    // InternalMirBase.g:2782:1: entryRuleXExpressionInClosure returns [EObject current=null] : iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF ;
     public final EObject entryRuleXExpressionInClosure() throws RecognitionException {
         EObject current = null;
 
@@ -7854,8 +7921,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2755:61: (iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF )
-            // InternalMirBase.g:2756:2: iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF
+            // InternalMirBase.g:2782:61: (iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF )
+            // InternalMirBase.g:2783:2: iv_ruleXExpressionInClosure= ruleXExpressionInClosure EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXExpressionInClosureRule()); 
@@ -7886,7 +7953,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXExpressionInClosure"
-    // InternalMirBase.g:2762:1: ruleXExpressionInClosure returns [EObject current=null] : ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* ) ;
+    // InternalMirBase.g:2789:1: ruleXExpressionInClosure returns [EObject current=null] : ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* ) ;
     public final EObject ruleXExpressionInClosure() throws RecognitionException {
         EObject current = null;
 
@@ -7898,14 +7965,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2768:2: ( ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* ) )
-            // InternalMirBase.g:2769:2: ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* )
+            // InternalMirBase.g:2795:2: ( ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* ) )
+            // InternalMirBase.g:2796:2: ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* )
             {
-            // InternalMirBase.g:2769:2: ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* )
-            // InternalMirBase.g:2770:3: () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )*
+            // InternalMirBase.g:2796:2: ( () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )* )
+            // InternalMirBase.g:2797:3: () ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )*
             {
-            // InternalMirBase.g:2770:3: ()
-            // InternalMirBase.g:2771:4: 
+            // InternalMirBase.g:2797:3: ()
+            // InternalMirBase.g:2798:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -7917,7 +7984,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2777:3: ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )*
+            // InternalMirBase.g:2804:3: ( ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )? )*
             loop46:
             do {
                 int alt46=2;
@@ -7930,13 +7997,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt46) {
             	case 1 :
-            	    // InternalMirBase.g:2778:4: ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )?
+            	    // InternalMirBase.g:2805:4: ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_2= ';' )?
             	    {
-            	    // InternalMirBase.g:2778:4: ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) )
-            	    // InternalMirBase.g:2779:5: (lv_expressions_1_0= ruleXExpressionOrVarDeclaration )
+            	    // InternalMirBase.g:2805:4: ( (lv_expressions_1_0= ruleXExpressionOrVarDeclaration ) )
+            	    // InternalMirBase.g:2806:5: (lv_expressions_1_0= ruleXExpressionOrVarDeclaration )
             	    {
-            	    // InternalMirBase.g:2779:5: (lv_expressions_1_0= ruleXExpressionOrVarDeclaration )
-            	    // InternalMirBase.g:2780:6: lv_expressions_1_0= ruleXExpressionOrVarDeclaration
+            	    // InternalMirBase.g:2806:5: (lv_expressions_1_0= ruleXExpressionOrVarDeclaration )
+            	    // InternalMirBase.g:2807:6: lv_expressions_1_0= ruleXExpressionOrVarDeclaration
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -7967,7 +8034,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:2797:4: (otherlv_2= ';' )?
+            	    // InternalMirBase.g:2824:4: (otherlv_2= ';' )?
             	    int alt45=2;
             	    int LA45_0 = input.LA(1);
 
@@ -7976,7 +8043,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt45) {
             	        case 1 :
-            	            // InternalMirBase.g:2798:5: otherlv_2= ';'
+            	            // InternalMirBase.g:2825:5: otherlv_2= ';'
             	            {
             	            otherlv_2=(Token)match(input,59,FOLLOW_48); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -8024,7 +8091,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXShortClosure"
-    // InternalMirBase.g:2808:1: entryRuleXShortClosure returns [EObject current=null] : iv_ruleXShortClosure= ruleXShortClosure EOF ;
+    // InternalMirBase.g:2835:1: entryRuleXShortClosure returns [EObject current=null] : iv_ruleXShortClosure= ruleXShortClosure EOF ;
     public final EObject entryRuleXShortClosure() throws RecognitionException {
         EObject current = null;
 
@@ -8032,8 +8099,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2808:54: (iv_ruleXShortClosure= ruleXShortClosure EOF )
-            // InternalMirBase.g:2809:2: iv_ruleXShortClosure= ruleXShortClosure EOF
+            // InternalMirBase.g:2835:54: (iv_ruleXShortClosure= ruleXShortClosure EOF )
+            // InternalMirBase.g:2836:2: iv_ruleXShortClosure= ruleXShortClosure EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXShortClosureRule()); 
@@ -8064,7 +8131,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXShortClosure"
-    // InternalMirBase.g:2815:1: ruleXShortClosure returns [EObject current=null] : ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:2842:1: ruleXShortClosure returns [EObject current=null] : ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) ) ;
     public final EObject ruleXShortClosure() throws RecognitionException {
         EObject current = null;
 
@@ -8081,20 +8148,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2821:2: ( ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:2822:2: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:2848:2: ( ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:2849:2: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:2822:2: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) )
-            // InternalMirBase.g:2823:3: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) )
+            // InternalMirBase.g:2849:2: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:2850:3: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) ) ( (lv_expression_5_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:2823:3: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) )
-            // InternalMirBase.g:2824:4: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) )
+            // InternalMirBase.g:2850:3: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) ) )
+            // InternalMirBase.g:2851:4: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) )
             {
-            // InternalMirBase.g:2849:4: ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) )
-            // InternalMirBase.g:2850:5: () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) )
+            // InternalMirBase.g:2876:4: ( () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) ) )
+            // InternalMirBase.g:2877:5: () ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_4_0= '|' ) )
             {
-            // InternalMirBase.g:2850:5: ()
-            // InternalMirBase.g:2851:6: 
+            // InternalMirBase.g:2877:5: ()
+            // InternalMirBase.g:2878:6: 
             {
             if ( state.backtracking==0 ) {
 
@@ -8106,7 +8173,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2857:5: ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )?
+            // InternalMirBase.g:2884:5: ( ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )* )?
             int alt48=2;
             int LA48_0 = input.LA(1);
 
@@ -8115,13 +8182,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt48) {
                 case 1 :
-                    // InternalMirBase.g:2858:6: ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )*
+                    // InternalMirBase.g:2885:6: ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) ) (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )*
                     {
-                    // InternalMirBase.g:2858:6: ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) )
-                    // InternalMirBase.g:2859:7: (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter )
+                    // InternalMirBase.g:2885:6: ( (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter ) )
+                    // InternalMirBase.g:2886:7: (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter )
                     {
-                    // InternalMirBase.g:2859:7: (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter )
-                    // InternalMirBase.g:2860:8: lv_declaredFormalParameters_1_0= ruleJvmFormalParameter
+                    // InternalMirBase.g:2886:7: (lv_declaredFormalParameters_1_0= ruleJvmFormalParameter )
+                    // InternalMirBase.g:2887:8: lv_declaredFormalParameters_1_0= ruleJvmFormalParameter
                     {
                     if ( state.backtracking==0 ) {
 
@@ -8152,7 +8219,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:2877:6: (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )*
+                    // InternalMirBase.g:2904:6: (otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) ) )*
                     loop47:
                     do {
                         int alt47=2;
@@ -8165,7 +8232,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt47) {
                     	case 1 :
-                    	    // InternalMirBase.g:2878:7: otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) )
+                    	    // InternalMirBase.g:2905:7: otherlv_2= ',' ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) )
                     	    {
                     	    otherlv_2=(Token)match(input,50,FOLLOW_18); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -8173,11 +8240,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      							newLeafNode(otherlv_2, grammarAccess.getXShortClosureAccess().getCommaKeyword_0_0_1_1_0());
                     	      						
                     	    }
-                    	    // InternalMirBase.g:2882:7: ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) )
-                    	    // InternalMirBase.g:2883:8: (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter )
+                    	    // InternalMirBase.g:2909:7: ( (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter ) )
+                    	    // InternalMirBase.g:2910:8: (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter )
                     	    {
-                    	    // InternalMirBase.g:2883:8: (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter )
-                    	    // InternalMirBase.g:2884:9: lv_declaredFormalParameters_3_0= ruleJvmFormalParameter
+                    	    // InternalMirBase.g:2910:8: (lv_declaredFormalParameters_3_0= ruleJvmFormalParameter )
+                    	    // InternalMirBase.g:2911:9: lv_declaredFormalParameters_3_0= ruleJvmFormalParameter
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -8223,11 +8290,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2903:5: ( (lv_explicitSyntax_4_0= '|' ) )
-            // InternalMirBase.g:2904:6: (lv_explicitSyntax_4_0= '|' )
+            // InternalMirBase.g:2930:5: ( (lv_explicitSyntax_4_0= '|' ) )
+            // InternalMirBase.g:2931:6: (lv_explicitSyntax_4_0= '|' )
             {
-            // InternalMirBase.g:2904:6: (lv_explicitSyntax_4_0= '|' )
-            // InternalMirBase.g:2905:7: lv_explicitSyntax_4_0= '|'
+            // InternalMirBase.g:2931:6: (lv_explicitSyntax_4_0= '|' )
+            // InternalMirBase.g:2932:7: lv_explicitSyntax_4_0= '|'
             {
             lv_explicitSyntax_4_0=(Token)match(input,58,FOLLOW_9); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -8255,11 +8322,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:2919:3: ( (lv_expression_5_0= ruleXExpression ) )
-            // InternalMirBase.g:2920:4: (lv_expression_5_0= ruleXExpression )
+            // InternalMirBase.g:2946:3: ( (lv_expression_5_0= ruleXExpression ) )
+            // InternalMirBase.g:2947:4: (lv_expression_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:2920:4: (lv_expression_5_0= ruleXExpression )
-            // InternalMirBase.g:2921:5: lv_expression_5_0= ruleXExpression
+            // InternalMirBase.g:2947:4: (lv_expression_5_0= ruleXExpression )
+            // InternalMirBase.g:2948:5: lv_expression_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -8315,7 +8382,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXParenthesizedExpression"
-    // InternalMirBase.g:2942:1: entryRuleXParenthesizedExpression returns [EObject current=null] : iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF ;
+    // InternalMirBase.g:2969:1: entryRuleXParenthesizedExpression returns [EObject current=null] : iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF ;
     public final EObject entryRuleXParenthesizedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8323,8 +8390,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2942:65: (iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF )
-            // InternalMirBase.g:2943:2: iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF
+            // InternalMirBase.g:2969:65: (iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF )
+            // InternalMirBase.g:2970:2: iv_ruleXParenthesizedExpression= ruleXParenthesizedExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXParenthesizedExpressionRule()); 
@@ -8355,7 +8422,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXParenthesizedExpression"
-    // InternalMirBase.g:2949:1: ruleXParenthesizedExpression returns [EObject current=null] : (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' ) ;
+    // InternalMirBase.g:2976:1: ruleXParenthesizedExpression returns [EObject current=null] : (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' ) ;
     public final EObject ruleXParenthesizedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8368,11 +8435,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2955:2: ( (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' ) )
-            // InternalMirBase.g:2956:2: (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' )
+            // InternalMirBase.g:2982:2: ( (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' ) )
+            // InternalMirBase.g:2983:2: (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' )
             {
-            // InternalMirBase.g:2956:2: (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' )
-            // InternalMirBase.g:2957:3: otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')'
+            // InternalMirBase.g:2983:2: (otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')' )
+            // InternalMirBase.g:2984:3: otherlv_0= '(' this_XExpression_1= ruleXExpression otherlv_2= ')'
             {
             otherlv_0=(Token)match(input,51,FOLLOW_9); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -8427,7 +8494,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXIfExpression"
-    // InternalMirBase.g:2977:1: entryRuleXIfExpression returns [EObject current=null] : iv_ruleXIfExpression= ruleXIfExpression EOF ;
+    // InternalMirBase.g:3004:1: entryRuleXIfExpression returns [EObject current=null] : iv_ruleXIfExpression= ruleXIfExpression EOF ;
     public final EObject entryRuleXIfExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8435,8 +8502,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:2977:54: (iv_ruleXIfExpression= ruleXIfExpression EOF )
-            // InternalMirBase.g:2978:2: iv_ruleXIfExpression= ruleXIfExpression EOF
+            // InternalMirBase.g:3004:54: (iv_ruleXIfExpression= ruleXIfExpression EOF )
+            // InternalMirBase.g:3005:2: iv_ruleXIfExpression= ruleXIfExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXIfExpressionRule()); 
@@ -8467,7 +8534,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXIfExpression"
-    // InternalMirBase.g:2984:1: ruleXIfExpression returns [EObject current=null] : ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? ) ;
+    // InternalMirBase.g:3011:1: ruleXIfExpression returns [EObject current=null] : ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? ) ;
     public final EObject ruleXIfExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8486,14 +8553,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:2990:2: ( ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? ) )
-            // InternalMirBase.g:2991:2: ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? )
+            // InternalMirBase.g:3017:2: ( ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? ) )
+            // InternalMirBase.g:3018:2: ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? )
             {
-            // InternalMirBase.g:2991:2: ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? )
-            // InternalMirBase.g:2992:3: () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:3018:2: ( () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )? )
+            // InternalMirBase.g:3019:3: () otherlv_1= 'if' otherlv_2= '(' ( (lv_if_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_then_5_0= ruleXExpression ) ) ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )?
             {
-            // InternalMirBase.g:2992:3: ()
-            // InternalMirBase.g:2993:4: 
+            // InternalMirBase.g:3019:3: ()
+            // InternalMirBase.g:3020:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -8517,11 +8584,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXIfExpressionAccess().getLeftParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:3007:3: ( (lv_if_3_0= ruleXExpression ) )
-            // InternalMirBase.g:3008:4: (lv_if_3_0= ruleXExpression )
+            // InternalMirBase.g:3034:3: ( (lv_if_3_0= ruleXExpression ) )
+            // InternalMirBase.g:3035:4: (lv_if_3_0= ruleXExpression )
             {
-            // InternalMirBase.g:3008:4: (lv_if_3_0= ruleXExpression )
-            // InternalMirBase.g:3009:5: lv_if_3_0= ruleXExpression
+            // InternalMirBase.g:3035:4: (lv_if_3_0= ruleXExpression )
+            // InternalMirBase.g:3036:5: lv_if_3_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -8558,11 +8625,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_4, grammarAccess.getXIfExpressionAccess().getRightParenthesisKeyword_4());
               		
             }
-            // InternalMirBase.g:3030:3: ( (lv_then_5_0= ruleXExpression ) )
-            // InternalMirBase.g:3031:4: (lv_then_5_0= ruleXExpression )
+            // InternalMirBase.g:3057:3: ( (lv_then_5_0= ruleXExpression ) )
+            // InternalMirBase.g:3058:4: (lv_then_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:3031:4: (lv_then_5_0= ruleXExpression )
-            // InternalMirBase.g:3032:5: lv_then_5_0= ruleXExpression
+            // InternalMirBase.g:3058:4: (lv_then_5_0= ruleXExpression )
+            // InternalMirBase.g:3059:5: lv_then_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -8593,7 +8660,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3049:3: ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:3076:3: ( ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) ) )?
             int alt49=2;
             int LA49_0 = input.LA(1);
 
@@ -8606,10 +8673,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt49) {
                 case 1 :
-                    // InternalMirBase.g:3050:4: ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:3077:4: ( ( 'else' )=>otherlv_6= 'else' ) ( (lv_else_7_0= ruleXExpression ) )
                     {
-                    // InternalMirBase.g:3050:4: ( ( 'else' )=>otherlv_6= 'else' )
-                    // InternalMirBase.g:3051:5: ( 'else' )=>otherlv_6= 'else'
+                    // InternalMirBase.g:3077:4: ( ( 'else' )=>otherlv_6= 'else' )
+                    // InternalMirBase.g:3078:5: ( 'else' )=>otherlv_6= 'else'
                     {
                     otherlv_6=(Token)match(input,61,FOLLOW_9); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -8620,11 +8687,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:3057:4: ( (lv_else_7_0= ruleXExpression ) )
-                    // InternalMirBase.g:3058:5: (lv_else_7_0= ruleXExpression )
+                    // InternalMirBase.g:3084:4: ( (lv_else_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:3085:5: (lv_else_7_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3058:5: (lv_else_7_0= ruleXExpression )
-                    // InternalMirBase.g:3059:6: lv_else_7_0= ruleXExpression
+                    // InternalMirBase.g:3085:5: (lv_else_7_0= ruleXExpression )
+                    // InternalMirBase.g:3086:6: lv_else_7_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -8686,7 +8753,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXSwitchExpression"
-    // InternalMirBase.g:3081:1: entryRuleXSwitchExpression returns [EObject current=null] : iv_ruleXSwitchExpression= ruleXSwitchExpression EOF ;
+    // InternalMirBase.g:3108:1: entryRuleXSwitchExpression returns [EObject current=null] : iv_ruleXSwitchExpression= ruleXSwitchExpression EOF ;
     public final EObject entryRuleXSwitchExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8694,8 +8761,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3081:58: (iv_ruleXSwitchExpression= ruleXSwitchExpression EOF )
-            // InternalMirBase.g:3082:2: iv_ruleXSwitchExpression= ruleXSwitchExpression EOF
+            // InternalMirBase.g:3108:58: (iv_ruleXSwitchExpression= ruleXSwitchExpression EOF )
+            // InternalMirBase.g:3109:2: iv_ruleXSwitchExpression= ruleXSwitchExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXSwitchExpressionRule()); 
@@ -8726,7 +8793,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXSwitchExpression"
-    // InternalMirBase.g:3088:1: ruleXSwitchExpression returns [EObject current=null] : ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' ) ;
+    // InternalMirBase.g:3115:1: ruleXSwitchExpression returns [EObject current=null] : ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' ) ;
     public final EObject ruleXSwitchExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8756,14 +8823,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3094:2: ( ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' ) )
-            // InternalMirBase.g:3095:2: ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' )
+            // InternalMirBase.g:3121:2: ( ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' ) )
+            // InternalMirBase.g:3122:2: ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' )
             {
-            // InternalMirBase.g:3095:2: ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' )
-            // InternalMirBase.g:3096:3: () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}'
+            // InternalMirBase.g:3122:2: ( () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}' )
+            // InternalMirBase.g:3123:3: () otherlv_1= 'switch' ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) ) otherlv_10= '{' ( (lv_cases_11_0= ruleXCasePart ) )* (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )? otherlv_15= '}'
             {
-            // InternalMirBase.g:3096:3: ()
-            // InternalMirBase.g:3097:4: 
+            // InternalMirBase.g:3123:3: ()
+            // InternalMirBase.g:3124:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -8781,21 +8848,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXSwitchExpressionAccess().getSwitchKeyword_1());
               		
             }
-            // InternalMirBase.g:3107:3: ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:3134:3: ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) )
             int alt51=2;
             alt51 = dfa51.predict(input);
             switch (alt51) {
                 case 1 :
-                    // InternalMirBase.g:3108:4: ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' )
+                    // InternalMirBase.g:3135:4: ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' )
                     {
-                    // InternalMirBase.g:3108:4: ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' )
-                    // InternalMirBase.g:3109:5: ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')'
+                    // InternalMirBase.g:3135:4: ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' )
+                    // InternalMirBase.g:3136:5: ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')'
                     {
-                    // InternalMirBase.g:3109:5: ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) )
-                    // InternalMirBase.g:3110:6: ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
+                    // InternalMirBase.g:3136:5: ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) )
+                    // InternalMirBase.g:3137:6: ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
                     {
-                    // InternalMirBase.g:3120:6: (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
-                    // InternalMirBase.g:3121:7: otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':'
+                    // InternalMirBase.g:3147:6: (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
+                    // InternalMirBase.g:3148:7: otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':'
                     {
                     otherlv_2=(Token)match(input,51,FOLLOW_18); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -8803,11 +8870,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       							newLeafNode(otherlv_2, grammarAccess.getXSwitchExpressionAccess().getLeftParenthesisKeyword_2_0_0_0_0());
                       						
                     }
-                    // InternalMirBase.g:3125:7: ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) )
-                    // InternalMirBase.g:3126:8: (lv_declaredParam_3_0= ruleJvmFormalParameter )
+                    // InternalMirBase.g:3152:7: ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) )
+                    // InternalMirBase.g:3153:8: (lv_declaredParam_3_0= ruleJvmFormalParameter )
                     {
-                    // InternalMirBase.g:3126:8: (lv_declaredParam_3_0= ruleJvmFormalParameter )
-                    // InternalMirBase.g:3127:9: lv_declaredParam_3_0= ruleJvmFormalParameter
+                    // InternalMirBase.g:3153:8: (lv_declaredParam_3_0= ruleJvmFormalParameter )
+                    // InternalMirBase.g:3154:9: lv_declaredParam_3_0= ruleJvmFormalParameter
                     {
                     if ( state.backtracking==0 ) {
 
@@ -8850,11 +8917,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:3150:5: ( (lv_switch_5_0= ruleXExpression ) )
-                    // InternalMirBase.g:3151:6: (lv_switch_5_0= ruleXExpression )
+                    // InternalMirBase.g:3177:5: ( (lv_switch_5_0= ruleXExpression ) )
+                    // InternalMirBase.g:3178:6: (lv_switch_5_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3151:6: (lv_switch_5_0= ruleXExpression )
-                    // InternalMirBase.g:3152:7: lv_switch_5_0= ruleXExpression
+                    // InternalMirBase.g:3178:6: (lv_switch_5_0= ruleXExpression )
+                    // InternalMirBase.g:3179:7: lv_switch_5_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -8898,26 +8965,26 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:3175:4: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:3202:4: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) )
                     {
-                    // InternalMirBase.g:3175:4: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) )
-                    // InternalMirBase.g:3176:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) )
+                    // InternalMirBase.g:3202:4: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:3203:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) )
                     {
-                    // InternalMirBase.g:3176:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )?
+                    // InternalMirBase.g:3203:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )?
                     int alt50=2;
                     alt50 = dfa50.predict(input);
                     switch (alt50) {
                         case 1 :
-                            // InternalMirBase.g:3177:6: ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' )
+                            // InternalMirBase.g:3204:6: ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' )
                             {
-                            // InternalMirBase.g:3186:6: ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' )
-                            // InternalMirBase.g:3187:7: ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':'
+                            // InternalMirBase.g:3213:6: ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' )
+                            // InternalMirBase.g:3214:7: ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':'
                             {
-                            // InternalMirBase.g:3187:7: ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) )
-                            // InternalMirBase.g:3188:8: (lv_declaredParam_7_0= ruleJvmFormalParameter )
+                            // InternalMirBase.g:3214:7: ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) )
+                            // InternalMirBase.g:3215:8: (lv_declaredParam_7_0= ruleJvmFormalParameter )
                             {
-                            // InternalMirBase.g:3188:8: (lv_declaredParam_7_0= ruleJvmFormalParameter )
-                            // InternalMirBase.g:3189:9: lv_declaredParam_7_0= ruleJvmFormalParameter
+                            // InternalMirBase.g:3215:8: (lv_declaredParam_7_0= ruleJvmFormalParameter )
+                            // InternalMirBase.g:3216:9: lv_declaredParam_7_0= ruleJvmFormalParameter
                             {
                             if ( state.backtracking==0 ) {
 
@@ -8963,11 +9030,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:3212:5: ( (lv_switch_9_0= ruleXExpression ) )
-                    // InternalMirBase.g:3213:6: (lv_switch_9_0= ruleXExpression )
+                    // InternalMirBase.g:3239:5: ( (lv_switch_9_0= ruleXExpression ) )
+                    // InternalMirBase.g:3240:6: (lv_switch_9_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3213:6: (lv_switch_9_0= ruleXExpression )
-                    // InternalMirBase.g:3214:7: lv_switch_9_0= ruleXExpression
+                    // InternalMirBase.g:3240:6: (lv_switch_9_0= ruleXExpression )
+                    // InternalMirBase.g:3241:7: lv_switch_9_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9013,7 +9080,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_10, grammarAccess.getXSwitchExpressionAccess().getLeftCurlyBracketKeyword_3());
               		
             }
-            // InternalMirBase.g:3237:3: ( (lv_cases_11_0= ruleXCasePart ) )*
+            // InternalMirBase.g:3264:3: ( (lv_cases_11_0= ruleXCasePart ) )*
             loop52:
             do {
                 int alt52=2;
@@ -9026,10 +9093,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt52) {
             	case 1 :
-            	    // InternalMirBase.g:3238:4: (lv_cases_11_0= ruleXCasePart )
+            	    // InternalMirBase.g:3265:4: (lv_cases_11_0= ruleXCasePart )
             	    {
-            	    // InternalMirBase.g:3238:4: (lv_cases_11_0= ruleXCasePart )
-            	    // InternalMirBase.g:3239:5: lv_cases_11_0= ruleXCasePart
+            	    // InternalMirBase.g:3265:4: (lv_cases_11_0= ruleXCasePart )
+            	    // InternalMirBase.g:3266:5: lv_cases_11_0= ruleXCasePart
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -9066,7 +9133,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            // InternalMirBase.g:3256:3: (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:3283:3: (otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) ) )?
             int alt53=2;
             int LA53_0 = input.LA(1);
 
@@ -9075,7 +9142,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt53) {
                 case 1 :
-                    // InternalMirBase.g:3257:4: otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) )
+                    // InternalMirBase.g:3284:4: otherlv_12= 'default' otherlv_13= ':' ( (lv_default_14_0= ruleXExpression ) )
                     {
                     otherlv_12=(Token)match(input,64,FOLLOW_52); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -9089,11 +9156,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_13, grammarAccess.getXSwitchExpressionAccess().getColonKeyword_5_1());
                       			
                     }
-                    // InternalMirBase.g:3265:4: ( (lv_default_14_0= ruleXExpression ) )
-                    // InternalMirBase.g:3266:5: (lv_default_14_0= ruleXExpression )
+                    // InternalMirBase.g:3292:4: ( (lv_default_14_0= ruleXExpression ) )
+                    // InternalMirBase.g:3293:5: (lv_default_14_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3266:5: (lv_default_14_0= ruleXExpression )
-                    // InternalMirBase.g:3267:6: lv_default_14_0= ruleXExpression
+                    // InternalMirBase.g:3293:5: (lv_default_14_0= ruleXExpression )
+                    // InternalMirBase.g:3294:6: lv_default_14_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9161,7 +9228,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXCasePart"
-    // InternalMirBase.g:3293:1: entryRuleXCasePart returns [EObject current=null] : iv_ruleXCasePart= ruleXCasePart EOF ;
+    // InternalMirBase.g:3320:1: entryRuleXCasePart returns [EObject current=null] : iv_ruleXCasePart= ruleXCasePart EOF ;
     public final EObject entryRuleXCasePart() throws RecognitionException {
         EObject current = null;
 
@@ -9169,8 +9236,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3293:50: (iv_ruleXCasePart= ruleXCasePart EOF )
-            // InternalMirBase.g:3294:2: iv_ruleXCasePart= ruleXCasePart EOF
+            // InternalMirBase.g:3320:50: (iv_ruleXCasePart= ruleXCasePart EOF )
+            // InternalMirBase.g:3321:2: iv_ruleXCasePart= ruleXCasePart EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXCasePartRule()); 
@@ -9201,7 +9268,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXCasePart"
-    // InternalMirBase.g:3300:1: ruleXCasePart returns [EObject current=null] : ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) ) ;
+    // InternalMirBase.g:3327:1: ruleXCasePart returns [EObject current=null] : ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) ) ;
     public final EObject ruleXCasePart() throws RecognitionException {
         EObject current = null;
 
@@ -9219,14 +9286,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3306:2: ( ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) ) )
-            // InternalMirBase.g:3307:2: ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) )
+            // InternalMirBase.g:3333:2: ( ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) ) )
+            // InternalMirBase.g:3334:2: ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) )
             {
-            // InternalMirBase.g:3307:2: ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) )
-            // InternalMirBase.g:3308:3: () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) )
+            // InternalMirBase.g:3334:2: ( () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) ) )
+            // InternalMirBase.g:3335:3: () ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )? (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )? ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) )
             {
-            // InternalMirBase.g:3308:3: ()
-            // InternalMirBase.g:3309:4: 
+            // InternalMirBase.g:3335:3: ()
+            // InternalMirBase.g:3336:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -9238,7 +9305,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3315:3: ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )?
+            // InternalMirBase.g:3342:3: ( (lv_typeGuard_1_0= ruleJvmTypeReference ) )?
             int alt54=2;
             int LA54_0 = input.LA(1);
 
@@ -9247,10 +9314,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt54) {
                 case 1 :
-                    // InternalMirBase.g:3316:4: (lv_typeGuard_1_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:3343:4: (lv_typeGuard_1_0= ruleJvmTypeReference )
                     {
-                    // InternalMirBase.g:3316:4: (lv_typeGuard_1_0= ruleJvmTypeReference )
-                    // InternalMirBase.g:3317:5: lv_typeGuard_1_0= ruleJvmTypeReference
+                    // InternalMirBase.g:3343:4: (lv_typeGuard_1_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:3344:5: lv_typeGuard_1_0= ruleJvmTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9284,7 +9351,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3334:3: (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:3361:3: (otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) ) )?
             int alt55=2;
             int LA55_0 = input.LA(1);
 
@@ -9293,7 +9360,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt55) {
                 case 1 :
-                    // InternalMirBase.g:3335:4: otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) )
+                    // InternalMirBase.g:3362:4: otherlv_2= 'case' ( (lv_case_3_0= ruleXExpression ) )
                     {
                     otherlv_2=(Token)match(input,65,FOLLOW_9); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -9301,11 +9368,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_2, grammarAccess.getXCasePartAccess().getCaseKeyword_2_0());
                       			
                     }
-                    // InternalMirBase.g:3339:4: ( (lv_case_3_0= ruleXExpression ) )
-                    // InternalMirBase.g:3340:5: (lv_case_3_0= ruleXExpression )
+                    // InternalMirBase.g:3366:4: ( (lv_case_3_0= ruleXExpression ) )
+                    // InternalMirBase.g:3367:5: (lv_case_3_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3340:5: (lv_case_3_0= ruleXExpression )
-                    // InternalMirBase.g:3341:6: lv_case_3_0= ruleXExpression
+                    // InternalMirBase.g:3367:5: (lv_case_3_0= ruleXExpression )
+                    // InternalMirBase.g:3368:6: lv_case_3_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9342,7 +9409,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3359:3: ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) )
+            // InternalMirBase.g:3386:3: ( (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) ) | ( (lv_fallThrough_6_0= ',' ) ) )
             int alt56=2;
             int LA56_0 = input.LA(1);
 
@@ -9361,10 +9428,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt56) {
                 case 1 :
-                    // InternalMirBase.g:3360:4: (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:3387:4: (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) )
                     {
-                    // InternalMirBase.g:3360:4: (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) )
-                    // InternalMirBase.g:3361:5: otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) )
+                    // InternalMirBase.g:3387:4: (otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:3388:5: otherlv_4= ':' ( (lv_then_5_0= ruleXExpression ) )
                     {
                     otherlv_4=(Token)match(input,63,FOLLOW_9); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -9372,11 +9439,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       					newLeafNode(otherlv_4, grammarAccess.getXCasePartAccess().getColonKeyword_3_0_0());
                       				
                     }
-                    // InternalMirBase.g:3365:5: ( (lv_then_5_0= ruleXExpression ) )
-                    // InternalMirBase.g:3366:6: (lv_then_5_0= ruleXExpression )
+                    // InternalMirBase.g:3392:5: ( (lv_then_5_0= ruleXExpression ) )
+                    // InternalMirBase.g:3393:6: (lv_then_5_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3366:6: (lv_then_5_0= ruleXExpression )
-                    // InternalMirBase.g:3367:7: lv_then_5_0= ruleXExpression
+                    // InternalMirBase.g:3393:6: (lv_then_5_0= ruleXExpression )
+                    // InternalMirBase.g:3394:7: lv_then_5_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9414,13 +9481,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:3386:4: ( (lv_fallThrough_6_0= ',' ) )
+                    // InternalMirBase.g:3413:4: ( (lv_fallThrough_6_0= ',' ) )
                     {
-                    // InternalMirBase.g:3386:4: ( (lv_fallThrough_6_0= ',' ) )
-                    // InternalMirBase.g:3387:5: (lv_fallThrough_6_0= ',' )
+                    // InternalMirBase.g:3413:4: ( (lv_fallThrough_6_0= ',' ) )
+                    // InternalMirBase.g:3414:5: (lv_fallThrough_6_0= ',' )
                     {
-                    // InternalMirBase.g:3387:5: (lv_fallThrough_6_0= ',' )
-                    // InternalMirBase.g:3388:6: lv_fallThrough_6_0= ','
+                    // InternalMirBase.g:3414:5: (lv_fallThrough_6_0= ',' )
+                    // InternalMirBase.g:3415:6: lv_fallThrough_6_0= ','
                     {
                     lv_fallThrough_6_0=(Token)match(input,50,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -9473,7 +9540,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXForLoopExpression"
-    // InternalMirBase.g:3405:1: entryRuleXForLoopExpression returns [EObject current=null] : iv_ruleXForLoopExpression= ruleXForLoopExpression EOF ;
+    // InternalMirBase.g:3432:1: entryRuleXForLoopExpression returns [EObject current=null] : iv_ruleXForLoopExpression= ruleXForLoopExpression EOF ;
     public final EObject entryRuleXForLoopExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9481,8 +9548,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3405:59: (iv_ruleXForLoopExpression= ruleXForLoopExpression EOF )
-            // InternalMirBase.g:3406:2: iv_ruleXForLoopExpression= ruleXForLoopExpression EOF
+            // InternalMirBase.g:3432:59: (iv_ruleXForLoopExpression= ruleXForLoopExpression EOF )
+            // InternalMirBase.g:3433:2: iv_ruleXForLoopExpression= ruleXForLoopExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXForLoopExpressionRule()); 
@@ -9513,7 +9580,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXForLoopExpression"
-    // InternalMirBase.g:3412:1: ruleXForLoopExpression returns [EObject current=null] : ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:3439:1: ruleXForLoopExpression returns [EObject current=null] : ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) ) ;
     public final EObject ruleXForLoopExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9532,20 +9599,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3418:2: ( ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:3419:2: ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3445:2: ( ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:3446:2: ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:3419:2: ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) )
-            // InternalMirBase.g:3420:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) )
+            // InternalMirBase.g:3446:2: ( ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3447:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_forExpression_5_0= ruleXExpression ) ) otherlv_6= ')' ( (lv_eachExpression_7_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:3420:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) )
-            // InternalMirBase.g:3421:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
+            // InternalMirBase.g:3447:3: ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) )
+            // InternalMirBase.g:3448:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
             {
-            // InternalMirBase.g:3434:4: ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
-            // InternalMirBase.g:3435:5: () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':'
+            // InternalMirBase.g:3461:4: ( () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' )
+            // InternalMirBase.g:3462:5: () otherlv_1= 'for' otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':'
             {
-            // InternalMirBase.g:3435:5: ()
-            // InternalMirBase.g:3436:6: 
+            // InternalMirBase.g:3462:5: ()
+            // InternalMirBase.g:3463:6: 
             {
             if ( state.backtracking==0 ) {
 
@@ -9569,11 +9636,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               					newLeafNode(otherlv_2, grammarAccess.getXForLoopExpressionAccess().getLeftParenthesisKeyword_0_0_2());
               				
             }
-            // InternalMirBase.g:3450:5: ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) )
-            // InternalMirBase.g:3451:6: (lv_declaredParam_3_0= ruleJvmFormalParameter )
+            // InternalMirBase.g:3477:5: ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) )
+            // InternalMirBase.g:3478:6: (lv_declaredParam_3_0= ruleJvmFormalParameter )
             {
-            // InternalMirBase.g:3451:6: (lv_declaredParam_3_0= ruleJvmFormalParameter )
-            // InternalMirBase.g:3452:7: lv_declaredParam_3_0= ruleJvmFormalParameter
+            // InternalMirBase.g:3478:6: (lv_declaredParam_3_0= ruleJvmFormalParameter )
+            // InternalMirBase.g:3479:7: lv_declaredParam_3_0= ruleJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
 
@@ -9616,11 +9683,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3475:3: ( (lv_forExpression_5_0= ruleXExpression ) )
-            // InternalMirBase.g:3476:4: (lv_forExpression_5_0= ruleXExpression )
+            // InternalMirBase.g:3502:3: ( (lv_forExpression_5_0= ruleXExpression ) )
+            // InternalMirBase.g:3503:4: (lv_forExpression_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:3476:4: (lv_forExpression_5_0= ruleXExpression )
-            // InternalMirBase.g:3477:5: lv_forExpression_5_0= ruleXExpression
+            // InternalMirBase.g:3503:4: (lv_forExpression_5_0= ruleXExpression )
+            // InternalMirBase.g:3504:5: lv_forExpression_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -9657,11 +9724,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_6, grammarAccess.getXForLoopExpressionAccess().getRightParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:3498:3: ( (lv_eachExpression_7_0= ruleXExpression ) )
-            // InternalMirBase.g:3499:4: (lv_eachExpression_7_0= ruleXExpression )
+            // InternalMirBase.g:3525:3: ( (lv_eachExpression_7_0= ruleXExpression ) )
+            // InternalMirBase.g:3526:4: (lv_eachExpression_7_0= ruleXExpression )
             {
-            // InternalMirBase.g:3499:4: (lv_eachExpression_7_0= ruleXExpression )
-            // InternalMirBase.g:3500:5: lv_eachExpression_7_0= ruleXExpression
+            // InternalMirBase.g:3526:4: (lv_eachExpression_7_0= ruleXExpression )
+            // InternalMirBase.g:3527:5: lv_eachExpression_7_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -9717,7 +9784,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXBasicForLoopExpression"
-    // InternalMirBase.g:3521:1: entryRuleXBasicForLoopExpression returns [EObject current=null] : iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF ;
+    // InternalMirBase.g:3548:1: entryRuleXBasicForLoopExpression returns [EObject current=null] : iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF ;
     public final EObject entryRuleXBasicForLoopExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9725,8 +9792,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3521:64: (iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF )
-            // InternalMirBase.g:3522:2: iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF
+            // InternalMirBase.g:3548:64: (iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF )
+            // InternalMirBase.g:3549:2: iv_ruleXBasicForLoopExpression= ruleXBasicForLoopExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXBasicForLoopExpressionRule()); 
@@ -9757,7 +9824,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXBasicForLoopExpression"
-    // InternalMirBase.g:3528:1: ruleXBasicForLoopExpression returns [EObject current=null] : ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:3555:1: ruleXBasicForLoopExpression returns [EObject current=null] : ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) ) ;
     public final EObject ruleXBasicForLoopExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9785,14 +9852,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3534:2: ( ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:3535:2: ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3561:2: ( ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:3562:2: ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:3535:2: ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) )
-            // InternalMirBase.g:3536:3: () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) )
+            // InternalMirBase.g:3562:2: ( () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3563:3: () otherlv_1= 'for' otherlv_2= '(' ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )? otherlv_6= ';' ( (lv_expression_7_0= ruleXExpression ) )? otherlv_8= ';' ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )? otherlv_12= ')' ( (lv_eachExpression_13_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:3536:3: ()
-            // InternalMirBase.g:3537:4: 
+            // InternalMirBase.g:3563:3: ()
+            // InternalMirBase.g:3564:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -9816,7 +9883,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXBasicForLoopExpressionAccess().getLeftParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:3551:3: ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )?
+            // InternalMirBase.g:3578:3: ( ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )* )?
             int alt58=2;
             int LA58_0 = input.LA(1);
 
@@ -9825,13 +9892,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt58) {
                 case 1 :
-                    // InternalMirBase.g:3552:4: ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )*
+                    // InternalMirBase.g:3579:4: ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )*
                     {
-                    // InternalMirBase.g:3552:4: ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) )
-                    // InternalMirBase.g:3553:5: (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration )
+                    // InternalMirBase.g:3579:4: ( (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration ) )
+                    // InternalMirBase.g:3580:5: (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration )
                     {
-                    // InternalMirBase.g:3553:5: (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration )
-                    // InternalMirBase.g:3554:6: lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration
+                    // InternalMirBase.g:3580:5: (lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration )
+                    // InternalMirBase.g:3581:6: lv_initExpressions_3_0= ruleXExpressionOrVarDeclaration
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9862,7 +9929,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:3571:4: (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )*
+                    // InternalMirBase.g:3598:4: (otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) ) )*
                     loop57:
                     do {
                         int alt57=2;
@@ -9875,7 +9942,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt57) {
                     	case 1 :
-                    	    // InternalMirBase.g:3572:5: otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) )
+                    	    // InternalMirBase.g:3599:5: otherlv_4= ',' ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) )
                     	    {
                     	    otherlv_4=(Token)match(input,50,FOLLOW_59); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -9883,11 +9950,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_4, grammarAccess.getXBasicForLoopExpressionAccess().getCommaKeyword_3_1_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:3576:5: ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) )
-                    	    // InternalMirBase.g:3577:6: (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration )
+                    	    // InternalMirBase.g:3603:5: ( (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration ) )
+                    	    // InternalMirBase.g:3604:6: (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration )
                     	    {
-                    	    // InternalMirBase.g:3577:6: (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration )
-                    	    // InternalMirBase.g:3578:7: lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration
+                    	    // InternalMirBase.g:3604:6: (lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration )
+                    	    // InternalMirBase.g:3605:7: lv_initExpressions_5_0= ruleXExpressionOrVarDeclaration
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -9939,7 +10006,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_6, grammarAccess.getXBasicForLoopExpressionAccess().getSemicolonKeyword_4());
               		
             }
-            // InternalMirBase.g:3601:3: ( (lv_expression_7_0= ruleXExpression ) )?
+            // InternalMirBase.g:3628:3: ( (lv_expression_7_0= ruleXExpression ) )?
             int alt59=2;
             int LA59_0 = input.LA(1);
 
@@ -9948,10 +10015,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt59) {
                 case 1 :
-                    // InternalMirBase.g:3602:4: (lv_expression_7_0= ruleXExpression )
+                    // InternalMirBase.g:3629:4: (lv_expression_7_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3602:4: (lv_expression_7_0= ruleXExpression )
-                    // InternalMirBase.g:3603:5: lv_expression_7_0= ruleXExpression
+                    // InternalMirBase.g:3629:4: (lv_expression_7_0= ruleXExpression )
+                    // InternalMirBase.g:3630:5: lv_expression_7_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -9991,7 +10058,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_8, grammarAccess.getXBasicForLoopExpressionAccess().getSemicolonKeyword_6());
               		
             }
-            // InternalMirBase.g:3624:3: ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )?
+            // InternalMirBase.g:3651:3: ( ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )* )?
             int alt61=2;
             int LA61_0 = input.LA(1);
 
@@ -10000,13 +10067,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt61) {
                 case 1 :
-                    // InternalMirBase.g:3625:4: ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:3652:4: ( (lv_updateExpressions_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )*
                     {
-                    // InternalMirBase.g:3625:4: ( (lv_updateExpressions_9_0= ruleXExpression ) )
-                    // InternalMirBase.g:3626:5: (lv_updateExpressions_9_0= ruleXExpression )
+                    // InternalMirBase.g:3652:4: ( (lv_updateExpressions_9_0= ruleXExpression ) )
+                    // InternalMirBase.g:3653:5: (lv_updateExpressions_9_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:3626:5: (lv_updateExpressions_9_0= ruleXExpression )
-                    // InternalMirBase.g:3627:6: lv_updateExpressions_9_0= ruleXExpression
+                    // InternalMirBase.g:3653:5: (lv_updateExpressions_9_0= ruleXExpression )
+                    // InternalMirBase.g:3654:6: lv_updateExpressions_9_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -10037,7 +10104,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:3644:4: (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )*
+                    // InternalMirBase.g:3671:4: (otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) ) )*
                     loop60:
                     do {
                         int alt60=2;
@@ -10050,7 +10117,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt60) {
                     	case 1 :
-                    	    // InternalMirBase.g:3645:5: otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:3672:5: otherlv_10= ',' ( (lv_updateExpressions_11_0= ruleXExpression ) )
                     	    {
                     	    otherlv_10=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -10058,11 +10125,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_10, grammarAccess.getXBasicForLoopExpressionAccess().getCommaKeyword_7_1_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:3649:5: ( (lv_updateExpressions_11_0= ruleXExpression ) )
-                    	    // InternalMirBase.g:3650:6: (lv_updateExpressions_11_0= ruleXExpression )
+                    	    // InternalMirBase.g:3676:5: ( (lv_updateExpressions_11_0= ruleXExpression ) )
+                    	    // InternalMirBase.g:3677:6: (lv_updateExpressions_11_0= ruleXExpression )
                     	    {
-                    	    // InternalMirBase.g:3650:6: (lv_updateExpressions_11_0= ruleXExpression )
-                    	    // InternalMirBase.g:3651:7: lv_updateExpressions_11_0= ruleXExpression
+                    	    // InternalMirBase.g:3677:6: (lv_updateExpressions_11_0= ruleXExpression )
+                    	    // InternalMirBase.g:3678:7: lv_updateExpressions_11_0= ruleXExpression
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -10114,11 +10181,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_12, grammarAccess.getXBasicForLoopExpressionAccess().getRightParenthesisKeyword_8());
               		
             }
-            // InternalMirBase.g:3674:3: ( (lv_eachExpression_13_0= ruleXExpression ) )
-            // InternalMirBase.g:3675:4: (lv_eachExpression_13_0= ruleXExpression )
+            // InternalMirBase.g:3701:3: ( (lv_eachExpression_13_0= ruleXExpression ) )
+            // InternalMirBase.g:3702:4: (lv_eachExpression_13_0= ruleXExpression )
             {
-            // InternalMirBase.g:3675:4: (lv_eachExpression_13_0= ruleXExpression )
-            // InternalMirBase.g:3676:5: lv_eachExpression_13_0= ruleXExpression
+            // InternalMirBase.g:3702:4: (lv_eachExpression_13_0= ruleXExpression )
+            // InternalMirBase.g:3703:5: lv_eachExpression_13_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -10174,7 +10241,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXWhileExpression"
-    // InternalMirBase.g:3697:1: entryRuleXWhileExpression returns [EObject current=null] : iv_ruleXWhileExpression= ruleXWhileExpression EOF ;
+    // InternalMirBase.g:3724:1: entryRuleXWhileExpression returns [EObject current=null] : iv_ruleXWhileExpression= ruleXWhileExpression EOF ;
     public final EObject entryRuleXWhileExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10182,8 +10249,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3697:57: (iv_ruleXWhileExpression= ruleXWhileExpression EOF )
-            // InternalMirBase.g:3698:2: iv_ruleXWhileExpression= ruleXWhileExpression EOF
+            // InternalMirBase.g:3724:57: (iv_ruleXWhileExpression= ruleXWhileExpression EOF )
+            // InternalMirBase.g:3725:2: iv_ruleXWhileExpression= ruleXWhileExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXWhileExpressionRule()); 
@@ -10214,7 +10281,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXWhileExpression"
-    // InternalMirBase.g:3704:1: ruleXWhileExpression returns [EObject current=null] : ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:3731:1: ruleXWhileExpression returns [EObject current=null] : ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) ) ;
     public final EObject ruleXWhileExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10230,14 +10297,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3710:2: ( ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:3711:2: ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3737:2: ( ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:3738:2: ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:3711:2: ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) )
-            // InternalMirBase.g:3712:3: () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) )
+            // InternalMirBase.g:3738:2: ( () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:3739:3: () otherlv_1= 'while' otherlv_2= '(' ( (lv_predicate_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_body_5_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:3712:3: ()
-            // InternalMirBase.g:3713:4: 
+            // InternalMirBase.g:3739:3: ()
+            // InternalMirBase.g:3740:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -10261,11 +10328,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXWhileExpressionAccess().getLeftParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:3727:3: ( (lv_predicate_3_0= ruleXExpression ) )
-            // InternalMirBase.g:3728:4: (lv_predicate_3_0= ruleXExpression )
+            // InternalMirBase.g:3754:3: ( (lv_predicate_3_0= ruleXExpression ) )
+            // InternalMirBase.g:3755:4: (lv_predicate_3_0= ruleXExpression )
             {
-            // InternalMirBase.g:3728:4: (lv_predicate_3_0= ruleXExpression )
-            // InternalMirBase.g:3729:5: lv_predicate_3_0= ruleXExpression
+            // InternalMirBase.g:3755:4: (lv_predicate_3_0= ruleXExpression )
+            // InternalMirBase.g:3756:5: lv_predicate_3_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -10302,11 +10369,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_4, grammarAccess.getXWhileExpressionAccess().getRightParenthesisKeyword_4());
               		
             }
-            // InternalMirBase.g:3750:3: ( (lv_body_5_0= ruleXExpression ) )
-            // InternalMirBase.g:3751:4: (lv_body_5_0= ruleXExpression )
+            // InternalMirBase.g:3777:3: ( (lv_body_5_0= ruleXExpression ) )
+            // InternalMirBase.g:3778:4: (lv_body_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:3751:4: (lv_body_5_0= ruleXExpression )
-            // InternalMirBase.g:3752:5: lv_body_5_0= ruleXExpression
+            // InternalMirBase.g:3778:4: (lv_body_5_0= ruleXExpression )
+            // InternalMirBase.g:3779:5: lv_body_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -10362,7 +10429,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXDoWhileExpression"
-    // InternalMirBase.g:3773:1: entryRuleXDoWhileExpression returns [EObject current=null] : iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF ;
+    // InternalMirBase.g:3800:1: entryRuleXDoWhileExpression returns [EObject current=null] : iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF ;
     public final EObject entryRuleXDoWhileExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10370,8 +10437,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3773:59: (iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF )
-            // InternalMirBase.g:3774:2: iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF
+            // InternalMirBase.g:3800:59: (iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF )
+            // InternalMirBase.g:3801:2: iv_ruleXDoWhileExpression= ruleXDoWhileExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXDoWhileExpressionRule()); 
@@ -10402,7 +10469,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXDoWhileExpression"
-    // InternalMirBase.g:3780:1: ruleXDoWhileExpression returns [EObject current=null] : ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' ) ;
+    // InternalMirBase.g:3807:1: ruleXDoWhileExpression returns [EObject current=null] : ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' ) ;
     public final EObject ruleXDoWhileExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10419,14 +10486,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3786:2: ( ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' ) )
-            // InternalMirBase.g:3787:2: ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' )
+            // InternalMirBase.g:3813:2: ( ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' ) )
+            // InternalMirBase.g:3814:2: ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' )
             {
-            // InternalMirBase.g:3787:2: ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' )
-            // InternalMirBase.g:3788:3: () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')'
+            // InternalMirBase.g:3814:2: ( () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')' )
+            // InternalMirBase.g:3815:3: () otherlv_1= 'do' ( (lv_body_2_0= ruleXExpression ) ) otherlv_3= 'while' otherlv_4= '(' ( (lv_predicate_5_0= ruleXExpression ) ) otherlv_6= ')'
             {
-            // InternalMirBase.g:3788:3: ()
-            // InternalMirBase.g:3789:4: 
+            // InternalMirBase.g:3815:3: ()
+            // InternalMirBase.g:3816:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -10444,11 +10511,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXDoWhileExpressionAccess().getDoKeyword_1());
               		
             }
-            // InternalMirBase.g:3799:3: ( (lv_body_2_0= ruleXExpression ) )
-            // InternalMirBase.g:3800:4: (lv_body_2_0= ruleXExpression )
+            // InternalMirBase.g:3826:3: ( (lv_body_2_0= ruleXExpression ) )
+            // InternalMirBase.g:3827:4: (lv_body_2_0= ruleXExpression )
             {
-            // InternalMirBase.g:3800:4: (lv_body_2_0= ruleXExpression )
-            // InternalMirBase.g:3801:5: lv_body_2_0= ruleXExpression
+            // InternalMirBase.g:3827:4: (lv_body_2_0= ruleXExpression )
+            // InternalMirBase.g:3828:5: lv_body_2_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -10491,11 +10558,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_4, grammarAccess.getXDoWhileExpressionAccess().getLeftParenthesisKeyword_4());
               		
             }
-            // InternalMirBase.g:3826:3: ( (lv_predicate_5_0= ruleXExpression ) )
-            // InternalMirBase.g:3827:4: (lv_predicate_5_0= ruleXExpression )
+            // InternalMirBase.g:3853:3: ( (lv_predicate_5_0= ruleXExpression ) )
+            // InternalMirBase.g:3854:4: (lv_predicate_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:3827:4: (lv_predicate_5_0= ruleXExpression )
-            // InternalMirBase.g:3828:5: lv_predicate_5_0= ruleXExpression
+            // InternalMirBase.g:3854:4: (lv_predicate_5_0= ruleXExpression )
+            // InternalMirBase.g:3855:5: lv_predicate_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -10557,7 +10624,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXBlockExpression"
-    // InternalMirBase.g:3853:1: entryRuleXBlockExpression returns [EObject current=null] : iv_ruleXBlockExpression= ruleXBlockExpression EOF ;
+    // InternalMirBase.g:3880:1: entryRuleXBlockExpression returns [EObject current=null] : iv_ruleXBlockExpression= ruleXBlockExpression EOF ;
     public final EObject entryRuleXBlockExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10565,8 +10632,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3853:57: (iv_ruleXBlockExpression= ruleXBlockExpression EOF )
-            // InternalMirBase.g:3854:2: iv_ruleXBlockExpression= ruleXBlockExpression EOF
+            // InternalMirBase.g:3880:57: (iv_ruleXBlockExpression= ruleXBlockExpression EOF )
+            // InternalMirBase.g:3881:2: iv_ruleXBlockExpression= ruleXBlockExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXBlockExpressionRule()); 
@@ -10597,7 +10664,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXBlockExpression"
-    // InternalMirBase.g:3860:1: ruleXBlockExpression returns [EObject current=null] : ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' ) ;
+    // InternalMirBase.g:3887:1: ruleXBlockExpression returns [EObject current=null] : ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' ) ;
     public final EObject ruleXBlockExpression() throws RecognitionException {
         EObject current = null;
 
@@ -10611,14 +10678,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3866:2: ( ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' ) )
-            // InternalMirBase.g:3867:2: ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' )
+            // InternalMirBase.g:3893:2: ( ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' ) )
+            // InternalMirBase.g:3894:2: ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' )
             {
-            // InternalMirBase.g:3867:2: ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' )
-            // InternalMirBase.g:3868:3: () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}'
+            // InternalMirBase.g:3894:2: ( () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}' )
+            // InternalMirBase.g:3895:3: () otherlv_1= '{' ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )* otherlv_4= '}'
             {
-            // InternalMirBase.g:3868:3: ()
-            // InternalMirBase.g:3869:4: 
+            // InternalMirBase.g:3895:3: ()
+            // InternalMirBase.g:3896:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -10636,7 +10703,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXBlockExpressionAccess().getLeftCurlyBracketKeyword_1());
               		
             }
-            // InternalMirBase.g:3879:3: ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )*
+            // InternalMirBase.g:3906:3: ( ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )? )*
             loop63:
             do {
                 int alt63=2;
@@ -10649,13 +10716,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt63) {
             	case 1 :
-            	    // InternalMirBase.g:3880:4: ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )?
+            	    // InternalMirBase.g:3907:4: ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) ) (otherlv_3= ';' )?
             	    {
-            	    // InternalMirBase.g:3880:4: ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) )
-            	    // InternalMirBase.g:3881:5: (lv_expressions_2_0= ruleXExpressionOrVarDeclaration )
+            	    // InternalMirBase.g:3907:4: ( (lv_expressions_2_0= ruleXExpressionOrVarDeclaration ) )
+            	    // InternalMirBase.g:3908:5: (lv_expressions_2_0= ruleXExpressionOrVarDeclaration )
             	    {
-            	    // InternalMirBase.g:3881:5: (lv_expressions_2_0= ruleXExpressionOrVarDeclaration )
-            	    // InternalMirBase.g:3882:6: lv_expressions_2_0= ruleXExpressionOrVarDeclaration
+            	    // InternalMirBase.g:3908:5: (lv_expressions_2_0= ruleXExpressionOrVarDeclaration )
+            	    // InternalMirBase.g:3909:6: lv_expressions_2_0= ruleXExpressionOrVarDeclaration
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -10686,7 +10753,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMirBase.g:3899:4: (otherlv_3= ';' )?
+            	    // InternalMirBase.g:3926:4: (otherlv_3= ';' )?
             	    int alt62=2;
             	    int LA62_0 = input.LA(1);
 
@@ -10695,7 +10762,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt62) {
             	        case 1 :
-            	            // InternalMirBase.g:3900:5: otherlv_3= ';'
+            	            // InternalMirBase.g:3927:5: otherlv_3= ';'
             	            {
             	            otherlv_3=(Token)match(input,59,FOLLOW_64); if (state.failed) return current;
             	            if ( state.backtracking==0 ) {
@@ -10749,7 +10816,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXExpressionOrVarDeclaration"
-    // InternalMirBase.g:3914:1: entryRuleXExpressionOrVarDeclaration returns [EObject current=null] : iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF ;
+    // InternalMirBase.g:3941:1: entryRuleXExpressionOrVarDeclaration returns [EObject current=null] : iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF ;
     public final EObject entryRuleXExpressionOrVarDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -10757,8 +10824,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3914:68: (iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF )
-            // InternalMirBase.g:3915:2: iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF
+            // InternalMirBase.g:3941:68: (iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF )
+            // InternalMirBase.g:3942:2: iv_ruleXExpressionOrVarDeclaration= ruleXExpressionOrVarDeclaration EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXExpressionOrVarDeclarationRule()); 
@@ -10789,7 +10856,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXExpressionOrVarDeclaration"
-    // InternalMirBase.g:3921:1: ruleXExpressionOrVarDeclaration returns [EObject current=null] : (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression ) ;
+    // InternalMirBase.g:3948:1: ruleXExpressionOrVarDeclaration returns [EObject current=null] : (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression ) ;
     public final EObject ruleXExpressionOrVarDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -10802,10 +10869,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3927:2: ( (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression ) )
-            // InternalMirBase.g:3928:2: (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression )
+            // InternalMirBase.g:3954:2: ( (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression ) )
+            // InternalMirBase.g:3955:2: (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression )
             {
-            // InternalMirBase.g:3928:2: (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression )
+            // InternalMirBase.g:3955:2: (this_XVariableDeclaration_0= ruleXVariableDeclaration | this_XExpression_1= ruleXExpression )
             int alt64=2;
             int LA64_0 = input.LA(1);
 
@@ -10824,7 +10891,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt64) {
                 case 1 :
-                    // InternalMirBase.g:3929:3: this_XVariableDeclaration_0= ruleXVariableDeclaration
+                    // InternalMirBase.g:3956:3: this_XVariableDeclaration_0= ruleXVariableDeclaration
                     {
                     if ( state.backtracking==0 ) {
 
@@ -10846,7 +10913,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:3938:3: this_XExpression_1= ruleXExpression
+                    // InternalMirBase.g:3965:3: this_XExpression_1= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -10892,7 +10959,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXVariableDeclaration"
-    // InternalMirBase.g:3950:1: entryRuleXVariableDeclaration returns [EObject current=null] : iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF ;
+    // InternalMirBase.g:3977:1: entryRuleXVariableDeclaration returns [EObject current=null] : iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF ;
     public final EObject entryRuleXVariableDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -10900,8 +10967,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:3950:61: (iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF )
-            // InternalMirBase.g:3951:2: iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF
+            // InternalMirBase.g:3977:61: (iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF )
+            // InternalMirBase.g:3978:2: iv_ruleXVariableDeclaration= ruleXVariableDeclaration EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXVariableDeclarationRule()); 
@@ -10932,7 +10999,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXVariableDeclaration"
-    // InternalMirBase.g:3957:1: ruleXVariableDeclaration returns [EObject current=null] : ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) ;
+    // InternalMirBase.g:3984:1: ruleXVariableDeclaration returns [EObject current=null] : ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) ;
     public final EObject ruleXVariableDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -10952,14 +11019,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:3963:2: ( ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) )
-            // InternalMirBase.g:3964:2: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
+            // InternalMirBase.g:3990:2: ( ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? ) )
+            // InternalMirBase.g:3991:2: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
             {
-            // InternalMirBase.g:3964:2: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
-            // InternalMirBase.g:3965:3: () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:3991:2: ( () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )? )
+            // InternalMirBase.g:3992:3: () ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' ) ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) ) (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
             {
-            // InternalMirBase.g:3965:3: ()
-            // InternalMirBase.g:3966:4: 
+            // InternalMirBase.g:3992:3: ()
+            // InternalMirBase.g:3993:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -10971,7 +11038,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3972:3: ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' )
+            // InternalMirBase.g:3999:3: ( ( (lv_writeable_1_0= 'var' ) ) | otherlv_2= 'val' )
             int alt65=2;
             int LA65_0 = input.LA(1);
 
@@ -10990,13 +11057,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt65) {
                 case 1 :
-                    // InternalMirBase.g:3973:4: ( (lv_writeable_1_0= 'var' ) )
+                    // InternalMirBase.g:4000:4: ( (lv_writeable_1_0= 'var' ) )
                     {
-                    // InternalMirBase.g:3973:4: ( (lv_writeable_1_0= 'var' ) )
-                    // InternalMirBase.g:3974:5: (lv_writeable_1_0= 'var' )
+                    // InternalMirBase.g:4000:4: ( (lv_writeable_1_0= 'var' ) )
+                    // InternalMirBase.g:4001:5: (lv_writeable_1_0= 'var' )
                     {
-                    // InternalMirBase.g:3974:5: (lv_writeable_1_0= 'var' )
-                    // InternalMirBase.g:3975:6: lv_writeable_1_0= 'var'
+                    // InternalMirBase.g:4001:5: (lv_writeable_1_0= 'var' )
+                    // InternalMirBase.g:4002:6: lv_writeable_1_0= 'var'
                     {
                     lv_writeable_1_0=(Token)match(input,69,FOLLOW_18); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -11022,7 +11089,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:3988:4: otherlv_2= 'val'
+                    // InternalMirBase.g:4015:4: otherlv_2= 'val'
                     {
                     otherlv_2=(Token)match(input,70,FOLLOW_18); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -11036,7 +11103,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:3993:3: ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) )
+            // InternalMirBase.g:4020:3: ( ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) ) | ( (lv_name_5_0= ruleValidID ) ) )
             int alt66=2;
             int LA66_0 = input.LA(1);
 
@@ -11072,19 +11139,19 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt66) {
                 case 1 :
-                    // InternalMirBase.g:3994:4: ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) )
+                    // InternalMirBase.g:4021:4: ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) )
                     {
-                    // InternalMirBase.g:3994:4: ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) )
-                    // InternalMirBase.g:3995:5: ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) )
+                    // InternalMirBase.g:4021:4: ( ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) ) )
+                    // InternalMirBase.g:4022:5: ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )=> ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) )
                     {
-                    // InternalMirBase.g:4008:5: ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) )
-                    // InternalMirBase.g:4009:6: ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) )
+                    // InternalMirBase.g:4035:5: ( ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) ) )
+                    // InternalMirBase.g:4036:6: ( (lv_type_3_0= ruleJvmTypeReference ) ) ( (lv_name_4_0= ruleValidID ) )
                     {
-                    // InternalMirBase.g:4009:6: ( (lv_type_3_0= ruleJvmTypeReference ) )
-                    // InternalMirBase.g:4010:7: (lv_type_3_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:4036:6: ( (lv_type_3_0= ruleJvmTypeReference ) )
+                    // InternalMirBase.g:4037:7: (lv_type_3_0= ruleJvmTypeReference )
                     {
-                    // InternalMirBase.g:4010:7: (lv_type_3_0= ruleJvmTypeReference )
-                    // InternalMirBase.g:4011:8: lv_type_3_0= ruleJvmTypeReference
+                    // InternalMirBase.g:4037:7: (lv_type_3_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:4038:8: lv_type_3_0= ruleJvmTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11115,11 +11182,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4028:6: ( (lv_name_4_0= ruleValidID ) )
-                    // InternalMirBase.g:4029:7: (lv_name_4_0= ruleValidID )
+                    // InternalMirBase.g:4055:6: ( (lv_name_4_0= ruleValidID ) )
+                    // InternalMirBase.g:4056:7: (lv_name_4_0= ruleValidID )
                     {
-                    // InternalMirBase.g:4029:7: (lv_name_4_0= ruleValidID )
-                    // InternalMirBase.g:4030:8: lv_name_4_0= ruleValidID
+                    // InternalMirBase.g:4056:7: (lv_name_4_0= ruleValidID )
+                    // InternalMirBase.g:4057:8: lv_name_4_0= ruleValidID
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11160,13 +11227,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:4050:4: ( (lv_name_5_0= ruleValidID ) )
+                    // InternalMirBase.g:4077:4: ( (lv_name_5_0= ruleValidID ) )
                     {
-                    // InternalMirBase.g:4050:4: ( (lv_name_5_0= ruleValidID ) )
-                    // InternalMirBase.g:4051:5: (lv_name_5_0= ruleValidID )
+                    // InternalMirBase.g:4077:4: ( (lv_name_5_0= ruleValidID ) )
+                    // InternalMirBase.g:4078:5: (lv_name_5_0= ruleValidID )
                     {
-                    // InternalMirBase.g:4051:5: (lv_name_5_0= ruleValidID )
-                    // InternalMirBase.g:4052:6: lv_name_5_0= ruleValidID
+                    // InternalMirBase.g:4078:5: (lv_name_5_0= ruleValidID )
+                    // InternalMirBase.g:4079:6: lv_name_5_0= ruleValidID
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11203,7 +11270,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4070:3: (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
+            // InternalMirBase.g:4097:3: (otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) ) )?
             int alt67=2;
             int LA67_0 = input.LA(1);
 
@@ -11212,7 +11279,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt67) {
                 case 1 :
-                    // InternalMirBase.g:4071:4: otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:4098:4: otherlv_6= '=' ( (lv_right_7_0= ruleXExpression ) )
                     {
                     otherlv_6=(Token)match(input,16,FOLLOW_9); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -11220,11 +11287,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_6, grammarAccess.getXVariableDeclarationAccess().getEqualsSignKeyword_3_0());
                       			
                     }
-                    // InternalMirBase.g:4075:4: ( (lv_right_7_0= ruleXExpression ) )
-                    // InternalMirBase.g:4076:5: (lv_right_7_0= ruleXExpression )
+                    // InternalMirBase.g:4102:4: ( (lv_right_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:4103:5: (lv_right_7_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:4076:5: (lv_right_7_0= ruleXExpression )
-                    // InternalMirBase.g:4077:6: lv_right_7_0= ruleXExpression
+                    // InternalMirBase.g:4103:5: (lv_right_7_0= ruleXExpression )
+                    // InternalMirBase.g:4104:6: lv_right_7_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11286,7 +11353,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmFormalParameter"
-    // InternalMirBase.g:4099:1: entryRuleJvmFormalParameter returns [EObject current=null] : iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF ;
+    // InternalMirBase.g:4126:1: entryRuleJvmFormalParameter returns [EObject current=null] : iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF ;
     public final EObject entryRuleJvmFormalParameter() throws RecognitionException {
         EObject current = null;
 
@@ -11294,8 +11361,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4099:59: (iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF )
-            // InternalMirBase.g:4100:2: iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF
+            // InternalMirBase.g:4126:59: (iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF )
+            // InternalMirBase.g:4127:2: iv_ruleJvmFormalParameter= ruleJvmFormalParameter EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmFormalParameterRule()); 
@@ -11326,7 +11393,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmFormalParameter"
-    // InternalMirBase.g:4106:1: ruleJvmFormalParameter returns [EObject current=null] : ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) ) ;
+    // InternalMirBase.g:4133:1: ruleJvmFormalParameter returns [EObject current=null] : ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) ) ;
     public final EObject ruleJvmFormalParameter() throws RecognitionException {
         EObject current = null;
 
@@ -11339,13 +11406,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4112:2: ( ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) ) )
-            // InternalMirBase.g:4113:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) )
+            // InternalMirBase.g:4139:2: ( ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) ) )
+            // InternalMirBase.g:4140:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) )
             {
-            // InternalMirBase.g:4113:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) )
-            // InternalMirBase.g:4114:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) )
+            // InternalMirBase.g:4140:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) ) )
+            // InternalMirBase.g:4141:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )? ( (lv_name_1_0= ruleValidID ) )
             {
-            // InternalMirBase.g:4114:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )?
+            // InternalMirBase.g:4141:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )?
             int alt68=2;
             int LA68_0 = input.LA(1);
 
@@ -11361,10 +11428,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt68) {
                 case 1 :
-                    // InternalMirBase.g:4115:4: (lv_parameterType_0_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:4142:4: (lv_parameterType_0_0= ruleJvmTypeReference )
                     {
-                    // InternalMirBase.g:4115:4: (lv_parameterType_0_0= ruleJvmTypeReference )
-                    // InternalMirBase.g:4116:5: lv_parameterType_0_0= ruleJvmTypeReference
+                    // InternalMirBase.g:4142:4: (lv_parameterType_0_0= ruleJvmTypeReference )
+                    // InternalMirBase.g:4143:5: lv_parameterType_0_0= ruleJvmTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11398,11 +11465,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4133:3: ( (lv_name_1_0= ruleValidID ) )
-            // InternalMirBase.g:4134:4: (lv_name_1_0= ruleValidID )
+            // InternalMirBase.g:4160:3: ( (lv_name_1_0= ruleValidID ) )
+            // InternalMirBase.g:4161:4: (lv_name_1_0= ruleValidID )
             {
-            // InternalMirBase.g:4134:4: (lv_name_1_0= ruleValidID )
-            // InternalMirBase.g:4135:5: lv_name_1_0= ruleValidID
+            // InternalMirBase.g:4161:4: (lv_name_1_0= ruleValidID )
+            // InternalMirBase.g:4162:5: lv_name_1_0= ruleValidID
             {
             if ( state.backtracking==0 ) {
 
@@ -11458,7 +11525,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleFullJvmFormalParameter"
-    // InternalMirBase.g:4156:1: entryRuleFullJvmFormalParameter returns [EObject current=null] : iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF ;
+    // InternalMirBase.g:4183:1: entryRuleFullJvmFormalParameter returns [EObject current=null] : iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF ;
     public final EObject entryRuleFullJvmFormalParameter() throws RecognitionException {
         EObject current = null;
 
@@ -11466,8 +11533,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4156:63: (iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF )
-            // InternalMirBase.g:4157:2: iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF
+            // InternalMirBase.g:4183:63: (iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF )
+            // InternalMirBase.g:4184:2: iv_ruleFullJvmFormalParameter= ruleFullJvmFormalParameter EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getFullJvmFormalParameterRule()); 
@@ -11498,7 +11565,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleFullJvmFormalParameter"
-    // InternalMirBase.g:4163:1: ruleFullJvmFormalParameter returns [EObject current=null] : ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) ) ;
+    // InternalMirBase.g:4190:1: ruleFullJvmFormalParameter returns [EObject current=null] : ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) ) ;
     public final EObject ruleFullJvmFormalParameter() throws RecognitionException {
         EObject current = null;
 
@@ -11511,17 +11578,17 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4169:2: ( ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) ) )
-            // InternalMirBase.g:4170:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) )
+            // InternalMirBase.g:4196:2: ( ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) ) )
+            // InternalMirBase.g:4197:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) )
             {
-            // InternalMirBase.g:4170:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) )
-            // InternalMirBase.g:4171:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) )
+            // InternalMirBase.g:4197:2: ( ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) ) )
+            // InternalMirBase.g:4198:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) ) ( (lv_name_1_0= ruleValidID ) )
             {
-            // InternalMirBase.g:4171:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:4172:4: (lv_parameterType_0_0= ruleJvmTypeReference )
+            // InternalMirBase.g:4198:3: ( (lv_parameterType_0_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:4199:4: (lv_parameterType_0_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:4172:4: (lv_parameterType_0_0= ruleJvmTypeReference )
-            // InternalMirBase.g:4173:5: lv_parameterType_0_0= ruleJvmTypeReference
+            // InternalMirBase.g:4199:4: (lv_parameterType_0_0= ruleJvmTypeReference )
+            // InternalMirBase.g:4200:5: lv_parameterType_0_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -11552,11 +11619,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4190:3: ( (lv_name_1_0= ruleValidID ) )
-            // InternalMirBase.g:4191:4: (lv_name_1_0= ruleValidID )
+            // InternalMirBase.g:4217:3: ( (lv_name_1_0= ruleValidID ) )
+            // InternalMirBase.g:4218:4: (lv_name_1_0= ruleValidID )
             {
-            // InternalMirBase.g:4191:4: (lv_name_1_0= ruleValidID )
-            // InternalMirBase.g:4192:5: lv_name_1_0= ruleValidID
+            // InternalMirBase.g:4218:4: (lv_name_1_0= ruleValidID )
+            // InternalMirBase.g:4219:5: lv_name_1_0= ruleValidID
             {
             if ( state.backtracking==0 ) {
 
@@ -11612,7 +11679,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXFeatureCall"
-    // InternalMirBase.g:4213:1: entryRuleXFeatureCall returns [EObject current=null] : iv_ruleXFeatureCall= ruleXFeatureCall EOF ;
+    // InternalMirBase.g:4240:1: entryRuleXFeatureCall returns [EObject current=null] : iv_ruleXFeatureCall= ruleXFeatureCall EOF ;
     public final EObject entryRuleXFeatureCall() throws RecognitionException {
         EObject current = null;
 
@@ -11620,8 +11687,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4213:53: (iv_ruleXFeatureCall= ruleXFeatureCall EOF )
-            // InternalMirBase.g:4214:2: iv_ruleXFeatureCall= ruleXFeatureCall EOF
+            // InternalMirBase.g:4240:53: (iv_ruleXFeatureCall= ruleXFeatureCall EOF )
+            // InternalMirBase.g:4241:2: iv_ruleXFeatureCall= ruleXFeatureCall EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXFeatureCallRule()); 
@@ -11652,7 +11719,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXFeatureCall"
-    // InternalMirBase.g:4220:1: ruleXFeatureCall returns [EObject current=null] : ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? ) ;
+    // InternalMirBase.g:4247:1: ruleXFeatureCall returns [EObject current=null] : ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? ) ;
     public final EObject ruleXFeatureCall() throws RecognitionException {
         EObject current = null;
 
@@ -11679,14 +11746,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4226:2: ( ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? ) )
-            // InternalMirBase.g:4227:2: ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? )
+            // InternalMirBase.g:4253:2: ( ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? ) )
+            // InternalMirBase.g:4254:2: ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? )
             {
-            // InternalMirBase.g:4227:2: ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? )
-            // InternalMirBase.g:4228:3: () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?
+            // InternalMirBase.g:4254:2: ( () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )? )
+            // InternalMirBase.g:4255:3: () (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )? ( ( ruleIdOrSuper ) ) ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )? ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?
             {
-            // InternalMirBase.g:4228:3: ()
-            // InternalMirBase.g:4229:4: 
+            // InternalMirBase.g:4255:3: ()
+            // InternalMirBase.g:4256:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -11698,7 +11765,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4235:3: (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )?
+            // InternalMirBase.g:4262:3: (otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' )?
             int alt70=2;
             int LA70_0 = input.LA(1);
 
@@ -11707,7 +11774,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt70) {
                 case 1 :
-                    // InternalMirBase.g:4236:4: otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>'
+                    // InternalMirBase.g:4263:4: otherlv_1= '<' ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>'
                     {
                     otherlv_1=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -11715,11 +11782,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_1, grammarAccess.getXFeatureCallAccess().getLessThanSignKeyword_1_0());
                       			
                     }
-                    // InternalMirBase.g:4240:4: ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) )
-                    // InternalMirBase.g:4241:5: (lv_typeArguments_2_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:4267:4: ( (lv_typeArguments_2_0= ruleJvmArgumentTypeReference ) )
+                    // InternalMirBase.g:4268:5: (lv_typeArguments_2_0= ruleJvmArgumentTypeReference )
                     {
-                    // InternalMirBase.g:4241:5: (lv_typeArguments_2_0= ruleJvmArgumentTypeReference )
-                    // InternalMirBase.g:4242:6: lv_typeArguments_2_0= ruleJvmArgumentTypeReference
+                    // InternalMirBase.g:4268:5: (lv_typeArguments_2_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:4269:6: lv_typeArguments_2_0= ruleJvmArgumentTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -11750,7 +11817,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4259:4: (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )*
+                    // InternalMirBase.g:4286:4: (otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) )*
                     loop69:
                     do {
                         int alt69=2;
@@ -11763,7 +11830,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt69) {
                     	case 1 :
-                    	    // InternalMirBase.g:4260:5: otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:4287:5: otherlv_3= ',' ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
                     	    {
                     	    otherlv_3=(Token)match(input,50,FOLLOW_30); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -11771,11 +11838,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_3, grammarAccess.getXFeatureCallAccess().getCommaKeyword_1_2_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:4264:5: ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
-                    	    // InternalMirBase.g:4265:6: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:4291:5: ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:4292:6: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
                     	    {
-                    	    // InternalMirBase.g:4265:6: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
-                    	    // InternalMirBase.g:4266:7: lv_typeArguments_4_0= ruleJvmArgumentTypeReference
+                    	    // InternalMirBase.g:4292:6: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:4293:7: lv_typeArguments_4_0= ruleJvmArgumentTypeReference
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -11827,11 +11894,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4289:3: ( ( ruleIdOrSuper ) )
-            // InternalMirBase.g:4290:4: ( ruleIdOrSuper )
+            // InternalMirBase.g:4316:3: ( ( ruleIdOrSuper ) )
+            // InternalMirBase.g:4317:4: ( ruleIdOrSuper )
             {
-            // InternalMirBase.g:4290:4: ( ruleIdOrSuper )
-            // InternalMirBase.g:4291:5: ruleIdOrSuper
+            // InternalMirBase.g:4317:4: ( ruleIdOrSuper )
+            // InternalMirBase.g:4318:5: ruleIdOrSuper
             {
             if ( state.backtracking==0 ) {
 
@@ -11861,18 +11928,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4305:3: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )?
+            // InternalMirBase.g:4332:3: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )?
             int alt73=2;
             alt73 = dfa73.predict(input);
             switch (alt73) {
                 case 1 :
-                    // InternalMirBase.g:4306:4: ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')'
+                    // InternalMirBase.g:4333:4: ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')'
                     {
-                    // InternalMirBase.g:4306:4: ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) )
-                    // InternalMirBase.g:4307:5: ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' )
+                    // InternalMirBase.g:4333:4: ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) )
+                    // InternalMirBase.g:4334:5: ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' )
                     {
-                    // InternalMirBase.g:4311:5: (lv_explicitOperationCall_7_0= '(' )
-                    // InternalMirBase.g:4312:6: lv_explicitOperationCall_7_0= '('
+                    // InternalMirBase.g:4338:5: (lv_explicitOperationCall_7_0= '(' )
+                    // InternalMirBase.g:4339:6: lv_explicitOperationCall_7_0= '('
                     {
                     lv_explicitOperationCall_7_0=(Token)match(input,51,FOLLOW_33); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -11894,18 +11961,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4324:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )?
+                    // InternalMirBase.g:4351:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )?
                     int alt72=3;
                     alt72 = dfa72.predict(input);
                     switch (alt72) {
                         case 1 :
-                            // InternalMirBase.g:4325:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) )
+                            // InternalMirBase.g:4352:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) )
                             {
-                            // InternalMirBase.g:4325:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) )
-                            // InternalMirBase.g:4326:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure )
+                            // InternalMirBase.g:4352:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) )
+                            // InternalMirBase.g:4353:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure )
                             {
-                            // InternalMirBase.g:4351:6: (lv_featureCallArguments_8_0= ruleXShortClosure )
-                            // InternalMirBase.g:4352:7: lv_featureCallArguments_8_0= ruleXShortClosure
+                            // InternalMirBase.g:4378:6: (lv_featureCallArguments_8_0= ruleXShortClosure )
+                            // InternalMirBase.g:4379:7: lv_featureCallArguments_8_0= ruleXShortClosure
                             {
                             if ( state.backtracking==0 ) {
 
@@ -11940,16 +12007,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:4370:5: ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* )
+                            // InternalMirBase.g:4397:5: ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* )
                             {
-                            // InternalMirBase.g:4370:5: ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* )
-                            // InternalMirBase.g:4371:6: ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )*
+                            // InternalMirBase.g:4397:5: ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* )
+                            // InternalMirBase.g:4398:6: ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )*
                             {
-                            // InternalMirBase.g:4371:6: ( (lv_featureCallArguments_9_0= ruleXExpression ) )
-                            // InternalMirBase.g:4372:7: (lv_featureCallArguments_9_0= ruleXExpression )
+                            // InternalMirBase.g:4398:6: ( (lv_featureCallArguments_9_0= ruleXExpression ) )
+                            // InternalMirBase.g:4399:7: (lv_featureCallArguments_9_0= ruleXExpression )
                             {
-                            // InternalMirBase.g:4372:7: (lv_featureCallArguments_9_0= ruleXExpression )
-                            // InternalMirBase.g:4373:8: lv_featureCallArguments_9_0= ruleXExpression
+                            // InternalMirBase.g:4399:7: (lv_featureCallArguments_9_0= ruleXExpression )
+                            // InternalMirBase.g:4400:8: lv_featureCallArguments_9_0= ruleXExpression
                             {
                             if ( state.backtracking==0 ) {
 
@@ -11980,7 +12047,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:4390:6: (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )*
+                            // InternalMirBase.g:4417:6: (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )*
                             loop71:
                             do {
                                 int alt71=2;
@@ -11993,7 +12060,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                                 switch (alt71) {
                             	case 1 :
-                            	    // InternalMirBase.g:4391:7: otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) )
+                            	    // InternalMirBase.g:4418:7: otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) )
                             	    {
                             	    otherlv_10=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
                             	    if ( state.backtracking==0 ) {
@@ -12001,11 +12068,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             	      							newLeafNode(otherlv_10, grammarAccess.getXFeatureCallAccess().getCommaKeyword_3_1_1_1_0());
                             	      						
                             	    }
-                            	    // InternalMirBase.g:4395:7: ( (lv_featureCallArguments_11_0= ruleXExpression ) )
-                            	    // InternalMirBase.g:4396:8: (lv_featureCallArguments_11_0= ruleXExpression )
+                            	    // InternalMirBase.g:4422:7: ( (lv_featureCallArguments_11_0= ruleXExpression ) )
+                            	    // InternalMirBase.g:4423:8: (lv_featureCallArguments_11_0= ruleXExpression )
                             	    {
-                            	    // InternalMirBase.g:4396:8: (lv_featureCallArguments_11_0= ruleXExpression )
-                            	    // InternalMirBase.g:4397:9: lv_featureCallArguments_11_0= ruleXExpression
+                            	    // InternalMirBase.g:4423:8: (lv_featureCallArguments_11_0= ruleXExpression )
+                            	    // InternalMirBase.g:4424:9: lv_featureCallArguments_11_0= ruleXExpression
                             	    {
                             	    if ( state.backtracking==0 ) {
 
@@ -12066,15 +12133,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4422:3: ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?
+            // InternalMirBase.g:4449:3: ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?
             int alt74=2;
             alt74 = dfa74.predict(input);
             switch (alt74) {
                 case 1 :
-                    // InternalMirBase.g:4423:4: ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure )
+                    // InternalMirBase.g:4450:4: ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure )
                     {
-                    // InternalMirBase.g:4429:4: (lv_featureCallArguments_13_0= ruleXClosure )
-                    // InternalMirBase.g:4430:5: lv_featureCallArguments_13_0= ruleXClosure
+                    // InternalMirBase.g:4456:4: (lv_featureCallArguments_13_0= ruleXClosure )
+                    // InternalMirBase.g:4457:5: lv_featureCallArguments_13_0= ruleXClosure
                     {
                     if ( state.backtracking==0 ) {
 
@@ -12133,7 +12200,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleFeatureCallID"
-    // InternalMirBase.g:4451:1: entryRuleFeatureCallID returns [String current=null] : iv_ruleFeatureCallID= ruleFeatureCallID EOF ;
+    // InternalMirBase.g:4478:1: entryRuleFeatureCallID returns [String current=null] : iv_ruleFeatureCallID= ruleFeatureCallID EOF ;
     public final String entryRuleFeatureCallID() throws RecognitionException {
         String current = null;
 
@@ -12141,8 +12208,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4451:53: (iv_ruleFeatureCallID= ruleFeatureCallID EOF )
-            // InternalMirBase.g:4452:2: iv_ruleFeatureCallID= ruleFeatureCallID EOF
+            // InternalMirBase.g:4478:53: (iv_ruleFeatureCallID= ruleFeatureCallID EOF )
+            // InternalMirBase.g:4479:2: iv_ruleFeatureCallID= ruleFeatureCallID EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getFeatureCallIDRule()); 
@@ -12173,7 +12240,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleFeatureCallID"
-    // InternalMirBase.g:4458:1: ruleFeatureCallID returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' ) ;
+    // InternalMirBase.g:4485:1: ruleFeatureCallID returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' ) ;
     public final AntlrDatatypeRuleToken ruleFeatureCallID() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12185,10 +12252,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4464:2: ( (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' ) )
-            // InternalMirBase.g:4465:2: (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' )
+            // InternalMirBase.g:4491:2: ( (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' ) )
+            // InternalMirBase.g:4492:2: (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' )
             {
-            // InternalMirBase.g:4465:2: (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' )
+            // InternalMirBase.g:4492:2: (this_ValidID_0= ruleValidID | kw= 'extends' | kw= 'static' | kw= 'import' | kw= 'extension' )
             int alt75=5;
             switch ( input.LA(1) ) {
             case RULE_ID:
@@ -12226,7 +12293,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             switch (alt75) {
                 case 1 :
-                    // InternalMirBase.g:4466:3: this_ValidID_0= ruleValidID
+                    // InternalMirBase.g:4493:3: this_ValidID_0= ruleValidID
                     {
                     if ( state.backtracking==0 ) {
 
@@ -12252,7 +12319,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:4477:3: kw= 'extends'
+                    // InternalMirBase.g:4504:3: kw= 'extends'
                     {
                     kw=(Token)match(input,71,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12265,7 +12332,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:4483:3: kw= 'static'
+                    // InternalMirBase.g:4510:3: kw= 'static'
                     {
                     kw=(Token)match(input,72,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12278,7 +12345,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMirBase.g:4489:3: kw= 'import'
+                    // InternalMirBase.g:4516:3: kw= 'import'
                     {
                     kw=(Token)match(input,13,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12291,7 +12358,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMirBase.g:4495:3: kw= 'extension'
+                    // InternalMirBase.g:4522:3: kw= 'extension'
                     {
                     kw=(Token)match(input,73,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12328,7 +12395,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleIdOrSuper"
-    // InternalMirBase.g:4504:1: entryRuleIdOrSuper returns [String current=null] : iv_ruleIdOrSuper= ruleIdOrSuper EOF ;
+    // InternalMirBase.g:4531:1: entryRuleIdOrSuper returns [String current=null] : iv_ruleIdOrSuper= ruleIdOrSuper EOF ;
     public final String entryRuleIdOrSuper() throws RecognitionException {
         String current = null;
 
@@ -12336,8 +12403,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4504:49: (iv_ruleIdOrSuper= ruleIdOrSuper EOF )
-            // InternalMirBase.g:4505:2: iv_ruleIdOrSuper= ruleIdOrSuper EOF
+            // InternalMirBase.g:4531:49: (iv_ruleIdOrSuper= ruleIdOrSuper EOF )
+            // InternalMirBase.g:4532:2: iv_ruleIdOrSuper= ruleIdOrSuper EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getIdOrSuperRule()); 
@@ -12368,7 +12435,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleIdOrSuper"
-    // InternalMirBase.g:4511:1: ruleIdOrSuper returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' ) ;
+    // InternalMirBase.g:4538:1: ruleIdOrSuper returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' ) ;
     public final AntlrDatatypeRuleToken ruleIdOrSuper() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12380,10 +12447,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4517:2: ( (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' ) )
-            // InternalMirBase.g:4518:2: (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' )
+            // InternalMirBase.g:4544:2: ( (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' ) )
+            // InternalMirBase.g:4545:2: (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' )
             {
-            // InternalMirBase.g:4518:2: (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' )
+            // InternalMirBase.g:4545:2: (this_FeatureCallID_0= ruleFeatureCallID | kw= 'super' )
             int alt76=2;
             int LA76_0 = input.LA(1);
 
@@ -12402,7 +12469,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt76) {
                 case 1 :
-                    // InternalMirBase.g:4519:3: this_FeatureCallID_0= ruleFeatureCallID
+                    // InternalMirBase.g:4546:3: this_FeatureCallID_0= ruleFeatureCallID
                     {
                     if ( state.backtracking==0 ) {
 
@@ -12428,7 +12495,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:4530:3: kw= 'super'
+                    // InternalMirBase.g:4557:3: kw= 'super'
                     {
                     kw=(Token)match(input,74,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12465,7 +12532,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXConstructorCall"
-    // InternalMirBase.g:4539:1: entryRuleXConstructorCall returns [EObject current=null] : iv_ruleXConstructorCall= ruleXConstructorCall EOF ;
+    // InternalMirBase.g:4566:1: entryRuleXConstructorCall returns [EObject current=null] : iv_ruleXConstructorCall= ruleXConstructorCall EOF ;
     public final EObject entryRuleXConstructorCall() throws RecognitionException {
         EObject current = null;
 
@@ -12473,8 +12540,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4539:57: (iv_ruleXConstructorCall= ruleXConstructorCall EOF )
-            // InternalMirBase.g:4540:2: iv_ruleXConstructorCall= ruleXConstructorCall EOF
+            // InternalMirBase.g:4566:57: (iv_ruleXConstructorCall= ruleXConstructorCall EOF )
+            // InternalMirBase.g:4567:2: iv_ruleXConstructorCall= ruleXConstructorCall EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXConstructorCallRule()); 
@@ -12505,7 +12572,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXConstructorCall"
-    // InternalMirBase.g:4546:1: ruleXConstructorCall returns [EObject current=null] : ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? ) ;
+    // InternalMirBase.g:4573:1: ruleXConstructorCall returns [EObject current=null] : ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? ) ;
     public final EObject ruleXConstructorCall() throws RecognitionException {
         EObject current = null;
 
@@ -12533,14 +12600,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4552:2: ( ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? ) )
-            // InternalMirBase.g:4553:2: ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? )
+            // InternalMirBase.g:4579:2: ( ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? ) )
+            // InternalMirBase.g:4580:2: ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? )
             {
-            // InternalMirBase.g:4553:2: ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? )
-            // InternalMirBase.g:4554:3: () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?
+            // InternalMirBase.g:4580:2: ( () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )? )
+            // InternalMirBase.g:4581:3: () otherlv_1= 'new' ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )? ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )? ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?
             {
-            // InternalMirBase.g:4554:3: ()
-            // InternalMirBase.g:4555:4: 
+            // InternalMirBase.g:4581:3: ()
+            // InternalMirBase.g:4582:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -12558,11 +12625,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXConstructorCallAccess().getNewKeyword_1());
               		
             }
-            // InternalMirBase.g:4565:3: ( ( ruleQualifiedName ) )
-            // InternalMirBase.g:4566:4: ( ruleQualifiedName )
+            // InternalMirBase.g:4592:3: ( ( ruleQualifiedName ) )
+            // InternalMirBase.g:4593:4: ( ruleQualifiedName )
             {
-            // InternalMirBase.g:4566:4: ( ruleQualifiedName )
-            // InternalMirBase.g:4567:5: ruleQualifiedName
+            // InternalMirBase.g:4593:4: ( ruleQualifiedName )
+            // InternalMirBase.g:4594:5: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
 
@@ -12592,15 +12659,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4581:3: ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )?
+            // InternalMirBase.g:4608:3: ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )?
             int alt78=2;
             alt78 = dfa78.predict(input);
             switch (alt78) {
                 case 1 :
-                    // InternalMirBase.g:4582:4: ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>'
+                    // InternalMirBase.g:4609:4: ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>'
                     {
-                    // InternalMirBase.g:4582:4: ( ( '<' )=>otherlv_3= '<' )
-                    // InternalMirBase.g:4583:5: ( '<' )=>otherlv_3= '<'
+                    // InternalMirBase.g:4609:4: ( ( '<' )=>otherlv_3= '<' )
+                    // InternalMirBase.g:4610:5: ( '<' )=>otherlv_3= '<'
                     {
                     otherlv_3=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12611,11 +12678,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4589:4: ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
-                    // InternalMirBase.g:4590:5: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:4616:4: ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) )
+                    // InternalMirBase.g:4617:5: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
                     {
-                    // InternalMirBase.g:4590:5: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
-                    // InternalMirBase.g:4591:6: lv_typeArguments_4_0= ruleJvmArgumentTypeReference
+                    // InternalMirBase.g:4617:5: (lv_typeArguments_4_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:4618:6: lv_typeArguments_4_0= ruleJvmArgumentTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -12646,7 +12713,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4608:4: (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )*
+                    // InternalMirBase.g:4635:4: (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )*
                     loop77:
                     do {
                         int alt77=2;
@@ -12659,7 +12726,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt77) {
                     	case 1 :
-                    	    // InternalMirBase.g:4609:5: otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:4636:5: otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) )
                     	    {
                     	    otherlv_5=(Token)match(input,50,FOLLOW_30); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -12667,11 +12734,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_5, grammarAccess.getXConstructorCallAccess().getCommaKeyword_3_2_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:4613:5: ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) )
-                    	    // InternalMirBase.g:4614:6: (lv_typeArguments_6_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:4640:5: ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:4641:6: (lv_typeArguments_6_0= ruleJvmArgumentTypeReference )
                     	    {
-                    	    // InternalMirBase.g:4614:6: (lv_typeArguments_6_0= ruleJvmArgumentTypeReference )
-                    	    // InternalMirBase.g:4615:7: lv_typeArguments_6_0= ruleJvmArgumentTypeReference
+                    	    // InternalMirBase.g:4641:6: (lv_typeArguments_6_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:4642:7: lv_typeArguments_6_0= ruleJvmArgumentTypeReference
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -12723,18 +12790,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4638:3: ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )?
+            // InternalMirBase.g:4665:3: ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )?
             int alt81=2;
             alt81 = dfa81.predict(input);
             switch (alt81) {
                 case 1 :
-                    // InternalMirBase.g:4639:4: ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')'
+                    // InternalMirBase.g:4666:4: ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')'
                     {
-                    // InternalMirBase.g:4639:4: ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) )
-                    // InternalMirBase.g:4640:5: ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' )
+                    // InternalMirBase.g:4666:4: ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) )
+                    // InternalMirBase.g:4667:5: ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' )
                     {
-                    // InternalMirBase.g:4644:5: (lv_explicitConstructorCall_8_0= '(' )
-                    // InternalMirBase.g:4645:6: lv_explicitConstructorCall_8_0= '('
+                    // InternalMirBase.g:4671:5: (lv_explicitConstructorCall_8_0= '(' )
+                    // InternalMirBase.g:4672:6: lv_explicitConstructorCall_8_0= '('
                     {
                     lv_explicitConstructorCall_8_0=(Token)match(input,51,FOLLOW_33); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -12756,18 +12823,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:4657:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )?
+                    // InternalMirBase.g:4684:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )?
                     int alt80=3;
                     alt80 = dfa80.predict(input);
                     switch (alt80) {
                         case 1 :
-                            // InternalMirBase.g:4658:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) )
+                            // InternalMirBase.g:4685:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) )
                             {
-                            // InternalMirBase.g:4658:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) )
-                            // InternalMirBase.g:4659:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure )
+                            // InternalMirBase.g:4685:5: ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) )
+                            // InternalMirBase.g:4686:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure )
                             {
-                            // InternalMirBase.g:4684:6: (lv_arguments_9_0= ruleXShortClosure )
-                            // InternalMirBase.g:4685:7: lv_arguments_9_0= ruleXShortClosure
+                            // InternalMirBase.g:4711:6: (lv_arguments_9_0= ruleXShortClosure )
+                            // InternalMirBase.g:4712:7: lv_arguments_9_0= ruleXShortClosure
                             {
                             if ( state.backtracking==0 ) {
 
@@ -12802,16 +12869,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:4703:5: ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* )
+                            // InternalMirBase.g:4730:5: ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* )
                             {
-                            // InternalMirBase.g:4703:5: ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* )
-                            // InternalMirBase.g:4704:6: ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )*
+                            // InternalMirBase.g:4730:5: ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* )
+                            // InternalMirBase.g:4731:6: ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )*
                             {
-                            // InternalMirBase.g:4704:6: ( (lv_arguments_10_0= ruleXExpression ) )
-                            // InternalMirBase.g:4705:7: (lv_arguments_10_0= ruleXExpression )
+                            // InternalMirBase.g:4731:6: ( (lv_arguments_10_0= ruleXExpression ) )
+                            // InternalMirBase.g:4732:7: (lv_arguments_10_0= ruleXExpression )
                             {
-                            // InternalMirBase.g:4705:7: (lv_arguments_10_0= ruleXExpression )
-                            // InternalMirBase.g:4706:8: lv_arguments_10_0= ruleXExpression
+                            // InternalMirBase.g:4732:7: (lv_arguments_10_0= ruleXExpression )
+                            // InternalMirBase.g:4733:8: lv_arguments_10_0= ruleXExpression
                             {
                             if ( state.backtracking==0 ) {
 
@@ -12842,7 +12909,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:4723:6: (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )*
+                            // InternalMirBase.g:4750:6: (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )*
                             loop79:
                             do {
                                 int alt79=2;
@@ -12855,7 +12922,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                                 switch (alt79) {
                             	case 1 :
-                            	    // InternalMirBase.g:4724:7: otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) )
+                            	    // InternalMirBase.g:4751:7: otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) )
                             	    {
                             	    otherlv_11=(Token)match(input,50,FOLLOW_9); if (state.failed) return current;
                             	    if ( state.backtracking==0 ) {
@@ -12863,11 +12930,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             	      							newLeafNode(otherlv_11, grammarAccess.getXConstructorCallAccess().getCommaKeyword_4_1_1_1_0());
                             	      						
                             	    }
-                            	    // InternalMirBase.g:4728:7: ( (lv_arguments_12_0= ruleXExpression ) )
-                            	    // InternalMirBase.g:4729:8: (lv_arguments_12_0= ruleXExpression )
+                            	    // InternalMirBase.g:4755:7: ( (lv_arguments_12_0= ruleXExpression ) )
+                            	    // InternalMirBase.g:4756:8: (lv_arguments_12_0= ruleXExpression )
                             	    {
-                            	    // InternalMirBase.g:4729:8: (lv_arguments_12_0= ruleXExpression )
-                            	    // InternalMirBase.g:4730:9: lv_arguments_12_0= ruleXExpression
+                            	    // InternalMirBase.g:4756:8: (lv_arguments_12_0= ruleXExpression )
+                            	    // InternalMirBase.g:4757:9: lv_arguments_12_0= ruleXExpression
                             	    {
                             	    if ( state.backtracking==0 ) {
 
@@ -12928,15 +12995,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4755:3: ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?
+            // InternalMirBase.g:4782:3: ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?
             int alt82=2;
             alt82 = dfa82.predict(input);
             switch (alt82) {
                 case 1 :
-                    // InternalMirBase.g:4756:4: ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure )
+                    // InternalMirBase.g:4783:4: ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure )
                     {
-                    // InternalMirBase.g:4762:4: (lv_arguments_14_0= ruleXClosure )
-                    // InternalMirBase.g:4763:5: lv_arguments_14_0= ruleXClosure
+                    // InternalMirBase.g:4789:4: (lv_arguments_14_0= ruleXClosure )
+                    // InternalMirBase.g:4790:5: lv_arguments_14_0= ruleXClosure
                     {
                     if ( state.backtracking==0 ) {
 
@@ -12995,7 +13062,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXBooleanLiteral"
-    // InternalMirBase.g:4784:1: entryRuleXBooleanLiteral returns [EObject current=null] : iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF ;
+    // InternalMirBase.g:4811:1: entryRuleXBooleanLiteral returns [EObject current=null] : iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF ;
     public final EObject entryRuleXBooleanLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13003,8 +13070,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4784:56: (iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF )
-            // InternalMirBase.g:4785:2: iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF
+            // InternalMirBase.g:4811:56: (iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF )
+            // InternalMirBase.g:4812:2: iv_ruleXBooleanLiteral= ruleXBooleanLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXBooleanLiteralRule()); 
@@ -13035,7 +13102,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXBooleanLiteral"
-    // InternalMirBase.g:4791:1: ruleXBooleanLiteral returns [EObject current=null] : ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) ) ;
+    // InternalMirBase.g:4818:1: ruleXBooleanLiteral returns [EObject current=null] : ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) ) ;
     public final EObject ruleXBooleanLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13046,14 +13113,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4797:2: ( ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) ) )
-            // InternalMirBase.g:4798:2: ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) )
+            // InternalMirBase.g:4824:2: ( ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) ) )
+            // InternalMirBase.g:4825:2: ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) )
             {
-            // InternalMirBase.g:4798:2: ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) )
-            // InternalMirBase.g:4799:3: () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) )
+            // InternalMirBase.g:4825:2: ( () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) ) )
+            // InternalMirBase.g:4826:3: () (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) )
             {
-            // InternalMirBase.g:4799:3: ()
-            // InternalMirBase.g:4800:4: 
+            // InternalMirBase.g:4826:3: ()
+            // InternalMirBase.g:4827:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13065,7 +13132,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4806:3: (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) )
+            // InternalMirBase.g:4833:3: (otherlv_1= 'false' | ( (lv_isTrue_2_0= 'true' ) ) )
             int alt83=2;
             int LA83_0 = input.LA(1);
 
@@ -13084,7 +13151,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt83) {
                 case 1 :
-                    // InternalMirBase.g:4807:4: otherlv_1= 'false'
+                    // InternalMirBase.g:4834:4: otherlv_1= 'false'
                     {
                     otherlv_1=(Token)match(input,76,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -13096,13 +13163,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:4812:4: ( (lv_isTrue_2_0= 'true' ) )
+                    // InternalMirBase.g:4839:4: ( (lv_isTrue_2_0= 'true' ) )
                     {
-                    // InternalMirBase.g:4812:4: ( (lv_isTrue_2_0= 'true' ) )
-                    // InternalMirBase.g:4813:5: (lv_isTrue_2_0= 'true' )
+                    // InternalMirBase.g:4839:4: ( (lv_isTrue_2_0= 'true' ) )
+                    // InternalMirBase.g:4840:5: (lv_isTrue_2_0= 'true' )
                     {
-                    // InternalMirBase.g:4813:5: (lv_isTrue_2_0= 'true' )
-                    // InternalMirBase.g:4814:6: lv_isTrue_2_0= 'true'
+                    // InternalMirBase.g:4840:5: (lv_isTrue_2_0= 'true' )
+                    // InternalMirBase.g:4841:6: lv_isTrue_2_0= 'true'
                     {
                     lv_isTrue_2_0=(Token)match(input,77,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -13155,7 +13222,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXNullLiteral"
-    // InternalMirBase.g:4831:1: entryRuleXNullLiteral returns [EObject current=null] : iv_ruleXNullLiteral= ruleXNullLiteral EOF ;
+    // InternalMirBase.g:4858:1: entryRuleXNullLiteral returns [EObject current=null] : iv_ruleXNullLiteral= ruleXNullLiteral EOF ;
     public final EObject entryRuleXNullLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13163,8 +13230,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4831:53: (iv_ruleXNullLiteral= ruleXNullLiteral EOF )
-            // InternalMirBase.g:4832:2: iv_ruleXNullLiteral= ruleXNullLiteral EOF
+            // InternalMirBase.g:4858:53: (iv_ruleXNullLiteral= ruleXNullLiteral EOF )
+            // InternalMirBase.g:4859:2: iv_ruleXNullLiteral= ruleXNullLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXNullLiteralRule()); 
@@ -13195,7 +13262,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXNullLiteral"
-    // InternalMirBase.g:4838:1: ruleXNullLiteral returns [EObject current=null] : ( () otherlv_1= 'null' ) ;
+    // InternalMirBase.g:4865:1: ruleXNullLiteral returns [EObject current=null] : ( () otherlv_1= 'null' ) ;
     public final EObject ruleXNullLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13205,14 +13272,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4844:2: ( ( () otherlv_1= 'null' ) )
-            // InternalMirBase.g:4845:2: ( () otherlv_1= 'null' )
+            // InternalMirBase.g:4871:2: ( ( () otherlv_1= 'null' ) )
+            // InternalMirBase.g:4872:2: ( () otherlv_1= 'null' )
             {
-            // InternalMirBase.g:4845:2: ( () otherlv_1= 'null' )
-            // InternalMirBase.g:4846:3: () otherlv_1= 'null'
+            // InternalMirBase.g:4872:2: ( () otherlv_1= 'null' )
+            // InternalMirBase.g:4873:3: () otherlv_1= 'null'
             {
-            // InternalMirBase.g:4846:3: ()
-            // InternalMirBase.g:4847:4: 
+            // InternalMirBase.g:4873:3: ()
+            // InternalMirBase.g:4874:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13255,7 +13322,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXNumberLiteral"
-    // InternalMirBase.g:4861:1: entryRuleXNumberLiteral returns [EObject current=null] : iv_ruleXNumberLiteral= ruleXNumberLiteral EOF ;
+    // InternalMirBase.g:4888:1: entryRuleXNumberLiteral returns [EObject current=null] : iv_ruleXNumberLiteral= ruleXNumberLiteral EOF ;
     public final EObject entryRuleXNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13263,8 +13330,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4861:55: (iv_ruleXNumberLiteral= ruleXNumberLiteral EOF )
-            // InternalMirBase.g:4862:2: iv_ruleXNumberLiteral= ruleXNumberLiteral EOF
+            // InternalMirBase.g:4888:55: (iv_ruleXNumberLiteral= ruleXNumberLiteral EOF )
+            // InternalMirBase.g:4889:2: iv_ruleXNumberLiteral= ruleXNumberLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXNumberLiteralRule()); 
@@ -13295,7 +13362,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXNumberLiteral"
-    // InternalMirBase.g:4868:1: ruleXNumberLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= ruleNumber ) ) ) ;
+    // InternalMirBase.g:4895:1: ruleXNumberLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= ruleNumber ) ) ) ;
     public final EObject ruleXNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13306,14 +13373,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4874:2: ( ( () ( (lv_value_1_0= ruleNumber ) ) ) )
-            // InternalMirBase.g:4875:2: ( () ( (lv_value_1_0= ruleNumber ) ) )
+            // InternalMirBase.g:4901:2: ( ( () ( (lv_value_1_0= ruleNumber ) ) ) )
+            // InternalMirBase.g:4902:2: ( () ( (lv_value_1_0= ruleNumber ) ) )
             {
-            // InternalMirBase.g:4875:2: ( () ( (lv_value_1_0= ruleNumber ) ) )
-            // InternalMirBase.g:4876:3: () ( (lv_value_1_0= ruleNumber ) )
+            // InternalMirBase.g:4902:2: ( () ( (lv_value_1_0= ruleNumber ) ) )
+            // InternalMirBase.g:4903:3: () ( (lv_value_1_0= ruleNumber ) )
             {
-            // InternalMirBase.g:4876:3: ()
-            // InternalMirBase.g:4877:4: 
+            // InternalMirBase.g:4903:3: ()
+            // InternalMirBase.g:4904:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13325,11 +13392,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4883:3: ( (lv_value_1_0= ruleNumber ) )
-            // InternalMirBase.g:4884:4: (lv_value_1_0= ruleNumber )
+            // InternalMirBase.g:4910:3: ( (lv_value_1_0= ruleNumber ) )
+            // InternalMirBase.g:4911:4: (lv_value_1_0= ruleNumber )
             {
-            // InternalMirBase.g:4884:4: (lv_value_1_0= ruleNumber )
-            // InternalMirBase.g:4885:5: lv_value_1_0= ruleNumber
+            // InternalMirBase.g:4911:4: (lv_value_1_0= ruleNumber )
+            // InternalMirBase.g:4912:5: lv_value_1_0= ruleNumber
             {
             if ( state.backtracking==0 ) {
 
@@ -13385,7 +13452,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXStringLiteral"
-    // InternalMirBase.g:4906:1: entryRuleXStringLiteral returns [EObject current=null] : iv_ruleXStringLiteral= ruleXStringLiteral EOF ;
+    // InternalMirBase.g:4933:1: entryRuleXStringLiteral returns [EObject current=null] : iv_ruleXStringLiteral= ruleXStringLiteral EOF ;
     public final EObject entryRuleXStringLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13393,8 +13460,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4906:55: (iv_ruleXStringLiteral= ruleXStringLiteral EOF )
-            // InternalMirBase.g:4907:2: iv_ruleXStringLiteral= ruleXStringLiteral EOF
+            // InternalMirBase.g:4933:55: (iv_ruleXStringLiteral= ruleXStringLiteral EOF )
+            // InternalMirBase.g:4934:2: iv_ruleXStringLiteral= ruleXStringLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXStringLiteralRule()); 
@@ -13425,7 +13492,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXStringLiteral"
-    // InternalMirBase.g:4913:1: ruleXStringLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= RULE_STRING ) ) ) ;
+    // InternalMirBase.g:4940:1: ruleXStringLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= RULE_STRING ) ) ) ;
     public final EObject ruleXStringLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13435,14 +13502,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4919:2: ( ( () ( (lv_value_1_0= RULE_STRING ) ) ) )
-            // InternalMirBase.g:4920:2: ( () ( (lv_value_1_0= RULE_STRING ) ) )
+            // InternalMirBase.g:4946:2: ( ( () ( (lv_value_1_0= RULE_STRING ) ) ) )
+            // InternalMirBase.g:4947:2: ( () ( (lv_value_1_0= RULE_STRING ) ) )
             {
-            // InternalMirBase.g:4920:2: ( () ( (lv_value_1_0= RULE_STRING ) ) )
-            // InternalMirBase.g:4921:3: () ( (lv_value_1_0= RULE_STRING ) )
+            // InternalMirBase.g:4947:2: ( () ( (lv_value_1_0= RULE_STRING ) ) )
+            // InternalMirBase.g:4948:3: () ( (lv_value_1_0= RULE_STRING ) )
             {
-            // InternalMirBase.g:4921:3: ()
-            // InternalMirBase.g:4922:4: 
+            // InternalMirBase.g:4948:3: ()
+            // InternalMirBase.g:4949:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13454,11 +13521,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4928:3: ( (lv_value_1_0= RULE_STRING ) )
-            // InternalMirBase.g:4929:4: (lv_value_1_0= RULE_STRING )
+            // InternalMirBase.g:4955:3: ( (lv_value_1_0= RULE_STRING ) )
+            // InternalMirBase.g:4956:4: (lv_value_1_0= RULE_STRING )
             {
-            // InternalMirBase.g:4929:4: (lv_value_1_0= RULE_STRING )
-            // InternalMirBase.g:4930:5: lv_value_1_0= RULE_STRING
+            // InternalMirBase.g:4956:4: (lv_value_1_0= RULE_STRING )
+            // InternalMirBase.g:4957:5: lv_value_1_0= RULE_STRING
             {
             lv_value_1_0=(Token)match(input,RULE_STRING,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -13509,7 +13576,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXTypeLiteral"
-    // InternalMirBase.g:4950:1: entryRuleXTypeLiteral returns [EObject current=null] : iv_ruleXTypeLiteral= ruleXTypeLiteral EOF ;
+    // InternalMirBase.g:4977:1: entryRuleXTypeLiteral returns [EObject current=null] : iv_ruleXTypeLiteral= ruleXTypeLiteral EOF ;
     public final EObject entryRuleXTypeLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13517,8 +13584,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:4950:53: (iv_ruleXTypeLiteral= ruleXTypeLiteral EOF )
-            // InternalMirBase.g:4951:2: iv_ruleXTypeLiteral= ruleXTypeLiteral EOF
+            // InternalMirBase.g:4977:53: (iv_ruleXTypeLiteral= ruleXTypeLiteral EOF )
+            // InternalMirBase.g:4978:2: iv_ruleXTypeLiteral= ruleXTypeLiteral EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXTypeLiteralRule()); 
@@ -13549,7 +13616,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXTypeLiteral"
-    // InternalMirBase.g:4957:1: ruleXTypeLiteral returns [EObject current=null] : ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' ) ;
+    // InternalMirBase.g:4984:1: ruleXTypeLiteral returns [EObject current=null] : ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' ) ;
     public final EObject ruleXTypeLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -13563,14 +13630,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:4963:2: ( ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' ) )
-            // InternalMirBase.g:4964:2: ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' )
+            // InternalMirBase.g:4990:2: ( ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' ) )
+            // InternalMirBase.g:4991:2: ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' )
             {
-            // InternalMirBase.g:4964:2: ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' )
-            // InternalMirBase.g:4965:3: () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')'
+            // InternalMirBase.g:4991:2: ( () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')' )
+            // InternalMirBase.g:4992:3: () otherlv_1= 'typeof' otherlv_2= '(' ( ( ruleQualifiedName ) ) ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )* otherlv_5= ')'
             {
-            // InternalMirBase.g:4965:3: ()
-            // InternalMirBase.g:4966:4: 
+            // InternalMirBase.g:4992:3: ()
+            // InternalMirBase.g:4993:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13594,11 +13661,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_2, grammarAccess.getXTypeLiteralAccess().getLeftParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:4980:3: ( ( ruleQualifiedName ) )
-            // InternalMirBase.g:4981:4: ( ruleQualifiedName )
+            // InternalMirBase.g:5007:3: ( ( ruleQualifiedName ) )
+            // InternalMirBase.g:5008:4: ( ruleQualifiedName )
             {
-            // InternalMirBase.g:4981:4: ( ruleQualifiedName )
-            // InternalMirBase.g:4982:5: ruleQualifiedName
+            // InternalMirBase.g:5008:4: ( ruleQualifiedName )
+            // InternalMirBase.g:5009:5: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
 
@@ -13628,7 +13695,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:4996:3: ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )*
+            // InternalMirBase.g:5023:3: ( (lv_arrayDimensions_4_0= ruleArrayBrackets ) )*
             loop84:
             do {
                 int alt84=2;
@@ -13641,10 +13708,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt84) {
             	case 1 :
-            	    // InternalMirBase.g:4997:4: (lv_arrayDimensions_4_0= ruleArrayBrackets )
+            	    // InternalMirBase.g:5024:4: (lv_arrayDimensions_4_0= ruleArrayBrackets )
             	    {
-            	    // InternalMirBase.g:4997:4: (lv_arrayDimensions_4_0= ruleArrayBrackets )
-            	    // InternalMirBase.g:4998:5: lv_arrayDimensions_4_0= ruleArrayBrackets
+            	    // InternalMirBase.g:5024:4: (lv_arrayDimensions_4_0= ruleArrayBrackets )
+            	    // InternalMirBase.g:5025:5: lv_arrayDimensions_4_0= ruleArrayBrackets
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -13712,7 +13779,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXThrowExpression"
-    // InternalMirBase.g:5023:1: entryRuleXThrowExpression returns [EObject current=null] : iv_ruleXThrowExpression= ruleXThrowExpression EOF ;
+    // InternalMirBase.g:5050:1: entryRuleXThrowExpression returns [EObject current=null] : iv_ruleXThrowExpression= ruleXThrowExpression EOF ;
     public final EObject entryRuleXThrowExpression() throws RecognitionException {
         EObject current = null;
 
@@ -13720,8 +13787,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5023:57: (iv_ruleXThrowExpression= ruleXThrowExpression EOF )
-            // InternalMirBase.g:5024:2: iv_ruleXThrowExpression= ruleXThrowExpression EOF
+            // InternalMirBase.g:5050:57: (iv_ruleXThrowExpression= ruleXThrowExpression EOF )
+            // InternalMirBase.g:5051:2: iv_ruleXThrowExpression= ruleXThrowExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXThrowExpressionRule()); 
@@ -13752,7 +13819,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXThrowExpression"
-    // InternalMirBase.g:5030:1: ruleXThrowExpression returns [EObject current=null] : ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:5057:1: ruleXThrowExpression returns [EObject current=null] : ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) ) ;
     public final EObject ruleXThrowExpression() throws RecognitionException {
         EObject current = null;
 
@@ -13764,14 +13831,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5036:2: ( ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:5037:2: ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5063:2: ( ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:5064:2: ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:5037:2: ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) )
-            // InternalMirBase.g:5038:3: () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) )
+            // InternalMirBase.g:5064:2: ( () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5065:3: () otherlv_1= 'throw' ( (lv_expression_2_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:5038:3: ()
-            // InternalMirBase.g:5039:4: 
+            // InternalMirBase.g:5065:3: ()
+            // InternalMirBase.g:5066:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13789,11 +13856,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXThrowExpressionAccess().getThrowKeyword_1());
               		
             }
-            // InternalMirBase.g:5049:3: ( (lv_expression_2_0= ruleXExpression ) )
-            // InternalMirBase.g:5050:4: (lv_expression_2_0= ruleXExpression )
+            // InternalMirBase.g:5076:3: ( (lv_expression_2_0= ruleXExpression ) )
+            // InternalMirBase.g:5077:4: (lv_expression_2_0= ruleXExpression )
             {
-            // InternalMirBase.g:5050:4: (lv_expression_2_0= ruleXExpression )
-            // InternalMirBase.g:5051:5: lv_expression_2_0= ruleXExpression
+            // InternalMirBase.g:5077:4: (lv_expression_2_0= ruleXExpression )
+            // InternalMirBase.g:5078:5: lv_expression_2_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -13849,7 +13916,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXReturnExpression"
-    // InternalMirBase.g:5072:1: entryRuleXReturnExpression returns [EObject current=null] : iv_ruleXReturnExpression= ruleXReturnExpression EOF ;
+    // InternalMirBase.g:5099:1: entryRuleXReturnExpression returns [EObject current=null] : iv_ruleXReturnExpression= ruleXReturnExpression EOF ;
     public final EObject entryRuleXReturnExpression() throws RecognitionException {
         EObject current = null;
 
@@ -13857,8 +13924,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5072:58: (iv_ruleXReturnExpression= ruleXReturnExpression EOF )
-            // InternalMirBase.g:5073:2: iv_ruleXReturnExpression= ruleXReturnExpression EOF
+            // InternalMirBase.g:5099:58: (iv_ruleXReturnExpression= ruleXReturnExpression EOF )
+            // InternalMirBase.g:5100:2: iv_ruleXReturnExpression= ruleXReturnExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXReturnExpressionRule()); 
@@ -13889,7 +13956,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXReturnExpression"
-    // InternalMirBase.g:5079:1: ruleXReturnExpression returns [EObject current=null] : ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? ) ;
+    // InternalMirBase.g:5106:1: ruleXReturnExpression returns [EObject current=null] : ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? ) ;
     public final EObject ruleXReturnExpression() throws RecognitionException {
         EObject current = null;
 
@@ -13901,14 +13968,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5085:2: ( ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? ) )
-            // InternalMirBase.g:5086:2: ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? )
+            // InternalMirBase.g:5112:2: ( ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? ) )
+            // InternalMirBase.g:5113:2: ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? )
             {
-            // InternalMirBase.g:5086:2: ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? )
-            // InternalMirBase.g:5087:3: () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?
+            // InternalMirBase.g:5113:2: ( () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )? )
+            // InternalMirBase.g:5114:3: () otherlv_1= 'return' ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?
             {
-            // InternalMirBase.g:5087:3: ()
-            // InternalMirBase.g:5088:4: 
+            // InternalMirBase.g:5114:3: ()
+            // InternalMirBase.g:5115:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -13926,15 +13993,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXReturnExpressionAccess().getReturnKeyword_1());
               		
             }
-            // InternalMirBase.g:5098:3: ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?
+            // InternalMirBase.g:5125:3: ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?
             int alt85=2;
             alt85 = dfa85.predict(input);
             switch (alt85) {
                 case 1 :
-                    // InternalMirBase.g:5099:4: ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression )
+                    // InternalMirBase.g:5126:4: ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:5100:4: (lv_expression_2_0= ruleXExpression )
-                    // InternalMirBase.g:5101:5: lv_expression_2_0= ruleXExpression
+                    // InternalMirBase.g:5127:4: (lv_expression_2_0= ruleXExpression )
+                    // InternalMirBase.g:5128:5: lv_expression_2_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -13993,7 +14060,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXTryCatchFinallyExpression"
-    // InternalMirBase.g:5122:1: entryRuleXTryCatchFinallyExpression returns [EObject current=null] : iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF ;
+    // InternalMirBase.g:5149:1: entryRuleXTryCatchFinallyExpression returns [EObject current=null] : iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF ;
     public final EObject entryRuleXTryCatchFinallyExpression() throws RecognitionException {
         EObject current = null;
 
@@ -14001,8 +14068,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5122:67: (iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF )
-            // InternalMirBase.g:5123:2: iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF
+            // InternalMirBase.g:5149:67: (iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF )
+            // InternalMirBase.g:5150:2: iv_ruleXTryCatchFinallyExpression= ruleXTryCatchFinallyExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXTryCatchFinallyExpressionRule()); 
@@ -14033,7 +14100,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXTryCatchFinallyExpression"
-    // InternalMirBase.g:5129:1: ruleXTryCatchFinallyExpression returns [EObject current=null] : ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) ) ;
+    // InternalMirBase.g:5156:1: ruleXTryCatchFinallyExpression returns [EObject current=null] : ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) ) ;
     public final EObject ruleXTryCatchFinallyExpression() throws RecognitionException {
         EObject current = null;
 
@@ -14053,14 +14120,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5135:2: ( ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) ) )
-            // InternalMirBase.g:5136:2: ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) )
+            // InternalMirBase.g:5162:2: ( ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) ) )
+            // InternalMirBase.g:5163:2: ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) )
             {
-            // InternalMirBase.g:5136:2: ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) )
-            // InternalMirBase.g:5137:3: () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:5163:2: ( () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) ) )
+            // InternalMirBase.g:5164:3: () otherlv_1= 'try' ( (lv_expression_2_0= ruleXExpression ) ) ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) )
             {
-            // InternalMirBase.g:5137:3: ()
-            // InternalMirBase.g:5138:4: 
+            // InternalMirBase.g:5164:3: ()
+            // InternalMirBase.g:5165:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -14078,11 +14145,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXTryCatchFinallyExpressionAccess().getTryKeyword_1());
               		
             }
-            // InternalMirBase.g:5148:3: ( (lv_expression_2_0= ruleXExpression ) )
-            // InternalMirBase.g:5149:4: (lv_expression_2_0= ruleXExpression )
+            // InternalMirBase.g:5175:3: ( (lv_expression_2_0= ruleXExpression ) )
+            // InternalMirBase.g:5176:4: (lv_expression_2_0= ruleXExpression )
             {
-            // InternalMirBase.g:5149:4: (lv_expression_2_0= ruleXExpression )
-            // InternalMirBase.g:5150:5: lv_expression_2_0= ruleXExpression
+            // InternalMirBase.g:5176:4: (lv_expression_2_0= ruleXExpression )
+            // InternalMirBase.g:5177:5: lv_expression_2_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -14113,7 +14180,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:5167:3: ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:5194:3: ( ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? ) | (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) ) )
             int alt88=2;
             int LA88_0 = input.LA(1);
 
@@ -14132,12 +14199,12 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt88) {
                 case 1 :
-                    // InternalMirBase.g:5168:4: ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? )
+                    // InternalMirBase.g:5195:4: ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? )
                     {
-                    // InternalMirBase.g:5168:4: ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? )
-                    // InternalMirBase.g:5169:5: ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )?
+                    // InternalMirBase.g:5195:4: ( ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )? )
+                    // InternalMirBase.g:5196:5: ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+ ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )?
                     {
-                    // InternalMirBase.g:5169:5: ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+
+                    // InternalMirBase.g:5196:5: ( ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause ) )+
                     int cnt86=0;
                     loop86:
                     do {
@@ -14157,10 +14224,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt86) {
                     	case 1 :
-                    	    // InternalMirBase.g:5170:6: ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause )
+                    	    // InternalMirBase.g:5197:6: ( 'catch' )=> (lv_catchClauses_3_0= ruleXCatchClause )
                     	    {
-                    	    // InternalMirBase.g:5171:6: (lv_catchClauses_3_0= ruleXCatchClause )
-                    	    // InternalMirBase.g:5172:7: lv_catchClauses_3_0= ruleXCatchClause
+                    	    // InternalMirBase.g:5198:6: (lv_catchClauses_3_0= ruleXCatchClause )
+                    	    // InternalMirBase.g:5199:7: lv_catchClauses_3_0= ruleXCatchClause
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -14202,7 +14269,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         cnt86++;
                     } while (true);
 
-                    // InternalMirBase.g:5189:5: ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )?
+                    // InternalMirBase.g:5216:5: ( ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) ) )?
                     int alt87=2;
                     int LA87_0 = input.LA(1);
 
@@ -14215,10 +14282,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt87) {
                         case 1 :
-                            // InternalMirBase.g:5190:6: ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) )
+                            // InternalMirBase.g:5217:6: ( ( 'finally' )=>otherlv_4= 'finally' ) ( (lv_finallyExpression_5_0= ruleXExpression ) )
                             {
-                            // InternalMirBase.g:5190:6: ( ( 'finally' )=>otherlv_4= 'finally' )
-                            // InternalMirBase.g:5191:7: ( 'finally' )=>otherlv_4= 'finally'
+                            // InternalMirBase.g:5217:6: ( ( 'finally' )=>otherlv_4= 'finally' )
+                            // InternalMirBase.g:5218:7: ( 'finally' )=>otherlv_4= 'finally'
                             {
                             otherlv_4=(Token)match(input,83,FOLLOW_9); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -14229,11 +14296,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:5197:6: ( (lv_finallyExpression_5_0= ruleXExpression ) )
-                            // InternalMirBase.g:5198:7: (lv_finallyExpression_5_0= ruleXExpression )
+                            // InternalMirBase.g:5224:6: ( (lv_finallyExpression_5_0= ruleXExpression ) )
+                            // InternalMirBase.g:5225:7: (lv_finallyExpression_5_0= ruleXExpression )
                             {
-                            // InternalMirBase.g:5198:7: (lv_finallyExpression_5_0= ruleXExpression )
-                            // InternalMirBase.g:5199:8: lv_finallyExpression_5_0= ruleXExpression
+                            // InternalMirBase.g:5225:7: (lv_finallyExpression_5_0= ruleXExpression )
+                            // InternalMirBase.g:5226:8: lv_finallyExpression_5_0= ruleXExpression
                             {
                             if ( state.backtracking==0 ) {
 
@@ -14277,10 +14344,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:5219:4: (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:5246:4: (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) )
                     {
-                    // InternalMirBase.g:5219:4: (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) )
-                    // InternalMirBase.g:5220:5: otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:5246:4: (otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) ) )
+                    // InternalMirBase.g:5247:5: otherlv_6= 'finally' ( (lv_finallyExpression_7_0= ruleXExpression ) )
                     {
                     otherlv_6=(Token)match(input,83,FOLLOW_9); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -14288,11 +14355,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       					newLeafNode(otherlv_6, grammarAccess.getXTryCatchFinallyExpressionAccess().getFinallyKeyword_3_1_0());
                       				
                     }
-                    // InternalMirBase.g:5224:5: ( (lv_finallyExpression_7_0= ruleXExpression ) )
-                    // InternalMirBase.g:5225:6: (lv_finallyExpression_7_0= ruleXExpression )
+                    // InternalMirBase.g:5251:5: ( (lv_finallyExpression_7_0= ruleXExpression ) )
+                    // InternalMirBase.g:5252:6: (lv_finallyExpression_7_0= ruleXExpression )
                     {
-                    // InternalMirBase.g:5225:6: (lv_finallyExpression_7_0= ruleXExpression )
-                    // InternalMirBase.g:5226:7: lv_finallyExpression_7_0= ruleXExpression
+                    // InternalMirBase.g:5252:6: (lv_finallyExpression_7_0= ruleXExpression )
+                    // InternalMirBase.g:5253:7: lv_finallyExpression_7_0= ruleXExpression
                     {
                     if ( state.backtracking==0 ) {
 
@@ -14357,7 +14424,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXSynchronizedExpression"
-    // InternalMirBase.g:5249:1: entryRuleXSynchronizedExpression returns [EObject current=null] : iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF ;
+    // InternalMirBase.g:5276:1: entryRuleXSynchronizedExpression returns [EObject current=null] : iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF ;
     public final EObject entryRuleXSynchronizedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -14365,8 +14432,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5249:64: (iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF )
-            // InternalMirBase.g:5250:2: iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF
+            // InternalMirBase.g:5276:64: (iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF )
+            // InternalMirBase.g:5277:2: iv_ruleXSynchronizedExpression= ruleXSynchronizedExpression EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXSynchronizedExpressionRule()); 
@@ -14397,7 +14464,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXSynchronizedExpression"
-    // InternalMirBase.g:5256:1: ruleXSynchronizedExpression returns [EObject current=null] : ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:5283:1: ruleXSynchronizedExpression returns [EObject current=null] : ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) ) ;
     public final EObject ruleXSynchronizedExpression() throws RecognitionException {
         EObject current = null;
 
@@ -14413,20 +14480,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5262:2: ( ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:5263:2: ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5289:2: ( ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:5290:2: ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:5263:2: ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) )
-            // InternalMirBase.g:5264:3: ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) )
+            // InternalMirBase.g:5290:2: ( ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5291:3: ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) ) ( (lv_param_3_0= ruleXExpression ) ) otherlv_4= ')' ( (lv_expression_5_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:5264:3: ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) )
-            // InternalMirBase.g:5265:4: ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' )
+            // InternalMirBase.g:5291:3: ( ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' ) )
+            // InternalMirBase.g:5292:4: ( ( () 'synchronized' '(' ) )=> ( () otherlv_1= 'synchronized' otherlv_2= '(' )
             {
-            // InternalMirBase.g:5272:4: ( () otherlv_1= 'synchronized' otherlv_2= '(' )
-            // InternalMirBase.g:5273:5: () otherlv_1= 'synchronized' otherlv_2= '('
+            // InternalMirBase.g:5299:4: ( () otherlv_1= 'synchronized' otherlv_2= '(' )
+            // InternalMirBase.g:5300:5: () otherlv_1= 'synchronized' otherlv_2= '('
             {
-            // InternalMirBase.g:5273:5: ()
-            // InternalMirBase.g:5274:6: 
+            // InternalMirBase.g:5300:5: ()
+            // InternalMirBase.g:5301:6: 
             {
             if ( state.backtracking==0 ) {
 
@@ -14456,11 +14523,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:5290:3: ( (lv_param_3_0= ruleXExpression ) )
-            // InternalMirBase.g:5291:4: (lv_param_3_0= ruleXExpression )
+            // InternalMirBase.g:5317:3: ( (lv_param_3_0= ruleXExpression ) )
+            // InternalMirBase.g:5318:4: (lv_param_3_0= ruleXExpression )
             {
-            // InternalMirBase.g:5291:4: (lv_param_3_0= ruleXExpression )
-            // InternalMirBase.g:5292:5: lv_param_3_0= ruleXExpression
+            // InternalMirBase.g:5318:4: (lv_param_3_0= ruleXExpression )
+            // InternalMirBase.g:5319:5: lv_param_3_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -14497,11 +14564,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_4, grammarAccess.getXSynchronizedExpressionAccess().getRightParenthesisKeyword_2());
               		
             }
-            // InternalMirBase.g:5313:3: ( (lv_expression_5_0= ruleXExpression ) )
-            // InternalMirBase.g:5314:4: (lv_expression_5_0= ruleXExpression )
+            // InternalMirBase.g:5340:3: ( (lv_expression_5_0= ruleXExpression ) )
+            // InternalMirBase.g:5341:4: (lv_expression_5_0= ruleXExpression )
             {
-            // InternalMirBase.g:5314:4: (lv_expression_5_0= ruleXExpression )
-            // InternalMirBase.g:5315:5: lv_expression_5_0= ruleXExpression
+            // InternalMirBase.g:5341:4: (lv_expression_5_0= ruleXExpression )
+            // InternalMirBase.g:5342:5: lv_expression_5_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -14557,7 +14624,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXCatchClause"
-    // InternalMirBase.g:5336:1: entryRuleXCatchClause returns [EObject current=null] : iv_ruleXCatchClause= ruleXCatchClause EOF ;
+    // InternalMirBase.g:5363:1: entryRuleXCatchClause returns [EObject current=null] : iv_ruleXCatchClause= ruleXCatchClause EOF ;
     public final EObject entryRuleXCatchClause() throws RecognitionException {
         EObject current = null;
 
@@ -14565,8 +14632,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5336:53: (iv_ruleXCatchClause= ruleXCatchClause EOF )
-            // InternalMirBase.g:5337:2: iv_ruleXCatchClause= ruleXCatchClause EOF
+            // InternalMirBase.g:5363:53: (iv_ruleXCatchClause= ruleXCatchClause EOF )
+            // InternalMirBase.g:5364:2: iv_ruleXCatchClause= ruleXCatchClause EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXCatchClauseRule()); 
@@ -14597,7 +14664,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXCatchClause"
-    // InternalMirBase.g:5343:1: ruleXCatchClause returns [EObject current=null] : ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) ) ;
+    // InternalMirBase.g:5370:1: ruleXCatchClause returns [EObject current=null] : ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) ) ;
     public final EObject ruleXCatchClause() throws RecognitionException {
         EObject current = null;
 
@@ -14613,14 +14680,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5349:2: ( ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) ) )
-            // InternalMirBase.g:5350:2: ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5376:2: ( ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) ) )
+            // InternalMirBase.g:5377:2: ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) )
             {
-            // InternalMirBase.g:5350:2: ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) )
-            // InternalMirBase.g:5351:3: ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) )
+            // InternalMirBase.g:5377:2: ( ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) ) )
+            // InternalMirBase.g:5378:3: ( ( 'catch' )=>otherlv_0= 'catch' ) otherlv_1= '(' ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) ) otherlv_3= ')' ( (lv_expression_4_0= ruleXExpression ) )
             {
-            // InternalMirBase.g:5351:3: ( ( 'catch' )=>otherlv_0= 'catch' )
-            // InternalMirBase.g:5352:4: ( 'catch' )=>otherlv_0= 'catch'
+            // InternalMirBase.g:5378:3: ( ( 'catch' )=>otherlv_0= 'catch' )
+            // InternalMirBase.g:5379:4: ( 'catch' )=>otherlv_0= 'catch'
             {
             otherlv_0=(Token)match(input,85,FOLLOW_49); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -14637,11 +14704,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getXCatchClauseAccess().getLeftParenthesisKeyword_1());
               		
             }
-            // InternalMirBase.g:5362:3: ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) )
-            // InternalMirBase.g:5363:4: (lv_declaredParam_2_0= ruleFullJvmFormalParameter )
+            // InternalMirBase.g:5389:3: ( (lv_declaredParam_2_0= ruleFullJvmFormalParameter ) )
+            // InternalMirBase.g:5390:4: (lv_declaredParam_2_0= ruleFullJvmFormalParameter )
             {
-            // InternalMirBase.g:5363:4: (lv_declaredParam_2_0= ruleFullJvmFormalParameter )
-            // InternalMirBase.g:5364:5: lv_declaredParam_2_0= ruleFullJvmFormalParameter
+            // InternalMirBase.g:5390:4: (lv_declaredParam_2_0= ruleFullJvmFormalParameter )
+            // InternalMirBase.g:5391:5: lv_declaredParam_2_0= ruleFullJvmFormalParameter
             {
             if ( state.backtracking==0 ) {
 
@@ -14678,11 +14745,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_3, grammarAccess.getXCatchClauseAccess().getRightParenthesisKeyword_3());
               		
             }
-            // InternalMirBase.g:5385:3: ( (lv_expression_4_0= ruleXExpression ) )
-            // InternalMirBase.g:5386:4: (lv_expression_4_0= ruleXExpression )
+            // InternalMirBase.g:5412:3: ( (lv_expression_4_0= ruleXExpression ) )
+            // InternalMirBase.g:5413:4: (lv_expression_4_0= ruleXExpression )
             {
-            // InternalMirBase.g:5386:4: (lv_expression_4_0= ruleXExpression )
-            // InternalMirBase.g:5387:5: lv_expression_4_0= ruleXExpression
+            // InternalMirBase.g:5413:4: (lv_expression_4_0= ruleXExpression )
+            // InternalMirBase.g:5414:5: lv_expression_4_0= ruleXExpression
             {
             if ( state.backtracking==0 ) {
 
@@ -14738,7 +14805,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleQualifiedName"
-    // InternalMirBase.g:5408:1: entryRuleQualifiedName returns [String current=null] : iv_ruleQualifiedName= ruleQualifiedName EOF ;
+    // InternalMirBase.g:5435:1: entryRuleQualifiedName returns [String current=null] : iv_ruleQualifiedName= ruleQualifiedName EOF ;
     public final String entryRuleQualifiedName() throws RecognitionException {
         String current = null;
 
@@ -14746,8 +14813,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5408:53: (iv_ruleQualifiedName= ruleQualifiedName EOF )
-            // InternalMirBase.g:5409:2: iv_ruleQualifiedName= ruleQualifiedName EOF
+            // InternalMirBase.g:5435:53: (iv_ruleQualifiedName= ruleQualifiedName EOF )
+            // InternalMirBase.g:5436:2: iv_ruleQualifiedName= ruleQualifiedName EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getQualifiedNameRule()); 
@@ -14778,7 +14845,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleQualifiedName"
-    // InternalMirBase.g:5415:1: ruleQualifiedName returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* ) ;
+    // InternalMirBase.g:5442:1: ruleQualifiedName returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* ) ;
     public final AntlrDatatypeRuleToken ruleQualifiedName() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -14792,11 +14859,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5421:2: ( (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* ) )
-            // InternalMirBase.g:5422:2: (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* )
+            // InternalMirBase.g:5448:2: ( (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* ) )
+            // InternalMirBase.g:5449:2: (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* )
             {
-            // InternalMirBase.g:5422:2: (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* )
-            // InternalMirBase.g:5423:3: this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )*
+            // InternalMirBase.g:5449:2: (this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )* )
+            // InternalMirBase.g:5450:3: this_ValidID_0= ruleValidID ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )*
             {
             if ( state.backtracking==0 ) {
 
@@ -14818,7 +14885,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			afterParserOrEnumRuleCall();
               		
             }
-            // InternalMirBase.g:5433:3: ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )*
+            // InternalMirBase.g:5460:3: ( ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID )*
             loop89:
             do {
                 int alt89=2;
@@ -14843,10 +14910,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt89) {
             	case 1 :
-            	    // InternalMirBase.g:5434:4: ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID
+            	    // InternalMirBase.g:5461:4: ( ( '.' )=>kw= '.' ) this_ValidID_2= ruleValidID
             	    {
-            	    // InternalMirBase.g:5434:4: ( ( '.' )=>kw= '.' )
-            	    // InternalMirBase.g:5435:5: ( '.' )=>kw= '.'
+            	    // InternalMirBase.g:5461:4: ( ( '.' )=>kw= '.' )
+            	    // InternalMirBase.g:5462:5: ( '.' )=>kw= '.'
             	    {
             	    kw=(Token)match(input,47,FOLLOW_6); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
@@ -14912,7 +14979,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleNumber"
-    // InternalMirBase.g:5457:1: entryRuleNumber returns [String current=null] : iv_ruleNumber= ruleNumber EOF ;
+    // InternalMirBase.g:5484:1: entryRuleNumber returns [String current=null] : iv_ruleNumber= ruleNumber EOF ;
     public final String entryRuleNumber() throws RecognitionException {
         String current = null;
 
@@ -14923,8 +14990,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	HiddenTokens myHiddenTokenState = ((XtextTokenStream)input).setHiddenTokens();
 
         try {
-            // InternalMirBase.g:5459:2: (iv_ruleNumber= ruleNumber EOF )
-            // InternalMirBase.g:5460:2: iv_ruleNumber= ruleNumber EOF
+            // InternalMirBase.g:5486:2: (iv_ruleNumber= ruleNumber EOF )
+            // InternalMirBase.g:5487:2: iv_ruleNumber= ruleNumber EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getNumberRule()); 
@@ -14958,7 +15025,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleNumber"
-    // InternalMirBase.g:5469:1: ruleNumber returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) ) ;
+    // InternalMirBase.g:5496:1: ruleNumber returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) ) ;
     public final AntlrDatatypeRuleToken ruleNumber() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -14974,10 +15041,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	HiddenTokens myHiddenTokenState = ((XtextTokenStream)input).setHiddenTokens();
 
         try {
-            // InternalMirBase.g:5476:2: ( (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) ) )
-            // InternalMirBase.g:5477:2: (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) )
+            // InternalMirBase.g:5503:2: ( (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) ) )
+            // InternalMirBase.g:5504:2: (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) )
             {
-            // InternalMirBase.g:5477:2: (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) )
+            // InternalMirBase.g:5504:2: (this_HEX_0= RULE_HEX | ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? ) )
             int alt93=2;
             int LA93_0 = input.LA(1);
 
@@ -14996,7 +15063,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt93) {
                 case 1 :
-                    // InternalMirBase.g:5478:3: this_HEX_0= RULE_HEX
+                    // InternalMirBase.g:5505:3: this_HEX_0= RULE_HEX
                     {
                     this_HEX_0=(Token)match(input,RULE_HEX,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -15013,12 +15080,12 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:5486:3: ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? )
+                    // InternalMirBase.g:5513:3: ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? )
                     {
-                    // InternalMirBase.g:5486:3: ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? )
-                    // InternalMirBase.g:5487:4: (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )?
+                    // InternalMirBase.g:5513:3: ( (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )? )
+                    // InternalMirBase.g:5514:4: (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL ) (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )?
                     {
-                    // InternalMirBase.g:5487:4: (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL )
+                    // InternalMirBase.g:5514:4: (this_INT_1= RULE_INT | this_DECIMAL_2= RULE_DECIMAL )
                     int alt90=2;
                     int LA90_0 = input.LA(1);
 
@@ -15037,7 +15104,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt90) {
                         case 1 :
-                            // InternalMirBase.g:5488:5: this_INT_1= RULE_INT
+                            // InternalMirBase.g:5515:5: this_INT_1= RULE_INT
                             {
                             this_INT_1=(Token)match(input,RULE_INT,FOLLOW_74); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -15054,7 +15121,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:5496:5: this_DECIMAL_2= RULE_DECIMAL
+                            // InternalMirBase.g:5523:5: this_DECIMAL_2= RULE_DECIMAL
                             {
                             this_DECIMAL_2=(Token)match(input,RULE_DECIMAL,FOLLOW_74); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -15073,7 +15140,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:5504:4: (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )?
+                    // InternalMirBase.g:5531:4: (kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL ) )?
                     int alt92=2;
                     int LA92_0 = input.LA(1);
 
@@ -15086,7 +15153,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt92) {
                         case 1 :
-                            // InternalMirBase.g:5505:5: kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL )
+                            // InternalMirBase.g:5532:5: kw= '.' (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL )
                             {
                             kw=(Token)match(input,47,FOLLOW_75); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -15095,7 +15162,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                               					newLeafNode(kw, grammarAccess.getNumberAccess().getFullStopKeyword_1_1_0());
                               				
                             }
-                            // InternalMirBase.g:5510:5: (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL )
+                            // InternalMirBase.g:5537:5: (this_INT_4= RULE_INT | this_DECIMAL_5= RULE_DECIMAL )
                             int alt91=2;
                             int LA91_0 = input.LA(1);
 
@@ -15114,7 +15181,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             switch (alt91) {
                                 case 1 :
-                                    // InternalMirBase.g:5511:6: this_INT_4= RULE_INT
+                                    // InternalMirBase.g:5538:6: this_INT_4= RULE_INT
                                     {
                                     this_INT_4=(Token)match(input,RULE_INT,FOLLOW_2); if (state.failed) return current;
                                     if ( state.backtracking==0 ) {
@@ -15131,7 +15198,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                                     }
                                     break;
                                 case 2 :
-                                    // InternalMirBase.g:5519:6: this_DECIMAL_5= RULE_DECIMAL
+                                    // InternalMirBase.g:5546:6: this_DECIMAL_5= RULE_DECIMAL
                                     {
                                     this_DECIMAL_5=(Token)match(input,RULE_DECIMAL,FOLLOW_2); if (state.failed) return current;
                                     if ( state.backtracking==0 ) {
@@ -15190,7 +15257,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmTypeReference"
-    // InternalMirBase.g:5536:1: entryRuleJvmTypeReference returns [EObject current=null] : iv_ruleJvmTypeReference= ruleJvmTypeReference EOF ;
+    // InternalMirBase.g:5563:1: entryRuleJvmTypeReference returns [EObject current=null] : iv_ruleJvmTypeReference= ruleJvmTypeReference EOF ;
     public final EObject entryRuleJvmTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -15198,8 +15265,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5536:57: (iv_ruleJvmTypeReference= ruleJvmTypeReference EOF )
-            // InternalMirBase.g:5537:2: iv_ruleJvmTypeReference= ruleJvmTypeReference EOF
+            // InternalMirBase.g:5563:57: (iv_ruleJvmTypeReference= ruleJvmTypeReference EOF )
+            // InternalMirBase.g:5564:2: iv_ruleJvmTypeReference= ruleJvmTypeReference EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmTypeReferenceRule()); 
@@ -15230,7 +15297,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmTypeReference"
-    // InternalMirBase.g:5543:1: ruleJvmTypeReference returns [EObject current=null] : ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef ) ;
+    // InternalMirBase.g:5570:1: ruleJvmTypeReference returns [EObject current=null] : ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef ) ;
     public final EObject ruleJvmTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -15243,10 +15310,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5549:2: ( ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef ) )
-            // InternalMirBase.g:5550:2: ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef )
+            // InternalMirBase.g:5576:2: ( ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef ) )
+            // InternalMirBase.g:5577:2: ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef )
             {
-            // InternalMirBase.g:5550:2: ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef )
+            // InternalMirBase.g:5577:2: ( (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* ) | this_XFunctionTypeRef_3= ruleXFunctionTypeRef )
             int alt95=2;
             int LA95_0 = input.LA(1);
 
@@ -15265,10 +15332,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt95) {
                 case 1 :
-                    // InternalMirBase.g:5551:3: (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* )
+                    // InternalMirBase.g:5578:3: (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* )
                     {
-                    // InternalMirBase.g:5551:3: (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* )
-                    // InternalMirBase.g:5552:4: this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )*
+                    // InternalMirBase.g:5578:3: (this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )* )
+                    // InternalMirBase.g:5579:4: this_JvmParameterizedTypeReference_0= ruleJvmParameterizedTypeReference ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )*
                     {
                     if ( state.backtracking==0 ) {
 
@@ -15286,7 +15353,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				afterParserOrEnumRuleCall();
                       			
                     }
-                    // InternalMirBase.g:5560:4: ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )*
+                    // InternalMirBase.g:5587:4: ( ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets ) )*
                     loop94:
                     do {
                         int alt94=2;
@@ -15311,13 +15378,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt94) {
                     	case 1 :
-                    	    // InternalMirBase.g:5561:5: ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets )
+                    	    // InternalMirBase.g:5588:5: ( ( () ruleArrayBrackets ) )=> ( () ruleArrayBrackets )
                     	    {
-                    	    // InternalMirBase.g:5567:5: ( () ruleArrayBrackets )
-                    	    // InternalMirBase.g:5568:6: () ruleArrayBrackets
+                    	    // InternalMirBase.g:5594:5: ( () ruleArrayBrackets )
+                    	    // InternalMirBase.g:5595:6: () ruleArrayBrackets
                     	    {
-                    	    // InternalMirBase.g:5568:6: ()
-                    	    // InternalMirBase.g:5569:7: 
+                    	    // InternalMirBase.g:5595:6: ()
+                    	    // InternalMirBase.g:5596:7: 
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -15363,7 +15430,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:5586:3: this_XFunctionTypeRef_3= ruleXFunctionTypeRef
+                    // InternalMirBase.g:5613:3: this_XFunctionTypeRef_3= ruleXFunctionTypeRef
                     {
                     if ( state.backtracking==0 ) {
 
@@ -15409,7 +15476,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleArrayBrackets"
-    // InternalMirBase.g:5598:1: entryRuleArrayBrackets returns [String current=null] : iv_ruleArrayBrackets= ruleArrayBrackets EOF ;
+    // InternalMirBase.g:5625:1: entryRuleArrayBrackets returns [String current=null] : iv_ruleArrayBrackets= ruleArrayBrackets EOF ;
     public final String entryRuleArrayBrackets() throws RecognitionException {
         String current = null;
 
@@ -15417,8 +15484,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5598:53: (iv_ruleArrayBrackets= ruleArrayBrackets EOF )
-            // InternalMirBase.g:5599:2: iv_ruleArrayBrackets= ruleArrayBrackets EOF
+            // InternalMirBase.g:5625:53: (iv_ruleArrayBrackets= ruleArrayBrackets EOF )
+            // InternalMirBase.g:5626:2: iv_ruleArrayBrackets= ruleArrayBrackets EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getArrayBracketsRule()); 
@@ -15449,7 +15516,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleArrayBrackets"
-    // InternalMirBase.g:5605:1: ruleArrayBrackets returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '[' kw= ']' ) ;
+    // InternalMirBase.g:5632:1: ruleArrayBrackets returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '[' kw= ']' ) ;
     public final AntlrDatatypeRuleToken ruleArrayBrackets() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -15459,11 +15526,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5611:2: ( (kw= '[' kw= ']' ) )
-            // InternalMirBase.g:5612:2: (kw= '[' kw= ']' )
+            // InternalMirBase.g:5638:2: ( (kw= '[' kw= ']' ) )
+            // InternalMirBase.g:5639:2: (kw= '[' kw= ']' )
             {
-            // InternalMirBase.g:5612:2: (kw= '[' kw= ']' )
-            // InternalMirBase.g:5613:3: kw= '[' kw= ']'
+            // InternalMirBase.g:5639:2: (kw= '[' kw= ']' )
+            // InternalMirBase.g:5640:3: kw= '[' kw= ']'
             {
             kw=(Token)match(input,56,FOLLOW_46); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -15504,7 +15571,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXFunctionTypeRef"
-    // InternalMirBase.g:5627:1: entryRuleXFunctionTypeRef returns [EObject current=null] : iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF ;
+    // InternalMirBase.g:5654:1: entryRuleXFunctionTypeRef returns [EObject current=null] : iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF ;
     public final EObject entryRuleXFunctionTypeRef() throws RecognitionException {
         EObject current = null;
 
@@ -15512,8 +15579,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5627:57: (iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF )
-            // InternalMirBase.g:5628:2: iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF
+            // InternalMirBase.g:5654:57: (iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF )
+            // InternalMirBase.g:5655:2: iv_ruleXFunctionTypeRef= ruleXFunctionTypeRef EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXFunctionTypeRefRule()); 
@@ -15544,7 +15611,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXFunctionTypeRef"
-    // InternalMirBase.g:5634:1: ruleXFunctionTypeRef returns [EObject current=null] : ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) ) ;
+    // InternalMirBase.g:5661:1: ruleXFunctionTypeRef returns [EObject current=null] : ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) ) ;
     public final EObject ruleXFunctionTypeRef() throws RecognitionException {
         EObject current = null;
 
@@ -15563,13 +15630,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5640:2: ( ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) ) )
-            // InternalMirBase.g:5641:2: ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:5667:2: ( ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) ) )
+            // InternalMirBase.g:5668:2: ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) )
             {
-            // InternalMirBase.g:5641:2: ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) )
-            // InternalMirBase.g:5642:3: (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:5668:2: ( (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:5669:3: (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )? otherlv_5= '=>' ( (lv_returnType_6_0= ruleJvmTypeReference ) )
             {
-            // InternalMirBase.g:5642:3: (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )?
+            // InternalMirBase.g:5669:3: (otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')' )?
             int alt98=2;
             int LA98_0 = input.LA(1);
 
@@ -15578,7 +15645,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt98) {
                 case 1 :
-                    // InternalMirBase.g:5643:4: otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')'
+                    // InternalMirBase.g:5670:4: otherlv_0= '(' ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )? otherlv_4= ')'
                     {
                     otherlv_0=(Token)match(input,51,FOLLOW_76); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -15586,7 +15653,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_0, grammarAccess.getXFunctionTypeRefAccess().getLeftParenthesisKeyword_0_0());
                       			
                     }
-                    // InternalMirBase.g:5647:4: ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )?
+                    // InternalMirBase.g:5674:4: ( ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )* )?
                     int alt97=2;
                     int LA97_0 = input.LA(1);
 
@@ -15595,13 +15662,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt97) {
                         case 1 :
-                            // InternalMirBase.g:5648:5: ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )*
+                            // InternalMirBase.g:5675:5: ( (lv_paramTypes_1_0= ruleJvmTypeReference ) ) (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )*
                             {
-                            // InternalMirBase.g:5648:5: ( (lv_paramTypes_1_0= ruleJvmTypeReference ) )
-                            // InternalMirBase.g:5649:6: (lv_paramTypes_1_0= ruleJvmTypeReference )
+                            // InternalMirBase.g:5675:5: ( (lv_paramTypes_1_0= ruleJvmTypeReference ) )
+                            // InternalMirBase.g:5676:6: (lv_paramTypes_1_0= ruleJvmTypeReference )
                             {
-                            // InternalMirBase.g:5649:6: (lv_paramTypes_1_0= ruleJvmTypeReference )
-                            // InternalMirBase.g:5650:7: lv_paramTypes_1_0= ruleJvmTypeReference
+                            // InternalMirBase.g:5676:6: (lv_paramTypes_1_0= ruleJvmTypeReference )
+                            // InternalMirBase.g:5677:7: lv_paramTypes_1_0= ruleJvmTypeReference
                             {
                             if ( state.backtracking==0 ) {
 
@@ -15632,7 +15699,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                             }
 
-                            // InternalMirBase.g:5667:5: (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )*
+                            // InternalMirBase.g:5694:5: (otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) ) )*
                             loop96:
                             do {
                                 int alt96=2;
@@ -15645,7 +15712,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                                 switch (alt96) {
                             	case 1 :
-                            	    // InternalMirBase.g:5668:6: otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) )
+                            	    // InternalMirBase.g:5695:6: otherlv_2= ',' ( (lv_paramTypes_3_0= ruleJvmTypeReference ) )
                             	    {
                             	    otherlv_2=(Token)match(input,50,FOLLOW_18); if (state.failed) return current;
                             	    if ( state.backtracking==0 ) {
@@ -15653,11 +15720,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             	      						newLeafNode(otherlv_2, grammarAccess.getXFunctionTypeRefAccess().getCommaKeyword_0_1_1_0());
                             	      					
                             	    }
-                            	    // InternalMirBase.g:5672:6: ( (lv_paramTypes_3_0= ruleJvmTypeReference ) )
-                            	    // InternalMirBase.g:5673:7: (lv_paramTypes_3_0= ruleJvmTypeReference )
+                            	    // InternalMirBase.g:5699:6: ( (lv_paramTypes_3_0= ruleJvmTypeReference ) )
+                            	    // InternalMirBase.g:5700:7: (lv_paramTypes_3_0= ruleJvmTypeReference )
                             	    {
-                            	    // InternalMirBase.g:5673:7: (lv_paramTypes_3_0= ruleJvmTypeReference )
-                            	    // InternalMirBase.g:5674:8: lv_paramTypes_3_0= ruleJvmTypeReference
+                            	    // InternalMirBase.g:5700:7: (lv_paramTypes_3_0= ruleJvmTypeReference )
+                            	    // InternalMirBase.g:5701:8: lv_paramTypes_3_0= ruleJvmTypeReference
                             	    {
                             	    if ( state.backtracking==0 ) {
 
@@ -15721,11 +15788,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_5, grammarAccess.getXFunctionTypeRefAccess().getEqualsSignGreaterThanSignKeyword_1());
               		
             }
-            // InternalMirBase.g:5702:3: ( (lv_returnType_6_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:5703:4: (lv_returnType_6_0= ruleJvmTypeReference )
+            // InternalMirBase.g:5729:3: ( (lv_returnType_6_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:5730:4: (lv_returnType_6_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:5703:4: (lv_returnType_6_0= ruleJvmTypeReference )
-            // InternalMirBase.g:5704:5: lv_returnType_6_0= ruleJvmTypeReference
+            // InternalMirBase.g:5730:4: (lv_returnType_6_0= ruleJvmTypeReference )
+            // InternalMirBase.g:5731:5: lv_returnType_6_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -15781,7 +15848,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmParameterizedTypeReference"
-    // InternalMirBase.g:5725:1: entryRuleJvmParameterizedTypeReference returns [EObject current=null] : iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF ;
+    // InternalMirBase.g:5752:1: entryRuleJvmParameterizedTypeReference returns [EObject current=null] : iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF ;
     public final EObject entryRuleJvmParameterizedTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -15789,8 +15856,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5725:70: (iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF )
-            // InternalMirBase.g:5726:2: iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF
+            // InternalMirBase.g:5752:70: (iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF )
+            // InternalMirBase.g:5753:2: iv_ruleJvmParameterizedTypeReference= ruleJvmParameterizedTypeReference EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmParameterizedTypeReferenceRule()); 
@@ -15821,7 +15888,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmParameterizedTypeReference"
-    // InternalMirBase.g:5732:1: ruleJvmParameterizedTypeReference returns [EObject current=null] : ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? ) ;
+    // InternalMirBase.g:5759:1: ruleJvmParameterizedTypeReference returns [EObject current=null] : ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? ) ;
     public final EObject ruleJvmParameterizedTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -15845,17 +15912,17 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5738:2: ( ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? ) )
-            // InternalMirBase.g:5739:2: ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? )
+            // InternalMirBase.g:5765:2: ( ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? ) )
+            // InternalMirBase.g:5766:2: ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? )
             {
-            // InternalMirBase.g:5739:2: ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? )
-            // InternalMirBase.g:5740:3: ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?
+            // InternalMirBase.g:5766:2: ( ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )? )
+            // InternalMirBase.g:5767:3: ( ( ruleQualifiedName ) ) ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?
             {
-            // InternalMirBase.g:5740:3: ( ( ruleQualifiedName ) )
-            // InternalMirBase.g:5741:4: ( ruleQualifiedName )
+            // InternalMirBase.g:5767:3: ( ( ruleQualifiedName ) )
+            // InternalMirBase.g:5768:4: ( ruleQualifiedName )
             {
-            // InternalMirBase.g:5741:4: ( ruleQualifiedName )
-            // InternalMirBase.g:5742:5: ruleQualifiedName
+            // InternalMirBase.g:5768:4: ( ruleQualifiedName )
+            // InternalMirBase.g:5769:5: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
 
@@ -15885,15 +15952,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:5756:3: ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?
+            // InternalMirBase.g:5783:3: ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?
             int alt103=2;
             alt103 = dfa103.predict(input);
             switch (alt103) {
                 case 1 :
-                    // InternalMirBase.g:5757:4: ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )*
+                    // InternalMirBase.g:5784:4: ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )*
                     {
-                    // InternalMirBase.g:5757:4: ( ( '<' )=>otherlv_1= '<' )
-                    // InternalMirBase.g:5758:5: ( '<' )=>otherlv_1= '<'
+                    // InternalMirBase.g:5784:4: ( ( '<' )=>otherlv_1= '<' )
+                    // InternalMirBase.g:5785:5: ( '<' )=>otherlv_1= '<'
                     {
                     otherlv_1=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -15904,11 +15971,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:5764:4: ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) )
-                    // InternalMirBase.g:5765:5: (lv_arguments_2_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:5791:4: ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) )
+                    // InternalMirBase.g:5792:5: (lv_arguments_2_0= ruleJvmArgumentTypeReference )
                     {
-                    // InternalMirBase.g:5765:5: (lv_arguments_2_0= ruleJvmArgumentTypeReference )
-                    // InternalMirBase.g:5766:6: lv_arguments_2_0= ruleJvmArgumentTypeReference
+                    // InternalMirBase.g:5792:5: (lv_arguments_2_0= ruleJvmArgumentTypeReference )
+                    // InternalMirBase.g:5793:6: lv_arguments_2_0= ruleJvmArgumentTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -15939,7 +16006,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:5783:4: (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )*
+                    // InternalMirBase.g:5810:4: (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )*
                     loop99:
                     do {
                         int alt99=2;
@@ -15952,7 +16019,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt99) {
                     	case 1 :
-                    	    // InternalMirBase.g:5784:5: otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:5811:5: otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) )
                     	    {
                     	    otherlv_3=(Token)match(input,50,FOLLOW_30); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
@@ -15960,11 +16027,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	      					newLeafNode(otherlv_3, grammarAccess.getJvmParameterizedTypeReferenceAccess().getCommaKeyword_1_2_0());
                     	      				
                     	    }
-                    	    // InternalMirBase.g:5788:5: ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) )
-                    	    // InternalMirBase.g:5789:6: (lv_arguments_4_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:5815:5: ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) )
+                    	    // InternalMirBase.g:5816:6: (lv_arguments_4_0= ruleJvmArgumentTypeReference )
                     	    {
-                    	    // InternalMirBase.g:5789:6: (lv_arguments_4_0= ruleJvmArgumentTypeReference )
-                    	    // InternalMirBase.g:5790:7: lv_arguments_4_0= ruleJvmArgumentTypeReference
+                    	    // InternalMirBase.g:5816:6: (lv_arguments_4_0= ruleJvmArgumentTypeReference )
+                    	    // InternalMirBase.g:5817:7: lv_arguments_4_0= ruleJvmArgumentTypeReference
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -16010,7 +16077,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                       				newLeafNode(otherlv_5, grammarAccess.getJvmParameterizedTypeReferenceAccess().getGreaterThanSignKeyword_1_3());
                       			
                     }
-                    // InternalMirBase.g:5812:4: ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )*
+                    // InternalMirBase.g:5839:4: ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )*
                     loop102:
                     do {
                         int alt102=2;
@@ -16035,16 +16102,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt102) {
                     	case 1 :
-                    	    // InternalMirBase.g:5813:5: ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?
+                    	    // InternalMirBase.g:5840:5: ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?
                     	    {
-                    	    // InternalMirBase.g:5813:5: ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) )
-                    	    // InternalMirBase.g:5814:6: ( ( () '.' ) )=> ( () otherlv_7= '.' )
+                    	    // InternalMirBase.g:5840:5: ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) )
+                    	    // InternalMirBase.g:5841:6: ( ( () '.' ) )=> ( () otherlv_7= '.' )
                     	    {
-                    	    // InternalMirBase.g:5820:6: ( () otherlv_7= '.' )
-                    	    // InternalMirBase.g:5821:7: () otherlv_7= '.'
+                    	    // InternalMirBase.g:5847:6: ( () otherlv_7= '.' )
+                    	    // InternalMirBase.g:5848:7: () otherlv_7= '.'
                     	    {
-                    	    // InternalMirBase.g:5821:7: ()
-                    	    // InternalMirBase.g:5822:8: 
+                    	    // InternalMirBase.g:5848:7: ()
+                    	    // InternalMirBase.g:5849:8: 
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -16068,11 +16135,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     	    }
 
-                    	    // InternalMirBase.g:5834:5: ( ( ruleValidID ) )
-                    	    // InternalMirBase.g:5835:6: ( ruleValidID )
+                    	    // InternalMirBase.g:5861:5: ( ( ruleValidID ) )
+                    	    // InternalMirBase.g:5862:6: ( ruleValidID )
                     	    {
-                    	    // InternalMirBase.g:5835:6: ( ruleValidID )
-                    	    // InternalMirBase.g:5836:7: ruleValidID
+                    	    // InternalMirBase.g:5862:6: ( ruleValidID )
+                    	    // InternalMirBase.g:5863:7: ruleValidID
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -16102,15 +16169,15 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     	    }
 
-                    	    // InternalMirBase.g:5850:5: ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?
+                    	    // InternalMirBase.g:5877:5: ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?
                     	    int alt101=2;
                     	    alt101 = dfa101.predict(input);
                     	    switch (alt101) {
                     	        case 1 :
-                    	            // InternalMirBase.g:5851:6: ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>'
+                    	            // InternalMirBase.g:5878:6: ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>'
                     	            {
-                    	            // InternalMirBase.g:5851:6: ( ( '<' )=>otherlv_9= '<' )
-                    	            // InternalMirBase.g:5852:7: ( '<' )=>otherlv_9= '<'
+                    	            // InternalMirBase.g:5878:6: ( ( '<' )=>otherlv_9= '<' )
+                    	            // InternalMirBase.g:5879:7: ( '<' )=>otherlv_9= '<'
                     	            {
                     	            otherlv_9=(Token)match(input,22,FOLLOW_30); if (state.failed) return current;
                     	            if ( state.backtracking==0 ) {
@@ -16121,11 +16188,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     	            }
 
-                    	            // InternalMirBase.g:5858:6: ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) )
-                    	            // InternalMirBase.g:5859:7: (lv_arguments_10_0= ruleJvmArgumentTypeReference )
+                    	            // InternalMirBase.g:5885:6: ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) )
+                    	            // InternalMirBase.g:5886:7: (lv_arguments_10_0= ruleJvmArgumentTypeReference )
                     	            {
-                    	            // InternalMirBase.g:5859:7: (lv_arguments_10_0= ruleJvmArgumentTypeReference )
-                    	            // InternalMirBase.g:5860:8: lv_arguments_10_0= ruleJvmArgumentTypeReference
+                    	            // InternalMirBase.g:5886:7: (lv_arguments_10_0= ruleJvmArgumentTypeReference )
+                    	            // InternalMirBase.g:5887:8: lv_arguments_10_0= ruleJvmArgumentTypeReference
                     	            {
                     	            if ( state.backtracking==0 ) {
 
@@ -16156,7 +16223,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     	            }
 
-                    	            // InternalMirBase.g:5877:6: (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )*
+                    	            // InternalMirBase.g:5904:6: (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )*
                     	            loop100:
                     	            do {
                     	                int alt100=2;
@@ -16169,7 +16236,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     	                switch (alt100) {
                     	            	case 1 :
-                    	            	    // InternalMirBase.g:5878:7: otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) )
+                    	            	    // InternalMirBase.g:5905:7: otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) )
                     	            	    {
                     	            	    otherlv_11=(Token)match(input,50,FOLLOW_30); if (state.failed) return current;
                     	            	    if ( state.backtracking==0 ) {
@@ -16177,11 +16244,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     	            	      							newLeafNode(otherlv_11, grammarAccess.getJvmParameterizedTypeReferenceAccess().getCommaKeyword_1_4_2_2_0());
                     	            	      						
                     	            	    }
-                    	            	    // InternalMirBase.g:5882:7: ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) )
-                    	            	    // InternalMirBase.g:5883:8: (lv_arguments_12_0= ruleJvmArgumentTypeReference )
+                    	            	    // InternalMirBase.g:5909:7: ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) )
+                    	            	    // InternalMirBase.g:5910:8: (lv_arguments_12_0= ruleJvmArgumentTypeReference )
                     	            	    {
-                    	            	    // InternalMirBase.g:5883:8: (lv_arguments_12_0= ruleJvmArgumentTypeReference )
-                    	            	    // InternalMirBase.g:5884:9: lv_arguments_12_0= ruleJvmArgumentTypeReference
+                    	            	    // InternalMirBase.g:5910:8: (lv_arguments_12_0= ruleJvmArgumentTypeReference )
+                    	            	    // InternalMirBase.g:5911:9: lv_arguments_12_0= ruleJvmArgumentTypeReference
                     	            	    {
                     	            	    if ( state.backtracking==0 ) {
 
@@ -16273,7 +16340,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmArgumentTypeReference"
-    // InternalMirBase.g:5913:1: entryRuleJvmArgumentTypeReference returns [EObject current=null] : iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF ;
+    // InternalMirBase.g:5940:1: entryRuleJvmArgumentTypeReference returns [EObject current=null] : iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF ;
     public final EObject entryRuleJvmArgumentTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -16281,8 +16348,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5913:65: (iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF )
-            // InternalMirBase.g:5914:2: iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF
+            // InternalMirBase.g:5940:65: (iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF )
+            // InternalMirBase.g:5941:2: iv_ruleJvmArgumentTypeReference= ruleJvmArgumentTypeReference EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmArgumentTypeReferenceRule()); 
@@ -16313,7 +16380,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmArgumentTypeReference"
-    // InternalMirBase.g:5920:1: ruleJvmArgumentTypeReference returns [EObject current=null] : (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference ) ;
+    // InternalMirBase.g:5947:1: ruleJvmArgumentTypeReference returns [EObject current=null] : (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference ) ;
     public final EObject ruleJvmArgumentTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -16326,10 +16393,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5926:2: ( (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference ) )
-            // InternalMirBase.g:5927:2: (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference )
+            // InternalMirBase.g:5953:2: ( (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference ) )
+            // InternalMirBase.g:5954:2: (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference )
             {
-            // InternalMirBase.g:5927:2: (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference )
+            // InternalMirBase.g:5954:2: (this_JvmTypeReference_0= ruleJvmTypeReference | this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference )
             int alt104=2;
             int LA104_0 = input.LA(1);
 
@@ -16348,7 +16415,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt104) {
                 case 1 :
-                    // InternalMirBase.g:5928:3: this_JvmTypeReference_0= ruleJvmTypeReference
+                    // InternalMirBase.g:5955:3: this_JvmTypeReference_0= ruleJvmTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -16370,7 +16437,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:5937:3: this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference
+                    // InternalMirBase.g:5964:3: this_JvmWildcardTypeReference_1= ruleJvmWildcardTypeReference
                     {
                     if ( state.backtracking==0 ) {
 
@@ -16416,7 +16483,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmWildcardTypeReference"
-    // InternalMirBase.g:5949:1: entryRuleJvmWildcardTypeReference returns [EObject current=null] : iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF ;
+    // InternalMirBase.g:5976:1: entryRuleJvmWildcardTypeReference returns [EObject current=null] : iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF ;
     public final EObject entryRuleJvmWildcardTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -16424,8 +16491,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:5949:65: (iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF )
-            // InternalMirBase.g:5950:2: iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF
+            // InternalMirBase.g:5976:65: (iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF )
+            // InternalMirBase.g:5977:2: iv_ruleJvmWildcardTypeReference= ruleJvmWildcardTypeReference EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmWildcardTypeReferenceRule()); 
@@ -16456,7 +16523,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmWildcardTypeReference"
-    // InternalMirBase.g:5956:1: ruleJvmWildcardTypeReference returns [EObject current=null] : ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? ) ;
+    // InternalMirBase.g:5983:1: ruleJvmWildcardTypeReference returns [EObject current=null] : ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? ) ;
     public final EObject ruleJvmWildcardTypeReference() throws RecognitionException {
         EObject current = null;
 
@@ -16474,14 +16541,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:5962:2: ( ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? ) )
-            // InternalMirBase.g:5963:2: ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? )
+            // InternalMirBase.g:5989:2: ( ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? ) )
+            // InternalMirBase.g:5990:2: ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? )
             {
-            // InternalMirBase.g:5963:2: ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? )
-            // InternalMirBase.g:5964:3: () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )?
+            // InternalMirBase.g:5990:2: ( () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )? )
+            // InternalMirBase.g:5991:3: () otherlv_1= '?' ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )?
             {
-            // InternalMirBase.g:5964:3: ()
-            // InternalMirBase.g:5965:4: 
+            // InternalMirBase.g:5991:3: ()
+            // InternalMirBase.g:5992:4: 
             {
             if ( state.backtracking==0 ) {
 
@@ -16499,7 +16566,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getJvmWildcardTypeReferenceAccess().getQuestionMarkKeyword_1());
               		
             }
-            // InternalMirBase.g:5975:3: ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )?
+            // InternalMirBase.g:6002:3: ( ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* ) | ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* ) )?
             int alt107=3;
             int LA107_0 = input.LA(1);
 
@@ -16511,16 +16578,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt107) {
                 case 1 :
-                    // InternalMirBase.g:5976:4: ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* )
+                    // InternalMirBase.g:6003:4: ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* )
                     {
-                    // InternalMirBase.g:5976:4: ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* )
-                    // InternalMirBase.g:5977:5: ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )*
+                    // InternalMirBase.g:6003:4: ( ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )* )
+                    // InternalMirBase.g:6004:5: ( (lv_constraints_2_0= ruleJvmUpperBound ) ) ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )*
                     {
-                    // InternalMirBase.g:5977:5: ( (lv_constraints_2_0= ruleJvmUpperBound ) )
-                    // InternalMirBase.g:5978:6: (lv_constraints_2_0= ruleJvmUpperBound )
+                    // InternalMirBase.g:6004:5: ( (lv_constraints_2_0= ruleJvmUpperBound ) )
+                    // InternalMirBase.g:6005:6: (lv_constraints_2_0= ruleJvmUpperBound )
                     {
-                    // InternalMirBase.g:5978:6: (lv_constraints_2_0= ruleJvmUpperBound )
-                    // InternalMirBase.g:5979:7: lv_constraints_2_0= ruleJvmUpperBound
+                    // InternalMirBase.g:6005:6: (lv_constraints_2_0= ruleJvmUpperBound )
+                    // InternalMirBase.g:6006:7: lv_constraints_2_0= ruleJvmUpperBound
                     {
                     if ( state.backtracking==0 ) {
 
@@ -16551,7 +16618,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:5996:5: ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )*
+                    // InternalMirBase.g:6023:5: ( (lv_constraints_3_0= ruleJvmUpperBoundAnded ) )*
                     loop105:
                     do {
                         int alt105=2;
@@ -16564,10 +16631,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt105) {
                     	case 1 :
-                    	    // InternalMirBase.g:5997:6: (lv_constraints_3_0= ruleJvmUpperBoundAnded )
+                    	    // InternalMirBase.g:6024:6: (lv_constraints_3_0= ruleJvmUpperBoundAnded )
                     	    {
-                    	    // InternalMirBase.g:5997:6: (lv_constraints_3_0= ruleJvmUpperBoundAnded )
-                    	    // InternalMirBase.g:5998:7: lv_constraints_3_0= ruleJvmUpperBoundAnded
+                    	    // InternalMirBase.g:6024:6: (lv_constraints_3_0= ruleJvmUpperBoundAnded )
+                    	    // InternalMirBase.g:6025:7: lv_constraints_3_0= ruleJvmUpperBoundAnded
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -16611,16 +16678,16 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:6017:4: ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* )
+                    // InternalMirBase.g:6044:4: ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* )
                     {
-                    // InternalMirBase.g:6017:4: ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* )
-                    // InternalMirBase.g:6018:5: ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )*
+                    // InternalMirBase.g:6044:4: ( ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )* )
+                    // InternalMirBase.g:6045:5: ( (lv_constraints_4_0= ruleJvmLowerBound ) ) ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )*
                     {
-                    // InternalMirBase.g:6018:5: ( (lv_constraints_4_0= ruleJvmLowerBound ) )
-                    // InternalMirBase.g:6019:6: (lv_constraints_4_0= ruleJvmLowerBound )
+                    // InternalMirBase.g:6045:5: ( (lv_constraints_4_0= ruleJvmLowerBound ) )
+                    // InternalMirBase.g:6046:6: (lv_constraints_4_0= ruleJvmLowerBound )
                     {
-                    // InternalMirBase.g:6019:6: (lv_constraints_4_0= ruleJvmLowerBound )
-                    // InternalMirBase.g:6020:7: lv_constraints_4_0= ruleJvmLowerBound
+                    // InternalMirBase.g:6046:6: (lv_constraints_4_0= ruleJvmLowerBound )
+                    // InternalMirBase.g:6047:7: lv_constraints_4_0= ruleJvmLowerBound
                     {
                     if ( state.backtracking==0 ) {
 
@@ -16651,7 +16718,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:6037:5: ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )*
+                    // InternalMirBase.g:6064:5: ( (lv_constraints_5_0= ruleJvmLowerBoundAnded ) )*
                     loop106:
                     do {
                         int alt106=2;
@@ -16664,10 +16731,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                         switch (alt106) {
                     	case 1 :
-                    	    // InternalMirBase.g:6038:6: (lv_constraints_5_0= ruleJvmLowerBoundAnded )
+                    	    // InternalMirBase.g:6065:6: (lv_constraints_5_0= ruleJvmLowerBoundAnded )
                     	    {
-                    	    // InternalMirBase.g:6038:6: (lv_constraints_5_0= ruleJvmLowerBoundAnded )
-                    	    // InternalMirBase.g:6039:7: lv_constraints_5_0= ruleJvmLowerBoundAnded
+                    	    // InternalMirBase.g:6065:6: (lv_constraints_5_0= ruleJvmLowerBoundAnded )
+                    	    // InternalMirBase.g:6066:7: lv_constraints_5_0= ruleJvmLowerBoundAnded
                     	    {
                     	    if ( state.backtracking==0 ) {
 
@@ -16738,7 +16805,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmUpperBound"
-    // InternalMirBase.g:6062:1: entryRuleJvmUpperBound returns [EObject current=null] : iv_ruleJvmUpperBound= ruleJvmUpperBound EOF ;
+    // InternalMirBase.g:6089:1: entryRuleJvmUpperBound returns [EObject current=null] : iv_ruleJvmUpperBound= ruleJvmUpperBound EOF ;
     public final EObject entryRuleJvmUpperBound() throws RecognitionException {
         EObject current = null;
 
@@ -16746,8 +16813,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6062:54: (iv_ruleJvmUpperBound= ruleJvmUpperBound EOF )
-            // InternalMirBase.g:6063:2: iv_ruleJvmUpperBound= ruleJvmUpperBound EOF
+            // InternalMirBase.g:6089:54: (iv_ruleJvmUpperBound= ruleJvmUpperBound EOF )
+            // InternalMirBase.g:6090:2: iv_ruleJvmUpperBound= ruleJvmUpperBound EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmUpperBoundRule()); 
@@ -16778,7 +16845,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmUpperBound"
-    // InternalMirBase.g:6069:1: ruleJvmUpperBound returns [EObject current=null] : (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
+    // InternalMirBase.g:6096:1: ruleJvmUpperBound returns [EObject current=null] : (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
     public final EObject ruleJvmUpperBound() throws RecognitionException {
         EObject current = null;
 
@@ -16790,11 +16857,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6075:2: ( (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
-            // InternalMirBase.g:6076:2: (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6102:2: ( (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
+            // InternalMirBase.g:6103:2: (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
             {
-            // InternalMirBase.g:6076:2: (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
-            // InternalMirBase.g:6077:3: otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6103:2: (otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6104:3: otherlv_0= 'extends' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
             {
             otherlv_0=(Token)match(input,71,FOLLOW_18); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -16802,11 +16869,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_0, grammarAccess.getJvmUpperBoundAccess().getExtendsKeyword_0());
               		
             }
-            // InternalMirBase.g:6081:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:6082:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6108:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6109:4: (lv_typeReference_1_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:6082:4: (lv_typeReference_1_0= ruleJvmTypeReference )
-            // InternalMirBase.g:6083:5: lv_typeReference_1_0= ruleJvmTypeReference
+            // InternalMirBase.g:6109:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6110:5: lv_typeReference_1_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -16862,7 +16929,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmUpperBoundAnded"
-    // InternalMirBase.g:6104:1: entryRuleJvmUpperBoundAnded returns [EObject current=null] : iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF ;
+    // InternalMirBase.g:6131:1: entryRuleJvmUpperBoundAnded returns [EObject current=null] : iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF ;
     public final EObject entryRuleJvmUpperBoundAnded() throws RecognitionException {
         EObject current = null;
 
@@ -16870,8 +16937,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6104:59: (iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF )
-            // InternalMirBase.g:6105:2: iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF
+            // InternalMirBase.g:6131:59: (iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF )
+            // InternalMirBase.g:6132:2: iv_ruleJvmUpperBoundAnded= ruleJvmUpperBoundAnded EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmUpperBoundAndedRule()); 
@@ -16902,7 +16969,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmUpperBoundAnded"
-    // InternalMirBase.g:6111:1: ruleJvmUpperBoundAnded returns [EObject current=null] : (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
+    // InternalMirBase.g:6138:1: ruleJvmUpperBoundAnded returns [EObject current=null] : (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
     public final EObject ruleJvmUpperBoundAnded() throws RecognitionException {
         EObject current = null;
 
@@ -16914,11 +16981,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6117:2: ( (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
-            // InternalMirBase.g:6118:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6144:2: ( (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
+            // InternalMirBase.g:6145:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
             {
-            // InternalMirBase.g:6118:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
-            // InternalMirBase.g:6119:3: otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6145:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6146:3: otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
             {
             otherlv_0=(Token)match(input,87,FOLLOW_18); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -16926,11 +16993,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_0, grammarAccess.getJvmUpperBoundAndedAccess().getAmpersandKeyword_0());
               		
             }
-            // InternalMirBase.g:6123:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:6124:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6150:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6151:4: (lv_typeReference_1_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:6124:4: (lv_typeReference_1_0= ruleJvmTypeReference )
-            // InternalMirBase.g:6125:5: lv_typeReference_1_0= ruleJvmTypeReference
+            // InternalMirBase.g:6151:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6152:5: lv_typeReference_1_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -16986,7 +17053,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmLowerBound"
-    // InternalMirBase.g:6146:1: entryRuleJvmLowerBound returns [EObject current=null] : iv_ruleJvmLowerBound= ruleJvmLowerBound EOF ;
+    // InternalMirBase.g:6173:1: entryRuleJvmLowerBound returns [EObject current=null] : iv_ruleJvmLowerBound= ruleJvmLowerBound EOF ;
     public final EObject entryRuleJvmLowerBound() throws RecognitionException {
         EObject current = null;
 
@@ -16994,8 +17061,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6146:54: (iv_ruleJvmLowerBound= ruleJvmLowerBound EOF )
-            // InternalMirBase.g:6147:2: iv_ruleJvmLowerBound= ruleJvmLowerBound EOF
+            // InternalMirBase.g:6173:54: (iv_ruleJvmLowerBound= ruleJvmLowerBound EOF )
+            // InternalMirBase.g:6174:2: iv_ruleJvmLowerBound= ruleJvmLowerBound EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmLowerBoundRule()); 
@@ -17026,7 +17093,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmLowerBound"
-    // InternalMirBase.g:6153:1: ruleJvmLowerBound returns [EObject current=null] : (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
+    // InternalMirBase.g:6180:1: ruleJvmLowerBound returns [EObject current=null] : (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
     public final EObject ruleJvmLowerBound() throws RecognitionException {
         EObject current = null;
 
@@ -17038,11 +17105,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6159:2: ( (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
-            // InternalMirBase.g:6160:2: (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6186:2: ( (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
+            // InternalMirBase.g:6187:2: (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
             {
-            // InternalMirBase.g:6160:2: (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
-            // InternalMirBase.g:6161:3: otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6187:2: (otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6188:3: otherlv_0= 'super' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
             {
             otherlv_0=(Token)match(input,74,FOLLOW_18); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -17050,11 +17117,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_0, grammarAccess.getJvmLowerBoundAccess().getSuperKeyword_0());
               		
             }
-            // InternalMirBase.g:6165:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:6166:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6192:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6193:4: (lv_typeReference_1_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:6166:4: (lv_typeReference_1_0= ruleJvmTypeReference )
-            // InternalMirBase.g:6167:5: lv_typeReference_1_0= ruleJvmTypeReference
+            // InternalMirBase.g:6193:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6194:5: lv_typeReference_1_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -17110,7 +17177,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleJvmLowerBoundAnded"
-    // InternalMirBase.g:6188:1: entryRuleJvmLowerBoundAnded returns [EObject current=null] : iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF ;
+    // InternalMirBase.g:6215:1: entryRuleJvmLowerBoundAnded returns [EObject current=null] : iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF ;
     public final EObject entryRuleJvmLowerBoundAnded() throws RecognitionException {
         EObject current = null;
 
@@ -17118,8 +17185,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6188:59: (iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF )
-            // InternalMirBase.g:6189:2: iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF
+            // InternalMirBase.g:6215:59: (iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF )
+            // InternalMirBase.g:6216:2: iv_ruleJvmLowerBoundAnded= ruleJvmLowerBoundAnded EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getJvmLowerBoundAndedRule()); 
@@ -17150,7 +17217,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleJvmLowerBoundAnded"
-    // InternalMirBase.g:6195:1: ruleJvmLowerBoundAnded returns [EObject current=null] : (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
+    // InternalMirBase.g:6222:1: ruleJvmLowerBoundAnded returns [EObject current=null] : (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) ;
     public final EObject ruleJvmLowerBoundAnded() throws RecognitionException {
         EObject current = null;
 
@@ -17162,11 +17229,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6201:2: ( (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
-            // InternalMirBase.g:6202:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6228:2: ( (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) ) )
+            // InternalMirBase.g:6229:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
             {
-            // InternalMirBase.g:6202:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
-            // InternalMirBase.g:6203:3: otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6229:2: (otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) ) )
+            // InternalMirBase.g:6230:3: otherlv_0= '&' ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
             {
             otherlv_0=(Token)match(input,87,FOLLOW_18); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -17174,11 +17241,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_0, grammarAccess.getJvmLowerBoundAndedAccess().getAmpersandKeyword_0());
               		
             }
-            // InternalMirBase.g:6207:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
-            // InternalMirBase.g:6208:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6234:3: ( (lv_typeReference_1_0= ruleJvmTypeReference ) )
+            // InternalMirBase.g:6235:4: (lv_typeReference_1_0= ruleJvmTypeReference )
             {
-            // InternalMirBase.g:6208:4: (lv_typeReference_1_0= ruleJvmTypeReference )
-            // InternalMirBase.g:6209:5: lv_typeReference_1_0= ruleJvmTypeReference
+            // InternalMirBase.g:6235:4: (lv_typeReference_1_0= ruleJvmTypeReference )
+            // InternalMirBase.g:6236:5: lv_typeReference_1_0= ruleJvmTypeReference
             {
             if ( state.backtracking==0 ) {
 
@@ -17234,7 +17301,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleQualifiedNameWithWildcard"
-    // InternalMirBase.g:6230:1: entryRuleQualifiedNameWithWildcard returns [String current=null] : iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF ;
+    // InternalMirBase.g:6257:1: entryRuleQualifiedNameWithWildcard returns [String current=null] : iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF ;
     public final String entryRuleQualifiedNameWithWildcard() throws RecognitionException {
         String current = null;
 
@@ -17242,8 +17309,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6230:65: (iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF )
-            // InternalMirBase.g:6231:2: iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF
+            // InternalMirBase.g:6257:65: (iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF )
+            // InternalMirBase.g:6258:2: iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getQualifiedNameWithWildcardRule()); 
@@ -17274,7 +17341,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleQualifiedNameWithWildcard"
-    // InternalMirBase.g:6237:1: ruleQualifiedNameWithWildcard returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' ) ;
+    // InternalMirBase.g:6264:1: ruleQualifiedNameWithWildcard returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' ) ;
     public final AntlrDatatypeRuleToken ruleQualifiedNameWithWildcard() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -17286,11 +17353,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6243:2: ( (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' ) )
-            // InternalMirBase.g:6244:2: (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' )
+            // InternalMirBase.g:6270:2: ( (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' ) )
+            // InternalMirBase.g:6271:2: (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' )
             {
-            // InternalMirBase.g:6244:2: (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' )
-            // InternalMirBase.g:6245:3: this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*'
+            // InternalMirBase.g:6271:2: (this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*' )
+            // InternalMirBase.g:6272:3: this_QualifiedName_0= ruleQualifiedName kw= '.' kw= '*'
             {
             if ( state.backtracking==0 ) {
 
@@ -17351,7 +17418,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleValidID"
-    // InternalMirBase.g:6269:1: entryRuleValidID returns [String current=null] : iv_ruleValidID= ruleValidID EOF ;
+    // InternalMirBase.g:6296:1: entryRuleValidID returns [String current=null] : iv_ruleValidID= ruleValidID EOF ;
     public final String entryRuleValidID() throws RecognitionException {
         String current = null;
 
@@ -17359,8 +17426,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6269:47: (iv_ruleValidID= ruleValidID EOF )
-            // InternalMirBase.g:6270:2: iv_ruleValidID= ruleValidID EOF
+            // InternalMirBase.g:6296:47: (iv_ruleValidID= ruleValidID EOF )
+            // InternalMirBase.g:6297:2: iv_ruleValidID= ruleValidID EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getValidIDRule()); 
@@ -17391,7 +17458,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleValidID"
-    // InternalMirBase.g:6276:1: ruleValidID returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : this_ID_0= RULE_ID ;
+    // InternalMirBase.g:6303:1: ruleValidID returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : this_ID_0= RULE_ID ;
     public final AntlrDatatypeRuleToken ruleValidID() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -17401,8 +17468,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6282:2: (this_ID_0= RULE_ID )
-            // InternalMirBase.g:6283:2: this_ID_0= RULE_ID
+            // InternalMirBase.g:6309:2: (this_ID_0= RULE_ID )
+            // InternalMirBase.g:6310:2: this_ID_0= RULE_ID
             {
             this_ID_0=(Token)match(input,RULE_ID,FOLLOW_2); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -17437,7 +17504,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleXImportDeclaration"
-    // InternalMirBase.g:6293:1: entryRuleXImportDeclaration returns [EObject current=null] : iv_ruleXImportDeclaration= ruleXImportDeclaration EOF ;
+    // InternalMirBase.g:6320:1: entryRuleXImportDeclaration returns [EObject current=null] : iv_ruleXImportDeclaration= ruleXImportDeclaration EOF ;
     public final EObject entryRuleXImportDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -17445,8 +17512,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6293:59: (iv_ruleXImportDeclaration= ruleXImportDeclaration EOF )
-            // InternalMirBase.g:6294:2: iv_ruleXImportDeclaration= ruleXImportDeclaration EOF
+            // InternalMirBase.g:6320:59: (iv_ruleXImportDeclaration= ruleXImportDeclaration EOF )
+            // InternalMirBase.g:6321:2: iv_ruleXImportDeclaration= ruleXImportDeclaration EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getXImportDeclarationRule()); 
@@ -17477,7 +17544,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleXImportDeclaration"
-    // InternalMirBase.g:6300:1: ruleXImportDeclaration returns [EObject current=null] : (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? ) ;
+    // InternalMirBase.g:6327:1: ruleXImportDeclaration returns [EObject current=null] : (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? ) ;
     public final EObject ruleXImportDeclaration() throws RecognitionException {
         EObject current = null;
 
@@ -17495,11 +17562,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6306:2: ( (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? ) )
-            // InternalMirBase.g:6307:2: (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? )
+            // InternalMirBase.g:6333:2: ( (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? ) )
+            // InternalMirBase.g:6334:2: (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? )
             {
-            // InternalMirBase.g:6307:2: (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? )
-            // InternalMirBase.g:6308:3: otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )?
+            // InternalMirBase.g:6334:2: (otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )? )
+            // InternalMirBase.g:6335:3: otherlv_0= 'import' ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) ) (otherlv_8= ';' )?
             {
             otherlv_0=(Token)match(input,13,FOLLOW_84); if (state.failed) return current;
             if ( state.backtracking==0 ) {
@@ -17507,21 +17574,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_0, grammarAccess.getXImportDeclarationAccess().getImportKeyword_0());
               		
             }
-            // InternalMirBase.g:6312:3: ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) )
+            // InternalMirBase.g:6339:3: ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) )
             int alt110=3;
             alt110 = dfa110.predict(input);
             switch (alt110) {
                 case 1 :
-                    // InternalMirBase.g:6313:4: ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) )
+                    // InternalMirBase.g:6340:4: ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) )
                     {
-                    // InternalMirBase.g:6313:4: ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) )
-                    // InternalMirBase.g:6314:5: ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) )
+                    // InternalMirBase.g:6340:4: ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) )
+                    // InternalMirBase.g:6341:5: ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) )
                     {
-                    // InternalMirBase.g:6314:5: ( (lv_static_1_0= 'static' ) )
-                    // InternalMirBase.g:6315:6: (lv_static_1_0= 'static' )
+                    // InternalMirBase.g:6341:5: ( (lv_static_1_0= 'static' ) )
+                    // InternalMirBase.g:6342:6: (lv_static_1_0= 'static' )
                     {
-                    // InternalMirBase.g:6315:6: (lv_static_1_0= 'static' )
-                    // InternalMirBase.g:6316:7: lv_static_1_0= 'static'
+                    // InternalMirBase.g:6342:6: (lv_static_1_0= 'static' )
+                    // InternalMirBase.g:6343:7: lv_static_1_0= 'static'
                     {
                     lv_static_1_0=(Token)match(input,72,FOLLOW_85); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -17543,7 +17610,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:6328:5: ( (lv_extension_2_0= 'extension' ) )?
+                    // InternalMirBase.g:6355:5: ( (lv_extension_2_0= 'extension' ) )?
                     int alt108=2;
                     int LA108_0 = input.LA(1);
 
@@ -17552,10 +17619,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt108) {
                         case 1 :
-                            // InternalMirBase.g:6329:6: (lv_extension_2_0= 'extension' )
+                            // InternalMirBase.g:6356:6: (lv_extension_2_0= 'extension' )
                             {
-                            // InternalMirBase.g:6329:6: (lv_extension_2_0= 'extension' )
-                            // InternalMirBase.g:6330:7: lv_extension_2_0= 'extension'
+                            // InternalMirBase.g:6356:6: (lv_extension_2_0= 'extension' )
+                            // InternalMirBase.g:6357:7: lv_extension_2_0= 'extension'
                             {
                             lv_extension_2_0=(Token)match(input,73,FOLLOW_85); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -17580,11 +17647,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:6342:5: ( ( ruleQualifiedNameInStaticImport ) )
-                    // InternalMirBase.g:6343:6: ( ruleQualifiedNameInStaticImport )
+                    // InternalMirBase.g:6369:5: ( ( ruleQualifiedNameInStaticImport ) )
+                    // InternalMirBase.g:6370:6: ( ruleQualifiedNameInStaticImport )
                     {
-                    // InternalMirBase.g:6343:6: ( ruleQualifiedNameInStaticImport )
-                    // InternalMirBase.g:6344:7: ruleQualifiedNameInStaticImport
+                    // InternalMirBase.g:6370:6: ( ruleQualifiedNameInStaticImport )
+                    // InternalMirBase.g:6371:7: ruleQualifiedNameInStaticImport
                     {
                     if ( state.backtracking==0 ) {
 
@@ -17614,7 +17681,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMirBase.g:6358:5: ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) )
+                    // InternalMirBase.g:6385:5: ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) )
                     int alt109=2;
                     int LA109_0 = input.LA(1);
 
@@ -17633,13 +17700,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     switch (alt109) {
                         case 1 :
-                            // InternalMirBase.g:6359:6: ( (lv_wildcard_4_0= '*' ) )
+                            // InternalMirBase.g:6386:6: ( (lv_wildcard_4_0= '*' ) )
                             {
-                            // InternalMirBase.g:6359:6: ( (lv_wildcard_4_0= '*' ) )
-                            // InternalMirBase.g:6360:7: (lv_wildcard_4_0= '*' )
+                            // InternalMirBase.g:6386:6: ( (lv_wildcard_4_0= '*' ) )
+                            // InternalMirBase.g:6387:7: (lv_wildcard_4_0= '*' )
                             {
-                            // InternalMirBase.g:6360:7: (lv_wildcard_4_0= '*' )
-                            // InternalMirBase.g:6361:8: lv_wildcard_4_0= '*'
+                            // InternalMirBase.g:6387:7: (lv_wildcard_4_0= '*' )
+                            // InternalMirBase.g:6388:8: lv_wildcard_4_0= '*'
                             {
                             lv_wildcard_4_0=(Token)match(input,40,FOLLOW_87); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
@@ -17665,13 +17732,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:6374:6: ( (lv_memberName_5_0= ruleValidID ) )
+                            // InternalMirBase.g:6401:6: ( (lv_memberName_5_0= ruleValidID ) )
                             {
-                            // InternalMirBase.g:6374:6: ( (lv_memberName_5_0= ruleValidID ) )
-                            // InternalMirBase.g:6375:7: (lv_memberName_5_0= ruleValidID )
+                            // InternalMirBase.g:6401:6: ( (lv_memberName_5_0= ruleValidID ) )
+                            // InternalMirBase.g:6402:7: (lv_memberName_5_0= ruleValidID )
                             {
-                            // InternalMirBase.g:6375:7: (lv_memberName_5_0= ruleValidID )
-                            // InternalMirBase.g:6376:8: lv_memberName_5_0= ruleValidID
+                            // InternalMirBase.g:6402:7: (lv_memberName_5_0= ruleValidID )
+                            // InternalMirBase.g:6403:8: lv_memberName_5_0= ruleValidID
                             {
                             if ( state.backtracking==0 ) {
 
@@ -17715,13 +17782,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:6396:4: ( ( ruleQualifiedName ) )
+                    // InternalMirBase.g:6423:4: ( ( ruleQualifiedName ) )
                     {
-                    // InternalMirBase.g:6396:4: ( ( ruleQualifiedName ) )
-                    // InternalMirBase.g:6397:5: ( ruleQualifiedName )
+                    // InternalMirBase.g:6423:4: ( ( ruleQualifiedName ) )
+                    // InternalMirBase.g:6424:5: ( ruleQualifiedName )
                     {
-                    // InternalMirBase.g:6397:5: ( ruleQualifiedName )
-                    // InternalMirBase.g:6398:6: ruleQualifiedName
+                    // InternalMirBase.g:6424:5: ( ruleQualifiedName )
+                    // InternalMirBase.g:6425:6: ruleQualifiedName
                     {
                     if ( state.backtracking==0 ) {
 
@@ -17755,13 +17822,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMirBase.g:6413:4: ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) )
+                    // InternalMirBase.g:6440:4: ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) )
                     {
-                    // InternalMirBase.g:6413:4: ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) )
-                    // InternalMirBase.g:6414:5: (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard )
+                    // InternalMirBase.g:6440:4: ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) )
+                    // InternalMirBase.g:6441:5: (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard )
                     {
-                    // InternalMirBase.g:6414:5: (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard )
-                    // InternalMirBase.g:6415:6: lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard
+                    // InternalMirBase.g:6441:5: (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard )
+                    // InternalMirBase.g:6442:6: lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard
                     {
                     if ( state.backtracking==0 ) {
 
@@ -17798,7 +17865,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMirBase.g:6433:3: (otherlv_8= ';' )?
+            // InternalMirBase.g:6460:3: (otherlv_8= ';' )?
             int alt111=2;
             int LA111_0 = input.LA(1);
 
@@ -17807,7 +17874,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             }
             switch (alt111) {
                 case 1 :
-                    // InternalMirBase.g:6434:4: otherlv_8= ';'
+                    // InternalMirBase.g:6461:4: otherlv_8= ';'
                     {
                     otherlv_8=(Token)match(input,59,FOLLOW_2); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
@@ -17846,7 +17913,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleQualifiedNameInStaticImport"
-    // InternalMirBase.g:6443:1: entryRuleQualifiedNameInStaticImport returns [String current=null] : iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF ;
+    // InternalMirBase.g:6470:1: entryRuleQualifiedNameInStaticImport returns [String current=null] : iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF ;
     public final String entryRuleQualifiedNameInStaticImport() throws RecognitionException {
         String current = null;
 
@@ -17854,8 +17921,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMirBase.g:6443:67: (iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF )
-            // InternalMirBase.g:6444:2: iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF
+            // InternalMirBase.g:6470:67: (iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF )
+            // InternalMirBase.g:6471:2: iv_ruleQualifiedNameInStaticImport= ruleQualifiedNameInStaticImport EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getQualifiedNameInStaticImportRule()); 
@@ -17886,7 +17953,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleQualifiedNameInStaticImport"
-    // InternalMirBase.g:6450:1: ruleQualifiedNameInStaticImport returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID kw= '.' )+ ;
+    // InternalMirBase.g:6477:1: ruleQualifiedNameInStaticImport returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ValidID_0= ruleValidID kw= '.' )+ ;
     public final AntlrDatatypeRuleToken ruleQualifiedNameInStaticImport() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -17898,10 +17965,10 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMirBase.g:6456:2: ( (this_ValidID_0= ruleValidID kw= '.' )+ )
-            // InternalMirBase.g:6457:2: (this_ValidID_0= ruleValidID kw= '.' )+
+            // InternalMirBase.g:6483:2: ( (this_ValidID_0= ruleValidID kw= '.' )+ )
+            // InternalMirBase.g:6484:2: (this_ValidID_0= ruleValidID kw= '.' )+
             {
-            // InternalMirBase.g:6457:2: (this_ValidID_0= ruleValidID kw= '.' )+
+            // InternalMirBase.g:6484:2: (this_ValidID_0= ruleValidID kw= '.' )+
             int cnt112=0;
             loop112:
             do {
@@ -17921,7 +17988,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 switch (alt112) {
             	case 1 :
-            	    // InternalMirBase.g:6458:3: this_ValidID_0= ruleValidID kw= '.'
+            	    // InternalMirBase.g:6485:3: this_ValidID_0= ruleValidID kw= '.'
             	    {
             	    if ( state.backtracking==0 ) {
 
@@ -17986,22 +18053,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred1_InternalMirBase
     public final void synpred1_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:298:6: ( ( () ( ( ruleOpMultiAssign ) ) ) )
-        // InternalMirBase.g:298:7: ( () ( ( ruleOpMultiAssign ) ) )
+        // InternalMirBase.g:325:6: ( ( () ( ( ruleOpMultiAssign ) ) ) )
+        // InternalMirBase.g:325:7: ( () ( ( ruleOpMultiAssign ) ) )
         {
-        // InternalMirBase.g:298:7: ( () ( ( ruleOpMultiAssign ) ) )
-        // InternalMirBase.g:299:7: () ( ( ruleOpMultiAssign ) )
+        // InternalMirBase.g:325:7: ( () ( ( ruleOpMultiAssign ) ) )
+        // InternalMirBase.g:326:7: () ( ( ruleOpMultiAssign ) )
         {
-        // InternalMirBase.g:299:7: ()
-        // InternalMirBase.g:300:7: 
+        // InternalMirBase.g:326:7: ()
+        // InternalMirBase.g:327:7: 
         {
         }
 
-        // InternalMirBase.g:301:7: ( ( ruleOpMultiAssign ) )
-        // InternalMirBase.g:302:8: ( ruleOpMultiAssign )
+        // InternalMirBase.g:328:7: ( ( ruleOpMultiAssign ) )
+        // InternalMirBase.g:329:8: ( ruleOpMultiAssign )
         {
-        // InternalMirBase.g:302:8: ( ruleOpMultiAssign )
-        // InternalMirBase.g:303:9: ruleOpMultiAssign
+        // InternalMirBase.g:329:8: ( ruleOpMultiAssign )
+        // InternalMirBase.g:330:9: ruleOpMultiAssign
         {
         pushFollow(FOLLOW_2);
         ruleOpMultiAssign();
@@ -18024,22 +18091,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred2_InternalMirBase
     public final void synpred2_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:492:5: ( ( () ( ( ruleOpOr ) ) ) )
-        // InternalMirBase.g:492:6: ( () ( ( ruleOpOr ) ) )
+        // InternalMirBase.g:519:5: ( ( () ( ( ruleOpOr ) ) ) )
+        // InternalMirBase.g:519:6: ( () ( ( ruleOpOr ) ) )
         {
-        // InternalMirBase.g:492:6: ( () ( ( ruleOpOr ) ) )
-        // InternalMirBase.g:493:6: () ( ( ruleOpOr ) )
+        // InternalMirBase.g:519:6: ( () ( ( ruleOpOr ) ) )
+        // InternalMirBase.g:520:6: () ( ( ruleOpOr ) )
         {
-        // InternalMirBase.g:493:6: ()
-        // InternalMirBase.g:494:6: 
+        // InternalMirBase.g:520:6: ()
+        // InternalMirBase.g:521:6: 
         {
         }
 
-        // InternalMirBase.g:495:6: ( ( ruleOpOr ) )
-        // InternalMirBase.g:496:7: ( ruleOpOr )
+        // InternalMirBase.g:522:6: ( ( ruleOpOr ) )
+        // InternalMirBase.g:523:7: ( ruleOpOr )
         {
-        // InternalMirBase.g:496:7: ( ruleOpOr )
-        // InternalMirBase.g:497:8: ruleOpOr
+        // InternalMirBase.g:523:7: ( ruleOpOr )
+        // InternalMirBase.g:524:8: ruleOpOr
         {
         pushFollow(FOLLOW_2);
         ruleOpOr();
@@ -18062,22 +18129,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred3_InternalMirBase
     public final void synpred3_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:599:5: ( ( () ( ( ruleOpAnd ) ) ) )
-        // InternalMirBase.g:599:6: ( () ( ( ruleOpAnd ) ) )
+        // InternalMirBase.g:626:5: ( ( () ( ( ruleOpAnd ) ) ) )
+        // InternalMirBase.g:626:6: ( () ( ( ruleOpAnd ) ) )
         {
-        // InternalMirBase.g:599:6: ( () ( ( ruleOpAnd ) ) )
-        // InternalMirBase.g:600:6: () ( ( ruleOpAnd ) )
+        // InternalMirBase.g:626:6: ( () ( ( ruleOpAnd ) ) )
+        // InternalMirBase.g:627:6: () ( ( ruleOpAnd ) )
         {
-        // InternalMirBase.g:600:6: ()
-        // InternalMirBase.g:601:6: 
+        // InternalMirBase.g:627:6: ()
+        // InternalMirBase.g:628:6: 
         {
         }
 
-        // InternalMirBase.g:602:6: ( ( ruleOpAnd ) )
-        // InternalMirBase.g:603:7: ( ruleOpAnd )
+        // InternalMirBase.g:629:6: ( ( ruleOpAnd ) )
+        // InternalMirBase.g:630:7: ( ruleOpAnd )
         {
-        // InternalMirBase.g:603:7: ( ruleOpAnd )
-        // InternalMirBase.g:604:8: ruleOpAnd
+        // InternalMirBase.g:630:7: ( ruleOpAnd )
+        // InternalMirBase.g:631:8: ruleOpAnd
         {
         pushFollow(FOLLOW_2);
         ruleOpAnd();
@@ -18100,22 +18167,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred4_InternalMirBase
     public final void synpred4_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:706:5: ( ( () ( ( ruleOpEquality ) ) ) )
-        // InternalMirBase.g:706:6: ( () ( ( ruleOpEquality ) ) )
+        // InternalMirBase.g:733:5: ( ( () ( ( ruleOpEquality ) ) ) )
+        // InternalMirBase.g:733:6: ( () ( ( ruleOpEquality ) ) )
         {
-        // InternalMirBase.g:706:6: ( () ( ( ruleOpEquality ) ) )
-        // InternalMirBase.g:707:6: () ( ( ruleOpEquality ) )
+        // InternalMirBase.g:733:6: ( () ( ( ruleOpEquality ) ) )
+        // InternalMirBase.g:734:6: () ( ( ruleOpEquality ) )
         {
-        // InternalMirBase.g:707:6: ()
-        // InternalMirBase.g:708:6: 
+        // InternalMirBase.g:734:6: ()
+        // InternalMirBase.g:735:6: 
         {
         }
 
-        // InternalMirBase.g:709:6: ( ( ruleOpEquality ) )
-        // InternalMirBase.g:710:7: ( ruleOpEquality )
+        // InternalMirBase.g:736:6: ( ( ruleOpEquality ) )
+        // InternalMirBase.g:737:7: ( ruleOpEquality )
         {
-        // InternalMirBase.g:710:7: ( ruleOpEquality )
-        // InternalMirBase.g:711:8: ruleOpEquality
+        // InternalMirBase.g:737:7: ( ruleOpEquality )
+        // InternalMirBase.g:738:8: ruleOpEquality
         {
         pushFollow(FOLLOW_2);
         ruleOpEquality();
@@ -18138,14 +18205,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred5_InternalMirBase
     public final void synpred5_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:834:6: ( ( () 'instanceof' ) )
-        // InternalMirBase.g:834:7: ( () 'instanceof' )
+        // InternalMirBase.g:861:6: ( ( () 'instanceof' ) )
+        // InternalMirBase.g:861:7: ( () 'instanceof' )
         {
-        // InternalMirBase.g:834:7: ( () 'instanceof' )
-        // InternalMirBase.g:835:7: () 'instanceof'
+        // InternalMirBase.g:861:7: ( () 'instanceof' )
+        // InternalMirBase.g:862:7: () 'instanceof'
         {
-        // InternalMirBase.g:835:7: ()
-        // InternalMirBase.g:836:7: 
+        // InternalMirBase.g:862:7: ()
+        // InternalMirBase.g:863:7: 
         {
         }
 
@@ -18160,22 +18227,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred6_InternalMirBase
     public final void synpred6_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:877:6: ( ( () ( ( ruleOpCompare ) ) ) )
-        // InternalMirBase.g:877:7: ( () ( ( ruleOpCompare ) ) )
+        // InternalMirBase.g:904:6: ( ( () ( ( ruleOpCompare ) ) ) )
+        // InternalMirBase.g:904:7: ( () ( ( ruleOpCompare ) ) )
         {
-        // InternalMirBase.g:877:7: ( () ( ( ruleOpCompare ) ) )
-        // InternalMirBase.g:878:7: () ( ( ruleOpCompare ) )
+        // InternalMirBase.g:904:7: ( () ( ( ruleOpCompare ) ) )
+        // InternalMirBase.g:905:7: () ( ( ruleOpCompare ) )
         {
-        // InternalMirBase.g:878:7: ()
-        // InternalMirBase.g:879:7: 
+        // InternalMirBase.g:905:7: ()
+        // InternalMirBase.g:906:7: 
         {
         }
 
-        // InternalMirBase.g:880:7: ( ( ruleOpCompare ) )
-        // InternalMirBase.g:881:8: ( ruleOpCompare )
+        // InternalMirBase.g:907:7: ( ( ruleOpCompare ) )
+        // InternalMirBase.g:908:8: ( ruleOpCompare )
         {
-        // InternalMirBase.g:881:8: ( ruleOpCompare )
-        // InternalMirBase.g:882:9: ruleOpCompare
+        // InternalMirBase.g:908:8: ( ruleOpCompare )
+        // InternalMirBase.g:909:9: ruleOpCompare
         {
         pushFollow(FOLLOW_2);
         ruleOpCompare();
@@ -18198,22 +18265,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred7_InternalMirBase
     public final void synpred7_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1012:5: ( ( () ( ( ruleOpOther ) ) ) )
-        // InternalMirBase.g:1012:6: ( () ( ( ruleOpOther ) ) )
+        // InternalMirBase.g:1039:5: ( ( () ( ( ruleOpOther ) ) ) )
+        // InternalMirBase.g:1039:6: ( () ( ( ruleOpOther ) ) )
         {
-        // InternalMirBase.g:1012:6: ( () ( ( ruleOpOther ) ) )
-        // InternalMirBase.g:1013:6: () ( ( ruleOpOther ) )
+        // InternalMirBase.g:1039:6: ( () ( ( ruleOpOther ) ) )
+        // InternalMirBase.g:1040:6: () ( ( ruleOpOther ) )
         {
-        // InternalMirBase.g:1013:6: ()
-        // InternalMirBase.g:1014:6: 
+        // InternalMirBase.g:1040:6: ()
+        // InternalMirBase.g:1041:6: 
         {
         }
 
-        // InternalMirBase.g:1015:6: ( ( ruleOpOther ) )
-        // InternalMirBase.g:1016:7: ( ruleOpOther )
+        // InternalMirBase.g:1042:6: ( ( ruleOpOther ) )
+        // InternalMirBase.g:1043:7: ( ruleOpOther )
         {
-        // InternalMirBase.g:1016:7: ( ruleOpOther )
-        // InternalMirBase.g:1017:8: ruleOpOther
+        // InternalMirBase.g:1043:7: ( ruleOpOther )
+        // InternalMirBase.g:1044:8: ruleOpOther
         {
         pushFollow(FOLLOW_2);
         ruleOpOther();
@@ -18236,11 +18303,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred8_InternalMirBase
     public final void synpred8_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1132:6: ( ( '>' '>' ) )
-        // InternalMirBase.g:1132:7: ( '>' '>' )
+        // InternalMirBase.g:1159:6: ( ( '>' '>' ) )
+        // InternalMirBase.g:1159:7: ( '>' '>' )
         {
-        // InternalMirBase.g:1132:7: ( '>' '>' )
-        // InternalMirBase.g:1133:7: '>' '>'
+        // InternalMirBase.g:1159:7: ( '>' '>' )
+        // InternalMirBase.g:1160:7: '>' '>'
         {
         match(input,23,FOLLOW_21); if (state.failed) return ;
         match(input,23,FOLLOW_2); if (state.failed) return ;
@@ -18254,11 +18321,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred9_InternalMirBase
     public final void synpred9_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1167:6: ( ( '<' '<' ) )
-        // InternalMirBase.g:1167:7: ( '<' '<' )
+        // InternalMirBase.g:1194:6: ( ( '<' '<' ) )
+        // InternalMirBase.g:1194:7: ( '<' '<' )
         {
-        // InternalMirBase.g:1167:7: ( '<' '<' )
-        // InternalMirBase.g:1168:7: '<' '<'
+        // InternalMirBase.g:1194:7: ( '<' '<' )
+        // InternalMirBase.g:1195:7: '<' '<'
         {
         match(input,22,FOLLOW_11); if (state.failed) return ;
         match(input,22,FOLLOW_2); if (state.failed) return ;
@@ -18272,22 +18339,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred10_InternalMirBase
     public final void synpred10_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1240:5: ( ( () ( ( ruleOpAdd ) ) ) )
-        // InternalMirBase.g:1240:6: ( () ( ( ruleOpAdd ) ) )
+        // InternalMirBase.g:1267:5: ( ( () ( ( ruleOpAdd ) ) ) )
+        // InternalMirBase.g:1267:6: ( () ( ( ruleOpAdd ) ) )
         {
-        // InternalMirBase.g:1240:6: ( () ( ( ruleOpAdd ) ) )
-        // InternalMirBase.g:1241:6: () ( ( ruleOpAdd ) )
+        // InternalMirBase.g:1267:6: ( () ( ( ruleOpAdd ) ) )
+        // InternalMirBase.g:1268:6: () ( ( ruleOpAdd ) )
         {
-        // InternalMirBase.g:1241:6: ()
-        // InternalMirBase.g:1242:6: 
+        // InternalMirBase.g:1268:6: ()
+        // InternalMirBase.g:1269:6: 
         {
         }
 
-        // InternalMirBase.g:1243:6: ( ( ruleOpAdd ) )
-        // InternalMirBase.g:1244:7: ( ruleOpAdd )
+        // InternalMirBase.g:1270:6: ( ( ruleOpAdd ) )
+        // InternalMirBase.g:1271:7: ( ruleOpAdd )
         {
-        // InternalMirBase.g:1244:7: ( ruleOpAdd )
-        // InternalMirBase.g:1245:8: ruleOpAdd
+        // InternalMirBase.g:1271:7: ( ruleOpAdd )
+        // InternalMirBase.g:1272:8: ruleOpAdd
         {
         pushFollow(FOLLOW_2);
         ruleOpAdd();
@@ -18310,22 +18377,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred11_InternalMirBase
     public final void synpred11_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1355:5: ( ( () ( ( ruleOpMulti ) ) ) )
-        // InternalMirBase.g:1355:6: ( () ( ( ruleOpMulti ) ) )
+        // InternalMirBase.g:1382:5: ( ( () ( ( ruleOpMulti ) ) ) )
+        // InternalMirBase.g:1382:6: ( () ( ( ruleOpMulti ) ) )
         {
-        // InternalMirBase.g:1355:6: ( () ( ( ruleOpMulti ) ) )
-        // InternalMirBase.g:1356:6: () ( ( ruleOpMulti ) )
+        // InternalMirBase.g:1382:6: ( () ( ( ruleOpMulti ) ) )
+        // InternalMirBase.g:1383:6: () ( ( ruleOpMulti ) )
         {
-        // InternalMirBase.g:1356:6: ()
-        // InternalMirBase.g:1357:6: 
+        // InternalMirBase.g:1383:6: ()
+        // InternalMirBase.g:1384:6: 
         {
         }
 
-        // InternalMirBase.g:1358:6: ( ( ruleOpMulti ) )
-        // InternalMirBase.g:1359:7: ( ruleOpMulti )
+        // InternalMirBase.g:1385:6: ( ( ruleOpMulti ) )
+        // InternalMirBase.g:1386:7: ( ruleOpMulti )
         {
-        // InternalMirBase.g:1359:7: ( ruleOpMulti )
-        // InternalMirBase.g:1360:8: ruleOpMulti
+        // InternalMirBase.g:1386:7: ( ruleOpMulti )
+        // InternalMirBase.g:1387:8: ruleOpMulti
         {
         pushFollow(FOLLOW_2);
         ruleOpMulti();
@@ -18348,14 +18415,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred12_InternalMirBase
     public final void synpred12_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1590:5: ( ( () 'as' ) )
-        // InternalMirBase.g:1590:6: ( () 'as' )
+        // InternalMirBase.g:1617:5: ( ( () 'as' ) )
+        // InternalMirBase.g:1617:6: ( () 'as' )
         {
-        // InternalMirBase.g:1590:6: ( () 'as' )
-        // InternalMirBase.g:1591:6: () 'as'
+        // InternalMirBase.g:1617:6: ( () 'as' )
+        // InternalMirBase.g:1618:6: () 'as'
         {
-        // InternalMirBase.g:1591:6: ()
-        // InternalMirBase.g:1592:6: 
+        // InternalMirBase.g:1618:6: ()
+        // InternalMirBase.g:1619:6: 
         {
         }
 
@@ -18370,22 +18437,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred13_InternalMirBase
     public final void synpred13_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1658:4: ( ( () ( ( ruleOpPostfix ) ) ) )
-        // InternalMirBase.g:1658:5: ( () ( ( ruleOpPostfix ) ) )
+        // InternalMirBase.g:1685:4: ( ( () ( ( ruleOpPostfix ) ) ) )
+        // InternalMirBase.g:1685:5: ( () ( ( ruleOpPostfix ) ) )
         {
-        // InternalMirBase.g:1658:5: ( () ( ( ruleOpPostfix ) ) )
-        // InternalMirBase.g:1659:5: () ( ( ruleOpPostfix ) )
+        // InternalMirBase.g:1685:5: ( () ( ( ruleOpPostfix ) ) )
+        // InternalMirBase.g:1686:5: () ( ( ruleOpPostfix ) )
         {
-        // InternalMirBase.g:1659:5: ()
-        // InternalMirBase.g:1660:5: 
+        // InternalMirBase.g:1686:5: ()
+        // InternalMirBase.g:1687:5: 
         {
         }
 
-        // InternalMirBase.g:1661:5: ( ( ruleOpPostfix ) )
-        // InternalMirBase.g:1662:6: ( ruleOpPostfix )
+        // InternalMirBase.g:1688:5: ( ( ruleOpPostfix ) )
+        // InternalMirBase.g:1689:6: ( ruleOpPostfix )
         {
-        // InternalMirBase.g:1662:6: ( ruleOpPostfix )
-        // InternalMirBase.g:1663:7: ruleOpPostfix
+        // InternalMirBase.g:1689:6: ( ruleOpPostfix )
+        // InternalMirBase.g:1690:7: ruleOpPostfix
         {
         pushFollow(FOLLOW_2);
         ruleOpPostfix();
@@ -18408,18 +18475,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred14_InternalMirBase
     public final void synpred14_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1754:6: ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )
-        // InternalMirBase.g:1754:7: ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
+        // InternalMirBase.g:1781:6: ( ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign ) )
+        // InternalMirBase.g:1781:7: ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
         {
-        // InternalMirBase.g:1754:7: ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
-        // InternalMirBase.g:1755:7: () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign
+        // InternalMirBase.g:1781:7: ( () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign )
+        // InternalMirBase.g:1782:7: () ( '.' | ( ( '::' ) ) ) ( ( ruleFeatureCallID ) ) ruleOpSingleAssign
         {
-        // InternalMirBase.g:1755:7: ()
-        // InternalMirBase.g:1756:7: 
+        // InternalMirBase.g:1782:7: ()
+        // InternalMirBase.g:1783:7: 
         {
         }
 
-        // InternalMirBase.g:1757:7: ( '.' | ( ( '::' ) ) )
+        // InternalMirBase.g:1784:7: ( '.' | ( ( '::' ) ) )
         int alt113=2;
         int LA113_0 = input.LA(1);
 
@@ -18438,20 +18505,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         }
         switch (alt113) {
             case 1 :
-                // InternalMirBase.g:1758:8: '.'
+                // InternalMirBase.g:1785:8: '.'
                 {
                 match(input,47,FOLLOW_28); if (state.failed) return ;
 
                 }
                 break;
             case 2 :
-                // InternalMirBase.g:1760:8: ( ( '::' ) )
+                // InternalMirBase.g:1787:8: ( ( '::' ) )
                 {
-                // InternalMirBase.g:1760:8: ( ( '::' ) )
-                // InternalMirBase.g:1761:9: ( '::' )
+                // InternalMirBase.g:1787:8: ( ( '::' ) )
+                // InternalMirBase.g:1788:9: ( '::' )
                 {
-                // InternalMirBase.g:1761:9: ( '::' )
-                // InternalMirBase.g:1762:10: '::'
+                // InternalMirBase.g:1788:9: ( '::' )
+                // InternalMirBase.g:1789:10: '::'
                 {
                 match(input,48,FOLLOW_28); if (state.failed) return ;
 
@@ -18466,11 +18533,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:1766:7: ( ( ruleFeatureCallID ) )
-        // InternalMirBase.g:1767:8: ( ruleFeatureCallID )
+        // InternalMirBase.g:1793:7: ( ( ruleFeatureCallID ) )
+        // InternalMirBase.g:1794:8: ( ruleFeatureCallID )
         {
-        // InternalMirBase.g:1767:8: ( ruleFeatureCallID )
-        // InternalMirBase.g:1768:9: ruleFeatureCallID
+        // InternalMirBase.g:1794:8: ( ruleFeatureCallID )
+        // InternalMirBase.g:1795:9: ruleFeatureCallID
         {
         pushFollow(FOLLOW_8);
         ruleFeatureCallID();
@@ -18498,18 +18565,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred15_InternalMirBase
     public final void synpred15_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1851:6: ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )
-        // InternalMirBase.g:1851:7: ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) )
+        // InternalMirBase.g:1878:6: ( ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) ) )
+        // InternalMirBase.g:1878:7: ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) )
         {
-        // InternalMirBase.g:1851:7: ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) )
-        // InternalMirBase.g:1852:7: () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) )
+        // InternalMirBase.g:1878:7: ( () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) ) )
+        // InternalMirBase.g:1879:7: () ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) )
         {
-        // InternalMirBase.g:1852:7: ()
-        // InternalMirBase.g:1853:7: 
+        // InternalMirBase.g:1879:7: ()
+        // InternalMirBase.g:1880:7: 
         {
         }
 
-        // InternalMirBase.g:1854:7: ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) )
+        // InternalMirBase.g:1881:7: ( '.' | ( ( '?.' ) ) | ( ( '::' ) ) )
         int alt114=3;
         switch ( input.LA(1) ) {
         case 47:
@@ -18537,20 +18604,20 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         switch (alt114) {
             case 1 :
-                // InternalMirBase.g:1855:8: '.'
+                // InternalMirBase.g:1882:8: '.'
                 {
                 match(input,47,FOLLOW_2); if (state.failed) return ;
 
                 }
                 break;
             case 2 :
-                // InternalMirBase.g:1857:8: ( ( '?.' ) )
+                // InternalMirBase.g:1884:8: ( ( '?.' ) )
                 {
-                // InternalMirBase.g:1857:8: ( ( '?.' ) )
-                // InternalMirBase.g:1858:9: ( '?.' )
+                // InternalMirBase.g:1884:8: ( ( '?.' ) )
+                // InternalMirBase.g:1885:9: ( '?.' )
                 {
-                // InternalMirBase.g:1858:9: ( '?.' )
-                // InternalMirBase.g:1859:10: '?.'
+                // InternalMirBase.g:1885:9: ( '?.' )
+                // InternalMirBase.g:1886:10: '?.'
                 {
                 match(input,49,FOLLOW_2); if (state.failed) return ;
 
@@ -18563,13 +18630,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                 }
                 break;
             case 3 :
-                // InternalMirBase.g:1863:8: ( ( '::' ) )
+                // InternalMirBase.g:1890:8: ( ( '::' ) )
                 {
-                // InternalMirBase.g:1863:8: ( ( '::' ) )
-                // InternalMirBase.g:1864:9: ( '::' )
+                // InternalMirBase.g:1890:8: ( ( '::' ) )
+                // InternalMirBase.g:1891:9: ( '::' )
                 {
-                // InternalMirBase.g:1864:9: ( '::' )
-                // InternalMirBase.g:1865:10: '::'
+                // InternalMirBase.g:1891:9: ( '::' )
+                // InternalMirBase.g:1892:10: '::'
                 {
                 match(input,48,FOLLOW_2); if (state.failed) return ;
 
@@ -18594,11 +18661,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred16_InternalMirBase
     public final void synpred16_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:1989:7: ( ( '(' ) )
-        // InternalMirBase.g:1989:8: ( '(' )
+        // InternalMirBase.g:2016:7: ( ( '(' ) )
+        // InternalMirBase.g:2016:8: ( '(' )
         {
-        // InternalMirBase.g:1989:8: ( '(' )
-        // InternalMirBase.g:1990:8: '('
+        // InternalMirBase.g:2016:8: ( '(' )
+        // InternalMirBase.g:2017:8: '('
         {
         match(input,51,FOLLOW_2); if (state.failed) return ;
 
@@ -18611,18 +18678,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred17_InternalMirBase
     public final void synpred17_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2008:8: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
-        // InternalMirBase.g:2008:9: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:2035:8: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
+        // InternalMirBase.g:2035:9: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
         {
-        // InternalMirBase.g:2008:9: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
-        // InternalMirBase.g:2009:9: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
+        // InternalMirBase.g:2035:9: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:2036:9: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
         {
-        // InternalMirBase.g:2009:9: ()
-        // InternalMirBase.g:2010:9: 
+        // InternalMirBase.g:2036:9: ()
+        // InternalMirBase.g:2037:9: 
         {
         }
 
-        // InternalMirBase.g:2011:9: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
+        // InternalMirBase.g:2038:9: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
         int alt116=2;
         int LA116_0 = input.LA(1);
 
@@ -18631,13 +18698,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         }
         switch (alt116) {
             case 1 :
-                // InternalMirBase.g:2012:10: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:2039:10: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 {
-                // InternalMirBase.g:2012:10: ( ( ruleJvmFormalParameter ) )
-                // InternalMirBase.g:2013:11: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:2039:10: ( ( ruleJvmFormalParameter ) )
+                // InternalMirBase.g:2040:11: ( ruleJvmFormalParameter )
                 {
-                // InternalMirBase.g:2013:11: ( ruleJvmFormalParameter )
-                // InternalMirBase.g:2014:12: ruleJvmFormalParameter
+                // InternalMirBase.g:2040:11: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:2041:12: ruleJvmFormalParameter
                 {
                 pushFollow(FOLLOW_44);
                 ruleJvmFormalParameter();
@@ -18650,7 +18717,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 }
 
-                // InternalMirBase.g:2017:10: ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:2044:10: ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 loop115:
                 do {
                     int alt115=2;
@@ -18663,14 +18730,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     switch (alt115) {
                 	case 1 :
-                	    // InternalMirBase.g:2018:11: ',' ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:2045:11: ',' ( ( ruleJvmFormalParameter ) )
                 	    {
                 	    match(input,50,FOLLOW_18); if (state.failed) return ;
-                	    // InternalMirBase.g:2019:11: ( ( ruleJvmFormalParameter ) )
-                	    // InternalMirBase.g:2020:12: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:2046:11: ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:2047:12: ( ruleJvmFormalParameter )
                 	    {
-                	    // InternalMirBase.g:2020:12: ( ruleJvmFormalParameter )
-                	    // InternalMirBase.g:2021:13: ruleJvmFormalParameter
+                	    // InternalMirBase.g:2047:12: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:2048:13: ruleJvmFormalParameter
                 	    {
                 	    pushFollow(FOLLOW_44);
                 	    ruleJvmFormalParameter();
@@ -18698,11 +18765,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:2026:9: ( ( '|' ) )
-        // InternalMirBase.g:2027:10: ( '|' )
+        // InternalMirBase.g:2053:9: ( ( '|' ) )
+        // InternalMirBase.g:2054:10: ( '|' )
         {
-        // InternalMirBase.g:2027:10: ( '|' )
-        // InternalMirBase.g:2028:11: '|'
+        // InternalMirBase.g:2054:10: ( '|' )
+        // InternalMirBase.g:2055:11: '|'
         {
         match(input,58,FOLLOW_2); if (state.failed) return ;
 
@@ -18721,14 +18788,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred18_InternalMirBase
     public final void synpred18_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2105:6: ( ( () '[' ) )
-        // InternalMirBase.g:2105:7: ( () '[' )
+        // InternalMirBase.g:2132:6: ( ( () '[' ) )
+        // InternalMirBase.g:2132:7: ( () '[' )
         {
-        // InternalMirBase.g:2105:7: ( () '[' )
-        // InternalMirBase.g:2106:7: () '['
+        // InternalMirBase.g:2132:7: ( () '[' )
+        // InternalMirBase.g:2133:7: () '['
         {
-        // InternalMirBase.g:2106:7: ()
-        // InternalMirBase.g:2107:7: 
+        // InternalMirBase.g:2133:7: ()
+        // InternalMirBase.g:2134:7: 
         {
         }
 
@@ -18743,14 +18810,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred19_InternalMirBase
     public final void synpred19_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2178:4: ( ( () 'synchronized' '(' ) )
-        // InternalMirBase.g:2178:5: ( () 'synchronized' '(' )
+        // InternalMirBase.g:2205:4: ( ( () 'synchronized' '(' ) )
+        // InternalMirBase.g:2205:5: ( () 'synchronized' '(' )
         {
-        // InternalMirBase.g:2178:5: ( () 'synchronized' '(' )
-        // InternalMirBase.g:2179:5: () 'synchronized' '('
+        // InternalMirBase.g:2205:5: ( () 'synchronized' '(' )
+        // InternalMirBase.g:2206:5: () 'synchronized' '('
         {
-        // InternalMirBase.g:2179:5: ()
-        // InternalMirBase.g:2180:5: 
+        // InternalMirBase.g:2206:5: ()
+        // InternalMirBase.g:2207:5: 
         {
         }
 
@@ -18766,24 +18833,24 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred20_InternalMirBase
     public final void synpred20_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2223:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )
-        // InternalMirBase.g:2223:5: ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:2250:4: ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )
+        // InternalMirBase.g:2250:5: ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' )
         {
-        // InternalMirBase.g:2223:5: ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' )
-        // InternalMirBase.g:2224:5: () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':'
+        // InternalMirBase.g:2250:5: ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:2251:5: () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':'
         {
-        // InternalMirBase.g:2224:5: ()
-        // InternalMirBase.g:2225:5: 
+        // InternalMirBase.g:2251:5: ()
+        // InternalMirBase.g:2252:5: 
         {
         }
 
         match(input,66,FOLLOW_49); if (state.failed) return ;
         match(input,51,FOLLOW_18); if (state.failed) return ;
-        // InternalMirBase.g:2228:5: ( ( ruleJvmFormalParameter ) )
-        // InternalMirBase.g:2229:6: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:2255:5: ( ( ruleJvmFormalParameter ) )
+        // InternalMirBase.g:2256:6: ( ruleJvmFormalParameter )
         {
-        // InternalMirBase.g:2229:6: ( ruleJvmFormalParameter )
-        // InternalMirBase.g:2230:7: ruleJvmFormalParameter
+        // InternalMirBase.g:2256:6: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:2257:7: ruleJvmFormalParameter
         {
         pushFollow(FOLLOW_52);
         ruleJvmFormalParameter();
@@ -18807,14 +18874,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred21_InternalMirBase
     public final void synpred21_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2337:4: ( ( () '[' ) )
-        // InternalMirBase.g:2337:5: ( () '[' )
+        // InternalMirBase.g:2364:4: ( ( () '[' ) )
+        // InternalMirBase.g:2364:5: ( () '[' )
         {
-        // InternalMirBase.g:2337:5: ( () '[' )
-        // InternalMirBase.g:2338:5: () '['
+        // InternalMirBase.g:2364:5: ( () '[' )
+        // InternalMirBase.g:2365:5: () '['
         {
-        // InternalMirBase.g:2338:5: ()
-        // InternalMirBase.g:2339:5: 
+        // InternalMirBase.g:2365:5: ()
+        // InternalMirBase.g:2366:5: 
         {
         }
 
@@ -18829,13 +18896,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred23_InternalMirBase
     public final void synpred23_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:2642:4: ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
-        // InternalMirBase.g:2642:5: ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:2669:4: ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
+        // InternalMirBase.g:2669:5: ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
         {
-        // InternalMirBase.g:2642:5: ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
-        // InternalMirBase.g:2643:5: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
+        // InternalMirBase.g:2669:5: ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:2670:5: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
         {
-        // InternalMirBase.g:2643:5: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
+        // InternalMirBase.g:2670:5: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
         int alt118=2;
         int LA118_0 = input.LA(1);
 
@@ -18844,13 +18911,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         }
         switch (alt118) {
             case 1 :
-                // InternalMirBase.g:2644:6: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:2671:6: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 {
-                // InternalMirBase.g:2644:6: ( ( ruleJvmFormalParameter ) )
-                // InternalMirBase.g:2645:7: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:2671:6: ( ( ruleJvmFormalParameter ) )
+                // InternalMirBase.g:2672:7: ( ruleJvmFormalParameter )
                 {
-                // InternalMirBase.g:2645:7: ( ruleJvmFormalParameter )
-                // InternalMirBase.g:2646:8: ruleJvmFormalParameter
+                // InternalMirBase.g:2672:7: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:2673:8: ruleJvmFormalParameter
                 {
                 pushFollow(FOLLOW_44);
                 ruleJvmFormalParameter();
@@ -18863,7 +18930,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 }
 
-                // InternalMirBase.g:2649:6: ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:2676:6: ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 loop117:
                 do {
                     int alt117=2;
@@ -18876,14 +18943,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     switch (alt117) {
                 	case 1 :
-                	    // InternalMirBase.g:2650:7: ',' ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:2677:7: ',' ( ( ruleJvmFormalParameter ) )
                 	    {
                 	    match(input,50,FOLLOW_18); if (state.failed) return ;
-                	    // InternalMirBase.g:2651:7: ( ( ruleJvmFormalParameter ) )
-                	    // InternalMirBase.g:2652:8: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:2678:7: ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:2679:8: ( ruleJvmFormalParameter )
                 	    {
-                	    // InternalMirBase.g:2652:8: ( ruleJvmFormalParameter )
-                	    // InternalMirBase.g:2653:9: ruleJvmFormalParameter
+                	    // InternalMirBase.g:2679:8: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:2680:9: ruleJvmFormalParameter
                 	    {
                 	    pushFollow(FOLLOW_44);
                 	    ruleJvmFormalParameter();
@@ -18911,11 +18978,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:2658:5: ( ( '|' ) )
-        // InternalMirBase.g:2659:6: ( '|' )
+        // InternalMirBase.g:2685:5: ( ( '|' ) )
+        // InternalMirBase.g:2686:6: ( '|' )
         {
-        // InternalMirBase.g:2659:6: ( '|' )
-        // InternalMirBase.g:2660:7: '|'
+        // InternalMirBase.g:2686:6: ( '|' )
+        // InternalMirBase.g:2687:7: '|'
         {
         match(input,58,FOLLOW_2); if (state.failed) return ;
 
@@ -18934,8 +19001,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred25_InternalMirBase
     public final void synpred25_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:3051:5: ( 'else' )
-        // InternalMirBase.g:3051:6: 'else'
+        // InternalMirBase.g:3078:5: ( 'else' )
+        // InternalMirBase.g:3078:6: 'else'
         {
         match(input,61,FOLLOW_2); if (state.failed) return ;
 
@@ -18945,18 +19012,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred26_InternalMirBase
     public final void synpred26_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:3110:6: ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )
-        // InternalMirBase.g:3110:7: ( '(' ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:3137:6: ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )
+        // InternalMirBase.g:3137:7: ( '(' ( ( ruleJvmFormalParameter ) ) ':' )
         {
-        // InternalMirBase.g:3110:7: ( '(' ( ( ruleJvmFormalParameter ) ) ':' )
-        // InternalMirBase.g:3111:7: '(' ( ( ruleJvmFormalParameter ) ) ':'
+        // InternalMirBase.g:3137:7: ( '(' ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:3138:7: '(' ( ( ruleJvmFormalParameter ) ) ':'
         {
         match(input,51,FOLLOW_18); if (state.failed) return ;
-        // InternalMirBase.g:3112:7: ( ( ruleJvmFormalParameter ) )
-        // InternalMirBase.g:3113:8: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:3139:7: ( ( ruleJvmFormalParameter ) )
+        // InternalMirBase.g:3140:8: ( ruleJvmFormalParameter )
         {
-        // InternalMirBase.g:3113:8: ( ruleJvmFormalParameter )
-        // InternalMirBase.g:3114:9: ruleJvmFormalParameter
+        // InternalMirBase.g:3140:8: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:3141:9: ruleJvmFormalParameter
         {
         pushFollow(FOLLOW_52);
         ruleJvmFormalParameter();
@@ -18980,17 +19047,17 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred27_InternalMirBase
     public final void synpred27_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:3177:6: ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )
-        // InternalMirBase.g:3177:7: ( ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:3204:6: ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )
+        // InternalMirBase.g:3204:7: ( ( ( ruleJvmFormalParameter ) ) ':' )
         {
-        // InternalMirBase.g:3177:7: ( ( ( ruleJvmFormalParameter ) ) ':' )
-        // InternalMirBase.g:3178:7: ( ( ruleJvmFormalParameter ) ) ':'
+        // InternalMirBase.g:3204:7: ( ( ( ruleJvmFormalParameter ) ) ':' )
+        // InternalMirBase.g:3205:7: ( ( ruleJvmFormalParameter ) ) ':'
         {
-        // InternalMirBase.g:3178:7: ( ( ruleJvmFormalParameter ) )
-        // InternalMirBase.g:3179:8: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:3205:7: ( ( ruleJvmFormalParameter ) )
+        // InternalMirBase.g:3206:8: ( ruleJvmFormalParameter )
         {
-        // InternalMirBase.g:3179:8: ( ruleJvmFormalParameter )
-        // InternalMirBase.g:3180:9: ruleJvmFormalParameter
+        // InternalMirBase.g:3206:8: ( ruleJvmFormalParameter )
+        // InternalMirBase.g:3207:9: ruleJvmFormalParameter
         {
         pushFollow(FOLLOW_52);
         ruleJvmFormalParameter();
@@ -19014,17 +19081,17 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred29_InternalMirBase
     public final void synpred29_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:3995:5: ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )
-        // InternalMirBase.g:3995:6: ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) )
+        // InternalMirBase.g:4022:5: ( ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) ) )
+        // InternalMirBase.g:4022:6: ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) )
         {
-        // InternalMirBase.g:3995:6: ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) )
-        // InternalMirBase.g:3996:6: ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) )
+        // InternalMirBase.g:4022:6: ( ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) ) )
+        // InternalMirBase.g:4023:6: ( ( ruleJvmTypeReference ) ) ( ( ruleValidID ) )
         {
-        // InternalMirBase.g:3996:6: ( ( ruleJvmTypeReference ) )
-        // InternalMirBase.g:3997:7: ( ruleJvmTypeReference )
+        // InternalMirBase.g:4023:6: ( ( ruleJvmTypeReference ) )
+        // InternalMirBase.g:4024:7: ( ruleJvmTypeReference )
         {
-        // InternalMirBase.g:3997:7: ( ruleJvmTypeReference )
-        // InternalMirBase.g:3998:8: ruleJvmTypeReference
+        // InternalMirBase.g:4024:7: ( ruleJvmTypeReference )
+        // InternalMirBase.g:4025:8: ruleJvmTypeReference
         {
         pushFollow(FOLLOW_6);
         ruleJvmTypeReference();
@@ -19037,11 +19104,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:4001:6: ( ( ruleValidID ) )
-        // InternalMirBase.g:4002:7: ( ruleValidID )
+        // InternalMirBase.g:4028:6: ( ( ruleValidID ) )
+        // InternalMirBase.g:4029:7: ( ruleValidID )
         {
-        // InternalMirBase.g:4002:7: ( ruleValidID )
-        // InternalMirBase.g:4003:8: ruleValidID
+        // InternalMirBase.g:4029:7: ( ruleValidID )
+        // InternalMirBase.g:4030:8: ruleValidID
         {
         pushFollow(FOLLOW_2);
         ruleValidID();
@@ -19064,11 +19131,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred30_InternalMirBase
     public final void synpred30_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4307:5: ( ( '(' ) )
-        // InternalMirBase.g:4307:6: ( '(' )
+        // InternalMirBase.g:4334:5: ( ( '(' ) )
+        // InternalMirBase.g:4334:6: ( '(' )
         {
-        // InternalMirBase.g:4307:6: ( '(' )
-        // InternalMirBase.g:4308:6: '('
+        // InternalMirBase.g:4334:6: ( '(' )
+        // InternalMirBase.g:4335:6: '('
         {
         match(input,51,FOLLOW_2); if (state.failed) return ;
 
@@ -19081,18 +19148,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred31_InternalMirBase
     public final void synpred31_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4326:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
-        // InternalMirBase.g:4326:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:4353:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
+        // InternalMirBase.g:4353:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
         {
-        // InternalMirBase.g:4326:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
-        // InternalMirBase.g:4327:7: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
+        // InternalMirBase.g:4353:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:4354:7: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
         {
-        // InternalMirBase.g:4327:7: ()
-        // InternalMirBase.g:4328:7: 
+        // InternalMirBase.g:4354:7: ()
+        // InternalMirBase.g:4355:7: 
         {
         }
 
-        // InternalMirBase.g:4329:7: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
+        // InternalMirBase.g:4356:7: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
         int alt122=2;
         int LA122_0 = input.LA(1);
 
@@ -19101,13 +19168,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         }
         switch (alt122) {
             case 1 :
-                // InternalMirBase.g:4330:8: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:4357:8: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 {
-                // InternalMirBase.g:4330:8: ( ( ruleJvmFormalParameter ) )
-                // InternalMirBase.g:4331:9: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:4357:8: ( ( ruleJvmFormalParameter ) )
+                // InternalMirBase.g:4358:9: ( ruleJvmFormalParameter )
                 {
-                // InternalMirBase.g:4331:9: ( ruleJvmFormalParameter )
-                // InternalMirBase.g:4332:10: ruleJvmFormalParameter
+                // InternalMirBase.g:4358:9: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:4359:10: ruleJvmFormalParameter
                 {
                 pushFollow(FOLLOW_44);
                 ruleJvmFormalParameter();
@@ -19120,7 +19187,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 }
 
-                // InternalMirBase.g:4335:8: ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:4362:8: ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 loop121:
                 do {
                     int alt121=2;
@@ -19133,14 +19200,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     switch (alt121) {
                 	case 1 :
-                	    // InternalMirBase.g:4336:9: ',' ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:4363:9: ',' ( ( ruleJvmFormalParameter ) )
                 	    {
                 	    match(input,50,FOLLOW_18); if (state.failed) return ;
-                	    // InternalMirBase.g:4337:9: ( ( ruleJvmFormalParameter ) )
-                	    // InternalMirBase.g:4338:10: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:4364:9: ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:4365:10: ( ruleJvmFormalParameter )
                 	    {
-                	    // InternalMirBase.g:4338:10: ( ruleJvmFormalParameter )
-                	    // InternalMirBase.g:4339:11: ruleJvmFormalParameter
+                	    // InternalMirBase.g:4365:10: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:4366:11: ruleJvmFormalParameter
                 	    {
                 	    pushFollow(FOLLOW_44);
                 	    ruleJvmFormalParameter();
@@ -19168,11 +19235,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:4344:7: ( ( '|' ) )
-        // InternalMirBase.g:4345:8: ( '|' )
+        // InternalMirBase.g:4371:7: ( ( '|' ) )
+        // InternalMirBase.g:4372:8: ( '|' )
         {
-        // InternalMirBase.g:4345:8: ( '|' )
-        // InternalMirBase.g:4346:9: '|'
+        // InternalMirBase.g:4372:8: ( '|' )
+        // InternalMirBase.g:4373:9: '|'
         {
         match(input,58,FOLLOW_2); if (state.failed) return ;
 
@@ -19191,14 +19258,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred32_InternalMirBase
     public final void synpred32_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4423:4: ( ( () '[' ) )
-        // InternalMirBase.g:4423:5: ( () '[' )
+        // InternalMirBase.g:4450:4: ( ( () '[' ) )
+        // InternalMirBase.g:4450:5: ( () '[' )
         {
-        // InternalMirBase.g:4423:5: ( () '[' )
-        // InternalMirBase.g:4424:5: () '['
+        // InternalMirBase.g:4450:5: ( () '[' )
+        // InternalMirBase.g:4451:5: () '['
         {
-        // InternalMirBase.g:4424:5: ()
-        // InternalMirBase.g:4425:5: 
+        // InternalMirBase.g:4451:5: ()
+        // InternalMirBase.g:4452:5: 
         {
         }
 
@@ -19213,8 +19280,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred33_InternalMirBase
     public final void synpred33_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4583:5: ( '<' )
-        // InternalMirBase.g:4583:6: '<'
+        // InternalMirBase.g:4610:5: ( '<' )
+        // InternalMirBase.g:4610:6: '<'
         {
         match(input,22,FOLLOW_2); if (state.failed) return ;
 
@@ -19224,11 +19291,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred34_InternalMirBase
     public final void synpred34_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4640:5: ( ( '(' ) )
-        // InternalMirBase.g:4640:6: ( '(' )
+        // InternalMirBase.g:4667:5: ( ( '(' ) )
+        // InternalMirBase.g:4667:6: ( '(' )
         {
-        // InternalMirBase.g:4640:6: ( '(' )
-        // InternalMirBase.g:4641:6: '('
+        // InternalMirBase.g:4667:6: ( '(' )
+        // InternalMirBase.g:4668:6: '('
         {
         match(input,51,FOLLOW_2); if (state.failed) return ;
 
@@ -19241,18 +19308,18 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred35_InternalMirBase
     public final void synpred35_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4659:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
-        // InternalMirBase.g:4659:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:4686:6: ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )
+        // InternalMirBase.g:4686:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
         {
-        // InternalMirBase.g:4659:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
-        // InternalMirBase.g:4660:7: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
+        // InternalMirBase.g:4686:7: ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) )
+        // InternalMirBase.g:4687:7: () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) )
         {
-        // InternalMirBase.g:4660:7: ()
-        // InternalMirBase.g:4661:7: 
+        // InternalMirBase.g:4687:7: ()
+        // InternalMirBase.g:4688:7: 
         {
         }
 
-        // InternalMirBase.g:4662:7: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
+        // InternalMirBase.g:4689:7: ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )?
         int alt124=2;
         int LA124_0 = input.LA(1);
 
@@ -19261,13 +19328,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
         }
         switch (alt124) {
             case 1 :
-                // InternalMirBase.g:4663:8: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:4690:8: ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 {
-                // InternalMirBase.g:4663:8: ( ( ruleJvmFormalParameter ) )
-                // InternalMirBase.g:4664:9: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:4690:8: ( ( ruleJvmFormalParameter ) )
+                // InternalMirBase.g:4691:9: ( ruleJvmFormalParameter )
                 {
-                // InternalMirBase.g:4664:9: ( ruleJvmFormalParameter )
-                // InternalMirBase.g:4665:10: ruleJvmFormalParameter
+                // InternalMirBase.g:4691:9: ( ruleJvmFormalParameter )
+                // InternalMirBase.g:4692:10: ruleJvmFormalParameter
                 {
                 pushFollow(FOLLOW_44);
                 ruleJvmFormalParameter();
@@ -19280,7 +19347,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                 }
 
-                // InternalMirBase.g:4668:8: ( ',' ( ( ruleJvmFormalParameter ) ) )*
+                // InternalMirBase.g:4695:8: ( ',' ( ( ruleJvmFormalParameter ) ) )*
                 loop123:
                 do {
                     int alt123=2;
@@ -19293,14 +19360,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
                     switch (alt123) {
                 	case 1 :
-                	    // InternalMirBase.g:4669:9: ',' ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:4696:9: ',' ( ( ruleJvmFormalParameter ) )
                 	    {
                 	    match(input,50,FOLLOW_18); if (state.failed) return ;
-                	    // InternalMirBase.g:4670:9: ( ( ruleJvmFormalParameter ) )
-                	    // InternalMirBase.g:4671:10: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:4697:9: ( ( ruleJvmFormalParameter ) )
+                	    // InternalMirBase.g:4698:10: ( ruleJvmFormalParameter )
                 	    {
-                	    // InternalMirBase.g:4671:10: ( ruleJvmFormalParameter )
-                	    // InternalMirBase.g:4672:11: ruleJvmFormalParameter
+                	    // InternalMirBase.g:4698:10: ( ruleJvmFormalParameter )
+                	    // InternalMirBase.g:4699:11: ruleJvmFormalParameter
                 	    {
                 	    pushFollow(FOLLOW_44);
                 	    ruleJvmFormalParameter();
@@ -19328,11 +19395,11 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
         }
 
-        // InternalMirBase.g:4677:7: ( ( '|' ) )
-        // InternalMirBase.g:4678:8: ( '|' )
+        // InternalMirBase.g:4704:7: ( ( '|' ) )
+        // InternalMirBase.g:4705:8: ( '|' )
         {
-        // InternalMirBase.g:4678:8: ( '|' )
-        // InternalMirBase.g:4679:9: '|'
+        // InternalMirBase.g:4705:8: ( '|' )
+        // InternalMirBase.g:4706:9: '|'
         {
         match(input,58,FOLLOW_2); if (state.failed) return ;
 
@@ -19351,14 +19418,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred36_InternalMirBase
     public final void synpred36_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:4756:4: ( ( () '[' ) )
-        // InternalMirBase.g:4756:5: ( () '[' )
+        // InternalMirBase.g:4783:4: ( ( () '[' ) )
+        // InternalMirBase.g:4783:5: ( () '[' )
         {
-        // InternalMirBase.g:4756:5: ( () '[' )
-        // InternalMirBase.g:4757:5: () '['
+        // InternalMirBase.g:4783:5: ( () '[' )
+        // InternalMirBase.g:4784:5: () '['
         {
-        // InternalMirBase.g:4757:5: ()
-        // InternalMirBase.g:4758:5: 
+        // InternalMirBase.g:4784:5: ()
+        // InternalMirBase.g:4785:5: 
         {
         }
 
@@ -19373,7 +19440,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred37_InternalMirBase
     public final void synpred37_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5099:4: ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )
+        // InternalMirBase.g:5126:4: ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )
         // InternalMirBase.g:
         {
         if ( (input.LA(1)>=RULE_STRING && input.LA(1)<=RULE_ID)||input.LA(1)==13||input.LA(1)==22||(input.LA(1)>=38 && input.LA(1)<=39)||input.LA(1)==44||input.LA(1)==51||(input.LA(1)>=53 && input.LA(1)<=54)||input.LA(1)==56||input.LA(1)==60||input.LA(1)==62||(input.LA(1)>=66 && input.LA(1)<=68)||(input.LA(1)>=71 && input.LA(1)<=82)||input.LA(1)==84 ) {
@@ -19393,8 +19460,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred38_InternalMirBase
     public final void synpred38_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5170:6: ( 'catch' )
-        // InternalMirBase.g:5170:7: 'catch'
+        // InternalMirBase.g:5197:6: ( 'catch' )
+        // InternalMirBase.g:5197:7: 'catch'
         {
         match(input,85,FOLLOW_2); if (state.failed) return ;
 
@@ -19404,8 +19471,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred39_InternalMirBase
     public final void synpred39_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5191:7: ( 'finally' )
-        // InternalMirBase.g:5191:8: 'finally'
+        // InternalMirBase.g:5218:7: ( 'finally' )
+        // InternalMirBase.g:5218:8: 'finally'
         {
         match(input,83,FOLLOW_2); if (state.failed) return ;
 
@@ -19415,8 +19482,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred42_InternalMirBase
     public final void synpred42_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5435:5: ( '.' )
-        // InternalMirBase.g:5435:6: '.'
+        // InternalMirBase.g:5462:5: ( '.' )
+        // InternalMirBase.g:5462:6: '.'
         {
         match(input,47,FOLLOW_2); if (state.failed) return ;
 
@@ -19426,14 +19493,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred43_InternalMirBase
     public final void synpred43_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5561:5: ( ( () ruleArrayBrackets ) )
-        // InternalMirBase.g:5561:6: ( () ruleArrayBrackets )
+        // InternalMirBase.g:5588:5: ( ( () ruleArrayBrackets ) )
+        // InternalMirBase.g:5588:6: ( () ruleArrayBrackets )
         {
-        // InternalMirBase.g:5561:6: ( () ruleArrayBrackets )
-        // InternalMirBase.g:5562:6: () ruleArrayBrackets
+        // InternalMirBase.g:5588:6: ( () ruleArrayBrackets )
+        // InternalMirBase.g:5589:6: () ruleArrayBrackets
         {
-        // InternalMirBase.g:5562:6: ()
-        // InternalMirBase.g:5563:6: 
+        // InternalMirBase.g:5589:6: ()
+        // InternalMirBase.g:5590:6: 
         {
         }
 
@@ -19452,8 +19519,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred44_InternalMirBase
     public final void synpred44_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5758:5: ( '<' )
-        // InternalMirBase.g:5758:6: '<'
+        // InternalMirBase.g:5785:5: ( '<' )
+        // InternalMirBase.g:5785:6: '<'
         {
         match(input,22,FOLLOW_2); if (state.failed) return ;
 
@@ -19463,14 +19530,14 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred45_InternalMirBase
     public final void synpred45_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5814:6: ( ( () '.' ) )
-        // InternalMirBase.g:5814:7: ( () '.' )
+        // InternalMirBase.g:5841:6: ( ( () '.' ) )
+        // InternalMirBase.g:5841:7: ( () '.' )
         {
-        // InternalMirBase.g:5814:7: ( () '.' )
-        // InternalMirBase.g:5815:7: () '.'
+        // InternalMirBase.g:5841:7: ( () '.' )
+        // InternalMirBase.g:5842:7: () '.'
         {
-        // InternalMirBase.g:5815:7: ()
-        // InternalMirBase.g:5816:7: 
+        // InternalMirBase.g:5842:7: ()
+        // InternalMirBase.g:5843:7: 
         {
         }
 
@@ -19485,8 +19552,8 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred46_InternalMirBase
     public final void synpred46_InternalMirBase_fragment() throws RecognitionException {   
-        // InternalMirBase.g:5852:7: ( '<' )
-        // InternalMirBase.g:5852:8: '<'
+        // InternalMirBase.g:5879:7: ( '<' )
+        // InternalMirBase.g:5879:8: '<'
         {
         match(input,22,FOLLOW_2); if (state.failed) return ;
 
@@ -20134,7 +20201,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_7;
         }
         public String getDescription() {
-            return "296:4: ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?";
+            return "323:4: ( ( ( ( () ( ( ruleOpMultiAssign ) ) ) )=> ( () ( ( ruleOpMultiAssign ) ) ) ) ( (lv_rightOperand_7_0= ruleXAssignment ) ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20258,7 +20325,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
     static final String dfa_10s = "\1\4\1\uffff\10\0\1\uffff";
     static final String dfa_11s = "\1\125\1\uffff\10\0\1\uffff";
     static final String dfa_12s = "\1\uffff\1\2\10\uffff\1\1";
-    static final String dfa_13s = "\2\uffff\1\7\1\3\1\5\1\6\1\4\1\2\1\0\1\1\1\uffff}>";
+    static final String dfa_13s = "\2\uffff\1\6\1\7\1\3\1\4\1\2\1\5\1\0\1\1\1\uffff}>";
     static final String[] dfa_14s = {
             "\5\1\4\uffff\2\1\2\uffff\5\1\1\2\1\3\10\1\1\4\1\5\1\6\1\7\1\10\1\11\24\1\1\uffff\33\1",
             "",
@@ -20295,7 +20362,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_14;
         }
         public String getDescription() {
-            return "()* loopback of 1010:3: ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*";
+            return "()* loopback of 1037:3: ( ( ( ( () ( ( ruleOpOther ) ) ) )=> ( () ( ( ruleOpOther ) ) ) ) ( (lv_rightOperand_3_0= ruleXAdditiveExpression ) ) )*";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20332,36 +20399,6 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
-                        int LA13_7 = input.LA(1);
-
-                         
-                        int index13_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred7_InternalMirBase()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index13_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
-                        int LA13_3 = input.LA(1);
-
-                         
-                        int index13_3 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred7_InternalMirBase()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index13_3);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
                         int LA13_6 = input.LA(1);
 
                          
@@ -20376,7 +20413,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         input.seek(index13_6);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
+                    case 3 : 
                         int LA13_4 = input.LA(1);
 
                          
@@ -20391,7 +20428,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         input.seek(index13_4);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
+                    case 4 : 
                         int LA13_5 = input.LA(1);
 
                          
@@ -20406,7 +20443,22 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         input.seek(index13_5);
                         if ( s>=0 ) return s;
                         break;
-                    case 7 : 
+                    case 5 : 
+                        int LA13_7 = input.LA(1);
+
+                         
+                        int index13_7 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred7_InternalMirBase()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index13_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
                         int LA13_2 = input.LA(1);
 
                          
@@ -20421,6 +20473,21 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
                         input.seek(index13_2);
                         if ( s>=0 ) return s;
                         break;
+                    case 7 : 
+                        int LA13_3 = input.LA(1);
+
+                         
+                        int index13_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred7_InternalMirBase()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index13_3);
+                        if ( s>=0 ) return s;
+                        break;
             }
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
@@ -20431,13 +20498,13 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
     }
     static final String dfa_15s = "\1\26\2\uffff\1\27\7\uffff";
     static final String dfa_16s = "\1\45\2\uffff\1\42\7\uffff";
-    static final String dfa_17s = "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\6\1\3";
+    static final String dfa_17s = "\1\uffff\1\1\1\2\1\uffff\1\4\1\5\1\7\1\10\1\11\1\3\1\6";
     static final String dfa_18s = "\13\uffff}>";
     static final String[] dfa_19s = {
             "\1\6\1\3\10\uffff\1\1\1\2\1\4\1\5\1\7\1\10",
             "",
             "",
-            "\1\11\12\uffff\1\12",
+            "\1\12\12\uffff\1\11",
             "",
             "",
             "",
@@ -20466,7 +20533,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_19;
         }
         public String getDescription() {
-            return "1086:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )";
+            return "1113:2: (kw= '->' | kw= '..<' | (kw= '>' kw= '..' ) | kw= '..' | kw= '=>' | (kw= '>' ( ( ( ( '>' '>' ) )=> (kw= '>' kw= '>' ) ) | kw= '>' ) ) | (kw= '<' ( ( ( ( '<' '<' ) )=> (kw= '<' kw= '<' ) ) | kw= '<' | kw= '=>' ) ) | kw= '<>' | kw= '?:' )";
         }
     }
     static final String dfa_20s = "\116\uffff";
@@ -20578,7 +20645,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_26;
         }
         public String getDescription() {
-            return "1987:5: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )?";
+            return "2014:5: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_17_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )? otherlv_22= ')' )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20672,7 +20739,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_32;
         }
         public String getDescription() {
-            return "2006:6: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )?";
+            return "2033:6: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_memberCallArguments_18_0= ruleXShortClosure ) ) | ( ( (lv_memberCallArguments_19_0= ruleXExpression ) ) (otherlv_20= ',' ( (lv_memberCallArguments_21_0= ruleXExpression ) ) )* ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20835,7 +20902,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_33;
         }
         public String getDescription() {
-            return "2104:5: ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?";
+            return "2131:5: ( ( ( () '[' ) )=> (lv_memberCallArguments_23_0= ruleXClosure ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -20925,7 +20992,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_39;
         }
         public String getDescription() {
-            return "2149:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )";
+            return "2176:2: (this_XConstructorCall_0= ruleXConstructorCall | this_XBlockExpression_1= ruleXBlockExpression | this_XSwitchExpression_2= ruleXSwitchExpression | ( ( ( () 'synchronized' '(' ) )=>this_XSynchronizedExpression_3= ruleXSynchronizedExpression ) | this_XFeatureCall_4= ruleXFeatureCall | this_XLiteral_5= ruleXLiteral | this_XIfExpression_6= ruleXIfExpression | ( ( ( () 'for' '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=>this_XForLoopExpression_7= ruleXForLoopExpression ) | this_XBasicForLoopExpression_8= ruleXBasicForLoopExpression | this_XWhileExpression_9= ruleXWhileExpression | this_XDoWhileExpression_10= ruleXDoWhileExpression | this_XThrowExpression_11= ruleXThrowExpression | this_XReturnExpression_12= ruleXReturnExpression | this_XTryCatchFinallyExpression_13= ruleXTryCatchFinallyExpression | this_XParenthesizedExpression_14= ruleXParenthesizedExpression )";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21060,7 +21127,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_45;
         }
         public String getDescription() {
-            return "2641:3: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )?";
+            return "2668:3: ( ( ( ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> ( ( ( (lv_declaredFormalParameters_2_0= ruleJvmFormalParameter ) ) (otherlv_3= ',' ( (lv_declaredFormalParameters_4_0= ruleJvmFormalParameter ) ) )* )? ( (lv_explicitSyntax_5_0= '|' ) ) ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21189,7 +21256,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_51;
         }
         public String getDescription() {
-            return "3107:3: ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) )";
+            return "3134:3: ( ( ( ( ( '(' ( ( ruleJvmFormalParameter ) ) ':' ) )=> (otherlv_2= '(' ( (lv_declaredParam_3_0= ruleJvmFormalParameter ) ) otherlv_4= ':' ) ) ( (lv_switch_5_0= ruleXExpression ) ) otherlv_6= ')' ) | ( ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )? ( (lv_switch_9_0= ruleXExpression ) ) ) )";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21281,7 +21348,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_57;
         }
         public String getDescription() {
-            return "3176:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )?";
+            return "3203:5: ( ( ( ( ( ruleJvmFormalParameter ) ) ':' ) )=> ( ( (lv_declaredParam_7_0= ruleJvmFormalParameter ) ) otherlv_8= ':' ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21359,7 +21426,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_26;
         }
         public String getDescription() {
-            return "4305:3: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )?";
+            return "4332:3: ( ( ( ( '(' ) )=> (lv_explicitOperationCall_7_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )? otherlv_12= ')' )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21403,7 +21470,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_32;
         }
         public String getDescription() {
-            return "4324:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )?";
+            return "4351:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_featureCallArguments_8_0= ruleXShortClosure ) ) | ( ( (lv_featureCallArguments_9_0= ruleXExpression ) ) (otherlv_10= ',' ( (lv_featureCallArguments_11_0= ruleXExpression ) ) )* ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21485,7 +21552,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_33;
         }
         public String getDescription() {
-            return "4422:3: ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?";
+            return "4449:3: ( ( ( () '[' ) )=> (lv_featureCallArguments_13_0= ruleXClosure ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21610,7 +21677,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_58;
         }
         public String getDescription() {
-            return "4581:3: ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )?";
+            return "4608:3: ( ( ( '<' )=>otherlv_3= '<' ) ( (lv_typeArguments_4_0= ruleJvmArgumentTypeReference ) ) (otherlv_5= ',' ( (lv_typeArguments_6_0= ruleJvmArgumentTypeReference ) ) )* otherlv_7= '>' )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21654,7 +21721,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_26;
         }
         public String getDescription() {
-            return "4638:3: ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )?";
+            return "4665:3: ( ( ( ( '(' ) )=> (lv_explicitConstructorCall_8_0= '(' ) ) ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )? otherlv_13= ')' )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21698,7 +21765,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_32;
         }
         public String getDescription() {
-            return "4657:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )?";
+            return "4684:4: ( ( ( ( () ( ( ( ruleJvmFormalParameter ) ) ( ',' ( ( ruleJvmFormalParameter ) ) )* )? ( ( '|' ) ) ) )=> (lv_arguments_9_0= ruleXShortClosure ) ) | ( ( (lv_arguments_10_0= ruleXExpression ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleXExpression ) ) )* ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21780,7 +21847,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_33;
         }
         public String getDescription() {
-            return "4755:3: ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?";
+            return "4782:3: ( ( ( () '[' ) )=> (lv_arguments_14_0= ruleXClosure ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -21915,7 +21982,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_64;
         }
         public String getDescription() {
-            return "5098:3: ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?";
+            return "5125:3: ( ( 'extends' | 'static' | 'import' | 'extension' | '!' | '-' | '+' | 'new' | '{' | 'switch' | 'synchronized' | '<' | 'super' | '#' | '[' | 'false' | 'true' | 'null' | 'typeof' | 'if' | 'for' | 'while' | 'do' | 'throw' | 'return' | 'try' | '(' | RULE_ID | RULE_HEX | RULE_INT | RULE_DECIMAL | RULE_STRING )=> (lv_expression_2_0= ruleXExpression ) )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22519,7 +22586,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_71;
         }
         public String getDescription() {
-            return "5756:3: ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?";
+            return "5783:3: ( ( ( '<' )=>otherlv_1= '<' ) ( (lv_arguments_2_0= ruleJvmArgumentTypeReference ) ) (otherlv_3= ',' ( (lv_arguments_4_0= ruleJvmArgumentTypeReference ) ) )* otherlv_5= '>' ( ( ( ( () '.' ) )=> ( () otherlv_7= '.' ) ) ( ( ruleValidID ) ) ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )? )* )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22563,7 +22630,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_71;
         }
         public String getDescription() {
-            return "5850:5: ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?";
+            return "5877:5: ( ( ( '<' )=>otherlv_9= '<' ) ( (lv_arguments_10_0= ruleJvmArgumentTypeReference ) ) (otherlv_11= ',' ( (lv_arguments_12_0= ruleJvmArgumentTypeReference ) ) )* otherlv_13= '>' )?";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             TokenStream input = (TokenStream)_input;
@@ -22630,7 +22697,7 @@ public class InternalMirBaseParser extends AbstractInternalAntlrParser {
             this.transition = dfa_78;
         }
         public String getDescription() {
-            return "6312:3: ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) )";
+            return "6339:3: ( ( ( (lv_static_1_0= 'static' ) ) ( (lv_extension_2_0= 'extension' ) )? ( ( ruleQualifiedNameInStaticImport ) ) ( ( (lv_wildcard_4_0= '*' ) ) | ( (lv_memberName_5_0= ruleValidID ) ) ) ) | ( ( ruleQualifiedName ) ) | ( (lv_importedNamespace_7_0= ruleQualifiedNameWithWildcard ) ) )";
         }
     }
  
