@@ -60,14 +60,14 @@ public interface ResponseLanguagePackage extends EPackage
   ResponseLanguagePackage eINSTANCE = tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl.init();
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl <em>Response File</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl <em>Reactions File</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponseFile()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReactionsFile()
    * @generated
    */
-  int RESPONSE_FILE = 0;
+  int REACTIONS_FILE = 0;
 
   /**
    * The feature id for the '<em><b>Metamodel Imports</b></em>' containment reference list.
@@ -76,7 +76,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE_FILE__METAMODEL_IMPORTS = MirBasePackage.MIR_BASE_FILE__METAMODEL_IMPORTS;
+  int REACTIONS_FILE__METAMODEL_IMPORTS = MirBasePackage.MIR_BASE_FILE__METAMODEL_IMPORTS;
 
   /**
    * The feature id for the '<em><b>Namespace Imports</b></em>' containment reference.
@@ -85,35 +85,35 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE_FILE__NAMESPACE_IMPORTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 0;
+  int REACTIONS_FILE__NAMESPACE_IMPORTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Responses Segments</b></em>' containment reference list.
+   * The feature id for the '<em><b>Reactions Segments</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSE_FILE__RESPONSES_SEGMENTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 1;
+  int REACTIONS_FILE__REACTIONS_SEGMENTS = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the '<em>Response File</em>' class.
+   * The number of structural features of the '<em>Reactions File</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSE_FILE_FEATURE_COUNT = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 2;
+  int REACTIONS_FILE_FEATURE_COUNT = MirBasePackage.MIR_BASE_FILE_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl <em>Responses Segment</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl <em>Reactions Segment</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReactionsSegment()
    * @generated
    */
-  int RESPONSES_SEGMENT = 1;
+  int REACTIONS_SEGMENT = 1;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -122,7 +122,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT__NAME = 0;
+  int REACTIONS_SEGMENT__NAME = 0;
 
   /**
    * The feature id for the '<em><b>From Metamodel</b></em>' containment reference.
@@ -131,7 +131,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT__FROM_METAMODEL = 1;
+  int REACTIONS_SEGMENT__FROM_METAMODEL = 1;
 
   /**
    * The feature id for the '<em><b>To Metamodel</b></em>' containment reference.
@@ -140,16 +140,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT__TO_METAMODEL = 2;
+  int REACTIONS_SEGMENT__TO_METAMODEL = 2;
 
   /**
-   * The feature id for the '<em><b>Responses</b></em>' containment reference list.
+   * The feature id for the '<em><b>Reactions</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT__RESPONSES = 3;
+  int REACTIONS_SEGMENT__REACTIONS = 3;
 
   /**
    * The feature id for the '<em><b>Routines</b></em>' containment reference list.
@@ -158,26 +158,26 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT__ROUTINES = 4;
+  int REACTIONS_SEGMENT__ROUTINES = 4;
 
   /**
-   * The number of structural features of the '<em>Responses Segment</em>' class.
+   * The number of structural features of the '<em>Reactions Segment</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSES_SEGMENT_FEATURE_COUNT = 5;
+  int REACTIONS_SEGMENT_FEATURE_COUNT = 5;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseImpl <em>Response</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionImpl <em>Reaction</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponse()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReaction()
    * @generated
    */
-  int RESPONSE = 2;
+  int REACTION = 2;
 
   /**
    * The feature id for the '<em><b>Documentation</b></em>' attribute.
@@ -186,7 +186,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE__DOCUMENTATION = 0;
+  int REACTION__DOCUMENTATION = 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -195,7 +195,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE__NAME = 1;
+  int REACTION__NAME = 1;
 
   /**
    * The feature id for the '<em><b>Trigger</b></em>' containment reference.
@@ -204,7 +204,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE__TRIGGER = 2;
+  int REACTION__TRIGGER = 2;
 
   /**
    * The feature id for the '<em><b>Call Routine</b></em>' containment reference.
@@ -213,25 +213,25 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RESPONSE__CALL_ROUTINE = 3;
+  int REACTION__CALL_ROUTINE = 3;
 
   /**
-   * The feature id for the '<em><b>Responses Segment</b></em>' container reference.
+   * The feature id for the '<em><b>Reactions Segment</b></em>' container reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSE__RESPONSES_SEGMENT = 4;
+  int REACTION__REACTIONS_SEGMENT = 4;
 
   /**
-   * The number of structural features of the '<em>Response</em>' class.
+   * The number of structural features of the '<em>Reaction</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RESPONSE_FEATURE_COUNT = 5;
+  int REACTION_FEATURE_COUNT = 5;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.
@@ -241,7 +241,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCodeBlock()
    * @generated
    */
-  int CODE_BLOCK = 23;
+  int CODE_BLOCK = 28;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -269,7 +269,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRoutineCallBlock()
    * @generated
    */
-  int ROUTINE_CALL_BLOCK = 24;
+  int ROUTINE_CALL_BLOCK = 30;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -281,13 +281,22 @@ public interface ResponseLanguagePackage extends EPackage
   int ROUTINE_CALL_BLOCK__CODE = CODE_BLOCK__CODE;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ROUTINE_CALL_BLOCK__NAME = CODE_BLOCK_FEATURE_COUNT + 0;
+
+  /**
    * The number of structural features of the '<em>Routine Call Block</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROUTINE_CALL_BLOCK_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 0;
+  int ROUTINE_CALL_BLOCK_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl <em>Response Reaction Routine Call</em>}' class.
@@ -307,6 +316,15 @@ public interface ResponseLanguagePackage extends EPackage
    * @ordered
    */
   int RESPONSE_REACTION_ROUTINE_CALL__CODE = ROUTINE_CALL_BLOCK__CODE;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RESPONSE_REACTION_ROUTINE_CALL__NAME = ROUTINE_CALL_BLOCK__NAME;
 
   /**
    * The number of structural features of the '<em>Response Reaction Routine Call</em>' class.
@@ -680,22 +698,31 @@ public interface ResponseLanguagePackage extends EPackage
   int ROUTINE__MATCHER = 2;
 
   /**
-   * The feature id for the '<em><b>Effect</b></em>' containment reference.
+   * The feature id for the '<em><b>Action</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROUTINE__EFFECT = 3;
+  int ROUTINE__ACTION = 3;
 
   /**
-   * The feature id for the '<em><b>Responses Segment</b></em>' container reference.
+   * The feature id for the '<em><b>Return</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROUTINE__RESPONSES_SEGMENT = 4;
+  int ROUTINE__RETURN = 4;
+
+  /**
+   * The feature id for the '<em><b>Reactions Segment</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ROUTINE__REACTIONS_SEGMENT = 5;
 
   /**
    * The number of structural features of the '<em>Routine</em>' class.
@@ -704,7 +731,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ROUTINE_FEATURE_COUNT = 5;
+  int ROUTINE_FEATURE_COUNT = 6;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineInputImpl <em>Routine Input</em>}' class.
@@ -791,14 +818,23 @@ public interface ResponseLanguagePackage extends EPackage
   int MATCHER_STATEMENT_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl <em>Retrieve Model Element Statement</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl <em>Retrieve Model Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElementStatement()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElement()
    * @generated
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT = 18;
+  int RETRIEVE_MODEL_ELEMENT = 18;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETRIEVE_MODEL_ELEMENT__ELEMENT = MATCHER_STATEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -807,16 +843,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__TAG = MATCHER_STATEMENT_FEATURE_COUNT + 0;
+  int RETRIEVE_MODEL_ELEMENT__TAG = MATCHER_STATEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Required</b></em>' attribute.
+   * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED = MATCHER_STATEMENT_FEATURE_COUNT + 1;
+  int RETRIEVE_MODEL_ELEMENT__NAME = MATCHER_STATEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -825,7 +861,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL = MATCHER_STATEMENT_FEATURE_COUNT + 2;
+  int RETRIEVE_MODEL_ELEMENT__OPTIONAL = MATCHER_STATEMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Abscence</b></em>' attribute.
@@ -834,16 +870,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE = MATCHER_STATEMENT_FEATURE_COUNT + 3;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT = MATCHER_STATEMENT_FEATURE_COUNT + 4;
+  int RETRIEVE_MODEL_ELEMENT__ABSCENCE = MATCHER_STATEMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Correspondence Source</b></em>' containment reference.
@@ -852,7 +879,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE = MATCHER_STATEMENT_FEATURE_COUNT + 5;
+  int RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = MATCHER_STATEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -861,16 +888,16 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION = MATCHER_STATEMENT_FEATURE_COUNT + 6;
+  int RETRIEVE_MODEL_ELEMENT__PRECONDITION = MATCHER_STATEMENT_FEATURE_COUNT + 6;
 
   /**
-   * The number of structural features of the '<em>Retrieve Model Element Statement</em>' class.
+   * The number of structural features of the '<em>Retrieve Model Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_STATEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 7;
+  int RETRIEVE_MODEL_ELEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 7;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl <em>Matcher Check Statement</em>}' class.
@@ -901,32 +928,32 @@ public interface ResponseLanguagePackage extends EPackage
   int MATCHER_CHECK_STATEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl <em>Effect</em>}' class.
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ActionImpl <em>Action</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffect()
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ActionImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAction()
    * @generated
    */
-  int EFFECT = 20;
+  int ACTION = 20;
 
   /**
-   * The feature id for the '<em><b>Effect Statements</b></em>' containment reference list.
+   * The feature id for the '<em><b>Action Statements</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EFFECT__EFFECT_STATEMENTS = 0;
+  int ACTION__ACTION_STATEMENTS = 0;
 
   /**
-   * The number of structural features of the '<em>Effect</em>' class.
+   * The number of structural features of the '<em>Action</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EFFECT_FEATURE_COUNT = 1;
+  int ACTION_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallStatementImpl <em>Routine Call Statement</em>}' class.
@@ -948,13 +975,13 @@ public interface ResponseLanguagePackage extends EPackage
   int ROUTINE_CALL_STATEMENT__CODE = ROUTINE_CALL_BLOCK__CODE;
 
   /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
+   * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ROUTINE_CALL_STATEMENT__TAG = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 0;
+  int ROUTINE_CALL_STATEMENT__NAME = ROUTINE_CALL_BLOCK__NAME;
 
   /**
    * The number of structural features of the '<em>Routine Call Statement</em>' class.
@@ -963,7 +990,302 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int ROUTINE_CALL_STATEMENT_FEATURE_COUNT = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 1;
+  int ROUTINE_CALL_STATEMENT_FEATURE_COUNT = ROUTINE_CALL_BLOCK_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ExecuteActionBlockImpl <em>Execute Action Block</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ExecuteActionBlockImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExecuteActionBlock()
+   * @generated
+   */
+  int EXECUTE_ACTION_BLOCK = 29;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXECUTE_ACTION_BLOCK__CODE = CODE_BLOCK__CODE;
+
+  /**
+   * The number of structural features of the '<em>Execute Action Block</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXECUTE_ACTION_BLOCK_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ActionStatementImpl <em>Action Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ActionStatementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getActionStatement()
+   * @generated
+   */
+  int ACTION_STATEMENT = 22;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION_STATEMENT__CODE = EXECUTE_ACTION_BLOCK__CODE;
+
+  /**
+   * The number of structural features of the '<em>Action Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTION_STATEMENT_FEATURE_COUNT = EXECUTE_ACTION_BLOCK_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateModelElementImpl <em>Create Model Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateModelElementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateModelElement()
+   * @generated
+   */
+  int CREATE_MODEL_ELEMENT = 23;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT__CODE = ACTION_STATEMENT__CODE;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT__ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT__NAME = ACTION_STATEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Initialization Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT__INITIALIZATION_BLOCK = ACTION_STATEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Create Model Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl <em>Delete Model Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteModelElement()
+   * @generated
+   */
+  int DELETE_MODEL_ELEMENT = 24;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DELETE_MODEL_ELEMENT__CODE = ACTION_STATEMENT__CODE;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DELETE_MODEL_ELEMENT__ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Delete Model Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DELETE_MODEL_ELEMENT_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl <em>Update Model Element</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateModelElement()
+   * @generated
+   */
+  int UPDATE_MODEL_ELEMENT = 25;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPDATE_MODEL_ELEMENT__CODE = ACTION_STATEMENT__CODE;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPDATE_MODEL_ELEMENT__ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Update Block</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPDATE_MODEL_ELEMENT__UPDATE_BLOCK = ACTION_STATEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Update Model Element</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UPDATE_MODEL_ELEMENT_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl <em>Create Correspondence</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
+   * @generated
+   */
+  int CREATE_CORRESPONDENCE = 26;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_CORRESPONDENCE__CODE = ACTION_STATEMENT__CODE;
+
+  /**
+   * The feature id for the '<em><b>Tag</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_CORRESPONDENCE__TAG = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>First Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_CORRESPONDENCE__FIRST_ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Second Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_CORRESPONDENCE__SECOND_ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Create Correspondence</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_CORRESPONDENCE_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl <em>Remove Correspondence</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
+   * @generated
+   */
+  int REMOVE_CORRESPONDENCE = 27;
+
+  /**
+   * The feature id for the '<em><b>Code</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REMOVE_CORRESPONDENCE__CODE = ACTION_STATEMENT__CODE;
+
+  /**
+   * The feature id for the '<em><b>First Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REMOVE_CORRESPONDENCE__FIRST_ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Second Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REMOVE_CORRESPONDENCE__SECOND_ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Remove Correspondence</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REMOVE_CORRESPONDENCE_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.TaggableImpl <em>Taggable</em>}' class.
@@ -973,7 +1295,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTaggable()
    * @generated
    */
-  int TAGGABLE = 25;
+  int TAGGABLE = 31;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -994,34 +1316,6 @@ public interface ResponseLanguagePackage extends EPackage
   int TAGGABLE_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectStatementImpl <em>Effect Statement</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.EffectStatementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffectStatement()
-   * @generated
-   */
-  int EFFECT_STATEMENT = 22;
-
-  /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int EFFECT_STATEMENT__TAG = TAGGABLE__TAG;
-
-  /**
-   * The number of structural features of the '<em>Effect Statement</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int EFFECT_STATEMENT_FEATURE_COUNT = TAGGABLE_FEATURE_COUNT + 0;
-
-  /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ExistingElementReferenceImpl <em>Existing Element Reference</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1029,7 +1323,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExistingElementReference()
    * @generated
    */
-  int EXISTING_ELEMENT_REFERENCE = 26;
+  int EXISTING_ELEMENT_REFERENCE = 32;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1057,7 +1351,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getTagCodeBlock()
    * @generated
    */
-  int TAG_CODE_BLOCK = 27;
+  int TAG_CODE_BLOCK = 33;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1085,7 +1379,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getPreconditionCodeBlock()
    * @generated
    */
-  int PRECONDITION_CODE_BLOCK = 28;
+  int PRECONDITION_CODE_BLOCK = 34;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1113,7 +1407,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCorrespondingObjectCodeBlock()
    * @generated
    */
-  int CORRESPONDING_OBJECT_CODE_BLOCK = 29;
+  int CORRESPONDING_OBJECT_CODE_BLOCK = 35;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1141,7 +1435,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExecutionCodeBlock()
    * @generated
    */
-  int EXECUTION_CODE_BLOCK = 30;
+  int EXECUTION_CODE_BLOCK = 36;
 
   /**
    * The feature id for the '<em><b>Code</b></em>' containment reference.
@@ -1162,6 +1456,34 @@ public interface ResponseLanguagePackage extends EPackage
   int EXECUTION_CODE_BLOCK_FEATURE_COUNT = CODE_BLOCK_FEATURE_COUNT + 0;
 
   /**
+   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReturnStatementImpl <em>Return Statement</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ReturnStatementImpl
+   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReturnStatement()
+   * @generated
+   */
+  int RETURN_STATEMENT = 37;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETURN_STATEMENT__ELEMENT = 0;
+
+  /**
+   * The number of structural features of the '<em>Return Statement</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETURN_STATEMENT_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.InsertRootChangeImpl <em>Insert Root Change</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1169,7 +1491,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getInsertRootChange()
    * @generated
    */
-  int INSERT_ROOT_CHANGE = 31;
+  int INSERT_ROOT_CHANGE = 38;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1206,7 +1528,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveRootChange()
    * @generated
    */
-  int REMOVE_ROOT_CHANGE = 32;
+  int REMOVE_ROOT_CHANGE = 39;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1243,7 +1565,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureInsertChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 33;
+  int MULTI_VALUED_FEATURE_INSERT_CHANGE = 40;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1280,7 +1602,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeatureRemoveChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 34;
+  int MULTI_VALUED_FEATURE_REMOVE_CHANGE = 41;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1317,7 +1639,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getMultiValuedFeaturePermuteChange()
    * @generated
    */
-  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 35;
+  int MULTI_VALUED_FEATURE_PERMUTE_CHANGE = 42;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1354,7 +1676,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getSingleValuedFeatureReplace()
    * @generated
    */
-  int SINGLE_VALUED_FEATURE_REPLACE = 36;
+  int SINGLE_VALUED_FEATURE_REPLACE = 43;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -1383,389 +1705,168 @@ public interface ResponseLanguagePackage extends EPackage
    */
   int SINGLE_VALUED_FEATURE_REPLACE_FEATURE_COUNT = ATOMIC_SINGLE_VALUED_FEATURE_CHANGE_FEATURE_COUNT + 0;
 
+
   /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl <em>Create Element</em>}' class.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsFile <em>Reactions File</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateElement()
+   * @return the meta object for class '<em>Reactions File</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsFile
    * @generated
    */
-  int CREATE_ELEMENT = 37;
+  EClass getReactionsFile();
 
   /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_ELEMENT__TAG = EFFECT_STATEMENT__TAG;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_ELEMENT__ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Initialization Block</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_ELEMENT__INITIALIZATION_BLOCK = EFFECT_STATEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Create Element</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_ELEMENT_FEATURE_COUNT = EFFECT_STATEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteElementImpl <em>Delete Element</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.DeleteElementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteElement()
-   * @generated
-   */
-  int DELETE_ELEMENT = 38;
-
-  /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE_ELEMENT__TAG = EFFECT_STATEMENT__TAG;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE_ELEMENT__ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Delete Element</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DELETE_ELEMENT_FEATURE_COUNT = EFFECT_STATEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl <em>Update Element</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateElement()
-   * @generated
-   */
-  int UPDATE_ELEMENT = 39;
-
-  /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int UPDATE_ELEMENT__TAG = EFFECT_STATEMENT__TAG;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int UPDATE_ELEMENT__ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Update Block</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int UPDATE_ELEMENT__UPDATE_BLOCK = EFFECT_STATEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Update Element</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int UPDATE_ELEMENT_FEATURE_COUNT = EFFECT_STATEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl <em>Create Correspondence</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
-   * @generated
-   */
-  int CREATE_CORRESPONDENCE = 40;
-
-  /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_CORRESPONDENCE__TAG = EFFECT_STATEMENT__TAG;
-
-  /**
-   * The feature id for the '<em><b>First Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_CORRESPONDENCE__FIRST_ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Second Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_CORRESPONDENCE__SECOND_ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Create Correspondence</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CREATE_CORRESPONDENCE_FEATURE_COUNT = EFFECT_STATEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl <em>Remove Correspondence</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl
-   * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
-   * @generated
-   */
-  int REMOVE_CORRESPONDENCE = 41;
-
-  /**
-   * The feature id for the '<em><b>Tag</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REMOVE_CORRESPONDENCE__TAG = EFFECT_STATEMENT__TAG;
-
-  /**
-   * The feature id for the '<em><b>First Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REMOVE_CORRESPONDENCE__FIRST_ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Second Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REMOVE_CORRESPONDENCE__SECOND_ELEMENT = EFFECT_STATEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Remove Correspondence</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REMOVE_CORRESPONDENCE_FEATURE_COUNT = EFFECT_STATEMENT_FEATURE_COUNT + 2;
-
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ResponseFile <em>Response File</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Response File</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseFile
-   * @generated
-   */
-  EClass getResponseFile();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ResponseFile#getNamespaceImports <em>Namespace Imports</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsFile#getNamespaceImports <em>Namespace Imports</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Namespace Imports</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseFile#getNamespaceImports()
-   * @see #getResponseFile()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsFile#getNamespaceImports()
+   * @see #getReactionsFile()
    * @generated
    */
-  EReference getResponseFile_NamespaceImports();
+  EReference getReactionsFile_NamespaceImports();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ResponseFile#getResponsesSegments <em>Responses Segments</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsFile#getReactionsSegments <em>Reactions Segments</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Responses Segments</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseFile#getResponsesSegments()
-   * @see #getResponseFile()
+   * @return the meta object for the containment reference list '<em>Reactions Segments</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsFile#getReactionsSegments()
+   * @see #getReactionsFile()
    * @generated
    */
-  EReference getResponseFile_ResponsesSegments();
+  EReference getReactionsFile_ReactionsSegments();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment <em>Responses Segment</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment <em>Reactions Segment</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Responses Segment</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
+   * @return the meta object for class '<em>Reactions Segment</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
    * @generated
    */
-  EClass getResponsesSegment();
+  EClass getReactionsSegment();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName()
-   * @see #getResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getName()
+   * @see #getReactionsSegment()
    * @generated
    */
-  EAttribute getResponsesSegment_Name();
+  EAttribute getReactionsSegment_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getFromMetamodel <em>From Metamodel</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>From Metamodel</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getFromMetamodel()
-   * @see #getResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getFromMetamodel()
+   * @see #getReactionsSegment()
    * @generated
    */
-  EReference getResponsesSegment_FromMetamodel();
+  EReference getReactionsSegment_FromMetamodel();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getToMetamodel <em>To Metamodel</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>To Metamodel</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getToMetamodel()
-   * @see #getResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getToMetamodel()
+   * @see #getReactionsSegment()
    * @generated
    */
-  EReference getResponsesSegment_ToMetamodel();
+  EReference getReactionsSegment_ToMetamodel();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses <em>Responses</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getReactions <em>Reactions</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Responses</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses()
-   * @see #getResponsesSegment()
+   * @return the meta object for the containment reference list '<em>Reactions</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getReactions()
+   * @see #getReactionsSegment()
    * @generated
    */
-  EReference getResponsesSegment_Responses();
+  EReference getReactionsSegment_Reactions();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines <em>Routines</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getRoutines <em>Routines</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Routines</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines()
-   * @see #getResponsesSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getRoutines()
+   * @see #getReactionsSegment()
    * @generated
    */
-  EReference getResponsesSegment_Routines();
+  EReference getReactionsSegment_Routines();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Response <em>Response</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Reaction <em>Reaction</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Response</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response
+   * @return the meta object for class '<em>Reaction</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction
    * @generated
    */
-  EClass getResponse();
+  EClass getReaction();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.Response#getDocumentation <em>Documentation</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getDocumentation <em>Documentation</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Documentation</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getDocumentation()
-   * @see #getResponse()
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getDocumentation()
+   * @see #getReaction()
    * @generated
    */
-  EAttribute getResponse_Documentation();
+  EAttribute getReaction_Documentation();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.Response#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getName()
-   * @see #getResponse()
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getName()
+   * @see #getReaction()
    * @generated
    */
-  EAttribute getResponse_Name();
+  EAttribute getReaction_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getTrigger <em>Trigger</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getTrigger <em>Trigger</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Trigger</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getTrigger()
-   * @see #getResponse()
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getTrigger()
+   * @see #getReaction()
    * @generated
    */
-  EReference getResponse_Trigger();
+  EReference getReaction_Trigger();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine <em>Call Routine</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getCallRoutine <em>Call Routine</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Call Routine</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getCallRoutine()
-   * @see #getResponse()
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getCallRoutine()
+   * @see #getReaction()
    * @generated
    */
-  EReference getResponse_CallRoutine();
+  EReference getReaction_CallRoutine();
 
   /**
-   * Returns the meta object for the container reference '{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}'.
+   * Returns the meta object for the container reference '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the container reference '<em>Responses Segment</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment()
-   * @see #getResponse()
+   * @return the meta object for the container reference '<em>Reactions Segment</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment()
+   * @see #getReaction()
    * @generated
    */
-  EReference getResponse_ResponsesSegment();
+  EReference getReaction_ReactionsSegment();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ResponseReactionRoutineCall <em>Response Reaction Routine Call</em>}'.
@@ -1965,26 +2066,37 @@ public interface ResponseLanguagePackage extends EPackage
   EReference getRoutine_Matcher();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getEffect <em>Effect</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getAction <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Effect</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getEffect()
+   * @return the meta object for the containment reference '<em>Action</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getAction()
    * @see #getRoutine()
    * @generated
    */
-  EReference getRoutine_Effect();
+  EReference getRoutine_Action();
 
   /**
-   * Returns the meta object for the container reference '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReturn <em>Return</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the container reference '<em>Responses Segment</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment()
+   * @return the meta object for the containment reference '<em>Return</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getReturn()
    * @see #getRoutine()
    * @generated
    */
-  EReference getRoutine_ResponsesSegment();
+  EReference getRoutine_Return();
+
+  /**
+   * Returns the meta object for the container reference '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment <em>Reactions Segment</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the container reference '<em>Reactions Segment</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment()
+   * @see #getRoutine()
+   * @generated
+   */
+  EReference getRoutine_ReactionsSegment();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineInput <em>Routine Input</em>}'.
@@ -2050,80 +2162,69 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getMatcherStatement();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement <em>Retrieve Model Element Statement</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement <em>Retrieve Model Element</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Retrieve Model Element Statement</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+   * @return the meta object for class '<em>Retrieve Model Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
    * @generated
    */
-  EClass getRetrieveModelElementStatement();
+  EClass getRetrieveModelElement();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired <em>Required</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Required</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isRequired()
-   * @see #getRetrieveModelElementStatement()
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getName()
+   * @see #getRetrieveModelElement()
    * @generated
    */
-  EAttribute getRetrieveModelElementStatement_Required();
+  EAttribute getRetrieveModelElement_Name();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional <em>Optional</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional <em>Optional</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Optional</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isOptional()
-   * @see #getRetrieveModelElementStatement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isOptional()
+   * @see #getRetrieveModelElement()
    * @generated
    */
-  EAttribute getRetrieveModelElementStatement_Optional();
+  EAttribute getRetrieveModelElement_Optional();
 
   /**
-   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence <em>Abscence</em>}'.
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence <em>Abscence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Abscence</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#isAbscence()
-   * @see #getRetrieveModelElementStatement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#isAbscence()
+   * @see #getRetrieveModelElement()
    * @generated
    */
-  EAttribute getRetrieveModelElementStatement_Abscence();
+  EAttribute getRetrieveModelElement_Abscence();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement <em>Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getElement()
-   * @see #getRetrieveModelElementStatement()
-   * @generated
-   */
-  EReference getRetrieveModelElementStatement_Element();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource <em>Correspondence Source</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource <em>Correspondence Source</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Correspondence Source</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getCorrespondenceSource()
-   * @see #getRetrieveModelElementStatement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getCorrespondenceSource()
+   * @see #getRetrieveModelElement()
    * @generated
    */
-  EReference getRetrieveModelElementStatement_CorrespondenceSource();
+  EReference getRetrieveModelElement_CorrespondenceSource();
 
   /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition <em>Precondition</em>}'.
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition <em>Precondition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Precondition</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement#getPrecondition()
-   * @see #getRetrieveModelElementStatement()
+   * @see tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement#getPrecondition()
+   * @see #getRetrieveModelElement()
    * @generated
    */
-  EReference getRetrieveModelElementStatement_Precondition();
+  EReference getRetrieveModelElement_Precondition();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement <em>Matcher Check Statement</em>}'.
@@ -2136,25 +2237,25 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getMatcherCheckStatement();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Effect <em>Effect</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Action <em>Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Effect</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Effect
+   * @return the meta object for class '<em>Action</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Action
    * @generated
    */
-  EClass getEffect();
+  EClass getAction();
 
   /**
-   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.Effect#getEffectStatements <em>Effect Statements</em>}'.
+   * Returns the meta object for the containment reference list '{@link tools.vitruv.dsls.response.responseLanguage.Action#getActionStatements <em>Action Statements</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Effect Statements</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.Effect#getEffectStatements()
-   * @see #getEffect()
+   * @return the meta object for the containment reference list '<em>Action Statements</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.Action#getActionStatements()
+   * @see #getAction()
    * @generated
    */
-  EReference getEffect_EffectStatements();
+  EReference getAction_ActionStatements();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement <em>Routine Call Statement</em>}'.
@@ -2167,14 +2268,163 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getRoutineCallStatement();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.EffectStatement <em>Effect Statement</em>}'.
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ActionStatement <em>Action Statement</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Effect Statement</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.EffectStatement
+   * @return the meta object for class '<em>Action Statement</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ActionStatement
    * @generated
    */
-  EClass getEffectStatement();
+  EClass getActionStatement();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.CreateModelElement <em>Create Model Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Create Model Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateModelElement
+   * @generated
+   */
+  EClass getCreateModelElement();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.CreateModelElement#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateModelElement#getName()
+   * @see #getCreateModelElement()
+   * @generated
+   */
+  EAttribute getCreateModelElement_Name();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateModelElement#getInitializationBlock <em>Initialization Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Initialization Block</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateModelElement#getInitializationBlock()
+   * @see #getCreateModelElement()
+   * @generated
+   */
+  EReference getCreateModelElement_InitializationBlock();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.DeleteModelElement <em>Delete Model Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Delete Model Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.DeleteModelElement
+   * @generated
+   */
+  EClass getDeleteModelElement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.DeleteModelElement#getElement <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.DeleteModelElement#getElement()
+   * @see #getDeleteModelElement()
+   * @generated
+   */
+  EReference getDeleteModelElement_Element();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.UpdateModelElement <em>Update Model Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Update Model Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.UpdateModelElement
+   * @generated
+   */
+  EClass getUpdateModelElement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.UpdateModelElement#getElement <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.UpdateModelElement#getElement()
+   * @see #getUpdateModelElement()
+   * @generated
+   */
+  EReference getUpdateModelElement_Element();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.UpdateModelElement#getUpdateBlock <em>Update Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Update Block</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.UpdateModelElement#getUpdateBlock()
+   * @see #getUpdateModelElement()
+   * @generated
+   */
+  EReference getUpdateModelElement_UpdateBlock();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence <em>Create Correspondence</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Create Correspondence</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
+   * @generated
+   */
+  EClass getCreateCorrespondence();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getFirstElement <em>First Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>First Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getFirstElement()
+   * @see #getCreateCorrespondence()
+   * @generated
+   */
+  EReference getCreateCorrespondence_FirstElement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getSecondElement <em>Second Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Second Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getSecondElement()
+   * @see #getCreateCorrespondence()
+   * @generated
+   */
+  EReference getCreateCorrespondence_SecondElement();
+
+  /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence <em>Remove Correspondence</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Remove Correspondence</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
+   * @generated
+   */
+  EClass getRemoveCorrespondence();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getFirstElement <em>First Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>First Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getFirstElement()
+   * @see #getRemoveCorrespondence()
+   * @generated
+   */
+  EReference getRemoveCorrespondence_FirstElement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getSecondElement <em>Second Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Second Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getSecondElement()
+   * @see #getRemoveCorrespondence()
+   * @generated
+   */
+  EReference getRemoveCorrespondence_SecondElement();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.CodeBlock <em>Code Block</em>}'.
@@ -2198,6 +2448,16 @@ public interface ResponseLanguagePackage extends EPackage
   EReference getCodeBlock_Code();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ExecuteActionBlock <em>Execute Action Block</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Execute Action Block</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ExecuteActionBlock
+   * @generated
+   */
+  EClass getExecuteActionBlock();
+
+  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock <em>Routine Call Block</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2206,6 +2466,17 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    */
   EClass getRoutineCallBlock();
+
+  /**
+   * Returns the meta object for the attribute '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock#getName()
+   * @see #getRoutineCallBlock()
+   * @generated
+   */
+  EAttribute getRoutineCallBlock_Name();
 
   /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.Taggable <em>Taggable</em>}'.
@@ -2279,6 +2550,27 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getExecutionCodeBlock();
 
   /**
+   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.ReturnStatement <em>Return Statement</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Return Statement</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReturnStatement
+   * @generated
+   */
+  EClass getReturnStatement();
+
+  /**
+   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.ReturnStatement#getElement <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element</em>'.
+   * @see tools.vitruv.dsls.response.responseLanguage.ReturnStatement#getElement()
+   * @see #getReturnStatement()
+   * @generated
+   */
+  EReference getReturnStatement_Element();
+
+  /**
    * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.InsertRootChange <em>Insert Root Change</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2339,155 +2631,6 @@ public interface ResponseLanguagePackage extends EPackage
   EClass getSingleValuedFeatureReplace();
 
   /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement <em>Create Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Create Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateElement
-   * @generated
-   */
-  EClass getCreateElement();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement#getElement <em>Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateElement#getElement()
-   * @see #getCreateElement()
-   * @generated
-   */
-  EReference getCreateElement_Element();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateElement#getInitializationBlock <em>Initialization Block</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Initialization Block</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateElement#getInitializationBlock()
-   * @see #getCreateElement()
-   * @generated
-   */
-  EReference getCreateElement_InitializationBlock();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement <em>Delete Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Delete Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.DeleteElement
-   * @generated
-   */
-  EClass getDeleteElement();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.DeleteElement#getElement <em>Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.DeleteElement#getElement()
-   * @see #getDeleteElement()
-   * @generated
-   */
-  EReference getDeleteElement_Element();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.UpdateElement <em>Update Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Update Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.UpdateElement
-   * @generated
-   */
-  EClass getUpdateElement();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.UpdateElement#getElement <em>Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.UpdateElement#getElement()
-   * @see #getUpdateElement()
-   * @generated
-   */
-  EReference getUpdateElement_Element();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.UpdateElement#getUpdateBlock <em>Update Block</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Update Block</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.UpdateElement#getUpdateBlock()
-   * @see #getUpdateElement()
-   * @generated
-   */
-  EReference getUpdateElement_UpdateBlock();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence <em>Create Correspondence</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Create Correspondence</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
-   * @generated
-   */
-  EClass getCreateCorrespondence();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getFirstElement <em>First Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>First Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getFirstElement()
-   * @see #getCreateCorrespondence()
-   * @generated
-   */
-  EReference getCreateCorrespondence_FirstElement();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getSecondElement <em>Second Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Second Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence#getSecondElement()
-   * @see #getCreateCorrespondence()
-   * @generated
-   */
-  EReference getCreateCorrespondence_SecondElement();
-
-  /**
-   * Returns the meta object for class '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence <em>Remove Correspondence</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Remove Correspondence</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-   * @generated
-   */
-  EClass getRemoveCorrespondence();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getFirstElement <em>First Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>First Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getFirstElement()
-   * @see #getRemoveCorrespondence()
-   * @generated
-   */
-  EReference getRemoveCorrespondence_FirstElement();
-
-  /**
-   * Returns the meta object for the containment reference '{@link tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getSecondElement <em>Second Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Second Element</em>'.
-   * @see tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence#getSecondElement()
-   * @see #getRemoveCorrespondence()
-   * @generated
-   */
-  EReference getRemoveCorrespondence_SecondElement();
-
-  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2511,14 +2654,14 @@ public interface ResponseLanguagePackage extends EPackage
   interface Literals
   {
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl <em>Response File</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl <em>Reactions File</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponseFile()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReactionsFile()
      * @generated
      */
-    EClass RESPONSE_FILE = eINSTANCE.getResponseFile();
+    EClass REACTIONS_FILE = eINSTANCE.getReactionsFile();
 
     /**
      * The meta object literal for the '<em><b>Namespace Imports</b></em>' containment reference feature.
@@ -2526,25 +2669,25 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE_FILE__NAMESPACE_IMPORTS = eINSTANCE.getResponseFile_NamespaceImports();
+    EReference REACTIONS_FILE__NAMESPACE_IMPORTS = eINSTANCE.getReactionsFile_NamespaceImports();
 
     /**
-     * The meta object literal for the '<em><b>Responses Segments</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Reactions Segments</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE_FILE__RESPONSES_SEGMENTS = eINSTANCE.getResponseFile_ResponsesSegments();
+    EReference REACTIONS_FILE__REACTIONS_SEGMENTS = eINSTANCE.getReactionsFile_ReactionsSegments();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl <em>Responses Segment</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl <em>Reactions Segment</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponsesSegment()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReactionsSegment()
      * @generated
      */
-    EClass RESPONSES_SEGMENT = eINSTANCE.getResponsesSegment();
+    EClass REACTIONS_SEGMENT = eINSTANCE.getReactionsSegment();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2552,7 +2695,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RESPONSES_SEGMENT__NAME = eINSTANCE.getResponsesSegment_Name();
+    EAttribute REACTIONS_SEGMENT__NAME = eINSTANCE.getReactionsSegment_Name();
 
     /**
      * The meta object literal for the '<em><b>From Metamodel</b></em>' containment reference feature.
@@ -2560,7 +2703,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSES_SEGMENT__FROM_METAMODEL = eINSTANCE.getResponsesSegment_FromMetamodel();
+    EReference REACTIONS_SEGMENT__FROM_METAMODEL = eINSTANCE.getReactionsSegment_FromMetamodel();
 
     /**
      * The meta object literal for the '<em><b>To Metamodel</b></em>' containment reference feature.
@@ -2568,15 +2711,15 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSES_SEGMENT__TO_METAMODEL = eINSTANCE.getResponsesSegment_ToMetamodel();
+    EReference REACTIONS_SEGMENT__TO_METAMODEL = eINSTANCE.getReactionsSegment_ToMetamodel();
 
     /**
-     * The meta object literal for the '<em><b>Responses</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Reactions</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSES_SEGMENT__RESPONSES = eINSTANCE.getResponsesSegment_Responses();
+    EReference REACTIONS_SEGMENT__REACTIONS = eINSTANCE.getReactionsSegment_Reactions();
 
     /**
      * The meta object literal for the '<em><b>Routines</b></em>' containment reference list feature.
@@ -2584,17 +2727,17 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSES_SEGMENT__ROUTINES = eINSTANCE.getResponsesSegment_Routines();
+    EReference REACTIONS_SEGMENT__ROUTINES = eINSTANCE.getReactionsSegment_Routines();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseImpl <em>Response</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionImpl <em>Reaction</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getResponse()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ReactionImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReaction()
      * @generated
      */
-    EClass RESPONSE = eINSTANCE.getResponse();
+    EClass REACTION = eINSTANCE.getReaction();
 
     /**
      * The meta object literal for the '<em><b>Documentation</b></em>' attribute feature.
@@ -2602,7 +2745,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RESPONSE__DOCUMENTATION = eINSTANCE.getResponse_Documentation();
+    EAttribute REACTION__DOCUMENTATION = eINSTANCE.getReaction_Documentation();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -2610,7 +2753,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RESPONSE__NAME = eINSTANCE.getResponse_Name();
+    EAttribute REACTION__NAME = eINSTANCE.getReaction_Name();
 
     /**
      * The meta object literal for the '<em><b>Trigger</b></em>' containment reference feature.
@@ -2618,7 +2761,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE__TRIGGER = eINSTANCE.getResponse_Trigger();
+    EReference REACTION__TRIGGER = eINSTANCE.getReaction_Trigger();
 
     /**
      * The meta object literal for the '<em><b>Call Routine</b></em>' containment reference feature.
@@ -2626,15 +2769,15 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE__CALL_ROUTINE = eINSTANCE.getResponse_CallRoutine();
+    EReference REACTION__CALL_ROUTINE = eINSTANCE.getReaction_CallRoutine();
 
     /**
-     * The meta object literal for the '<em><b>Responses Segment</b></em>' container reference feature.
+     * The meta object literal for the '<em><b>Reactions Segment</b></em>' container reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RESPONSE__RESPONSES_SEGMENT = eINSTANCE.getResponse_ResponsesSegment();
+    EReference REACTION__REACTIONS_SEGMENT = eINSTANCE.getReaction_ReactionsSegment();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseReactionRoutineCallImpl <em>Response Reaction Routine Call</em>}' class.
@@ -2813,20 +2956,28 @@ public interface ResponseLanguagePackage extends EPackage
     EReference ROUTINE__MATCHER = eINSTANCE.getRoutine_Matcher();
 
     /**
-     * The meta object literal for the '<em><b>Effect</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Action</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ROUTINE__EFFECT = eINSTANCE.getRoutine_Effect();
+    EReference ROUTINE__ACTION = eINSTANCE.getRoutine_Action();
 
     /**
-     * The meta object literal for the '<em><b>Responses Segment</b></em>' container reference feature.
+     * The meta object literal for the '<em><b>Return</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ROUTINE__RESPONSES_SEGMENT = eINSTANCE.getRoutine_ResponsesSegment();
+    EReference ROUTINE__RETURN = eINSTANCE.getRoutine_Return();
+
+    /**
+     * The meta object literal for the '<em><b>Reactions Segment</b></em>' container reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ROUTINE__REACTIONS_SEGMENT = eINSTANCE.getRoutine_ReactionsSegment();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineInputImpl <em>Routine Input</em>}' class.
@@ -2883,22 +3034,22 @@ public interface ResponseLanguagePackage extends EPackage
     EClass MATCHER_STATEMENT = eINSTANCE.getMatcherStatement();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl <em>Retrieve Model Element Statement</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl <em>Retrieve Model Element</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementStatementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElementStatement()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.RetrieveModelElementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRetrieveModelElement()
      * @generated
      */
-    EClass RETRIEVE_MODEL_ELEMENT_STATEMENT = eINSTANCE.getRetrieveModelElementStatement();
+    EClass RETRIEVE_MODEL_ELEMENT = eINSTANCE.getRetrieveModelElement();
 
     /**
-     * The meta object literal for the '<em><b>Required</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__REQUIRED = eINSTANCE.getRetrieveModelElementStatement_Required();
+    EAttribute RETRIEVE_MODEL_ELEMENT__NAME = eINSTANCE.getRetrieveModelElement_Name();
 
     /**
      * The meta object literal for the '<em><b>Optional</b></em>' attribute feature.
@@ -2906,7 +3057,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__OPTIONAL = eINSTANCE.getRetrieveModelElementStatement_Optional();
+    EAttribute RETRIEVE_MODEL_ELEMENT__OPTIONAL = eINSTANCE.getRetrieveModelElement_Optional();
 
     /**
      * The meta object literal for the '<em><b>Abscence</b></em>' attribute feature.
@@ -2914,15 +3065,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RETRIEVE_MODEL_ELEMENT_STATEMENT__ABSCENCE = eINSTANCE.getRetrieveModelElementStatement_Abscence();
-
-    /**
-     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__ELEMENT = eINSTANCE.getRetrieveModelElementStatement_Element();
+    EAttribute RETRIEVE_MODEL_ELEMENT__ABSCENCE = eINSTANCE.getRetrieveModelElement_Abscence();
 
     /**
      * The meta object literal for the '<em><b>Correspondence Source</b></em>' containment reference feature.
@@ -2930,7 +3073,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__CORRESPONDENCE_SOURCE = eINSTANCE.getRetrieveModelElementStatement_CorrespondenceSource();
+    EReference RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = eINSTANCE.getRetrieveModelElement_CorrespondenceSource();
 
     /**
      * The meta object literal for the '<em><b>Precondition</b></em>' containment reference feature.
@@ -2938,7 +3081,7 @@ public interface ResponseLanguagePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RETRIEVE_MODEL_ELEMENT_STATEMENT__PRECONDITION = eINSTANCE.getRetrieveModelElementStatement_Precondition();
+    EReference RETRIEVE_MODEL_ELEMENT__PRECONDITION = eINSTANCE.getRetrieveModelElement_Precondition();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl <em>Matcher Check Statement</em>}' class.
@@ -2951,22 +3094,22 @@ public interface ResponseLanguagePackage extends EPackage
     EClass MATCHER_CHECK_STATEMENT = eINSTANCE.getMatcherCheckStatement();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl <em>Effect</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ActionImpl <em>Action</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.EffectImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffect()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ActionImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getAction()
      * @generated
      */
-    EClass EFFECT = eINSTANCE.getEffect();
+    EClass ACTION = eINSTANCE.getAction();
 
     /**
-     * The meta object literal for the '<em><b>Effect Statements</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Action Statements</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference EFFECT__EFFECT_STATEMENTS = eINSTANCE.getEffect_EffectStatements();
+    EReference ACTION__ACTION_STATEMENTS = eINSTANCE.getAction_ActionStatements();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallStatementImpl <em>Routine Call Statement</em>}' class.
@@ -2979,14 +3122,136 @@ public interface ResponseLanguagePackage extends EPackage
     EClass ROUTINE_CALL_STATEMENT = eINSTANCE.getRoutineCallStatement();
 
     /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.EffectStatementImpl <em>Effect Statement</em>}' class.
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ActionStatementImpl <em>Action Statement</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.EffectStatementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getEffectStatement()
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ActionStatementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getActionStatement()
      * @generated
      */
-    EClass EFFECT_STATEMENT = eINSTANCE.getEffectStatement();
+    EClass ACTION_STATEMENT = eINSTANCE.getActionStatement();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateModelElementImpl <em>Create Model Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateModelElementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateModelElement()
+     * @generated
+     */
+    EClass CREATE_MODEL_ELEMENT = eINSTANCE.getCreateModelElement();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute CREATE_MODEL_ELEMENT__NAME = eINSTANCE.getCreateModelElement_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Initialization Block</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CREATE_MODEL_ELEMENT__INITIALIZATION_BLOCK = eINSTANCE.getCreateModelElement_InitializationBlock();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl <em>Delete Model Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteModelElement()
+     * @generated
+     */
+    EClass DELETE_MODEL_ELEMENT = eINSTANCE.getDeleteModelElement();
+
+    /**
+     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference DELETE_MODEL_ELEMENT__ELEMENT = eINSTANCE.getDeleteModelElement_Element();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl <em>Update Model Element</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateModelElement()
+     * @generated
+     */
+    EClass UPDATE_MODEL_ELEMENT = eINSTANCE.getUpdateModelElement();
+
+    /**
+     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UPDATE_MODEL_ELEMENT__ELEMENT = eINSTANCE.getUpdateModelElement_Element();
+
+    /**
+     * The meta object literal for the '<em><b>Update Block</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UPDATE_MODEL_ELEMENT__UPDATE_BLOCK = eINSTANCE.getUpdateModelElement_UpdateBlock();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl <em>Create Correspondence</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
+     * @generated
+     */
+    EClass CREATE_CORRESPONDENCE = eINSTANCE.getCreateCorrespondence();
+
+    /**
+     * The meta object literal for the '<em><b>First Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CREATE_CORRESPONDENCE__FIRST_ELEMENT = eINSTANCE.getCreateCorrespondence_FirstElement();
+
+    /**
+     * The meta object literal for the '<em><b>Second Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CREATE_CORRESPONDENCE__SECOND_ELEMENT = eINSTANCE.getCreateCorrespondence_SecondElement();
+
+    /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl <em>Remove Correspondence</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
+     * @generated
+     */
+    EClass REMOVE_CORRESPONDENCE = eINSTANCE.getRemoveCorrespondence();
+
+    /**
+     * The meta object literal for the '<em><b>First Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REMOVE_CORRESPONDENCE__FIRST_ELEMENT = eINSTANCE.getRemoveCorrespondence_FirstElement();
+
+    /**
+     * The meta object literal for the '<em><b>Second Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference REMOVE_CORRESPONDENCE__SECOND_ELEMENT = eINSTANCE.getRemoveCorrespondence_SecondElement();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CodeBlockImpl <em>Code Block</em>}' class.
@@ -3007,6 +3272,16 @@ public interface ResponseLanguagePackage extends EPackage
     EReference CODE_BLOCK__CODE = eINSTANCE.getCodeBlock_Code();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ExecuteActionBlockImpl <em>Execute Action Block</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ExecuteActionBlockImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getExecuteActionBlock()
+     * @generated
+     */
+    EClass EXECUTE_ACTION_BLOCK = eINSTANCE.getExecuteActionBlock();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineCallBlockImpl <em>Routine Call Block</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3015,6 +3290,14 @@ public interface ResponseLanguagePackage extends EPackage
      * @generated
      */
     EClass ROUTINE_CALL_BLOCK = eINSTANCE.getRoutineCallBlock();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ROUTINE_CALL_BLOCK__NAME = eINSTANCE.getRoutineCallBlock_Name();
 
     /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.TaggableImpl <em>Taggable</em>}' class.
@@ -3085,6 +3368,24 @@ public interface ResponseLanguagePackage extends EPackage
     EClass EXECUTION_CODE_BLOCK = eINSTANCE.getExecutionCodeBlock();
 
     /**
+     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.ReturnStatementImpl <em>Return Statement</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ReturnStatementImpl
+     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getReturnStatement()
+     * @generated
+     */
+    EClass RETURN_STATEMENT = eINSTANCE.getReturnStatement();
+
+    /**
+     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RETURN_STATEMENT__ELEMENT = eINSTANCE.getReturnStatement_Element();
+
+    /**
      * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.InsertRootChangeImpl <em>Insert Root Change</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3143,128 +3444,6 @@ public interface ResponseLanguagePackage extends EPackage
      * @generated
      */
     EClass SINGLE_VALUED_FEATURE_REPLACE = eINSTANCE.getSingleValuedFeatureReplace();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl <em>Create Element</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateElementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateElement()
-     * @generated
-     */
-    EClass CREATE_ELEMENT = eINSTANCE.getCreateElement();
-
-    /**
-     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CREATE_ELEMENT__ELEMENT = eINSTANCE.getCreateElement_Element();
-
-    /**
-     * The meta object literal for the '<em><b>Initialization Block</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CREATE_ELEMENT__INITIALIZATION_BLOCK = eINSTANCE.getCreateElement_InitializationBlock();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteElementImpl <em>Delete Element</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.DeleteElementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getDeleteElement()
-     * @generated
-     */
-    EClass DELETE_ELEMENT = eINSTANCE.getDeleteElement();
-
-    /**
-     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference DELETE_ELEMENT__ELEMENT = eINSTANCE.getDeleteElement_Element();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl <em>Update Element</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getUpdateElement()
-     * @generated
-     */
-    EClass UPDATE_ELEMENT = eINSTANCE.getUpdateElement();
-
-    /**
-     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference UPDATE_ELEMENT__ELEMENT = eINSTANCE.getUpdateElement_Element();
-
-    /**
-     * The meta object literal for the '<em><b>Update Block</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference UPDATE_ELEMENT__UPDATE_BLOCK = eINSTANCE.getUpdateElement_UpdateBlock();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl <em>Create Correspondence</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getCreateCorrespondence()
-     * @generated
-     */
-    EClass CREATE_CORRESPONDENCE = eINSTANCE.getCreateCorrespondence();
-
-    /**
-     * The meta object literal for the '<em><b>First Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CREATE_CORRESPONDENCE__FIRST_ELEMENT = eINSTANCE.getCreateCorrespondence_FirstElement();
-
-    /**
-     * The meta object literal for the '<em><b>Second Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CREATE_CORRESPONDENCE__SECOND_ELEMENT = eINSTANCE.getCreateCorrespondence_SecondElement();
-
-    /**
-     * The meta object literal for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl <em>Remove Correspondence</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.RemoveCorrespondenceImpl
-     * @see tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguagePackageImpl#getRemoveCorrespondence()
-     * @generated
-     */
-    EClass REMOVE_CORRESPONDENCE = eINSTANCE.getRemoveCorrespondence();
-
-    /**
-     * The meta object literal for the '<em><b>First Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference REMOVE_CORRESPONDENCE__FIRST_ELEMENT = eINSTANCE.getRemoveCorrespondence_FirstElement();
-
-    /**
-     * The meta object literal for the '<em><b>Second Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference REMOVE_CORRESPONDENCE__SECOND_ELEMENT = eINSTANCE.getRemoveCorrespondence_SecondElement();
 
   }
 

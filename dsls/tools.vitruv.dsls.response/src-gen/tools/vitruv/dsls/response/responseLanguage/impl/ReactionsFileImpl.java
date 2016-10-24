@@ -22,25 +22,25 @@ import org.eclipse.xtext.xtype.XImportSection;
 
 import tools.vitruv.dsls.mirbase.mirBase.impl.MirBaseFileImpl;
 
-import tools.vitruv.dsls.response.responseLanguage.ResponseFile;
+import tools.vitruv.dsls.response.responseLanguage.ReactionsFile;
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Response File</b></em>'.
+ * An implementation of the model object '<em><b>Reactions File</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl#getNamespaceImports <em>Namespace Imports</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponseFileImpl#getResponsesSegments <em>Responses Segments</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl#getNamespaceImports <em>Namespace Imports</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsFileImpl#getReactionsSegments <em>Reactions Segments</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
+public class ReactionsFileImpl extends MirBaseFileImpl implements ReactionsFile
 {
   /**
    * The cached value of the '{@link #getNamespaceImports() <em>Namespace Imports</em>}' containment reference.
@@ -53,21 +53,21 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   protected XImportSection namespaceImports;
 
   /**
-   * The cached value of the '{@link #getResponsesSegments() <em>Responses Segments</em>}' containment reference list.
+   * The cached value of the '{@link #getReactionsSegments() <em>Reactions Segments</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getResponsesSegments()
+   * @see #getReactionsSegments()
    * @generated
    * @ordered
    */
-  protected EList<ResponsesSegment> responsesSegments;
+  protected EList<ReactionsSegment> reactionsSegments;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ResponseFileImpl()
+  protected ReactionsFileImpl()
   {
     super();
   }
@@ -80,7 +80,7 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.RESPONSE_FILE;
+    return ResponseLanguagePackage.Literals.REACTIONS_FILE;
   }
 
   /**
@@ -104,7 +104,7 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
     namespaceImports = newNamespaceImports;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS, oldNamespaceImports, newNamespaceImports);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS, oldNamespaceImports, newNamespaceImports);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -121,14 +121,14 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
     {
       NotificationChain msgs = null;
       if (namespaceImports != null)
-        msgs = ((InternalEObject)namespaceImports).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS, null, msgs);
+        msgs = ((InternalEObject)namespaceImports).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS, null, msgs);
       if (newNamespaceImports != null)
-        msgs = ((InternalEObject)newNamespaceImports).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS, null, msgs);
+        msgs = ((InternalEObject)newNamespaceImports).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS, null, msgs);
       msgs = basicSetNamespaceImports(newNamespaceImports, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS, newNamespaceImports, newNamespaceImports));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS, newNamespaceImports, newNamespaceImports));
   }
 
   /**
@@ -136,13 +136,13 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ResponsesSegment> getResponsesSegments()
+  public EList<ReactionsSegment> getReactionsSegments()
   {
-    if (responsesSegments == null)
+    if (reactionsSegments == null)
     {
-      responsesSegments = new EObjectContainmentEList<ResponsesSegment>(ResponsesSegment.class, this, ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS);
+      reactionsSegments = new EObjectContainmentEList<ReactionsSegment>(ReactionsSegment.class, this, ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS);
     }
-    return responsesSegments;
+    return reactionsSegments;
   }
 
   /**
@@ -155,10 +155,10 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS:
+      case ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS:
         return basicSetNamespaceImports(null, msgs);
-      case ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS:
-        return ((InternalEList<?>)getResponsesSegments()).basicRemove(otherEnd, msgs);
+      case ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS:
+        return ((InternalEList<?>)getReactionsSegments()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -173,10 +173,10 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS:
+      case ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS:
         return getNamespaceImports();
-      case ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS:
-        return getResponsesSegments();
+      case ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS:
+        return getReactionsSegments();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,12 +192,12 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS:
+      case ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS:
         setNamespaceImports((XImportSection)newValue);
         return;
-      case ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS:
-        getResponsesSegments().clear();
-        getResponsesSegments().addAll((Collection<? extends ResponsesSegment>)newValue);
+      case ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS:
+        getReactionsSegments().clear();
+        getReactionsSegments().addAll((Collection<? extends ReactionsSegment>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -213,11 +213,11 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS:
+      case ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS:
         setNamespaceImports((XImportSection)null);
         return;
-      case ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS:
-        getResponsesSegments().clear();
+      case ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS:
+        getReactionsSegments().clear();
         return;
     }
     super.eUnset(featureID);
@@ -233,12 +233,12 @@ public class ResponseFileImpl extends MirBaseFileImpl implements ResponseFile
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSE_FILE__NAMESPACE_IMPORTS:
+      case ResponseLanguagePackage.REACTIONS_FILE__NAMESPACE_IMPORTS:
         return namespaceImports != null;
-      case ResponseLanguagePackage.RESPONSE_FILE__RESPONSES_SEGMENTS:
-        return responsesSegments != null && !responsesSegments.isEmpty();
+      case ResponseLanguagePackage.REACTIONS_FILE__REACTIONS_SEGMENTS:
+        return reactionsSegments != null && !reactionsSegments.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //ResponseFileImpl
+} //ReactionsFileImpl

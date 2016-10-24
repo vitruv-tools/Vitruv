@@ -3,17 +3,17 @@ package tools.vitruv.dsls.response.helper
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.dsls.response.responseLanguage.Response
 import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import tools.vitruv.dsls.response.helper.XtendImportHelper
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
 import tools.vitruv.dsls.response.responseLanguage.Routine
+import tools.vitruv.dsls.response.responseLanguage.Reaction
 
 final class ResponseClassNamesGenerator {
 	private static String BASIC_PACKAGE = "mir";
 	private static val FSA_SEPARATOR = "/";
 	private static val XTEND_FILE_EXTENSION = ".java";
-	private static val RESPONSES_PACKAGE = "responses";
+	private static val RESPONSES_PACKAGE = "reactions";
 	private static String ROUTINES_PACKAGE = "routines";
 	private static String ROUTINES_FACADE_CLASS_NAME = "RoutinesFacade";
 	
@@ -55,30 +55,30 @@ final class ResponseClassNamesGenerator {
 		return '''«metamodelPair.first.metamodelIdentifier»To«metamodelPair.second.metamodelIdentifier»'''	
 	}
 	
-	private static def String getMetamodelPairName(ResponsesSegment responsesSegment) {
-		return responsesSegment.sourceTargetPair.metamodelPairName;
+	private static def String getMetamodelPairName(ReactionsSegment reactionSegment) {
+		return reactionSegment.sourceTargetPair.metamodelPairName;
 	}
 	
-	private static def String getPackageName(ResponsesSegment responsesSegment) '''
-		responses«responsesSegment.metamodelPairName»'''
+	private static def String getPackageName(ReactionsSegment reactionSegment) '''
+		reactions«reactionSegment.metamodelPairName»'''
 		
-	private static def String getQualifiedPackageName(ResponsesSegment responsesSegment) '''
-		«basicResponsesPackageQualifiedName».«responsesSegment.packageName»'''
+	private static def String getQualifiedPackageName(ReactionsSegment reactionSegment) '''
+		«basicResponsesPackageQualifiedName».«reactionSegment.packageName»'''
 	
 	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VURI, VURI> metamodelPair) {
 		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
 	}
 	
-	public static def ClassNameGenerator getExecutorClassNameGenerator(ResponsesSegment responsesSegment) {
-		return new ExecutorClassNameGenerator(responsesSegment);
+	public static def ClassNameGenerator getExecutorClassNameGenerator(ReactionsSegment reactionSegment) {
+		return new ExecutorClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getRoutinesFacadeClassNameGenerator(ResponsesSegment responsesSegment) {
-		return new RoutinesFacadeClassNameGenerator(responsesSegment);
+	public static def ClassNameGenerator getRoutinesFacadeClassNameGenerator(ReactionsSegment reactionSegment) {
+		return new RoutinesFacadeClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getResponseClassNameGenerator(Response response) {
-		return new ResponseClassNameGenerator(response);
+	public static def ClassNameGenerator getReactionClassNameGenerator(Reaction reaction) {
+		return new ResponseClassNameGenerator(reaction);
 	}
 	
 	public static def ClassNameGenerator getRoutineClassNameGenerator(Routine routine) {
@@ -108,30 +108,30 @@ final class ResponseClassNamesGenerator {
 	}	
 	
 	private static class ExecutorClassNameGenerator extends ClassNameGenerator {
-		private val ResponsesSegment responsesSegment;
+		private val ReactionsSegment reactionSegment;
 		
-		public new(ResponsesSegment responsesSegment) {
-			this.responsesSegment = responsesSegment;
+		public new(ReactionsSegment reactionSegment) {
+			this.reactionSegment = reactionSegment;
 		}
 		
 		public override getSimpleName() '''
-			Executor«responsesSegment.metamodelPairName»'''
+			Executor«reactionSegment.metamodelPairName»'''
 	
 		public override getPackageName() '''
-			«responsesSegment.qualifiedPackageName».«responsesSegment.name.toFirstLower»'''		
+			«reactionSegment.qualifiedPackageName».«reactionSegment.name.toFirstLower»'''		
 	}
 	
 	private static class ResponseClassNameGenerator extends ClassNameGenerator {
-		private val Response response;
-		public new(Response response) {
-			this.response = response;
+		private val Reaction reaction;
+		public new(Reaction reaction) {
+			this.reaction = reaction;
 		}
 		
 		public override String getSimpleName() '''
-			«response.name.toFirstUpper»Response'''
+			«reaction.name.toFirstUpper»Reaction'''
 		
 		public override String getPackageName() '''
-			«response.responsesSegment.qualifiedPackageName».«response.responsesSegment.name.toFirstLower»'''		
+			«reaction.reactionsSegment.qualifiedPackageName».«reaction.reactionsSegment.name.toFirstLower»'''		
 	}
 	
 	private static class RoutineClassNameGenerator extends ClassNameGenerator {
@@ -144,20 +144,20 @@ final class ResponseClassNamesGenerator {
 			«routine.name.toFirstUpper»Routine'''
 		
 		public override String getPackageName() '''
-			«basicRoutinesPackageQualifiedName».«routine.responsesSegment.name.toFirstLower»'''
+			«basicRoutinesPackageQualifiedName».«routine.reactionsSegment.name.toFirstLower»'''
 		
 	}
 	
 	private static class RoutinesFacadeClassNameGenerator extends ClassNameGenerator {
-		private val ResponsesSegment responsesSegment;
-		public new(ResponsesSegment responsesSegment) {
-			this.responsesSegment = responsesSegment;
+		private val ReactionsSegment reactionSegment;
+		public new(ReactionsSegment reactionSegment) {
+			this.reactionSegment = reactionSegment;
 		}
 		
 		public override String getSimpleName() '''
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicRoutinesPackageQualifiedName».«responsesSegment.name.toFirstLower»'''		
+			«basicRoutinesPackageQualifiedName».«reactionSegment.name.toFirstLower»'''		
 	}
 }

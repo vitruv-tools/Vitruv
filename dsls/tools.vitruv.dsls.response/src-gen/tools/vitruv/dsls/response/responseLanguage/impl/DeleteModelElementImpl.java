@@ -11,24 +11,24 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.dsls.response.responseLanguage.DeleteElement;
+import tools.vitruv.dsls.response.responseLanguage.DeleteModelElement;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Delete Element</b></em>'.
+ * An implementation of the model object '<em><b>Delete Model Element</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl#getElement <em>Element</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class DeleteElementImpl extends EffectStatementImpl implements DeleteElement
+public class DeleteModelElementImpl extends ActionStatementImpl implements DeleteModelElement
 {
   /**
    * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference.
@@ -45,7 +45,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
    * <!-- end-user-doc -->
    * @generated
    */
-  protected DeleteElementImpl()
+  protected DeleteModelElementImpl()
   {
     super();
   }
@@ -58,7 +58,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.DELETE_ELEMENT;
+    return ResponseLanguagePackage.Literals.DELETE_MODEL_ELEMENT;
   }
 
   /**
@@ -82,7 +82,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
     element = newElement;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT, oldElement, newElement);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT, oldElement, newElement);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -99,14 +99,14 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
     {
       NotificationChain msgs = null;
       if (element != null)
-        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT, null, msgs);
       if (newElement != null)
-        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT, null, msgs);
       msgs = basicSetElement(newElement, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT, newElement, newElement));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT, newElement, newElement));
   }
 
   /**
@@ -119,7 +119,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT:
         return basicSetElement(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -135,7 +135,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT:
         return getElement();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -151,7 +151,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT:
         setElement((ExistingElementReference)newValue);
         return;
     }
@@ -168,7 +168,7 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT:
         setElement((ExistingElementReference)null);
         return;
     }
@@ -185,10 +185,10 @@ public class DeleteElementImpl extends EffectStatementImpl implements DeleteElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.DELETE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT__ELEMENT:
         return element != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //DeleteElementImpl
+} //DeleteModelElementImpl

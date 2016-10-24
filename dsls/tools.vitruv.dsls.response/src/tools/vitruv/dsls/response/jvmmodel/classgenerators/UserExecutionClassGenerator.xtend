@@ -11,9 +11,9 @@ import tools.vitruv.dsls.response.responseLanguage.Taggable
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -100,18 +100,18 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];		
 	}
 	
-	protected def generateMethodCorrespondencePrecondition(RetrieveModelElementStatement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getCorrespondingModelElementsPrecondition" + elementRetrieve.element.name.toFirstUpper;
+	protected def generateMethodCorrespondencePrecondition(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+		val methodName = "getCorrespondingModelElementsPrecondition" + elementRetrieve.name.toFirstUpper;
 		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
-			val elementParameter = generateModelElementParameter(elementRetrieve.element);
+			val elementParameter = generateModelElementParameter(elementRetrieve, elementRetrieve.name);
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			parameters += elementParameter;
 			body = elementRetrieve.precondition.code;
 		];
 	}
 	
-	protected def generateMethodGetCorrespondenceSource(RetrieveModelElementStatement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getCorrepondenceSource" + elementRetrieve.element.name.toFirstUpper;
+	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve, Iterable<AccessibleElement> accessibleElements) {
+		val methodName = "getCorrepondenceSource" + elementRetrieve.name.toFirstUpper;
 		
 		return elementRetrieve.correspondenceSource.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);

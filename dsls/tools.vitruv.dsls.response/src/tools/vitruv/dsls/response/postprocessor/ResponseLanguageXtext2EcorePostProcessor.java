@@ -21,12 +21,12 @@ public class ResponseLanguageXtext2EcorePostProcessor implements IXtext2EcorePos
 			return;
 		
 		final EPackage ePackage = metamodel.getEPackage();
-		final EClass responsesSegmentEClass = getEClass(ePackage, "ResponsesSegment");
-		final EClass responseEClass = getEClass(ePackage, "Response");
+		final EClass responsesSegmentEClass = getEClass(ePackage, "ReactionsSegment");
+		final EClass responseEClass = getEClass(ePackage, "Reaction");
 		final EClass effectEClass = getEClass(ePackage, "Routine");
 		
 		// Add an opposite reference for the metamodel pair to the response
-		final EReference responsesSegmentResponsesReference = (EReference)responsesSegmentEClass.getEStructuralFeature("responses");
+		final EReference responsesSegmentResponsesReference = (EReference)responsesSegmentEClass.getEStructuralFeature("reactions");
 		addResponsesSegmentEReference(responseEClass, responsesSegmentResponsesReference);
 		
 		final EReference responsesSegmentEffectsReference = (EReference)responsesSegmentEClass.getEStructuralFeature("routines");
@@ -35,8 +35,8 @@ public class ResponseLanguageXtext2EcorePostProcessor implements IXtext2EcorePos
 	
 	private EReference addResponsesSegmentEReference(EClass classToAddReferenceTo, EReference oppositeReference) {
 		final EReference responsesSegmentReference = EcoreFactory.eINSTANCE.createEReference();
-		responsesSegmentReference.setName("responsesSegment");
-		responsesSegmentReference.setEType(classToAddReferenceTo.getEPackage().getEClassifier("ResponsesSegment"));
+		responsesSegmentReference.setName("reactionsSegment");
+		responsesSegmentReference.setEType(classToAddReferenceTo.getEPackage().getEClassifier("ReactionsSegment"));
 		responsesSegmentReference.setLowerBound(1);
 		responsesSegmentReference.setUpperBound(1);
 		oppositeReference.setEOpposite(responsesSegmentReference);

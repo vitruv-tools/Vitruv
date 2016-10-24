@@ -16,22 +16,22 @@ import tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.ClassNameGe
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
 import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.CreateElement
-import tools.vitruv.dsls.response.responseLanguage.DeleteElement
 import java.util.List
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.response.responseLanguage.Routine
-import tools.vitruv.dsls.response.responseLanguage.UpdateElement
 import tools.vitruv.dsls.response.responseLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.response.responseLanguage.EffectStatement
 import java.util.ArrayList
 import tools.vitruv.dsls.response.jvmmodel.classgenerators.UserExecutionClassGenerator.AccessibleElement
 import tools.vitruv.dsls.response.responseLanguage.RoutineCallStatement
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherCheckStatement
 import tools.vitruv.dsls.response.responseLanguage.MatcherStatement
 import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization
+import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.response.responseLanguage.CreateModelElement
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import tools.vitruv.dsls.response.responseLanguage.DeleteModelElement
+import tools.vitruv.dsls.response.responseLanguage.UpdateModelElement
+import tools.vitruv.dsls.response.responseLanguage.ActionStatement
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -39,7 +39,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	private final String generalUserExecutionClassQualifiedName;
 	private final ClassNameGenerator routineClassNameGenerator;
 	private final ClassNameGenerator routinesFacadeClassNameGenerator;
-	private final List<ModelElement> modelInputElements;
+	private final List<NamedModelElement> modelInputElements;
 	private final List<NamedJavaElement> javaInputElements;
 	private extension final UserExecutionClassGenerator userExecutionClassGenerator;
 	private final List<AccessibleElement> currentlyAccessibleElements;
@@ -51,7 +51,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		this.routine = routine;
 		this._completionChecker = new ResponseElementsCompletionChecker();
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
-		this.routinesFacadeClassNameGenerator = routine.responsesSegment.routinesFacadeClassNameGenerator;
+		this.routinesFacadeClassNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, routine, 
 			routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
@@ -125,10 +125,10 @@ class RoutineClassGenerator extends ClassGenerator {
 		]
 	}
 	
-	private def dispatch StringConcatenationClient createStatements(CreateElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.element.name, typeRef(createElement.element.element.instanceClass))
+	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, typeRef(createElement.element.instanceClass))
 		val initializeMethod = if (createElement.initializationBlock != null) 
-			generateUpdateElementMethod(createElement.element.name, createElement.initializationBlock, currentlyAccessibleElements);
+			generateUpdateElementMethod(createElement.name, createElement.initializationBlock, currentlyAccessibleElements);
 		val initializeMethodCall = if (initializeMethod != null) initializeMethod.userExecutionMethodCallString;
 		return '''
 			«getElementCreationCode(createElement)»
@@ -138,23 +138,23 @@ class RoutineClassGenerator extends ClassGenerator {
 		'''
 	}
 	
-	private def dispatch StringConcatenationClient createStatements(RetrieveModelElementStatement retrieveElement) {
+	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
 		val retrieveStatement = getGetCorrespondingElementStatement(retrieveElement);
-		val affectedElementClass = retrieveElement.element.element;
+		val affectedElementClass = retrieveElement.element;
 		val StringConcatenationClient statements = '''
-			«IF !retrieveElement.element.name.nullOrEmpty»
-				«affectedElementClass.javaClass» «retrieveElement.element.name» = «retrieveStatement»;
-				«IF retrieveElement.required»
-					if («retrieveElement.element.name» == null) {
+			«IF !retrieveElement.name.nullOrEmpty»
+				«affectedElementClass.javaClass» «retrieveElement.name» = «retrieveStatement»;
+				«IF !retrieveElement.optional && !retrieveElement.abscence»
+					if («retrieveElement.name» == null) {
 						return;
 					}
 				«ENDIF»
-				initializeRetrieveElementState(«retrieveElement.element.name»);
+				initializeRetrieveElementState(«retrieveElement.name»);
 			«ELSEIF retrieveElement.abscence»
 				if («retrieveStatement» != null) {
 					return;
 				}
-			«ELSEIF retrieveElement.required || retrieveElement.optional»
+			«ELSE»
 				if («retrieveStatement» == null) {
 					return;
 				} else {
@@ -162,8 +162,8 @@ class RoutineClassGenerator extends ClassGenerator {
 				}
 			«ENDIF»
 		'''	
-		if (retrieveElement.required || retrieveElement.optional) {
-			currentlyAccessibleElements += new AccessibleElement(retrieveElement.element.name, typeRef(retrieveElement.element.element.instanceClass));
+		if (!retrieveElement.abscence) {
+			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, typeRef(retrieveElement.element.instanceClass));
 		}
 		return statements;
 	}
@@ -177,7 +177,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		}''';
 	}
 	
-	private def dispatch StringConcatenationClient createStatements(DeleteElement deleteElement) {
+	private def dispatch StringConcatenationClient createStatements(DeleteModelElement deleteElement) {
 		val getElementMethod = generateMethodGetElement(deleteElement.element, currentlyAccessibleElements);
 		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
 		return '''
@@ -185,7 +185,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		'''
 	}
 	
-	private def dispatch StringConcatenationClient createStatements(UpdateElement updateElement) {
+	private def dispatch StringConcatenationClient createStatements(UpdateModelElement updateElement) {
 		val getElementMethod = generateMethodGetElement(updateElement.element, currentlyAccessibleElements);
 		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
 		val updateMethod = generateUpdateElementMethod("" + elementUpdateCounter++, updateElement.updateBlock, currentlyAccessibleElements);
@@ -230,10 +230,10 @@ class RoutineClassGenerator extends ClassGenerator {
 		val methodName = "executeRoutine";
 		val inputParameters = routine.generateInputParameters();
 		val matcherStatements = if (routine.matcher != null) routine.matcher.matcherStatements else #[];
-		val effectStatements = routine.effect.effectStatements;
+		val effectStatements = routine.action.actionStatements;
 		val matcherStatementsMap = <MatcherStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(matcherStatements, [matcherStatementsMap.put(it, createStatements(it))]);
-		val effectStatementsMap = <EffectStatement, StringConcatenationClient>newHashMap();
+		val effectStatementsMap = <ActionStatement, StringConcatenationClient>newHashMap();
 		CollectionBridge.mapFixed(effectStatements, [effectStatementsMap.put(it, createStatements(it))]);
 		return generateUnassociatedMethod(methodName, typeRef(Void.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
@@ -256,7 +256,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		];	
 	}
 		
-	private def StringConcatenationClient getTagString(RetrieveModelElementStatement retrieveElement) {
+	private def StringConcatenationClient getTagString(RetrieveModelElement retrieveElement) {
 		if (retrieveElement.tag != null) {
 			val tagMethod = generateMethodGetRetrieveTag(retrieveElement, currentlyAccessibleElements);
 			return '''«tagMethod.userExecutionMethodCallString»'''
@@ -265,18 +265,18 @@ class RoutineClassGenerator extends ClassGenerator {
 		}
 	}
 	
-	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElementStatement retrieveElement) {
-		val affectedElementClass = retrieveElement.element.element.javaClass;
+	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
+		val affectedElementClass = retrieveElement.element.javaClass;
 		if (retrieveElement.precondition == null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
 		val preconditionMethod = generateMethodCorrespondencePrecondition(retrieveElement, currentlyAccessibleElements);
 		return '''(«affectedElementClass» _element) -> «USER_EXECUTION_FIELD_NAME».«preconditionMethod.simpleName»(«
-			preconditionMethod.generateMethodParameterCallList.toString.replace(retrieveElement.element.name, "_element")»)'''	
+			preconditionMethod.generateMethodParameterCallList.toString.replace(retrieveElement.name, "_element")»)'''	
 	}
 	
-	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElementStatement retrieveElement) {
-		val affectedElementClass = retrieveElement.element.element;
+	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElement retrieveElement) {
+		val affectedElementClass = retrieveElement.element;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement, currentlyAccessibleElements);
 		val correspondenceSourceMethodCall = correspondenceSourceMethod.userExecutionMethodCallString;
@@ -289,12 +289,12 @@ class RoutineClassGenerator extends ClassGenerator {
 				«tagString»)'''	
 	}
 	
-	private def StringConcatenationClient getElementCreationCode(CreateElement elementCreate) {
-		val affectedElementClass = elementCreate.element.element;
+	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
+		val affectedElementClass = elementCreate.element;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
 		return '''
-			«affectedElementClass.instanceClass» «elementCreate.element.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
-			initializeCreateElementState(«elementCreate.element.name»);'''
+			«affectedElementClass.instanceClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+			initializeCreateElementState(«elementCreate.name»);'''
 	}
 	
 }

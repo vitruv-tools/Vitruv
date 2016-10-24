@@ -21,29 +21,29 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 
-import tools.vitruv.dsls.response.responseLanguage.Response;
+import tools.vitruv.dsls.response.responseLanguage.Reaction;
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Responses Segment</b></em>'.
+ * An implementation of the model object '<em><b>Reactions Segment</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getFromMetamodel <em>From Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getToMetamodel <em>To Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getResponses <em>Responses</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ResponsesSegmentImpl#getRoutines <em>Routines</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl#getFromMetamodel <em>From Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl#getToMetamodel <em>To Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl#getReactions <em>Reactions</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.ReactionsSegmentImpl#getRoutines <em>Routines</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implements ResponsesSegment
+public class ReactionsSegmentImpl extends MinimalEObjectImpl.Container implements ReactionsSegment
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -86,14 +86,14 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   protected MetamodelReference toMetamodel;
 
   /**
-   * The cached value of the '{@link #getResponses() <em>Responses</em>}' containment reference list.
+   * The cached value of the '{@link #getReactions() <em>Reactions</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getResponses()
+   * @see #getReactions()
    * @generated
    * @ordered
    */
-  protected EList<Response> responses;
+  protected EList<Reaction> reactions;
 
   /**
    * The cached value of the '{@link #getRoutines() <em>Routines</em>}' containment reference list.
@@ -110,7 +110,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ResponsesSegmentImpl()
+  protected ReactionsSegmentImpl()
   {
     super();
   }
@@ -123,7 +123,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.RESPONSES_SEGMENT;
+    return ResponseLanguagePackage.Literals.REACTIONS_SEGMENT;
   }
 
   /**
@@ -146,7 +146,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_SEGMENT__NAME, oldName, name));
   }
 
   /**
@@ -170,7 +170,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     fromMetamodel = newFromMetamodel;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL, oldFromMetamodel, newFromMetamodel);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, oldFromMetamodel, newFromMetamodel);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -187,14 +187,14 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     {
       NotificationChain msgs = null;
       if (fromMetamodel != null)
-        msgs = ((InternalEObject)fromMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL, null, msgs);
+        msgs = ((InternalEObject)fromMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, null, msgs);
       if (newFromMetamodel != null)
-        msgs = ((InternalEObject)newFromMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL, null, msgs);
+        msgs = ((InternalEObject)newFromMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, null, msgs);
       msgs = basicSetFromMetamodel(newFromMetamodel, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL, newFromMetamodel, newFromMetamodel));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL, newFromMetamodel, newFromMetamodel));
   }
 
   /**
@@ -218,7 +218,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     toMetamodel = newToMetamodel;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL, oldToMetamodel, newToMetamodel);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, oldToMetamodel, newToMetamodel);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -235,14 +235,14 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     {
       NotificationChain msgs = null;
       if (toMetamodel != null)
-        msgs = ((InternalEObject)toMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL, null, msgs);
+        msgs = ((InternalEObject)toMetamodel).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, null, msgs);
       if (newToMetamodel != null)
-        msgs = ((InternalEObject)newToMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL, null, msgs);
+        msgs = ((InternalEObject)newToMetamodel).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, null, msgs);
       msgs = basicSetToMetamodel(newToMetamodel, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL, newToMetamodel, newToMetamodel));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL, newToMetamodel, newToMetamodel));
   }
 
   /**
@@ -250,13 +250,13 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Response> getResponses()
+  public EList<Reaction> getReactions()
   {
-    if (responses == null)
+    if (reactions == null)
     {
-      responses = new EObjectContainmentWithInverseEList<Response>(Response.class, this, ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES, ResponseLanguagePackage.RESPONSE__RESPONSES_SEGMENT);
+      reactions = new EObjectContainmentWithInverseEList<Reaction>(Reaction.class, this, ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS, ResponseLanguagePackage.REACTION__REACTIONS_SEGMENT);
     }
-    return responses;
+    return reactions;
   }
 
   /**
@@ -268,7 +268,7 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     if (routines == null)
     {
-      routines = new EObjectContainmentWithInverseEList<Routine>(Routine.class, this, ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES, ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT);
+      routines = new EObjectContainmentWithInverseEList<Routine>(Routine.class, this, ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES, ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT);
     }
     return routines;
   }
@@ -284,9 +284,9 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        return ((InternalEList<InternalEObject>)(InternalEList<?>)getResponses()).basicAdd(otherEnd, msgs);
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getReactions()).basicAdd(otherEnd, msgs);
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         return ((InternalEList<InternalEObject>)(InternalEList<?>)getRoutines()).basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -302,13 +302,13 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
         return basicSetFromMetamodel(null, msgs);
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
         return basicSetToMetamodel(null, msgs);
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        return ((InternalEList<?>)getResponses()).basicRemove(otherEnd, msgs);
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        return ((InternalEList<?>)getReactions()).basicRemove(otherEnd, msgs);
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         return ((InternalEList<?>)getRoutines()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -324,15 +324,15 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__NAME:
         return getName();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
         return getFromMetamodel();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
         return getToMetamodel();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        return getResponses();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        return getReactions();
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         return getRoutines();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -349,20 +349,20 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__NAME:
         setName((String)newValue);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
         setFromMetamodel((MetamodelReference)newValue);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
         setToMetamodel((MetamodelReference)newValue);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        getResponses().clear();
-        getResponses().addAll((Collection<? extends Response>)newValue);
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        getReactions().clear();
+        getReactions().addAll((Collection<? extends Reaction>)newValue);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         getRoutines().clear();
         getRoutines().addAll((Collection<? extends Routine>)newValue);
         return;
@@ -380,19 +380,19 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
         setFromMetamodel((MetamodelReference)null);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
         setToMetamodel((MetamodelReference)null);
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        getResponses().clear();
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        getReactions().clear();
         return;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         getRoutines().clear();
         return;
     }
@@ -409,15 +409,15 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__NAME:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__FROM_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__FROM_METAMODEL:
         return fromMetamodel != null;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__TO_METAMODEL:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__TO_METAMODEL:
         return toMetamodel != null;
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__RESPONSES:
-        return responses != null && !responses.isEmpty();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES:
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__REACTIONS:
+        return reactions != null && !reactions.isEmpty();
+      case ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES:
         return routines != null && !routines.isEmpty();
     }
     return super.eIsSet(featureID);
@@ -440,4 +440,4 @@ public class ResponsesSegmentImpl extends MinimalEObjectImpl.Container implement
     return result.toString();
   }
 
-} //ResponsesSegmentImpl
+} //ReactionsSegmentImpl

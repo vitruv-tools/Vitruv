@@ -17,7 +17,7 @@ import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.response.responseLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput
-import tools.vitruv.dsls.response.responseLanguage.CreateElement
+import tools.vitruv.dsls.response.responseLanguage.CreateModelElement
 
 class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 	override getScope(EObject context, EReference reference) {
@@ -26,8 +26,8 @@ class ResponseLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			return createEStructuralFeatureScope(context as FeatureOfElement)
 		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
 			|| reference.equals(MODEL_ELEMENT__ELEMENT)) {
-			if (context instanceof CreateElement
-				|| context.eContainer() instanceof CreateElement
+			if (context instanceof CreateModelElement
+				|| context.eContainer() instanceof CreateModelElement
 			) {
 				return createQualifiedEClassScopeWithoutAbstract(context.eResource);
 			} else if (reference.equals(MODEL_ELEMENT__ELEMENT) && 

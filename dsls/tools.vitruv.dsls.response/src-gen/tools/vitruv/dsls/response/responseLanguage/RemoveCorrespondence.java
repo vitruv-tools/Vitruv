@@ -21,7 +21,7 @@ package tools.vitruv.dsls.response.responseLanguage;
  * @model
  * @generated
  */
-public interface RemoveCorrespondence extends EffectStatement
+public interface RemoveCorrespondence extends ActionStatement
 {
   /**
    * Returns the value of the '<em><b>First Element</b></em>' containment reference.

@@ -14,10 +14,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import tools.vitruv.dsls.response.responseLanguage.Effect;
+import tools.vitruv.dsls.response.responseLanguage.Action;
 import tools.vitruv.dsls.response.responseLanguage.Matcher;
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment;
+import tools.vitruv.dsls.response.responseLanguage.ReturnStatement;
 import tools.vitruv.dsls.response.responseLanguage.Routine;
 import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
 
@@ -32,8 +33,9 @@ import tools.vitruv.dsls.response.responseLanguage.RoutineInput;
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getInput <em>Input</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getMatcher <em>Matcher</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getEffect <em>Effect</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getResponsesSegment <em>Responses Segment</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getAction <em>Action</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getReturn <em>Return</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.RoutineImpl#getReactionsSegment <em>Reactions Segment</em>}</li>
  * </ul>
  *
  * @generated
@@ -81,14 +83,24 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
   protected Matcher matcher;
 
   /**
-   * The cached value of the '{@link #getEffect() <em>Effect</em>}' containment reference.
+   * The cached value of the '{@link #getAction() <em>Action</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEffect()
+   * @see #getAction()
    * @generated
    * @ordered
    */
-  protected Effect effect;
+  protected Action action;
+
+  /**
+   * The cached value of the '{@link #getReturn() <em>Return</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getReturn()
+   * @generated
+   * @ordered
+   */
+  protected ReturnStatement return_;
 
   /**
    * <!-- begin-user-doc -->
@@ -235,9 +247,9 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public Effect getEffect()
+  public Action getAction()
   {
-    return effect;
+    return action;
   }
 
   /**
@@ -245,13 +257,13 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetEffect(Effect newEffect, NotificationChain msgs)
+  public NotificationChain basicSetAction(Action newAction, NotificationChain msgs)
   {
-    Effect oldEffect = effect;
-    effect = newEffect;
+    Action oldAction = action;
+    action = newAction;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__EFFECT, oldEffect, newEffect);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__ACTION, oldAction, newAction);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -262,20 +274,20 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setEffect(Effect newEffect)
+  public void setAction(Action newAction)
   {
-    if (newEffect != effect)
+    if (newAction != action)
     {
       NotificationChain msgs = null;
-      if (effect != null)
-        msgs = ((InternalEObject)effect).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__EFFECT, null, msgs);
-      if (newEffect != null)
-        msgs = ((InternalEObject)newEffect).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__EFFECT, null, msgs);
-      msgs = basicSetEffect(newEffect, msgs);
+      if (action != null)
+        msgs = ((InternalEObject)action).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__ACTION, null, msgs);
+      if (newAction != null)
+        msgs = ((InternalEObject)newAction).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__ACTION, null, msgs);
+      msgs = basicSetAction(newAction, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__EFFECT, newEffect, newEffect));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__ACTION, newAction, newAction));
   }
 
   /**
@@ -283,10 +295,9 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public ResponsesSegment getResponsesSegment()
+  public ReturnStatement getReturn()
   {
-    if (eContainerFeatureID() != ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT) return null;
-    return (ResponsesSegment)eInternalContainer();
+    return return_;
   }
 
   /**
@@ -294,9 +305,15 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetResponsesSegment(ResponsesSegment newResponsesSegment, NotificationChain msgs)
+  public NotificationChain basicSetReturn(ReturnStatement newReturn, NotificationChain msgs)
   {
-    msgs = eBasicSetContainer((InternalEObject)newResponsesSegment, ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT, msgs);
+    ReturnStatement oldReturn = return_;
+    return_ = newReturn;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__RETURN, oldReturn, newReturn);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
     return msgs;
   }
 
@@ -305,22 +322,65 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setResponsesSegment(ResponsesSegment newResponsesSegment)
+  public void setReturn(ReturnStatement newReturn)
   {
-    if (newResponsesSegment != eInternalContainer() || (eContainerFeatureID() != ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT && newResponsesSegment != null))
+    if (newReturn != return_)
     {
-      if (EcoreUtil.isAncestor(this, newResponsesSegment))
+      NotificationChain msgs = null;
+      if (return_ != null)
+        msgs = ((InternalEObject)return_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__RETURN, null, msgs);
+      if (newReturn != null)
+        msgs = ((InternalEObject)newReturn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.ROUTINE__RETURN, null, msgs);
+      msgs = basicSetReturn(newReturn, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__RETURN, newReturn, newReturn));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ReactionsSegment getReactionsSegment()
+  {
+    if (eContainerFeatureID() != ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT) return null;
+    return (ReactionsSegment)eInternalContainer();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetReactionsSegment(ReactionsSegment newReactionsSegment, NotificationChain msgs)
+  {
+    msgs = eBasicSetContainer((InternalEObject)newReactionsSegment, ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT, msgs);
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setReactionsSegment(ReactionsSegment newReactionsSegment)
+  {
+    if (newReactionsSegment != eInternalContainer() || (eContainerFeatureID() != ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT && newReactionsSegment != null))
+    {
+      if (EcoreUtil.isAncestor(this, newReactionsSegment))
         throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
       NotificationChain msgs = null;
       if (eInternalContainer() != null)
         msgs = eBasicRemoveFromContainer(msgs);
-      if (newResponsesSegment != null)
-        msgs = ((InternalEObject)newResponsesSegment).eInverseAdd(this, ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES, ResponsesSegment.class, msgs);
-      msgs = basicSetResponsesSegment(newResponsesSegment, msgs);
+      if (newReactionsSegment != null)
+        msgs = ((InternalEObject)newReactionsSegment).eInverseAdd(this, ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES, ReactionsSegment.class, msgs);
+      msgs = basicSetReactionsSegment(newReactionsSegment, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT, newResponsesSegment, newResponsesSegment));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT, newReactionsSegment, newReactionsSegment));
   }
 
   /**
@@ -333,10 +393,10 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
         if (eInternalContainer() != null)
           msgs = eBasicRemoveFromContainer(msgs);
-        return basicSetResponsesSegment((ResponsesSegment)otherEnd, msgs);
+        return basicSetReactionsSegment((ReactionsSegment)otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -355,10 +415,12 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
         return basicSetInput(null, msgs);
       case ResponseLanguagePackage.ROUTINE__MATCHER:
         return basicSetMatcher(null, msgs);
-      case ResponseLanguagePackage.ROUTINE__EFFECT:
-        return basicSetEffect(null, msgs);
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        return basicSetResponsesSegment(null, msgs);
+      case ResponseLanguagePackage.ROUTINE__ACTION:
+        return basicSetAction(null, msgs);
+      case ResponseLanguagePackage.ROUTINE__RETURN:
+        return basicSetReturn(null, msgs);
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        return basicSetReactionsSegment(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -373,8 +435,8 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
   {
     switch (eContainerFeatureID())
     {
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        return eInternalContainer().eInverseRemove(this, ResponseLanguagePackage.RESPONSES_SEGMENT__ROUTINES, ResponsesSegment.class, msgs);
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        return eInternalContainer().eInverseRemove(this, ResponseLanguagePackage.REACTIONS_SEGMENT__ROUTINES, ReactionsSegment.class, msgs);
     }
     return super.eBasicRemoveFromContainerFeature(msgs);
   }
@@ -395,10 +457,12 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
         return getInput();
       case ResponseLanguagePackage.ROUTINE__MATCHER:
         return getMatcher();
-      case ResponseLanguagePackage.ROUTINE__EFFECT:
-        return getEffect();
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        return getResponsesSegment();
+      case ResponseLanguagePackage.ROUTINE__ACTION:
+        return getAction();
+      case ResponseLanguagePackage.ROUTINE__RETURN:
+        return getReturn();
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        return getReactionsSegment();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -422,11 +486,14 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
       case ResponseLanguagePackage.ROUTINE__MATCHER:
         setMatcher((Matcher)newValue);
         return;
-      case ResponseLanguagePackage.ROUTINE__EFFECT:
-        setEffect((Effect)newValue);
+      case ResponseLanguagePackage.ROUTINE__ACTION:
+        setAction((Action)newValue);
         return;
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        setResponsesSegment((ResponsesSegment)newValue);
+      case ResponseLanguagePackage.ROUTINE__RETURN:
+        setReturn((ReturnStatement)newValue);
+        return;
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        setReactionsSegment((ReactionsSegment)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -451,11 +518,14 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
       case ResponseLanguagePackage.ROUTINE__MATCHER:
         setMatcher((Matcher)null);
         return;
-      case ResponseLanguagePackage.ROUTINE__EFFECT:
-        setEffect((Effect)null);
+      case ResponseLanguagePackage.ROUTINE__ACTION:
+        setAction((Action)null);
         return;
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        setResponsesSegment((ResponsesSegment)null);
+      case ResponseLanguagePackage.ROUTINE__RETURN:
+        setReturn((ReturnStatement)null);
+        return;
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        setReactionsSegment((ReactionsSegment)null);
         return;
     }
     super.eUnset(featureID);
@@ -477,10 +547,12 @@ public class RoutineImpl extends MinimalEObjectImpl.Container implements Routine
         return input != null;
       case ResponseLanguagePackage.ROUTINE__MATCHER:
         return matcher != null;
-      case ResponseLanguagePackage.ROUTINE__EFFECT:
-        return effect != null;
-      case ResponseLanguagePackage.ROUTINE__RESPONSES_SEGMENT:
-        return getResponsesSegment() != null;
+      case ResponseLanguagePackage.ROUTINE__ACTION:
+        return action != null;
+      case ResponseLanguagePackage.ROUTINE__RETURN:
+        return return_ != null;
+      case ResponseLanguagePackage.ROUTINE__REACTIONS_SEGMENT:
+        return getReactionsSegment() != null;
     }
     return super.eIsSet(featureID);
   }

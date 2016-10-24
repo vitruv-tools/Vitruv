@@ -5,24 +5,24 @@ package tools.vitruv.dsls.response.responseLanguage.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import tools.vitruv.dsls.response.responseLanguage.EffectStatement;
+import tools.vitruv.dsls.response.responseLanguage.ActionStatement;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Effect Statement</b></em>'.
+ * An implementation of the model object '<em><b>Action Statement</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class EffectStatementImpl extends TaggableImpl implements EffectStatement
+public class ActionStatementImpl extends ExecuteActionBlockImpl implements ActionStatement
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected EffectStatementImpl()
+  protected ActionStatementImpl()
   {
     super();
   }
@@ -35,7 +35,7 @@ public class EffectStatementImpl extends TaggableImpl implements EffectStatement
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.EFFECT_STATEMENT;
+    return ResponseLanguagePackage.Literals.ACTION_STATEMENT;
   }
 
-} //EffectStatementImpl
+} //ActionStatementImpl

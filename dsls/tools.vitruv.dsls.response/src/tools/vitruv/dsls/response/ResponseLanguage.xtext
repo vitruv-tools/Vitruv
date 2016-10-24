@@ -7,23 +7,23 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 
 
-ResponseFile:
+ReactionsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
-	(responsesSegments+=ResponsesSegment)+;
+	(reactionsSegments+=ReactionsSegment)+;
 	
-ResponsesSegment:
+ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromMetamodel=MetamodelReference 
 	'execute actions in' toMetamodel=MetamodelReference
-	(responses+=Response |
+	(reactions+=Reaction |
 		routines+=Routine)*;
 
 // *********************************
 // *********** RESPONSES ***********
 // *********************************
 
-Response:
+Reaction:
 	(documentation=ML_COMMENT)?
 	'reaction' (name=ValidID)? '{'
 		trigger=Trigger
@@ -59,7 +59,7 @@ AtomicRootObjectChange:
 //	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
 //	'root inserted' {InsertRootChange} |
 //	'root removed' {RemoveRootChange})
-	changedElement=ModelElement;
+	changedElement=UnnamedModelElement;
 
 AtomicFeatureChange:
 	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
@@ -89,8 +89,8 @@ ArbitraryModelElementChange:
 
 Routine:
 	'routine' name=ValidID '(' input=RoutineInput ')' '{'
-		matcher=Matcher?
-		effect=Effect
+		matcher=MatcherBlock?
+		action=ActionBlock
 		(return=ReturnStatement)?
 	'}';
 
@@ -101,7 +101,7 @@ RoutineInput:
 
 // *********** MATCHER ***********
 
-Matcher:
+MatcherBlock returns Matcher:
 	{Matcher}
 	'match' '{'
 		(matcherStatements+=MatcherStatement)+
@@ -110,11 +110,11 @@ Matcher:
 MatcherStatement:
 	RetrieveModelElementStatement | MatcherCheckStatement;
 
-RetrieveModelElementStatement:
-	{RetrieveModelElementStatement}
+RetrieveModelElementStatement returns RetrieveModelElement:
+	{RetrieveModelElement}
 	// TODO remove uses of required property or set it to something like required?=!optional
-	(('val' name=ValidID '= retrieve' optional?='optional') | abscence?='require absence of') 
-	element=ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	((('val' name=ValidID '=')? 'retrieve' optional?='optional'?) | abscence?='require absence of') 
+	ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
 MatcherCheckStatement:
@@ -123,38 +123,38 @@ MatcherCheckStatement:
 
 // *********** EFFECTS ***********
 
-Effect:
-	{Effect}
+ActionBlock returns Action:
+	{Action}
 	'action' '{'
-		(effectStatements+=EffectStatement)+
+		(actionStatements+=ActionStatement)+
 	'}';
 
 RoutineCallStatement returns RoutineCallStatement:
 	{RoutineCallStatement}
 	RoutineCallBlock;
 
-EffectStatement:
-	CreateElement | DeleteElement | UpdateElement | CreateCorrespondence | RemoveCorrespondence | ExecuteActionBlock | RoutineCallStatement;
+ActionStatement:
+	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
 	
-CreateElement returns EffectStatement:
-	{CreateElement}
-	'val' name=ValidID '= create' element=ModelElement ("and initialize" initializationBlock=ExecutionCodeBlock)?;
+CreateModelElementStatement returns CreateModelElement:
+	{CreateModelElement}
+	'val' name=ValidID '=' 'create' ModelElement ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
 	
-DeleteElement returns EffectStatement:
-	{DeleteElement}
+DeleteModelElementStatement returns DeleteModelElement:
+	{DeleteModelElement}
 	"delete" element=ExistingElementReference;
 
-UpdateElement returns EffectStatement:
-	{UpdateElement}
+UpdateModelElementStatement returns UpdateModelElement:
+	{UpdateModelElement}
 	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
 
 
-CreateCorrespondence returns EffectStatement:
+CreateCorrespondenceStatement returns CreateCorrespondence:
 	{CreateCorrespondence}
 	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
 	('tag with' Taggable)?;
 	
-RemoveCorrespondence returns EffectStatement:
+RemoveCorrespondenceStatement returns RemoveCorrespondence:
 	{RemoveCorrespondence}
 	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference;
 

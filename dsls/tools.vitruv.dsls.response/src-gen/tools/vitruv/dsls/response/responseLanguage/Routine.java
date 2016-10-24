@@ -17,8 +17,9 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getName <em>Name</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getInput <em>Input</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getMatcher <em>Matcher</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getEffect <em>Effect</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getAction <em>Action</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReturn <em>Return</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment <em>Reactions Segment</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine()
@@ -106,57 +107,83 @@ public interface Routine extends EObject
   void setMatcher(Matcher value);
 
   /**
-   * Returns the value of the '<em><b>Effect</b></em>' containment reference.
+   * Returns the value of the '<em><b>Action</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Effect</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Action</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Effect</em>' containment reference.
-   * @see #setEffect(Effect)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Effect()
+   * @return the value of the '<em>Action</em>' containment reference.
+   * @see #setAction(Action)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Action()
    * @model containment="true"
    * @generated
    */
-  Effect getEffect();
+  Action getAction();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getEffect <em>Effect</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getAction <em>Action</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Effect</em>' containment reference.
-   * @see #getEffect()
+   * @param value the new value of the '<em>Action</em>' containment reference.
+   * @see #getAction()
    * @generated
    */
-  void setEffect(Effect value);
+  void setAction(Action value);
 
   /**
-   * Returns the value of the '<em><b>Responses Segment</b></em>' container reference.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines <em>Routines</em>}'.
+   * Returns the value of the '<em><b>Return</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Responses Segment</em>' container reference isn't clear,
+   * If the meaning of the '<em>Return</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Responses Segment</em>' container reference.
-   * @see #setResponsesSegment(ResponsesSegment)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_ResponsesSegment()
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines
+   * @return the value of the '<em>Return</em>' containment reference.
+   * @see #setReturn(ReturnStatement)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_Return()
+   * @model containment="true"
+   * @generated
+   */
+  ReturnStatement getReturn();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReturn <em>Return</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Return</em>' containment reference.
+   * @see #getReturn()
+   * @generated
+   */
+  void setReturn(ReturnStatement value);
+
+  /**
+   * Returns the value of the '<em><b>Reactions Segment</b></em>' container reference.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getRoutines <em>Routines</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Reactions Segment</em>' container reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Reactions Segment</em>' container reference.
+   * @see #setReactionsSegment(ReactionsSegment)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutine_ReactionsSegment()
+   * @see tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getRoutines
    * @model opposite="routines" required="true" transient="false"
    * @generated
    */
-  ResponsesSegment getResponsesSegment();
+  ReactionsSegment getReactionsSegment();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}' container reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment <em>Reactions Segment</em>}' container reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Responses Segment</em>' container reference.
-   * @see #getResponsesSegment()
+   * @param value the new value of the '<em>Reactions Segment</em>' container reference.
+   * @see #getReactionsSegment()
    * @generated
    */
-  void setResponsesSegment(ResponsesSegment value);
+  void setReactionsSegment(ReactionsSegment value);
 
 } // Routine

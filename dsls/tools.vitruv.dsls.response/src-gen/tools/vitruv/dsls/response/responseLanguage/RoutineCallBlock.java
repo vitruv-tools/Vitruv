@@ -9,6 +9,12 @@ package tools.vitruv.dsls.response.responseLanguage;
  * A representation of the model object '<em><b>Routine Call Block</b></em>'.
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock#getName <em>Name</em>}</li>
+ * </ul>
  *
  * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutineCallBlock()
  * @model
@@ -16,4 +22,30 @@ package tools.vitruv.dsls.response.responseLanguage;
  */
 public interface RoutineCallBlock extends CodeBlock
 {
+  /**
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getRoutineCallBlock_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.RoutineCallBlock#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
 } // RoutineCallBlock

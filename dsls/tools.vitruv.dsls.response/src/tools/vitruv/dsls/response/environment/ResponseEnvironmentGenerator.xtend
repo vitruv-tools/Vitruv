@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.response.environment;
 
-import tools.vitruv.dsls.response.responseLanguage.Response
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
 import tools.vitruv.framework.util.datatypes.VURI
@@ -11,7 +10,6 @@ import java.util.HashMap
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguageFactory
 import tools.vitruv.dsls.response.api.generator.IResponseEnvironmentGenerator
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.dsls.response.responseLanguage.ResponseFile
 import com.google.inject.Inject
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.runtime.NullProgressMonitor
@@ -23,10 +21,12 @@ import org.eclipse.xtext.generator.IGenerator
 import org.eclipse.xtext.resource.DerivedStateAwareResource
 import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 import static extension tools.vitruv.dsls.response.helper.ResponseClassNamesGenerator.*;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
 import tools.vitruv.framework.util.datatypes.MetamodelPair
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
+import tools.vitruv.dsls.response.responseLanguage.ReactionsFile
+import tools.vitruv.dsls.response.responseLanguage.Reaction
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
 
 class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	@Inject
@@ -50,32 +50,32 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		this.project = project;
 	}
 	
-	private static def ResponseFile getResponseFileInResource(Resource resource) {
-		if (!(resource?.contents.get(0) instanceof ResponseFile)) {
+	private static def ReactionsFile getResponseFileInResource(Resource resource) {
+		if (!(resource?.contents.get(0) instanceof ReactionsFile)) {
 			throw new IllegalStateException("The given resource must contain a ResponseFile element.");
 		}
 		
-		return resource.contents.get(0) as ResponseFile;
+		return resource.contents.get(0) as ReactionsFile;
 	}
 	
 	
-	public override void addResponse(String sourceFileName, Response response) {
+	public override void addResponse(String sourceFileName, Reaction response) {
 		if (project == null) {
 			throw new IllegalStateException("Project must be set");
 		}
 		if (response == null) {
 			throw new IllegalArgumentException("Response must not be null");
 		}
-		val responsesSegment = getCorrespondingResponsesSegmentInTempResource(sourceFileName, response.responsesSegment);
-		responsesSegment.responses += response;
+		val responsesSegment = getCorrespondingResponsesSegmentInTempResource(sourceFileName, response.reactionsSegment);
+		responsesSegment.reactions += response;
 	}
 	
-	private def ResponsesSegment getCorrespondingResponsesSegmentInTempResource(String sourceFileName, ResponsesSegment responsesSegment) {
+	private def ReactionsSegment getCorrespondingResponsesSegmentInTempResource(String sourceFileName, ReactionsSegment responsesSegment) {
 		for (res : tempResources) {
 			if (res.URI.segmentsList.last.equals(sourceFileName + ".response")) {
 				val responseFile = res.responseFileInResource;
-				var ResponsesSegment foundSegment = null;
-				for (segment :  responseFile.responsesSegments) {
+				var ReactionsSegment foundSegment = null;
+				for (segment :  responseFile.reactionsSegments) {
 					if (segment.fromMetamodel == responsesSegment.fromMetamodel
 						&& segment.toMetamodel == responsesSegment.toMetamodel
 					) {
@@ -93,21 +93,21 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		return addResponsesSegment(newFile, responsesSegment, sourceFileName);
 	}
 	
-	private def ResponsesSegment addResponsesSegment(ResponseFile fileToAddTo, ResponsesSegment originalSegment, String segmentName) {
-		val newSegment = ResponseLanguageFactory.eINSTANCE.createResponsesSegment();
+	private def ReactionsSegment addResponsesSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment, String segmentName) {
+		val newSegment = ResponseLanguageFactory.eINSTANCE.createReactionsSegment();
 		newSegment.fromMetamodel = originalSegment.fromMetamodel;
 		newSegment.toMetamodel = originalSegment.toMetamodel;
 		newSegment.name = segmentName;
-		fileToAddTo.responsesSegments += newSegment;
+		fileToAddTo.reactionsSegments += newSegment;
 		return newSegment;
 	}
 	
-	public override void addResponses(String sourceFileName, Iterable<Response> responses) {
+	public override void addResponses(String sourceFileName, Iterable<Reaction> responses) {
 		responses.forEach[addResponse(sourceFileName, it)];
 	}
 	
 	public def override addResponses(Resource responseResource) {
-		if (responseResource == null || !(responseResource.contents.get(0) instanceof ResponseFile)) {
+		if (responseResource == null || !(responseResource.contents.get(0) instanceof ReactionsFile)) {
 			throw new IllegalArgumentException("The given resource is not a response file");
 		}
 		this.resources.add(responseResource);
@@ -135,8 +135,8 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		clearResponsesAndResources();
 	}
 	
-	private def ResponseFile generateTempResourceWithResponseFile(IProject project, String sourceFileName) {
-		val responseFile = ResponseLanguageFactory.eINSTANCE.createResponseFile();
+	private def ReactionsFile generateTempResourceWithResponseFile(IProject project, String sourceFileName) {
+		val responseFile = ResponseLanguageFactory.eINSTANCE.createReactionsFile();
 		val resSet = resourceSetProvider.get(project);
 		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".response"));
 		singleResponseResource.contents.add(responseFile);
@@ -168,7 +168,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 		reinitializeDerivedStateOfTemporaryResources();		
 		val modelCorrespondencesToExecutors = new HashMap<Pair<VURI, VURI>, List<String>>;
 		for (resource : resources + tempResources) {
-			for (responseSegment : resource.responseFileInResource.responsesSegments) {
+			for (responseSegment : resource.responseFileInResource.reactionsSegments) {
 				val modelCombination = responseSegment.sourceTargetPair;
 				if (!modelCorrespondencesToExecutors.containsKey(modelCombination)) {
 					modelCorrespondencesToExecutors.put(modelCombination, <String>newArrayList());

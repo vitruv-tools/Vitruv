@@ -65,9 +65,9 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     switch (eClass.getClassifierID())
     {
-      case ResponseLanguagePackage.RESPONSE_FILE: return createResponseFile();
-      case ResponseLanguagePackage.RESPONSES_SEGMENT: return createResponsesSegment();
-      case ResponseLanguagePackage.RESPONSE: return createResponse();
+      case ResponseLanguagePackage.REACTIONS_FILE: return createReactionsFile();
+      case ResponseLanguagePackage.REACTIONS_SEGMENT: return createReactionsSegment();
+      case ResponseLanguagePackage.REACTION: return createReaction();
       case ResponseLanguagePackage.RESPONSE_REACTION_ROUTINE_CALL: return createResponseReactionRoutineCall();
       case ResponseLanguagePackage.INVARIANT_VIOLATION_EVENT: return createInvariantViolationEvent();
       case ResponseLanguagePackage.TRIGGER: return createTrigger();
@@ -83,12 +83,18 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.ROUTINE_INPUT: return createRoutineInput();
       case ResponseLanguagePackage.MATCHER: return createMatcher();
       case ResponseLanguagePackage.MATCHER_STATEMENT: return createMatcherStatement();
-      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT_STATEMENT: return createRetrieveModelElementStatement();
+      case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT: return createRetrieveModelElement();
       case ResponseLanguagePackage.MATCHER_CHECK_STATEMENT: return createMatcherCheckStatement();
-      case ResponseLanguagePackage.EFFECT: return createEffect();
+      case ResponseLanguagePackage.ACTION: return createAction();
       case ResponseLanguagePackage.ROUTINE_CALL_STATEMENT: return createRoutineCallStatement();
-      case ResponseLanguagePackage.EFFECT_STATEMENT: return createEffectStatement();
+      case ResponseLanguagePackage.ACTION_STATEMENT: return createActionStatement();
+      case ResponseLanguagePackage.CREATE_MODEL_ELEMENT: return createCreateModelElement();
+      case ResponseLanguagePackage.DELETE_MODEL_ELEMENT: return createDeleteModelElement();
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT: return createUpdateModelElement();
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE: return createCreateCorrespondence();
+      case ResponseLanguagePackage.REMOVE_CORRESPONDENCE: return createRemoveCorrespondence();
       case ResponseLanguagePackage.CODE_BLOCK: return createCodeBlock();
+      case ResponseLanguagePackage.EXECUTE_ACTION_BLOCK: return createExecuteActionBlock();
       case ResponseLanguagePackage.ROUTINE_CALL_BLOCK: return createRoutineCallBlock();
       case ResponseLanguagePackage.TAGGABLE: return createTaggable();
       case ResponseLanguagePackage.EXISTING_ELEMENT_REFERENCE: return createExistingElementReference();
@@ -96,17 +102,13 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
       case ResponseLanguagePackage.PRECONDITION_CODE_BLOCK: return createPreconditionCodeBlock();
       case ResponseLanguagePackage.CORRESPONDING_OBJECT_CODE_BLOCK: return createCorrespondingObjectCodeBlock();
       case ResponseLanguagePackage.EXECUTION_CODE_BLOCK: return createExecutionCodeBlock();
+      case ResponseLanguagePackage.RETURN_STATEMENT: return createReturnStatement();
       case ResponseLanguagePackage.INSERT_ROOT_CHANGE: return createInsertRootChange();
       case ResponseLanguagePackage.REMOVE_ROOT_CHANGE: return createRemoveRootChange();
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_INSERT_CHANGE: return createMultiValuedFeatureInsertChange();
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_REMOVE_CHANGE: return createMultiValuedFeatureRemoveChange();
       case ResponseLanguagePackage.MULTI_VALUED_FEATURE_PERMUTE_CHANGE: return createMultiValuedFeaturePermuteChange();
       case ResponseLanguagePackage.SINGLE_VALUED_FEATURE_REPLACE: return createSingleValuedFeatureReplace();
-      case ResponseLanguagePackage.CREATE_ELEMENT: return createCreateElement();
-      case ResponseLanguagePackage.DELETE_ELEMENT: return createDeleteElement();
-      case ResponseLanguagePackage.UPDATE_ELEMENT: return createUpdateElement();
-      case ResponseLanguagePackage.CREATE_CORRESPONDENCE: return createCreateCorrespondence();
-      case ResponseLanguagePackage.REMOVE_CORRESPONDENCE: return createRemoveCorrespondence();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -117,10 +119,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public ResponseFile createResponseFile()
+  public ReactionsFile createReactionsFile()
   {
-    ResponseFileImpl responseFile = new ResponseFileImpl();
-    return responseFile;
+    ReactionsFileImpl reactionsFile = new ReactionsFileImpl();
+    return reactionsFile;
   }
 
   /**
@@ -128,10 +130,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public ResponsesSegment createResponsesSegment()
+  public ReactionsSegment createReactionsSegment()
   {
-    ResponsesSegmentImpl responsesSegment = new ResponsesSegmentImpl();
-    return responsesSegment;
+    ReactionsSegmentImpl reactionsSegment = new ReactionsSegmentImpl();
+    return reactionsSegment;
   }
 
   /**
@@ -139,10 +141,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public Response createResponse()
+  public Reaction createReaction()
   {
-    ResponseImpl response = new ResponseImpl();
-    return response;
+    ReactionImpl reaction = new ReactionImpl();
+    return reaction;
   }
 
   /**
@@ -315,10 +317,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public RetrieveModelElementStatement createRetrieveModelElementStatement()
+  public RetrieveModelElement createRetrieveModelElement()
   {
-    RetrieveModelElementStatementImpl retrieveModelElementStatement = new RetrieveModelElementStatementImpl();
-    return retrieveModelElementStatement;
+    RetrieveModelElementImpl retrieveModelElement = new RetrieveModelElementImpl();
+    return retrieveModelElement;
   }
 
   /**
@@ -337,10 +339,10 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public Effect createEffect()
+  public Action createAction()
   {
-    EffectImpl effect = new EffectImpl();
-    return effect;
+    ActionImpl action = new ActionImpl();
+    return action;
   }
 
   /**
@@ -359,10 +361,65 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
-  public EffectStatement createEffectStatement()
+  public ActionStatement createActionStatement()
   {
-    EffectStatementImpl effectStatement = new EffectStatementImpl();
-    return effectStatement;
+    ActionStatementImpl actionStatement = new ActionStatementImpl();
+    return actionStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CreateModelElement createCreateModelElement()
+  {
+    CreateModelElementImpl createModelElement = new CreateModelElementImpl();
+    return createModelElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DeleteModelElement createDeleteModelElement()
+  {
+    DeleteModelElementImpl deleteModelElement = new DeleteModelElementImpl();
+    return deleteModelElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UpdateModelElement createUpdateModelElement()
+  {
+    UpdateModelElementImpl updateModelElement = new UpdateModelElementImpl();
+    return updateModelElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CreateCorrespondence createCreateCorrespondence()
+  {
+    CreateCorrespondenceImpl createCorrespondence = new CreateCorrespondenceImpl();
+    return createCorrespondence;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RemoveCorrespondence createRemoveCorrespondence()
+  {
+    RemoveCorrespondenceImpl removeCorrespondence = new RemoveCorrespondenceImpl();
+    return removeCorrespondence;
   }
 
   /**
@@ -374,6 +431,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     CodeBlockImpl codeBlock = new CodeBlockImpl();
     return codeBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ExecuteActionBlock createExecuteActionBlock()
+  {
+    ExecuteActionBlockImpl executeActionBlock = new ExecuteActionBlockImpl();
+    return executeActionBlock;
   }
 
   /**
@@ -458,6 +526,17 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
    * <!-- end-user-doc -->
    * @generated
    */
+  public ReturnStatement createReturnStatement()
+  {
+    ReturnStatementImpl returnStatement = new ReturnStatementImpl();
+    return returnStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public InsertRootChange createInsertRootChange()
   {
     InsertRootChangeImpl insertRootChange = new InsertRootChangeImpl();
@@ -517,61 +596,6 @@ public class ResponseLanguageFactoryImpl extends EFactoryImpl implements Respons
   {
     SingleValuedFeatureReplaceImpl singleValuedFeatureReplace = new SingleValuedFeatureReplaceImpl();
     return singleValuedFeatureReplace;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CreateElement createCreateElement()
-  {
-    CreateElementImpl createElement = new CreateElementImpl();
-    return createElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public DeleteElement createDeleteElement()
-  {
-    DeleteElementImpl deleteElement = new DeleteElementImpl();
-    return deleteElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public UpdateElement createUpdateElement()
-  {
-    UpdateElementImpl updateElement = new UpdateElementImpl();
-    return updateElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CreateCorrespondence createCreateCorrespondence()
-  {
-    CreateCorrespondenceImpl createCorrespondence = new CreateCorrespondenceImpl();
-    return createCorrespondence;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RemoveCorrespondence createRemoveCorrespondence()
-  {
-    RemoveCorrespondenceImpl removeCorrespondence = new RemoveCorrespondenceImpl();
-    return removeCorrespondence;
   }
 
   /**

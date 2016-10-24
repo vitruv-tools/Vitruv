@@ -14,6 +14,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import tools.vitruv.dsls.response.responseLanguage.CreateCorrespondence;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
+import tools.vitruv.dsls.response.responseLanguage.TagCodeBlock;
+import tools.vitruv.dsls.response.responseLanguage.Taggable;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,14 +25,25 @@ import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl#getTag <em>Tag</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl#getFirstElement <em>First Element</em>}</li>
  *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.CreateCorrespondenceImpl#getSecondElement <em>Second Element</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class CreateCorrespondenceImpl extends EffectStatementImpl implements CreateCorrespondence
+public class CreateCorrespondenceImpl extends ActionStatementImpl implements CreateCorrespondence
 {
+  /**
+   * The cached value of the '{@link #getTag() <em>Tag</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTag()
+   * @generated
+   * @ordered
+   */
+  protected TagCodeBlock tag;
+
   /**
    * The cached value of the '{@link #getFirstElement() <em>First Element</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -70,6 +83,54 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   protected EClass eStaticClass()
   {
     return ResponseLanguagePackage.Literals.CREATE_CORRESPONDENCE;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TagCodeBlock getTag()
+  {
+    return tag;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetTag(TagCodeBlock newTag, NotificationChain msgs)
+  {
+    TagCodeBlock oldTag = tag;
+    tag = newTag;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG, oldTag, newTag);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTag(TagCodeBlock newTag)
+  {
+    if (newTag != tag)
+    {
+      NotificationChain msgs = null;
+      if (tag != null)
+        msgs = ((InternalEObject)tag).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG, null, msgs);
+      if (newTag != null)
+        msgs = ((InternalEObject)newTag).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG, null, msgs);
+      msgs = basicSetTag(newTag, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG, newTag, newTag));
   }
 
   /**
@@ -178,6 +239,8 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG:
+        return basicSetTag(null, msgs);
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__FIRST_ELEMENT:
         return basicSetFirstElement(null, msgs);
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__SECOND_ELEMENT:
@@ -196,6 +259,8 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG:
+        return getTag();
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__FIRST_ELEMENT:
         return getFirstElement();
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__SECOND_ELEMENT:
@@ -214,6 +279,9 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG:
+        setTag((TagCodeBlock)newValue);
+        return;
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__FIRST_ELEMENT:
         setFirstElement((ExistingElementReference)newValue);
         return;
@@ -234,6 +302,9 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG:
+        setTag((TagCodeBlock)null);
+        return;
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__FIRST_ELEMENT:
         setFirstElement((ExistingElementReference)null);
         return;
@@ -254,12 +325,52 @@ public class CreateCorrespondenceImpl extends EffectStatementImpl implements Cre
   {
     switch (featureID)
     {
+      case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG:
+        return tag != null;
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__FIRST_ELEMENT:
         return firstElement != null;
       case ResponseLanguagePackage.CREATE_CORRESPONDENCE__SECOND_ELEMENT:
         return secondElement != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == Taggable.class)
+    {
+      switch (derivedFeatureID)
+      {
+        case ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG: return ResponseLanguagePackage.TAGGABLE__TAG;
+        default: return -1;
+      }
+    }
+    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == Taggable.class)
+    {
+      switch (baseFeatureID)
+      {
+        case ResponseLanguagePackage.TAGGABLE__TAG: return ResponseLanguagePackage.CREATE_CORRESPONDENCE__TAG;
+        default: return -1;
+      }
+    }
+    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
   }
 
 } //CreateCorrespondenceImpl

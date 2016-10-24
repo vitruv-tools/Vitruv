@@ -11,25 +11,25 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Responses Segment</b></em>'.
+ * A representation of the model object '<em><b>Reactions Segment</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getFromMetamodel <em>From Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getToMetamodel <em>To Metamodel</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getResponses <em>Responses</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getRoutines <em>Routines</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getReactions <em>Reactions</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getRoutines <em>Routines</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment()
+ * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment()
  * @model
  * @generated
  */
-public interface ResponsesSegment extends EObject
+public interface ReactionsSegment extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -41,14 +41,14 @@ public interface ResponsesSegment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Name()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -67,14 +67,14 @@ public interface ResponsesSegment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>From Metamodel</em>' containment reference.
    * @see #setFromMetamodel(MetamodelReference)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_FromMetamodel()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment_FromMetamodel()
    * @model containment="true"
    * @generated
    */
   MetamodelReference getFromMetamodel();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getFromMetamodel <em>From Metamodel</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getFromMetamodel <em>From Metamodel</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>From Metamodel</em>' containment reference.
@@ -93,14 +93,14 @@ public interface ResponsesSegment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>To Metamodel</em>' containment reference.
    * @see #setToMetamodel(MetamodelReference)
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_ToMetamodel()
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment_ToMetamodel()
    * @model containment="true"
    * @generated
    */
   MetamodelReference getToMetamodel();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ResponsesSegment#getToMetamodel <em>To Metamodel</em>}' containment reference.
+   * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.ReactionsSegment#getToMetamodel <em>To Metamodel</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>To Metamodel</em>' containment reference.
@@ -110,27 +110,27 @@ public interface ResponsesSegment extends EObject
   void setToMetamodel(MetamodelReference value);
 
   /**
-   * Returns the value of the '<em><b>Responses</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.Response}.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment <em>Responses Segment</em>}'.
+   * Returns the value of the '<em><b>Reactions</b></em>' containment reference list.
+   * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.Reaction}.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment <em>Reactions Segment</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Responses</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Reactions</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Responses</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Responses()
-   * @see tools.vitruv.dsls.response.responseLanguage.Response#getResponsesSegment
-   * @model opposite="responsesSegment" containment="true"
+   * @return the value of the '<em>Reactions</em>' containment reference list.
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment_Reactions()
+   * @see tools.vitruv.dsls.response.responseLanguage.Reaction#getReactionsSegment
+   * @model opposite="reactionsSegment" containment="true"
    * @generated
    */
-  EList<Response> getResponses();
+  EList<Reaction> getReactions();
 
   /**
    * Returns the value of the '<em><b>Routines</b></em>' containment reference list.
    * The list contents are of type {@link tools.vitruv.dsls.response.responseLanguage.Routine}.
-   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment <em>Responses Segment</em>}'.
+   * It is bidirectional and its opposite is '{@link tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment <em>Reactions Segment</em>}'.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Routines</em>' containment reference list isn't clear,
@@ -138,11 +138,11 @@ public interface ResponsesSegment extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Routines</em>' containment reference list.
-   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getResponsesSegment_Routines()
-   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getResponsesSegment
-   * @model opposite="responsesSegment" containment="true"
+   * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getReactionsSegment_Routines()
+   * @see tools.vitruv.dsls.response.responseLanguage.Routine#getReactionsSegment
+   * @model opposite="reactionsSegment" containment="true"
    * @generated
    */
   EList<Routine> getRoutines();
 
-} // ResponsesSegment
+} // ReactionsSegment

@@ -14,23 +14,23 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import tools.vitruv.dsls.response.responseLanguage.ExecutionCodeBlock;
 import tools.vitruv.dsls.response.responseLanguage.ExistingElementReference;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
-import tools.vitruv.dsls.response.responseLanguage.UpdateElement;
+import tools.vitruv.dsls.response.responseLanguage.UpdateModelElement;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Update Element</b></em>'.
+ * An implementation of the model object '<em><b>Update Model Element</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl#getElement <em>Element</em>}</li>
- *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateElementImpl#getUpdateBlock <em>Update Block</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.response.responseLanguage.impl.UpdateModelElementImpl#getUpdateBlock <em>Update Block</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class UpdateElementImpl extends EffectStatementImpl implements UpdateElement
+public class UpdateModelElementImpl extends ActionStatementImpl implements UpdateModelElement
 {
   /**
    * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference.
@@ -57,7 +57,7 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
    * <!-- end-user-doc -->
    * @generated
    */
-  protected UpdateElementImpl()
+  protected UpdateModelElementImpl()
   {
     super();
   }
@@ -70,7 +70,7 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   @Override
   protected EClass eStaticClass()
   {
-    return ResponseLanguagePackage.Literals.UPDATE_ELEMENT;
+    return ResponseLanguagePackage.Literals.UPDATE_MODEL_ELEMENT;
   }
 
   /**
@@ -94,7 +94,7 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
     element = newElement;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT, oldElement, newElement);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT, oldElement, newElement);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -111,14 +111,14 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
     {
       NotificationChain msgs = null;
       if (element != null)
-        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT, null, msgs);
       if (newElement != null)
-        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT, null, msgs);
       msgs = basicSetElement(newElement, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT, newElement, newElement));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT, newElement, newElement));
   }
 
   /**
@@ -142,7 +142,7 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
     updateBlock = newUpdateBlock;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK, oldUpdateBlock, newUpdateBlock);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK, oldUpdateBlock, newUpdateBlock);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -159,14 +159,14 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
     {
       NotificationChain msgs = null;
       if (updateBlock != null)
-        msgs = ((InternalEObject)updateBlock).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK, null, msgs);
+        msgs = ((InternalEObject)updateBlock).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK, null, msgs);
       if (newUpdateBlock != null)
-        msgs = ((InternalEObject)newUpdateBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK, null, msgs);
+        msgs = ((InternalEObject)newUpdateBlock).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK, null, msgs);
       msgs = basicSetUpdateBlock(newUpdateBlock, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK, newUpdateBlock, newUpdateBlock));
+      eNotify(new ENotificationImpl(this, Notification.SET, ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK, newUpdateBlock, newUpdateBlock));
   }
 
   /**
@@ -179,9 +179,9 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT:
         return basicSetElement(null, msgs);
-      case ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK:
         return basicSetUpdateBlock(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -197,9 +197,9 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT:
         return getElement();
-      case ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK:
         return getUpdateBlock();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -215,10 +215,10 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT:
         setElement((ExistingElementReference)newValue);
         return;
-      case ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK:
         setUpdateBlock((ExecutionCodeBlock)newValue);
         return;
     }
@@ -235,10 +235,10 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT:
         setElement((ExistingElementReference)null);
         return;
-      case ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK:
         setUpdateBlock((ExecutionCodeBlock)null);
         return;
     }
@@ -255,12 +255,12 @@ public class UpdateElementImpl extends EffectStatementImpl implements UpdateElem
   {
     switch (featureID)
     {
-      case ResponseLanguagePackage.UPDATE_ELEMENT__ELEMENT:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__ELEMENT:
         return element != null;
-      case ResponseLanguagePackage.UPDATE_ELEMENT__UPDATE_BLOCK:
+      case ResponseLanguagePackage.UPDATE_MODEL_ELEMENT__UPDATE_BLOCK:
         return updateBlock != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //UpdateElementImpl
+} //UpdateModelElementImpl

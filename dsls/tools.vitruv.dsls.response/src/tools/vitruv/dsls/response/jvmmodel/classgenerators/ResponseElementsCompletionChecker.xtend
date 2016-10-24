@@ -1,15 +1,15 @@
 package tools.vitruv.dsls.response.jvmmodel.classgenerators
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
-import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElementStatement
+import tools.vitruv.dsls.response.responseLanguage.RetrieveModelElement
+import org.eclipse.emf.ecore.EClass
 
 class ResponseElementsCompletionChecker {
-	public def boolean isComplete(RetrieveModelElementStatement retrieveElement) {
-		return retrieveElement?.correspondenceSource?.code != null && retrieveElement?.element.complete;
+	public def boolean isComplete(RetrieveModelElement retrieveElement) {
+		return retrieveElement?.correspondenceSource?.code != null && retrieveElement.element.complete;
 	}
 	
-	public def boolean isComplete(ModelElement element) {
-		return element?.element?.instanceClass != null;
+	public def boolean isComplete(EClass eClass) {
+		return eClass?.instanceClass != null;
 	}
 	
 }

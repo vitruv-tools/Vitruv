@@ -10,13 +10,13 @@ final class ResponseLanguageConstants {
 	private static val TRANSFORMATION_RESULT_NAME = "transformationResult";
 	public static val TRANSFORMATION_RESULT_PARAMETER_NAME = TRANSFORMATION_RESULT_NAME;
 	public static val TRANSFORMATION_RESULT_FIELD_NAME = TRANSFORMATION_RESULT_NAME;
-	private static val RESPONSE_EXECUTION_STATE_NAME = "responseExecutionState";
+	private static val RESPONSE_EXECUTION_STATE_NAME = "reactionExecutionState";
 	public static val RESPONSE_EXECUTION_STATE_PARAMETER_NAME = RESPONSE_EXECUTION_STATE_NAME;
 	public static val RESPONSE_EXECUTION_STATE_FIELD_NAME = RESPONSE_EXECUTION_STATE_NAME;
 	public static val CHANGE_PARAMETER_NAME = "change";
 	
-	public static val EFFECT_FACADE_FIELD_NAME = "effectFacade";
+	public static val EFFECT_FACADE_FIELD_NAME = "actionsFacade";
 	public static val EFFECT_FACADE_CALLED_BY_FIELD_NAME = "calledBy";
 	
-	public static val EFFECT_USER_EXECUTION_SIMPLE_NAME = "EffectUserExecution";
+	public static val EFFECT_USER_EXECUTION_SIMPLE_NAME = "ActionUserExecution";
 }

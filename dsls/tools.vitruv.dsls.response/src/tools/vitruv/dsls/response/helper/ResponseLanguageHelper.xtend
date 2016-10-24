@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.response.helper
 
-import tools.vitruv.dsls.response.responseLanguage.Response
 import tools.vitruv.dsls.response.responseLanguage.Trigger
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.response.responseLanguage.AtomicRootObjectChange
@@ -13,7 +12,8 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair;
-import tools.vitruv.dsls.response.responseLanguage.ResponsesSegment
+import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
+import tools.vitruv.dsls.response.responseLanguage.Reaction
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -63,9 +63,9 @@ final class ResponseLanguageHelper {
 		return element.element.javaClass;
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(ResponsesSegment responsesSegment) {
-		val sourceVURI = responsesSegment.fromMetamodel.model.package.VURI;
-		val targetVURI = responsesSegment.toMetamodel.model.package.VURI;
+	static def Pair<VURI, VURI> getSourceTargetPair(ReactionsSegment reactionsSegment) {
+		val sourceVURI = reactionsSegment.fromMetamodel.model.package.VURI;
+		val targetVURI = reactionsSegment.toMetamodel.model.package.VURI;
 		if (sourceVURI != null && targetVURI != null) {
 			return new Pair<VURI, VURI>(sourceVURI, targetVURI);
 		} else {
@@ -73,8 +73,8 @@ final class ResponseLanguageHelper {
 		}		
 	}
 	
-	static def Pair<VURI, VURI> getSourceTargetPair(Response response) {
-		return response.responsesSegment.sourceTargetPair;
+	static def Pair<VURI, VURI> getSourceTargetPair(Reaction reaction) {
+		return reaction.reactionsSegment.sourceTargetPair;
 	}
 	
 	private static def VURI getVURI(EPackage pckg) {

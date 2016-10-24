@@ -14,6 +14,6 @@ package tools.vitruv.dsls.response.responseLanguage;
  * @model
  * @generated
  */
-public interface RoutineCallStatement extends RoutineCallBlock, CodeBlock, EffectStatement
+public interface RoutineCallStatement extends RoutineCallBlock, CodeBlock, ActionStatement
 {
 } // RoutineCallStatement

@@ -24,31 +24,31 @@ public interface ResponseLanguageFactory extends EFactory
   ResponseLanguageFactory eINSTANCE = tools.vitruv.dsls.response.responseLanguage.impl.ResponseLanguageFactoryImpl.init();
 
   /**
-   * Returns a new object of class '<em>Response File</em>'.
+   * Returns a new object of class '<em>Reactions File</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Response File</em>'.
+   * @return a new object of class '<em>Reactions File</em>'.
    * @generated
    */
-  ResponseFile createResponseFile();
+  ReactionsFile createReactionsFile();
 
   /**
-   * Returns a new object of class '<em>Responses Segment</em>'.
+   * Returns a new object of class '<em>Reactions Segment</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Responses Segment</em>'.
+   * @return a new object of class '<em>Reactions Segment</em>'.
    * @generated
    */
-  ResponsesSegment createResponsesSegment();
+  ReactionsSegment createReactionsSegment();
 
   /**
-   * Returns a new object of class '<em>Response</em>'.
+   * Returns a new object of class '<em>Reaction</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Response</em>'.
+   * @return a new object of class '<em>Reaction</em>'.
    * @generated
    */
-  Response createResponse();
+  Reaction createReaction();
 
   /**
    * Returns a new object of class '<em>Response Reaction Routine Call</em>'.
@@ -186,13 +186,13 @@ public interface ResponseLanguageFactory extends EFactory
   MatcherStatement createMatcherStatement();
 
   /**
-   * Returns a new object of class '<em>Retrieve Model Element Statement</em>'.
+   * Returns a new object of class '<em>Retrieve Model Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Retrieve Model Element Statement</em>'.
+   * @return a new object of class '<em>Retrieve Model Element</em>'.
    * @generated
    */
-  RetrieveModelElementStatement createRetrieveModelElementStatement();
+  RetrieveModelElement createRetrieveModelElement();
 
   /**
    * Returns a new object of class '<em>Matcher Check Statement</em>'.
@@ -204,13 +204,13 @@ public interface ResponseLanguageFactory extends EFactory
   MatcherCheckStatement createMatcherCheckStatement();
 
   /**
-   * Returns a new object of class '<em>Effect</em>'.
+   * Returns a new object of class '<em>Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Effect</em>'.
+   * @return a new object of class '<em>Action</em>'.
    * @generated
    */
-  Effect createEffect();
+  Action createAction();
 
   /**
    * Returns a new object of class '<em>Routine Call Statement</em>'.
@@ -222,13 +222,58 @@ public interface ResponseLanguageFactory extends EFactory
   RoutineCallStatement createRoutineCallStatement();
 
   /**
-   * Returns a new object of class '<em>Effect Statement</em>'.
+   * Returns a new object of class '<em>Action Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Effect Statement</em>'.
+   * @return a new object of class '<em>Action Statement</em>'.
    * @generated
    */
-  EffectStatement createEffectStatement();
+  ActionStatement createActionStatement();
+
+  /**
+   * Returns a new object of class '<em>Create Model Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Create Model Element</em>'.
+   * @generated
+   */
+  CreateModelElement createCreateModelElement();
+
+  /**
+   * Returns a new object of class '<em>Delete Model Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Delete Model Element</em>'.
+   * @generated
+   */
+  DeleteModelElement createDeleteModelElement();
+
+  /**
+   * Returns a new object of class '<em>Update Model Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Update Model Element</em>'.
+   * @generated
+   */
+  UpdateModelElement createUpdateModelElement();
+
+  /**
+   * Returns a new object of class '<em>Create Correspondence</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Create Correspondence</em>'.
+   * @generated
+   */
+  CreateCorrespondence createCreateCorrespondence();
+
+  /**
+   * Returns a new object of class '<em>Remove Correspondence</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Remove Correspondence</em>'.
+   * @generated
+   */
+  RemoveCorrespondence createRemoveCorrespondence();
 
   /**
    * Returns a new object of class '<em>Code Block</em>'.
@@ -238,6 +283,15 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   CodeBlock createCodeBlock();
+
+  /**
+   * Returns a new object of class '<em>Execute Action Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Execute Action Block</em>'.
+   * @generated
+   */
+  ExecuteActionBlock createExecuteActionBlock();
 
   /**
    * Returns a new object of class '<em>Routine Call Block</em>'.
@@ -303,6 +357,15 @@ public interface ResponseLanguageFactory extends EFactory
   ExecutionCodeBlock createExecutionCodeBlock();
 
   /**
+   * Returns a new object of class '<em>Return Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Return Statement</em>'.
+   * @generated
+   */
+  ReturnStatement createReturnStatement();
+
+  /**
    * Returns a new object of class '<em>Insert Root Change</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -355,51 +418,6 @@ public interface ResponseLanguageFactory extends EFactory
    * @generated
    */
   SingleValuedFeatureReplace createSingleValuedFeatureReplace();
-
-  /**
-   * Returns a new object of class '<em>Create Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Create Element</em>'.
-   * @generated
-   */
-  CreateElement createCreateElement();
-
-  /**
-   * Returns a new object of class '<em>Delete Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Delete Element</em>'.
-   * @generated
-   */
-  DeleteElement createDeleteElement();
-
-  /**
-   * Returns a new object of class '<em>Update Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Update Element</em>'.
-   * @generated
-   */
-  UpdateElement createUpdateElement();
-
-  /**
-   * Returns a new object of class '<em>Create Correspondence</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Create Correspondence</em>'.
-   * @generated
-   */
-  CreateCorrespondence createCreateCorrespondence();
-
-  /**
-   * Returns a new object of class '<em>Remove Correspondence</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Remove Correspondence</em>'.
-   * @generated
-   */
-  RemoveCorrespondence createRemoveCorrespondence();
 
   /**
    * Returns the package supported by this factory.
