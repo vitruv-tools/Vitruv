@@ -6,16 +6,16 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.RequiredRole;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class CreatedRequiredRoleReaction extends AbstractResponseRealization {
+class CreatedRequiredRoleReaction extends AbstractReactionRealization {
   public CreatedRequiredRoleReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
@@ -23,6 +23,13 @@ class CreatedRequiredRoleReaction extends AbstractResponseRealization {
   private boolean checkTriggerPrecondition(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change) {
     RequiredRole _newValue = change.getNewValue();
     return (_newValue instanceof OperationRequiredRole);
+  }
+  
+  public void executeReaction(final EChange change) {
+    InsertEReference<InterfaceRequiringEntity, RequiredRole> typedChange = (InsertEReference<InterfaceRequiringEntity, RequiredRole>)change;
+    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactions5_1ToJava.pcm2java.CreatedRequiredRoleReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.CreatedRequiredRoleReaction.ActionUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -54,20 +61,13 @@ class CreatedRequiredRoleReaction extends AbstractResponseRealization {
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
-  public void executeResponse(final EChange change) {
-    InsertEReference<InterfaceRequiringEntity, RequiredRole> typedChange = (InsertEReference<InterfaceRequiringEntity, RequiredRole>)change;
-    mir.routines.pcm2java.RoutinesFacade routinesFacade = new mir.routines.pcm2java.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactions5_1ToJava.pcm2java.CreatedRequiredRoleReaction.ActionUserExecution userExecution = new mir.reactions.reactions5_1ToJava.pcm2java.CreatedRequiredRoleReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
-  }
-  
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public void callRoutine1(final InsertEReference<InterfaceRequiringEntity, RequiredRole> change, @Extension final RoutinesFacade _routinesFacade) {

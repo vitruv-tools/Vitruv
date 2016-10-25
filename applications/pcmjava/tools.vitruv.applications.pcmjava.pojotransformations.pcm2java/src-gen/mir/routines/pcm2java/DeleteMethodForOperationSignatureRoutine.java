@@ -5,9 +5,9 @@ import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class DeleteMethodForOperationSignatureRoutine extends AbstractRepairRoutineRealization {
@@ -16,8 +16,8 @@ public class DeleteMethodForOperationSignatureRoutine extends AbstractRepairRout
   private DeleteMethodForOperationSignatureRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final OperationSignature operationSignature, final InterfaceMethod interfaceMethod) {
@@ -29,8 +29,8 @@ public class DeleteMethodForOperationSignatureRoutine extends AbstractRepairRout
     }
   }
   
-  public DeleteMethodForOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
-    super(responseExecutionState, calledBy);
+  public DeleteMethodForOperationSignatureRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.DeleteMethodForOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.operationSignature = operationSignature;

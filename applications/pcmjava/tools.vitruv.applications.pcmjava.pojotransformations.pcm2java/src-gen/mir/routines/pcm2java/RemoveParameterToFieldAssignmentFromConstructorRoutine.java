@@ -15,9 +15,9 @@ import org.emftext.language.java.references.ReferenceableElement;
 import org.emftext.language.java.references.SelfReference;
 import org.emftext.language.java.statements.ExpressionStatement;
 import org.emftext.language.java.statements.Statement;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RemoveParameterToFieldAssignmentFromConstructorRoutine extends AbstractRepairRoutineRealization {
@@ -26,8 +26,8 @@ public class RemoveParameterToFieldAssignmentFromConstructorRoutine extends Abst
   private RemoveParameterToFieldAssignmentFromConstructorRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final Constructor ctor, final String fieldName) {
@@ -62,8 +62,8 @@ public class RemoveParameterToFieldAssignmentFromConstructorRoutine extends Abst
     }
   }
   
-  public RemoveParameterToFieldAssignmentFromConstructorRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final String fieldName) {
-    super(responseExecutionState, calledBy);
+  public RemoveParameterToFieldAssignmentFromConstructorRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Constructor ctor, final String fieldName) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.RemoveParameterToFieldAssignmentFromConstructorRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.ctor = ctor;this.fieldName = fieldName;

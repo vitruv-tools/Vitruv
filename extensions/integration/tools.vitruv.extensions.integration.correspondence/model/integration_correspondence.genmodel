@@ -4,9 +4,9 @@
     modelPluginID="tools.vitruv.extensions.integration.correspondence"
     modelName="Integration_correspondence" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.extensions.dslsruntime.response/model/response_correspondence.genmodel#//response"
+    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.genmodel#//reactions"
     importOrganizing="true">
-  <foreignModel>../../tools.vitruv.extensions.dslsruntime.response/model/response_correspondence.ecore</foreignModel>
+  <foreignModel>../../tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.ecore</foreignModel>
   <foreignModel>../../tools.vitruv.framework.correspondence/metamodel/correspondence.ecore</foreignModel>
   <foreignModel>integration_correspondence.ecore</foreignModel>
   <genPackages prefix="Integration" basePackage="tools.vitruv.extensions.integration.correspondence"

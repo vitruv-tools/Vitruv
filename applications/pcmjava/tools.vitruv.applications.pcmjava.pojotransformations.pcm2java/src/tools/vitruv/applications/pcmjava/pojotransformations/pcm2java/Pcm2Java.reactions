@@ -38,7 +38,7 @@ in reaction to changes in pcm
 execute actions in java
 
 // ###################################################
-// ################ PACKAGE RESPONSES ################
+// ################ PACKAGE REACTIONS ################
 
 
 reaction CreatedRepository {
@@ -179,7 +179,7 @@ routine addAssemblyContextToComposedStructure(pcm::ComposedStructure composedStr
 }
 
 // #####################################################
-// ################ COMPONENT RESPONSES ################
+// ################ COMPONENT REACTIONS ################
 
 reaction CreatedComponent { 
 	after list entry created and inserted in pcm::Repository[components__Repository]
@@ -247,7 +247,7 @@ reaction DeletedComponent {
 }
 
 // #####################################################
-// ################ INTERFACE RESPONSES ################
+// ################ INTERFACE REACTIONS ################
 
 reaction CreatedInterface { 
 	after list entry created and inserted in pcm::Repository[interfaces__Repository]
@@ -282,7 +282,7 @@ routine renameInterface(pcm::OperationInterface interf) {
 }
 
 // ######################################################
-// ################ DATA TYPES RESPONSES ################
+// ################ DATA TYPES REACTIONS ################
 
 reaction CreatedCompositeDataType { 
 	after list entry created and inserted in pcm::Repository[dataTypes__Repository]
@@ -403,7 +403,7 @@ reaction DeletedCollectionDataType {
 	call deleteJavaClassifier(change.oldValue as CollectionDataType)
 }
 
-// ################ DATA TYPES - INNER DECLARATION RESPONSES ################
+// ################ DATA TYPES - INNER DECLARATION REACTIONS ################
 
 reaction CreatedInnerDeclaration { 
 	after list entry created and inserted in pcm::CompositeDataType[innerDeclaration_CompositeDataType]
@@ -515,7 +515,7 @@ routine changeInnerDeclarationType(pcm::InnerDeclaration innerDeclaration, java:
 
 
 // ######################################################
-// ################ JAVA PACKAGE actionS ################
+// ################ JAVA PACKAGE ROUTINES ################
 
 routine createJavaPackage(EObject sourceElementMappedToPackage, java::Package parentPackage, String packageName, String newTag)	 { 
 	match {
@@ -563,7 +563,7 @@ routine deleteJavaPackage(pcm::NamedElement sourceElementMappedToPackage, String
 }
 	
 // ######################################################
-// ################ JAVA CLASS actionS ##################
+// ################ JAVA CLASS ROUTINES ##################
 
 routine createJavaClass(pcm::NamedElement sourceElementMappedToClass, java::Package containingPackage, String className) {
 	action { 
@@ -706,7 +706,7 @@ routine removeProvidedRole(pcm::ProvidedRole providedRole) {
 // ################ REQUIRED ROLES ####################
 
 // TODO HK implement ctor statement as correspondence (dynamic in explicit action for each ctor) to remove them easily
-// Use as example for responses best practices chapter
+// Use as example for reactions best practices chapter
 // TODO HK Implement rename correctly after having all four correspondences correctly 
 reaction CreatedRequiredRole { 
 	after list entry created and inserted in pcm::InterfaceRequiringEntity[requiredRoles_InterfaceRequiringEntity]

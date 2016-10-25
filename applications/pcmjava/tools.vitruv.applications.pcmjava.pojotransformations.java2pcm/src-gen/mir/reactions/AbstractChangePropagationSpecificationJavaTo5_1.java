@@ -20,7 +20,7 @@ public abstract class AbstractChangePropagationSpecificationJavaTo5_1 extends Co
 	}	
 	
 	/**
-	 * Adds the response change processors to this {@link AbstractChangePropagationSpecificationJavaTo5_1}.
+	 * Adds the reactions change processors to this {@link AbstractChangePropagationSpecificationJavaTo5_1}.
 	 * For adding further change processors overwrite this method and call the super method at the right place.
 	 */
 	protected void setup() {

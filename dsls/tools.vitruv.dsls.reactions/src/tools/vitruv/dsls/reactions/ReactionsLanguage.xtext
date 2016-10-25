@@ -1,0 +1,198 @@
+grammar tools.vitruv.dsls.reactions.ReactionsLanguage with tools.vitruv.dsls.mirbase.MirBase
+hidden(WS, SL_COMMENT)
+
+generate reactionsLanguage "http://vitruv.tools/dsls/reactions/ReactionsLanguage"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
+
+
+ReactionsFile:
+	(namespaceImports=XImportSection)?
+	MirBaseFile
+	(reactionsSegments+=ReactionsSegment)+;
+	
+ReactionsSegment:
+	'reactions:' name=ValidID
+	'in reaction to changes in' fromMetamodel=MetamodelReference 
+	'execute actions in' toMetamodel=MetamodelReference
+	(reactions+=Reaction |
+		routines+=Routine)*;
+
+// *********************************
+// *********** REACTIONS ***********
+// *********************************
+
+Reaction:
+	(documentation=ML_COMMENT)?
+	'reaction' (name=ValidID)? '{'
+		trigger=Trigger
+		callRoutine=ReactionRoutineCall
+	'}';
+	
+ReactionRoutineCall:
+	{ReactionRoutineCall}
+	RoutineCallBlock;
+
+// *********** TRIGGER ***********
+
+InvariantViolationEvent:
+	'invariant' violation=[ecore::EClass|QualifiedName];
+
+Trigger:
+	// TODO HK Extend this by "before" executing the transformation before applying the change
+	'after' (ModelChange | InvariantViolationEvent)
+	('with' precondition=PreconditionCodeBlock)?;
+
+ModelChange:
+	ConcreteModelElementChange | ArbitraryModelElementChange;
+
+ConcreteModelElementChange returns ConcreteModelElementChange:
+	AtomicConcreteModelElementChange;
+
+AtomicConcreteModelElementChange:
+	AtomicRootObjectChange | AtomicFeatureChange;
+
+AtomicRootObjectChange:
+	('root created and inserted' {InsertRootChange} |
+	'root deleted and removed' {RemoveRootChange})
+//	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
+//	'root inserted' {InsertRootChange} |
+//	'root removed' {RemoveRootChange})
+	changedElement=UnnamedMetaclassReference;
+
+AtomicFeatureChange:
+	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
+	changedFeature=MetaclassFeatureReference;
+
+AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
+	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
+	'list entry deleted and removed in' {MultiValuedFeatureRemoveChange} |
+// TODO add change types for cases in which an entry was inserted without a creation or an entry was deleted without a removal
+// TODO also add new change types only for creation or deletion of elements and roots similar to the comments above (next to root rules) and the following:
+// 	'element' changedElement=ModelElement 'created' {ElementCreatedChange} |
+// 	'element' changedElement=ModelElement 'deleted' {ElementDeletedChange} |
+	'list permuted' {MultiValuedFeaturePermuteChange};
+
+AtomicSingleValuedFeatureChange returns AtomicSingleValuedFeatureChange:
+	//'create value' {SingleValuedFeatureCreate} | 'delete value' {SingleValuedFeatureDelete} | 
+	'value replaced for' {SingleValuedFeatureReplace};
+
+ArbitraryModelElementChange:
+	{ArbitraryModelElementChange} 'any change';
+
+
+
+// ***************************************
+// *********** REPAIR ROUTINES ***********
+// ***************************************
+
+Routine:
+	'routine' name=ValidID input=RoutineInput '{'
+		matcher=MatcherBlock?
+		action=ActionBlock
+		(return=ReturnStatement)?
+	'}';
+
+RoutineInput:
+	{RoutineInput}
+	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')';
+
+// *********** MATCHER ***********
+
+MatcherBlock returns Matcher:
+	{Matcher}
+	'match' '{'
+		(matcherStatements+=MatcherStatement)+
+	'}';
+
+MatcherStatement:
+	RetrieveModelElementStatement | MatcherCheckStatement;
+
+RetrieveModelElementStatement returns RetrieveModelElement:
+	{RetrieveModelElement}
+	// TODO remove uses of required property or set it to something like required?=!optional
+	((('val' name=ValidID '=')? 'retrieve' optional?='optional'?) | abscence?='require absence of') 
+	MetaclassReference 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+
+MatcherCheckStatement:
+	{MatcherCheckStatement}
+	'check' CodeBlock;
+
+// *********** EFFECTS ***********
+
+ActionBlock returns Action:
+	{Action}
+	'action' '{'
+		(actionStatements+=ActionStatement)+
+	'}';
+
+RoutineCallStatement returns RoutineCallStatement:
+	{RoutineCallStatement}
+	RoutineCallBlock;
+
+ActionStatement:
+	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionBlock | RoutineCallStatement;
+	
+CreateModelElementStatement returns CreateModelElement:
+	{CreateModelElement}
+	'val' name=ValidID '=' 'create' MetaclassReference ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
+	
+DeleteModelElementStatement returns DeleteModelElement:
+	{DeleteModelElement}
+	"delete" element=ExistingElementReference;
+
+UpdateModelElementStatement returns UpdateModelElement:
+	{UpdateModelElement}
+	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
+
+
+CreateCorrespondenceStatement returns CreateCorrespondence:
+	{CreateCorrespondence}
+	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
+	('tag with' Taggable)?;
+	
+RemoveCorrespondenceStatement returns RemoveCorrespondence:
+	{RemoveCorrespondence}
+	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference;
+
+
+// ****** CODE BLOCKS ******
+
+fragment CodeBlock:
+	code=XExpression;
+	
+fragment ExecuteActionBlock:
+	'execute' CodeBlock;
+
+fragment RoutineCallBlock:
+// TODO move the variable declaration and assignment for routine returns inside the code block not before it!
+	('val' name=ValidID '=')? 'call' CodeBlock;
+
+fragment Taggable:
+	tag=TagCodeBlock;
+
+ExistingElementReference:
+	CodeBlock;
+
+TagCodeBlock returns TagCodeBlock:
+	{TagCodeBlock}
+	CodeBlock;
+
+PreconditionCodeBlock returns PreconditionCodeBlock:
+	{PreconditionCodeBlock}
+	CodeBlock;
+
+CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
+	{CorrespondingObjectCodeBlock}
+	CodeBlock;
+
+ExecutionCodeBlock returns ExecutionCodeBlock:
+	{ExecutionCodeBlock}
+	CodeBlock;
+	
+ReturnStatement returns ReturnStatement:
+	{ReturnStatement}
+	'return' element=ExistingElementReference;

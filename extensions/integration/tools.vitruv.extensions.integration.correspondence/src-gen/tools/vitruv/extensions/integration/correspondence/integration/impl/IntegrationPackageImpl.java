@@ -2,8 +2,6 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.impl;
 
-import tools.vitruv.dsls.response.meta.correspondence.response.ResponsePackage;
-
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationFactory;
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationPackage;
@@ -13,6 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -75,7 +74,7 @@ public class IntegrationPackageImpl extends EPackageImpl implements IntegrationP
 		isInited = true;
 
 		// Initialize simple dependencies
-		ResponsePackage.eINSTANCE.eClass();
+		ReactionsPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theIntegrationPackage.createPackageContents();
@@ -166,14 +165,14 @@ public class IntegrationPackageImpl extends EPackageImpl implements IntegrationP
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		ResponsePackage theResponsePackage = (ResponsePackage)EPackage.Registry.INSTANCE.getEPackage(ResponsePackage.eNS_URI);
+		ReactionsPackage theReactionsPackage = (ReactionsPackage)EPackage.Registry.INSTANCE.getEPackage(ReactionsPackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		integrationCorrespondenceEClass.getESuperTypes().add(theResponsePackage.getResponseCorrespondence());
+		integrationCorrespondenceEClass.getESuperTypes().add(theReactionsPackage.getReactionsCorrespondence());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(integrationCorrespondenceEClass, IntegrationCorrespondence.class, "IntegrationCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

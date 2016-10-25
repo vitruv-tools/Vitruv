@@ -22,8 +22,8 @@
 //import tools.vitruv.dsls.mapping.mappingLanguage.RequiredMapping
 //import tools.vitruv.dsls.mapping.util.PreProcessingFileSystemAccess
 //import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-//import tools.vitruv.dsls.response.api.generator.ResponseBuilderFactory
-//import tools.vitruv.dsls.response.responseLanguage.Response
+//import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
+//import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 //import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
 //import tools.vitruv.framework.util.command.ChangePropagationResult
 //import tools.vitruv.framework.util.datatypes.VURI
@@ -55,13 +55,13 @@
 // * The main Java plugin project generator for the mapping language.
 // */
 //class MappingLanguageGenerator {
-//	def Collection<Response> doGenerate(Resource input, IFileSystemAccess fsa) {
+//	def Collection<Reaction> doGenerate(Resource input, IFileSystemAccess fsa) {
 //		val mappingFile = input.contents.filter(MappingFile).claimExactlyOne
 //		XMIDumper.dump(mappingFile, input, "mxmi")
 //		doGenerate(mappingFile, fsa)
 //	}
 //	
-//	def Collection<Response> doGenerate(MappingFile mappingFile, IFileSystemAccess fsa) {
+//	def Collection<Reaction> doGenerate(MappingFile mappingFile, IFileSystemAccess fsa) {
 //		
 ////		if (mappingFile.pluginName != null) {
 ////			val contributorNames = mappingFile.imports.map[
@@ -99,19 +99,19 @@
 //		private extension ConstraintLanguageGenerator clg
 //		private extension MappingLanguageGeneratorState state
 //		
-//		private final Set<Response> responses
+//		private final Set<Reaction> reactions
 //		
 //		private final String pkgName;
 //	
 //		private final extension TemplateGenerator templateGenerator
 //		
-//		private final ResponseBuilderFactory responseBuilderFactory = new ResponseBuilderFactory
+//		private final ReactionBuilderFactory reactionBuilderFactory = new ReactionBuilderFactory
 //		
 //		
 //		private ClaimableHashMap<MetamodelImport, String> correspondenceGetMethod = new ClaimableHashMap
 //
 //		new(MappingFile file, IFileSystemAccess fsa) {
-//			this.responses = newHashSet
+//			this.reactions = newHashSet
 //			this.file = file
 //			this.pkgName = "mappings.generated"
 //			this.fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(fsa)
@@ -152,7 +152,7 @@
 //			templateGenerator.generateAllTemplates			
 //			emfGeneratorHelper.generateCode(fsa)
 //			
-//			responses
+//			reactions
 //		}
 //
 //		private def generateMapping(Mapping mapping) {
@@ -508,20 +508,20 @@
 //				'''
 //			])
 //			
-//			responses += #[
+//			reactions += #[
 //				new Pair(imports.get(0), imports.get(1)),
 //				new Pair(imports.get(1), imports.get(0))
 //			].map[
-//				responseBuilderFactory
-//					.createResponseBuilder
-//					.setName("Response_" + className)
+//				reactionsBuilderFactory
+//					.createReactionBuilder
+//					.setName("Reaction_" + className)
 //					.setTrigger(first.package)
 //					.setTargetChange(second.package)
 //					.setExecutionBlock(
 //					'''
 //						{ «fqn».INSTANCE.applyEChangeFor«first.toFirstUpperName»(change, blackboard, null); }
 //					''')
-//					.generateResponse
+//					.generateReaction
 //			]			
 //		}
 //		

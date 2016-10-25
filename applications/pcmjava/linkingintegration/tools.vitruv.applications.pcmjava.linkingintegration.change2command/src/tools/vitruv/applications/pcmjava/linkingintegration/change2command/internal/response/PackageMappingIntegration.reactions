@@ -16,18 +16,18 @@ import tools.vitruv.applications.pcmjava.util.java2pcm.TypeReferenceCorresponden
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
 
-// TODO We can convert several custom statements to response language statements, e.g. correspondence creation, element creation
+// TODO We can convert several custom statements to reactions language statements, e.g. correspondence creation, element creation
 reactions: PackageMappingIntegration
 in reaction to changes in java
 execute actions in pcm
 
 //empty implementation for add and remove imports
-reaction AddImportResponse {
+reaction AddImportReaction {
 	after list entry created and inserted in java::JavaRoot[imports]
 	call {}
 }
 
-reaction RemoveImportResponse {
+reaction RemoveImportReaction {
 	after list entry deleted and removed in java::JavaRoot[imports]
 	call {}
 }
@@ -44,7 +44,7 @@ routine renamedMethod(java::Method method, String newMethodName) {
 	action {
 		update operationSignature {
 			operationSignature.entityName = newMethodName
-			//EvaluationHelper.instance.logChange2ActionHandeldByIntegrationResponse(change, "renamed operation signature " + operationSignature + " to " + change.newValue)
+			//EvaluationHelper.instance.logChange2ActionHandeldByIntegrationReaction(change, "renamed operation signature " + operationSignature + " to " + change.newValue)
 		}
 	} 
 }

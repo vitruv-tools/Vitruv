@@ -6,9 +6,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.emftext.language.java.members.Field;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RemoveRequiredRoleAndCorrespondenceRoutine extends AbstractRepairRoutineRealization {
@@ -17,8 +17,8 @@ public class RemoveRequiredRoleAndCorrespondenceRoutine extends AbstractRepairRo
   private RemoveRequiredRoleAndCorrespondenceRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final OperationRequiredRole orr, final Field field) {
@@ -38,8 +38,8 @@ public class RemoveRequiredRoleAndCorrespondenceRoutine extends AbstractRepairRo
     }
   }
   
-  public RemoveRequiredRoleAndCorrespondenceRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole orr, final Field field) {
-    super(responseExecutionState, calledBy);
+  public RemoveRequiredRoleAndCorrespondenceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final OperationRequiredRole orr, final Field field) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.packageMappingIntegration.RemoveRequiredRoleAndCorrespondenceRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.orr = orr;this.field = field;

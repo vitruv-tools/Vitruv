@@ -122,8 +122,8 @@ class MappingLanguageGeneratorNameProvider {
 		'''propagateConstraint«getOrSetIndex(expression)»From«expression.metamodel?.model?.toFirstUpperName ?: ''»'''
 	}
 	
-	public def String getResponseName(MetamodelImport imp, Resource resource) {
-		'''ResponseFrom«imp.toFirstUpperName»And«resource.URI.trimFileExtension.lastSegment.toFirstUpper»'''
+	public def String getReactionName(MetamodelImport imp, Resource resource) {
+		'''ReactionFrom«imp.toFirstUpperName»And«resource.URI.trimFileExtension.lastSegment.toFirstUpper»'''
 	}
 	
 	public def String getContextVariableName(ContextVariable contextVariable) {

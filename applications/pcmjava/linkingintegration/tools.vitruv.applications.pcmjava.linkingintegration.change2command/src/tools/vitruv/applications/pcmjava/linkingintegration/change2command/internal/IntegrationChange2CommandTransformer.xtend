@@ -40,21 +40,21 @@ class IntegrationChange2CommandTransformer {
 	
 	private def executeIntegration(EChange change, CorrespondenceModel correspondenceModel) {
 		// Since all correspondences are considered (not only IntegrationCorrespondences),
-		// only return response commands, if one of the other 2 checks are successful
-		val existsResponse = doesResponseHandleChange(change, correspondenceModel); 
+		// only return reaction commands, if one of the other 2 checks are successful
+		val existsReaction = doesReactionHandleChange(change, correspondenceModel); 
 		val newClassOrInterfaceInIntegratedAreaCommand = createNewClassOrInterfaceInIntegratedAreaCommand(
 			change, correspondenceModel)
     	if (newClassOrInterfaceInIntegratedAreaCommand != null) {
-    		if (existsResponse) {
-				return executeResponses(change, correspondenceModel);
+    		if (existsReaction) {
+				return executeReactions(change, correspondenceModel);
 			}
 			val result = newClassOrInterfaceInIntegratedAreaCommand.call()
     		return result;
     	}
     	val defaultIntegrationChangeCommand = getDefaultIntegrationChangeCommand(change, correspondenceModel)
     	if (defaultIntegrationChangeCommand != null) {
-    		if (existsResponse) {
-				return executeResponses(change, correspondenceModel);
+    		if (existsReaction) {
+				return executeReactions(change, correspondenceModel);
 			}
     		val result = defaultIntegrationChangeCommand.call()
     		return result
@@ -62,12 +62,12 @@ class IntegrationChange2CommandTransformer {
     	return null
 	}
 	
-	def doesResponseHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
+	def doesReactionHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
 		return executor.doesHandleChange(change, correspondenceModel);
 	}
 	
-	def executeResponses(EChange change, CorrespondenceModel correspondenceModel) {
+	def executeReactions(EChange change, CorrespondenceModel correspondenceModel) {
 		val executor = new ExecutorJavaTo5_1(userInteracting)
 		return executor.propagateChange(change, correspondenceModel)
 	}

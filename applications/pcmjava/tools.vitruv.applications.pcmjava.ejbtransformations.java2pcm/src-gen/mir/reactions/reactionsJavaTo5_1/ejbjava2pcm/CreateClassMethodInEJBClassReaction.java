@@ -7,16 +7,16 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Member;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBAnnotationHelper;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class CreateClassMethodInEJBClassReaction extends AbstractResponseRealization {
+class CreateClassMethodInEJBClassReaction extends AbstractReactionRealization {
   public CreateClassMethodInEJBClassReaction(final UserInteracting userInteracting) {
     super(userInteracting);
   }
@@ -24,6 +24,13 @@ class CreateClassMethodInEJBClassReaction extends AbstractResponseRealization {
   private boolean checkTriggerPrecondition(final InsertEReference<org.emftext.language.java.classifiers.Class, Member> change) {
     return (((change.getNewValue() instanceof ClassMethod) && EJBAnnotationHelper.isEJBClass(change.getAffectedEObject())) && 
       EJBJava2PcmHelper.overridesInterfaceMethod(((ClassMethod) change.getNewValue()), change.getAffectedEObject()));
+  }
+  
+  public void executeReaction(final EChange change) {
+    InsertEReference<org.emftext.language.java.classifiers.Class, Member> typedChange = (InsertEReference<org.emftext.language.java.classifiers.Class, Member>)change;
+    mir.routines.ejbjava2pcm.RoutinesFacade routinesFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassReaction.ActionUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -55,20 +62,13 @@ class CreateClassMethodInEJBClassReaction extends AbstractResponseRealization {
     if (!checkTriggerPrecondition(typedChange)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
-  public void executeResponse(final EChange change) {
-    InsertEReference<org.emftext.language.java.classifiers.Class, Member> typedChange = (InsertEReference<org.emftext.language.java.classifiers.Class, Member>)change;
-    mir.routines.ejbjava2pcm.RoutinesFacade routinesFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.ejbjava2pcm.CreateClassMethodInEJBClassReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
-  }
-  
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public void callRoutine1(final InsertEReference<org.emftext.language.java.classifiers.Class, Member> change, @Extension final RoutinesFacade _routinesFacade) {
