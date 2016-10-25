@@ -1,0 +1,84 @@
+package mir.routines.simpleChangesTests;
+
+import allElementTypes.NonRoot;
+import allElementTypes.Root;
+import com.google.common.base.Objects;
+import java.io.IOException;
+import java.util.function.Predicate;
+import mir.routines.simpleChangesTests.RoutinesFacade;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.xbase.lib.Extension;
+import tools.vitruv.dsls.response.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor;
+import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
+import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+
+@SuppressWarnings("all")
+public class RemoveNonContainmentReferenceRoutine extends AbstractRepairRoutineRealization {
+  private RoutinesFacade actionsFacade;
+  
+  private RemoveNonContainmentReferenceRoutine.ActionUserExecution userExecution;
+  
+  private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
+    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
+      super(responseExecutionState);
+    }
+    
+    public EObject getCorrepondenceSourceTargetRoot(final Root root, final NonRoot removedNonRoot) {
+      return root;
+    }
+    
+    public EObject getElement1(final Root root, final NonRoot removedNonRoot, final Root targetRoot) {
+      return targetRoot;
+    }
+    
+    public void update0Element(final Root root, final NonRoot removedNonRoot, final Root targetRoot) {
+      EList<NonRoot> _multiValuedNonContainmentEReference = targetRoot.getMultiValuedNonContainmentEReference();
+      final Predicate<NonRoot> _function = (NonRoot it) -> {
+        String _id = it.getId();
+        String _id_1 = removedNonRoot.getId();
+        return Objects.equal(_id, _id_1);
+      };
+      _multiValuedNonContainmentEReference.removeIf(_function);
+    }
+    
+    public void callRoutine1(final Root root, final NonRoot removedNonRoot, final Root targetRoot, @Extension final RoutinesFacade _routinesFacade) {
+      SimpleChangesTestsExecutionMonitor _instance = SimpleChangesTestsExecutionMonitor.getInstance();
+      _instance.set(SimpleChangesTestsExecutionMonitor.ChangeType.RemoveNonContainmentEReference);
+    }
+  }
+  
+  public RemoveNonContainmentReferenceRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Root root, final NonRoot removedNonRoot) {
+    super(responseExecutionState, calledBy);
+    this.userExecution = new mir.routines.simpleChangesTests.RemoveNonContainmentReferenceRoutine.ActionUserExecution(getExecutionState(), this);
+    this.actionsFacade = new mir.routines.simpleChangesTests.RoutinesFacade(getExecutionState(), this);
+    this.root = root;this.removedNonRoot = removedNonRoot;
+  }
+  
+  private Root root;
+  
+  private NonRoot removedNonRoot;
+  
+  protected void executeRoutine() throws IOException {
+    getLogger().debug("Called routine RemoveNonContainmentReferenceRoutine with input:");
+    getLogger().debug("   Root: " + this.root);
+    getLogger().debug("   NonRoot: " + this.removedNonRoot);
+    
+    Root targetRoot = getCorrespondingElement(
+    	userExecution.getCorrepondenceSourceTargetRoot(root, removedNonRoot), // correspondence source supplier
+    	Root.class,
+    	(Root _element) -> true, // correspondence precondition checker
+    	null);
+    if (targetRoot == null) {
+    	return;
+    }
+    initializeRetrieveElementState(targetRoot);
+    // val updatedElement userExecution.getElement1(root, removedNonRoot, targetRoot);
+    userExecution.update0Element(root, removedNonRoot, targetRoot);
+    
+    userExecution.callRoutine1(root, removedNonRoot, targetRoot, actionsFacade);
+    
+    postprocessElementStates();
+  }
+}

@@ -24,16 +24,16 @@ execute actions in pcm
 // ###################################################
 // ################ create Repository for first package################
 reaction CreatedFirstPackage {
-	after root created and inserted java.Package
+	after root created and inserted java::Package
 	call createRepositoryForFirstPackage(change.newValue)
 }
 
-routine createRepositoryForFirstPackage(java.Package javaPackage) {
+routine createRepositoryForFirstPackage(java::Package javaPackage) {
 	match {
 		check EJBJava2PcmHelper.findRepository(correspondenceModel) == null
 	}
 	action {
-		val repository = create pcm.Repository and initialize {
+		val repository = create pcm::Repository and initialize {
 			repository.setEntityName(javaPackage.name)
 			persistProjectRelative(javaPackage, repository, "model/" + repository.entityName + ".repository")
 		}
@@ -45,7 +45,7 @@ routine createRepositoryForFirstPackage(java.Package javaPackage) {
 // ################ create Component from EJB class################
  
 reaction CreatedClass {
-	after list entry created and inserted in java.CompilationUnit[classifiers]
+	after list entry created and inserted in java::CompilationUnit[classifiers]
 		with change.newValue.isEJBClass 	
 	call {
 		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
@@ -54,7 +54,7 @@ reaction CreatedClass {
 }
 
 reaction CreateClassAnnotation {
-	after list entry created and inserted in java.Class[annotationsAndModifiers]
+	after list entry created and inserted in java::Class[annotationsAndModifiers]
 		with change.affectedEObject.isEJBClass 
 	call {
 		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel) 
@@ -62,9 +62,9 @@ reaction CreateClassAnnotation {
 	} 
 }
 
-routine createBasicComponent(pcm.Repository repo, java.NamedElement namedElement) {
+routine createBasicComponent(pcm::Repository repo, java::NamedElement namedElement) {
 	action {
-		val basicComponent = create pcm.BasicComponent and initialize {
+		val basicComponent = create pcm::BasicComponent and initialize {
 			basicComponent.entityName = namedElement.name;
 		}
 		add correspondence between basicComponent and namedElement
@@ -78,7 +78,7 @@ routine createBasicComponent(pcm.Repository repo, java.NamedElement namedElement
 // ################ create Interface from EJB interface################
 
 reaction CreatedInterface {
-	after list entry created and inserted in java.CompilationUnit[classifiers]
+	after list entry created and inserted in java::CompilationUnit[classifiers]
 		with change.newValue.isEJBBuisnessInterface 
 	call {
 		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
@@ -87,7 +87,7 @@ reaction CreatedInterface {
 }
 
 reaction CreateInterfaceAnnotation {
-	after list entry created and inserted in java.Interface[annotationsAndModifiers]
+	after list entry created and inserted in java::Interface[annotationsAndModifiers]
 		with change.affectedEObject.isEJBBuisnessInterface
 	call {
 		val Repository repo = EJBJava2PcmHelper.findRepository(correspondenceModel)
@@ -95,9 +95,9 @@ reaction CreateInterfaceAnnotation {
 	}
 }
 
-routine createOperationInterface(pcm.Repository repo, java.NamedElement namedElement) {
+routine createOperationInterface(pcm::Repository repo, java::NamedElement namedElement) {
 	action { 
-		val operationInterface = create pcm.OperationInterface and initialize {
+		val operationInterface = create pcm::OperationInterface and initialize {
 			operationInterface.entityName = namedElement.name;
 		}
 		add correspondence between operationInterface and namedElement
@@ -110,15 +110,15 @@ routine createOperationInterface(pcm.Repository repo, java.NamedElement namedEle
 // ###################################################
 // ################ create OperationRequiredRole from field################
 reaction CreateAnnotationForField {
-	after list entry created and inserted in java.Field[annotationsAndModifiers]
+	after list entry created and inserted in java::Field[annotationsAndModifiers]
 		with change.affectedEObject.hasEJBAnnotation
 	call createdAnnotationForField(change.affectedEObject)
 }
 		
-routine createdAnnotationForField(java.Field annotatedField) {
+routine createdAnnotationForField(java::Field annotatedField) {
 	match {
-		val basicComponent = retrieve pcm.BasicComponent corresponding to annotatedField.containingConcreteClassifier
-		//retrieve: pcm.OperationInterface as opInterface corresponding to change.affectedEObject 
+		val basicComponent = retrieve pcm::BasicComponent corresponding to annotatedField.containingConcreteClassifier
+		//retrieve: pcm::OperationInterface as opInterface corresponding to change.affectedEObject 
 	}
 	action {
 		call {
@@ -130,15 +130,15 @@ routine createdAnnotationForField(java.Field annotatedField) {
 }
 
 reaction CreateField {
-	after list entry created and inserted in java.Class[members]
+	after list entry created and inserted in java::Class[members]
 		with change.newValue.hasEJBAnnotation
 	call createdField(change.newValue as Field)
 }
 
-routine createdField(java.Field field) {
+routine createdField(java::Field field) {
 	match {
-		val basicComponent = retrieve pcm.BasicComponent corresponding to field
-		//retrieve: pcm.OperationInterface as opInterface corresponding to change.newValue
+		val basicComponent = retrieve pcm::BasicComponent corresponding to field
+		//retrieve: pcm::OperationInterface as opInterface corresponding to change.newValue
 	}
 	action {
 		call {
@@ -150,9 +150,9 @@ routine createdField(java.Field field) {
 }
 
 
-routine createOperationRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInterface opInterface, java.Field field) {
+routine createOperationRequiredRole(pcm::BasicComponent basicComponent, pcm::OperationInterface opInterface, java::Field field) {
 	action { 
-		val orr = create pcm.OperationRequiredRole and initialize {
+		val orr = create pcm::OperationRequiredRole and initialize {
 			orr.requiringEntity_RequiredRole = basicComponent
 			orr.requiredInterface__OperationRequiredRole = opInterface
 			orr.entityName = basicComponent.entityName + "_requires_" + opInterface.entityName
@@ -164,17 +164,17 @@ routine createOperationRequiredRole(pcm.BasicComponent basicComponent, pcm.Opera
 // ###################################################
 // ################ create OperationProvidedRole from implements################
 reaction CreateImplements {
-	after list entry created and inserted in java.Class[implements]
+	after list entry created and inserted in java::Class[implements]
 	call createdImplements(change.affectedEObject, change.newValue)
 }
 
-routine createdImplements(java.Class clazz, java.TypeReference implementz) {
+routine createdImplements(java::Class clazz, java::TypeReference implementz) {
 	match {
-		val basicComponent = retrieve pcm.BasicComponent corresponding to clazz
-		//retrieve: pcm.OperationInterface as opInterface corresponding to getClassifier(change.newValue) 
+		val basicComponent = retrieve pcm::BasicComponent corresponding to clazz
+		//retrieve: pcm::OperationInterface as opInterface corresponding to getClassifier(change.newValue) 
 	}
 	action {
-		val opr = create pcm.OperationProvidedRole
+		val opr = create pcm::OperationProvidedRole
 		//add correspondence: opr, change.newValue
 		update opr {
 	    	val opInterface = basicComponent.repository__RepositoryComponent.interfaces__Repository.filter(typeof(OperationInterface)).
@@ -193,23 +193,23 @@ routine createdImplements(java.Class clazz, java.TypeReference implementz) {
 // ################ create Signatures for interface methods################
 
 reaction CreateInterfaceMethod {
-	after list entry created and inserted in java.Interface[members]
+	after list entry created and inserted in java::Interface[members]
 		with change.newValue instanceof InterfaceMethod && change.affectedEObject.isEJBBuisnessInterface
 	call createdInterfaceMethod(change.affectedEObject, change.newValue as InterfaceMethod)
 }
 
-routine createdInterfaceMethod(java.Interface interf, java.InterfaceMethod method) {
+routine createdInterfaceMethod(java::Interface interf, java::InterfaceMethod method) {
 	match {
-		val opInterface = retrieve pcm.OperationInterface corresponding to interf
+		val opInterface = retrieve pcm::OperationInterface corresponding to interf
 	}
 	action {
 		call createOperationSignature(method, opInterface)
 	}
 }
 
-routine createOperationSignature(java.InterfaceMethod interfaceMethod, pcm.OperationInterface opInterface) {
+routine createOperationSignature(java::InterfaceMethod interfaceMethod, pcm::OperationInterface opInterface) {
 	action {
-		val opSignature = create pcm.OperationSignature
+		val opSignature = create pcm::OperationSignature
 		add correspondence between opSignature and interfaceMethod
 		call {
 			opSignature.entityName = interfaceMethod.name
@@ -223,22 +223,22 @@ routine createOperationSignature(java.InterfaceMethod interfaceMethod, pcm.Opera
 // #######################################################################
 // ################ create Parameter for  parameter################		
 reaction CreateParameterInInterfaceMethod {
-	after list entry created and inserted in java.InterfaceMethod[parameters]
+	after list entry created and inserted in java::InterfaceMethod[parameters]
 	call createdParameterInInterfaceMethod(change.affectedEObject, change.newValue)
 }
 
-routine createdParameterInInterfaceMethod(java.InterfaceMethod method, java.Parameter parameter) {
+routine createdParameterInInterfaceMethod(java::InterfaceMethod method, java::Parameter parameter) {
 	match {
-		val opSignature = retrieve pcm.OperationSignature corresponding to method
+		val opSignature = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		call createPCMParameter(parameter, opSignature)
 	}
 }
 
-routine createPCMParameter(java.Parameter jaMoPPParam, pcm.OperationSignature opSignature) {
+routine createPCMParameter(java::Parameter jaMoPPParam, pcm::OperationSignature opSignature) {
 	action {
-		val pcmParameter = create pcm.Parameter and initialize {
+		val pcmParameter = create pcm::Parameter and initialize {
 			pcmParameter.entityName = jaMoPPParam.name
 			pcmParameter.parameterName = jaMoPPParam.name
 			pcmParameter.dataType__Parameter = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(jaMoPPParam.typeReference, 
@@ -254,20 +254,20 @@ routine createPCMParameter(java.Parameter jaMoPPParam, pcm.OperationSignature op
 // #######################################################################
 // ################ create ReturnType for return type ################
 reaction ReturnTypeCreated {
-	after value replaced for java.InterfaceMethod[typeReference]
+	after value replaced for java::InterfaceMethod[typeReference]
 	call createdReturnType(change.affectedEObject, change.newValue)
 }
 
-routine createdReturnType(java.InterfaceMethod method, java.TypeReference type) {
+routine createdReturnType(java::InterfaceMethod method, java::TypeReference type) {
 	match {
-		val opSignature = retrieve pcm.OperationSignature corresponding to method
+		val opSignature = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		call createPCMReturnType(type, opSignature, method)
 	}
 }
 
-routine createPCMReturnType(java.TypeReference returnType, pcm.OperationSignature opSignature, java.Method javaMethod) {
+routine createPCMReturnType(java::TypeReference returnType, pcm::OperationSignature opSignature, java::Method javaMethod) {
 	action {
 		update opSignature {
 			val pcmDataType = TypeReferenceCorrespondenceHelper.getCorrespondingPCMDataTypeForTypeReference(returnType, correspondenceModel, userInteracting, 
@@ -281,17 +281,17 @@ routine createPCMReturnType(java.TypeReference returnType, pcm.OperationSignatur
 // #######################################################################
 // ################ create InnerDeclaration for field in datatype class################
 reaction CreateFieldInDatatypeClass {
-	after list entry created and inserted in java.Class[members]
+	after list entry created and inserted in java::Class[members]
 		with change.newValue instanceof Field
 	call createdFieldInDatatypeClass(change.affectedEObject, change.newValue as Field)
 }
 
-routine createdFieldInDatatypeClass(java.Class clazz, java.Field field) {
+routine createdFieldInDatatypeClass(java::Class clazz, java::Field field) {
 	match { 
-		val compositeDataType = retrieve pcm.CompositeDataType corresponding to clazz
+		val compositeDataType = retrieve pcm::CompositeDataType corresponding to clazz
 	}
 	action {
-		val innerDec = create pcm.InnerDeclaration and initialize {
+		val innerDec = create pcm::InnerDeclaration and initialize {
 			innerDec.datatype_InnerDeclaration = TypeReferenceCorrespondenceHelper.
 					getCorrespondingPCMDataTypeForTypeReference(field.typeReference, correspondenceModel,
 						userInteracting, compositeDataType.repository__DataType, field.arrayDimension)
@@ -308,15 +308,15 @@ routine createdFieldInDatatypeClass(java.Class clazz, java.Field field) {
 // ################ create SEFF for class method that overrides interface method################
 
 reaction CreateClassMethodInEJBClass {
-	after list entry created and inserted in java.Class[members]
+	after list entry created and inserted in java::Class[members]
 		with change.newValue instanceof ClassMethod && change.affectedEObject.isEJBClass &&
 	   		EJBJava2PcmHelper.overridesInterfaceMethod(change.newValue as ClassMethod, change.affectedEObject)
 	call createdClassMethodInEJBClass(change.affectedEObject, change.newValue as ClassMethod)
 }
 
-routine createdClassMethodInEJBClass(java.Class clazz, java.ClassMethod classMethod) {
+routine createdClassMethodInEJBClass(java::Class clazz, java::ClassMethod classMethod) {
 	match {
-		val basicComponent = retrieve pcm.BasicComponent corresponding to clazz
+		val basicComponent = retrieve pcm::BasicComponent corresponding to clazz
 	}
 	action { 
 		call {
@@ -331,9 +331,9 @@ routine createdClassMethodInEJBClass(java.Class clazz, java.ClassMethod classMet
 	}
 }
 
-routine createSEFFForClassMethod(pcm.BasicComponent basicComponent, pcm.OperationSignature opSignature, java.ClassMethod classMethod) {
+routine createSEFFForClassMethod(pcm::BasicComponent basicComponent, pcm::OperationSignature opSignature, java::ClassMethod classMethod) {
 	action {
-		val seff = create pcm.ResourceDemandingSEFF and initialize {
+		val seff = create pcm::ResourceDemandingSEFF and initialize {
 			seff.describedService__SEFF = opSignature
 		}
 		add correspondence between seff and classMethod

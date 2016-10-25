@@ -23,23 +23,23 @@ execute actions in pcm
 
 //empty implementation for add and remove imports
 reaction AddImportResponse {
-	after list entry created and inserted in java.JavaRoot[imports]
+	after list entry created and inserted in java::JavaRoot[imports]
 	call {}
 }
 
 reaction RemoveImportResponse {
-	after list entry deleted and removed in java.JavaRoot[imports]
+	after list entry deleted and removed in java::JavaRoot[imports]
 	call {}
 }
 
 reaction RenameMethod {
-	after value replaced for java.Method[name]
+	after value replaced for java::Method[name]
 	call renamedMethod(change.affectedEObject, change.newValue)
 }
 
-routine renamedMethod(java.Method method, String newMethodName) {
+routine renamedMethod(java::Method method, String newMethodName) {
 	match {
-		val operationSignature = retrieve pcm.OperationSignature corresponding to method
+		val operationSignature = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		update operationSignature {
@@ -50,7 +50,7 @@ routine renamedMethod(java.Method method, String newMethodName) {
 }
 
 reaction RemoveMethodEvent {
-	after list entry deleted and removed in java.ConcreteClassifier[members]
+	after list entry deleted and removed in java::ConcreteClassifier[members]
 		with { 
 			if (change.oldValue instanceof Method){
 			// EvaluationHelper.
@@ -61,9 +61,9 @@ reaction RemoveMethodEvent {
 	call removedMethodEvent(change.oldValue as Method)
 } 
 
-routine removedMethodEvent(java.Method method) {
+routine removedMethodEvent(java::Method method) {
 	match {
-		val opSig = retrieve pcm.OperationSignature corresponding to method
+		val opSig = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		remove correspondence between opSig and method
@@ -74,14 +74,14 @@ routine removedMethodEvent(java.Method method) {
 }
 
 reaction AddMethodEvent {
-	after list entry created and inserted in java.ConcreteClassifier[members]
+	after list entry created and inserted in java::ConcreteClassifier[members]
 		with change.newValue instanceof Method
 	call addedMethodEvent(change.affectedEObject, change.newValue as Method)
 }
 
-routine addedMethodEvent(java.ConcreteClassifier clazz, java.Method method) {
+routine addedMethodEvent(java::ConcreteClassifier clazz, java::Method method) {
 	match {
-		val opInterface = retrieve pcm.OperationInterface corresponding to clazz
+		val opInterface = retrieve pcm::OperationInterface corresponding to clazz
 	}
 	action {
 		call {	
@@ -90,7 +90,7 @@ routine addedMethodEvent(java.ConcreteClassifier clazz, java.Method method) {
 	}
 }
 
-routine createOperationSignature(pcm.OperationInterface opInterface, java.Method newMethod) {
+routine createOperationSignature(pcm::OperationInterface opInterface, java::Method newMethod) {
 	action {
 		update newMethod {
 			// ask user whether to add the new method to the operationInterface
@@ -107,13 +107,13 @@ routine createOperationSignature(pcm.OperationInterface opInterface, java.Method
 }
 
 reaction CreateMetodParameterEvent {
-	after list entry created and inserted in java.Method[parameters]
+	after list entry created and inserted in java::Method[parameters]
 	call createdMethodParameterEvent(change.affectedEObject, change.newValue)
 }
 
-routine createdMethodParameterEvent(java.Method method, java.Parameter parameter) {
+routine createdMethodParameterEvent(java::Method method, java::Parameter parameter) {
 	match {
-		val opSignature = retrieve pcm.OperationSignature corresponding to method
+		val opSignature = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		add correspondence between opSignature and parameter
@@ -129,13 +129,13 @@ routine createdMethodParameterEvent(java.Method method, java.Parameter parameter
 }
 
 reaction MethodParameterNameChangeEvent {
-	after value replaced for java.Parameter[name]
+	after value replaced for java::Parameter[name]
 	call methodParameterNameChangedEvent(change.affectedEObject, change.oldValue, change.newValue)
 }
 
-routine methodParameterNameChangedEvent(java.Parameter parameter, String oldParameterName, String newParameterName) {
+routine methodParameterNameChangedEvent(java::Parameter parameter, String oldParameterName, String newParameterName) {
 	match { 
-		val pcmParam = retrieve pcm.Parameter corresponding to parameter
+		val pcmParam = retrieve pcm::Parameter corresponding to parameter
 	}
 	action {
 		update pcmParam {
@@ -146,13 +146,13 @@ routine methodParameterNameChangedEvent(java.Parameter parameter, String oldPara
 }	
 
 reaction ChangeMethodTypeEvent {
-	after value replaced for java.Method[typeReference]
+	after value replaced for java::Method[typeReference]
 	call changedMethodType(change.affectedEObject, change.newValue)
 }
 	
-routine changedMethodType(java.Method method, java.TypeReference newType) {
+routine changedMethodType(java::Method method, java::TypeReference newType) {
 	match { 	
-		val opSignature = retrieve pcm.OperationSignature corresponding to method
+		val opSignature = retrieve pcm::OperationSignature corresponding to method
 	}
 	action {
 		update opSignature {
@@ -167,14 +167,14 @@ routine changedMethodType(java.Method method, java.TypeReference newType) {
 }
 
 reaction RemoveFieldEvent {
-	after list entry deleted and removed in java.ConcreteClassifier[members]
+	after list entry deleted and removed in java::ConcreteClassifier[members]
 		with change.oldValue instanceof Field
 	call removedFieldEvent(change.oldValue as Field)
 }
 	
-routine removedFieldEvent(java.Field field) {
+routine removedFieldEvent(java::Field field) {
 	match { 
-		val namedElement = retrieve pcm.NamedElement corresponding to field
+		val namedElement = retrieve pcm::NamedElement corresponding to field
 	}	
 	action {
 		remove correspondence between field and namedElement
@@ -187,15 +187,15 @@ routine removedFieldEvent(java.Field field) {
 }
 	
 reaction AddFieldEvent {
-	after list entry created and inserted in java.ConcreteClassifier[members]
+	after list entry created and inserted in java::ConcreteClassifier[members]
 		with change.newValue instanceof Field
 	call addedFieldEvent(change.affectedEObject, change.newValue as Field)
 }
 
-routine addedFieldEvent(java.ConcreteClassifier clazz, java.Field field) {
+routine addedFieldEvent(java::ConcreteClassifier clazz, java::Field field) {
 	match {
-		val basicComponent = retrieve pcm.BasicComponent corresponding to clazz
-		val opInterface = retrieve pcm.OperationInterface corresponding to field.typeReference
+		val basicComponent = retrieve pcm::BasicComponent corresponding to clazz
+		val opInterface = retrieve pcm::OperationInterface corresponding to field.typeReference
 	}
 	action {
 		call {
@@ -205,9 +205,9 @@ routine addedFieldEvent(java.ConcreteClassifier clazz, java.Field field) {
 	}
 }
 
-routine createRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInterface opInterface, java.Field field) {
+routine createRequiredRole(pcm::BasicComponent basicComponent, pcm::OperationInterface opInterface, java::Field field) {
 	action {
-		val opRequiredRole = create pcm.OperationRequiredRole
+		val opRequiredRole = create pcm::OperationRequiredRole
 		add correspondence between opRequiredRole and field
 		update opRequiredRole {
 			opRequiredRole.requiredInterface__OperationRequiredRole = opInterface
@@ -219,16 +219,16 @@ routine createRequiredRole(pcm.BasicComponent basicComponent, pcm.OperationInter
 }
 
 reaction ChangeFieldTypeEvent {
-	after value replaced for java.Field[typeReference]
+	after value replaced for java::Field[typeReference]
 	call changedFieldTypeEvent(change.affectedEObject, change.oldValue, change.newValue)
 }
 
-routine changedFieldTypeEvent(java.Field field, java.TypeReference oldType, java.TypeReference newType) {
+routine changedFieldTypeEvent(java::Field field, java::TypeReference oldType, java::TypeReference newType) {
 	match {
-		val oldCorrespondingOpInterface = retrieve optional pcm.OperationInterface corresponding to oldType
-		val opInterface = retrieve optional pcm.OperationInterface corresponding to newType
-		val opRequiredRole = retrieve optional pcm.OperationRequiredRole corresponding to field
-		val basicComponent = retrieve pcm.BasicComponent corresponding to field.containingConcreteClassifier
+		val oldCorrespondingOpInterface = retrieve optional pcm::OperationInterface corresponding to oldType
+		val opInterface = retrieve optional pcm::OperationInterface corresponding to newType
+		val opRequiredRole = retrieve optional pcm::OperationRequiredRole corresponding to field
+		val basicComponent = retrieve pcm::BasicComponent corresponding to field.containingConcreteClassifier
 	}
 	action {
 		call {
@@ -256,7 +256,7 @@ routine changedFieldTypeEvent(java.Field field, java.TypeReference oldType, java
 }
 	
 
-routine removeRequiredRoleAndCorrespondence(pcm.OperationRequiredRole orr, java.Field field) {
+routine removeRequiredRoleAndCorrespondence(pcm::OperationRequiredRole orr, java::Field field) {
 	action {
 		remove correspondence between orr and field
 		update orr {
@@ -267,12 +267,12 @@ routine removeRequiredRoleAndCorrespondence(pcm.OperationRequiredRole orr, java.
 
 // empty implementation for changeFieldModifier, because the change is not architectural relevant
 reaction ChangeFieldModifierEvent {
-	after list entry created and inserted in java.Field[annotationsAndModifiers]
+	after list entry created and inserted in java::Field[annotationsAndModifiers]
 	call { }
 }
 
 reaction RemoveFieldModifierEvent {
-	after list entry deleted and removed in java.Field[annotationsAndModifiers]
+	after list entry deleted and removed in java::Field[annotationsAndModifiers]
 	call { }
 }
 
@@ -280,14 +280,14 @@ reaction RemoveFieldModifierEvent {
 // if the method was non-public and is public now and the classifier has a corresponding interface 
 //--> ask user whether to add the signature to the corresponding interface 
 reaction ChangeMethodModifierEvent {
-	after list entry created and inserted in java.Method[annotationsAndModifiers]
+	after list entry created and inserted in java::Method[annotationsAndModifiers]
 	call changedMethodModifierEvent(change.affectedEObject, change.newValue)
 }
 
-routine changedMethodModifierEvent(java.Method method, java.AnnotationInstanceOrModifier annotationOrModifier) {
+routine changedMethodModifierEvent(java::Method method, java::AnnotationInstanceOrModifier annotationOrModifier) {
 	match {
-		val operationSignature = retrieve optional pcm.OperationSignature corresponding to method
-		val operationInterface = retrieve pcm.OperationInterface corresponding to method.containingConcreteClassifier
+		val operationSignature = retrieve optional pcm::OperationSignature corresponding to method
+		val operationInterface = retrieve pcm::OperationInterface corresponding to method.containingConcreteClassifier
 	}
 	action {
 		call {
