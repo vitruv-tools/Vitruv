@@ -19,13 +19,13 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.mirbase.tests"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.mirbase.ui"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.mirbase.ui.tests"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.response"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.response.ide"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.response.tests"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.response.ui"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.response.ui.tests"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.reactions"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.reactions.ide"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.reactions.tests"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.reactions.ui"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,dsls/tools.vitruv.dsls.reactions.ui.tests"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,extensions/dslsruntime/tools.vitruv.extensions.dslsruntime.mapping"/>
-<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,extensions/dslsruntime/tools.vitruv.extensions.dslsruntime.response"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,extensions/dslsruntime/tools.vitruv.extensions.dslsruntime.reactions"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.change"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.change.echange"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.change.processing"/>
@@ -36,6 +36,7 @@
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.change"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.util"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.util.metamodels"/>
+<project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tests.vsum"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.tuid"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.userinteracting"/>
 <project reference="1.0,git@github.com:vitruv-tools/Vitruv.git,master,framework/tools.vitruv.framework.util"/>
@@ -50,29 +51,29 @@
 <item elementID="=tools.vitruv.domains.emf.monitorededitor" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1475739783627_4" label="DSLs" name="DSLs">
-<item elementID="=tools.vitruv.dsls.response.ui.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.ui.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.common.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.dsls.response" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.dsls.response.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.common" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.testframework" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.dsls.response.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase.ui.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
-<item elementID="=tools.vitruv.dsls.response.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mapping.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.dsls.mirbase.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.dsls.reactions" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.dsls.reactions.ide" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.dsls.reactions.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.dsls.reactions.ui" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.dsls.reactions.ui.tests" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1475739835819_5" label="Extension: DSLs" name="Extension: DSLs">
-<item elementID="=tools.vitruv.extensions.dslsruntime.response" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.extensions.dslsruntime.mapping" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.extensions.dslsruntime.reactions" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSets>
 <workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" id="1475739513934_1" label="Framework" name="Framework">
 <item elementID="=tools.vitruv.framework.tests.change" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
@@ -82,6 +83,7 @@
 <item elementID="=tools.vitruv.framework.tests.util.metamodels" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.tuid" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=tools.vitruv.framework.tests.vsum" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.change.processing" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.util" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 <item elementID="=tools.vitruv.framework.userinteraction" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
