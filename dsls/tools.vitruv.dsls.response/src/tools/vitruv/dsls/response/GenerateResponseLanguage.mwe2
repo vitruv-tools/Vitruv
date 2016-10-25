@@ -60,7 +60,7 @@ Workflow {
 		}
 		language = StandardLanguage {
 			name = "tools.vitruv.dsls.response.ResponseLanguage"
-			fileExtensions = "response"
+			fileExtensions = "reactions"
 			junitSupport = junit.Junit4Fragment2 {
 				generateStub = false
 			}

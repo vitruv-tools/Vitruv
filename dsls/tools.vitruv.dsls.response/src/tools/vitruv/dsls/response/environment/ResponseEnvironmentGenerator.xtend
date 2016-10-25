@@ -72,7 +72,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	
 	private def ReactionsSegment getCorrespondingResponsesSegmentInTempResource(String sourceFileName, ReactionsSegment responsesSegment) {
 		for (res : tempResources) {
-			if (res.URI.segmentsList.last.equals(sourceFileName + ".response")) {
+			if (res.URI.segmentsList.last.equals(sourceFileName + ".reactions")) {
 				val responseFile = res.responseFileInResource;
 				var ReactionsSegment foundSegment = null;
 				for (segment :  responseFile.reactionsSegments) {
@@ -138,7 +138,7 @@ class ResponseEnvironmentGenerator implements IResponseEnvironmentGenerator {
 	private def ReactionsFile generateTempResourceWithResponseFile(IProject project, String sourceFileName) {
 		val responseFile = ResponseLanguageFactory.eINSTANCE.createReactionsFile();
 		val resSet = resourceSetProvider.get(project);
-		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".response"));
+		val singleResponseResource = resSet.createResource(URI.createFileURI(System.getProperty("java.io.tmpdir") + "/" + sourceFileName + ".reactions"));
 		singleResponseResource.contents.add(responseFile);
 		tempResources += singleResponseResource;
 		return responseFile;
