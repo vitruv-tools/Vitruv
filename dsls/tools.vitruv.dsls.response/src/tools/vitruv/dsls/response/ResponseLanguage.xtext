@@ -59,11 +59,11 @@ AtomicRootObjectChange:
 //	TODO add new change types for root insertions or removals without creation or deletion similar to the following and rename above:
 //	'root inserted' {InsertRootChange} |
 //	'root removed' {RemoveRootChange})
-	changedElement=UnnamedModelElement;
+	changedElement=UnnamedMetaclassReference;
 
 AtomicFeatureChange:
 	(AtomicMultiValuedFeatureChange | AtomicSingleValuedFeatureChange)
-	changedFeature=FeatureOfElement;
+	changedFeature=MetaclassFeatureReference;
 
 AtomicMultiValuedFeatureChange returns AtomicMultiValuedFeatureChange:
 	'list entry created and inserted in' {MultiValuedFeatureInsertChange} |
@@ -88,7 +88,7 @@ ArbitraryModelElementChange:
 // ***************************************
 
 Routine:
-	'routine' name=ValidID '(' input=RoutineInput ')' '{'
+	'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 		(return=ReturnStatement)?
@@ -96,8 +96,8 @@ Routine:
 
 RoutineInput:
 	{RoutineInput}
-	 ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)?;
+	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
+		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')';
 
 // *********** MATCHER ***********
 
@@ -114,7 +114,7 @@ RetrieveModelElementStatement returns RetrieveModelElement:
 	{RetrieveModelElement}
 	// TODO remove uses of required property or set it to something like required?=!optional
 	((('val' name=ValidID '=')? 'retrieve' optional?='optional'?) | abscence?='require absence of') 
-	ModelElement 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
+	MetaclassReference 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
 	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
 
 MatcherCheckStatement:
@@ -138,7 +138,7 @@ ActionStatement:
 	
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
-	'val' name=ValidID '=' 'create' ModelElement ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '=' 'create' MetaclassReference ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteModelElementStatement returns DeleteModelElement:
 	{DeleteModelElement}

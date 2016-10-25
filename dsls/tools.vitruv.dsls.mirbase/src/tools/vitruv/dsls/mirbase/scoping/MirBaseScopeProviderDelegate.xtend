@@ -16,11 +16,12 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 
 class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	private static val LOGGER = Logger.getLogger(MirBaseScopeProviderDelegate)
@@ -31,11 +32,10 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	}
 	
 	override getScope(EObject context, EReference reference) {
-		if (reference.equals(FEATURE_OF_ELEMENT__FEATURE))
-			return createEStructuralFeatureScope((context as FeatureOfElement)?.element)
-		else if (reference.equals(FEATURE_OF_ELEMENT__ELEMENT)
-			|| reference.equals(MODEL_ELEMENT__ELEMENT))
-			return createQualifiedEClassScope(context.eResource)
+		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
+			return createEStructuralFeatureScope((context as MetaclassFeatureReference)?.metaclass)
+		else if (reference.equals(METACLASS_REFERENCE__METACLASS))
+			return createQualifiedEClassScope((context as MetaclassReference).metamodel)
 		else if (reference.equals(METAMODEL_REFERENCE__MODEL)) {
 			return createImportsScope(context.eResource);
 		}
@@ -94,10 +94,10 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 */
 	private def createQualifiedEClassScope(Resource res, boolean includeAbstract, boolean includeEObject) {
 		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useSimpleNames, import.name)
+			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useSimpleNames)
 		].flatten +
 			if (includeEObject) {
-				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true, null)];	
+				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true)];	
 			} else {
 				#[];
 			}
@@ -106,22 +106,50 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		return resultScope
 	}
 	
-	def createQualifiedEClassScopeWithoutAbstract(Resource res) {
-		return createQualifiedEClassScope(res, true, false);
+		/**
+	 * Create an {@link IScope} that represents all {@link EClass}es
+	 * that are referencable inside the {@link Resource} via {@link Import}s
+	 * by a fully qualified name.
+	 * 
+	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
+	 */
+	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeAbstract, boolean includeEObject) {
+		val classifierDescriptions = 
+			if (metamodelImport == null || metamodelImport.package == null) {
+				if (includeEObject) {
+					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, true)];
+				} else {
+					#[];
+				}
+			} else { 
+				collectObjectDescriptions(metamodelImport.package, 
+					true, includeAbstract, metamodelImport.useSimpleNames)
+			}
+
+		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
+		return resultScope
+	}
+	
+	def createQualifiedEClassScopeWithoutAbstract(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, true, false);
 	}
 	
 	def createQualifiedEClassScope(Resource res) {
 		return createQualifiedEClassScope(res, false, false);
 	}
 	
-	def createQualifiedEClassScopeWithEObject(Resource res) {
-		return createQualifiedEClassScope(res, true, true);
+	def createQualifiedEClassScope(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, false, false);
+	}
+	
+	def createQualifiedEClassScopeWithEObject(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, true, true);
 	}
 	
 	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
-		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames, String packagePrefix) {
+		boolean includeSubpackages, boolean includeAbstract, boolean useSimpleNames) {
 		var classes = collectEClasses(pckg, includeSubpackages);
-		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useSimpleNames, packagePrefix)];
+		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useSimpleNames)];
 		return result;
 	}
 	
@@ -138,15 +166,12 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * Creates and returns a {@link EObjectDescription} with simple name
 	 * or in case of a qualified name with the given package prefix.
 	 */
-	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName, String packagePrefix) {
+	protected def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useSimpleName) {
 		var QualifiedName qualifiedName;
 		if (useSimpleName) {
 			qualifiedName = QualifiedName.create(classifier.name);
 		} else {
 			qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
-		}
-		if (packagePrefix != null) {
-			qualifiedName = QualifiedName.create(packagePrefix).append(qualifiedName);
 		}
 		return EObjectDescription.create(qualifiedName, classifier);
 	}

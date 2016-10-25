@@ -718,41 +718,41 @@ finally {
 }
 
 
-// Rule ModelElement
-ruleModelElement 
+// Rule MetaclassReference
+ruleMetaclassReference 
 	@init {
 		int stackSize = keepStackSize();
 	}
 	:
 	(
-		{ before(grammarAccess.getModelElementAccess().getElementAssignment()); }
-		(rule__ModelElement__ElementAssignment)
-		{ after(grammarAccess.getModelElementAccess().getElementAssignment()); }
+		{ before(grammarAccess.getMetaclassReferenceAccess().getGroup()); }
+		(rule__MetaclassReference__Group__0)
+		{ after(grammarAccess.getMetaclassReferenceAccess().getGroup()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleNamedModelElement
-entryRuleNamedModelElement
+// Entry rule entryRuleNamedMetaclassReference
+entryRuleNamedMetaclassReference
 :
-{ before(grammarAccess.getNamedModelElementRule()); }
-	 ruleNamedModelElement
-{ after(grammarAccess.getNamedModelElementRule()); } 
+{ before(grammarAccess.getNamedMetaclassReferenceRule()); }
+	 ruleNamedMetaclassReference
+{ after(grammarAccess.getNamedMetaclassReferenceRule()); } 
 	 EOF 
 ;
 
-// Rule NamedModelElement
-ruleNamedModelElement 
+// Rule NamedMetaclassReference
+ruleNamedMetaclassReference 
 	@init {
 		int stackSize = keepStackSize();
 	}
 	:
 	(
-		{ before(grammarAccess.getNamedModelElementAccess().getGroup()); }
-		(rule__NamedModelElement__Group__0)
-		{ after(grammarAccess.getNamedModelElementAccess().getGroup()); }
+		{ before(grammarAccess.getNamedMetaclassReferenceAccess().getGroup()); }
+		(rule__NamedMetaclassReference__Group__0)
+		{ after(grammarAccess.getNamedMetaclassReferenceAccess().getGroup()); }
 	)
 ;
 finally {
@@ -8065,53 +8065,53 @@ finally {
 }
 
 
-rule__NamedModelElement__Group__0
+rule__MetaclassReference__Group__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__NamedModelElement__Group__0__Impl
-	rule__NamedModelElement__Group__1
+	rule__MetaclassReference__Group__0__Impl
+	rule__MetaclassReference__Group__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group__0__Impl
+rule__MetaclassReference__Group__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getNamedModelElementAccess().getModelElementParserRuleCall_0()); }
-	ruleModelElement
-	{ after(grammarAccess.getNamedModelElementAccess().getModelElementParserRuleCall_0()); }
+	{ before(grammarAccess.getMetaclassReferenceAccess().getGroup_0()); }
+	(rule__MetaclassReference__Group_0__0)?
+	{ after(grammarAccess.getMetaclassReferenceAccess().getGroup_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group__1
+rule__MetaclassReference__Group__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__NamedModelElement__Group__1__Impl
+	rule__MetaclassReference__Group__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group__1__Impl
+rule__MetaclassReference__Group__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getNamedModelElementAccess().getGroup_1()); }
-	(rule__NamedModelElement__Group_1__0)?
-	{ after(grammarAccess.getNamedModelElementAccess().getGroup_1()); }
+	{ before(grammarAccess.getMetaclassReferenceAccess().getMetaclassAssignment_1()); }
+	(rule__MetaclassReference__MetaclassAssignment_1)
+	{ after(grammarAccess.getMetaclassReferenceAccess().getMetaclassAssignment_1()); }
 )
 ;
 finally {
@@ -8119,53 +8119,161 @@ finally {
 }
 
 
-rule__NamedModelElement__Group_1__0
+rule__MetaclassReference__Group_0__0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__NamedModelElement__Group_1__0__Impl
-	rule__NamedModelElement__Group_1__1
+	rule__MetaclassReference__Group_0__0__Impl
+	rule__MetaclassReference__Group_0__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group_1__0__Impl
+rule__MetaclassReference__Group_0__0__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getNamedModelElementAccess().getAsKeyword_1_0()); }
+	{ before(grammarAccess.getMetaclassReferenceAccess().getMetamodelAssignment_0_0()); }
+	(rule__MetaclassReference__MetamodelAssignment_0_0)
+	{ after(grammarAccess.getMetaclassReferenceAccess().getMetamodelAssignment_0_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MetaclassReference__Group_0__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__MetaclassReference__Group_0__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__MetaclassReference__Group_0__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getMetaclassReferenceAccess().getColonColonKeyword_0_1()); }
+	'::'
+	{ after(grammarAccess.getMetaclassReferenceAccess().getColonColonKeyword_0_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__NamedMetaclassReference__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NamedMetaclassReference__Group__0__Impl
+	rule__NamedMetaclassReference__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NamedMetaclassReference__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNamedMetaclassReferenceAccess().getMetaclassReferenceParserRuleCall_0()); }
+	ruleMetaclassReference
+	{ after(grammarAccess.getNamedMetaclassReferenceAccess().getMetaclassReferenceParserRuleCall_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NamedMetaclassReference__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NamedMetaclassReference__Group__1__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NamedMetaclassReference__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNamedMetaclassReferenceAccess().getGroup_1()); }
+	(rule__NamedMetaclassReference__Group_1__0)?
+	{ after(grammarAccess.getNamedMetaclassReferenceAccess().getGroup_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
+rule__NamedMetaclassReference__Group_1__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__NamedMetaclassReference__Group_1__0__Impl
+	rule__NamedMetaclassReference__Group_1__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NamedMetaclassReference__Group_1__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getNamedMetaclassReferenceAccess().getAsKeyword_1_0()); }
 	'as'
-	{ after(grammarAccess.getNamedModelElementAccess().getAsKeyword_1_0()); }
+	{ after(grammarAccess.getNamedMetaclassReferenceAccess().getAsKeyword_1_0()); }
 )
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group_1__1
+rule__NamedMetaclassReference__Group_1__1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
-	rule__NamedModelElement__Group_1__1__Impl
+	rule__NamedMetaclassReference__Group_1__1__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__Group_1__1__Impl
+rule__NamedMetaclassReference__Group_1__1__Impl
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 (
-	{ before(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1()); }
-	(rule__NamedModelElement__NameAssignment_1_1)
-	{ after(grammarAccess.getNamedModelElementAccess().getNameAssignment_1_1()); }
+	{ before(grammarAccess.getNamedMetaclassReferenceAccess().getNameAssignment_1_1()); }
+	(rule__NamedMetaclassReference__NameAssignment_1_1)
+	{ after(grammarAccess.getNamedMetaclassReferenceAccess().getNameAssignment_1_1()); }
 )
 ;
 finally {
@@ -20082,9 +20190,9 @@ rule__Signature__ElementsAssignment_3_0
 	}
 :
 	(
-		{ before(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_0_0()); }
-		ruleNamedModelElement
-		{ after(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_0_0()); }
+		{ before(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_0_0()); }
+		ruleNamedMetaclassReference
+		{ after(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_0_0()); }
 	)
 ;
 finally {
@@ -20097,9 +20205,9 @@ rule__Signature__ElementsAssignment_3_1_1
 	}
 :
 	(
-		{ before(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_1_1_0()); }
-		ruleNamedModelElement
-		{ after(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_1_1_0()); }
+		{ before(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0()); }
+		ruleNamedMetaclassReference
+		{ after(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0()); }
 	)
 ;
 finally {
@@ -20465,13 +20573,13 @@ rule__ContextVariable__TargetClassAssignment_1
 	}
 :
 	(
-		{ before(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementCrossReference_1_0()); }
+		{ before(grammarAccess.getContextVariableAccess().getTargetClassNamedMetaclassReferenceCrossReference_1_0()); }
 		(
-			{ before(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementValidIDParserRuleCall_1_0_1()); }
+			{ before(grammarAccess.getContextVariableAccess().getTargetClassNamedMetaclassReferenceValidIDParserRuleCall_1_0_1()); }
 			ruleValidID
-			{ after(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementValidIDParserRuleCall_1_0_1()); }
+			{ after(grammarAccess.getContextVariableAccess().getTargetClassNamedMetaclassReferenceValidIDParserRuleCall_1_0_1()); }
 		)
-		{ after(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementCrossReference_1_0()); }
+		{ after(grammarAccess.getContextVariableAccess().getTargetClassNamedMetaclassReferenceCrossReference_1_0()); }
 	)
 ;
 finally {
@@ -20663,34 +20771,53 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ModelElement__ElementAssignment
+rule__MetaclassReference__MetamodelAssignment_0_0
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
+		{ before(grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportCrossReference_0_0_0()); }
 		(
-			{ before(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
-			ruleQualifiedName
-			{ after(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1()); }
+			{ before(grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportIDTerminalRuleCall_0_0_0_1()); }
+			RULE_ID
+			{ after(grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportIDTerminalRuleCall_0_0_0_1()); }
 		)
-		{ after(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0()); }
+		{ after(grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportCrossReference_0_0_0()); }
 	)
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__NamedModelElement__NameAssignment_1_1
+rule__MetaclassReference__MetaclassAssignment_1
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getNamedModelElementAccess().getNameValidIDParserRuleCall_1_1_0()); }
+		{ before(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassCrossReference_1_0()); }
+		(
+			{ before(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassQualifiedNameParserRuleCall_1_0_1()); }
+			ruleQualifiedName
+			{ after(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassQualifiedNameParserRuleCall_1_0_1()); }
+		)
+		{ after(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassCrossReference_1_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NamedMetaclassReference__NameAssignment_1_1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getNamedMetaclassReferenceAccess().getNameValidIDParserRuleCall_1_1_0()); }
 		ruleValidID
-		{ after(grammarAccess.getNamedModelElementAccess().getNameValidIDParserRuleCall_1_1_0()); }
+		{ after(grammarAccess.getNamedMetaclassReferenceAccess().getNameValidIDParserRuleCall_1_1_0()); }
 	)
 ;
 finally {

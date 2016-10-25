@@ -59,13 +59,13 @@ import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 import tools.vitruv.dsls.mirbase.serializer.MirBaseSemanticSequencer;
 import tools.vitruv.dsls.response.responseLanguage.ActionStatement;
 import tools.vitruv.dsls.response.responseLanguage.ArbitraryModelElementChange;
@@ -117,8 +117,11 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
-			case MirBasePackage.FEATURE_OF_ELEMENT:
-				sequence_FeatureOfElement(context, (FeatureOfElement) semanticObject); 
+			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
+				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_REFERENCE:
+				sequence_MetaclassReference(context, (MetaclassReference) semanticObject); 
 				return; 
 			case MirBasePackage.METAMODEL_IMPORT:
 				sequence_MetamodelImport(context, (MetamodelImport) semanticObject); 
@@ -126,19 +129,16 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
-			case MirBasePackage.MODEL_ELEMENT:
-				sequence_ModelElement(context, (ModelElement) semanticObject); 
-				return; 
 			case MirBasePackage.NAMED_JAVA_ELEMENT:
 				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
 				return; 
-			case MirBasePackage.NAMED_MODEL_ELEMENT:
+			case MirBasePackage.NAMED_METACLASS_REFERENCE:
 				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
-					sequence_ClassicallyNamedModelElement_ModelElement(context, (NamedModelElement) semanticObject); 
+					sequence_ClassicallyNamedModelElement_MetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_ModelElement_NamedModelElement(context, (NamedModelElement) semanticObject); 
+				else if (rule == grammarAccess.getNamedMetaclassReferenceRule()) {
+					sequence_MetaclassReference_NamedMetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
 				else break;
@@ -169,7 +169,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				sequence_CreateCorrespondenceStatement_Taggable(context, (CreateCorrespondence) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.CREATE_MODEL_ELEMENT:
-				sequence_CreateModelElementStatement_ModelElement(context, (CreateModelElement) semanticObject); 
+				sequence_CreateModelElementStatement_MetaclassReference(context, (CreateModelElement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.DELETE_MODEL_ELEMENT:
 				sequence_DeleteModelElementStatement(context, (DeleteModelElement) semanticObject); 
@@ -292,7 +292,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				sequence_CodeBlock_ResponseReactionRoutineCall_RoutineCallBlock(context, (ResponseReactionRoutineCall) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.RETRIEVE_MODEL_ELEMENT:
-				sequence_ModelElement_RetrieveModelElementStatement_Taggable(context, (RetrieveModelElement) semanticObject); 
+				sequence_MetaclassReference_RetrieveModelElementStatement_Taggable(context, (RetrieveModelElement) semanticObject); 
 				return; 
 			case ResponseLanguagePackage.RETURN_STATEMENT:
 				sequence_ReturnStatement(context, (ReturnStatement) semanticObject); 
@@ -618,7 +618,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicFeatureChange returns MultiValuedFeatureInsertChange
 	 *
 	 * Constraint:
-	 *     changedFeature=FeatureOfElement
+	 *     changedFeature=MetaclassFeatureReference
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureInsertChange semanticObject) {
 		if (errorAcceptor != null) {
@@ -626,7 +626,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureFeatureOfElementParserRuleCall_1_0(), semanticObject.getChangedFeature());
+		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
 		feeder.finish();
 	}
 	
@@ -639,7 +639,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicFeatureChange returns MultiValuedFeaturePermuteChange
 	 *
 	 * Constraint:
-	 *     changedFeature=FeatureOfElement
+	 *     changedFeature=MetaclassFeatureReference
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeaturePermuteChange semanticObject) {
 		if (errorAcceptor != null) {
@@ -647,7 +647,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureFeatureOfElementParserRuleCall_1_0(), semanticObject.getChangedFeature());
+		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
 		feeder.finish();
 	}
 	
@@ -660,7 +660,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicFeatureChange returns MultiValuedFeatureRemoveChange
 	 *
 	 * Constraint:
-	 *     changedFeature=FeatureOfElement
+	 *     changedFeature=MetaclassFeatureReference
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange(ISerializationContext context, MultiValuedFeatureRemoveChange semanticObject) {
 		if (errorAcceptor != null) {
@@ -668,7 +668,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureFeatureOfElementParserRuleCall_1_0(), semanticObject.getChangedFeature());
+		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
 		feeder.finish();
 	}
 	
@@ -678,7 +678,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns MultiValuedFeatureInsertChange
 	 *
 	 * Constraint:
-	 *     (changedFeature=FeatureOfElement precondition=PreconditionCodeBlock?)
+	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeatureInsertChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -690,7 +690,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns MultiValuedFeaturePermuteChange
 	 *
 	 * Constraint:
-	 *     (changedFeature=FeatureOfElement precondition=PreconditionCodeBlock?)
+	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeaturePermuteChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -702,7 +702,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns MultiValuedFeatureRemoveChange
 	 *
 	 * Constraint:
-	 *     (changedFeature=FeatureOfElement precondition=PreconditionCodeBlock?)
+	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicMultiValuedFeatureChange_Trigger(ISerializationContext context, MultiValuedFeatureRemoveChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -717,7 +717,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicFeatureChange returns SingleValuedFeatureReplace
 	 *
 	 * Constraint:
-	 *     changedFeature=FeatureOfElement
+	 *     changedFeature=MetaclassFeatureReference
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange(ISerializationContext context, SingleValuedFeatureReplace semanticObject) {
 		if (errorAcceptor != null) {
@@ -725,7 +725,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureFeatureOfElementParserRuleCall_1_0(), semanticObject.getChangedFeature());
+		feeder.accept(grammarAccess.getAtomicFeatureChangeAccess().getChangedFeatureMetaclassFeatureReferenceParserRuleCall_1_0(), semanticObject.getChangedFeature());
 		feeder.finish();
 	}
 	
@@ -735,7 +735,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns SingleValuedFeatureReplace
 	 *
 	 * Constraint:
-	 *     (changedFeature=FeatureOfElement precondition=PreconditionCodeBlock?)
+	 *     (changedFeature=MetaclassFeatureReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicFeatureChange_AtomicSingleValuedFeatureChange_Trigger(ISerializationContext context, SingleValuedFeatureReplace semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -786,7 +786,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicRootObjectChange returns InsertRootChange
 	 *
 	 * Constraint:
-	 *     changedElement=UnnamedModelElement
+	 *     changedElement=UnnamedMetaclassReference
 	 */
 	protected void sequence_AtomicRootObjectChange(ISerializationContext context, InsertRootChange semanticObject) {
 		if (errorAcceptor != null) {
@@ -794,7 +794,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedModelElementParserRuleCall_1_0(), semanticObject.getChangedElement());
+		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0(), semanticObject.getChangedElement());
 		feeder.finish();
 	}
 	
@@ -807,7 +807,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     AtomicRootObjectChange returns RemoveRootChange
 	 *
 	 * Constraint:
-	 *     changedElement=UnnamedModelElement
+	 *     changedElement=UnnamedMetaclassReference
 	 */
 	protected void sequence_AtomicRootObjectChange(ISerializationContext context, RemoveRootChange semanticObject) {
 		if (errorAcceptor != null) {
@@ -815,7 +815,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, ResponseLanguagePackage.Literals.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedModelElementParserRuleCall_1_0(), semanticObject.getChangedElement());
+		feeder.accept(grammarAccess.getAtomicRootObjectChangeAccess().getChangedElementUnnamedMetaclassReferenceParserRuleCall_1_0(), semanticObject.getChangedElement());
 		feeder.finish();
 	}
 	
@@ -825,7 +825,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns InsertRootChange
 	 *
 	 * Constraint:
-	 *     (changedElement=UnnamedModelElement precondition=PreconditionCodeBlock?)
+	 *     (changedElement=UnnamedMetaclassReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicRootObjectChange_Trigger(ISerializationContext context, InsertRootChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -837,7 +837,7 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     Trigger returns RemoveRootChange
 	 *
 	 * Constraint:
-	 *     (changedElement=UnnamedModelElement precondition=PreconditionCodeBlock?)
+	 *     (changedElement=UnnamedMetaclassReference precondition=PreconditionCodeBlock?)
 	 */
 	protected void sequence_AtomicRootObjectChange_Trigger(ISerializationContext context, RemoveRootChange semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1027,9 +1027,9 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	 *     CreateModelElementStatement returns CreateModelElement
 	 *
 	 * Constraint:
-	 *     (name=ValidID element=[EClass|QualifiedName] initializationBlock=ExecutionCodeBlock?)
+	 *     (name=ValidID metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] initializationBlock=ExecutionCodeBlock?)
 	 */
-	protected void sequence_CreateModelElementStatement_ModelElement(ISerializationContext context, CreateModelElement semanticObject) {
+	protected void sequence_CreateModelElementStatement_MetaclassReference(ISerializationContext context, CreateModelElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -1097,31 +1097,32 @@ public abstract class AbstractResponseLanguageSemanticSequencer extends MirBaseS
 	
 	/**
 	 * Contexts:
-	 *     ReactionsFile returns ReactionsFile
-	 *
-	 * Constraint:
-	 *     (namespaceImports=XImportSection? metamodelImports+=MetamodelImport* reactionsSegments+=ReactionsSegment+)
-	 */
-	protected void sequence_MirBaseFile_ReactionsFile(ISerializationContext context, ReactionsFile semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     MatcherStatement returns RetrieveModelElement
 	 *     RetrieveModelElementStatement returns RetrieveModelElement
 	 *
 	 * Constraint:
 	 *     (
 	 *         ((name=ValidID? optional?='optional'?) | abscence?='require absence of')? 
-	 *         element=[EClass|QualifiedName] 
+	 *         metamodel=[MetamodelImport|ID]? 
+	 *         metaclass=[EClass|QualifiedName] 
 	 *         correspondenceSource=CorrespondingObjectCodeBlock 
 	 *         tag=TagCodeBlock? 
 	 *         precondition=PreconditionCodeBlock?
 	 *     )
 	 */
-	protected void sequence_ModelElement_RetrieveModelElementStatement_Taggable(ISerializationContext context, RetrieveModelElement semanticObject) {
+	protected void sequence_MetaclassReference_RetrieveModelElementStatement_Taggable(ISerializationContext context, RetrieveModelElement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ReactionsFile returns ReactionsFile
+	 *
+	 * Constraint:
+	 *     (namespaceImports=XImportSection? metamodelImports+=MetamodelImport* reactionsSegments+=ReactionsSegment+)
+	 */
+	protected void sequence_MirBaseFile_ReactionsFile(ISerializationContext context, ReactionsFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

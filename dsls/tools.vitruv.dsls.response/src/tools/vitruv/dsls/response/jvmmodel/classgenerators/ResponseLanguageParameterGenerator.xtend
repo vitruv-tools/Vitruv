@@ -14,11 +14,12 @@ import java.util.List
 import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.response.responseLanguage.inputTypes.InputTypesPackage
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.dsls.response.jvmmodel.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.command.ChangePropagationResult
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 class ResponseLanguageParameterGenerator {
 	package static val CHANGE_PARAMETER_NAME = "change";
@@ -35,9 +36,9 @@ class ResponseLanguageParameterGenerator {
 		_typesBuilder = typesBuilder;
 	}
 	
-	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, ModelElement element, String elementName) {
-		if (element?.element != null) {
-			return parameterContext.generateParameter(elementName, element.element.instanceClass);
+	protected def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
+		if (metaclassReference?.metaclass != null) {
+			return parameterContext.generateParameter(elementName, metaclassReference.javaClass);
 		}	
 		return null;
 	}
@@ -73,9 +74,9 @@ class ResponseLanguageParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
-	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedModelElement> modelElements, Iterable<NamedJavaElement> javaElements) {
-		return modelElements.map[
-			generateParameter(contextObject, it.name, it.element.mappedInstanceClass)
+	protected def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+		return metaclassReferences.map[
+			generateParameter(contextObject, it.name, it.metaclass.mappedInstanceClass)
 		] + javaElements.map[toParameter(contextObject, it.name, it.type)];
 	}
 	

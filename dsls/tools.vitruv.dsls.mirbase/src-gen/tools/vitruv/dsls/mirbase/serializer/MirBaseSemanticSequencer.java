@@ -60,13 +60,13 @@ import org.eclipse.xtext.xtype.XImportDeclaration;
 import org.eclipse.xtext.xtype.XImportSection;
 import org.eclipse.xtext.xtype.XtypePackage;
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule;
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport;
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage;
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement;
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess;
 
 @SuppressWarnings("all")
@@ -86,8 +86,11 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 			case MirBasePackage.DUMMY_ENTRY_RULE:
 				sequence_MirBaseFile(context, (DummyEntryRule) semanticObject); 
 				return; 
-			case MirBasePackage.FEATURE_OF_ELEMENT:
-				sequence_FeatureOfElement(context, (FeatureOfElement) semanticObject); 
+			case MirBasePackage.METACLASS_FEATURE_REFERENCE:
+				sequence_MetaclassFeatureReference_MetaclassReference(context, (MetaclassFeatureReference) semanticObject); 
+				return; 
+			case MirBasePackage.METACLASS_REFERENCE:
+				sequence_MetaclassReference(context, (MetaclassReference) semanticObject); 
 				return; 
 			case MirBasePackage.METAMODEL_IMPORT:
 				sequence_MetamodelImport(context, (MetamodelImport) semanticObject); 
@@ -95,19 +98,16 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 			case MirBasePackage.METAMODEL_REFERENCE:
 				sequence_MetamodelReference(context, (MetamodelReference) semanticObject); 
 				return; 
-			case MirBasePackage.MODEL_ELEMENT:
-				sequence_ModelElement(context, (ModelElement) semanticObject); 
-				return; 
 			case MirBasePackage.NAMED_JAVA_ELEMENT:
 				sequence_NamedJavaElement(context, (NamedJavaElement) semanticObject); 
 				return; 
-			case MirBasePackage.NAMED_MODEL_ELEMENT:
+			case MirBasePackage.NAMED_METACLASS_REFERENCE:
 				if (rule == grammarAccess.getClassicallyNamedModelElementRule()) {
-					sequence_ClassicallyNamedModelElement_ModelElement(context, (NamedModelElement) semanticObject); 
+					sequence_ClassicallyNamedModelElement_MetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
-				else if (rule == grammarAccess.getNamedModelElementRule()) {
-					sequence_ModelElement_NamedModelElement(context, (NamedModelElement) semanticObject); 
+				else if (rule == grammarAccess.getNamedMetaclassReferenceRule()) {
+					sequence_MetaclassReference_NamedMetaclassReference(context, (NamedMetaclassReference) semanticObject); 
 					return; 
 				}
 				else break;
@@ -357,43 +357,49 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     ClassicallyNamedModelElement returns NamedModelElement
+	 *     ClassicallyNamedModelElement returns NamedMetaclassReference
 	 *
 	 * Constraint:
-	 *     (element=[EClass|QualifiedName] name=ValidID)
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] name=ValidID)
 	 */
-	protected void sequence_ClassicallyNamedModelElement_ModelElement(ISerializationContext context, NamedModelElement semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT));
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.NAMED_MODEL_ELEMENT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.NAMED_MODEL_ELEMENT__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getElement());
-		feeder.accept(grammarAccess.getClassicallyNamedModelElementAccess().getNameValidIDParserRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
+	protected void sequence_ClassicallyNamedModelElement_MetaclassReference(ISerializationContext context, NamedMetaclassReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Contexts:
-	 *     FeatureOfElement returns FeatureOfElement
+	 *     MetaclassFeatureReference returns MetaclassFeatureReference
 	 *
 	 * Constraint:
-	 *     (element=[EClass|QualifiedName] feature=[EStructuralFeature|ValidID])
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] feature=[EStructuralFeature|ValidID])
 	 */
-	protected void sequence_FeatureOfElement(ISerializationContext context, FeatureOfElement semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.FEATURE_OF_ELEMENT__ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.FEATURE_OF_ELEMENT__ELEMENT));
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.FEATURE_OF_ELEMENT__FEATURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.FEATURE_OF_ELEMENT__FEATURE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getFeatureOfElementAccess().getElementEClassQualifiedNameParserRuleCall_0_0_1(), semanticObject.getElement());
-		feeder.accept(grammarAccess.getFeatureOfElementAccess().getFeatureEStructuralFeatureValidIDParserRuleCall_2_0_1(), semanticObject.getFeature());
-		feeder.finish();
+	protected void sequence_MetaclassFeatureReference_MetaclassReference(ISerializationContext context, MetaclassFeatureReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     UnnamedMetaclassReference returns MetaclassReference
+	 *
+	 * Constraint:
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName])
+	 */
+	protected void sequence_MetaclassReference(ISerializationContext context, MetaclassReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     NamedMetaclassReference returns NamedMetaclassReference
+	 *
+	 * Constraint:
+	 *     (metamodel=[MetamodelImport|ID]? metaclass=[EClass|QualifiedName] name=ValidID?)
+	 */
+	protected void sequence_MetaclassReference_NamedMetaclassReference(ISerializationContext context, NamedMetaclassReference semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -435,36 +441,6 @@ public class MirBaseSemanticSequencer extends XbaseSemanticSequencer {
 	 *     metamodelImports+=MetamodelImport*
 	 */
 	protected void sequence_MirBaseFile(ISerializationContext context, DummyEntryRule semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     UnnamedModelElement returns ModelElement
-	 *
-	 * Constraint:
-	 *     element=[EClass|QualifiedName]
-	 */
-	protected void sequence_ModelElement(ISerializationContext context, ModelElement semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MirBasePackage.Literals.MODEL_ELEMENT__ELEMENT));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getModelElementAccess().getElementEClassQualifiedNameParserRuleCall_0_1(), semanticObject.getElement());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     NamedModelElement returns NamedModelElement
-	 *
-	 * Constraint:
-	 *     (element=[EClass|QualifiedName] name=ValidID?)
-	 */
-	protected void sequence_ModelElement_NamedModelElement(ISerializationContext context, NamedModelElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

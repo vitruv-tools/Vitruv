@@ -96,19 +96,19 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
         return createNamedJavaElementAdapter();
       }
       @Override
-      public Adapter caseModelElement(ModelElement object)
+      public Adapter caseMetaclassReference(MetaclassReference object)
       {
-        return createModelElementAdapter();
+        return createMetaclassReferenceAdapter();
       }
       @Override
-      public Adapter caseNamedModelElement(NamedModelElement object)
+      public Adapter caseNamedMetaclassReference(NamedMetaclassReference object)
       {
-        return createNamedModelElementAdapter();
+        return createNamedMetaclassReferenceAdapter();
       }
       @Override
-      public Adapter caseFeatureOfElement(FeatureOfElement object)
+      public Adapter caseMetaclassFeatureReference(MetaclassFeatureReference object)
       {
-        return createFeatureOfElementAdapter();
+        return createMetaclassFeatureReferenceAdapter();
       }
       @Override
       public Adapter caseMetamodelReference(MetamodelReference object)
@@ -198,46 +198,46 @@ public class MirBaseAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.ModelElement <em>Model Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassReference <em>Metaclass Reference</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mirbase.mirBase.ModelElement
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
    * @generated
    */
-  public Adapter createModelElementAdapter()
+  public Adapter createMetaclassReferenceAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement <em>Named Model Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference <em>Named Metaclass Reference</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+   * @see tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
    * @generated
    */
-  public Adapter createNamedModelElementAdapter()
+  public Adapter createNamedMetaclassReferenceAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement <em>Feature Of Element</em>}'.
+   * Creates a new adapter for an object of class '{@link tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference <em>Metaclass Feature Reference</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement
+   * @see tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
    * @generated
    */
-  public Adapter createFeatureOfElementAdapter()
+  public Adapter createMetaclassFeatureReferenceAdapter()
   {
     return null;
   }

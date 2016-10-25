@@ -92,7 +92,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicFeatureChange event) {
 		createEObjectNode(parentNode, event);
 		if (event.changedFeature != null) {
-			createEObjectNode(parentNode, event.changedFeature.element);
+			createEObjectNode(parentNode, event.changedFeature.metaclass);
 			if (event.changedFeature.feature != null) {
 				createEObjectNode(parentNode, event.changedFeature.feature);
 			}
@@ -102,7 +102,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(EStructuralFeatureNode parentNode, AtomicRootObjectChange event) {
 		createEObjectNode(parentNode, event);
 		if (event.changedElement != null) {
-			createEObjectNode(parentNode, event.changedElement.element);
+			createEObjectNode(parentNode, event.changedElement.metaclass);
 		}
 	}
 	
@@ -154,7 +154,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(AtomicFeatureChange event) {
-		if (event.changedFeature?.element != null) {
+		if (event.changedFeature?.metaclass != null) {
 			return event.generateEChange()?.name;
 		} else {
 			return "No changed element specified"
@@ -162,7 +162,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(AtomicRootObjectChange event) {
-		if (event.changedElement?.element != null) {
+		if (event.changedElement?.metaclass != null) {
 			return event.generateEChange()?.name;
 		} else {
 			return "No changed element specified"
@@ -202,7 +202,7 @@ class ResponseLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //	}
 	
 	private def String getElementText(RetrieveModelElement retrieveElement) {
-		return retrieveElement.name + " (" + retrieveElement.element?.name + ")"
+		return retrieveElement.name + " (" + retrieveElement.metaclass?.name + ")"
 	}
 	
 	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {

@@ -31,7 +31,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="declaredPackage" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetamodelReference"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedModelElement"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequiredMapping">
@@ -53,7 +53,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ContextVariable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMappingPath" eType="#//RequiredMappingPathBase"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetClass" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedModelElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetClass" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequiredMappingPathBase">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requiredMapping" eType="#//RequiredMapping"/>

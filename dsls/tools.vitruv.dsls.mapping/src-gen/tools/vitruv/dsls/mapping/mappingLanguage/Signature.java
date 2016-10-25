@@ -8,7 +8,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelReference;
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,7 +57,7 @@ public interface Signature extends EObject
 
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement}.
+   * The list contents are of type {@link tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
@@ -69,6 +69,6 @@ public interface Signature extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<NamedModelElement> getElements();
+  EList<NamedMetaclassReference> getElements();
 
 } // Signature

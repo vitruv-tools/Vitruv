@@ -330,20 +330,21 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cColonKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Assignment cElementsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
-		private final RuleCall cElementsNamedModelElementParserRuleCall_3_0_0 = (RuleCall)cElementsAssignment_3_0.eContents().get(0);
+		private final RuleCall cElementsNamedMetaclassReferenceParserRuleCall_3_0_0 = (RuleCall)cElementsAssignment_3_0.eContents().get(0);
 		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
 		private final Keyword cCommaKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
 		private final Assignment cElementsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
-		private final RuleCall cElementsNamedModelElementParserRuleCall_3_1_1_0 = (RuleCall)cElementsAssignment_3_1_1.eContents().get(0);
+		private final RuleCall cElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0 = (RuleCall)cElementsAssignment_3_1_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Signature:
 		//	{Signature}
-		//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']';
+		//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedMetaclassReference (','
+		//	elements+=NamedMetaclassReference)*)? ']';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Signature} '[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (','
-		//elements+=NamedModelElement)*)? ']'
+		//{Signature} '[' (declaredPackage=MetamodelReference ':')? (elements+=NamedMetaclassReference (','
+		//elements+=NamedMetaclassReference)*)? ']'
 		public Group getGroup() { return cGroup; }
 		
 		//{Signature}
@@ -364,26 +365,26 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//':'
 		public Keyword getColonKeyword_2_1() { return cColonKeyword_2_1; }
 		
-		//(elements+=NamedModelElement (',' elements+=NamedModelElement)*)?
+		//(elements+=NamedMetaclassReference (',' elements+=NamedMetaclassReference)*)?
 		public Group getGroup_3() { return cGroup_3; }
 		
-		//elements+=NamedModelElement
+		//elements+=NamedMetaclassReference
 		public Assignment getElementsAssignment_3_0() { return cElementsAssignment_3_0; }
 		
-		//NamedModelElement
-		public RuleCall getElementsNamedModelElementParserRuleCall_3_0_0() { return cElementsNamedModelElementParserRuleCall_3_0_0; }
+		//NamedMetaclassReference
+		public RuleCall getElementsNamedMetaclassReferenceParserRuleCall_3_0_0() { return cElementsNamedMetaclassReferenceParserRuleCall_3_0_0; }
 		
-		//(',' elements+=NamedModelElement)*
+		//(',' elements+=NamedMetaclassReference)*
 		public Group getGroup_3_1() { return cGroup_3_1; }
 		
 		//','
 		public Keyword getCommaKeyword_3_1_0() { return cCommaKeyword_3_1_0; }
 		
-		//elements+=NamedModelElement
+		//elements+=NamedMetaclassReference
 		public Assignment getElementsAssignment_3_1_1() { return cElementsAssignment_3_1_1; }
 		
-		//NamedModelElement
-		public RuleCall getElementsNamedModelElementParserRuleCall_3_1_1_0() { return cElementsNamedModelElementParserRuleCall_3_1_1_0; }
+		//NamedMetaclassReference
+		public RuleCall getElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0() { return cElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0; }
 		
 		//']'
 		public Keyword getRightSquareBracketKeyword_4() { return cRightSquareBracketKeyword_4; }
@@ -1064,14 +1065,14 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRequiredMappingPathRequiredMappingPathBaseParserRuleCall_0_0_0 = (RuleCall)cRequiredMappingPathAssignment_0_0.eContents().get(0);
 		private final Keyword cColonColonKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
 		private final Assignment cTargetClassAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final CrossReference cTargetClassNamedModelElementCrossReference_1_0 = (CrossReference)cTargetClassAssignment_1.eContents().get(0);
-		private final RuleCall cTargetClassNamedModelElementValidIDParserRuleCall_1_0_1 = (RuleCall)cTargetClassNamedModelElementCrossReference_1_0.eContents().get(1);
+		private final CrossReference cTargetClassNamedMetaclassReferenceCrossReference_1_0 = (CrossReference)cTargetClassAssignment_1.eContents().get(0);
+		private final RuleCall cTargetClassNamedMetaclassReferenceValidIDParserRuleCall_1_0_1 = (RuleCall)cTargetClassNamedMetaclassReferenceCrossReference_1_0.eContents().get(1);
 		
 		//ContextVariable:
-		//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID];
+		//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedMetaclassReference|ValidID];
 		@Override public ParserRule getRule() { return rule; }
 		
-		//(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID]
+		//(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedMetaclassReference|ValidID]
 		public Group getGroup() { return cGroup; }
 		
 		//(requiredMappingPath=RequiredMappingPathBase '::')?
@@ -1086,14 +1087,14 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		//'::'
 		public Keyword getColonColonKeyword_0_1() { return cColonColonKeyword_0_1; }
 		
-		//targetClass=[mirBase::NamedModelElement|ValidID]
+		//targetClass=[mirBase::NamedMetaclassReference|ValidID]
 		public Assignment getTargetClassAssignment_1() { return cTargetClassAssignment_1; }
 		
-		//[mirBase::NamedModelElement|ValidID]
-		public CrossReference getTargetClassNamedModelElementCrossReference_1_0() { return cTargetClassNamedModelElementCrossReference_1_0; }
+		//[mirBase::NamedMetaclassReference|ValidID]
+		public CrossReference getTargetClassNamedMetaclassReferenceCrossReference_1_0() { return cTargetClassNamedMetaclassReferenceCrossReference_1_0; }
 		
 		//ValidID
-		public RuleCall getTargetClassNamedModelElementValidIDParserRuleCall_1_0_1() { return cTargetClassNamedModelElementValidIDParserRuleCall_1_0_1; }
+		public RuleCall getTargetClassNamedMetaclassReferenceValidIDParserRuleCall_1_0_1() { return cTargetClassNamedMetaclassReferenceValidIDParserRuleCall_1_0_1; }
 	}
 	public class RequiredMappingPathBaseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "tools.vitruv.dsls.mapping.MappingLanguage.RequiredMappingPathBase");
@@ -1437,7 +1438,8 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//Signature:
 	//	{Signature}
-	//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']';
+	//	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedMetaclassReference (','
+	//	elements+=NamedMetaclassReference)*)? ']';
 	public SignatureElements getSignatureAccess() {
 		return pSignature;
 	}
@@ -1626,7 +1628,7 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ContextVariable:
-	//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedModelElement|ValidID];
+	//	(requiredMappingPath=RequiredMappingPathBase '::')? targetClass=[mirBase::NamedMetaclassReference|ValidID];
 	public ContextVariableElements getContextVariableAccess() {
 		return pContextVariable;
 	}
@@ -1746,38 +1748,38 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 		return getNamedJavaElementAccess().getRule();
 	}
 	
-	//fragment ModelElement:
-	//	element=[ecore::EClass|QualifiedName];
-	public MirBaseGrammarAccess.ModelElementElements getModelElementAccess() {
-		return gaMirBase.getModelElementAccess();
+	//fragment MetaclassReference:
+	//	(metamodel=[MetamodelImport] '::')? metaclass=[ecore::EClass|QualifiedName];
+	public MirBaseGrammarAccess.MetaclassReferenceElements getMetaclassReferenceAccess() {
+		return gaMirBase.getMetaclassReferenceAccess();
 	}
 	
-	public ParserRule getModelElementRule() {
-		return getModelElementAccess().getRule();
+	public ParserRule getMetaclassReferenceRule() {
+		return getMetaclassReferenceAccess().getRule();
 	}
 	
-	//UnnamedModelElement ModelElement:
-	//	ModelElement
-	public MirBaseGrammarAccess.UnnamedModelElementElements getUnnamedModelElementAccess() {
-		return gaMirBase.getUnnamedModelElementAccess();
+	//UnnamedMetaclassReference MetaclassReference:
+	//	MetaclassReference
+	public MirBaseGrammarAccess.UnnamedMetaclassReferenceElements getUnnamedMetaclassReferenceAccess() {
+		return gaMirBase.getUnnamedMetaclassReferenceAccess();
 	}
 	
-	public ParserRule getUnnamedModelElementRule() {
-		return getUnnamedModelElementAccess().getRule();
+	public ParserRule getUnnamedMetaclassReferenceRule() {
+		return getUnnamedMetaclassReferenceAccess().getRule();
 	}
 	
-	//NamedModelElement:
-	//	ModelElement ('as' name=ValidID)?;
-	public MirBaseGrammarAccess.NamedModelElementElements getNamedModelElementAccess() {
-		return gaMirBase.getNamedModelElementAccess();
+	//NamedMetaclassReference:
+	//	MetaclassReference ('as' name=ValidID)?;
+	public MirBaseGrammarAccess.NamedMetaclassReferenceElements getNamedMetaclassReferenceAccess() {
+		return gaMirBase.getNamedMetaclassReferenceAccess();
 	}
 	
-	public ParserRule getNamedModelElementRule() {
-		return getNamedModelElementAccess().getRule();
+	public ParserRule getNamedMetaclassReferenceRule() {
+		return getNamedMetaclassReferenceAccess().getRule();
 	}
 	
-	//ClassicallyNamedModelElement NamedModelElement:
-	//	ModelElement name=ValidID
+	//ClassicallyNamedModelElement NamedMetaclassReference:
+	//	MetaclassReference name=ValidID
 	public MirBaseGrammarAccess.ClassicallyNamedModelElementElements getClassicallyNamedModelElementAccess() {
 		return gaMirBase.getClassicallyNamedModelElementAccess();
 	}
@@ -1796,14 +1798,14 @@ public class MappingLanguageGrammarAccess extends AbstractGrammarElementFinder {
 	////NamedModelElement:
 	////	ModelElement ('as' name=ValidID)?
 	////;
-	//FeatureOfElement:
-	//	element=[ecore::EClass|QualifiedName] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
-	public MirBaseGrammarAccess.FeatureOfElementElements getFeatureOfElementAccess() {
-		return gaMirBase.getFeatureOfElementAccess();
+	//MetaclassFeatureReference:
+	//	MetaclassReference '[' feature=[ecore::EStructuralFeature|ValidID] ']';
+	public MirBaseGrammarAccess.MetaclassFeatureReferenceElements getMetaclassFeatureReferenceAccess() {
+		return gaMirBase.getMetaclassFeatureReferenceAccess();
 	}
 	
-	public ParserRule getFeatureOfElementRule() {
-		return getFeatureOfElementAccess().getRule();
+	public ParserRule getMetaclassFeatureReferenceRule() {
+		return getMetaclassFeatureReferenceAccess().getRule();
 	}
 	
 	//MetamodelReference:

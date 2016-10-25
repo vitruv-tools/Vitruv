@@ -230,10 +230,10 @@ class MappingLanguageJvmModelInferrer extends AbstractModelInferrer {
 						initializer = '''«index»'''
 					],
 					modelElement.toMethod('''get«modelElement.name.toFirstUpper»''',
-						typeRef(modelElement.element.instanceTypeName)) [
+						typeRef(modelElement.metaclass.instanceTypeName)) [
 						body = '''
 							return «JavaHelper».requireType(getElements().get(«modelElement.name.toUpperCase»_INDEX),
-								«typeRef(modelElement.element.instanceTypeName)».class);
+								«typeRef(modelElement.metaclass.instanceTypeName)».class);
 						'''
 					]
 				]

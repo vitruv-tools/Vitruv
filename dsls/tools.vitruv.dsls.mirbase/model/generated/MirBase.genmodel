@@ -19,15 +19,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MirBase.ecore#//NamedJavaElement/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//NamedJavaElement/name"/>
     </genClasses>
-    <genClasses ecoreClass="MirBase.ecore#//ModelElement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//ModelElement/element"/>
+    <genClasses ecoreClass="MirBase.ecore#//MetaclassReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassReference/metamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassReference/metaclass"/>
     </genClasses>
-    <genClasses ecoreClass="MirBase.ecore#//NamedModelElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//NamedModelElement/name"/>
+    <genClasses ecoreClass="MirBase.ecore#//NamedMetaclassReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MirBase.ecore#//NamedMetaclassReference/name"/>
     </genClasses>
-    <genClasses ecoreClass="MirBase.ecore#//FeatureOfElement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//FeatureOfElement/element"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//FeatureOfElement/feature"/>
+    <genClasses ecoreClass="MirBase.ecore#//MetaclassFeatureReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetaclassFeatureReference/feature"/>
     </genClasses>
     <genClasses ecoreClass="MirBase.ecore#//MetamodelReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MirBase.ecore#//MetamodelReference/model"/>

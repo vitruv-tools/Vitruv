@@ -6,21 +6,21 @@ package tools.vitruv.dsls.mirbase.mirBase;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Named Model Element</b></em>'.
+ * A representation of the model object '<em><b>Named Metaclass Reference</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement#getName <em>Name</em>}</li>
+ *   <li>{@link tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference#getName <em>Name</em>}</li>
  * </ul>
  *
- * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getNamedModelElement()
+ * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getNamedMetaclassReference()
  * @model
  * @generated
  */
-public interface NamedModelElement extends ModelElement
+public interface NamedMetaclassReference extends MetaclassReference
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -32,14 +32,14 @@ public interface NamedModelElement extends ModelElement
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getNamedModelElement_Name()
+   * @see tools.vitruv.dsls.mirbase.mirBase.MirBasePackage#getNamedMetaclassReference_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link tools.vitruv.dsls.mirbase.mirBase.NamedModelElement#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -48,4 +48,4 @@ public interface NamedModelElement extends ModelElement
    */
   void setName(String value);
 
-} // NamedModelElement
+} // NamedMetaclassReference

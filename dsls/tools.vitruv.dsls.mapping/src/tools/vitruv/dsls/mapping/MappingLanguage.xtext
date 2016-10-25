@@ -40,7 +40,7 @@ Mapping returns Mapping:
 
 Signature:
 	{Signature}
-	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedModelElement (',' elements+=NamedModelElement)*)? ']'
+	'[' (declaredPackage=MetamodelReference ':')? (elements+=NamedMetaclassReference (',' elements+=NamedMetaclassReference)*)? ']'
 ;
 
 RequiredMapping:
@@ -136,7 +136,7 @@ FeatureOfContextVariable:
 ;
 
 ContextVariable:
-	(requiredMappingPath=RequiredMappingPathBase '::')? (targetClass=[mirBase::NamedModelElement|ValidID])
+	(requiredMappingPath=RequiredMappingPathBase '::')? (targetClass=[mirBase::NamedMetaclassReference|ValidID])
 ;
 
 RequiredMappingPathBase:

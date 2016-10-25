@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference;
 
 import tools.vitruv.dsls.response.responseLanguage.AtomicRootObjectChange;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
@@ -39,7 +39,7 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
    * @generated
    * @ordered
    */
-  protected ModelElement changedElement;
+  protected MetaclassReference changedElement;
 
   /**
    * <!-- begin-user-doc -->
@@ -67,7 +67,7 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
    * <!-- end-user-doc -->
    * @generated
    */
-  public ModelElement getChangedElement()
+  public MetaclassReference getChangedElement()
   {
     return changedElement;
   }
@@ -77,9 +77,9 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetChangedElement(ModelElement newChangedElement, NotificationChain msgs)
+  public NotificationChain basicSetChangedElement(MetaclassReference newChangedElement, NotificationChain msgs)
   {
-    ModelElement oldChangedElement = changedElement;
+    MetaclassReference oldChangedElement = changedElement;
     changedElement = newChangedElement;
     if (eNotificationRequired())
     {
@@ -94,7 +94,7 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setChangedElement(ModelElement newChangedElement)
+  public void setChangedElement(MetaclassReference newChangedElement)
   {
     if (newChangedElement != changedElement)
     {
@@ -153,7 +153,7 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
     switch (featureID)
     {
       case ResponseLanguagePackage.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT:
-        setChangedElement((ModelElement)newValue);
+        setChangedElement((MetaclassReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -170,7 +170,7 @@ public class AtomicRootObjectChangeImpl extends AtomicConcreteModelElementChange
     switch (featureID)
     {
       case ResponseLanguagePackage.ATOMIC_ROOT_OBJECT_CHANGE__CHANGED_ELEMENT:
-        setChangedElement((ModelElement)null);
+        setChangedElement((MetaclassReference)null);
         return;
     }
     super.eUnset(featureID);

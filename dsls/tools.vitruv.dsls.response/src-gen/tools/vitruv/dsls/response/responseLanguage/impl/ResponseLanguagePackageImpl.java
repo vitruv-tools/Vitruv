@@ -1537,7 +1537,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     atomicSingleValuedFeatureChangeEClass.getESuperTypes().add(this.getAtomicFeatureChange());
     arbitraryModelElementChangeEClass.getESuperTypes().add(this.getModelChange());
     retrieveModelElementEClass.getESuperTypes().add(this.getMatcherStatement());
-    retrieveModelElementEClass.getESuperTypes().add(theMirBasePackage.getModelElement());
+    retrieveModelElementEClass.getESuperTypes().add(theMirBasePackage.getMetaclassReference());
     retrieveModelElementEClass.getESuperTypes().add(this.getTaggable());
     matcherCheckStatementEClass.getESuperTypes().add(this.getMatcherStatement());
     matcherCheckStatementEClass.getESuperTypes().add(this.getCodeBlock());
@@ -1547,7 +1547,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     actionStatementEClass.getESuperTypes().add(this.getExecuteActionBlock());
     actionStatementEClass.getESuperTypes().add(this.getCodeBlock());
     createModelElementEClass.getESuperTypes().add(this.getActionStatement());
-    createModelElementEClass.getESuperTypes().add(theMirBasePackage.getModelElement());
+    createModelElementEClass.getESuperTypes().add(theMirBasePackage.getMetaclassReference());
     deleteModelElementEClass.getESuperTypes().add(this.getActionStatement());
     updateModelElementEClass.getESuperTypes().add(this.getActionStatement());
     createCorrespondenceEClass.getESuperTypes().add(this.getActionStatement());
@@ -1601,10 +1601,10 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEClass(atomicConcreteModelElementChangeEClass, AtomicConcreteModelElementChange.class, "AtomicConcreteModelElementChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(atomicRootObjectChangeEClass, AtomicRootObjectChange.class, "AtomicRootObjectChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAtomicRootObjectChange_ChangedElement(), theMirBasePackage.getModelElement(), null, "changedElement", null, 0, 1, AtomicRootObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAtomicRootObjectChange_ChangedElement(), theMirBasePackage.getMetaclassReference(), null, "changedElement", null, 0, 1, AtomicRootObjectChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(atomicFeatureChangeEClass, AtomicFeatureChange.class, "AtomicFeatureChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAtomicFeatureChange_ChangedFeature(), theMirBasePackage.getFeatureOfElement(), null, "changedFeature", null, 0, 1, AtomicFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAtomicFeatureChange_ChangedFeature(), theMirBasePackage.getMetaclassFeatureReference(), null, "changedFeature", null, 0, 1, AtomicFeatureChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(atomicMultiValuedFeatureChangeEClass, AtomicMultiValuedFeatureChange.class, "AtomicMultiValuedFeatureChange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1621,7 +1621,7 @@ public class ResponseLanguagePackageImpl extends EPackageImpl implements Respons
     initEReference(getRoutine_ReactionsSegment(), this.getReactionsSegment(), this.getReactionsSegment_Routines(), "reactionsSegment", null, 1, 1, Routine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(routineInputEClass, RoutineInput.class, "RoutineInput", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRoutineInput_ModelInputElements(), theMirBasePackage.getNamedModelElement(), null, "modelInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoutineInput_ModelInputElements(), theMirBasePackage.getNamedMetaclassReference(), null, "modelInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRoutineInput_JavaInputElements(), theMirBasePackage.getNamedJavaElement(), null, "javaInputElements", null, 0, -1, RoutineInput.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(matcherEClass, Matcher.class, "Matcher", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

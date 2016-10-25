@@ -60,31 +60,31 @@ public interface MirBaseFactory extends EFactory
   NamedJavaElement createNamedJavaElement();
 
   /**
-   * Returns a new object of class '<em>Model Element</em>'.
+   * Returns a new object of class '<em>Metaclass Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Model Element</em>'.
+   * @return a new object of class '<em>Metaclass Reference</em>'.
    * @generated
    */
-  ModelElement createModelElement();
+  MetaclassReference createMetaclassReference();
 
   /**
-   * Returns a new object of class '<em>Named Model Element</em>'.
+   * Returns a new object of class '<em>Named Metaclass Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Named Model Element</em>'.
+   * @return a new object of class '<em>Named Metaclass Reference</em>'.
    * @generated
    */
-  NamedModelElement createNamedModelElement();
+  NamedMetaclassReference createNamedMetaclassReference();
 
   /**
-   * Returns a new object of class '<em>Feature Of Element</em>'.
+   * Returns a new object of class '<em>Metaclass Feature Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Feature Of Element</em>'.
+   * @return a new object of class '<em>Metaclass Feature Reference</em>'.
    * @generated
    */
-  FeatureOfElement createFeatureOfElement();
+  MetaclassFeatureReference createMetaclassFeatureReference();
 
   /**
    * Returns a new object of class '<em>Metamodel Reference</em>'.

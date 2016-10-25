@@ -15,7 +15,6 @@ import tools.vitruv.dsls.response.responseLanguage.InsertRootChange
 import tools.vitruv.dsls.response.responseLanguage.RemoveRootChange
 import tools.vitruv.dsls.response.responseLanguage.SingleValuedFeatureReplace
 import tools.vitruv.dsls.response.responseLanguage.Trigger
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.ChangePackage
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage
@@ -26,10 +25,12 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import java.util.List
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import static extension tools.vitruv.dsls.response.helper.ResponseLanguageHelper.*;
 
 final class EChangeHelper {
 	
-	static def String getGenericTypeParameterFQNOfChange(EClass changeEClass, FeatureOfElement foe) {
+	static def String getGenericTypeParameterFQNOfChange(EClass changeEClass, MetaclassFeatureReference featureReference) {
 		val changeClass = changeEClass.instanceClass;
 		var String className = "";
 		if (FeatureEChange.isAssignableFrom(changeClass)
@@ -37,9 +38,9 @@ final class EChangeHelper {
 //			|| UnsetEReference.isAssignableFrom(changeClass)
 //			|| UnsetEAttribute.isAssignableFrom(changeClass)
 		) {
-			className = foe.feature.EType.instanceClassName
+			className = featureReference.feature.EType.instanceClassName
 		} else if (RootEChange.isAssignableFrom(changeClass)) {
-			className = foe.element.instanceClassName;
+			className = featureReference.metaclass.instanceClassName;
 		}/* else if (EFeatureChange.isAssignableFrom(changeClass)) {
 			className = foe.feature.class.name
 		}*/
@@ -53,11 +54,11 @@ final class EChangeHelper {
 	}
 	
 	static def dispatch List<Class<?>> getGenericTypeParametersOfChange(AtomicFeatureChange featureChange) {
-		return #[featureChange.changedFeature.element.instanceClass, featureChange.changedFeature.feature.EType.instanceClass];
+		return #[featureChange.changedFeature.javaClass, featureChange.changedFeature.feature.EType.instanceClass];
 	}
 	
 	static def dispatch List<Class<?>> getGenericTypeParametersOfChange(AtomicRootObjectChange elementChange) {
-		return #[elementChange.changedElement.element.instanceClass];
+		return #[elementChange.changedElement.javaClass];
 	}
 	
 	static def List<String> getGenericTypeParameterFQNsOfChange(ConcreteModelElementChange change) {
@@ -96,7 +97,7 @@ final class EChangeHelper {
 	}
 	
 	static def dispatch EClass generateEChange(AtomicRootObjectChange elementChange) {
-		generateEChange(elementChange, elementChange.changedElement.element);
+		generateEChange(elementChange, elementChange.changedElement.metaclass);
 	}
 	
 	private static def dispatch EClass generateEChange(ConcreteModelElementChange elementUpdate, EObject element) {

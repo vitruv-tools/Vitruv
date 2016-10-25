@@ -3,7 +3,7 @@
  */
 package tools.vitruv.dsls.response.responseLanguage;
 
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,12 +32,12 @@ public interface AtomicFeatureChange extends AtomicConcreteModelElementChange
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Changed Feature</em>' containment reference.
-   * @see #setChangedFeature(FeatureOfElement)
+   * @see #setChangedFeature(MetaclassFeatureReference)
    * @see tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage#getAtomicFeatureChange_ChangedFeature()
    * @model containment="true"
    * @generated
    */
-  FeatureOfElement getChangedFeature();
+  MetaclassFeatureReference getChangedFeature();
 
   /**
    * Sets the value of the '{@link tools.vitruv.dsls.response.responseLanguage.AtomicFeatureChange#getChangedFeature <em>Changed Feature</em>}' containment reference.
@@ -47,6 +47,6 @@ public interface AtomicFeatureChange extends AtomicConcreteModelElementChange
    * @see #getChangedFeature()
    * @generated
    */
-  void setChangedFeature(FeatureOfElement value);
+  void setChangedFeature(MetaclassFeatureReference value);
 
 } // AtomicFeatureChange

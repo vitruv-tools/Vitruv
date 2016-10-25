@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import tools.vitruv.dsls.mirbase.mirBase.FeatureOfElement;
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference;
 
 import tools.vitruv.dsls.response.responseLanguage.AtomicFeatureChange;
 import tools.vitruv.dsls.response.responseLanguage.ResponseLanguagePackage;
@@ -39,7 +39,7 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
    * @generated
    * @ordered
    */
-  protected FeatureOfElement changedFeature;
+  protected MetaclassFeatureReference changedFeature;
 
   /**
    * <!-- begin-user-doc -->
@@ -67,7 +67,7 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
    * <!-- end-user-doc -->
    * @generated
    */
-  public FeatureOfElement getChangedFeature()
+  public MetaclassFeatureReference getChangedFeature()
   {
     return changedFeature;
   }
@@ -77,9 +77,9 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetChangedFeature(FeatureOfElement newChangedFeature, NotificationChain msgs)
+  public NotificationChain basicSetChangedFeature(MetaclassFeatureReference newChangedFeature, NotificationChain msgs)
   {
-    FeatureOfElement oldChangedFeature = changedFeature;
+    MetaclassFeatureReference oldChangedFeature = changedFeature;
     changedFeature = newChangedFeature;
     if (eNotificationRequired())
     {
@@ -94,7 +94,7 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setChangedFeature(FeatureOfElement newChangedFeature)
+  public void setChangedFeature(MetaclassFeatureReference newChangedFeature)
   {
     if (newChangedFeature != changedFeature)
     {
@@ -153,7 +153,7 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
     switch (featureID)
     {
       case ResponseLanguagePackage.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE:
-        setChangedFeature((FeatureOfElement)newValue);
+        setChangedFeature((MetaclassFeatureReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -170,7 +170,7 @@ public class AtomicFeatureChangeImpl extends AtomicConcreteModelElementChangeImp
     switch (featureID)
     {
       case ResponseLanguagePackage.ATOMIC_FEATURE_CHANGE__CHANGED_FEATURE:
-        setChangedFeature((FeatureOfElement)null);
+        setChangedFeature((MetaclassFeatureReference)null);
         return;
     }
     super.eUnset(featureID);

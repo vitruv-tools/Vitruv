@@ -573,9 +573,9 @@ ruleSignature returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_0_0());
+						newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_0_0());
 					}
-					lv_elements_4_0=ruleNamedModelElement
+					lv_elements_4_0=ruleNamedMetaclassReference
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getSignatureRule());
@@ -584,7 +584,7 @@ ruleSignature returns [EObject current=null]
 							$current,
 							"elements",
 							lv_elements_4_0,
-							"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
+							"tools.vitruv.dsls.mirbase.MirBase.NamedMetaclassReference");
 						afterParserOrEnumRuleCall();
 					}
 				)
@@ -597,9 +597,9 @@ ruleSignature returns [EObject current=null]
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedModelElementParserRuleCall_3_1_1_0());
+							newCompositeNode(grammarAccess.getSignatureAccess().getElementsNamedMetaclassReferenceParserRuleCall_3_1_1_0());
 						}
-						lv_elements_6_0=ruleNamedModelElement
+						lv_elements_6_0=ruleNamedMetaclassReference
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getSignatureRule());
@@ -608,7 +608,7 @@ ruleSignature returns [EObject current=null]
 								$current,
 								"elements",
 								lv_elements_6_0,
-								"tools.vitruv.dsls.mirbase.MirBase.NamedModelElement");
+								"tools.vitruv.dsls.mirbase.MirBase.NamedMetaclassReference");
 							afterParserOrEnumRuleCall();
 						}
 					)
@@ -1627,7 +1627,7 @@ ruleContextVariable returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getContextVariableAccess().getTargetClassNamedModelElementCrossReference_1_0());
+					newCompositeNode(grammarAccess.getContextVariableAccess().getTargetClassNamedMetaclassReferenceCrossReference_1_0());
 				}
 				ruleValidID
 				{
@@ -2074,8 +2074,8 @@ ruleMetamodelImport returns [EObject current=null]
 ;
 
 
-// Rule ModelElement
-ruleModelElement[EObject in_current]  returns [EObject current=in_current]
+// Rule MetaclassReference
+ruleMetaclassReference[EObject in_current]  returns [EObject current=in_current]
 @init {
 	enterRule();
 }
@@ -2084,31 +2084,52 @@ ruleModelElement[EObject in_current]  returns [EObject current=in_current]
 }:
 	(
 		(
+			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getMetaclassReferenceRule());
+						}
+					}
+					otherlv_0=RULE_ID
+					{
+						newLeafNode(otherlv_0, grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportCrossReference_0_0_0());
+					}
+				)
+			)
+			otherlv_1='::'
 			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getModelElementRule());
+				newLeafNode(otherlv_1, grammarAccess.getMetaclassReferenceAccess().getColonColonKeyword_0_1());
+			}
+		)?
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getMetaclassReferenceRule());
+					}
 				}
-			}
-			{
-				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
-			}
-			ruleQualifiedName
-			{
-				afterParserOrEnumRuleCall();
-			}
+				{
+					newCompositeNode(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassCrossReference_1_0());
+				}
+				ruleQualifiedName
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
 		)
 	)
 ;
 
-// Entry rule entryRuleNamedModelElement
-entryRuleNamedModelElement returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getNamedModelElementRule()); }
-	iv_ruleNamedModelElement=ruleNamedModelElement
-	{ $current=$iv_ruleNamedModelElement.current; }
+// Entry rule entryRuleNamedMetaclassReference
+entryRuleNamedMetaclassReference returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getNamedMetaclassReferenceRule()); }
+	iv_ruleNamedMetaclassReference=ruleNamedMetaclassReference
+	{ $current=$iv_ruleNamedMetaclassReference.current; }
 	EOF;
 
-// Rule NamedModelElement
-ruleNamedModelElement returns [EObject current=null]
+// Rule NamedMetaclassReference
+ruleNamedMetaclassReference returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -2118,29 +2139,29 @@ ruleNamedModelElement returns [EObject current=null]
 	(
 		{
 			if ($current==null) {
-				$current = createModelElement(grammarAccess.getNamedModelElementRule());
+				$current = createModelElement(grammarAccess.getNamedMetaclassReferenceRule());
 			}
-			newCompositeNode(grammarAccess.getNamedModelElementAccess().getModelElementParserRuleCall_0());
+			newCompositeNode(grammarAccess.getNamedMetaclassReferenceAccess().getMetaclassReferenceParserRuleCall_0());
 		}
-		this_ModelElement_0=ruleModelElement[$current]
+		this_MetaclassReference_0=ruleMetaclassReference[$current]
 		{
-			$current = $this_ModelElement_0.current;
+			$current = $this_MetaclassReference_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		(
 			otherlv_1='as'
 			{
-				newLeafNode(otherlv_1, grammarAccess.getNamedModelElementAccess().getAsKeyword_1_0());
+				newLeafNode(otherlv_1, grammarAccess.getNamedMetaclassReferenceAccess().getAsKeyword_1_0());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getNamedModelElementAccess().getNameValidIDParserRuleCall_1_1_0());
+						newCompositeNode(grammarAccess.getNamedMetaclassReferenceAccess().getNameValidIDParserRuleCall_1_1_0());
 					}
 					lv_name_2_0=ruleValidID
 					{
 						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getNamedModelElementRule());
+							$current = createModelElementForParent(grammarAccess.getNamedMetaclassReferenceRule());
 						}
 						set(
 							$current,

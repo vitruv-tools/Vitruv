@@ -192,8 +192,8 @@ ruleMetamodelImport returns [EObject current=null]
 ;
 
 
-// Rule ModelElement
-ruleModelElement[EObject in_current]  returns [EObject current=in_current]
+// Rule MetaclassReference
+ruleMetaclassReference[EObject in_current]  returns [EObject current=in_current]
 @init {
 	enterRule();
 }
@@ -202,18 +202,39 @@ ruleModelElement[EObject in_current]  returns [EObject current=in_current]
 }:
 	(
 		(
+			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getMetaclassReferenceRule());
+						}
+					}
+					otherlv_0=RULE_ID
+					{
+						newLeafNode(otherlv_0, grammarAccess.getMetaclassReferenceAccess().getMetamodelMetamodelImportCrossReference_0_0_0());
+					}
+				)
+			)
+			otherlv_1='::'
 			{
-				if ($current==null) {
-					$current = createModelElement(grammarAccess.getModelElementRule());
+				newLeafNode(otherlv_1, grammarAccess.getMetaclassReferenceAccess().getColonColonKeyword_0_1());
+			}
+		)?
+		(
+			(
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getMetaclassReferenceRule());
+					}
 				}
-			}
-			{
-				newCompositeNode(grammarAccess.getModelElementAccess().getElementEClassCrossReference_0());
-			}
-			ruleQualifiedName
-			{
-				afterParserOrEnumRuleCall();
-			}
+				{
+					newCompositeNode(grammarAccess.getMetaclassReferenceAccess().getMetaclassEClassCrossReference_1_0());
+				}
+				ruleQualifiedName
+				{
+					afterParserOrEnumRuleCall();
+				}
+			)
 		)
 	)
 ;

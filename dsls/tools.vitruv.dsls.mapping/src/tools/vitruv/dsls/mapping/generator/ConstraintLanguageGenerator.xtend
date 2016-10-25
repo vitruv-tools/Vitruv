@@ -31,7 +31,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseSignatureConstraintExpression
 import tools.vitruv.dsls.mapping.mappingLanguage.XbaseBodyConstraintExpression
 import tools.vitruv.framework.util.bridges.EMFBridge
-import tools.vitruv.dsls.mirbase.mirBase.NamedModelElement
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 class ConstraintLanguageGenerator {
 	private final extension EMFGeneratorHelper emfGeneratorHelper
@@ -214,7 +214,7 @@ class ConstraintLanguageGenerator {
 		'''/* unnamed «object.toString» */'''
 	}
 
-	private static def dispatch String tryGetName(NamedModelElement object) {
+	private static def dispatch String tryGetName(NamedMetaclassReference object) {
 		object.name
 	}
 

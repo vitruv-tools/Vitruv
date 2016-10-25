@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class InternalMirBaseLexer extends Lexer {
-    public static final int RULE_HEX=5;
+    public static final int RULE_HEX=6;
     public static final int T__50=50;
     public static final int T__19=19;
     public static final int T__15=15;
@@ -32,12 +32,12 @@ public class InternalMirBaseLexer extends Lexer {
     public static final int T__54=54;
     public static final int T__60=60;
     public static final int T__61=61;
-    public static final int RULE_ID=8;
-    public static final int RULE_DECIMAL=7;
+    public static final int RULE_ID=5;
+    public static final int RULE_DECIMAL=8;
     public static final int T__26=26;
     public static final int T__27=27;
     public static final int T__28=28;
-    public static final int RULE_INT=6;
+    public static final int RULE_INT=7;
     public static final int T__29=29;
     public static final int T__22=22;
     public static final int T__66=66;
@@ -179,10 +179,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__16;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:14:7: ( '=' )
-            // InternalMirBase.g:14:9: '='
+            // InternalMirBase.g:14:7: ( '::' )
+            // InternalMirBase.g:14:9: '::'
             {
-            match('='); 
+            match("::"); 
+
 
             }
 
@@ -199,11 +200,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__17;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:15:7: ( '+=' )
-            // InternalMirBase.g:15:9: '+='
+            // InternalMirBase.g:15:7: ( '=' )
+            // InternalMirBase.g:15:9: '='
             {
-            match("+="); 
-
+            match('='); 
 
             }
 
@@ -220,10 +220,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__18;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:16:7: ( '-=' )
-            // InternalMirBase.g:16:9: '-='
+            // InternalMirBase.g:16:7: ( '+=' )
+            // InternalMirBase.g:16:9: '+='
             {
-            match("-="); 
+            match("+="); 
 
 
             }
@@ -241,10 +241,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__19;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:17:7: ( '*=' )
-            // InternalMirBase.g:17:9: '*='
+            // InternalMirBase.g:17:7: ( '-=' )
+            // InternalMirBase.g:17:9: '-='
             {
-            match("*="); 
+            match("-="); 
 
 
             }
@@ -262,10 +262,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__20;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:18:7: ( '/=' )
-            // InternalMirBase.g:18:9: '/='
+            // InternalMirBase.g:18:7: ( '*=' )
+            // InternalMirBase.g:18:9: '*='
             {
-            match("/="); 
+            match("*="); 
 
 
             }
@@ -283,10 +283,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:19:7: ( '%=' )
-            // InternalMirBase.g:19:9: '%='
+            // InternalMirBase.g:19:7: ( '/=' )
+            // InternalMirBase.g:19:9: '/='
             {
-            match("%="); 
+            match("/="); 
 
 
             }
@@ -304,10 +304,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:20:7: ( '<' )
-            // InternalMirBase.g:20:9: '<'
+            // InternalMirBase.g:20:7: ( '%=' )
+            // InternalMirBase.g:20:9: '%='
             {
-            match('<'); 
+            match("%="); 
+
 
             }
 
@@ -324,10 +325,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:21:7: ( '>' )
-            // InternalMirBase.g:21:9: '>'
+            // InternalMirBase.g:21:7: ( '<' )
+            // InternalMirBase.g:21:9: '<'
             {
-            match('>'); 
+            match('<'); 
 
             }
 
@@ -344,11 +345,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:22:7: ( '>=' )
-            // InternalMirBase.g:22:9: '>='
+            // InternalMirBase.g:22:7: ( '>' )
+            // InternalMirBase.g:22:9: '>'
             {
-            match(">="); 
-
+            match('>'); 
 
             }
 
@@ -365,10 +365,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:23:7: ( '||' )
-            // InternalMirBase.g:23:9: '||'
+            // InternalMirBase.g:23:7: ( '>=' )
+            // InternalMirBase.g:23:9: '>='
             {
-            match("||"); 
+            match(">="); 
 
 
             }
@@ -386,10 +386,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__26;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:24:7: ( '&&' )
-            // InternalMirBase.g:24:9: '&&'
+            // InternalMirBase.g:24:7: ( '||' )
+            // InternalMirBase.g:24:9: '||'
             {
-            match("&&"); 
+            match("||"); 
 
 
             }
@@ -407,10 +407,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:25:7: ( '==' )
-            // InternalMirBase.g:25:9: '=='
+            // InternalMirBase.g:25:7: ( '&&' )
+            // InternalMirBase.g:25:9: '&&'
             {
-            match("=="); 
+            match("&&"); 
 
 
             }
@@ -428,10 +428,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:26:7: ( '!=' )
-            // InternalMirBase.g:26:9: '!='
+            // InternalMirBase.g:26:7: ( '==' )
+            // InternalMirBase.g:26:9: '=='
             {
-            match("!="); 
+            match("=="); 
 
 
             }
@@ -449,10 +449,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__29;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:27:7: ( '===' )
-            // InternalMirBase.g:27:9: '==='
+            // InternalMirBase.g:27:7: ( '!=' )
+            // InternalMirBase.g:27:9: '!='
             {
-            match("==="); 
+            match("!="); 
 
 
             }
@@ -470,10 +470,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:28:7: ( '!==' )
-            // InternalMirBase.g:28:9: '!=='
+            // InternalMirBase.g:28:7: ( '===' )
+            // InternalMirBase.g:28:9: '==='
             {
-            match("!=="); 
+            match("==="); 
 
 
             }
@@ -491,10 +491,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:29:7: ( 'instanceof' )
-            // InternalMirBase.g:29:9: 'instanceof'
+            // InternalMirBase.g:29:7: ( '!==' )
+            // InternalMirBase.g:29:9: '!=='
             {
-            match("instanceof"); 
+            match("!=="); 
 
 
             }
@@ -512,10 +512,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:30:7: ( '->' )
-            // InternalMirBase.g:30:9: '->'
+            // InternalMirBase.g:30:7: ( 'instanceof' )
+            // InternalMirBase.g:30:9: 'instanceof'
             {
-            match("->"); 
+            match("instanceof"); 
 
 
             }
@@ -533,10 +533,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:31:7: ( '..<' )
-            // InternalMirBase.g:31:9: '..<'
+            // InternalMirBase.g:31:7: ( '->' )
+            // InternalMirBase.g:31:9: '->'
             {
-            match("..<"); 
+            match("->"); 
 
 
             }
@@ -554,10 +554,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__34;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:32:7: ( '..' )
-            // InternalMirBase.g:32:9: '..'
+            // InternalMirBase.g:32:7: ( '..<' )
+            // InternalMirBase.g:32:9: '..<'
             {
-            match(".."); 
+            match("..<"); 
 
 
             }
@@ -575,10 +575,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__35;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:33:7: ( '=>' )
-            // InternalMirBase.g:33:9: '=>'
+            // InternalMirBase.g:33:7: ( '..' )
+            // InternalMirBase.g:33:9: '..'
             {
-            match("=>"); 
+            match(".."); 
 
 
             }
@@ -596,10 +596,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__36;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:34:7: ( '<>' )
-            // InternalMirBase.g:34:9: '<>'
+            // InternalMirBase.g:34:7: ( '=>' )
+            // InternalMirBase.g:34:9: '=>'
             {
-            match("<>"); 
+            match("=>"); 
 
 
             }
@@ -617,10 +617,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__37;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:35:7: ( '?:' )
-            // InternalMirBase.g:35:9: '?:'
+            // InternalMirBase.g:35:7: ( '<>' )
+            // InternalMirBase.g:35:9: '<>'
             {
-            match("?:"); 
+            match("<>"); 
 
 
             }
@@ -638,10 +638,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__38;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:36:7: ( '+' )
-            // InternalMirBase.g:36:9: '+'
+            // InternalMirBase.g:36:7: ( '?:' )
+            // InternalMirBase.g:36:9: '?:'
             {
-            match('+'); 
+            match("?:"); 
+
 
             }
 
@@ -658,10 +659,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__39;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:37:7: ( '-' )
-            // InternalMirBase.g:37:9: '-'
+            // InternalMirBase.g:37:7: ( '+' )
+            // InternalMirBase.g:37:9: '+'
             {
-            match('-'); 
+            match('+'); 
 
             }
 
@@ -678,10 +679,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__40;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:38:7: ( '*' )
-            // InternalMirBase.g:38:9: '*'
+            // InternalMirBase.g:38:7: ( '-' )
+            // InternalMirBase.g:38:9: '-'
             {
-            match('*'); 
+            match('-'); 
 
             }
 
@@ -698,11 +699,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__41;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:39:7: ( '**' )
-            // InternalMirBase.g:39:9: '**'
+            // InternalMirBase.g:39:7: ( '*' )
+            // InternalMirBase.g:39:9: '*'
             {
-            match("**"); 
-
+            match('*'); 
 
             }
 
@@ -719,10 +719,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__42;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:40:7: ( '/' )
-            // InternalMirBase.g:40:9: '/'
+            // InternalMirBase.g:40:7: ( '**' )
+            // InternalMirBase.g:40:9: '**'
             {
-            match('/'); 
+            match("**"); 
+
 
             }
 
@@ -739,10 +740,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__43;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:41:7: ( '%' )
-            // InternalMirBase.g:41:9: '%'
+            // InternalMirBase.g:41:7: ( '/' )
+            // InternalMirBase.g:41:9: '/'
             {
-            match('%'); 
+            match('/'); 
 
             }
 
@@ -759,10 +760,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__44;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:42:7: ( '!' )
-            // InternalMirBase.g:42:9: '!'
+            // InternalMirBase.g:42:7: ( '%' )
+            // InternalMirBase.g:42:9: '%'
             {
-            match('!'); 
+            match('%'); 
 
             }
 
@@ -779,11 +780,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__45;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:43:7: ( '++' )
-            // InternalMirBase.g:43:9: '++'
+            // InternalMirBase.g:43:7: ( '!' )
+            // InternalMirBase.g:43:9: '!'
             {
-            match("++"); 
-
+            match('!'); 
 
             }
 
@@ -800,10 +800,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__46;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:44:7: ( '--' )
-            // InternalMirBase.g:44:9: '--'
+            // InternalMirBase.g:44:7: ( '++' )
+            // InternalMirBase.g:44:9: '++'
             {
-            match("--"); 
+            match("++"); 
 
 
             }
@@ -821,10 +821,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__47;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:45:7: ( '.' )
-            // InternalMirBase.g:45:9: '.'
+            // InternalMirBase.g:45:7: ( '--' )
+            // InternalMirBase.g:45:9: '--'
             {
-            match('.'); 
+            match("--"); 
+
 
             }
 
@@ -841,11 +842,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = T__48;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:46:7: ( '::' )
-            // InternalMirBase.g:46:9: '::'
+            // InternalMirBase.g:46:7: ( '.' )
+            // InternalMirBase.g:46:9: '.'
             {
-            match("::"); 
-
+            match('.'); 
 
             }
 
@@ -1668,10 +1668,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6503:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // InternalMirBase.g:6503:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // InternalMirBase.g:6524:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // InternalMirBase.g:6524:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // InternalMirBase.g:6503:12: ( '0x' | '0X' )
+            // InternalMirBase.g:6524:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1699,7 +1699,7 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // InternalMirBase.g:6503:13: '0x'
+                    // InternalMirBase.g:6524:13: '0x'
                     {
                     match("0x"); 
 
@@ -1707,7 +1707,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:6503:18: '0X'
+                    // InternalMirBase.g:6524:18: '0X'
                     {
                     match("0X"); 
 
@@ -1717,7 +1717,7 @@ public class InternalMirBaseLexer extends Lexer {
 
             }
 
-            // InternalMirBase.g:6503:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // InternalMirBase.g:6524:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -1755,7 +1755,7 @@ public class InternalMirBaseLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // InternalMirBase.g:6503:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // InternalMirBase.g:6524:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1764,10 +1764,10 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // InternalMirBase.g:6503:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // InternalMirBase.g:6524:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // InternalMirBase.g:6503:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // InternalMirBase.g:6524:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -1785,7 +1785,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // InternalMirBase.g:6503:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // InternalMirBase.g:6524:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -1809,7 +1809,7 @@ public class InternalMirBaseLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // InternalMirBase.g:6503:84: ( 'l' | 'L' )
+                            // InternalMirBase.g:6524:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -1848,11 +1848,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6505:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // InternalMirBase.g:6505:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // InternalMirBase.g:6526:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // InternalMirBase.g:6526:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // InternalMirBase.g:6505:21: ( '0' .. '9' | '_' )*
+            // InternalMirBase.g:6526:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -1901,11 +1901,11 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6507:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // InternalMirBase.g:6507:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // InternalMirBase.g:6528:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // InternalMirBase.g:6528:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // InternalMirBase.g:6507:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // InternalMirBase.g:6528:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -1914,7 +1914,7 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // InternalMirBase.g:6507:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // InternalMirBase.g:6528:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -1925,7 +1925,7 @@ public class InternalMirBaseLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // InternalMirBase.g:6507:36: ( '+' | '-' )?
+                    // InternalMirBase.g:6528:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -1958,7 +1958,7 @@ public class InternalMirBaseLexer extends Lexer {
 
             }
 
-            // InternalMirBase.g:6507:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // InternalMirBase.g:6528:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -1970,7 +1970,7 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // InternalMirBase.g:6507:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // InternalMirBase.g:6528:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -1994,7 +1994,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:6507:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // InternalMirBase.g:6528:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2027,10 +2027,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6509:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // InternalMirBase.g:6509:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // InternalMirBase.g:6530:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // InternalMirBase.g:6530:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // InternalMirBase.g:6509:11: ( '^' )?
+            // InternalMirBase.g:6530:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2039,7 +2039,7 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // InternalMirBase.g:6509:11: '^'
+                    // InternalMirBase.g:6530:11: '^'
                     {
                     match('^'); 
 
@@ -2057,7 +2057,7 @@ public class InternalMirBaseLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalMirBase.g:6509:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // InternalMirBase.g:6530:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2106,10 +2106,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6511:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
-            // InternalMirBase.g:6511:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // InternalMirBase.g:6532:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // InternalMirBase.g:6532:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // InternalMirBase.g:6511:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // InternalMirBase.g:6532:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -2127,10 +2127,10 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // InternalMirBase.g:6511:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+                    // InternalMirBase.g:6532:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // InternalMirBase.g:6511:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // InternalMirBase.g:6532:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2146,7 +2146,7 @@ public class InternalMirBaseLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // InternalMirBase.g:6511:21: '\\\\' .
+                    	    // InternalMirBase.g:6532:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2154,7 +2154,7 @@ public class InternalMirBaseLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalMirBase.g:6511:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalMirBase.g:6532:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2174,7 +2174,7 @@ public class InternalMirBaseLexer extends Lexer {
                         }
                     } while (true);
 
-                    // InternalMirBase.g:6511:44: ( '\"' )?
+                    // InternalMirBase.g:6532:44: ( '\"' )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -2183,7 +2183,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     switch (alt12) {
                         case 1 :
-                            // InternalMirBase.g:6511:44: '\"'
+                            // InternalMirBase.g:6532:44: '\"'
                             {
                             match('\"'); 
 
@@ -2196,10 +2196,10 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalMirBase.g:6511:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+                    // InternalMirBase.g:6532:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // InternalMirBase.g:6511:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // InternalMirBase.g:6532:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
                         int alt13=3;
@@ -2215,7 +2215,7 @@ public class InternalMirBaseLexer extends Lexer {
 
                         switch (alt13) {
                     	case 1 :
-                    	    // InternalMirBase.g:6511:55: '\\\\' .
+                    	    // InternalMirBase.g:6532:55: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2223,7 +2223,7 @@ public class InternalMirBaseLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalMirBase.g:6511:62: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalMirBase.g:6532:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2243,7 +2243,7 @@ public class InternalMirBaseLexer extends Lexer {
                         }
                     } while (true);
 
-                    // InternalMirBase.g:6511:79: ( '\\'' )?
+                    // InternalMirBase.g:6532:79: ( '\\'' )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2252,7 +2252,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // InternalMirBase.g:6511:79: '\\''
+                            // InternalMirBase.g:6532:79: '\\''
                             {
                             match('\''); 
 
@@ -2283,12 +2283,12 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6513:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalMirBase.g:6513:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalMirBase.g:6534:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalMirBase.g:6534:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalMirBase.g:6513:24: ( options {greedy=false; } : . )*
+            // InternalMirBase.g:6534:24: ( options {greedy=false; } : . )*
             loop16:
             do {
                 int alt16=2;
@@ -2313,7 +2313,7 @@ public class InternalMirBaseLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // InternalMirBase.g:6513:52: .
+            	    // InternalMirBase.g:6534:52: .
             	    {
             	    matchAny(); 
 
@@ -2343,12 +2343,12 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6515:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalMirBase.g:6515:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalMirBase.g:6536:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalMirBase.g:6536:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalMirBase.g:6515:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // InternalMirBase.g:6536:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -2361,7 +2361,7 @@ public class InternalMirBaseLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // InternalMirBase.g:6515:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalMirBase.g:6536:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2381,7 +2381,7 @@ public class InternalMirBaseLexer extends Lexer {
                 }
             } while (true);
 
-            // InternalMirBase.g:6515:40: ( ( '\\r' )? '\\n' )?
+            // InternalMirBase.g:6536:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2390,9 +2390,9 @@ public class InternalMirBaseLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // InternalMirBase.g:6515:41: ( '\\r' )? '\\n'
+                    // InternalMirBase.g:6536:41: ( '\\r' )? '\\n'
                     {
-                    // InternalMirBase.g:6515:41: ( '\\r' )?
+                    // InternalMirBase.g:6536:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -2401,7 +2401,7 @@ public class InternalMirBaseLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // InternalMirBase.g:6515:41: '\\r'
+                            // InternalMirBase.g:6536:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2433,10 +2433,10 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6517:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalMirBase.g:6517:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalMirBase.g:6538:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // InternalMirBase.g:6538:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // InternalMirBase.g:6517:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // InternalMirBase.g:6538:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt20=0;
             loop20:
             do {
@@ -2490,8 +2490,8 @@ public class InternalMirBaseLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalMirBase.g:6519:16: ( . )
-            // InternalMirBase.g:6519:18: .
+            // InternalMirBase.g:6540:16: ( . )
+            // InternalMirBase.g:6540:18: .
             {
             matchAny(); 
 
@@ -3106,36 +3106,36 @@ public class InternalMirBaseLexer extends Lexer {
 
     protected DFA21 dfa21 = new DFA21(this);
     static final String DFA21_eotS =
-        "\1\uffff\3\60\1\65\1\70\1\74\1\77\1\103\1\105\1\107\1\111\1\113\1\115\1\117\1\121\1\124\1\126\11\uffff\12\60\2\166\1\54\5\uffff\2\60\1\174\1\uffff\1\175\1\60\1\u0080\32\uffff\1\u0082\1\uffff\1\u0084\17\uffff\7\60\1\u008c\14\60\1\uffff\1\166\4\uffff\2\60\2\uffff\1\60\6\uffff\7\60\1\uffff\2\60\1\u00a8\3\60\1\u00ac\1\u00ad\1\u00ae\2\60\1\u00b1\6\60\1\u00b8\6\60\1\u00bf\1\60\1\uffff\3\60\3\uffff\1\u00c4\1\u00c5\1\uffff\6\60\1\uffff\3\60\1\u00d0\2\60\1\uffff\1\u00d3\1\u00d4\1\60\1\u00d6\2\uffff\1\60\1\u00d8\1\60\1\u00da\1\60\1\uffff\2\60\1\u00de\1\u00df\1\uffff\2\60\2\uffff\1\60\1\uffff\1\u00e3\1\uffff\1\u00e4\1\uffff\1\60\1\u00e6\1\60\2\uffff\1\60\1\u00e9\1\u00ea\2\uffff\1\60\1\uffff\2\60\2\uffff\1\60\1\u00ef\1\60\1\u00f1\1\uffff\1\60\1\uffff\1\60\1\u00f4\1\uffff";
+        "\1\uffff\3\60\1\64\1\67\1\72\1\76\1\101\1\105\1\107\1\111\1\113\1\115\1\117\1\121\1\123\1\126\11\uffff\12\60\2\166\1\54\5\uffff\2\60\1\174\1\uffff\1\175\1\60\2\uffff\1\u0080\32\uffff\1\u0082\1\uffff\1\u0084\15\uffff\7\60\1\u008c\14\60\1\uffff\1\166\4\uffff\2\60\2\uffff\1\60\6\uffff\7\60\1\uffff\2\60\1\u00a8\3\60\1\u00ac\1\u00ad\1\u00ae\2\60\1\u00b1\6\60\1\u00b8\6\60\1\u00bf\1\60\1\uffff\3\60\3\uffff\1\u00c4\1\u00c5\1\uffff\6\60\1\uffff\3\60\1\u00d0\2\60\1\uffff\1\u00d3\1\u00d4\1\60\1\u00d6\2\uffff\1\60\1\u00d8\1\60\1\u00da\1\60\1\uffff\2\60\1\u00de\1\u00df\1\uffff\2\60\2\uffff\1\60\1\uffff\1\u00e3\1\uffff\1\u00e4\1\uffff\1\60\1\u00e6\1\60\2\uffff\1\60\1\u00e9\1\u00ea\2\uffff\1\60\1\uffff\2\60\2\uffff\1\60\1\u00ef\1\60\1\u00f1\1\uffff\1\60\1\uffff\1\60\1\u00f4\1\uffff";
     static final String DFA21_eofS =
         "\u00f5\uffff";
     static final String DFA21_minS =
-        "\1\0\1\146\2\163\1\75\1\53\1\55\2\52\1\75\1\76\1\75\1\174\1\46\1\75\2\56\1\72\11\uffff\1\154\1\164\1\145\2\141\1\150\1\141\1\145\1\150\1\145\2\60\1\44\5\uffff\1\160\1\163\1\44\1\uffff\1\44\1\151\1\75\32\uffff\1\75\1\uffff\1\74\17\uffff\1\163\1\164\1\151\1\141\1\160\1\156\1\146\1\44\1\163\1\162\1\154\1\156\1\151\1\154\1\167\1\154\1\165\1\160\1\162\1\164\1\uffff\1\60\4\uffff\1\157\1\164\2\uffff\1\156\6\uffff\2\145\2\164\1\145\1\143\1\141\1\uffff\1\145\1\143\1\44\1\163\1\141\1\154\3\44\1\154\1\145\1\44\1\145\1\157\1\165\1\162\1\141\1\147\1\44\1\156\1\143\1\151\1\162\1\150\1\165\1\44\1\150\1\uffff\1\145\1\154\1\145\3\uffff\2\44\1\uffff\1\157\1\167\1\162\1\164\1\156\1\40\1\uffff\1\144\1\150\1\143\1\44\1\162\1\154\1\uffff\2\44\1\154\1\44\2\uffff\1\146\1\44\1\156\1\44\1\143\1\uffff\1\163\1\151\2\44\1\uffff\1\157\1\164\2\uffff\1\171\1\uffff\1\44\1\uffff\1\44\1\uffff\1\145\1\44\1\157\2\uffff\1\156\2\44\2\uffff\1\157\1\uffff\1\156\1\151\2\uffff\1\146\1\44\1\172\1\44\1\uffff\1\145\1\uffff\1\144\1\44\1\uffff";
+        "\1\0\1\146\2\163\1\72\1\75\1\53\1\55\2\52\1\75\1\76\1\75\1\174\1\46\1\75\2\56\11\uffff\1\154\1\164\1\145\2\141\1\150\1\141\1\145\1\150\1\145\2\60\1\44\5\uffff\1\160\1\163\1\44\1\uffff\1\44\1\151\2\uffff\1\75\32\uffff\1\75\1\uffff\1\74\15\uffff\1\163\1\164\1\151\1\141\1\160\1\156\1\146\1\44\1\163\1\162\1\154\1\156\1\151\1\154\1\167\1\154\1\165\1\160\1\162\1\164\1\uffff\1\60\4\uffff\1\157\1\164\2\uffff\1\156\6\uffff\2\145\2\164\1\145\1\143\1\141\1\uffff\1\145\1\143\1\44\1\163\1\141\1\154\3\44\1\154\1\145\1\44\1\145\1\157\1\165\1\162\1\141\1\147\1\44\1\156\1\143\1\151\1\162\1\150\1\165\1\44\1\150\1\uffff\1\145\1\154\1\145\3\uffff\2\44\1\uffff\1\157\1\167\1\162\1\164\1\156\1\40\1\uffff\1\144\1\150\1\143\1\44\1\162\1\154\1\uffff\2\44\1\154\1\44\2\uffff\1\146\1\44\1\156\1\44\1\143\1\uffff\1\163\1\151\2\44\1\uffff\1\157\1\164\2\uffff\1\171\1\uffff\1\44\1\uffff\1\44\1\uffff\1\145\1\44\1\157\2\uffff\1\156\2\44\2\uffff\1\157\1\uffff\1\156\1\151\2\uffff\1\146\1\44\1\172\1\44\1\uffff\1\145\1\uffff\1\144\1\44\1\uffff";
     static final String DFA21_maxS =
-        "\1\uffff\1\156\2\163\1\76\1\75\1\76\3\75\1\76\1\75\1\174\1\46\1\75\1\56\2\72\11\uffff\1\170\1\171\1\157\1\141\1\157\1\150\1\141\1\165\1\171\1\145\1\170\1\154\1\172\5\uffff\1\160\1\163\1\172\1\uffff\1\172\1\151\1\75\32\uffff\1\75\1\uffff\1\74\17\uffff\1\163\1\164\1\151\1\141\1\160\1\156\1\146\1\172\1\164\1\162\1\154\1\156\1\151\1\162\1\167\1\154\1\171\1\160\1\162\1\164\1\uffff\1\154\4\uffff\1\157\1\164\2\uffff\1\156\6\uffff\2\145\2\164\1\145\1\143\1\141\1\uffff\1\145\1\143\1\172\1\163\1\141\1\154\3\172\1\154\1\145\1\172\1\145\1\157\1\165\1\162\1\141\1\147\1\172\1\156\1\143\1\151\1\162\1\150\1\165\1\172\1\150\1\uffff\1\145\1\154\1\145\3\uffff\2\172\1\uffff\1\157\1\167\1\162\1\164\1\156\1\40\1\uffff\1\163\1\150\1\143\1\172\1\162\1\154\1\uffff\2\172\1\154\1\172\2\uffff\1\146\1\172\1\156\1\172\1\143\1\uffff\1\163\1\151\2\172\1\uffff\1\157\1\164\2\uffff\1\171\1\uffff\1\172\1\uffff\1\172\1\uffff\1\145\1\172\1\157\2\uffff\1\156\2\172\2\uffff\1\157\1\uffff\1\156\1\151\2\uffff\1\146\3\172\1\uffff\1\145\1\uffff\1\144\1\172\1\uffff";
+        "\1\uffff\1\156\2\163\1\72\1\76\1\75\1\76\3\75\1\76\1\75\1\174\1\46\1\75\1\56\1\72\11\uffff\1\170\1\171\1\157\1\141\1\157\1\150\1\141\1\165\1\171\1\145\1\170\1\154\1\172\5\uffff\1\160\1\163\1\172\1\uffff\1\172\1\151\2\uffff\1\75\32\uffff\1\75\1\uffff\1\74\15\uffff\1\163\1\164\1\151\1\141\1\160\1\156\1\146\1\172\1\164\1\162\1\154\1\156\1\151\1\162\1\167\1\154\1\171\1\160\1\162\1\164\1\uffff\1\154\4\uffff\1\157\1\164\2\uffff\1\156\6\uffff\2\145\2\164\1\145\1\143\1\141\1\uffff\1\145\1\143\1\172\1\163\1\141\1\154\3\172\1\154\1\145\1\172\1\145\1\157\1\165\1\162\1\141\1\147\1\172\1\156\1\143\1\151\1\162\1\150\1\165\1\172\1\150\1\uffff\1\145\1\154\1\145\3\uffff\2\172\1\uffff\1\157\1\167\1\162\1\164\1\156\1\40\1\uffff\1\163\1\150\1\143\1\172\1\162\1\154\1\uffff\2\172\1\154\1\172\2\uffff\1\146\1\172\1\156\1\172\1\143\1\uffff\1\163\1\151\2\172\1\uffff\1\157\1\164\2\uffff\1\171\1\uffff\1\172\1\uffff\1\172\1\uffff\1\145\1\172\1\157\2\uffff\1\156\2\172\2\uffff\1\157\1\uffff\1\156\1\151\2\uffff\1\146\3\172\1\uffff\1\145\1\uffff\1\144\1\172\1\uffff";
     static final String DFA21_acceptS =
-        "\22\uffff\1\46\1\47\1\50\1\51\1\52\1\53\1\54\1\55\1\57\15\uffff\1\117\2\120\1\123\1\124\3\uffff\1\117\3\uffff\1\27\1\4\1\5\1\41\1\32\1\6\1\24\1\42\1\33\1\7\1\35\1\34\1\10\1\121\1\122\1\36\1\11\1\37\1\30\1\12\1\14\1\13\1\15\1\56\1\16\1\113\1\uffff\1\40\1\uffff\1\43\1\31\1\45\1\112\1\44\1\63\1\46\1\47\1\50\1\51\1\52\1\53\1\54\1\55\1\57\24\uffff\1\114\1\uffff\1\115\1\116\1\120\1\123\2\uffff\1\60\1\2\1\uffff\1\21\1\17\1\22\1\20\1\25\1\26\7\uffff\1\70\33\uffff\1\66\3\uffff\1\71\1\72\1\77\2\uffff\1\106\6\uffff\1\61\6\uffff\1\65\4\uffff\1\102\1\101\5\uffff\1\3\4\uffff\1\76\2\uffff\1\111\1\100\1\uffff\1\67\1\uffff\1\104\1\uffff\1\1\3\uffff\1\62\1\74\3\uffff\1\103\1\105\1\uffff\1\73\2\uffff\1\64\1\107\4\uffff\1\75\1\uffff\1\23\2\uffff\1\110";
+        "\22\uffff\1\46\1\47\1\50\1\51\1\52\1\53\1\54\1\55\1\57\15\uffff\1\117\2\120\1\123\1\124\3\uffff\1\117\2\uffff\1\4\1\63\1\uffff\1\30\1\5\1\6\1\42\1\33\1\7\1\25\1\43\1\34\1\10\1\36\1\35\1\11\1\121\1\122\1\37\1\12\1\40\1\31\1\13\1\15\1\14\1\16\1\56\1\17\1\113\1\uffff\1\41\1\uffff\1\44\1\32\1\45\1\112\1\46\1\47\1\50\1\51\1\52\1\53\1\54\1\55\1\57\24\uffff\1\114\1\uffff\1\115\1\116\1\120\1\123\2\uffff\1\60\1\2\1\uffff\1\22\1\20\1\23\1\21\1\26\1\27\7\uffff\1\70\33\uffff\1\66\3\uffff\1\71\1\72\1\77\2\uffff\1\106\6\uffff\1\61\6\uffff\1\65\4\uffff\1\102\1\101\5\uffff\1\3\4\uffff\1\76\2\uffff\1\111\1\100\1\uffff\1\67\1\uffff\1\104\1\uffff\1\1\3\uffff\1\62\1\74\3\uffff\1\103\1\105\1\uffff\1\73\2\uffff\1\64\1\107\4\uffff\1\75\1\uffff\1\24\2\uffff\1\110";
     static final String DFA21_specialS =
         "\1\0\u00f4\uffff}>";
     static final String[] DFA21_transitionS = {
-            "\11\54\2\53\2\54\1\53\22\54\1\53\1\16\1\51\1\25\1\50\1\11\1\15\1\52\1\23\1\24\1\7\1\5\1\22\1\6\1\17\1\10\1\45\11\46\1\21\1\32\1\12\1\4\1\13\1\20\1\54\32\50\1\30\1\54\1\31\1\47\1\50\1\54\1\2\1\50\1\36\1\35\1\33\1\37\2\50\1\1\4\50\1\42\3\50\1\44\1\34\1\43\1\3\1\41\1\40\3\50\1\26\1\14\1\27\uff82\54",
+            "\11\54\2\53\2\54\1\53\22\54\1\53\1\17\1\51\1\25\1\50\1\12\1\16\1\52\1\23\1\24\1\10\1\6\1\22\1\7\1\20\1\11\1\45\11\46\1\4\1\32\1\13\1\5\1\14\1\21\1\54\32\50\1\30\1\54\1\31\1\47\1\50\1\54\1\2\1\50\1\36\1\35\1\33\1\37\2\50\1\1\4\50\1\42\3\50\1\44\1\34\1\43\1\3\1\41\1\40\3\50\1\26\1\15\1\27\uff82\54",
             "\1\57\6\uffff\1\55\1\56",
             "\1\61",
             "\1\62",
-            "\1\63\1\64",
-            "\1\67\21\uffff\1\66",
-            "\1\73\17\uffff\1\71\1\72",
-            "\1\76\22\uffff\1\75",
-            "\1\101\4\uffff\1\102\15\uffff\1\100",
-            "\1\104",
+            "\1\63",
+            "\1\65\1\66",
+            "\1\71\21\uffff\1\70",
+            "\1\75\17\uffff\1\73\1\74",
+            "\1\100\22\uffff\1\77",
+            "\1\103\4\uffff\1\104\15\uffff\1\102",
             "\1\106",
             "\1\110",
             "\1\112",
             "\1\114",
             "\1\116",
             "\1\120",
-            "\1\123\13\uffff\1\122",
-            "\1\125",
+            "\1\122",
+            "\1\125\13\uffff\1\124",
             "",
             "",
             "",
@@ -3169,6 +3169,8 @@ public class InternalMirBaseLexer extends Lexer {
             "",
             "\1\60\13\uffff\12\60\7\uffff\32\60\4\uffff\1\60\1\uffff\32\60",
             "\1\176",
+            "",
+            "",
             "\1\177",
             "",
             "",
@@ -3199,8 +3201,6 @@ public class InternalMirBaseLexer extends Lexer {
             "\1\u0081",
             "",
             "\1\u0083",
-            "",
-            "",
             "",
             "",
             "",
@@ -3411,33 +3411,33 @@ public class InternalMirBaseLexer extends Lexer {
 
                         else if ( (LA21_0=='u') ) {s = 3;}
 
-                        else if ( (LA21_0=='=') ) {s = 4;}
+                        else if ( (LA21_0==':') ) {s = 4;}
 
-                        else if ( (LA21_0=='+') ) {s = 5;}
+                        else if ( (LA21_0=='=') ) {s = 5;}
 
-                        else if ( (LA21_0=='-') ) {s = 6;}
+                        else if ( (LA21_0=='+') ) {s = 6;}
 
-                        else if ( (LA21_0=='*') ) {s = 7;}
+                        else if ( (LA21_0=='-') ) {s = 7;}
 
-                        else if ( (LA21_0=='/') ) {s = 8;}
+                        else if ( (LA21_0=='*') ) {s = 8;}
 
-                        else if ( (LA21_0=='%') ) {s = 9;}
+                        else if ( (LA21_0=='/') ) {s = 9;}
 
-                        else if ( (LA21_0=='<') ) {s = 10;}
+                        else if ( (LA21_0=='%') ) {s = 10;}
 
-                        else if ( (LA21_0=='>') ) {s = 11;}
+                        else if ( (LA21_0=='<') ) {s = 11;}
 
-                        else if ( (LA21_0=='|') ) {s = 12;}
+                        else if ( (LA21_0=='>') ) {s = 12;}
 
-                        else if ( (LA21_0=='&') ) {s = 13;}
+                        else if ( (LA21_0=='|') ) {s = 13;}
 
-                        else if ( (LA21_0=='!') ) {s = 14;}
+                        else if ( (LA21_0=='&') ) {s = 14;}
 
-                        else if ( (LA21_0=='.') ) {s = 15;}
+                        else if ( (LA21_0=='!') ) {s = 15;}
 
-                        else if ( (LA21_0=='?') ) {s = 16;}
+                        else if ( (LA21_0=='.') ) {s = 16;}
 
-                        else if ( (LA21_0==':') ) {s = 17;}
+                        else if ( (LA21_0=='?') ) {s = 17;}
 
                         else if ( (LA21_0==',') ) {s = 18;}
 

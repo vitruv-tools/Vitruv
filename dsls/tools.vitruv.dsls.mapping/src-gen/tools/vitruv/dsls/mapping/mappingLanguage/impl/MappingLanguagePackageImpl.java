@@ -1163,7 +1163,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     initEClass(signatureEClass, Signature.class, "Signature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSignature_DeclaredPackage(), theMirBasePackage.getMetamodelReference(), null, "declaredPackage", null, 0, 1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSignature_Elements(), theMirBasePackage.getNamedModelElement(), null, "elements", null, 0, -1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSignature_Elements(), theMirBasePackage.getNamedMetaclassReference(), null, "elements", null, 0, -1, Signature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(requiredMappingEClass, RequiredMapping.class, "RequiredMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRequiredMapping_Mapping(), this.getMapping(), null, "mapping", null, 0, 1, RequiredMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1184,7 +1184,7 @@ public class MappingLanguagePackageImpl extends EPackageImpl implements MappingL
 
     initEClass(contextVariableEClass, ContextVariable.class, "ContextVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getContextVariable_RequiredMappingPath(), this.getRequiredMappingPathBase(), null, "requiredMappingPath", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getContextVariable_TargetClass(), theMirBasePackage.getNamedModelElement(), null, "targetClass", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getContextVariable_TargetClass(), theMirBasePackage.getNamedMetaclassReference(), null, "targetClass", null, 0, 1, ContextVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(requiredMappingPathBaseEClass, RequiredMappingPathBase.class, "RequiredMappingPathBase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRequiredMappingPathBase_RequiredMapping(), this.getRequiredMapping(), null, "requiredMapping", null, 0, 1, RequiredMappingPathBase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

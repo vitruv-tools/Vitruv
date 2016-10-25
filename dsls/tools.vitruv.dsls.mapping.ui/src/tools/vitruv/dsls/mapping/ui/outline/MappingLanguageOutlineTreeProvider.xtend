@@ -9,7 +9,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import tools.vitruv.dsls.mapping.mappingLanguage.ConstraintBlock
 import tools.vitruv.dsls.mapping.mappingLanguage.Mapping
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 /**
  * Customization of the default outline structure.
@@ -28,7 +28,7 @@ class MappingLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 //	    createNode(parent, element);
 //	  }
 //	}
-	protected def _createChildren(AbstractOutlineNode parent, ModelElement eClass) {
+	protected def _createChildren(AbstractOutlineNode parent, MetaclassReference eClass) {
 		// only create node for the ModelElement
 	}
 

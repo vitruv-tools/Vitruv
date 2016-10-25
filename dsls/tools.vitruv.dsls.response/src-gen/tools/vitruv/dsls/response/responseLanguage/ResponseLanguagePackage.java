@@ -828,13 +828,22 @@ public interface ResponseLanguagePackage extends EPackage
   int RETRIEVE_MODEL_ELEMENT = 18;
 
   /**
-   * The feature id for the '<em><b>Element</b></em>' reference.
+   * The feature id for the '<em><b>Metamodel</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__ELEMENT = MATCHER_STATEMENT_FEATURE_COUNT + 0;
+  int RETRIEVE_MODEL_ELEMENT__METAMODEL = MATCHER_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Metaclass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETRIEVE_MODEL_ELEMENT__METACLASS = MATCHER_STATEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Tag</b></em>' containment reference.
@@ -843,7 +852,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__TAG = MATCHER_STATEMENT_FEATURE_COUNT + 1;
+  int RETRIEVE_MODEL_ELEMENT__TAG = MATCHER_STATEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -852,7 +861,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__NAME = MATCHER_STATEMENT_FEATURE_COUNT + 2;
+  int RETRIEVE_MODEL_ELEMENT__NAME = MATCHER_STATEMENT_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -861,7 +870,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__OPTIONAL = MATCHER_STATEMENT_FEATURE_COUNT + 3;
+  int RETRIEVE_MODEL_ELEMENT__OPTIONAL = MATCHER_STATEMENT_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Abscence</b></em>' attribute.
@@ -870,7 +879,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__ABSCENCE = MATCHER_STATEMENT_FEATURE_COUNT + 4;
+  int RETRIEVE_MODEL_ELEMENT__ABSCENCE = MATCHER_STATEMENT_FEATURE_COUNT + 5;
 
   /**
    * The feature id for the '<em><b>Correspondence Source</b></em>' containment reference.
@@ -879,7 +888,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = MATCHER_STATEMENT_FEATURE_COUNT + 5;
+  int RETRIEVE_MODEL_ELEMENT__CORRESPONDENCE_SOURCE = MATCHER_STATEMENT_FEATURE_COUNT + 6;
 
   /**
    * The feature id for the '<em><b>Precondition</b></em>' containment reference.
@@ -888,7 +897,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT__PRECONDITION = MATCHER_STATEMENT_FEATURE_COUNT + 6;
+  int RETRIEVE_MODEL_ELEMENT__PRECONDITION = MATCHER_STATEMENT_FEATURE_COUNT + 7;
 
   /**
    * The number of structural features of the '<em>Retrieve Model Element</em>' class.
@@ -897,7 +906,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int RETRIEVE_MODEL_ELEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 7;
+  int RETRIEVE_MODEL_ELEMENT_FEATURE_COUNT = MATCHER_STATEMENT_FEATURE_COUNT + 8;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.MatcherCheckStatementImpl <em>Matcher Check Statement</em>}' class.
@@ -1068,13 +1077,22 @@ public interface ResponseLanguagePackage extends EPackage
   int CREATE_MODEL_ELEMENT__CODE = ACTION_STATEMENT__CODE;
 
   /**
-   * The feature id for the '<em><b>Element</b></em>' reference.
+   * The feature id for the '<em><b>Metamodel</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CREATE_MODEL_ELEMENT__ELEMENT = ACTION_STATEMENT_FEATURE_COUNT + 0;
+  int CREATE_MODEL_ELEMENT__METAMODEL = ACTION_STATEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Metaclass</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CREATE_MODEL_ELEMENT__METACLASS = ACTION_STATEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1083,7 +1101,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int CREATE_MODEL_ELEMENT__NAME = ACTION_STATEMENT_FEATURE_COUNT + 1;
+  int CREATE_MODEL_ELEMENT__NAME = ACTION_STATEMENT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Initialization Block</b></em>' containment reference.
@@ -1092,7 +1110,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int CREATE_MODEL_ELEMENT__INITIALIZATION_BLOCK = ACTION_STATEMENT_FEATURE_COUNT + 2;
+  int CREATE_MODEL_ELEMENT__INITIALIZATION_BLOCK = ACTION_STATEMENT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Create Model Element</em>' class.
@@ -1101,7 +1119,7 @@ public interface ResponseLanguagePackage extends EPackage
    * @generated
    * @ordered
    */
-  int CREATE_MODEL_ELEMENT_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 3;
+  int CREATE_MODEL_ELEMENT_FEATURE_COUNT = ACTION_STATEMENT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link tools.vitruv.dsls.response.responseLanguage.impl.DeleteModelElementImpl <em>Delete Model Element</em>}' class.

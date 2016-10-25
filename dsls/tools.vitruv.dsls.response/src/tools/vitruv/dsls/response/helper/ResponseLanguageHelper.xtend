@@ -9,11 +9,11 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.response.environment.SimpleTextXBlockExpression
 import org.eclipse.xtext.xbase.XBlockExpression
-import tools.vitruv.dsls.mirbase.mirBase.ModelElement
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.util.datatypes.Pair;
 import tools.vitruv.dsls.response.responseLanguage.ReactionsSegment
 import tools.vitruv.dsls.response.responseLanguage.Reaction
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 final class ResponseLanguageHelper {
 	private new() {}
@@ -23,11 +23,11 @@ final class ResponseLanguageHelper {
 	}
 	
 	public static def dispatch EClass getChangedModelElementClass(AtomicRootObjectChange change) {
-		return change?.changedElement?.element;
+		return change?.changedElement?.metaclass;
 	}
 	
 	public static def dispatch EClass getChangedModelElementClass(AtomicFeatureChange change) {
-		change?.changedFeature?.element;
+		change?.changedFeature?.metaclass;
 	}
 	
 //	public static def dispatch EPackage getSourceMetamodel(AtomicConcreteModelElementChange change) {
@@ -59,8 +59,8 @@ final class ResponseLanguageHelper {
 		return element.instanceClass;
 	}
 	
-	public static def Class<?> getJavaClass(ModelElement element) {
-		return element.element.javaClass;
+	public static def Class<?> getJavaClass(MetaclassReference metaclassReference) {
+		return metaclassReference.metaclass.javaClass;
 	}
 	
 	static def Pair<VURI, VURI> getSourceTargetPair(ReactionsSegment reactionsSegment) {
