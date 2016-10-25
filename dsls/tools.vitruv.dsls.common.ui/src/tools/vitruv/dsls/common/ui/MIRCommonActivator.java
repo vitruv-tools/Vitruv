@@ -6,7 +6,7 @@ import org.osgi.framework.BundleContext;
 import com.google.inject.Injector;
 
 import tools.vitruv.dsls.mapping.ui.internal.MappingActivator;
-import tools.vitruv.dsls.response.ui.internal.ResponseActivator;
+import tools.vitruv.dsls.reactions.ui.internal.ReactionsActivator;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -24,7 +24,7 @@ public class MIRCommonActivator extends AbstractUIPlugin {
 	 */
 	public MIRCommonActivator() {
 		 mappingInjector = MappingActivator.getInstance().getInjector(MappingActivator.TOOLS_VITRUV_DSLS_MAPPING_MAPPINGLANGUAGE);
-		 responseInjector = ResponseActivator.getInstance().getInjector(ResponseActivator.TOOLS_VITRUV_DSLS_RESPONSE_RESPONSELANGUAGE);
+		 reactionsInjector = ReactionsActivator.getInstance().getInjector(ReactionsActivator.TOOLS_VITRUV_DSLS_REACTIONS_REACTIONSLANGUAGE);
 	}
 	
 	/*
@@ -55,5 +55,5 @@ public class MIRCommonActivator extends AbstractUIPlugin {
 	}
 	
 	final public Injector mappingInjector;
-	final public Injector responseInjector;
+	final public Injector reactionsInjector;
 }

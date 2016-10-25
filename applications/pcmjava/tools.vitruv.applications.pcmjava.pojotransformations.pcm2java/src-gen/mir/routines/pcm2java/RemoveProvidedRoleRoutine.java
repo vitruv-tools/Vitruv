@@ -6,9 +6,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.imports.ClassifierImport;
 import org.emftext.language.java.types.NamespaceClassifierReference;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RemoveProvidedRoleRoutine extends AbstractRepairRoutineRealization {
@@ -17,8 +17,8 @@ public class RemoveProvidedRoleRoutine extends AbstractRepairRoutineRealization 
   private RemoveProvidedRoleRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceRequiredInterfaceImport(final ProvidedRole providedRole) {
@@ -38,8 +38,8 @@ public class RemoveProvidedRoleRoutine extends AbstractRepairRoutineRealization 
     }
   }
   
-  public RemoveProvidedRoleRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ProvidedRole providedRole) {
-    super(responseExecutionState, calledBy);
+  public RemoveProvidedRoleRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final ProvidedRole providedRole) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.RemoveProvidedRoleRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.providedRole = providedRole;

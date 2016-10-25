@@ -12,9 +12,9 @@ import org.emftext.language.java.members.Method;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm.EJBJava2PcmHelper;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 
@@ -25,8 +25,8 @@ public class CreatedClassMethodInEJBClassRoutine extends AbstractRepairRoutineRe
   private CreatedClassMethodInEJBClassRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceBasicComponent(final org.emftext.language.java.classifiers.Class clazz, final ClassMethod classMethod) {
@@ -47,8 +47,8 @@ public class CreatedClassMethodInEJBClassRoutine extends AbstractRepairRoutineRe
     }
   }
   
-  public CreatedClassMethodInEJBClassRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final org.emftext.language.java.classifiers.Class clazz, final ClassMethod classMethod) {
-    super(responseExecutionState, calledBy);
+  public CreatedClassMethodInEJBClassRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final org.emftext.language.java.classifiers.Class clazz, final ClassMethod classMethod) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.ejbjava2pcm.CreatedClassMethodInEJBClassRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.clazz = clazz;this.classMethod = classMethod;

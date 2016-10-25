@@ -10,9 +10,9 @@ import org.emftext.language.java.members.ClassMethod;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.parameters.Parameter;
 import org.palladiosimulator.pcm.repository.InnerDeclaration;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RenameInnerDeclarationImplementationRoutine extends AbstractRepairRoutineRealization {
@@ -21,8 +21,8 @@ public class RenameInnerDeclarationImplementationRoutine extends AbstractRepairR
   private RenameInnerDeclarationImplementationRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final InnerDeclaration innerDeclaration, final Field compositeTypeField, final ClassMethod compositeTypeGetterMethod, final ClassMethod compositeTypeSetterMethod) {
@@ -84,8 +84,8 @@ public class RenameInnerDeclarationImplementationRoutine extends AbstractRepairR
     }
   }
   
-  public RenameInnerDeclarationImplementationRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
-    super(responseExecutionState, calledBy);
+  public RenameInnerDeclarationImplementationRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final InnerDeclaration innerDeclaration) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.RenameInnerDeclarationImplementationRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.innerDeclaration = innerDeclaration;

@@ -4,7 +4,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import "http://www.emftext.org/java" as java using simple names
 import "http://palladiosimulator.org/PalladioComponentModel/5.1" as pcm using simple names
 
-reactions: ParserIntegrationResponse
+reactions: ParserIntegrationReaction
 in reaction to changes in java
 execute actions in pcm
 
@@ -32,7 +32,7 @@ routine addedMethodEventParser(java::ConcreteClassifier clazz, java::Method meth
 		val opSig = create pcm::OperationSignature and initialize {
 			opSig.entityName = method.name
 			opSig.interface__OperationSignature = opInterface
-			// TODO is this necessary or can we use the add correspondence statement creating a ResponseCorrespondence?
+			// TODO is this necessary or can we use the add correspondence statement creating a ReactionsCorrespondence?
 			CorrespondenceModelUtil.createAndAddCorrespondence(correspondenceModel, opSig, method)		
 		}
 	}

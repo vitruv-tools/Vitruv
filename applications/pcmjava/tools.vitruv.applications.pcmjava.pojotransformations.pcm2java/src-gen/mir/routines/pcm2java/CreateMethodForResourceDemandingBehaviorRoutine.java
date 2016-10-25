@@ -10,9 +10,9 @@ import org.emftext.language.java.members.impl.MembersFactoryImpl;
 import org.emftext.language.java.types.TypesFactory;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class CreateMethodForResourceDemandingBehaviorRoutine extends AbstractRepairRoutineRealization {
@@ -21,8 +21,8 @@ public class CreateMethodForResourceDemandingBehaviorRoutine extends AbstractRep
   private CreateMethodForResourceDemandingBehaviorRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public void updateJavaMethodElement(final ResourceDemandingInternalBehaviour behavior, final org.emftext.language.java.classifiers.Class componentClass, final ClassMethod javaMethod) {
@@ -55,8 +55,8 @@ public class CreateMethodForResourceDemandingBehaviorRoutine extends AbstractRep
     }
   }
   
-  public CreateMethodForResourceDemandingBehaviorRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
-    super(responseExecutionState, calledBy);
+  public CreateMethodForResourceDemandingBehaviorRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.CreateMethodForResourceDemandingBehaviorRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.behavior = behavior;

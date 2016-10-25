@@ -2,7 +2,7 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration;
 
-import tools.vitruv.dsls.response.meta.correspondence.response.ResponseCorrespondence;
+import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,7 +20,7 @@ import tools.vitruv.dsls.response.meta.correspondence.response.ResponseCorrespon
  * @model
  * @generated
  */
-public interface IntegrationCorrespondence extends ResponseCorrespondence {
+public interface IntegrationCorrespondence extends ReactionsCorrespondence {
 	/**
 	 * Returns the value of the '<em><b>Created By Integration</b></em>' attribute.
 	 * The default value is <code>"false"</code>.

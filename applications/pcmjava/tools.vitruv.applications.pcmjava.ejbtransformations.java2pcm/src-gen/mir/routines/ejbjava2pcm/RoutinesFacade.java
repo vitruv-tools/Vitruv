@@ -12,14 +12,14 @@ import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Repository;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutinesFacade;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RoutinesFacade extends AbstractRepairRoutinesFacade {
-  public RoutinesFacade(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-    super(responseExecutionState, calledBy);
+  public RoutinesFacade(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+    super(reactionExecutionState, calledBy);
   }
   
   public void createRepositoryForFirstPackage(final org.emftext.language.java.containers.Package javaPackage) {

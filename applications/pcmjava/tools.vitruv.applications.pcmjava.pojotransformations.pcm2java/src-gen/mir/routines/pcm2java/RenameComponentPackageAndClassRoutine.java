@@ -6,9 +6,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class RenameComponentPackageAndClassRoutine extends AbstractRepairRoutineRealization {
@@ -17,8 +17,8 @@ public class RenameComponentPackageAndClassRoutine extends AbstractRepairRoutine
   private RenameComponentPackageAndClassRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public boolean getCorrespondingModelElementsPreconditionRepositoryPackage(final RepositoryComponent component, final org.emftext.language.java.containers.Package repositoryPackage) {
@@ -41,8 +41,8 @@ public class RenameComponentPackageAndClassRoutine extends AbstractRepairRoutine
     }
   }
   
-  public RenameComponentPackageAndClassRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
-    super(responseExecutionState, calledBy);
+  public RenameComponentPackageAndClassRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final RepositoryComponent component) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.RenameComponentPackageAndClassRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.component = component;

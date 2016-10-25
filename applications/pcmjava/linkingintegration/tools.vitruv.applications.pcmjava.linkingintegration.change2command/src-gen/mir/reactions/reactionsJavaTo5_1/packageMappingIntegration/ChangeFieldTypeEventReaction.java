@@ -5,18 +5,25 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.Field;
 import org.emftext.language.java.types.TypeReference;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.AbstractResponseRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 
 @SuppressWarnings("all")
-class ChangeFieldTypeEventReaction extends AbstractResponseRealization {
+class ChangeFieldTypeEventReaction extends AbstractReactionRealization {
   public ChangeFieldTypeEventReaction(final UserInteracting userInteracting) {
     super(userInteracting);
+  }
+  
+  public void executeReaction(final EChange change) {
+    ReplaceSingleValuedEReference<Field, TypeReference> typedChange = (ReplaceSingleValuedEReference<Field, TypeReference>)change;
+    mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
+    mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldTypeEventReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldTypeEventReaction.ActionUserExecution(this.executionState, this);
+    userExecution.callRoutine1(typedChange, routinesFacade);
   }
   
   public static Class<? extends EChange> getExpectedChangeType() {
@@ -45,20 +52,13 @@ class ChangeFieldTypeEventReaction extends AbstractResponseRealization {
     if (!checkChangeProperties(typedChange)) {
     	return false;
     }
-    getLogger().debug("Passed precondition check of response " + this.getClass().getName());
+    getLogger().debug("Passed precondition check of reaction " + this.getClass().getName());
     return true;
   }
   
-  public void executeResponse(final EChange change) {
-    ReplaceSingleValuedEReference<Field, TypeReference> typedChange = (ReplaceSingleValuedEReference<Field, TypeReference>)change;
-    mir.routines.packageMappingIntegration.RoutinesFacade routinesFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(this.executionState, this);
-    mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldTypeEventReaction.ActionUserExecution userExecution = new mir.reactions.reactionsJavaTo5_1.packageMappingIntegration.ChangeFieldTypeEventReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
-  }
-  
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public void callRoutine1(final ReplaceSingleValuedEReference<Field, TypeReference> change, @Extension final RoutinesFacade _routinesFacade) {

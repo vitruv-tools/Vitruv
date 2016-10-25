@@ -13,7 +13,7 @@ class VitruviusDslsCommonConstants {
 		"tools.vitruv.framework.change.processing",
 		"tools.vitruv.framework.correspondence",
 		"tools.vitruv.framework.userinteraction",
- 		"tools.vitruv.extensions.dslsruntime.response",
+ 		"tools.vitruv.extensions.dslsruntime.reactions",
  		"tools.vitruv.extensions.dslsruntime.mapping"
 	]
 }

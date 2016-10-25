@@ -16,9 +16,9 @@ import org.emftext.language.java.modifiers.Protected;
 import org.emftext.language.java.modifiers.Public;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
@@ -28,8 +28,8 @@ public class ChangedMethodModifierEventRoutine extends AbstractRepairRoutineReal
   private ChangedMethodModifierEventRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceOperationSignature(final Method method, final AnnotationInstanceOrModifier annotationOrModifier) {
@@ -60,8 +60,8 @@ public class ChangedMethodModifierEventRoutine extends AbstractRepairRoutineReal
     }
   }
   
-  public ChangedMethodModifierEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Method method, final AnnotationInstanceOrModifier annotationOrModifier) {
-    super(responseExecutionState, calledBy);
+  public ChangedMethodModifierEventRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Method method, final AnnotationInstanceOrModifier annotationOrModifier) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.packageMappingIntegration.ChangedMethodModifierEventRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.method = method;this.annotationOrModifier = annotationOrModifier;

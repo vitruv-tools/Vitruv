@@ -7,9 +7,9 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.classifiers.Interface;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.palladiosimulator.pcm.repository.OperationInterface;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealization {
@@ -18,8 +18,8 @@ public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealizat
   private CreatedInterfaceMethodRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceOpInterface(final Interface interf, final InterfaceMethod method) {
@@ -31,8 +31,8 @@ public class CreatedInterfaceMethodRoutine extends AbstractRepairRoutineRealizat
     }
   }
   
-  public CreatedInterfaceMethodRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Interface interf, final InterfaceMethod method) {
-    super(responseExecutionState, calledBy);
+  public CreatedInterfaceMethodRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Interface interf, final InterfaceMethod method) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.ejbjava2pcm.CreatedInterfaceMethodRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.interf = interf;this.method = method;

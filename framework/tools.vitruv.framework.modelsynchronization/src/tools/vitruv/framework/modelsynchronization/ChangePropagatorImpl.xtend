@@ -104,7 +104,7 @@ class ChangePropagatorImpl implements ChangePropagator {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel(propagationSpecification.metamodelPair.first, propagationSpecification.metamodelPair.second);
 		var Blackboard blackboard = new BlackboardImpl(correspondenceModel, this.modelProviding)
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
-		// each response that uses it,
+		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
 		this.blackboardHistory.add(blackboard)
 		blackboard.pushCommands(

@@ -344,7 +344,7 @@ class PCMJaMoPPCorrespondenceModelTransformation {
 			if(useIntegrationCorrespondence){
 				val integrationCorrespondenceView = IntegrationCorrespondenceHelper.getEditableView(cInstance) 
 				correspondence = integrationCorrespondenceView.createAndAddCorrespondence(deresolvedA.toList, deresolvedB.toList)
-			}else{ // create a standard response correspondence
+			}else{ // create a standard reactions correspondence
 				correspondence = cInstance.createAndAddCorrespondence(deresolvedA, deresolvedB)
 			}
 			existingEntries.add(identifier)

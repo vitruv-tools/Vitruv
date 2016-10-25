@@ -7,9 +7,9 @@ import org.emftext.language.java.members.Method;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.RepositoryFactory;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 
@@ -20,8 +20,8 @@ public class CreateOperationSignatureRoutine extends AbstractRepairRoutineRealiz
   private CreateOperationSignatureRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final OperationInterface opInterface, final Method newMethod) {
@@ -46,8 +46,8 @@ public class CreateOperationSignatureRoutine extends AbstractRepairRoutineRealiz
     }
   }
   
-  public CreateOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationInterface opInterface, final Method newMethod) {
-    super(responseExecutionState, calledBy);
+  public CreateOperationSignatureRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final OperationInterface opInterface, final Method newMethod) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.packageMappingIntegration.CreateOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.opInterface = opInterface;this.newMethod = newMethod;

@@ -2,8 +2,6 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.impl;
 
-import tools.vitruv.dsls.response.meta.correspondence.response.impl.ResponseCorrespondenceImpl;
-
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationPackage;
 
@@ -12,6 +10,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl.ReactionsCorrespondenceImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class IntegrationCorrespondenceImpl extends ResponseCorrespondenceImpl implements IntegrationCorrespondence {
+public class IntegrationCorrespondenceImpl extends ReactionsCorrespondenceImpl implements IntegrationCorrespondence {
 	/**
 	 * The default value of the '{@link #isCreatedByIntegration() <em>Created By Integration</em>}' attribute.
 	 * <!-- begin-user-doc -->

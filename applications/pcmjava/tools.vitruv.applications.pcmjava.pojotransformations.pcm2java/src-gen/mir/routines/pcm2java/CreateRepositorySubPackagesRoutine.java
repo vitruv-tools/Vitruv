@@ -5,9 +5,9 @@ import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.palladiosimulator.pcm.repository.Repository;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRealization {
@@ -16,8 +16,8 @@ public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRea
   private CreateRepositorySubPackagesRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceRepositoryPackage(final Repository repository) {
@@ -30,8 +30,8 @@ public class CreateRepositorySubPackagesRoutine extends AbstractRepairRoutineRea
     }
   }
   
-  public CreateRepositorySubPackagesRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
-    super(responseExecutionState, calledBy);
+  public CreateRepositorySubPackagesRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Repository repository) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.CreateRepositorySubPackagesRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.repository = repository;

@@ -19,9 +19,9 @@ import org.emftext.language.java.types.TypeReference;
 import org.emftext.language.java.types.impl.TypesFactoryImpl;
 import org.palladiosimulator.pcm.repository.DataType;
 import tools.vitruv.applications.pcmjava.pojotransformations.pcm2java.Pcm2JavaHelper;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class AddSuperTypeToDataTypeRoutine extends AbstractRepairRoutineRealization {
@@ -30,8 +30,8 @@ public class AddSuperTypeToDataTypeRoutine extends AbstractRepairRoutineRealizat
   private AddSuperTypeToDataTypeRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName, final org.emftext.language.java.classifiers.Class dataTypeImplementation, final CompilationUnit dataTypeImplementationCU) {
@@ -83,8 +83,8 @@ public class AddSuperTypeToDataTypeRoutine extends AbstractRepairRoutineRealizat
     }
   }
   
-  public AddSuperTypeToDataTypeRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
-    super(responseExecutionState, calledBy);
+  public AddSuperTypeToDataTypeRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final DataType dataType, final TypeReference innerTypeReference, final String superTypeQualifiedName) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.AddSuperTypeToDataTypeRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.dataType = dataType;this.innerTypeReference = innerTypeReference;this.superTypeQualifiedName = superTypeQualifiedName;

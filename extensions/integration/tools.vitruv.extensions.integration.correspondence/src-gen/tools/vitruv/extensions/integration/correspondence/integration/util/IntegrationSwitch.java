@@ -2,8 +2,6 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.util;
 
-import tools.vitruv.dsls.response.meta.correspondence.response.ResponseCorrespondence;
-
 import tools.vitruv.extensions.integration.correspondence.integration.*;
 
 import tools.vitruv.framework.correspondence.Correspondence;
@@ -12,6 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,7 +72,7 @@ public class IntegrationSwitch<T> extends Switch<T> {
 			case IntegrationPackage.INTEGRATION_CORRESPONDENCE: {
 				IntegrationCorrespondence integrationCorrespondence = (IntegrationCorrespondence)theEObject;
 				T result = caseIntegrationCorrespondence(integrationCorrespondence);
-				if (result == null) result = caseResponseCorrespondence(integrationCorrespondence);
+				if (result == null) result = caseReactionsCorrespondence(integrationCorrespondence);
 				if (result == null) result = caseCorrespondence(integrationCorrespondence);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -123,7 +122,7 @@ public class IntegrationSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseResponseCorrespondence(ResponseCorrespondence object) {
+	public T caseReactionsCorrespondence(ReactionsCorrespondence object) {
 		return null;
 	}
 

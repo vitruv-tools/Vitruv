@@ -4,7 +4,7 @@ Bundle-Name: Vitruvius PCM-Java EJB Transformations Java -> PCM
 Bundle-SymbolicName: tools.vitruv.applications.pcmjava.ejbtransformations.java2pcm;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.apache.log4j, 
+Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
@@ -18,7 +18,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.correspondence,
- tools.vitruv.extensions.dslsruntime.response,
+ tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.extensions.dslsruntime.mapping,
  tools.vitruv.domains.java.echange,
  tools.vitruv.applications.pcmjava.util

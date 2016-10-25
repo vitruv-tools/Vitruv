@@ -9,9 +9,9 @@ import org.emftext.language.java.members.Field;
 import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class AddedFieldEventRoutine extends AbstractRepairRoutineRealization {
@@ -20,8 +20,8 @@ public class AddedFieldEventRoutine extends AbstractRepairRoutineRealization {
   private AddedFieldEventRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceBasicComponent(final ConcreteClassifier clazz, final Field field) {
@@ -38,8 +38,8 @@ public class AddedFieldEventRoutine extends AbstractRepairRoutineRealization {
     }
   }
   
-  public AddedFieldEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ConcreteClassifier clazz, final Field field) {
-    super(responseExecutionState, calledBy);
+  public AddedFieldEventRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final ConcreteClassifier clazz, final Field field) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.packageMappingIntegration.AddedFieldEventRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.clazz = clazz;this.field = field;

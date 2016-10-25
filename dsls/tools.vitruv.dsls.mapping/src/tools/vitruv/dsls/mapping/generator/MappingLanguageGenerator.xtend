@@ -14,7 +14,6 @@ import tools.vitruv.dsls.mapping.helpers.TemplateGenerator
 import tools.vitruv.dsls.mapping.mappingLanguage.Mapping
 import tools.vitruv.dsls.mapping.mappingLanguage.MappingFile
 import tools.vitruv.dsls.mapping.util.PreProcessingFileSystemAccess
-import tools.vitruv.dsls.response.api.generator.ResponseBuilderFactory
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.util.bridges.JavaHelper
 import java.util.Arrays
@@ -34,6 +33,7 @@ import static extension tools.vitruv.dsls.mapping.helpers.MappingLanguageHelper.
 import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.modelsynchronization.blackboard.Blackboard
+import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
 
 class MappingLanguageGenerator implements IMappingLanguageGenerator {
 	public final static String PACKAGE_NAME_FIELD = "tools.vitruv.dsls.mapping.generator.MappingLanguageGenerator.PACKAGE_NAME_FIELD"
@@ -53,24 +53,24 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 		nameProvider.initialize
 	}
 
-	override generateAndCreateResponses(Collection<Resource> inputResources, IFileSystemAccess inputFsa) {
+	override generateAndCreateReactions(Collection<Resource> inputResources, IFileSystemAccess inputFsa) {
 		val fsa = PreProcessingFileSystemAccess.createJavaFormattingFSA(inputFsa)
 		
 		emfGeneratorHelper = new EMFGeneratorHelper(nameProvider)
 		templateGenerator = new TemplateGenerator
-		val responses = newHashMap
+		val reactions = newHashMap
 		
 		for (resource : inputResources) {
 			delegateGenerator.doGenerate(resource, fsa)
 			val statefulGenerator = new StatefulMappingLanguageGenerator(resource, emfGeneratorHelper, templateGenerator, nameProvider)
-			val generatedResponses = statefulGenerator.generateResponses()
-			responses.put(resource, generatedResponses)
+			val generatedReactions = statefulGenerator.generateReactions()
+			reactions.put(resource, generatedReactions)
 		}
 		
 		templateGenerator.generateAllTemplates(fsa)
 		emfGeneratorHelper.generateCode(fsa)
 		
-		return responses
+		return reactions
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 			this.templateGenerator = templateGenerator
 			this.nameProvider = nameProvider
 			
-			this.responseBuilderFactory = new ResponseBuilderFactory
+			this.reactionBuilderFactory = new ReactionBuilderFactory
 		}
 
 		private Resource resource
@@ -103,12 +103,12 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 		private extension MappingLanguageGeneratorNameProvider nameProvider
 		private extension TemplateGenerator templateGenerator
 
-		private extension ResponseBuilderFactory responseBuilderFactory
+		private extension ReactionBuilderFactory reactionBuilderFactory
 		
 		private extension MappingLanguageGeneratorState state
 		private extension ConstraintLanguageGenerator clg
 	
-		private def generateResponses() {
+		private def generateReactions() {
 			val mappingFile = resource.contents.get(0).requireType(MappingFile)
 	
 			this.state = new MappingLanguageGeneratorState(mappingFile)
@@ -124,10 +124,10 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 			
 			(new DefaultContainmentGenerator(state, templateGenerator, nameProvider, clg)).generate
 	
-			val responses = newArrayList
+			val reactions = newArrayList
 			for (imp : imports) {
-				val response = responseBuilderFactory.createResponseBuilder
-					.setName(getResponseName(imp, resource))
+				val reaction = reactionBuilderFactory.createReactionBuilder
+					.setName(getReactionName(imp, resource))
 					.setTrigger(imp.package)
 					.setTargetChange(imp.otherImport.package)
 					.setExecutionBlock('''
@@ -137,10 +137,10 @@ class MappingLanguageGenerator implements IMappingLanguageGenerator {
 						tools.vitruv.extensions.dslsruntime.mapping.DefaultContainmentMapping
 							.INSTANCE.applyEChange(change, blackboard, state);
 					''')
-					.generateResponse
-				responses.add(response)
+					.generateReaction
+				reactions.add(reaction)
 			}
-			return responses
+			return reactions
 		}
 	
 

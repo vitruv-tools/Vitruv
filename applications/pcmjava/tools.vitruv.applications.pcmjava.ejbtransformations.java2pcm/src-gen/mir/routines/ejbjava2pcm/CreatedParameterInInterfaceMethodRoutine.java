@@ -7,9 +7,9 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.emftext.language.java.parameters.Parameter;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRoutineRealization {
@@ -18,8 +18,8 @@ public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRout
   private CreatedParameterInInterfaceMethodRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceOpSignature(final InterfaceMethod method, final Parameter parameter) {
@@ -31,8 +31,8 @@ public class CreatedParameterInInterfaceMethodRoutine extends AbstractRepairRout
     }
   }
   
-  public CreatedParameterInInterfaceMethodRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod method, final Parameter parameter) {
-    super(responseExecutionState, calledBy);
+  public CreatedParameterInInterfaceMethodRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final InterfaceMethod method, final Parameter parameter) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.ejbjava2pcm.CreatedParameterInInterfaceMethodRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.ejbjava2pcm.RoutinesFacade(getExecutionState(), this);
     this.method = method;this.parameter = parameter;

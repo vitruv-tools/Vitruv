@@ -12,8 +12,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtext.ui,
  tools.vitruv.dsls.mapping,
  tools.vitruv.dsls.mapping.ui,
- tools.vitruv.dsls.response,
- tools.vitruv.dsls.response.ui,
+ tools.vitruv.dsls.reactions,
+ tools.vitruv.dsls.reactions.ui,
  org.eclipse.jdt.core,
  org.eclipse.xtext.builder
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

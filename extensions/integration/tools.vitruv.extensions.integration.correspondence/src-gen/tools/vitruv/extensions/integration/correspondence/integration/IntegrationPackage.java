@@ -2,11 +2,10 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration;
 
-import tools.vitruv.dsls.response.meta.correspondence.response.ResponsePackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,7 +72,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__PARENT = ResponsePackage.RESPONSE_CORRESPONDENCE__PARENT;
+	int INTEGRATION_CORRESPONDENCE__PARENT = ReactionsPackage.REACTIONS_CORRESPONDENCE__PARENT;
 
 	/**
 	 * The feature id for the '<em><b>Depends On</b></em>' reference list.
@@ -82,7 +81,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__DEPENDS_ON = ResponsePackage.RESPONSE_CORRESPONDENCE__DEPENDS_ON;
+	int INTEGRATION_CORRESPONDENCE__DEPENDS_ON = ReactionsPackage.REACTIONS_CORRESPONDENCE__DEPENDS_ON;
 
 	/**
 	 * The feature id for the '<em><b>Depended On By</b></em>' reference list.
@@ -91,7 +90,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__DEPENDED_ON_BY = ResponsePackage.RESPONSE_CORRESPONDENCE__DEPENDED_ON_BY;
+	int INTEGRATION_CORRESPONDENCE__DEPENDED_ON_BY = ReactionsPackage.REACTIONS_CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
 	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
@@ -100,7 +99,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__ATUI_DS = ResponsePackage.RESPONSE_CORRESPONDENCE__ATUI_DS;
+	int INTEGRATION_CORRESPONDENCE__ATUI_DS = ReactionsPackage.REACTIONS_CORRESPONDENCE__ATUI_DS;
 
 	/**
 	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
@@ -109,7 +108,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__BTUI_DS = ResponsePackage.RESPONSE_CORRESPONDENCE__BTUI_DS;
+	int INTEGRATION_CORRESPONDENCE__BTUI_DS = ReactionsPackage.REACTIONS_CORRESPONDENCE__BTUI_DS;
 
 	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.
@@ -118,7 +117,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__TAG = ResponsePackage.RESPONSE_CORRESPONDENCE__TAG;
+	int INTEGRATION_CORRESPONDENCE__TAG = ReactionsPackage.REACTIONS_CORRESPONDENCE__TAG;
 
 	/**
 	 * The feature id for the '<em><b>Created By Integration</b></em>' attribute.
@@ -127,7 +126,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__CREATED_BY_INTEGRATION = ResponsePackage.RESPONSE_CORRESPONDENCE_FEATURE_COUNT + 0;
+	int INTEGRATION_CORRESPONDENCE__CREATED_BY_INTEGRATION = ReactionsPackage.REACTIONS_CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
@@ -136,7 +135,7 @@ public interface IntegrationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE_FEATURE_COUNT = ResponsePackage.RESPONSE_CORRESPONDENCE_FEATURE_COUNT + 1;
+	int INTEGRATION_CORRESPONDENCE_FEATURE_COUNT = ReactionsPackage.REACTIONS_CORRESPONDENCE_FEATURE_COUNT + 1;
 
 
 	/**

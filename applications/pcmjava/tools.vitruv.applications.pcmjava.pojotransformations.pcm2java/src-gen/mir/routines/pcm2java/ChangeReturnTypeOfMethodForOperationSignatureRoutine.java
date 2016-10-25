@@ -7,9 +7,9 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.emftext.language.java.members.InterfaceMethod;
 import org.palladiosimulator.pcm.repository.DataType;
 import org.palladiosimulator.pcm.repository.OperationSignature;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends AbstractRepairRoutineRealization {
@@ -18,8 +18,8 @@ public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends Abstra
   private ChangeReturnTypeOfMethodForOperationSignatureRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceInterfaceMethod(final OperationSignature operationSignature) {
@@ -32,8 +32,8 @@ public class ChangeReturnTypeOfMethodForOperationSignatureRoutine extends Abstra
     }
   }
   
-  public ChangeReturnTypeOfMethodForOperationSignatureRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
-    super(responseExecutionState, calledBy);
+  public ChangeReturnTypeOfMethodForOperationSignatureRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final OperationSignature operationSignature) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.ChangeReturnTypeOfMethodForOperationSignatureRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.operationSignature = operationSignature;

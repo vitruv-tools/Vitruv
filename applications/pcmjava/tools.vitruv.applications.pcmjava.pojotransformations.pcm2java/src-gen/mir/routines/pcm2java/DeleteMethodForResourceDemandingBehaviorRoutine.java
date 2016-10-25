@@ -5,9 +5,9 @@ import mir.routines.pcm2java.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
 import org.emftext.language.java.members.ClassMethod;
 import org.palladiosimulator.pcm.seff.ResourceDemandingInternalBehaviour;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 
 @SuppressWarnings("all")
 public class DeleteMethodForResourceDemandingBehaviorRoutine extends AbstractRepairRoutineRealization {
@@ -16,8 +16,8 @@ public class DeleteMethodForResourceDemandingBehaviorRoutine extends AbstractRep
   private DeleteMethodForResourceDemandingBehaviorRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getElement1(final ResourceDemandingInternalBehaviour behavior, final ClassMethod javaMethod) {
@@ -29,8 +29,8 @@ public class DeleteMethodForResourceDemandingBehaviorRoutine extends AbstractRep
     }
   }
   
-  public DeleteMethodForResourceDemandingBehaviorRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
-    super(responseExecutionState, calledBy);
+  public DeleteMethodForResourceDemandingBehaviorRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final ResourceDemandingInternalBehaviour behavior) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.pcm2java.DeleteMethodForResourceDemandingBehaviorRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.pcm2java.RoutinesFacade(getExecutionState(), this);
     this.behavior = behavior;

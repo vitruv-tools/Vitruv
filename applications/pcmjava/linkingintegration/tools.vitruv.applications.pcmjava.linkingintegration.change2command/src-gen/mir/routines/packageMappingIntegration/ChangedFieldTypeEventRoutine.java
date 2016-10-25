@@ -11,9 +11,9 @@ import org.emftext.language.java.types.TypeReference;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import tools.vitruv.extensions.dslsruntime.response.AbstractRepairRoutineRealization;
-import tools.vitruv.extensions.dslsruntime.response.ResponseExecutionState;
-import tools.vitruv.extensions.dslsruntime.response.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
@@ -23,8 +23,8 @@ public class ChangedFieldTypeEventRoutine extends AbstractRepairRoutineRealizati
   private ChangedFieldTypeEventRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
-    public ActionUserExecution(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy) {
-      super(responseExecutionState);
+    public ActionUserExecution(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+      super(reactionExecutionState);
     }
     
     public EObject getCorrepondenceSourceBasicComponent(final Field field, final TypeReference oldType, final TypeReference newType, final OperationInterface oldCorrespondingOpInterface, final OperationInterface opInterface, final OperationRequiredRole opRequiredRole) {
@@ -72,8 +72,8 @@ public class ChangedFieldTypeEventRoutine extends AbstractRepairRoutineRealizati
     }
   }
   
-  public ChangedFieldTypeEventRoutine(final ResponseExecutionState responseExecutionState, final CallHierarchyHaving calledBy, final Field field, final TypeReference oldType, final TypeReference newType) {
-    super(responseExecutionState, calledBy);
+  public ChangedFieldTypeEventRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Field field, final TypeReference oldType, final TypeReference newType) {
+    super(reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.packageMappingIntegration.ChangedFieldTypeEventRoutine.ActionUserExecution(getExecutionState(), this);
     this.actionsFacade = new mir.routines.packageMappingIntegration.RoutinesFacade(getExecutionState(), this);
     this.field = field;this.oldType = oldType;this.newType = newType;
