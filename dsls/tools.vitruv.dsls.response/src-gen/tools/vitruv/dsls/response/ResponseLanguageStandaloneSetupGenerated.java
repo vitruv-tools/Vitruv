@@ -36,7 +36,7 @@ public class ResponseLanguageStandaloneSetupGenerated implements ISetup {
 		IResourceFactory resourceFactory = injector.getInstance(IResourceFactory.class);
 		IResourceServiceProvider serviceProvider = injector.getInstance(IResourceServiceProvider.class);
 		
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("response", resourceFactory);
-		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("response", serviceProvider);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("reactions", resourceFactory);
+		IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("reactions", serviceProvider);
 	}
 }

@@ -5,7 +5,7 @@
     updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.12" usedGenPackages="platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel#//mirBase">
   <genPackages prefix="ResponseLanguage" basePackage="tools.vitruv.dsls.response"
-      disposableProviderFactory="true" fileExtensions="response" ecorePackage="ResponseLanguage.ecore#/">
+      disposableProviderFactory="true" fileExtensions="reactions" ecorePackage="ResponseLanguage.ecore#/">
     <genClasses ecoreClass="ResponseLanguage.ecore#//ReactionsFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//ReactionsFile/namespaceImports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ResponseLanguage.ecore#//ReactionsFile/reactionsSegments"/>
